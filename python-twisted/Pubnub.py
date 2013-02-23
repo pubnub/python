@@ -44,7 +44,7 @@ class Pubnub(PubnubCoreAsync):
 
     def start(self): reactor.run()
     def stop(self):  reactor.stop()
-    def timeout( self, callback, delay ):
+    def timeout( self, delay, callback ):
         reactor.callLater( delay, callback )
 
     def __init__(
@@ -63,193 +63,6 @@ class Pubnub(PubnubCoreAsync):
             ssl_on,
             origin,
         )        
-
-    def subscribe( self, args ) :
-        """
-        #**
-        #* Subscribe
-        #*
-        #* This is NON-BLOCKING.
-        #* Listen for a message on a channel.
-        #*
-        #* @param array args with channel and message.
-        #* @return false on fail, array on success.
-        #**
-
-        ## Subscribe Example
-        def receive(message) :
-            print(message)
-            return True
-
-        ## On Connect Callback
-        def connected() :
-            pubnub.publish({
-                'channel' : 'hello_world',
-                'message' : { 'some_var' : 'text' }
-            })
-
-        ## Subscribe
-        pubnub.subscribe({
-            'channel'  : 'hello_world',
-            'connect'  : connected,
-            'callback' : receive
-        })
-
-        """
-        ## Fail if missing channel
-        if not 'channel' in args :
-            return 'Missing Channel.'
-
-        ## Fail if missing callback
-        if not 'callback' in args :
-            return 'Missing Callback.'
-
-        ## Capture User Input
-        channel   = str(args['channel'])
-        callback  = args['callback']
-        connectcb = args['connect']
-
-        if 'errorback' in args:
-            errorback = args['errorback']
-        else:
-            errorback = lambda x: x
-
-        ## New Channel?
-        if not (channel in self.subscriptions) :
-            self.subscriptions[channel] = {
-                'first'     : False,
-                'connected' : 0,
-                'timetoken' : '0'
-            }
-
-        ## Ensure Single Connection
-        if self.subscriptions[channel]['connected'] :
-            return "Already Connected"
-
-        self.subscriptions[channel]['connected'] = 1
-
-        ## SUBSCRIPTION RECURSION 
-        def substabizel():
-            ## STOP CONNECTION?
-            if not self.subscriptions[channel]['connected']:
-                return
-
-            def sub_callback(response):
-                ## STOP CONNECTION?
-                if not self.subscriptions[channel]['connected']:
-                    return
-
-                ## CONNECTED CALLBACK
-                if not self.subscriptions[channel]['first'] :
-                    self.subscriptions[channel]['first'] = True
-                    connectcb()
-
-                ## PROBLEM?
-                if not response:
-                    def time_callback(_time):
-                        if not _time:
-                            reactor.callLater( 1, substabizel )
-                            return errorback("Lost Network Connection")
-                        else:
-                            reactor.callLater( 1, substabizel )
-
-                    ## ENSURE CONNECTED (Call Time Function)
-                    return self.time({ 'callback' : time_callback })
-
-                self.subscriptions[channel]['timetoken'] = response[1]
-                substabizel()
-
-                pc = PubnubCrypto()
-                out = []
-                for message in response[0]:
-                     if self.cipher_key :
-                          if type( message ) == type(list()):
-                              for item in message:
-                                  encryptItem = pc.decrypt(self.cipher_key, item )
-                                  out.append(encryptItem)
-                              message = out
-                          elif type( message ) == type(dict()):
-                              outdict = {}
-                              for k, item in message.iteritems():
-                                  encryptItem = pc.decrypt(self.cipher_key, item )
-                                  outdict[k] = encryptItem
-                                  out.append(outdict)
-                              message = out[0]
-                          else:
-                              message = pc.decrypt(self.cipher_key, message )
-                     else :
-                          message
-
-                     callback(message)
-
-            ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
-            try :
-                self._request( [
-                    'subscribe',
-                    self.subscribe_key,
-                    channel,
-                    '0',
-                    str(self.subscriptions[channel]['timetoken'])
-                ], sub_callback )
-            except :
-                reactor.callLater( 1, substabizel )
-                return
-
-        ## BEGIN SUBSCRIPTION (LISTEN FOR MESSAGES)
-        substabizel()
-
-
-    def unsubscribe( self, args ):
-        channel = str(args['channel'])
-        if not (channel in self.subscriptions):
-            return False
-
-        ## DISCONNECT
-        self.subscriptions[channel]['connected'] = 0
-        self.subscriptions[channel]['timetoken'] = 0
-        self.subscriptions[channel]['first']     = False
-
-    def time( self, args ) :
-        """
-        #**
-        #* Time
-        #*
-        #* Timestamp from PubNub Cloud.
-        #*
-        #* @return int timestamp.
-        #*
-
-        ## PubNub Server Time Example
-        def time_complete(timestamp):
-            print(timestamp)
-
-        pubnub.time(time_complete)
-
-        """
-        def complete(response) :
-            if not response: return 0
-            args['callback'](response[0])
-
-        self._request( [
-            'time',
-            '0'
-        ], complete )
-
-    def uuid(self) :
-        """
-        #**
-        #* uuid
-        #*
-        #* Generate a UUID
-        #*
-        #* @return  UUID.
-        #*
-
-        ## PubNub UUID Example
-        uuid = pubnub.uuid()
-        print(uuid)
-        """
-        return uuid.uuid1()
 
     def _request( self, request, callback, timeout=30 ) :
         global pnconn_pool
@@ -278,10 +91,10 @@ class Pubnub(PubnubCoreAsync):
         gp.addErrback(callback)
 	   
 
-class PubNubResponse(Protocol):
-    def __init__( self, finished ):
-        self.finished = finished
-
-    def dataReceived( self, bytes ):
-            self.finished.callback(bytes)
+#class PubNubResponse(Protocol):
+#    def __init__( self, finished ):
+#        self.finished = finished
+#
+#    def dataReceived( self, bytes ):
+#            self.finished.callback(bytes)
 

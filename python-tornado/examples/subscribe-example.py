@@ -12,6 +12,7 @@
 import sys
 import tornado
 sys.path.append('../')
+sys.path.append('../..')
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -26,6 +27,17 @@ ssl_on        = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 pubnub = Pubnub( publish_key, subscribe_key, secret_key,cipher_key, ssl_on )
 crazy  = 'hello_world'
 
+def connect_cb():
+    print 'Connect'
+
+def subscribe_result(response):
+    print response
+
+pubnub.subscribe({
+    'channel' : crazy,
+    'callback' : subscribe_result,
+    'connect' : connect_cb 
+})
 ## -----------------------------------------------------------------------
 ## Publish Example
 ## -----------------------------------------------------------------------
@@ -53,7 +65,6 @@ pubnub.publish({
     'message' : { 'some_key' : 'some_val' },
     'callback' : publish_complete
 })
-
 ## -----------------------------------------------------------------------
 ## IO Event Loop
 ## -----------------------------------------------------------------------

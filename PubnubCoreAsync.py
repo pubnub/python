@@ -39,7 +39,7 @@ class PubnubCoreAsync(object):
 
     def start(self): pass 
     def stop(self):  pass
-    def timeout( self, callback, delay ):
+    def timeout( self, delay, callback ):
         pass
 
     def __init__(
@@ -75,6 +75,7 @@ class PubnubCoreAsync(object):
         self.cipher_key    = cipher_key
         self.ssl           = ssl_on
         self.subscriptions = {}
+        self.timetoken     = 0
 
         if self.ssl :
             self.origin = 'https://' + self.origin
@@ -170,6 +171,7 @@ class PubnubCoreAsync(object):
         ], publish_response )
 
 
+
     def subscribe( self, args ) :
         """
         #**
@@ -224,8 +226,7 @@ class PubnubCoreAsync(object):
         if not (channel in self.subscriptions) :
             self.subscriptions[channel] = {
                 'first'     : False,
-                'connected' : 0,
-                'timetoken' : '0'
+                'connected' : False,
             }
 
         ## Ensure Single Connection
@@ -233,14 +234,15 @@ class PubnubCoreAsync(object):
             return "Already Connected"
 
         self.subscriptions[channel]['connected'] = 1
-
+        print self.subscriptions
         ## SUBSCRIPTION RECURSION 
         def substabizel():
             ## STOP CONNECTION?
             if not self.subscriptions[channel]['connected']:
                 return
-
+          
             def sub_callback(response):
+                response = json.loads(response)
                 ## STOP CONNECTION?
                 if not self.subscriptions[channel]['connected']:
                     return
@@ -254,15 +256,15 @@ class PubnubCoreAsync(object):
                 if not response:
                     def time_callback(_time):
                         if not _time:
-                            reactor.callLater( 1, substabizel )
+                            self.timeout( 1, substabizel )
                             return errorback("Lost Network Connection")
                         else:
-                            reactor.callLater( 1, substabizel )
+                            self.timeout( 1, substabizel )
 
                     ## ENSURE CONNECTED (Call Time Function)
                     return self.time({ 'callback' : time_callback })
 
-                self.subscriptions[channel]['timetoken'] = response[1]
+                self.timetoken = response[1]
                 substabizel()
 
                 pc = PubnubCrypto()
@@ -295,10 +297,10 @@ class PubnubCoreAsync(object):
                     self.subscribe_key,
                     channel,
                     '0',
-                    str(self.subscriptions[channel]['timetoken'])
+                    str(self.timetoken)
                 ], sub_callback )
             except :
-                reactor.callLater( 1, substabizel )
+                self.timeout( 1, substabizel )
                 return
 
         ## BEGIN SUBSCRIPTION (LISTEN FOR MESSAGES)
@@ -476,12 +478,5 @@ class PubnubCoreAsync(object):
         request.addCallback(received)
         request.addBoth(complete)
 
-
-
-class PubNubResponse(Protocol):
-    def __init__( self, finished ):
-        self.finished = finished
-
-    def dataReceived( self, bytes ):
-            self.finished.callback(bytes)
-
+    def _request( self, request, callback, timeout=30 ) :
+        pass

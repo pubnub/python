@@ -8,7 +8,9 @@
 ## -----------------------------------
 ## PubNub 3.1 Real-time Push Cloud API
 ## -----------------------------------
-
+import sys
+sys.path.append('../')
+from PubnubCoreAsync import PubnubCoreAsync
 import json
 import time
 import hashlib
@@ -30,7 +32,7 @@ from PubnubCrypto import PubnubCrypto
 
 ioloop = tornado.ioloop.IOLoop.instance()
 
-class Pubnub():
+class Pubnub(PubnubCoreAsync):
 
     def stop(self): ioloop.stop()
     def start(self): ioloop.start()
@@ -46,122 +48,13 @@ class Pubnub():
         ssl_on = False,
         origin = 'pubsub.pubnub.com'
     ) :
-        """
-        #**
-        #* Pubnub
-        #*
-        #* Init the Pubnub Client API
-        #*
-        #* @param string publish_key required key to send messages.
-        #* @param string subscribe_key required key to receive messages.
-        #* @param string secret_key required key to sign messages.
-        #* @param boolean ssl required for 2048 bit encrypted messages.
-        #* @param string origin PUBNUB Server Origin.
-        #**
-
-        ## Initiat Class
-        pubnub = Pubnub( 'PUBLISH-KEY', 'SUBSCRIBE-KEY', 'SECRET-KEY', False )
-
-        """
-        self.origin        = origin
-        self.publish_key   = publish_key
-        self.subscribe_key = subscribe_key
-        self.secret_key    = secret_key
-        self.cipher_key    = cipher_key
-        self.ssl           = ssl_on
-        self.subscriptions = {}
-
-        if self.ssl :
-            self.origin = 'https://' + self.origin
-        else :
-            self.origin = 'http://'  + self.origin
-
-
-    def publish( self, args ) :
-        """
-        #**
-        #* Publish
-        #*
-        #* Send a message to a channel.
-        #*
-        #* @param array args with channel and message.
-        #* @return array success information.
-        #**
-
-        ## Publish Example
-        def publish_complete(info):
-            print(info)
-
-        pubnub.publish({
-            'channel' : 'hello_world',
-            'message' : {
-                'some_text' : 'Hello my World'
-            },
-            'callback' : publish_complete
-        })
-
-        """
-        ## Fail if bad input.
-        if not (args['channel'] and args['message']) :
-            print('Missing Channel or Message')
-            return False
-
-        ## Capture User Input
-        channel = str(args['channel'])
-        message = args['message']
-
-        if self.cipher_key :
-            pc = PubnubCrypto()
-            out = []
-            if type( message ) == type(list()):
-                for item in message:
-                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
-                    out.append(encryptItem)
-                message = json.dumps(out)
-            elif type( message ) == type(dict()):
-                outdict = {}
-                for k, item in message.iteritems():
-                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
-                    outdict[k] = encryptItem
-                    out.append(outdict)
-                message = json.dumps(out[0])
-            else:
-                message = json.dumps(pc.encrypt(self.cipher_key, message).replace('\n',''))
-        else :
-            message = json.dumps(args['message'])
-
-        ## Capture Callback
-        if args.has_key('callback') :
-            callback = args['callback']
-        else :
-            callback = lambda x : x
-
-        ## Sign Message
-        if self.secret_key :
-            hashObject = sha256()
-            hashObject.update(self.secret_key)
-            hashedSecret = hashObject.hexdigest()
-            hash = hmac.HMAC(hashedSecret, '/'.join([
-                    self.publish_key,
-                    self.subscribe_key,
-                    self.secret_key,
-                    channel,
-                    message
-                ]), digestmod=digestmod)
-            signature = hash.hexdigest()        
-        else :
-            signature = '0'
-        
-        ## Send Message
-        return self._request([
-            'publish',
-            self.publish_key,
-            self.subscribe_key,
-            signature,
-            channel,
-            '0',
-            message
-        ], callback );
+        super(Pubnub, self).__init__(
+            publish_key,
+            subscribe_key,
+            secret_key,
+            ssl_on,
+            origin,
+        )        
 
 
     def subscribe( self, args ) :

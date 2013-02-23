@@ -12,6 +12,7 @@
 import sys
 from twisted.internet import reactor
 sys.path.append('../')
+sys.path.append('../../')
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'

@@ -9,7 +9,6 @@
 ## PubNub 3.1 Real-time Push Cloud API
 ## -----------------------------------
 import sys
-sys.path.append('../')
 from PubnubCoreAsync import PubnubCoreAsync
 import json
 import time
@@ -55,24 +54,15 @@ class Pubnub(PubnubCoreAsync):
             ssl_on,
             origin,
         )        
+        self.headers['User-Agent'] = 'Python-Tornado'
 
     def _request( self, request, callback ) :
-        ## Build URL
-        url = self.origin + '/' + "/".join([
-            "".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
-                hex(ord(ch)).replace( '0x', '%' ).upper() or
-                ch for ch in list(bit)
-            ]) for bit in request])
+        url = self.getUrl(request)
         print url
         ## Send Request Expecting JSON Response
         http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
-        request = tornado.httpclient.HTTPRequest( url, 'GET', dict({
-            'V' : '3.1',
-            'User-Agent' : 'Python-Tornado',
-            'Accept-Encoding' : 'gzip'
-        }) ) 
+        request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers ) 
         def responseCallback(response):
-            print response._get_body()
             callback(response._get_body())
         
         http.fetch(

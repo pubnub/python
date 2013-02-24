@@ -29,12 +29,13 @@ from twisted.web.client import getPage
 from twisted.internet import reactor
 from twisted.internet.defer import Deferred
 from twisted.internet.protocol import Protocol
-from twisted.web.client import Agent
+from twisted.web.client import Agent, ContentDecoderAgent, RedirectAgent, GzipDecoder
 from twisted.web.client import HTTPConnectionPool
 from twisted.web.http_headers import Headers
 from PubnubCrypto import PubnubCrypto
 import gzip
 import zlib
+from twisted.internet.ssl import ClientContextFactory
 
 pnconn_pool = HTTPConnectionPool(reactor)
 pnconn_pool.maxPersistentPerHost    = 100
@@ -64,37 +65,57 @@ class Pubnub(PubnubCoreAsync):
             origin,
         )        
 
-    def _request( self, request, callback, timeout=30 ) :
+    def _request( self, request, callback ) :
         global pnconn_pool
 
         ## Build URL
+        '''
         url = self.origin + '/' + "/".join([
             "".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
                 hex(ord(ch)).replace( '0x', '%' ).upper() or
                 ch for ch in list(bit)
             ]) for bit in request])
-
-        requestType = request[0]
-        agent       = Agent(
+        '''
+        url = self.getUrl(request)
+        cf = WebClientContextFactory()
+        agent       = ContentDecoderAgent(RedirectAgent(Agent(
             reactor,
-            self.ssl and None or pnconn_pool,
-            connectTimeout=timeout
-        )
+            contextFactory = cf,
+            pool = self.ssl and None or pnconn_pool
+        )), [('gzip', GzipDecoder)])
         print url
-        gp  = getPage( url, headers={
-            'V'               : ['3.4'],
+        request     = agent.request( 'GET', url, Headers({
+            'V'               : ['3.1'],
             'User-Agent'      : ['Python-Twisted'],
             'Accept-Encoding' : ['gzip']
-        } );
-        
-        gp.addCallback(callback)
-        gp.addErrback(callback)
-	   
+        }), None )
 
-#class PubNubResponse(Protocol):
-#    def __init__( self, finished ):
-#        self.finished = finished
-#
-#    def dataReceived( self, bytes ):
-#            self.finished.callback(bytes)
+        def received(response):
+            #print response
+            finished = Deferred()
+            response.deliverBody(PubNubResponse(finished))
+            return finished
+
+        def complete(data):
+            #print data
+            #try    : obj = json.loads(data)
+            #except : obj = None
+
+            #print obj
+            callback(data)
+
+        request.addCallback(received)
+        request.addBoth(complete)
+
+class WebClientContextFactory(ClientContextFactory):
+    def getContext(self, hostname, port):
+        return ClientContextFactory.getContext(self)
+	   
+class PubNubResponse(Protocol):
+    def __init__( self, finished ):
+        self.finished = finished
+
+    def dataReceived( self, bytes ):
+            #print bytes
+            self.finished.callback(bytes)
 

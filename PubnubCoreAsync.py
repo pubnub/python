@@ -49,7 +49,8 @@ class PubnubCoreAsync(object):
         secret_key = False,
         cipher_key = False,
         ssl_on = False,
-        origin = 'pubsub.pubnub.com'
+        origin = 'pubsub.pubnub.com',
+        uuid = None
     ) :
         """
         #**
@@ -76,6 +77,12 @@ class PubnubCoreAsync(object):
         self.ssl           = ssl_on
         self.subscriptions = {}
         self.timetoken     = 0
+        self.uuid          = uuid or str(self.uuid()) 
+        self.headers       = {
+            'V' : '3.1',
+            'User-Agent' : 'Python-*',
+            'Accept-Encoding' : 'gzip'
+        }
 
         if self.ssl :
             self.origin = 'https://' + self.origin
@@ -160,7 +167,7 @@ class PubnubCoreAsync(object):
             signature = '0'
 
         ## Send Message
-        return self._request([
+        return self._request({ "urlcomponents" : [
             'publish',
             self.publish_key,
             self.subscribe_key,
@@ -168,7 +175,7 @@ class PubnubCoreAsync(object):
             channel,
             '0',
             message
-        ], publish_response )
+        ] }, publish_response )
 
 
 
@@ -234,7 +241,6 @@ class PubnubCoreAsync(object):
             return "Already Connected"
 
         self.subscriptions[channel]['connected'] = 1
-        print self.subscriptions
         ## SUBSCRIPTION RECURSION 
         def substabizel():
             ## STOP CONNECTION?
@@ -242,6 +248,7 @@ class PubnubCoreAsync(object):
                 return
           
             def sub_callback(response):
+                print response
                 response = json.loads(response)
                 ## STOP CONNECTION?
                 if not self.subscriptions[channel]['connected']:
@@ -292,13 +299,13 @@ class PubnubCoreAsync(object):
 
             ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
             try :
-                self._request( [
+                self._request( { "urlcomponents" : [
                     'subscribe',
                     self.subscribe_key,
                     channel,
                     '0',
                     str(self.timetoken)
-                ], sub_callback )
+                ], "urlparams" : {"uuid":self.uuid} }, sub_callback )
             except :
                 self.timeout( 1, substabizel )
                 return
@@ -347,13 +354,13 @@ class PubnubCoreAsync(object):
 
         ## Get History
         pc = PubnubCrypto()
-        return self._request( [
+        return self._request( {"urlcomponents" : [
             'history',
             self.subscribe_key,
             channel,
             '0',
             str(limit)
-        ], args['callback'] )
+        ]}, args['callback'] )
 
     def time( self, args ) :
         """
@@ -376,10 +383,10 @@ class PubnubCoreAsync(object):
             if not response: return 0
             args['callback'](response[0])
 
-        self._request( [
+        self._request( { "urlcomponents" : [
             'time',
             '0'
-        ], complete )
+        ]}, complete )
 
     def uuid(self) :
         """
@@ -397,86 +404,16 @@ class PubnubCoreAsync(object):
         """
         return uuid.uuid1()
 
-    def _request( self, request, callback ) :
-        global pnconn_pool
-
+    def getUrl(self,request):
         ## Build URL
         url = self.origin + '/' + "/".join([
             "".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
                 hex(ord(ch)).replace( '0x', '%' ).upper() or
                 ch for ch in list(bit)
-            ]) for bit in request])
-
-        requestType = request[0]
-        agent       = Agent(
-            reactor,
-            self.ssl and None or pnconn_pool,
-            connectTimeout=30
-        )
-        request     = agent.request( 'GET', url, Headers({
-            'V'               : ['3.1'],
-            'User-Agent'      : ['Python-Twisted'],
-            'Accept-Encoding' : ['gzip']
-        }), None )
-
-        self.resulting_is = str()
-        def received(response):
-            headerlist = list(response.headers.getAllRawHeaders())
-            for item in headerlist:
-                if( item[0] == "Content-Encoding"):
-                    if type(item[1]) == type(list()):
-                        for subitem in item[1]:
-                            self.resulting_is = subitem
-                    elif type(item[1]) == type(str()):
-                        self.resulting_is = item[1]
-
-            finished = Deferred()
-            response.deliverBody(PubNubResponse(finished))
-            return finished
-
-        def complete(data):
-            if ( type(data) == type(str()) ):
-                if self.resulting_is:
-                    d = zlib.decompressobj(16+zlib.MAX_WBITS)
-
-            try     :   data = d.decompress(data) # try/catch here, pass through if except
-            except  :   data = data
-
-            try    : obj = json.loads(data)
-            except : obj = None
-
-            pc = PubnubCrypto()
-            out = []
-            if self.cipher_key :
-                if requestType == "history" :
-                    if type(obj) == type(list()):
-                        for item in obj:
-                            if type(item) == type(list()):
-                                for subitem in item:
-                                    encryptItem = pc.decrypt(self.cipher_key, subitem )
-                                    out.append(encryptItem)
-                            elif type(item) == type(dict()):
-                                outdict = {}
-                                for k, subitem in item.iteritems():
-                                    encryptItem = pc.decrypt(self.cipher_key, subitem )
-                                    outdict[k] = encryptItem
-                                    out.append(outdict)
-                            else :
-                                encryptItem = pc.decrypt(self.cipher_key, item )
-                                out.append(encryptItem)
-                        callback(out)
-                    elif type( obj ) == type(dict()):
-                        for k, item in obj.iteritems():
-                            encryptItem = pc.decrypt(self.cipher_key, item )
-                            out.append(encryptItem)
-                        callback(out)
-                else :
-                    callback(obj)
-            else :
-                callback(obj)
-
-        request.addCallback(received)
-        request.addBoth(complete)
+            ]) for bit in request["urlcomponents"]])
+        if (request.has_key("urlparams")):
+            url = url + '?' + "&".join([ x + "=" + y  for x,y in request["urlparams"].items()])
+        return url
 
     def _request( self, request, callback, timeout=30 ) :
         pass

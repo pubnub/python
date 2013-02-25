@@ -48,27 +48,29 @@ class Pubnub(PubnubCoreAsync):
         origin = 'pubsub.pubnub.com'
     ) :
         super(Pubnub, self).__init__(
-            publish_key,
-            subscribe_key,
-            secret_key,
-            ssl_on,
-            origin,
+            publish_key=publish_key,
+            subscribe_key=subscribe_key,
+            secret_key=secret_key,
+            ssl_on=ssl_on,
+            origin=origin,
         )        
+        self.headers = {}
         self.headers['User-Agent'] = 'Python-Tornado'
+        self.headers['Accept-Encoding'] = self.accept_encoding
+        self.headers['V'] = self.version
+        self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
 
     def _request( self, request, callback ) :
         url = self.getUrl(request)
         print url
         ## Send Request Expecting JSON Response
-        http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
-        request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers ) 
+        #print self.headers
+        request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers, connect_timeout=310, request_timeout=310 ) 
         def responseCallback(response):
             callback(response._get_body())
         
-        http.fetch(
+        self.http.fetch(
             request,
             callback=responseCallback,
-            connect_timeout=310,
-            request_timeout=310
         )
 

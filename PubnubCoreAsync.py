@@ -21,19 +21,7 @@ except ImportError:
     import Crypto.Hash.SHA256 as digestmod
     sha256 = digestmod.new
 import hmac
-from twisted.internet import reactor
-from twisted.internet.defer import Deferred
-from twisted.internet.protocol import Protocol
-from twisted.web.client import Agent
-from twisted.web.client import HTTPConnectionPool
-from twisted.web.http_headers import Headers
 from PubnubCrypto import PubnubCrypto
-import gzip
-import zlib
-
-pnconn_pool = HTTPConnectionPool(reactor)
-pnconn_pool.maxPersistentPerHost    = 100
-pnconn_pool.cachedConnectionTimeout = 310
 
 class PubnubCoreAsync(object):
 
@@ -78,12 +66,9 @@ class PubnubCoreAsync(object):
         self.subscriptions = {}
         self.timetoken     = 0
         self.uuid          = uuid or str(self.uuid()) 
-        self.headers       = {
-            'V' : '3.1',
-            'User-Agent' : 'Python-*',
-            'Accept-Encoding' : 'gzip'
-        }
-
+        self.version       = '3.4'
+        self.accept_encoding = 'gzip'
+        print self.ssl
         if self.ssl :
             self.origin = 'https://' + self.origin
         else :
@@ -277,6 +262,7 @@ class PubnubCoreAsync(object):
                 pc = PubnubCrypto()
                 out = []
                 for message in response[0]:
+                     print type(message)
                      if self.cipher_key :
                           if type( message ) == type(list()):
                               for item in message:

@@ -37,7 +37,7 @@ import gzip
 import zlib
 from twisted.internet.ssl import ClientContextFactory
 
-pnconn_pool = HTTPConnectionPool(reactor)
+pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
 pnconn_pool.maxPersistentPerHost    = 100
 pnconn_pool.cachedConnectionTimeout = 310
 
@@ -58,12 +58,16 @@ class Pubnub(PubnubCoreAsync):
         origin = 'pubsub.pubnub.com'
     ) :
         super(Pubnub, self).__init__(
-            publish_key,
-            subscribe_key,
-            secret_key,
-            ssl_on,
-            origin,
+            publish_key=publish_key,
+            subscribe_key=subscribe_key,
+            secret_key=secret_key,
+            ssl_on=ssl_on,
+            origin=origin,
         )        
+        self.headers = {}
+        self.headers['User-Agent'] = ['Python-Twisted']
+        #self.headers['Accept-Encoding'] = [self.accept_encoding]
+        self.headers['V'] = [self.version]
 
     def _request( self, request, callback ) :
         global pnconn_pool
@@ -77,18 +81,13 @@ class Pubnub(PubnubCoreAsync):
             ]) for bit in request])
         '''
         url = self.getUrl(request)
-        cf = WebClientContextFactory()
         agent       = ContentDecoderAgent(RedirectAgent(Agent(
             reactor,
-            contextFactory = cf,
+            contextFactory = WebClientContextFactory(),
             pool = self.ssl and None or pnconn_pool
         )), [('gzip', GzipDecoder)])
         print url
-        request     = agent.request( 'GET', url, Headers({
-            'V'               : ['3.1'],
-            'User-Agent'      : ['Python-Twisted'],
-            'Accept-Encoding' : ['gzip']
-        }), None )
+        request     = agent.request( 'GET', url, Headers(self.headers), None )
 
         def received(response):
             #print response
@@ -97,11 +96,6 @@ class Pubnub(PubnubCoreAsync):
             return finished
 
         def complete(data):
-            #print data
-            #try    : obj = json.loads(data)
-            #except : obj = None
-
-            #print obj
             callback(data)
 
         request.addCallback(received)
@@ -116,6 +110,5 @@ class PubNubResponse(Protocol):
         self.finished = finished
 
     def dataReceived( self, bytes ):
-            #print bytes
             self.finished.callback(bytes)
 

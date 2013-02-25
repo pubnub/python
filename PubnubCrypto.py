@@ -38,7 +38,8 @@ class PubnubCrypto() :
         #* @return msg with padding.
         #**
         """
-        return msg + ((block_size - len(msg) % block_size) * chr(block_size - len(msg) % block_size))
+        padding = block_size - (len(msg) % block_size)
+        return msg + chr(padding)*padding
        
     def depad( self, msg ):
         """
@@ -60,7 +61,7 @@ class PubnubCrypto() :
         #* @return key in MD5 format
         #**
         """
-        return MD5.new(key).digest()
+        return hashlib.sha256(key).hexdigest()
 
     def encrypt( self, key, msg ):
         """
@@ -73,9 +74,9 @@ class PubnubCrypto() :
         """
         secret = self.getSecret(key)
         Initial16bytes='0123456789012345'
-        cipher = AES.new(secret,AES.MODE_CBC,Initial16bytes)
-        return encodestring(cipher.encrypt(self.pad(msg)))
-    
+        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
+        enc = encodestring(cipher.encrypt(self.pad(msg)))
+        return enc
     def decrypt( self, key, msg ):
         """
         #**
@@ -87,6 +88,6 @@ class PubnubCrypto() :
         """
         secret = self.getSecret(key)
         Initial16bytes='0123456789012345'
-        cipher = AES.new(secret,AES.MODE_CBC,Initial16bytes)
+        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
         return self.depad((cipher.decrypt(decodestring(msg))))
     

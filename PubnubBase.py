@@ -16,6 +16,7 @@ import time
 import hashlib
 import urllib2
 import uuid 
+from PubnubCrypto import PubnubCrypto
 
 class PubnubBase(object):
     def __init__(
@@ -95,7 +96,7 @@ class PubnubBase(object):
                     out.append(outdict)
                 message = json.dumps(out[0])
             else:
-                message = json.dumps(pc.encrypt(self.cipher_key, message).replace('\n',''))
+                message = json.dumps(pc.encrypt(self.cipher_key, json.dumps(message)).replace('\n',''))
         else :
             message = json.dumps(message)
 
@@ -103,6 +104,7 @@ class PubnubBase(object):
 
     def decrypt(self, message):
         if self.cipher_key:
+            pc = PubnubCrypto()
             if type( message ) == type(list()):
                 for item in message:
                     encryptItem = pc.decrypt(self.cipher_key, item )

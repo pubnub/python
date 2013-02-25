@@ -51,6 +51,7 @@ class Pubnub(PubnubCoreAsync):
             publish_key=publish_key,
             subscribe_key=subscribe_key,
             secret_key=secret_key,
+            cipher_key=cipher_key,
             ssl_on=ssl_on,
             origin=origin,
         )        

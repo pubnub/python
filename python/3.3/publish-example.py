@@ -1,7 +1,7 @@
 from Pubnub import Pubnub
 
 ## Initiate Class
-pubnub = Pubnub( 'demo', 'demo', None, False )
+pubnub = Pubnub( publish_key='demo', subscribe_key='demo', ssl_on=False )
 
 ## Publish Example
 info = pubnub.publish({

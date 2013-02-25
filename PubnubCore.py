@@ -16,16 +16,18 @@ import time
 import hashlib
 import urllib2
 import uuid
+from PubnubBase import PubnubBase
 
-class PubnubCore(object):
+class PubnubCore(PubnubBase):
     def __init__(
         self,
         publish_key,
         subscribe_key,
         secret_key = False,
+        cipher_key = False,
         ssl_on = False,
         origin = 'pubsub.pubnub.com',
-        pres_uuid = None
+        uuid = None
     ) :
         """
         #**
@@ -45,81 +47,20 @@ class PubnubCore(object):
         pubnub = Pubnub( 'PUBLISH-KEY', 'SUBSCRIBE-KEY', 'SECRET-KEY', False )
 
         """
-        self.origin        = origin
-        self.limit         = 1800
-        self.publish_key   = publish_key
-        self.subscribe_key = subscribe_key
-        self.secret_key    = secret_key
-        self.ssl           = ssl_on
+        super(PubnubCore, self).__init__(
+            publish_key=publish_key,
+            subscribe_key=subscribe_key,
+            secret_key=secret_key,
+            cipher_key=cipher_key,
+            ssl_on=ssl_on,
+            origin=origin,
+            UUID=uuid
+        )        
 
-        if self.ssl :
-            self.origin = 'https://' + self.origin
-        else :
-            self.origin = 'http://'  + self.origin
-        
-        self.uuid = pres_uuid or str(uuid.uuid4())
-        
-        if not isinstance(self.uuid, basestring):
-            raise AttributeError("pres_uuid must be a string")
-
-    def publish( self, args ) :
-        """
-        #**
-        #* Publish
-        #*
-        #* Send a message to a channel.
-        #*
-        #* @param array args with channel and message.
-        #* @return array success information.
-        #**
-
-        ## Publish Example
-        info = pubnub.publish({
-            'channel' : 'hello_world',
-            'message' : {
-                'some_text' : 'Hello my World'
-            }
-        })
-        print(info)
-
-        """
-        ## Fail if bad input.
-        if not (args['channel'] and args['message']) :
-            return [ 0, 'Missing Channel or Message' ]
-
-        ## Capture User Input
-        channel = str(args['channel'])
-        message = json.dumps(args['message'], separators=(',',':'))
-
-
-        ## Capture Callback
-        if args.has_key('callback') :
-            callback = args['callback']
-        else :
-            callback = None 
-
-        ## Sign Message
-        if self.secret_key :
-            signature = hashlib.md5('/'.join([
-                self.publish_key,
-                self.subscribe_key,
-                self.secret_key,
-                channel,
-                message
-            ])).hexdigest()
-        else :
-            signature = '0'
-
-        ## Send Message
-        return self._request([
-            'publish',
-            self.publish_key,
-            self.subscribe_key,
-            signature,
-            channel,
-            '0',
-            message
-        ], callback)
+        self.subscriptions = {}
+        self.timetoken     = 0
+        self.version       = '3.4'
+        self.accept_encoding = 'gzip'
 
 
 
@@ -192,226 +133,3 @@ class PubnubCore(object):
                 time.sleep(1)
 
         return True
-    
-    def presence( self, args ) :
-        """
-        #**
-        #* presence
-        #*
-        #* This is BLOCKING.
-        #* Listen for presence events on a channel.
-        #*
-        #* @param array args with channel and callback.
-        #* @return false on fail, array on success.
-        #**
-
-        ## Presence Example
-        def pres_event(message) :
-            print(message)
-            return True
-
-        pubnub.presence({
-            'channel'  : 'hello_world',
-            'callback' : receive 
-        })
-        """
-
-        ## Fail if missing channel
-        if not 'channel' in args :
-            raise Exception('Missing Channel.')
-            return False
-
-        ## Fail if missing callback
-        if not 'callback' in args :
-            raise Exception('Missing Callback.')
-            return False
-
-        ## Capture User Input
-        channel   = str(args['channel'])
-        callback  = args['callback']
-        subscribe_key = args.get('subscribe_key') or self.subscribe_key
-        
-        return self.subscribe({'channel': channel+'-pnpres', 'subscribe_key':subscribe_key, 'callback': callback})
-    
-    
-    def here_now( self, args ) :
-        """
-        #**
-        #* Here Now
-        #*
-        #* Load current occupancy from a channel.
-        #*
-        #* @param array args with 'channel'.
-        #* @return mixed false on fail, array on success.
-        #*
-
-        ## Presence Example
-        here_now = pubnub.here_now({
-            'channel' : 'hello_world',
-        })
-        print(here_now['occupancy'])
-        print(here_now['uuids'])
-
-        """
-        channel = str(args['channel'])
-
-        ## Capture Callback
-        if args.has_key('callback') :
-            callback = args['callback']
-        else :
-            callback = None
-        
-        ## Fail if bad input.
-        if not channel :
-            raise Exception('Missing Channel')
-            return False
-        
-        ## Get Presence Here Now
-        return self._request([
-            'v2','presence',
-            'sub_key', self.subscribe_key,
-            'channel', channel
-        ], callback);
-        
-        
-    def history( self, args ) :
-        """
-        #**
-        #* History
-        #*
-        #* Load history from a channel.
-        #*
-        #* @param array args with 'channel' and 'limit'.
-        #* @return mixed false on fail, array on success.
-        #*
-
-        ## History Example
-        history = pubnub.history({
-            'channel' : 'hello_world',
-            'limit'   : 1
-        })
-        print(history)
-
-        """
-        ## Capture User Input
-        limit   = args.has_key('limit') and int(args['limit']) or 10
-        channel = str(args['channel'])
-
-        ## Fail if bad input.
-        if not channel :
-            raise Exception('Missing Channel')
-            return False
-
-        ## Capture Callback
-        if args.has_key('callback') :
-            callback = args['callback']
-        else :
-            callback = None
-
-        ## Get History
-        return self._request([
-            'history',
-            self.subscribe_key,
-            channel,
-            '0',
-            str(limit)
-        ] , callback);
-
-    def detailedHistory(self, args) :
-        """
-        #**
-        #* Detailed History
-        #*
-        #* Load Detailed history from a channel.
-        #*
-        #* @param array args with 'channel', optional: 'start', 'end', 'reverse', 'count'
-        #* @return mixed false on fail, array on success.
-        #*
-
-        ## History Example
-        history = pubnub.detailedHistory({
-            'channel' : 'hello_world',
-            'count'   : 5
-        })
-        print(history)
-
-        """
-        ## Capture User Input
-        channel = str(args['channel'])
-
-        params = [] 
-        count = 100    
-        
-        if args.has_key('count'):
-            count = int(args['count'])
-
-        params.append('count' + '=' + str(count))    
-        
-        if args.has_key('reverse'):
-            params.append('reverse' + '=' + str(args['reverse']).lower())
-
-        if args.has_key('start'):
-            params.append('start' + '=' + str(args['start']))
-
-        if args.has_key('end'):
-            params.append('end' + '=' + str(args['end']))
-
-        ## Fail if bad input.
-        if not channel :
-            raise Exception('Missing Channel')
-            return False
-
-        ## Capture Callback
-        if args.has_key('callback') :
-            callback = args['callback']
-        else :
-            callback = None 
-
-        ## Get History
-        return self._request([
-            'v2',
-            'history',
-            'sub-key',
-            self.subscribe_key,
-            'channel',
-            channel,
-        ],params=params , callback=callback);
-
-    def time(self, args = None) :
-        """
-        #**
-        #* Time
-        #*
-        #* Timestamp from PubNub Cloud.
-        #*
-        #* @return int timestamp.
-        #*
-
-        ## PubNub Server Time Example
-        timestamp = pubnub.time()
-        print(timestamp)
-
-        """
-        ## Capture Callback
-        if args and args.has_key('callback') :
-            callback = args['callback']
-        else :
-            callback = None 
-        time = self._request([
-            'time',
-            '0'
-        ], callback)
-        if time != None:
-            return time[0]
-
-
-    def _encode( self, request ) :
-        return [
-            "".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
-                hex(ord(ch)).replace( '0x', '%' ).upper() or
-                ch for ch in list(bit)
-            ]) for bit in request]
-
-
-
-

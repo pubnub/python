@@ -25,27 +25,24 @@ class Pubnub(PubnubCore):
         publish_key,
         subscribe_key,
         secret_key = False,
+        cipher_key = False,
         ssl_on = False,
         origin = 'pubsub.pubnub.com',
         pres_uuid = None
     ) :
         super(Pubnub, self).__init__(
-            publish_key,
-            subscribe_key,
-            secret_key,
-            ssl_on,
-            origin,
-            pres_uuid
+            publish_key = publish_key,
+            subscribe_key = subscribe_key,
+            secret_key = secret_key,
+            cipher_key = cipher_key,
+            ssl_on = ssl_on,
+            origin = origin,
+            uuid = pres_uuid
         )        
 
-    def _request( self, request, origin = None, encode = True, params = None, callback = None ) :
+    def _request( self, request, callback = None ) :
         ## Build URL
-        url = (origin or self.origin) + '/' + "/".join(
-            encode and self._encode(request) or request
-        )
-        ## Add query params
-        if params is not None and len(params) > 0:
-            url = url + "?" + "&".join(params)
+        url = self.getUrl(request)
 
         ## Send Request Expecting JSONP Response
         try:

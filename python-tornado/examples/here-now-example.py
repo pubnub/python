@@ -10,8 +10,7 @@
 ## -----------------------------------
 
 import sys
-from twisted.internet import reactor
-sys.path.append('../')
+import tornado
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -29,17 +28,16 @@ crazy  = 'hello_world'
 ## -----------------------------------------------------------------------
 ## History Example
 ## -----------------------------------------------------------------------
-def history_complete(messages):
+def here_now_complete(messages):
     print(messages)
-    reactor.stop()
+    tornado.ioloop.IOLoop.instance().stop()
 
-pubnub.history( {
+pubnub.here_now( {
     'channel'  : crazy,
-    'limit'    : 10,
-    'callback' : history_complete
+    'callback' : here_now_complete
 })
 
 ## -----------------------------------------------------------------------
 ## IO Event Loop
 ## -----------------------------------------------------------------------
-reactor.run()
+tornado.ioloop.IOLoop.instance().start()

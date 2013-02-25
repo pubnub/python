@@ -48,11 +48,14 @@ pubnub.publish({
     'callback' : publish_complete
 })
 
+def done_cb(info):
+    publish_complete(info)
+    reactor.stop()
 ## Publish Dictionary Object
 pubnub.publish({
     'channel' : crazy,
     'message' : { 'some_key' : 'some_val' },
-    'callback' : publish_complete
+    'callback' : done_cb
 })
 
 ## -----------------------------------------------------------------------

@@ -23,7 +23,8 @@ ssl_on        = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 ## -----------------------------------------------------------------------
 ## Initiate Pubnub State
 ## -----------------------------------------------------------------------
-pubnub = Pubnub( publish_key, subscribe_key, secret_key, cipher_key, ssl_on )
+#pubnub = Pubnub( publish_key, subscribe_key, secret_key, cipher_key, ssl_on )
+pubnub = Pubnub( publish_key, subscribe_key, secret_key, ssl_on )
 crazy  = 'hello_world'
 
 ## -----------------------------------------------------------------------
@@ -33,10 +34,7 @@ def message_received(message):
     print(message)
 
 def connected() :
-    pubnub.publish({
-        'channel' : crazy,
-        'message' : { 'Info' : 'Connected!' }
-    })
+    print 'Connected'
 
 pubnub.subscribe({
     'channel'  : crazy,

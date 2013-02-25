@@ -14,9 +14,6 @@ import time
 import hashlib
 import urllib2
 import uuid
-sys.path.append('../')
-sys.path.append('../../')
-sys.path.append('../../../')
 from PubnubCoreAsync import PubnubCoreAsync
 try:
     from hashlib import sha256
@@ -33,8 +30,6 @@ from twisted.web.client import Agent, ContentDecoderAgent, RedirectAgent, GzipDe
 from twisted.web.client import HTTPConnectionPool
 from twisted.web.http_headers import Headers
 from PubnubCrypto import PubnubCrypto
-import gzip
-import zlib
 from twisted.internet.ssl import ClientContextFactory
 
 pnconn_pool = HTTPConnectionPool(reactor, persistent=True)

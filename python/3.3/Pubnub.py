@@ -12,7 +12,6 @@
 try: import json
 except ImportError: import simplejson as json
 import sys
-sys.path.append('../..')
 import time
 import hashlib
 import urllib2

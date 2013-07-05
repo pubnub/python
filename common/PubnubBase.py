@@ -6,7 +6,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.0 Real-time Push Cloud API
+## PubNub 3.3.2 Real-time Push Cloud API
 ## -----------------------------------
 
 try: import json

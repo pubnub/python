@@ -63,7 +63,6 @@ class Pubnub(PubnubCoreAsync):
 
     def _request( self, request, callback ) :
         url = self.getUrl(request)
-        print url
         ## Send Request Expecting JSON Response
         #print self.headers
         request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers, connect_timeout=310, request_timeout=310 ) 

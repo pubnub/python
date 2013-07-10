@@ -11,6 +11,8 @@
 
 import sys
 sys.path.append('../')
+sys.path.append('./')
+sys.path.append('../common/')
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -23,7 +25,7 @@ ssl_on        = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 ## Initiat Class
 ## -----------------------------------------------------------------------
 pubnub = Pubnub( publish_key, subscribe_key, secret_key, cipher_key, ssl_on )
-crazy  = ' ~`!@#$%^&*( 顶顅 Ȓ)+=[]\\{}|;\':",./<>?abcd'
+crazy  = 'python-twisted-test-channel'
 
 ## ---------------------------------------------------------------------------
 ## Unit Test Function
@@ -90,10 +92,17 @@ def message_received(message):
         'callback' : dumpster
     })
 
+
 def connected() :
+    ch = crazy
+    def dump_message( msg):
+        print ch, msg
+        pubnub.unsubscribe({'channel':ch})
+        pubnub.stop()
     pubnub.publish({
-        'channel' : crazy,
-        'message' : { 'Info' : 'Connected!' }
+        'channel' : ch,
+        'message' : { 'Info' : 'Connected!' },
+        'callback' : dump_message
     })
 
 pubnub.subscribe({

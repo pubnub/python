@@ -9,9 +9,12 @@
 ## PubNub 3.0 Real-time Push Cloud API
 ## -----------------------------------
 
+import sys
+sys.path.append('.')
+sys.path.append('..')
+sys.path.append('../common')
 from Pubnub import Pubnub
 import unittest2 as unittest
-import sys
 
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'

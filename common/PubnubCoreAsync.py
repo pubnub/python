@@ -188,3 +188,12 @@ class PubnubCoreAsync(PubnubBase):
 
         ## BEGIN SUBSCRIPTION (LISTEN FOR MESSAGES)
         _subscribe()
+    def unsubscribe( self, args ):
+        channel = str(args['channel'])
+        if not (channel in self.subscriptions):
+            return False
+
+        ## DISCONNECT
+        self.subscriptions[channel]['connected'] = 0
+        self.subscriptions[channel]['timetoken'] = 0
+        self.subscriptions[channel]['first']     = False

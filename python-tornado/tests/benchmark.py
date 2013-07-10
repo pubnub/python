@@ -12,7 +12,9 @@
 import sys
 import datetime
 import tornado
+sys.path.append('./')
 sys.path.append('../')
+sys.path.append('../common')
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'

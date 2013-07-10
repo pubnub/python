@@ -81,7 +81,6 @@ class Pubnub(PubnubCoreAsync):
             contextFactory = WebClientContextFactory(),
             pool = self.ssl and None or pnconn_pool
         )), [('gzip', GzipDecoder)])
-        print url
         request     = agent.request( 'GET', url, Headers(self.headers), None )
 
         def received(response):

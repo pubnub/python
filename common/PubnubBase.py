@@ -319,22 +319,22 @@ class PubnubBase(object):
         ## Capture User Input
         channel = str(args['channel'])
 
-        params = [] 
+        params = dict() 
         count = 100    
         
         if args.has_key('count'):
             count = int(args['count'])
 
-        params.append('count' + '=' + str(count))    
+        params['count'] = str(count)    
         
         if args.has_key('reverse'):
-            params.append('reverse' + '=' + str(args['reverse']).lower())
+            params['reverse'] = str(args['reverse']).lower()
 
         if args.has_key('start'):
-            params.append('start' + '=' + str(args['start']))
+            params['start'] = str(args['start'])
 
         if args.has_key('end'):
-            params.append('end' + '=' + str(args['end']))
+            params['end'] = str(args['end'])
 
         ## Fail if bad input.
         if not channel :
@@ -348,14 +348,14 @@ class PubnubBase(object):
             callback = None 
 
         ## Get History
-        return self._request([
+        return self._request({ 'urlcomponents' : [
             'v2',
             'history',
             'sub-key',
             self.subscribe_key,
             'channel',
             channel,
-        ],params=params , callback=callback);
+        ],'urlparams' : params }, callback=callback);
 
     def time(self, args = None) :
         """
@@ -377,10 +377,10 @@ class PubnubBase(object):
             callback = args['callback']
         else :
             callback = None 
-        time = self._request([
+        time = self._request({'urlcomponents' : [
             'time',
             '0'
-        ], callback)
+        ]}, callback)
         if time != None:
             return time[0]
 
@@ -400,5 +400,5 @@ class PubnubBase(object):
                 ch for ch in list(bit)
             ]) for bit in request["urlcomponents"]])
         if (request.has_key("urlparams")):
-            url = url + '?' + "&".join([ x + "=" + y  for x,y in request["urlparams"].items()])
+            url = url + '?' + "&".join([ x + "=" + y  for x,y in request["urlparams"].iteritems()])
         return url

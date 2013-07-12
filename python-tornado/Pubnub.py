@@ -6,7 +6,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.3.2 Real-time Push Cloud API
+## PubNub 3.3.4 Real-time Push Cloud API
 ## -----------------------------------
 import sys
 from PubnubCoreAsync import PubnubCoreAsync
@@ -67,7 +67,7 @@ class Pubnub(PubnubCoreAsync):
         #print self.headers
         request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers, connect_timeout=310, request_timeout=310 ) 
         def responseCallback(response):
-            callback(response._get_body())
+            callback(eval(response._get_body()))
         
         self.http.fetch(
             request,

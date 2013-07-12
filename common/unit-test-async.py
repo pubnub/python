@@ -93,7 +93,6 @@ def test_subscribe():
             'callback' : publish_cb
         })
     def subscribe_cb(response):
-        print response
         test(response == message , 'Subscribe Receive Test in subscribe Callback')
     pubnub.subscribe({
         'channel' : crazy,

@@ -6,7 +6,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.3.2 Real-time Push Cloud API
+## PubNub 3.3.4 Real-time Push Cloud API
 ## -----------------------------------
 import sys
 import json
@@ -142,16 +142,15 @@ class PubnubCoreAsync(PubnubBase):
                 return
           
             def sub_callback(response):
-                print response
-                response = json.loads(response)
+                if not self.subscriptions[channel]['first'] :
+                    self.subscriptions[channel]['first'] = True
+                    connectcb()
+
                 ## STOP CONNECTION?
                 if not self.subscriptions[channel]['connected']:
                     return
 
-                ## CONNECTED CALLBACK
-                if not self.subscriptions[channel]['first'] :
-                    self.subscriptions[channel]['first'] = True
-                    connectcb()
+
 
                 ## PROBLEM?
                 if not response:

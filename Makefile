@@ -1,19 +1,13 @@
 SUBDIRS = common python python-twisted python-tornado
 
-.PHONY: all
-all:
-	for dir in $(SUBDIRS); do \
-    	$(MAKE) -C $$dir;     \
-	done
+.PHONY: all test
+all test: $(SUBDIRS)
 
-.PHONY: clean
-clean:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) clean -C $$dir; \
-	done 
+all: TARG=all
+test: TARG=test
 
-.PHONY: test
-test:
-	for dir in $(SUBDIRS); do \
-		$(MAKE) test -C $$dir; \
-	done 
+$(SUBDIRS): force
+	@ $(MAKE) -C $@ $(TARG)
+
+.PHONY: force
+force :;

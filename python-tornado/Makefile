@@ -14,4 +14,5 @@ clean:
 
 .PHONY: test
 test:
+	python ../common/unit-test-async.py
 

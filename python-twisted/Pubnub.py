@@ -6,7 +6,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.3.2 Real-time Push Cloud API
+## PubNub 3.3.4 Real-time Push Cloud API
 ## -----------------------------------
 import sys
 import json
@@ -84,13 +84,12 @@ class Pubnub(PubnubCoreAsync):
         request     = agent.request( 'GET', url, Headers(self.headers), None )
 
         def received(response):
-            #print response
             finished = Deferred()
             response.deliverBody(PubNubResponse(finished))
             return finished
 
         def complete(data):
-            callback(data)
+            callback(eval(data))
 
         request.addCallback(received)
         request.addBoth(complete)

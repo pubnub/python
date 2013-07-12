@@ -11,6 +11,7 @@
 
 import sys
 import time
+import random
 sys.path.append('../')
 sys.path.append('./')
 sys.path.append('../common/')
@@ -26,7 +27,7 @@ ssl_on        = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 ## Initiat Class
 ## -----------------------------------------------------------------------
 pubnub = Pubnub( publish_key, subscribe_key, secret_key, cipher_key, ssl_on )
-crazy  = 'python-async-test-channel'
+ch = 'python-async-test-channel-'
 expect = 0
 done = 0
 failures = 0
@@ -61,21 +62,23 @@ def test( trial, name ) :
         stop()
 
 def test_publish():
+    channel = ch + str(random.random())
     def publish_cb(messages):
         test(messages[0] == 1, "Publish Test")
 
     pubnub.publish({
-        'channel' : crazy,
+        'channel' : channel,
         'message' :  {'one': 'Hello World! --> ɂ顶@#$%^&*()!', 'two': 'hello2'},
         'callback' : publish_cb
     }) 
 
 
 def test_history():
+    channel = ch + str(random.random())
     def history_cb(messages):
         test(len(messages) <= 1, "History Test")    
     pubnub.history({
-        'channel' : crazy,
+        'channel' : channel,
         'limit' :  1,
         'callback' : history_cb 
     })
@@ -83,26 +86,27 @@ def test_history():
 
 
 def test_subscribe():
-    message = "Testing Subscribe"
+    message = "Testing Subscribe " + str(random.random())
+    channel = ch + str(random.random())
     def subscribe_connect_cb():
         def publish_cb(response):
             test(response[0] == 1, 'Publish Test in subscribe Connect Callback')
         pubnub.publish({
-            'channel' : crazy,
-            'message' :  message,
+            'channel'  :  channel,
+            'message'  :  message,
             'callback' : publish_cb
         })
     def subscribe_cb(response):
         test(response == message , 'Subscribe Receive Test in subscribe Callback')
     pubnub.subscribe({
-        'channel' : crazy,
+        'channel' : channel,
         'connect' : subscribe_connect_cb,
         'callback': subscribe_cb
     }) 
     
 
 def test_here_now():
-    channel = crazy + '-here-now'
+    channel = ch + str(random.random()) 
     message = "Testing Subscribe"
     def subscribe_connect_cb():
         def here_now_cb(response):
@@ -110,8 +114,8 @@ def test_here_now():
             def publish_cb(response):
                 test(response[0] == 1, 'Here Now Test: Publish Test in subscribe Connect Callback')
             pubnub.publish({
-                'channel' : channel,
-                'message' :  message,
+                'channel'  : channel,
+                'message'  : message,
                 'callback' : publish_cb
             })
         time.sleep(5)

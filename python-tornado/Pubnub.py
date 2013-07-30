@@ -221,7 +221,8 @@ class Pubnub():
             self.subscriptions[channel] = {
                 'first'     : False,
                 'connected' : 0,
-                'timetoken' : '0'
+                'timetoken' : '0',
+                'call_ids'  : set()
             }
 
         ## Ensure Single Connection
@@ -230,6 +231,9 @@ class Pubnub():
             return False
 
         self.subscriptions[channel]['connected'] = 1
+        
+        subscribe_call_uuid = uuid.uuid4()
+        self.subscriptions[channel]['call_ids'].add(subscribe_call_uuid)
 
         ## SUBSCRIPTION RECURSION 
         def substabizel():
@@ -237,9 +241,19 @@ class Pubnub():
             if not self.subscriptions[channel]['connected']:
                 return
 
+             ## STALE CONNECTION?
+            call_ids = self.subscriptions[channel]['call_ids']
+            if subscribe_call_uuid not in call_ids:
+                return
+
             def sub_callback(response):
                 ## STOP CONNECTION?
                 if not self.subscriptions[channel]['connected']:
+                    return
+
+                ## STALE CONNECTION?
+                call_ids = self.subscriptions[channel]['call_ids']
+                if subscribe_call_uuid not in call_ids:
                     return
 
                 ## CONNECTED CALLBACK
@@ -309,6 +323,7 @@ class Pubnub():
         self.subscriptions[channel]['connected'] = 0
         self.subscriptions[channel]['timetoken'] = 0
         self.subscriptions[channel]['first']     = False
+        self.subscriptions[channel]['call_ids'].clear()
 
 
     def history( self, args ) :

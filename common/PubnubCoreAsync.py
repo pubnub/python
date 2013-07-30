@@ -128,6 +128,7 @@ class PubnubCoreAsync(PubnubBase):
             self.subscriptions[channel] = {
                 'first'     : False,
                 'connected' : False,
+                'call_ids'  : set()
             }
 
         ## Ensure Single Connection
@@ -135,12 +136,21 @@ class PubnubCoreAsync(PubnubBase):
             return "Already Connected"
 
         self.subscriptions[channel]['connected'] = 1
+
+        subscribe_call_uuid = uuid.uuid4()
+        self.subscriptions[channel]['call_ids'].add(subscribe_call_uuid)
+
         ## SUBSCRIPTION RECURSION 
         def _subscribe():
             ## STOP CONNECTION?
             if not self.subscriptions[channel]['connected']:
                 return
           
+            ## STALE CONNECTION?
+            call_ids = self.subscriptions[channel]['call_ids']
+            if subscribe_call_uuid not in call_ids:
+                return
+
             def sub_callback(response):
                 if not self.subscriptions[channel]['first'] :
                     self.subscriptions[channel]['first'] = True
@@ -150,7 +160,10 @@ class PubnubCoreAsync(PubnubBase):
                 if not self.subscriptions[channel]['connected']:
                     return
 
-
+                ## STALE CONNECTION?
+                call_ids = self.subscriptions[channel]['call_ids']
+                if subscribe_call_uuid not in call_ids:
+                    return
 
                 ## PROBLEM?
                 if not response:
@@ -187,6 +200,8 @@ class PubnubCoreAsync(PubnubBase):
 
         ## BEGIN SUBSCRIPTION (LISTEN FOR MESSAGES)
         _subscribe()
+
+
     def unsubscribe( self, args ):
         channel = str(args['channel'])
         if not (channel in self.subscriptions):
@@ -196,3 +211,4 @@ class PubnubCoreAsync(PubnubBase):
         self.subscriptions[channel]['connected'] = 0
         self.subscriptions[channel]['timetoken'] = 0
         self.subscriptions[channel]['first']     = False
+        self.subscriptions[channel]['call_ids'].clear()

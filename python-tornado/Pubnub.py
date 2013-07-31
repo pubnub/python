@@ -67,7 +67,8 @@ class Pubnub(PubnubCoreAsync):
         #print self.headers
         request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers, connect_timeout=310, request_timeout=310 ) 
         def responseCallback(response):
-            callback(eval(response._get_body()))
+            if callback:
+                callback(eval(response._get_body()))
         
         self.http.fetch(
             request,

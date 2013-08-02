@@ -12,66 +12,79 @@
 from Pubnub import Pubnub
 import sys
 
-publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
+publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
-secret_key    = len(sys.argv) > 3 and sys.argv[3] or None
-ssl_on        = len(sys.argv) > 4 and bool(sys.argv[4]) or False
+secret_key = len(sys.argv) > 3 and sys.argv[3] or None
+ssl_on = len(sys.argv) > 4 and bool(sys.argv[4]) or False
 
 
 ## -----------------------------------------------------------------------
 ## Initiat Class
 ## -----------------------------------------------------------------------
 
-pubnub = Pubnub( publish_key, subscribe_key, secret_key, ssl_on )
-crazy  = ' ~`!@#$%^&*(顶顅Ȓ)+=[]\\{}|;\':",./<>?abcd'
+pubnub = Pubnub(publish_key, subscribe_key, secret_key, ssl_on)
+crazy = ' ~`!@#$%^&*(顶顅Ȓ)+=[]\\{}|;\':",./<>?abcd'
+
 
 ## ---------------------------------------------------------------------------
 ## Unit Test Function
 ## ---------------------------------------------------------------------------
-def test( trial, name ) :
-    if trial :
-        print( 'PASS: ' + name )
-    else :
-        print( 'FAIL: ' + name )
+def test(trial, name):
+    """
+
+    :param trial:
+    :param name:
+    """
+    if trial:
+        print('PASS: ' + name)
+    else:
+        print('FAIL: ' + name)
 
 ## -----------------------------------------------------------------------
 ## Publish Example
 ## -----------------------------------------------------------------------
 pubish_success = pubnub.publish({
-    'channel' : crazy,
-    'message' : crazy
+    'channel': crazy,
+    'message': crazy
 })
-test( pubish_success[0] == 1, 'Publish First Message Success' )
+test(pubish_success is not None, 'Publish First Message Success')
 
 ## -----------------------------------------------------------------------
 ## History Example
 ## -----------------------------------------------------------------------
 history = pubnub.history({
-    'channel' : crazy,
-    'limit'   : 1
+    'channel': crazy,
+    'limit': 1
 })
 test(
     history[0].encode('utf-8') == crazy,
     'History Message: ' + history[0]
 )
-test( len(history) == 1, 'History Message Count' )
+test(len(history) == 1, 'History Message Count')
 
 ## -----------------------------------------------------------------------
 ## PubNub Server Time Example
 ## -----------------------------------------------------------------------
 timestamp = pubnub.time()
-test( timestamp > 0, 'PubNub Server Time: ' + str(timestamp) )
+test(timestamp > 0, 'PubNub Server Time: ' + str(timestamp))
+
 
 ## -----------------------------------------------------------------------
 ## Subscribe Example
 ## -----------------------------------------------------------------------
-def receive(message) :
+def receive(message):
+    """
+
+    :param message:
+    :return:
+    """
     print(message)
     return True
 
+
 pubnub.subscribe({
-    'channel'  : crazy,
-    'callback' : receive 
+    'channel': crazy,
+    'callback': receive
 })
 
 

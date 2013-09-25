@@ -1,19 +1,3 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud. 
-# coding=utf8
-
-## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2010 Stephen Blum
-## http://www.pubnub.com/
-
-## -----------------------------------
-## PubNub 3.3.4 Real-time Push Cloud API
-## -----------------------------------
-import sys
-import json
-import time
-import hashlib
-import urllib2
-import uuid
 try:
     from hashlib import sha256
     digestmod = sha256
@@ -21,8 +5,6 @@ except ImportError:
     import Crypto.Hash.SHA256 as digestmod
     sha256 = digestmod.new
 import hmac
-from PubnubCrypto import PubnubCrypto
-from PubnubBase import PubnubBase
 
 class PubnubCoreAsync(PubnubBase):
 

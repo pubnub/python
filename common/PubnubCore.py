@@ -1,23 +1,3 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud. 
-# coding=utf8
-
-## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2010 Stephen Blum
-## http://www.pubnub.com/
-
-## -----------------------------------
-## PubNub 3.3.4 Real-time Push Cloud API
-## -----------------------------------
-
-try: import json
-except ImportError: import simplejson as json
-
-import time
-import hashlib
-import urllib2
-import uuid
-from PubnubBase import PubnubBase
-
 class PubnubCore(PubnubBase):
     def __init__(
         self,

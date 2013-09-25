@@ -9,5 +9,11 @@ test: TARG=test
 $(SUBDIRS): force
 	@ $(MAKE) -C $@ $(TARG)
 
+.PHONY: clean
+clean:
+	for dir in $(SUBDIRS); do \
+		$(MAKE) clean -C $$dir; \
+	done 
+
 .PHONY: force
 force :;

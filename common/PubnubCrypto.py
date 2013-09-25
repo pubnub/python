@@ -1,14 +1,3 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud. 
-# coding=utf8
-
-## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2010 Stephen Blum
-## http://www.pubnub.com/
-
-## -----------------------------------
-## PubNub 3.3.4 Real-time Push Cloud API
-## -----------------------------------
-
 from Crypto.Cipher import AES
 from Crypto.Hash import MD5
 from base64 import encodestring, decodestring 
@@ -90,4 +79,3 @@ class PubnubCrypto() :
         Initial16bytes='0123456789012345'
         cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
         return self.depad((cipher.decrypt(decodestring(msg))))
-    

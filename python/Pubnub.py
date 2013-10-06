@@ -632,13 +632,15 @@ class Pubnub(PubnubCore):
 
         ## Send Request Expecting JSONP Response
         try:
-            try: usock = urllib2.urlopen( url, None, 200 )
+            try: usock = urllib2.urlopen( url, None, 310 )
             except TypeError: usock = urllib2.urlopen( url, None )
             response = usock.read()
             usock.close()
-            if (callback):
-                callback(json.loads(response))
-            else:
-                return json.loads( response )
+            resp_json = json.loads(response)
         except:
             return None
+            
+        if (callback):
+            callback(resp_json)
+        else:
+            return resp_json

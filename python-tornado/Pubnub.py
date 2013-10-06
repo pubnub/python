@@ -541,7 +541,7 @@ class PubnubCoreAsync(PubnubBase):
 
         self.subscriptions = {}
         self.timetoken     = 0
-        self.version       = '3.4'
+        self.version       = '3.3.4'
         self.accept_encoding = 'gzip'
 
     def subscribe( self, args ) :
@@ -680,6 +680,7 @@ except ImportError:
 
 import hmac
 import tornado.ioloop
+from tornado.stack_context import ExceptionStackContext
 from PubnubCrypto import PubnubCrypto
 
 ioloop = tornado.ioloop.IOLoop.instance()
@@ -718,9 +719,17 @@ class Pubnub(PubnubCoreAsync):
         url = self.getUrl(request)
         ## Send Request Expecting JSON Response
         #print self.headers
-        request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers, connect_timeout=310, request_timeout=310 ) 
+
+        request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers, connect_timeout=10, request_timeout=310 )
+
         def responseCallback(response):
-            callback(eval(response._get_body()))
+            def handle_exc(*args):
+                return True
+            if response.error is not None:
+                with ExceptionStackContext(handle_exc):
+                    response.rethrow()
+            else:
+                callback(eval(response._get_body()))
         
         self.http.fetch(
             request,

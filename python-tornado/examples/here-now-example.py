@@ -11,6 +11,8 @@
 
 import sys
 import tornado
+sys.path.append('..')
+sys.path.append('../../common')
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -30,7 +32,7 @@ crazy  = 'hello_world'
 ## -----------------------------------------------------------------------
 def here_now_complete(messages):
     print(messages)
-    tornado.ioloop.IOLoop.instance().stop()
+    pubnub.stop()
 
 pubnub.here_now( {
     'channel'  : crazy,
@@ -40,4 +42,4 @@ pubnub.here_now( {
 ## -----------------------------------------------------------------------
 ## IO Event Loop
 ## -----------------------------------------------------------------------
-tornado.ioloop.IOLoop.instance().start()
+pubnub.start()

@@ -10,6 +10,7 @@
 ## -----------------------------------
 
 import sys
+sys.path.append('../')
 from twisted.internet import reactor
 from Pubnub import Pubnub
 
@@ -26,8 +27,11 @@ pubnub = Pubnub( publish_key=publish_key, subscribe_key=subscribe_key,
     secret_key=secret_key, cipher_key=cipher_key, ssl_on=ssl_on)
 crazy  = 'hello_world'
 
+def print_cb(message):
+	print message
 
-print pubnub.here_now( {
-    'channel'  : crazy
+pubnub.here_now( {
+    'channel'  : crazy,
+    'callback' : print_cb
 })
 

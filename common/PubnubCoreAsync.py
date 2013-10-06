@@ -52,7 +52,7 @@ class PubnubCoreAsync(PubnubBase):
 
         self.subscriptions = {}
         self.timetoken     = 0
-        self.version       = '3.4'
+        self.version       = '3.3.4'
         self.accept_encoding = 'gzip'
 
     def subscribe( self, args ) :

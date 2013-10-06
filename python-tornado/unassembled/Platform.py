@@ -57,7 +57,7 @@ class Pubnub(PubnubCoreAsync):
             if response.error is not None:
                 with ExceptionStackContext(handle_exc):
                     response.rethrow()
-            else:
+            elif callback:
                 callback(eval(response._get_body()))
         
         self.http.fetch(

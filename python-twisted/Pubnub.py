@@ -6,14 +6,487 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.1 Real-time Push Cloud API
+## PubNub 3.3.4 Real-time Push Cloud API
 ## -----------------------------------
-import sys
-import json
+
+
+from Crypto.Cipher import AES
+from Crypto.Hash import MD5
+from base64 import encodestring, decodestring 
+import hashlib
+import hmac
+
+class PubnubCrypto() :
+    """
+    #**
+    #* PubnubCrypto
+    #*
+    #**
+
+    ## Initiate Class
+    pc = PubnubCrypto
+
+    """
+   
+    def pad( self, msg, block_size=16 ):
+        """
+        #**
+        #* pad
+        #*
+        #* pad the text to be encrypted
+        #* appends a padding character to the end of the String
+        #* until the string has block_size length
+        #* @return msg with padding.
+        #**
+        """
+        padding = block_size - (len(msg) % block_size)
+        return msg + chr(padding)*padding
+       
+    def depad( self, msg ):
+        """
+        #**
+        #* depad
+        #*
+        #* depad the decryptet message"
+        #* @return msg without padding.
+        #**
+        """
+        return msg[0:-ord(msg[-1])]
+
+    def getSecret( self, key ):
+        """
+        #**
+        #* getSecret
+        #*
+        #* hases the key to MD5
+        #* @return key in MD5 format
+        #**
+        """
+        return hashlib.sha256(key).hexdigest()
+
+    def encrypt( self, key, msg ):
+        """
+        #**
+        #* encrypt
+        #*
+        #* encrypts the message
+        #* @return message in encrypted format
+        #**
+        """
+        secret = self.getSecret(key)
+        Initial16bytes='0123456789012345'
+        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
+        enc = encodestring(cipher.encrypt(self.pad(msg)))
+        return enc
+    def decrypt( self, key, msg ):
+        """
+        #**
+        #* decrypt
+        #*
+        #* decrypts the message
+        #* @return message in decryped format
+        #**
+        """
+        secret = self.getSecret(key)
+        Initial16bytes='0123456789012345'
+        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
+        return self.depad((cipher.decrypt(decodestring(msg))))
+
+
+try: import json
+except ImportError: import simplejson as json
+
 import time
 import hashlib
 import urllib2
-import uuid
+import uuid 
+
+class PubnubBase(object):
+    def __init__(
+        self,
+        publish_key,
+        subscribe_key,
+        secret_key = False,
+        cipher_key = False,
+        ssl_on = False,
+        origin = 'pubsub.pubnub.com',
+        UUID = None
+    ) :
+        """
+        #**
+        #* Pubnub
+        #*
+        #* Init the Pubnub Client API
+        #*
+        #* @param string publish_key required key to send messages.
+        #* @param string subscribe_key required key to receive messages.
+        #* @param string secret_key optional key to sign messages.
+        #* @param boolean ssl required for 2048 bit encrypted messages.
+        #* @param string origin PUBNUB Server Origin.
+        #* @param string pres_uuid optional identifier for presence (auto-generated if not supplied)
+        #**
+
+        ## Initiat Class
+        pubnub = Pubnub( 'PUBLISH-KEY', 'SUBSCRIBE-KEY', 'SECRET-KEY', False )
+
+        """
+        self.origin        = origin
+        self.limit         = 1800
+        self.publish_key   = publish_key
+        self.subscribe_key = subscribe_key
+        self.secret_key    = secret_key
+        self.cipher_key    = cipher_key
+        self.ssl           = ssl_on
+
+        if self.ssl :
+            self.origin = 'https://' + self.origin
+        else :
+            self.origin = 'http://'  + self.origin
+        
+        self.uuid = UUID or str(uuid.uuid4())
+        
+        if not isinstance(self.uuid, basestring):
+            raise AttributeError("pres_uuid must be a string")
+
+    def sign(self, channel, message):
+        ## Sign Message
+        if self.secret_key:
+            signature = hashlib.md5('/'.join([
+                self.publish_key,
+                self.subscribe_key,
+                self.secret_key,
+                channel,
+                message
+            ])).hexdigest()
+        else:
+            signature = '0'
+        return signature
+
+    def encrypt(self, message):
+        if self.cipher_key:
+            pc = PubnubCrypto()
+            out = []
+            if type( message ) == type(list()):
+                for item in message:
+                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
+                    out.append(encryptItem)
+                message = json.dumps(out)
+            elif type( message ) == type(dict()):
+                outdict = {}
+                for k, item in message.iteritems():
+                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
+                    outdict[k] = encryptItem
+                    out.append(outdict)
+                message = json.dumps(out[0])
+            else:
+                message = json.dumps(pc.encrypt(self.cipher_key, json.dumps(message)).replace('\n',''))
+        else :
+            message = json.dumps(message)
+
+        return message;
+
+    def decrypt(self, message):
+        if self.cipher_key:
+            pc = PubnubCrypto()
+            if type( message ) == type(list()):
+                for item in message:
+                    encryptItem = pc.decrypt(self.cipher_key, item )
+                    out.append(encryptItem)
+                message = out
+            elif type( message ) == type(dict()):
+                outdict = {}
+                for k, item in message.iteritems():
+                    encryptItem = pc.decrypt(self.cipher_key, item )
+                    outdict[k] = encryptItem
+                    out.append(outdict)
+                message = out[0]
+            else:
+                message = pc.decrypt(self.cipher_key, message)
+
+        return message
+
+
+    def publish( self, args ) :
+        """
+        #**
+        #* Publish
+        #*
+        #* Send a message to a channel.
+        #*
+        #* @param array args with channel and message.
+        #* @return array success information.
+        #**
+
+        ## Publish Example
+        info = pubnub.publish({
+            'channel' : 'hello_world',
+            'message' : {
+                'some_text' : 'Hello my World'
+            }
+        })
+        print(info)
+
+        """
+        ## Fail if bad input.
+        if not (args['channel'] and args['message']) :
+            return [ 0, 'Missing Channel or Message' ]
+
+        ## Capture User Input
+        channel = str(args['channel'])
+
+        ## Capture Callback
+        if args.has_key('callback') :
+            callback = args['callback']
+        else :
+            callback = None 
+
+        #message = json.dumps(args['message'], separators=(',',':'))
+        message = self.encrypt(args['message'])
+
+        signature = self.sign(channel, message)
+
+        ## Send Message
+        return self._request({"urlcomponents": [
+            'publish',
+            self.publish_key,
+            self.subscribe_key,
+            signature,
+            channel,
+            '0',
+            message
+        ]}, callback)
+    
+    def presence( self, args ) :
+        """
+        #**
+        #* presence
+        #*
+        #* This is BLOCKING.
+        #* Listen for presence events on a channel.
+        #*
+        #* @param array args with channel and callback.
+        #* @return false on fail, array on success.
+        #**
+
+        ## Presence Example
+        def pres_event(message) :
+            print(message)
+            return True
+
+        pubnub.presence({
+            'channel'  : 'hello_world',
+            'callback' : receive 
+        })
+        """
+
+        ## Fail if missing channel
+        if not 'channel' in args :
+            raise Exception('Missing Channel.')
+            return False
+
+        ## Fail if missing callback
+        if not 'callback' in args :
+            raise Exception('Missing Callback.')
+            return False
+
+        ## Capture User Input
+        channel   = str(args['channel'])
+        callback  = args['callback']
+        subscribe_key = args.get('subscribe_key') or self.subscribe_key
+        
+        return self.subscribe({'channel': channel+'-pnpres', 'subscribe_key':subscribe_key, 'callback': callback})
+    
+    
+    def here_now( self, args ) :
+        """
+        #**
+        #* Here Now
+        #*
+        #* Load current occupancy from a channel.
+        #*
+        #* @param array args with 'channel'.
+        #* @return mixed false on fail, array on success.
+        #*
+
+        ## Presence Example
+        here_now = pubnub.here_now({
+            'channel' : 'hello_world',
+        })
+        print(here_now['occupancy'])
+        print(here_now['uuids'])
+
+        """
+        channel = str(args['channel'])
+
+        ## Capture Callback
+        if args.has_key('callback') :
+            callback = args['callback']
+        else :
+            callback = None
+        
+        ## Fail if bad input.
+        if not channel :
+            raise Exception('Missing Channel')
+            return False
+        
+        ## Get Presence Here Now
+        return self._request({"urlcomponents": [
+            'v2','presence',
+            'sub_key', self.subscribe_key,
+            'channel', channel
+        ]}, callback);
+        
+        
+    def history( self, args ) :
+        """
+        #**
+        #* History
+        #*
+        #* Load history from a channel.
+        #*
+        #* @param array args with 'channel' and 'limit'.
+        #* @return mixed false on fail, array on success.
+        #*
+
+        ## History Example
+        history = pubnub.history({
+            'channel' : 'hello_world',
+            'limit'   : 1
+        })
+        print(history)
+
+        """
+        ## Capture User Input
+        limit   = args.has_key('limit') and int(args['limit']) or 10
+        channel = str(args['channel'])
+
+        ## Fail if bad input.
+        if not channel :
+            raise Exception('Missing Channel')
+            return False
+
+        ## Capture Callback
+        if args.has_key('callback') :
+            callback = args['callback']
+        else :
+            callback = None
+
+        ## Get History
+        return self._request({ "urlcomponents" : [
+            'history',
+            self.subscribe_key,
+            channel,
+            '0',
+            str(limit)
+        ] }, callback);
+
+    def detailedHistory(self, args) :
+        """
+        #**
+        #* Detailed History
+        #*
+        #* Load Detailed history from a channel.
+        #*
+        #* @param array args with 'channel', optional: 'start', 'end', 'reverse', 'count'
+        #* @return mixed false on fail, array on success.
+        #*
+
+        ## History Example
+        history = pubnub.detailedHistory({
+            'channel' : 'hello_world',
+            'count'   : 5
+        })
+        print(history)
+
+        """
+        ## Capture User Input
+        channel = str(args['channel'])
+
+        params = dict() 
+        count = 100    
+        
+        if args.has_key('count'):
+            count = int(args['count'])
+
+        params['count'] = str(count)    
+        
+        if args.has_key('reverse'):
+            params['reverse'] = str(args['reverse']).lower()
+
+        if args.has_key('start'):
+            params['start'] = str(args['start'])
+
+        if args.has_key('end'):
+            params['end'] = str(args['end'])
+
+        ## Fail if bad input.
+        if not channel :
+            raise Exception('Missing Channel')
+            return False
+
+        ## Capture Callback
+        if args.has_key('callback') :
+            callback = args['callback']
+        else :
+            callback = None 
+
+        ## Get History
+        return self._request({ 'urlcomponents' : [
+            'v2',
+            'history',
+            'sub-key',
+            self.subscribe_key,
+            'channel',
+            channel,
+        ],'urlparams' : params }, callback=callback);
+
+    def time(self, args = None) :
+        """
+        #**
+        #* Time
+        #*
+        #* Timestamp from PubNub Cloud.
+        #*
+        #* @return int timestamp.
+        #*
+
+        ## PubNub Server Time Example
+        timestamp = pubnub.time()
+        print(timestamp)
+
+        """
+        ## Capture Callback
+        if args and args.has_key('callback') :
+            callback = args['callback']
+        else :
+            callback = None 
+        time = self._request({'urlcomponents' : [
+            'time',
+            '0'
+        ]}, callback)
+        if time != None:
+            return time[0]
+
+
+    def _encode( self, request ) :
+        return [
+            "".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
+                hex(ord(ch)).replace( '0x', '%' ).upper() or
+                ch for ch in list(bit)
+            ]) for bit in request]
+    
+    def getUrl(self,request):
+        ## Build URL
+        url = self.origin + '/' + "/".join([
+            "".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
+                hex(ord(ch)).replace( '0x', '%' ).upper() or
+                ch for ch in list(bit)
+            ]) for bit in request["urlcomponents"]])
+        if (request.has_key("urlparams")):
+            url = url + '?' + "&".join([ x + "=" + y  for x,y in request["urlparams"].iteritems()])
+        return url
+
+
 try:
     from hashlib import sha256
     digestmod = sha256
@@ -21,26 +494,13 @@ except ImportError:
     import Crypto.Hash.SHA256 as digestmod
     sha256 = digestmod.new
 import hmac
-from twisted.internet import reactor
-from twisted.internet.defer import Deferred
-from twisted.internet.protocol import Protocol
-from twisted.web.client import Agent
-from twisted.web.client import HTTPConnectionPool
-from twisted.web.http_headers import Headers
-from PubnubCrypto import PubnubCrypto
-import gzip
-import zlib
 
-pnconn_pool = HTTPConnectionPool(reactor)
-pnconn_pool.maxPersistentPerHost    = 100
-pnconn_pool.cachedConnectionTimeout = 310
+class PubnubCoreAsync(PubnubBase):
 
-class Pubnub():
-
-    def start(self): reactor.run()
-    def stop(self):  reactor.stop()
-    def timeout( self, callback, delay ):
-        reactor.callLater( delay, callback )
+    def start(self): pass 
+    def stop(self):  pass
+    def timeout( self, delay, callback ):
+        pass
 
     def __init__(
         self,
@@ -49,7 +509,8 @@ class Pubnub():
         secret_key = False,
         cipher_key = False,
         ssl_on = False,
-        origin = 'pubsub.pubnub.com'
+        origin = 'pubsub.pubnub.com',
+        uuid = None
     ) :
         """
         #**
@@ -68,107 +529,20 @@ class Pubnub():
         pubnub = Pubnub( 'PUBLISH-KEY', 'SUBSCRIBE-KEY', 'SECRET-KEY', False )
 
         """
-        self.origin        = origin
-        self.publish_key   = publish_key
-        self.subscribe_key = subscribe_key
-        self.secret_key    = secret_key
-        self.cipher_key    = cipher_key
-        self.ssl           = ssl_on
+        super(PubnubCoreAsync, self).__init__(
+            publish_key=publish_key,
+            subscribe_key=subscribe_key,
+            secret_key=secret_key,
+            cipher_key=cipher_key,
+            ssl_on=ssl_on,
+            origin=origin,
+            UUID=uuid
+        )        
+
         self.subscriptions = {}
-
-        if self.ssl :
-            self.origin = 'https://' + self.origin
-        else :
-            self.origin = 'http://'  + self.origin
-
-
-    def publish( self, args ) :
-        """
-        #**
-        #* Publish
-        #*
-        #* Send a message to a channel.
-        #*
-        #* @param array args with channel and message.
-        #* @return array success information.
-        #**
-
-        ## Publish Example
-        def publish_complete(info):
-            print(info)
-
-        pubnub.publish({
-            'channel' : 'hello_world',
-            'message' : {
-                'some_text' : 'Hello my World'
-            },
-            'callback' : publish_complete
-        })
-
-        """
-        ## Capture Callback
-        if args.has_key('callback'): callback = args['callback']
-        else: callback = lambda x : x
-
-        ## Fail if bad input.
-        if not (args['channel'] and args['message']):
-            callback([ 0, 'Missing Channel or Message', 0 ])
-            return False
-
-        ## Capture User Input
-        channel = str(args['channel'])
-        message = args['message']
-
-        if self.cipher_key :
-            pc = PubnubCrypto()
-            out = []
-            if type( message ) == type(list()):
-                for item in message:
-                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
-                    out.append(encryptItem)
-                message = json.dumps(out)
-            elif type( message ) == type(dict()):
-                outdict = {}
-                for k, item in message.iteritems():
-                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
-                    outdict[k] = encryptItem
-                    out.append(outdict)
-                message = json.dumps(out[0])
-            else:
-                message = json.dumps(pc.encrypt(self.cipher_key, message).replace('\n',''))
-        else :
-            message = json.dumps(args['message'])
-
-        def publish_response(info):
-            callback(info or [0, 'Disconnected', 0]);
-
-        ## Sign Message
-        if self.secret_key :
-            hashObject = sha256()
-            hashObject.update(self.secret_key)
-            hashedSecret = hashObject.hexdigest()
-            hash = hmac.HMAC(hashedSecret, '/'.join([
-                    self.publish_key,
-                    self.subscribe_key,
-                    self.secret_key,
-                    channel,
-                    message
-                ]), digestmod=digestmod)
-            signature = hash.hexdigest()        
-        else :
-            signature = '0'
-
-        ## Send Message
-        return self._request([
-            'publish',
-            self.publish_key,
-            self.subscribe_key,
-            signature,
-            channel,
-            '0',
-            message
-        ], publish_response )
-
+        self.timetoken     = 0
+        self.version       = '3.3.4'
+        self.accept_encoding = 'gzip'
 
     def subscribe( self, args ) :
         """
@@ -224,8 +598,7 @@ class Pubnub():
         if not (channel in self.subscriptions) :
             self.subscriptions[channel] = {
                 'first'     : False,
-                'connected' : 0,
-                'timetoken' : '0'
+                'connected' : False,
             }
 
         ## Ensure Single Connection
@@ -233,78 +606,58 @@ class Pubnub():
             return "Already Connected"
 
         self.subscriptions[channel]['connected'] = 1
-
         ## SUBSCRIPTION RECURSION 
-        def substabizel():
+        def _subscribe():
             ## STOP CONNECTION?
             if not self.subscriptions[channel]['connected']:
                 return
-
+          
             def sub_callback(response):
+                if not self.subscriptions[channel]['first'] :
+                    self.subscriptions[channel]['first'] = True
+                    connectcb()
+
                 ## STOP CONNECTION?
                 if not self.subscriptions[channel]['connected']:
                     return
 
-                ## CONNECTED CALLBACK
-                if not self.subscriptions[channel]['first'] :
-                    self.subscriptions[channel]['first'] = True
-                    connectcb()
+
 
                 ## PROBLEM?
                 if not response:
                     def time_callback(_time):
                         if not _time:
-                            reactor.callLater( 1, substabizel )
+                            self.timeout( 1, _subscribe )
                             return errorback("Lost Network Connection")
                         else:
-                            reactor.callLater( 1, substabizel )
+                            self.timeout( 1, _subscribe)
 
                     ## ENSURE CONNECTED (Call Time Function)
                     return self.time({ 'callback' : time_callback })
 
-                self.subscriptions[channel]['timetoken'] = response[1]
-                substabizel()
+                self.timetoken = response[1]
+                _subscribe()
 
                 pc = PubnubCrypto()
                 out = []
                 for message in response[0]:
-                     if self.cipher_key :
-                          if type( message ) == type(list()):
-                              for item in message:
-                                  encryptItem = pc.decrypt(self.cipher_key, item )
-                                  out.append(encryptItem)
-                              message = out
-                          elif type( message ) == type(dict()):
-                              outdict = {}
-                              for k, item in message.iteritems():
-                                  encryptItem = pc.decrypt(self.cipher_key, item )
-                                  outdict[k] = encryptItem
-                                  out.append(outdict)
-                              message = out[0]
-                          else:
-                              message = pc.decrypt(self.cipher_key, message )
-                     else :
-                          message
-
-                     callback(message)
+                     callback(self.decrypt(message))
 
             ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
-            try :
-                self._request( [
+            try:
+                self._request( { "urlcomponents" : [
                     'subscribe',
                     self.subscribe_key,
                     channel,
                     '0',
-                    str(self.subscriptions[channel]['timetoken'])
-                ], sub_callback )
+                    str(self.timetoken)
+                ], "urlparams" : {"uuid":self.uuid} }, sub_callback )
             except :
-                reactor.callLater( 1, substabizel )
+                self.timeout( 1, _subscribe)
                 return
 
         ## BEGIN SUBSCRIPTION (LISTEN FOR MESSAGES)
-        substabizel()
-
-
+        _subscribe()
     def unsubscribe( self, args ):
         channel = str(args['channel'])
         if not (channel in self.subscriptions):
@@ -316,168 +669,82 @@ class Pubnub():
         self.subscriptions[channel]['first']     = False
 
 
-    def history( self, args ) :
-        """
-        #**
-        #* History
-        #*
-        #* Load history from a channel.
-        #*
-        #* @param array args with 'channel' and 'limit'.
-        #* @return mixed false on fail, array on success.
-        #*
+from twisted.web.client import getPage
+from twisted.internet import reactor
+from twisted.internet.defer import Deferred
+from twisted.internet.protocol import Protocol
+from twisted.web.client import Agent, ContentDecoderAgent, RedirectAgent, GzipDecoder
+from twisted.web.client import HTTPConnectionPool
+from twisted.web.http_headers import Headers
+from twisted.internet.ssl import ClientContextFactory
+from twisted.internet.task import LoopingCall
 
-        ## History Example
-        history = pubnub.history({
-            'channel' : 'hello_world',
-            'limit'   : 1
-        })
-        print(history)
+pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
+pnconn_pool.maxPersistentPerHost    = 100
+pnconn_pool.cachedConnectionTimeout = 310
 
-        """
-        ## Capture User Input
-        limit   = args.has_key('limit') and int(args['limit']) or 10
-        channel = str(args['channel'])
+class Pubnub(PubnubCoreAsync):
 
-        ## Fail if bad input.
-        if not channel :
-            return 'Missing Channel'
+    def start(self): reactor.run()
+    def stop(self):  reactor.stop()
+    def timeout( self, delay, callback ):
+        reactor.callLater( delay, callback )
 
-        ## Get History
-        pc = PubnubCrypto()
-        return self._request( [
-            'history',
-            self.subscribe_key,
-            channel,
-            '0',
-            str(limit)
-        ], args['callback'] )
-
-    def time( self, args ) :
-        """
-        #**
-        #* Time
-        #*
-        #* Timestamp from PubNub Cloud.
-        #*
-        #* @return int timestamp.
-        #*
-
-        ## PubNub Server Time Example
-        def time_complete(timestamp):
-            print(timestamp)
-
-        pubnub.time(time_complete)
-
-        """
-        def complete(response) :
-            if not response: return 0
-            args['callback'](response[0])
-
-        self._request( [
-            'time',
-            '0'
-        ], complete )
-
-    def uuid(self) :
-        """
-        #**
-        #* uuid
-        #*
-        #* Generate a UUID
-        #*
-        #* @return  UUID.
-        #*
-
-        ## PubNub UUID Example
-        uuid = pubnub.uuid()
-        print(uuid)
-        """
-        return uuid.uuid1()
+    def __init__(
+        self,
+        publish_key,
+        subscribe_key,
+        secret_key = False,
+        cipher_key = False,
+        ssl_on = False,
+        origin = 'pubsub.pubnub.com'
+    ) :
+        super(Pubnub, self).__init__(
+            publish_key=publish_key,
+            subscribe_key=subscribe_key,
+            secret_key=secret_key,
+            ssl_on=ssl_on,
+            origin=origin,
+        )        
+        self.headers = {}
+        self.headers['User-Agent'] = ['Python-Twisted']
+        #self.headers['Accept-Encoding'] = [self.accept_encoding]
+        self.headers['V'] = [self.version]
 
     def _request( self, request, callback ) :
         global pnconn_pool
 
         ## Build URL
+        '''
         url = self.origin + '/' + "/".join([
             "".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
                 hex(ord(ch)).replace( '0x', '%' ).upper() or
                 ch for ch in list(bit)
             ]) for bit in request])
-
-        requestType = request[0]
-        agent       = Agent(
+        '''
+        url = self.getUrl(request)
+        agent       = ContentDecoderAgent(RedirectAgent(Agent(
             reactor,
-            self.ssl and None or pnconn_pool,
-            connectTimeout=30
-        )
-        request     = agent.request( 'GET', url, Headers({
-            'V'               : ['3.1'],
-            'User-Agent'      : ['Python-Twisted'],
-            'Accept-Encoding' : ['gzip']
-        }), None )
+            contextFactory = WebClientContextFactory(),
+            pool = self.ssl and None or pnconn_pool
+        )), [('gzip', GzipDecoder)])
+        request     = agent.request( 'GET', url, Headers(self.headers), None )
 
-        self.resulting_is = str()
         def received(response):
-            headerlist = list(response.headers.getAllRawHeaders())
-            for item in headerlist:
-                if( item[0] == "Content-Encoding"):
-                    if type(item[1]) == type(list()):
-                        for subitem in item[1]:
-                            self.resulting_is = subitem
-                    elif type(item[1]) == type(str()):
-                        self.resulting_is = item[1]
-
             finished = Deferred()
             response.deliverBody(PubNubResponse(finished))
             return finished
 
         def complete(data):
-            if ( type(data) == type(str()) ):
-                if self.resulting_is:
-                    d = zlib.decompressobj(16+zlib.MAX_WBITS)
-
-            try     :   data = d.decompress(data) # try/catch here, pass through if except
-            except  :   data = data
-
-            try    : obj = json.loads(data)
-            except : obj = None
-
-            pc = PubnubCrypto()
-            out = []
-            if self.cipher_key :
-                if requestType == "history" :
-                    if type(obj) == type(list()):
-                        for item in obj:
-                            if type(item) == type(list()):
-                                for subitem in item:
-                                    encryptItem = pc.decrypt(self.cipher_key, subitem )
-                                    out.append(encryptItem)
-                            elif type(item) == type(dict()):
-                                outdict = {}
-                                for k, subitem in item.iteritems():
-                                    encryptItem = pc.decrypt(self.cipher_key, subitem )
-                                    outdict[k] = encryptItem
-                                    out.append(outdict)
-                            else :
-                                encryptItem = pc.decrypt(self.cipher_key, item )
-                                out.append(encryptItem)
-                        callback(out)
-                    elif type( obj ) == type(dict()):
-                        for k, item in obj.iteritems():
-                            encryptItem = pc.decrypt(self.cipher_key, item )
-                            out.append(encryptItem)
-                        callback(out)
-                else :
-                    callback(obj)
-            else :
-                callback(obj)
+            callback(eval(data))
 
         request.addCallback(received)
         request.addBoth(complete)
 
-
-
+class WebClientContextFactory(ClientContextFactory):
+    def getContext(self, hostname, port):
+        return ClientContextFactory.getContext(self)
+	   
 class PubNubResponse(Protocol):
     def __init__( self, finished ):
         self.finished = finished

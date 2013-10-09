@@ -12,6 +12,7 @@
 import sys
 from twisted.internet import reactor
 sys.path.append('../')
+sys.path.append('../../')
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -47,11 +48,14 @@ pubnub.publish({
     'callback' : publish_complete
 })
 
+def done_cb(info):
+    publish_complete(info)
+    reactor.stop()
 ## Publish Dictionary Object
 pubnub.publish({
     'channel' : crazy,
     'message' : { 'some_key' : 'some_val' },
-    'callback' : publish_complete
+    'callback' : done_cb
 })
 
 ## -----------------------------------------------------------------------

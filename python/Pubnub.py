@@ -487,21 +487,7 @@ class PubnubBase(object):
         return url
 
 
-try:
-    from hashlib import sha256
-    digestmod = sha256
-except ImportError:
-    import Crypto.Hash.SHA256 as digestmod
-    sha256 = digestmod.new
-import hmac
-
-class PubnubCoreAsync(PubnubBase):
-
-    def start(self): pass 
-    def stop(self):  pass
-    def timeout( self, delay, callback ):
-        pass
-
+class PubnubCore(PubnubBase):
     def __init__(
         self,
         publish_key,
@@ -520,16 +506,17 @@ class PubnubCoreAsync(PubnubBase):
         #*
         #* @param string publish_key required key to send messages.
         #* @param string subscribe_key required key to receive messages.
-        #* @param string secret_key required key to sign messages.
+        #* @param string secret_key optional key to sign messages.
         #* @param boolean ssl required for 2048 bit encrypted messages.
         #* @param string origin PUBNUB Server Origin.
+        #* @param string pres_uuid optional identifier for presence (auto-generated if not supplied)
         #**
 
         ## Initiat Class
         pubnub = Pubnub( 'PUBLISH-KEY', 'SUBSCRIBE-KEY', 'SECRET-KEY', False )
 
         """
-        super(PubnubCoreAsync, self).__init__(
+        super(PubnubCore, self).__init__(
             publish_key=publish_key,
             subscribe_key=subscribe_key,
             secret_key=secret_key,
@@ -541,18 +528,20 @@ class PubnubCoreAsync(PubnubBase):
 
         self.subscriptions = {}
         self.timetoken     = 0
-        self.version       = '3.3.4'
+        self.version       = '3.4'
         self.accept_encoding = 'gzip'
+
+
 
     def subscribe( self, args ) :
         """
         #**
         #* Subscribe
         #*
-        #* This is NON-BLOCKING.
+        #* This is BLOCKING.
         #* Listen for a message on a channel.
         #*
-        #* @param array args with channel and message.
+        #* @param array args with channel and callback.
         #* @return false on fail, array on success.
         #**
 
@@ -561,137 +550,62 @@ class PubnubCoreAsync(PubnubBase):
             print(message)
             return True
 
-        ## On Connect Callback
-        def connected() :
-            pubnub.publish({
-                'channel' : 'hello_world',
-                'message' : { 'some_var' : 'text' }
-            })
-
-        ## Subscribe
         pubnub.subscribe({
             'channel'  : 'hello_world',
-            'connect'  : connected,
-            'callback' : receive
+            'callback' : receive 
         })
 
         """
+
         ## Fail if missing channel
         if not 'channel' in args :
-            return 'Missing Channel.'
+            raise Exception('Missing Channel.')
+            return False
 
         ## Fail if missing callback
         if not 'callback' in args :
-            return 'Missing Callback.'
+            raise Exception('Missing Callback.')
+            return False
 
         ## Capture User Input
         channel   = str(args['channel'])
         callback  = args['callback']
-        connectcb = args['connect']
+        subscribe_key = args.get('subscribe_key') or self.subscribe_key
 
-        if 'errorback' in args:
-            errorback = args['errorback']
-        else:
-            errorback = lambda x: x
+        ## Begin Subscribe
+        while True :
 
-        ## New Channel?
-        if not (channel in self.subscriptions) :
-            self.subscriptions[channel] = {
-                'first'     : False,
-                'connected' : False,
-            }
-
-        ## Ensure Single Connection
-        if self.subscriptions[channel]['connected'] :
-            return "Already Connected"
-
-        self.subscriptions[channel]['connected'] = 1
-        ## SUBSCRIPTION RECURSION 
-        def _subscribe():
-            ## STOP CONNECTION?
-            if not self.subscriptions[channel]['connected']:
-                return
-          
-            def sub_callback(response):
-                if not self.subscriptions[channel]['first'] :
-                    self.subscriptions[channel]['first'] = True
-                    connectcb()
-
-                ## STOP CONNECTION?
-                if not self.subscriptions[channel]['connected']:
-                    return
-
-
-
-                ## PROBLEM?
-                if not response:
-                    def time_callback(_time):
-                        if not _time:
-                            self.timeout( 1, _subscribe )
-                            return errorback("Lost Network Connection")
-                        else:
-                            self.timeout( 1, _subscribe)
-
-                    ## ENSURE CONNECTED (Call Time Function)
-                    return self.time({ 'callback' : time_callback })
-
-                self.timetoken = response[1]
-                _subscribe()
-
-                pc = PubnubCrypto()
-                out = []
-                for message in response[0]:
-                     callback(self.decrypt(message))
-
-            ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
-            try:
-                self._request( { "urlcomponents" : [
+            timetoken = 'timetoken' in args and args['timetoken'] or 0
+            try :
+                ## Wait for Message
+                response = self._request(self._encode([
                     'subscribe',
-                    self.subscribe_key,
+                    subscribe_key,
                     channel,
                     '0',
-                    str(self.timetoken)
-                ], "urlparams" : {"uuid":self.uuid} }, sub_callback )
-            except :
-                self.timeout( 1, _subscribe)
-                return
+                    str(timetoken)
+                ])+['?uuid='+self.uuid], encode=False)
 
-        ## BEGIN SUBSCRIPTION (LISTEN FOR MESSAGES)
-        _subscribe()
-    def unsubscribe( self, args ):
-        channel = str(args['channel'])
-        if not (channel in self.subscriptions):
-            return False
+                messages          = response[0]
+                args['timetoken'] = response[1]
 
-        ## DISCONNECT
-        self.subscriptions[channel]['connected'] = 0
-        self.subscriptions[channel]['timetoken'] = 0
-        self.subscriptions[channel]['first']     = False
+                ## If it was a timeout
+                if not len(messages) :
+                    continue
+
+                ## Run user Callback and Reconnect if user permits.
+                for message in messages :
+                    if not callback(message) :
+                        return
+
+            except Exception:
+                time.sleep(1)
+
+        return True
 
 
-import tornado.httpclient
 
-try:
-    from hashlib import sha256
-    digestmod = sha256
-except ImportError:
-    import Crypto.Hash.SHA256 as digestmod
-    sha256 = digestmod.new
-
-import hmac
-import tornado.ioloop
-from tornado.stack_context import ExceptionStackContext
-from PubnubCrypto import PubnubCrypto
-
-ioloop = tornado.ioloop.IOLoop.instance()
-
-class Pubnub(PubnubCoreAsync):
-
-    def stop(self): ioloop.stop()
-    def start(self): ioloop.start()
-    def timeout( self, delay, callback):
-        ioloop.add_timeout( time.time()+float(delay), callback )
-        
+class Pubnub(PubnubCore):
     def __init__(
         self,
         publish_key,
@@ -699,40 +613,34 @@ class Pubnub(PubnubCoreAsync):
         secret_key = False,
         cipher_key = False,
         ssl_on = False,
-        origin = 'pubsub.pubnub.com'
+        origin = 'pubsub.pubnub.com',
+        pres_uuid = None
     ) :
         super(Pubnub, self).__init__(
-            publish_key=publish_key,
-            subscribe_key=subscribe_key,
-            secret_key=secret_key,
-            cipher_key=cipher_key,
-            ssl_on=ssl_on,
-            origin=origin,
+            publish_key = publish_key,
+            subscribe_key = subscribe_key,
+            secret_key = secret_key,
+            cipher_key = cipher_key,
+            ssl_on = ssl_on,
+            origin = origin,
+            uuid = pres_uuid
         )        
-        self.headers = {}
-        self.headers['User-Agent'] = 'Python-Tornado'
-        self.headers['Accept-Encoding'] = self.accept_encoding
-        self.headers['V'] = self.version
-        self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
 
-    def _request( self, request, callback ) :
+    def _request( self, request, callback = None ) :
+        ## Build URL
         url = self.getUrl(request)
-        ## Send Request Expecting JSON Response
-        #print self.headers
 
-        request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers, connect_timeout=10, request_timeout=310 )
-
-        def responseCallback(response):
-            def handle_exc(*args):
-                return True
-            if response.error is not None:
-                with ExceptionStackContext(handle_exc):
-                    response.rethrow()
-            elif callback:
-                callback(eval(response._get_body()))
-        
-        self.http.fetch(
-            request,
-            callback=responseCallback,
-        )
-
+        ## Send Request Expecting JSONP Response
+        try:
+            try: usock = urllib2.urlopen( url, None, 310 )
+            except TypeError: usock = urllib2.urlopen( url, None )
+            response = usock.read()
+            usock.close()
+            resp_json = json.loads(response)
+        except:
+            return None
+            
+        if (callback):
+            callback(resp_json)
+        else:
+            return resp_json

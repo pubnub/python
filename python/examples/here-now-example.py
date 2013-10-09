@@ -10,8 +10,8 @@
 ## -----------------------------------
 
 import sys
-from twisted.internet import reactor
 sys.path.append('../')
+from twisted.internet import reactor
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -23,23 +23,15 @@ ssl_on        = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 ## -----------------------------------------------------------------------
 ## Initiate Pubnub State
 ## -----------------------------------------------------------------------
-pubnub = Pubnub( publish_key, subscribe_key, secret_key, cipher_key, ssl_on )
+pubnub = Pubnub( publish_key=publish_key, subscribe_key=subscribe_key,
+    secret_key=secret_key, cipher_key=cipher_key, ssl_on=ssl_on)
 crazy  = 'hello_world'
 
-## -----------------------------------------------------------------------
-## History Example
-## -----------------------------------------------------------------------
-def history_complete(messages):
-    print(messages)
-    reactor.stop()
+def print_cb(message):
+	print message
 
-pubnub.history( {
+pubnub.here_now( {
     'channel'  : crazy,
-    'limit'    : 10,
-    'callback' : history_complete
+    'callback' : print_cb
 })
 
-## -----------------------------------------------------------------------
-## IO Event Loop
-## -----------------------------------------------------------------------
-reactor.run()

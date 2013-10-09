@@ -1,31 +1,21 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud. 
-# coding=utf8
-
-## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2010 Stephen Blum
-## http://www.pubnub.com/
-
-## -----------------------------------
-## PubNub 3.0 Real-time Push Cloud API
-## -----------------------------------
-
 try: import json
 except ImportError: import simplejson as json
 
 import time
 import hashlib
 import urllib2
-import uuid
+import uuid 
 
-class Pubnub():
+class PubnubBase(object):
     def __init__(
         self,
         publish_key,
         subscribe_key,
         secret_key = False,
+        cipher_key = False,
         ssl_on = False,
         origin = 'pubsub.pubnub.com',
-        pres_uuid = None
+        UUID = None
     ) :
         """
         #**
@@ -50,6 +40,7 @@ class Pubnub():
         self.publish_key   = publish_key
         self.subscribe_key = subscribe_key
         self.secret_key    = secret_key
+        self.cipher_key    = cipher_key
         self.ssl           = ssl_on
 
         if self.ssl :
@@ -57,10 +48,68 @@ class Pubnub():
         else :
             self.origin = 'http://'  + self.origin
         
-        self.uuid = pres_uuid or str(uuid.uuid4())
+        self.uuid = UUID or str(uuid.uuid4())
         
         if not isinstance(self.uuid, basestring):
             raise AttributeError("pres_uuid must be a string")
+
+    def sign(self, channel, message):
+        ## Sign Message
+        if self.secret_key:
+            signature = hashlib.md5('/'.join([
+                self.publish_key,
+                self.subscribe_key,
+                self.secret_key,
+                channel,
+                message
+            ])).hexdigest()
+        else:
+            signature = '0'
+        return signature
+
+    def encrypt(self, message):
+        if self.cipher_key:
+            pc = PubnubCrypto()
+            out = []
+            if type( message ) == type(list()):
+                for item in message:
+                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
+                    out.append(encryptItem)
+                message = json.dumps(out)
+            elif type( message ) == type(dict()):
+                outdict = {}
+                for k, item in message.iteritems():
+                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
+                    outdict[k] = encryptItem
+                    out.append(outdict)
+                message = json.dumps(out[0])
+            else:
+                message = json.dumps(pc.encrypt(self.cipher_key, json.dumps(message)).replace('\n',''))
+        else :
+            message = json.dumps(message)
+
+        return message;
+
+    def decrypt(self, message):
+        if self.cipher_key:
+            pc = PubnubCrypto()
+            if type( message ) == type(list()):
+                for item in message:
+                    encryptItem = pc.decrypt(self.cipher_key, item )
+                    out.append(encryptItem)
+                message = out
+            elif type( message ) == type(dict()):
+                outdict = {}
+                for k, item in message.iteritems():
+                    encryptItem = pc.decrypt(self.cipher_key, item )
+                    outdict[k] = encryptItem
+                    out.append(outdict)
+                message = out[0]
+            else:
+                message = pc.decrypt(self.cipher_key, message)
+
+        return message
+
 
     def publish( self, args ) :
         """
@@ -89,22 +138,20 @@ class Pubnub():
 
         ## Capture User Input
         channel = str(args['channel'])
-        message = json.dumps(args['message'], separators=(',',':'))
 
-        ## Sign Message
-        if self.secret_key :
-            signature = hashlib.md5('/'.join([
-                self.publish_key,
-                self.subscribe_key,
-                self.secret_key,
-                channel,
-                message
-            ])).hexdigest()
+        ## Capture Callback
+        if args.has_key('callback') :
+            callback = args['callback']
         else :
-            signature = '0'
+            callback = None 
+
+        #message = json.dumps(args['message'], separators=(',',':'))
+        message = self.encrypt(args['message'])
+
+        signature = self.sign(channel, message)
 
         ## Send Message
-        return self._request([
+        return self._request({"urlcomponents": [
             'publish',
             self.publish_key,
             self.subscribe_key,
@@ -112,78 +159,7 @@ class Pubnub():
             channel,
             '0',
             message
-        ])
-
-
-    def subscribe( self, args ) :
-        """
-        #**
-        #* Subscribe
-        #*
-        #* This is BLOCKING.
-        #* Listen for a message on a channel.
-        #*
-        #* @param array args with channel and callback.
-        #* @return false on fail, array on success.
-        #**
-
-        ## Subscribe Example
-        def receive(message) :
-            print(message)
-            return True
-
-        pubnub.subscribe({
-            'channel'  : 'hello_world',
-            'callback' : receive 
-        })
-
-        """
-
-        ## Fail if missing channel
-        if not 'channel' in args :
-            raise Exception('Missing Channel.')
-            return False
-
-        ## Fail if missing callback
-        if not 'callback' in args :
-            raise Exception('Missing Callback.')
-            return False
-
-        ## Capture User Input
-        channel   = str(args['channel'])
-        callback  = args['callback']
-        subscribe_key = args.get('subscribe_key') or self.subscribe_key
-
-        ## Begin Subscribe
-        while True :
-
-            timetoken = 'timetoken' in args and args['timetoken'] or 0
-            try :
-                ## Wait for Message
-                response = self._request(self._encode([
-                    'subscribe',
-                    subscribe_key,
-                    channel,
-                    '0',
-                    str(timetoken)
-                ])+['?uuid='+self.uuid], encode=False)
-
-                messages          = response[0]
-                args['timetoken'] = response[1]
-
-                ## If it was a timeout
-                if not len(messages) :
-                    continue
-
-                ## Run user Callback and Reconnect if user permits.
-                for message in messages :
-                    if not callback(message) :
-                        return
-
-            except Exception:
-                time.sleep(1)
-
-        return True
+        ]}, callback)
     
     def presence( self, args ) :
         """
@@ -246,6 +222,12 @@ class Pubnub():
 
         """
         channel = str(args['channel'])
+
+        ## Capture Callback
+        if args.has_key('callback') :
+            callback = args['callback']
+        else :
+            callback = None
         
         ## Fail if bad input.
         if not channel :
@@ -253,11 +235,11 @@ class Pubnub():
             return False
         
         ## Get Presence Here Now
-        return self._request([
+        return self._request({"urlcomponents": [
             'v2','presence',
             'sub_key', self.subscribe_key,
             'channel', channel
-        ]);
+        ]}, callback);
         
         
     def history( self, args ) :
@@ -288,17 +270,82 @@ class Pubnub():
             raise Exception('Missing Channel')
             return False
 
+        ## Capture Callback
+        if args.has_key('callback') :
+            callback = args['callback']
+        else :
+            callback = None
+
         ## Get History
-        return self._request([
+        return self._request({ "urlcomponents" : [
             'history',
             self.subscribe_key,
             channel,
             '0',
             str(limit)
-        ]);
+        ] }, callback);
 
+    def detailedHistory(self, args) :
+        """
+        #**
+        #* Detailed History
+        #*
+        #* Load Detailed history from a channel.
+        #*
+        #* @param array args with 'channel', optional: 'start', 'end', 'reverse', 'count'
+        #* @return mixed false on fail, array on success.
+        #*
 
-    def time(self) :
+        ## History Example
+        history = pubnub.detailedHistory({
+            'channel' : 'hello_world',
+            'count'   : 5
+        })
+        print(history)
+
+        """
+        ## Capture User Input
+        channel = str(args['channel'])
+
+        params = dict() 
+        count = 100    
+        
+        if args.has_key('count'):
+            count = int(args['count'])
+
+        params['count'] = str(count)    
+        
+        if args.has_key('reverse'):
+            params['reverse'] = str(args['reverse']).lower()
+
+        if args.has_key('start'):
+            params['start'] = str(args['start'])
+
+        if args.has_key('end'):
+            params['end'] = str(args['end'])
+
+        ## Fail if bad input.
+        if not channel :
+            raise Exception('Missing Channel')
+            return False
+
+        ## Capture Callback
+        if args.has_key('callback') :
+            callback = args['callback']
+        else :
+            callback = None 
+
+        ## Get History
+        return self._request({ 'urlcomponents' : [
+            'v2',
+            'history',
+            'sub-key',
+            self.subscribe_key,
+            'channel',
+            channel,
+        ],'urlparams' : params }, callback=callback);
+
+    def time(self, args = None) :
         """
         #**
         #* Time
@@ -313,10 +360,17 @@ class Pubnub():
         print(timestamp)
 
         """
-        return self._request([
+        ## Capture Callback
+        if args and args.has_key('callback') :
+            callback = args['callback']
+        else :
+            callback = None 
+        time = self._request({'urlcomponents' : [
             'time',
             '0'
-        ])[0]
+        ]}, callback)
+        if time != None:
+            return time[0]
 
 
     def _encode( self, request ) :
@@ -325,21 +379,14 @@ class Pubnub():
                 hex(ord(ch)).replace( '0x', '%' ).upper() or
                 ch for ch in list(bit)
             ]) for bit in request]
-
-
-    def _request( self, request, origin = None, encode = True ) :
+    
+    def getUrl(self,request):
         ## Build URL
-        url = (origin or self.origin) + '/' + "/".join(
-            encode and self._encode(request) or request
-        )
-
-        ## Send Request Expecting JSONP Response
-        try:
-            try: usock = urllib2.urlopen( url, None, 200 )
-            except TypeError: usock = urllib2.urlopen( url, None )
-            response = usock.read()
-            usock.close()
-            return json.loads( response )
-        except:
-            return None
-
+        url = self.origin + '/' + "/".join([
+            "".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
+                hex(ord(ch)).replace( '0x', '%' ).upper() or
+                ch for ch in list(bit)
+            ]) for bit in request["urlcomponents"]])
+        if (request.has_key("urlparams")):
+            url = url + '?' + "&".join([ x + "=" + y  for x,y in request["urlparams"].iteritems()])
+        return url

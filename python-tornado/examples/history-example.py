@@ -11,7 +11,6 @@
 
 import sys
 import tornado
-sys.path.append('../')
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -31,6 +30,7 @@ crazy  = 'hello_world'
 ## -----------------------------------------------------------------------
 def history_complete(messages):
     print(messages)
+    tornado.ioloop.IOLoop.instance().stop()
 
 pubnub.history( {
    'channel'  : crazy,

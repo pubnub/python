@@ -9,8 +9,11 @@
 ## PubNub 3.0 Real-time Push Cloud API
 ## -----------------------------------
 
-from Pubnub import Pubnub
 import sys
+sys.path.append('.')
+sys.path.append('..')
+sys.path.append('../common')
+from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
@@ -23,7 +26,7 @@ ssl_on        = len(sys.argv) > 4 and bool(sys.argv[4]) or False
 ## -----------------------------------------------------------------------
 
 pubnub = Pubnub( publish_key, subscribe_key, secret_key, ssl_on )
-crazy  = ' ~`!@#$%^&*(顶顅Ȓ)+=[]\\{}|;\':",./<>?abcd'
+crazy  = 'demo'
 
 ## ---------------------------------------------------------------------------
 ## Unit Test Function
@@ -37,11 +40,11 @@ def test( trial, name ) :
 ## -----------------------------------------------------------------------
 ## Publish Example
 ## -----------------------------------------------------------------------
-pubish_success = pubnub.publish({
+publish_success = pubnub.publish({
     'channel' : crazy,
     'message' : crazy
 })
-test( pubish_success[0] == 1, 'Publish First Message Success' )
+test( publish_success[0] == 1, 'Publish First Message Success' )
 
 ## -----------------------------------------------------------------------
 ## History Example
@@ -61,17 +64,3 @@ test( len(history) == 1, 'History Message Count' )
 ## -----------------------------------------------------------------------
 timestamp = pubnub.time()
 test( timestamp > 0, 'PubNub Server Time: ' + str(timestamp) )
-
-## -----------------------------------------------------------------------
-## Subscribe Example
-## -----------------------------------------------------------------------
-def receive(message) :
-    print(message)
-    return True
-
-pubnub.subscribe({
-    'channel'  : crazy,
-    'callback' : receive 
-})
-
-

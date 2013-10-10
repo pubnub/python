@@ -89,13 +89,13 @@ class PubnubCore(PubnubBase):
             timetoken = 'timetoken' in args and args['timetoken'] or 0
             try :
                 ## Wait for Message
-                response = self._request(self._encode([
+                response = self._request({"urlcomponents" : [
                     'subscribe',
                     subscribe_key,
                     channel,
                     '0',
                     str(timetoken)
-                ])+['?uuid='+self.uuid], encode=False)
+                ],"urlparams" : {"uuid" : self.uuid }})
 
                 messages          = response[0]
                 args['timetoken'] = response[1]

@@ -6,7 +6,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.3.4 Real-time Push Cloud API
+## PubNub 3.3.5 Real-time Push Cloud API
 ## -----------------------------------
 
 
@@ -137,6 +137,7 @@ class PubnubBase(object):
         self.secret_key    = secret_key
         self.cipher_key    = cipher_key
         self.ssl           = ssl_on
+        self.pc            = PubnubCrypto()
 
         if self.ssl :
             self.origin = 'https://' + self.origin
@@ -164,22 +165,7 @@ class PubnubBase(object):
 
     def encrypt(self, message):
         if self.cipher_key:
-            pc = PubnubCrypto()
-            out = []
-            if type( message ) == type(list()):
-                for item in message:
-                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
-                    out.append(encryptItem)
-                message = json.dumps(out)
-            elif type( message ) == type(dict()):
-                outdict = {}
-                for k, item in message.iteritems():
-                    encryptItem = pc.encrypt(self.cipher_key, item ).rstrip()
-                    outdict[k] = encryptItem
-                    out.append(outdict)
-                message = json.dumps(out[0])
-            else:
-                message = json.dumps(pc.encrypt(self.cipher_key, json.dumps(message)).replace('\n',''))
+            message = json.dumps(self.pc.encrypt(self.cipher_key, json.dumps(message)).replace('\n',''))
         else :
             message = json.dumps(message)
 
@@ -187,21 +173,7 @@ class PubnubBase(object):
 
     def decrypt(self, message):
         if self.cipher_key:
-            pc = PubnubCrypto()
-            if type( message ) == type(list()):
-                for item in message:
-                    encryptItem = pc.decrypt(self.cipher_key, item )
-                    out.append(encryptItem)
-                message = out
-            elif type( message ) == type(dict()):
-                outdict = {}
-                for k, item in message.iteritems():
-                    encryptItem = pc.decrypt(self.cipher_key, item )
-                    outdict[k] = encryptItem
-                    out.append(outdict)
-                message = out[0]
-            else:
-                message = pc.decrypt(self.cipher_key, message)
+            message = self.pc.decrypt(self.cipher_key, message)
 
         return message
 
@@ -595,7 +567,7 @@ class PubnubCore(PubnubBase):
 
                 ## Run user Callback and Reconnect if user permits.
                 for message in messages :
-                    if not callback(message) :
+                    if not callback(self.decrypt(message)) :
                         return
 
             except Exception:

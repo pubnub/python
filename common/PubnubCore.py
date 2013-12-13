@@ -106,7 +106,7 @@ class PubnubCore(PubnubBase):
 
                 ## Run user Callback and Reconnect if user permits.
                 for message in messages :
-                    if not callback(message) :
+                    if not callback(self.decrypt(message)) :
                         return
 
             except Exception:

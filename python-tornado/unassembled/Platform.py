@@ -10,7 +10,6 @@ except ImportError:
 import hmac
 import tornado.ioloop
 from tornado.stack_context import ExceptionStackContext
-from PubnubCrypto import PubnubCrypto
 
 ioloop = tornado.ioloop.IOLoop.instance()
 

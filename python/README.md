@@ -87,9 +87,11 @@ print(analytics)
 
 ```
 # Load Previously Published Messages
-history = pubnub.history({
-    'channel' : 'hello_world',
-    'limit'   : 1
+history = pubnub.detailedHistory({
+    'channel'   : 'my_channel',
+    'end'       : my_end_time_token, # Optional
+    'start'     : my_start_time_token, # Optional
+    'count'     : num_of_msgs_to_return # Optional, default is 100
 })
 print(history)
 ```

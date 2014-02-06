@@ -1,38 +1,22 @@
-## ---------------------------------------------------
-##
-## YOU MUST HAVE A PUBNUB ACCOUNT TO USE THE API.
-## http://www.pubnub.com/account
-##
-## ----------------------------------------------------
-
-## --------------------------------------------------
 ## PubNub 3.3 Web Data Push Cloud-hosted API - PYTHON
-## --------------------------------------------------
-##
-## www.pubnub.com - PubNub Web Data Push Service in the Cloud. 
-## http://github.com/pubnub/pubnub-api/tree/master/python
-##
-## PubNub is a Massively Scalable Data Push Service for Web and Mobile Games.
-## This is a cloud-based service for broadcasting messages
-## to thousands of web and mobile clients simultaneously.
+#### www.pubnub.com - PubNub Web Data Push Service in the Cloud. 
+#### http://github.com/pubnub/pubnub-api/tree/master/python
 
-## ---------------
-## Python Push API
-## ---------------
 
-### Check out additional tests and examples in the 3.2 directory!
+#### Init
 
+```
 pubnub = Pubnub(
     "demo",  ## PUBLISH_KEY
     "demo",  ## SUBSCRIBE_KEY
     None,    ## SECRET_KEY
     False    ## SSL_ON?
 )
+```
 
-# -------
-# PUBLISH
-# -------
-# Send Message
+#### PUBLISH
+
+```
 info = pubnub.publish({
     'channel' : 'hello_world',
     'message' : {
@@ -40,10 +24,12 @@ info = pubnub.publish({
     }
 })
 print(info)
+```
 
-# ---------
-# SUBSCRIBE
-# ---------
+
+#### SUBSCRIBE
+
+```
 # Listen for Messages *BLOCKING*
 def receive(message) :
     print(message)
@@ -53,10 +39,12 @@ pubnub.subscribe({
     'channel'  : 'hello_world',
     'callback' : receive 
 })
+```
 
-# ---------
-# PRESENCE
-# ---------
+
+#### PRESENCE
+
+```
 # Listen for Presence Event Messages *BLOCKING*
 
 def pres_event(message) :
@@ -67,10 +55,11 @@ pubnub.presence({
     'channel'  : 'hello_world',
     'callback' : receive 
 })
+```
 
-# ---------
-# HERE_NOW
-# ---------
+#### HERE_NOW
+
+```
 # Get info on who is here right now!
 
 here_now = pubnub.here_now({
@@ -79,11 +68,11 @@ here_now = pubnub.here_now({
 
 print(here_now['occupancy'])
 print(here_now['uuids'])
+```
 
+#### Channel Analytics
 
-# ------------------
-## Channel Analytics
-# ------------------
+```
 analytics = pubnub.analytics({
     'channel'  : 'channel-name-here', ## Leave blank for all channels
     'limit'    : 100,                 ## aggregation range
@@ -92,32 +81,15 @@ analytics = pubnub.analytics({
 })
 print(analytics)
 
-# -------
-# HISTORY
-# -------
+```
+
+#### HISTORY
+
+```
 # Load Previously Published Messages
 history = pubnub.history({
     'channel' : 'hello_world',
     'limit'   : 1
 })
 print(history)
-
-
-# -------
-# DETAILED HISTORY
-# -------
-# Load Previously Published Messages in Detail
-	@param array args with 'channel', optional: 'start', 'end', 'reverse', 'count'
-	'channel'-Channel name
-	'start'-Start timestamp
-	'end'-End timestamp
-	'reverse'-Order of History
-	'count'-Number of History messages
-	
- 	NSInteger count = 3;
-    NSNumber * aCountInt = [NSNumber numberWithInteger:count];
-    [pubnub detailedHistory:[NSDictionary dictionaryWithObjectsAndKeys:
-                             aCountInt,@"count",
-                             @"hello_world",@"channel",
-                             nil]];
-
+```

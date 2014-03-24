@@ -11,7 +11,7 @@
 
 import sys
 sys.path.append('../')
-from twisted.internet import reactor
+sys.path.append('./')
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -28,7 +28,7 @@ pubnub = Pubnub( publish_key=publish_key, subscribe_key=subscribe_key,
 crazy  = 'hello_world'
 
 def print_cb(message):
-	print message
+	print(message)
 
 pubnub.here_now( {
     'channel'  : crazy,

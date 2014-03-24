@@ -98,7 +98,6 @@ except ImportError: import simplejson as json
 
 import time
 import hashlib
-import urllib2
 import uuid 
 
 class PubnubBase(object):
@@ -146,7 +145,7 @@ class PubnubBase(object):
         
         self.uuid = UUID or str(uuid.uuid4())
         
-        if not isinstance(self.uuid, basestring):
+        if not isinstance(self.uuid, str):
             raise AttributeError("pres_uuid must be a string")
 
     def sign(self, channel, message):
@@ -207,7 +206,7 @@ class PubnubBase(object):
         channel = str(args['channel'])
 
         ## Capture Callback
-        if args.has_key('callback') :
+        if 'callback' in args :
             callback = args['callback']
         else :
             callback = None 
@@ -291,7 +290,7 @@ class PubnubBase(object):
         channel = str(args['channel'])
 
         ## Capture Callback
-        if args.has_key('callback') :
+        if 'callback' in args :
             callback = args['callback']
         else :
             callback = None
@@ -329,7 +328,7 @@ class PubnubBase(object):
 
         """
         ## Capture User Input
-        limit   = args.has_key('limit') and int(args['limit']) or 10
+        limit   = 'limit' in args and int(args['limit']) or 10
         channel = str(args['channel'])
 
         ## Fail if bad input.
@@ -338,7 +337,7 @@ class PubnubBase(object):
             return False
 
         ## Capture Callback
-        if args.has_key('callback') :
+        if 'callback' in args :
             callback = args['callback']
         else :
             callback = None
@@ -377,18 +376,18 @@ class PubnubBase(object):
         params = dict() 
         count = 100    
         
-        if args.has_key('count'):
+        if 'count' in args:
             count = int(args['count'])
 
         params['count'] = str(count)    
         
-        if args.has_key('reverse'):
+        if 'reverse' in args:
             params['reverse'] = str(args['reverse']).lower()
 
-        if args.has_key('start'):
+        if 'start' in args:
             params['start'] = str(args['start'])
 
-        if args.has_key('end'):
+        if 'end' in args:
             params['end'] = str(args['end'])
 
         ## Fail if bad input.
@@ -397,7 +396,7 @@ class PubnubBase(object):
             return False
 
         ## Capture Callback
-        if args.has_key('callback') :
+        if 'callback' in args :
             callback = args['callback']
         else :
             callback = None 
@@ -428,7 +427,7 @@ class PubnubBase(object):
 
         """
         ## Capture Callback
-        if args and args.has_key('callback') :
+        if args and 'callback' in args :
             callback = args['callback']
         else :
             callback = None 
@@ -454,8 +453,8 @@ class PubnubBase(object):
                 hex(ord(ch)).replace( '0x', '%' ).upper() or
                 ch for ch in list(bit)
             ]) for bit in request["urlcomponents"]])
-        if (request.has_key("urlparams")):
-            url = url + '?' + "&".join([ x + "=" + y  for x,y in request["urlparams"].iteritems()])
+        if ("urlparams" in request):
+            url = url + '?' + "&".join([ x + "=" + y  for x,y in request["urlparams"].items()])
         return url
 
 
@@ -576,6 +575,7 @@ class PubnubCore(PubnubBase):
         return True
 
 
+import urllib3
 
 class Pubnub(PubnubCore):
     def __init__(
@@ -596,7 +596,8 @@ class Pubnub(PubnubCore):
             ssl_on = ssl_on,
             origin = origin,
             uuid = pres_uuid
-        )        
+        )
+        self.http = urllib3.PoolManager(timeout=310)     
 
     def _request( self, request, callback = None ) :
         ## Build URL
@@ -604,11 +605,8 @@ class Pubnub(PubnubCore):
 
         ## Send Request Expecting JSONP Response
         try:
-            try: usock = urllib2.urlopen( url, None, 310 )
-            except TypeError: usock = urllib2.urlopen( url, None )
-            response = usock.read()
-            usock.close()
-            resp_json = json.loads(response)
+            response = self.http.request('GET', url)
+            resp_json = json.loads(response.data.decode("utf-8"))
         except:
             return None
             

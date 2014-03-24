@@ -1,5 +1,6 @@
 import sys
-sys.path.append('../')
+sys.path.append('..')
+sys.path.append('.')
 import threading
 import time
 import random
@@ -59,7 +60,7 @@ publish()
 print("waiting for subscribes and presence")
 pres_thread.join()
 
-print pubnub.here_now({'channel':channel})
+print(pubnub.here_now({'channel':channel}))
 
 sub_thread.join()
 

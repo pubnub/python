@@ -14,7 +14,7 @@ sys.path.append('.')
 sys.path.append('..')
 sys.path.append('../common')
 from Pubnub import Pubnub
-import unittest2 as unittest
+import unittest as unittest
 
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -37,7 +37,7 @@ class TestDetailedHistory(unittest.TestCase):
 
     @classmethod
     def publish_msg(cls, start, end, offset):
-        print 'Publishing messages'
+        print('Publishing messages')
         inputs = []
         for i in range(start + offset, end + offset):
             message = str(i) + " " + crazy
@@ -47,19 +47,19 @@ class TestDetailedHistory(unittest.TestCase):
                                      })
             t = pubnub.time()
             inputs.append({'timestamp': t, 'message': message})
-            print 'Message # ', i, ' published'
+            print(('Message # ' + i + ' published'))
         return inputs
 
     @classmethod
-    def setUpClass(cls):
-        print 'Setting up context for Detailed History tests. Please wait ...'
-        cls.starttime = pubnub.time()
-        cls.inputs = cls.inputs + cls.publish_msg(0, cls.total_msg / 2, 0)
-        cls.midtime = pubnub.time()
-        cls.inputs = cls.inputs + cls.publish_msg(
-            0, cls.total_msg / 2, cls.total_msg / 2)
-        cls.endtime = pubnub.time()
-        print 'Context setup for Detailed History tests. Now running tests'
+    def setUpClass(c):
+        print('Setting up context for Detailed History tests. Please wait ...')
+        c.starttime = pubnub.time()
+        c.inputs = c.inputs + c.publish_msg(0, c.total_msg / 2, 0)
+        c.midtime = pubnub.time()
+        c.inputs = c.inputs + c.publish_msg(
+            0, c.total_msg / 2, c.total_msg / 2)
+        c.endtime = pubnub.time()
+        print('Context setup for Detailed History tests. Now running tests')
 
     def test_begin_to_end_count(self):
         count = 5

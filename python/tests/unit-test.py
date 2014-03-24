@@ -53,8 +53,9 @@ history = pubnub.history({
     'channel' : crazy,
     'limit'   : 1
 })
+
 test(
-    history[0].encode('utf-8') == crazy,
+    history[0] == crazy,
     'History Message: ' + history[0]
 )
 test( len(history) == 1, 'History Message Count' )

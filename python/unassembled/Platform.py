@@ -1,3 +1,4 @@
+import urllib3
 
 class Pubnub(PubnubCore):
     def __init__(
@@ -18,7 +19,8 @@ class Pubnub(PubnubCore):
             ssl_on = ssl_on,
             origin = origin,
             uuid = pres_uuid
-        )        
+        )
+        self.http = urllib3.PoolManager(timeout=310)     
 
     def _request( self, request, callback = None ) :
         ## Build URL
@@ -26,11 +28,8 @@ class Pubnub(PubnubCore):
 
         ## Send Request Expecting JSONP Response
         try:
-            try: usock = urllib2.urlopen( url, None, 310 )
-            except TypeError: usock = urllib2.urlopen( url, None )
-            response = usock.read()
-            usock.close()
-            resp_json = json.loads(response)
+            response = self.http.request('GET', url)
+            resp_json = json.loads(response.data.decode("utf-8"))
         except:
             return None
             

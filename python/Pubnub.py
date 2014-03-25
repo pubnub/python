@@ -16,7 +16,84 @@ from base64 import encodestring, decodestring
 import hashlib
 import hmac
 
-class PubnubCrypto() :
+class PubnubCrypto2() :
+    """
+    #**
+    #* PubnubCrypto
+    #*
+    #**
+
+    ## Initiate Class
+    pc = PubnubCrypto
+
+    """
+   
+    def pad( self, msg, block_size=16 ):
+        """
+        #**
+        #* pad
+        #*
+        #* pad the text to be encrypted
+        #* appends a padding character to the end of the String
+        #* until the string has block_size length
+        #* @return msg with padding.
+        #**
+        """
+        padding = block_size - (len(msg) % block_size)
+        return msg + chr(padding)*padding
+       
+    def depad( self, msg ):
+        """
+        #**
+        #* depad
+        #*
+        #* depad the decryptet message"
+        #* @return msg without padding.
+        #**
+        """
+        return msg[0:-ord(msg[-1])]
+
+    def getSecret( self, key ):
+        """
+        #**
+        #* getSecret
+        #*
+        #* hases the key to MD5
+        #* @return key in MD5 format
+        #**
+        """
+        return hashlib.sha256(key).hexdigest()
+
+    def encrypt( self, key, msg ):
+        """
+        #**
+        #* encrypt
+        #*
+        #* encrypts the message
+        #* @return message in encrypted format
+        #**
+        """
+        secret = self.getSecret(key)
+        Initial16bytes='0123456789012345'
+        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
+        enc = encodestring(cipher.encrypt(self.pad(msg)))
+        return enc
+    def decrypt( self, key, msg ):
+        """
+        #**
+        #* decrypt
+        #*
+        #* decrypts the message
+        #* @return message in decryped format
+        #**
+        """
+        secret = self.getSecret(key)
+        Initial16bytes='0123456789012345'
+        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
+        return self.depad((cipher.decrypt(decodestring(msg))))
+
+
+class PubnubCrypto3() :
     """
     #**
     #* PubnubCrypto
@@ -97,7 +174,8 @@ except ImportError: import simplejson as json
 
 import time
 import hashlib
-import uuid 
+import uuid
+import sys
 
 class PubnubBase(object):
     def __init__(
@@ -128,14 +206,14 @@ class PubnubBase(object):
         pubnub = Pubnub( 'PUBLISH-KEY', 'SUBSCRIBE-KEY', 'SECRET-KEY', False )
 
         """
-        self.origin        = origin
-        self.limit         = 1800
-        self.publish_key   = publish_key
-        self.subscribe_key = subscribe_key
-        self.secret_key    = secret_key
-        self.cipher_key    = cipher_key
-        self.ssl           = ssl_on
-        self.pc            = PubnubCrypto()
+        self.origin         = origin
+        self.limit          = 1800
+        self.publish_key    = publish_key
+        self.subscribe_key  = subscribe_key
+        self.secret_key     = secret_key
+        self.cipher_key     = cipher_key
+        self.ssl            = ssl_on
+
 
         if self.ssl :
             self.origin = 'https://' + self.origin
@@ -143,6 +221,14 @@ class PubnubBase(object):
             self.origin = 'http://'  + self.origin
         
         self.uuid = UUID or str(uuid.uuid4())
+
+        if type(sys.version_info) is tuple:
+            self.python_version = 2
+            self.pc             = PubnubCrypto2()
+        else:
+            self.python_version = 3
+            self.pc             = PubnubCrypto3()
+
         
         if not isinstance(self.uuid, str):
             raise AttributeError("pres_uuid must be a string")
@@ -574,8 +660,10 @@ class PubnubCore(PubnubBase):
         return True
 
 
-
-import urllib.request
+try:
+    import urllib.request
+except:
+    import urllib2
 
 class Pubnub(PubnubCore):
     def __init__(
@@ -597,19 +685,51 @@ class Pubnub(PubnubCore):
             origin = origin,
             uuid = pres_uuid
         )
+        if self.python_version == 2:
+            self._request = self._request2
+        else:
+            self._request = self._request3
 
-    def _request( self, request, callback = None ) :
+    def _request2( self, request, callback = None ) :
         ## Build URL
         url = self.getUrl(request)
-        print(url)
+
         ## Send Request Expecting JSONP Response
         try:
-            response = urllib.request.urlopen(url,timeout=310)
-            resp_json = json.loads(response.read().decode("utf-8"))
-        except Exception as e:
+            try: usock = urllib2.urlopen( url, None, 310 )
+            except TypeError: usock = urllib2.urlopen( url, None )
+            response = usock.read()
+            usock.close()
+            resp_json = json.loads(response)
+        except:
             return None
             
         if (callback):
             callback(resp_json)
         else:
             return resp_json
+
+
+    def _request3( self, request, callback = None ) :
+        ## Build URL
+        url = self.getUrl(request)
+        ## Send Request Expecting JSONP Response
+        try:
+            response = urllib.request.urlopen(url,timeout=310)
+            resp_json = json.loads(response.read().decode("utf-8"))
+        except Exception as e:
+            print(e)
+            return None
+            
+        if (callback):
+            callback(resp_json)
+        else:
+            return resp_json
+
+    '''        
+    def _request(self, request, callback = None):
+        if self.python_version == 2:
+            return self._request2(request,callback)
+        else:
+            return self._request3(request, callback)
+    '''

@@ -3,7 +3,8 @@ except ImportError: import simplejson as json
 
 import time
 import hashlib
-import uuid 
+import uuid
+import sys
 
 class PubnubBase(object):
     def __init__(
@@ -41,7 +42,7 @@ class PubnubBase(object):
         self.secret_key    = secret_key
         self.cipher_key    = cipher_key
         self.ssl           = ssl_on
-        self.pc            = PubnubCrypto()
+
 
         if self.ssl :
             self.origin = 'https://' + self.origin
@@ -49,6 +50,14 @@ class PubnubBase(object):
             self.origin = 'http://'  + self.origin
         
         self.uuid = UUID or str(uuid.uuid4())
+
+        if type(sys.version_info) is tuple:
+            self.python_version = 2
+            self.pc             = PubnubCrypto2()
+        else:
+            self.python_version = 3
+            self.pc             = PubnubCrypto3()
+
         
         if not isinstance(self.uuid, str):
             raise AttributeError("pres_uuid must be a string")

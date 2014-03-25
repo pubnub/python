@@ -83,7 +83,7 @@ class PubnubBase(object):
         return message
 
 
-    def publish( self, args ) :
+    def publish( self, args, blocking = True ) :
         """
         #**
         #* Publish
@@ -91,6 +91,7 @@ class PubnubBase(object):
         #* Send a message to a channel.
         #*
         #* @param array args with channel and message.
+        #* @param bool blocking If False the call will return directly with no data
         #* @return array success information.
         #**
 
@@ -131,7 +132,7 @@ class PubnubBase(object):
             channel,
             '0',
             message
-        ]}, callback)
+        ]}, callback, blocking)
     
     def presence( self, args ) :
         """

@@ -40,7 +40,7 @@ class PubnubCrypto() :
         #**
         """
         padding = block_size - (len(msg) % block_size)
-        return msg + chr(padding)*padding
+        return msg + (chr(padding)*padding).encode('utf-8')
        
     def depad( self, msg ):
         """
@@ -62,7 +62,7 @@ class PubnubCrypto() :
         #* @return key in MD5 format
         #**
         """
-        return hashlib.sha256(key).hexdigest()
+        return hashlib.sha256(key.encode("utf-8")).hexdigest()
 
     def encrypt( self, key, msg ):
         """
@@ -76,8 +76,7 @@ class PubnubCrypto() :
         secret = self.getSecret(key)
         Initial16bytes='0123456789012345'
         cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
-        enc = encodestring(cipher.encrypt(self.pad(msg)))
-        return enc
+        return encodestring(cipher.encrypt(self.pad(msg.encode('utf-8')))).decode('utf-8')
     def decrypt( self, key, msg ):
         """
         #**
@@ -90,7 +89,7 @@ class PubnubCrypto() :
         secret = self.getSecret(key)
         Initial16bytes='0123456789012345'
         cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
-        return self.depad((cipher.decrypt(decodestring(msg))))
+        return (cipher.decrypt(decodestring(msg.encode('utf-8')))).decode('utf-8')
 
 
 try: import json
@@ -575,7 +574,8 @@ class PubnubCore(PubnubBase):
         return True
 
 
-import urllib3
+
+import urllib.request
 
 class Pubnub(PubnubCore):
     def __init__(
@@ -597,17 +597,16 @@ class Pubnub(PubnubCore):
             origin = origin,
             uuid = pres_uuid
         )
-        self.http = urllib3.PoolManager(timeout=310)     
 
     def _request( self, request, callback = None ) :
         ## Build URL
         url = self.getUrl(request)
-
+        print(url)
         ## Send Request Expecting JSONP Response
         try:
-            response = self.http.request('GET', url)
-            resp_json = json.loads(response.data.decode("utf-8"))
-        except:
+            response = urllib.request.urlopen(url,timeout=310)
+            resp_json = json.loads(response.read().decode("utf-8"))
+        except Exception as e:
             return None
             
         if (callback):

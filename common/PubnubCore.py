@@ -1,4 +1,4 @@
-class PubnubCore(PubnubBase):
+class PubnubCore(PubnubCoreAsync):
     def __init__(
         self,
         publish_key,
@@ -44,7 +44,7 @@ class PubnubCore(PubnubBase):
 
 
 
-    def subscribe( self, args ) :
+    def subscribe_sync( self, args ) :
         """
         #**
         #* Subscribe

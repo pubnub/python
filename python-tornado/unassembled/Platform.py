@@ -42,15 +42,24 @@ class Pubnub(PubnubCoreAsync):
         self.headers['Accept-Encoding'] = self.accept_encoding
         self.headers['V'] = self.version
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
+        self.id = None
 
-    def _request( self, request, callback ) :
+    def _request( self, request, callback, single=False ) :
         url = self.getUrl(request)
-        ## Send Request Expecting JSON Response
-        #print self.headers
-
         request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers, connect_timeout=10, request_timeout=310 )
+        if single is True:
+            id = time.time()
+            self.id = id
 
         def responseCallback(response):
+            if single is True:
+                if not id == self.id:
+                    return None 
+
+            body = response._get_body()
+            if body is None:
+                return
+
             def handle_exc(*args):
                 return True
             if response.error is not None:
@@ -58,9 +67,14 @@ class Pubnub(PubnubCoreAsync):
                     response.rethrow()
             elif callback:
                 callback(eval(response._get_body()))
-        
+
         self.http.fetch(
-            request,
-            callback=responseCallback,
+            request=request,
+            callback=responseCallback
         )
+
+        def abort():
+            pass
+
+        return abort
 

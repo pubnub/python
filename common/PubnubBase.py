@@ -90,6 +90,14 @@ class PubnubBase(object):
 
         return message
 
+    def _return_wrapped_callback(self, callback=None):
+        def _new_format_callback(response):
+            if 'payload' in response:
+                if (callback != None): callback({'message' : response['message'], 'payload' : response['payload']})
+            else:
+                if (callback != None):callback(response)
+        if (callback != None): return _new_format_callback
+
 
     def publish( self, args ) :
         """
@@ -139,7 +147,7 @@ class PubnubBase(object):
             channel,
             '0',
             message
-        ]}, callback)
+        ]'urlparams' : {'auth' : self.auth_key}}, self._return_wrapped_callback(callback))
     
     def presence( self, args ) :
         """
@@ -179,7 +187,7 @@ class PubnubBase(object):
         callback  = args['callback']
         subscribe_key = args.get('subscribe_key') or self.subscribe_key
         
-        return self.subscribe({'channel': channel+'-pnpres', 'subscribe_key':subscribe_key, 'callback': callback})
+        return self.subscribe({'channel': channel+'-pnpres', 'subscribe_key':subscribe_key, 'callback': self._return_wrapped_callback(callback)})
     
     
     def here_now( self, args ) :

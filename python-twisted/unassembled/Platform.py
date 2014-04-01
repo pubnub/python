@@ -7,10 +7,14 @@ from twisted.web.client import HTTPConnectionPool
 from twisted.web.http_headers import Headers
 from twisted.internet.ssl import ClientContextFactory
 from twisted.internet.task import LoopingCall
+import twisted
+from hashlib import sha256
+import time
 
 pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
-pnconn_pool.maxPersistentPerHost    = 100
+pnconn_pool.maxPersistentPerHost    = 100000
 pnconn_pool.cachedConnectionTimeout = 310
+pnconn_pool.retryAutomatically = True
 
 class Pubnub(PubnubCoreAsync):
 
@@ -41,7 +45,7 @@ class Pubnub(PubnubCoreAsync):
         #self.headers['Accept-Encoding'] = [self.accept_encoding]
         self.headers['V'] = [self.version]
 
-    def _request( self, request, callback ) :
+    def _request( self, request, callback, single=False ) :
         global pnconn_pool
 
         ## Build URL
@@ -53,12 +57,18 @@ class Pubnub(PubnubCoreAsync):
             ]) for bit in request])
         '''
         url = self.getUrl(request)
+
         agent       = ContentDecoderAgent(RedirectAgent(Agent(
             reactor,
             contextFactory = WebClientContextFactory(),
             pool = self.ssl and None or pnconn_pool
         )), [('gzip', GzipDecoder)])
+
         request     = agent.request( 'GET', url, Headers(self.headers), None )
+
+        if single is True:
+            id = time.time()
+            self.id = id
 
         def received(response):
             finished = Deferred()
@@ -66,10 +76,22 @@ class Pubnub(PubnubCoreAsync):
             return finished
 
         def complete(data):
-            callback(eval(data))
+            if single is True:
+                if not id == self.id:
+                    return None
+            try:
+                callback(eval(data))
+            except Exception as e:
+                pass
+                #need error handling here
+
+        def abort():
+            pass
 
         request.addCallback(received)
         request.addBoth(complete)
+
+        return abort
 
 class WebClientContextFactory(ClientContextFactory):
     def getContext(self, hostname, port):

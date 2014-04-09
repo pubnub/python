@@ -172,8 +172,12 @@ class PubnubBase(object):
         return message;
 
     def decrypt(self, message):
+
         if self.cipher_key:
-            message = self.pc.decrypt(self.cipher_key, message)
+            try:
+                message = self.pc.decrypt(self.cipher_key, message)
+            except:
+                pass
 
         return message
 
@@ -343,14 +347,26 @@ class PubnubBase(object):
         else :
             callback = None
 
+        def _history_decryption_wrapper(response):
+            if response is None: return
+            for i,v in enumerate(response):
+                response[i] = self.decrypt(v)
+            if callback is not None:
+                callback(response)
+            else:
+                return response
+
+
         ## Get History
-        return self._request({ "urlcomponents" : [
+        response = self._request({ "urlcomponents" : [
             'history',
             self.subscribe_key,
             channel,
             '0',
             str(limit)
-        ] }, callback);
+        ] }, _history_decryption_wrapper if callback is not None else None );
+
+        return _history_decryption_wrapper(response)
 
     def detailedHistory(self, args) :
         """
@@ -402,15 +418,26 @@ class PubnubBase(object):
         else :
             callback = None 
 
+        def _history_decryption_wrapper(response):
+            if response is None: return
+            for i,v in enumerate(response[0]):
+                response[0][i] = self.decrypt(v)
+            if callback is not None:
+                callback(response)
+            else:
+                return response
+
         ## Get History
-        return self._request({ 'urlcomponents' : [
+        response = self._request({ 'urlcomponents' : [
             'v2',
             'history',
             'sub-key',
             self.subscribe_key,
             'channel',
             channel,
-        ],'urlparams' : params }, callback=callback);
+        ],'urlparams' : params }, callback=_history_decryption_wrapper if callback is not None else None);
+
+        return _history_decryption_wrapper(response)
 
     def time(self, args = None) :
         """

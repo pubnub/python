@@ -15,21 +15,47 @@
 # limitations under the License.
 #
 import webapp2
-
+import time
 from Pubnub import Pubnub
 
-pubnub = Pubnub( publish_key='demo', subscribe_key='demo', cipher_key='enigma', ssl_on=False )
+pubnub = Pubnub( publish_key='demo', subscribe_key='demo', ssl_on=False )
+pubnub_enc = Pubnub( publish_key='demo', subscribe_key='demo', cipher_key='enigma', ssl_on=False )
+channel = 'gae-test-channel-' + str(time.time())
 
 class MainHandler(webapp2.RequestHandler):
 
     def get(self):
     	info = pubnub.publish({
-    		'channel' : 'hello_world',
+    		'channel' : channel,
     		'message' : {
         	'some_text' : 'Hello my World'
     		}
 		})
-        self.response.write(info)
+        info_enc = pubnub_enc.publish({
+    		'channel' : channel,
+    		'message' : {
+        	'some_text' : 'Hello my World'
+    		}
+		})
+        hn = pubnub.here_now({
+            'channel' : channel
+        })
+        history = pubnub.detailedHistory({
+            'channel' : channel
+        })
+        history_enc = pubnub_enc.detailedHistory({
+            'channel' : channel
+        })
+        self.response.write('Message published to channel ' + channel + '<br>' + str(info))
+        self.response.write('<br><br>')
+        self.response.write('Encrypted message published to channel ' + channel + '<br>' + str(info_enc))
+        self.response.write('<br><br>')
+        self.response.write('Here now data for channel : '+ channel + '<br>' + str(hn))
+        self.response.write('<br><br>')
+        self.response.write('History for channel : '+ channel + '<br>' + str(history))
+        self.response.write('<br><br>')
+        self.response.write('History with decryption enabled for channel : '+ channel + '<br>' + str(history_enc))
+
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)

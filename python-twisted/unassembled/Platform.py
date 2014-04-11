@@ -44,6 +44,7 @@ class Pubnub(PubnubCoreAsync):
         self.headers['User-Agent'] = ['Python-Twisted']
         #self.headers['Accept-Encoding'] = [self.accept_encoding]
         self.headers['V'] = [self.version]
+        self._channel_list_lock = None
 
     def _request( self, request, callback, single=False ) :
         global pnconn_pool

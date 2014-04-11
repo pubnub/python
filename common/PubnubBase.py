@@ -5,6 +5,14 @@ import time
 import hashlib
 import uuid
 import sys
+from urllib  import quote
+
+from base64  import urlsafe_b64encode
+from hashlib import sha256
+from urllib  import quote
+from urllib  import urlopen
+
+import hmac
 
 class PubnubBase(object):
     def __init__(
@@ -13,6 +21,7 @@ class PubnubBase(object):
         subscribe_key,
         secret_key = False,
         cipher_key = False,
+        auth_key = None,
         ssl_on = False,
         origin = 'pubsub.pubnub.com',
         UUID = None
@@ -42,6 +51,7 @@ class PubnubBase(object):
         self.secret_key    = secret_key
         self.cipher_key    = cipher_key
         self.ssl           = ssl_on
+        self.auth_key      = auth_key
 
 
         if self.ssl :
@@ -75,6 +85,86 @@ class PubnubBase(object):
         else:
             signature = '0'
         return signature
+
+    def _pam_sign( self, msg ):
+        """Calculate a signature by secret key and message."""
+
+        return urlsafe_b64encode(hmac.new(
+            self.secret_key.encode("utf-8"),
+            msg.encode("utf-8"),
+            sha256
+        ).digest())
+
+    def _pam_auth( self, query , apicode=0, callback=None):
+        """Issue an authenticated request."""
+
+        if 'timestamp' not in query:
+            query['timestamp'] = int(time.time())
+
+        ## Global Grant?
+        if 'auth' in query and not query['auth']:
+            del query['auth']
+
+        if 'channel' in query and not query['channel']:
+            del query['channel']
+
+        params = "&".join([
+            x + "=" + quote(
+                str(query[x]), safe=""
+            ) for x in sorted(query)
+        ])
+        sign_input = "{subkey}\n{pubkey}\n{apitype}\n{params}".format(
+            subkey=self.subscribe_key,
+            pubkey=self.publish_key,
+            apitype="audit" if (apicode) else "grant",
+            params=params
+        )
+
+        signature = self._pam_sign(sign_input)
+
+        '''
+        url = ("https://pubsub.pubnub.com/v1/auth/{apitype}/sub-key/".format(apitype="audit" if (apicode) else "grant") +
+            self.subscribe_key + "?" +
+            params + "&signature=" +
+            quote(signature, safe=""))
+        '''
+
+        return self._request({"urlcomponents": [
+            'v1', 'auth', "audit" if (apicode) else "grant" , 
+            'sub-key',
+            self.subscribe_key
+        ], 'urlparams' : {'auth' : self.auth_key, 'signature' : signature}}, 
+        self._return_wrapped_callback(callback))
+
+    def grant( self, channel, authkey=False, read=True, write=True, ttl=5, callback=None):
+        """Grant Access on a Channel."""
+
+        return self._pam_auth({
+            "channel" : channel,
+            "auth"    : authkey,
+            "r"       : read  and 1 or 0,
+            "w"       : write and 1 or 0,
+            "ttl"     : ttl
+        }, callback=callback)
+
+    def revoke( self, channel, authkey=False, read=False, write=False, ttl=1, callback=None):
+        """Revoke Access on a Channel."""
+
+        return self._pam_auth({
+            "channel" : channel,
+            "auth"    : authkey,
+            "r"       : read  and 1 or 0,
+            "w"       : write and 1 or 0,
+            "ttl"     : ttl
+        }, callback=callback)
+
+    def audit(self, channel=False, authkey=False, callback=None):
+        return self._pam_auth({
+            "channel" : channel,
+            "auth"    : authkey
+        },1, callback=callback)
+            
+
 
     def encrypt(self, message):
         if self.cipher_key:
@@ -147,7 +237,7 @@ class PubnubBase(object):
             channel,
             '0',
             message
-        ]'urlparams' : {'auth' : self.auth_key}}, self._return_wrapped_callback(callback))
+        ], 'urlparams' : {'auth' : self.auth_key}}, self._return_wrapped_callback(callback))
     
     def presence( self, args ) :
         """
@@ -349,7 +439,7 @@ class PubnubBase(object):
 
         """
         ## Capture Callback
-        if args and 'callback' in args :
+        if args and 'callback' in args:
             callback = args['callback']
         else :
             callback = None 
@@ -376,5 +466,5 @@ class PubnubBase(object):
                 ch for ch in list(bit)
             ]) for bit in request["urlcomponents"]])
         if ("urlparams" in request):
-            url = url + '?' + "&".join([ x + "=" + y  for x,y in request["urlparams"].items()])
+            url = url + '?' + "&".join([ x + "=" + str(y)  for x,y in request["urlparams"].items()])
         return url

@@ -43,6 +43,7 @@ class Pubnub(PubnubCoreAsync):
         self.headers['V'] = self.version
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
         self.id = None
+        self._channel_list_lock = None
 
     def _request( self, request, callback, single=False ) :
         url = self.getUrl(request)

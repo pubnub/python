@@ -12,19 +12,43 @@ from threading import current_thread
 latest_sub_callback_lock = threading.RLock()
 latest_sub_callback = {'id' : None, 'callback' : None}
 
+
+
+
 class HTTPClient:
-    def __init__(self, url, callback, id=None):
+    def __init__(self, url, urllib_func=None, callback=None, error=None, id=None):
         self.url = url
         self.id = id
         self.callback = callback
+        self.error = error
         self.stop = False
+        self._urllib_func = urllib_func
 
     def cancel(self):
         self.stop = True
         self.callback = None
+        self.error = None
+
 
     def run(self):
-        data = urllib2.urlopen(self.url, timeout=310).read()
+
+        def _invoke(func, data):
+            if func is not None:
+                func(data)
+
+        if self._urllib_func is None:
+            return
+
+        '''
+        try:
+            resp = urllib2.urlopen(self.url, timeout=320)
+        except urllib2.HTTPError as http_error:
+            resp = http_error
+        '''
+        resp = self._urllib_func(self.url, timeout=320)
+        data = resp[0]
+        code = resp[1]
+
         if self.stop is True:
             return
         if self.callback is None:
@@ -34,13 +58,48 @@ class HTTPClient:
                 if latest_sub_callback['id'] != self.id:
                     return
                 else:
-                    print(data)
                     if latest_sub_callback['callback'] is not None:
                         latest_sub_callback['id'] = 0
-                        latest_sub_callback['callback'](json.loads(data))
+                        try:
+                            data = json.loads(data)
+                        except:
+                            _invoke(latest_sub_callback['error'], {'error' : 'json decoding error'})
+                            return
+                        if code != 200:
+                            _invoke(latest_sub_callback['error'],data)
+                        else:
+                            _invoke(latest_sub_callback['callback'],data)
         else:
-            self.callback(json.loads(data))
+            try:
+                data = json.loads(data)
+            except:
+                _invoke(self.error, {'error' : 'json decoding error'})
+                return
 
+            if code != 200:
+                _invoke(self.error,data)
+            else:
+                _invoke(self.callback,data)
+
+
+def _urllib_request_2(url, timeout=320):
+    try:
+        resp = urllib2.urlopen(url,timeout=timeout)
+    except urllib2.HTTPError as http_error:
+        resp = http_error
+    return (resp.read(),resp.code)
+
+def _urllib_request_3(url, timeout=320):
+    #print(url)
+    try:
+        resp = urllib.request.urlopen(url,timeout=timeout)
+    except urllib.request.HTTPError as http_error:
+        resp = http_error
+    r =   resp.read().decode("utf-8")
+    #print(r)
+    return (r,resp.code)
+
+_urllib_request = None
 
 class Pubnub(PubnubCoreAsync):
     def __init__(
@@ -62,13 +121,15 @@ class Pubnub(PubnubCoreAsync):
             auth_key = auth_key,
             ssl_on = ssl_on,
             origin = origin,
-            uuid = pres_uuid
+            uuid = pres_uuid,
+            _tt_lock=threading.RLock(),
+            _channel_list_lock=threading.RLock()
         )
+        global _urllib_request
         if self.python_version == 2:
-            self._request = self._request2
+            _urllib_request = _urllib_request_2
         else:
-            self._request = self._request3
-        self._channel_list_lock = threading.RLock()
+            _urllib_request = _urllib_request_3
 
     def timeout(self, interval, func):
         def cb():
@@ -77,17 +138,20 @@ class Pubnub(PubnubCoreAsync):
         thread = threading.Thread(target=cb)
         thread.start()
 
-    def _request2_async( self, request, callback, single=False ) :
+
+    def _request_async( self, request, callback=None, error=None, single=False ) :
+        global _urllib_request
         ## Build URL
         url = self.getUrl(request)
         if single is True:
             id = time.time()
-            client = HTTPClient(url, None, id)
+            client = HTTPClient(url=url, urllib_func=_urllib_request, callback=None, error=None, id=id)
             with latest_sub_callback_lock:
                 latest_sub_callback['id'] = id
                 latest_sub_callback['callback'] = callback
+                latest_sub_callback['error'] = error
         else:
-            client = HTTPClient(url, callback)
+            client = HTTPClient(url=url, urllib_func=_urllib_request, callback=callback, error=error)
 
         thread = threading.Thread(target=client.run)
         thread.start()
@@ -96,31 +160,30 @@ class Pubnub(PubnubCoreAsync):
         return abort
 
 
-    def _request2_sync( self, request) :
-
+    def _request_sync( self, request) :
+        global _urllib_request
         ## Build URL
         url = self.getUrl(request)
         ## Send Request Expecting JSONP Response
+        response = _urllib_request(url, timeout=320)
         try:
-            try: usock = urllib2.urlopen( url, None, 310 )
-            except TypeError: usock = urllib2.urlopen( url, None )
-            response = usock.read()
-            usock.close()
-            resp_json = json.loads(response)
-        except Exception as e:
-            print e
-            return None
-            
+            resp_json = json.loads(response[0])
+        except:
+            return [0,"JSON Error"]
+
+        if response[1] != 200 and 'status' in resp_json:
+            return {'message' : resp_json['message'], 'payload' : resp_json['payload']}
+
         return resp_json
 
 
-    def _request2(self, request, callback=None, single=False):
+    def _request(self, request, callback=None, error=None, single=False):
         if callback is None:
-            return self._request2_sync(request)
+            return self._request_sync(request)
         else:
-            self._request2_async(request, callback, single=single)
+            self._request_async(request, callback, error, single=single)
 
-
+'''
 
     def _request3_sync( self, request) :
         ## Build URL
@@ -142,3 +205,4 @@ class Pubnub(PubnubCoreAsync):
             return self._request3_sync(request,single=single)
         else:
             self._request3_async(request, callback, single=single)
+            '''

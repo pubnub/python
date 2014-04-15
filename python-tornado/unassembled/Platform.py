@@ -43,9 +43,13 @@ class Pubnub(PubnubCoreAsync):
         self.headers['V'] = self.version
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
         self.id = None
-        self._channel_list_lock = None
+        
+    def _request( self, request, callback=None, error=None, single=False ) :
 
-    def _request( self, request, callback, single=False ) :
+        def _invoke(func, data):
+            if func is not None:
+                func(data)
+
         url = self.getUrl(request)
         request = tornado.httpclient.HTTPRequest( url, 'GET', self.headers, connect_timeout=10, request_timeout=310 )
         if single is True:
@@ -56,18 +60,30 @@ class Pubnub(PubnubCoreAsync):
             if single is True:
                 if not id == self.id:
                     return None 
-
+                    
             body = response._get_body()
+
             if body is None:
                 return
-
+            #print(body)
             def handle_exc(*args):
                 return True
             if response.error is not None:
                 with ExceptionStackContext(handle_exc):
                     response.rethrow()
-            elif callback:
-                callback(eval(response._get_body()))
+                    return
+            try:
+                data = json.loads(body)
+            except TypeError as e:
+                try:
+                    data = json.loads(body.decode("utf-8"))
+                except:
+                    _invoke(error, {'error' : 'json decode error'})
+
+            if 'error' in data and 'status' in data and 'status' != 200:
+                _invoke(error, data)
+            else:
+                _invoke(callback, data)
 
         self.http.fetch(
             request=request,

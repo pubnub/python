@@ -5,12 +5,13 @@ import time
 import hashlib
 import uuid
 import sys
-from urllib  import quote
+
+try: from urllib.parse  import quote
+except: from urllib2 import quote
 
 from base64  import urlsafe_b64encode
 from hashlib import sha256
-from urllib  import quote
-from urllib  import urlopen
+
 
 import hmac
 
@@ -62,12 +63,11 @@ class PubnubBase(object):
         self.uuid = UUID or str(uuid.uuid4())
 
         if type(sys.version_info) is tuple:
-            self.python_version = 2
-            self.pc             = PubnubCrypto2()
+            self.python_version  = 2
+            self.pc              = PubnubCrypto2()
         else:
             self.python_version = 3
             self.pc             = PubnubCrypto3()
-
         
         if not isinstance(self.uuid, str):
             raise AttributeError("pres_uuid must be a string")
@@ -186,7 +186,10 @@ class PubnubBase(object):
                 if (callback != None): callback({'message' : response['message'], 'payload' : response['payload']})
             else:
                 if (callback != None):callback(response)
-        if (callback != None): return _new_format_callback
+        if (callback != None):
+            return _new_format_callback
+        else:
+            return None
 
 
     def publish( self, args ) :
@@ -221,23 +224,28 @@ class PubnubBase(object):
         if 'callback' in args :
             callback = args['callback']
         else :
-            callback = None 
+            callback = None
 
-        #message = json.dumps(args['message'], separators=(',',':'))
+        if 'error' in args :
+            error = args['error']
+        else :
+            error = None
+
         message = self.encrypt(args['message'])
 
-        signature = self.sign(channel, message)
+        #signature = self.sign(channel, message)
 
         ## Send Message
         return self._request({"urlcomponents": [
             'publish',
             self.publish_key,
             self.subscribe_key,
-            signature,
+            '0',
             channel,
             '0',
             message
-        ], 'urlparams' : {'auth' : self.auth_key}}, self._return_wrapped_callback(callback))
+        ], 'urlparams' : {'auth' : self.auth_key}}, callback=self._return_wrapped_callback(callback), 
+        error=self._return_wrapped_callback(error))
     
     def presence( self, args ) :
         """
@@ -301,12 +309,10 @@ class PubnubBase(object):
         """
         channel = str(args['channel'])
 
-        ## Capture Callback
-        if 'callback' in args :
-            callback = args['callback']
-        else :
-            callback = None
-        
+
+        callback    = args['callback']  if 'callback'  in args else None
+        error       = args['error']     if 'error'     in args else None
+
         ## Fail if bad input.
         if not channel :
             raise Exception('Missing Channel')
@@ -317,58 +323,15 @@ class PubnubBase(object):
             'v2','presence',
             'sub_key', self.subscribe_key,
             'channel', channel
-        ]}, callback);
-        
-        
-    def history( self, args ) :
+        ], 'urlparams' : {'auth' : self.auth_key}}, callback=self._return_wrapped_callback(callback), 
+        error=self._return_wrapped_callback(error))
+
+    def history(self, args) :
         """
         #**
         #* History
         #*
         #* Load history from a channel.
-        #*
-        #* @param array args with 'channel' and 'limit'.
-        #* @return mixed false on fail, array on success.
-        #*
-
-        ## History Example
-        history = pubnub.history({
-            'channel' : 'hello_world',
-            'limit'   : 1
-        })
-        print(history)
-
-        """
-        ## Capture User Input
-        limit   = 'limit' in args and int(args['limit']) or 10
-        channel = str(args['channel'])
-
-        ## Fail if bad input.
-        if not channel :
-            raise Exception('Missing Channel')
-            return False
-
-        ## Capture Callback
-        if 'callback' in args :
-            callback = args['callback']
-        else :
-            callback = None
-
-        ## Get History
-        return self._request({ "urlcomponents" : [
-            'history',
-            self.subscribe_key,
-            channel,
-            '0',
-            str(limit)
-        ] }, callback);
-
-    def detailedHistory(self, args) :
-        """
-        #**
-        #* Detailed History
-        #*
-        #* Load Detailed history from a channel.
         #*
         #* @param array args with 'channel', optional: 'start', 'end', 'reverse', 'count'
         #* @return mixed false on fail, array on success.
@@ -385,33 +348,20 @@ class PubnubBase(object):
         ## Capture User Input
         channel = str(args['channel'])
 
+        callback            = args['callback']      if 'callback'  in args else None
+        error               = args['error']         if 'error'     in args else None
+
         params = dict() 
-        count = 100    
-        
-        if 'count' in args:
-            count = int(args['count'])
 
-        params['count'] = str(count)    
-        
-        if 'reverse' in args:
-            params['reverse'] = str(args['reverse']).lower()
-
-        if 'start' in args:
-            params['start'] = str(args['start'])
-
-        if 'end' in args:
-            params['end'] = str(args['end'])
+        params['count']     = str(args['count'])           if 'count'   in args else 100
+        params['reverse']   = str(args['reverse']).lower() if 'reverse' in args else 'false'
+        params['start']     = str(args['start'])           if 'start'   in args else None
+        params['end']       = str(args['end'])             if 'end'     in args else None
 
         ## Fail if bad input.
         if not channel :
             raise Exception('Missing Channel')
             return False
-
-        ## Capture Callback
-        if 'callback' in args :
-            callback = args['callback']
-        else :
-            callback = None 
 
         ## Get History
         return self._request({ 'urlcomponents' : [
@@ -421,7 +371,8 @@ class PubnubBase(object):
             self.subscribe_key,
             'channel',
             channel,
-        ],'urlparams' : params }, callback=callback);
+        ], 'urlparams' : {'auth' : self.auth_key}}, callback=self._return_wrapped_callback(callback), 
+        error=self._return_wrapped_callback(error))
 
     def time(self, args = None) :
         """
@@ -439,10 +390,9 @@ class PubnubBase(object):
 
         """
         ## Capture Callback
-        if args and 'callback' in args:
-            callback = args['callback']
-        else :
-            callback = None 
+
+        callback = callback if args and 'callback' in args else None
+
         time = self._request({'urlcomponents' : [
             'time',
             '0'
@@ -466,5 +416,6 @@ class PubnubBase(object):
                 ch for ch in list(bit)
             ]) for bit in request["urlcomponents"]])
         if ("urlparams" in request):
-            url = url + '?' + "&".join([ x + "=" + str(y)  for x,y in request["urlparams"].items()])
+            url = url + '?' + "&".join([ x + "=" + str(y)  for x,y in request["urlparams"].items() if y is not None])
+        #print(url)
         return url

@@ -10,6 +10,9 @@ from twisted.internet.task import LoopingCall
 import twisted
 from hashlib import sha256
 import time
+import json
+from twisted.python.compat import (
+    _PY3, unicode, intToBytes, networkString, nativeString)
 
 pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
 pnconn_pool.maxPersistentPerHost    = 100000
@@ -27,8 +30,9 @@ class Pubnub(PubnubCoreAsync):
         self,
         publish_key,
         subscribe_key,
-        secret_key = False,
-        cipher_key = False,
+        secret_key=False,
+        cipher_key=False,
+        auth_key=None,
         ssl_on = False,
         origin = 'pubsub.pubnub.com'
     ) :
@@ -37,6 +41,7 @@ class Pubnub(PubnubCoreAsync):
             subscribe_key=subscribe_key,
             secret_key=secret_key,
             cipher_key=cipher_key,
+            auth_key=auth_key,
             ssl_on=ssl_on,
             origin=origin,
         )        
@@ -44,10 +49,13 @@ class Pubnub(PubnubCoreAsync):
         self.headers['User-Agent'] = ['Python-Twisted']
         #self.headers['Accept-Encoding'] = [self.accept_encoding]
         self.headers['V'] = [self.version]
-        self._channel_list_lock = None
 
-    def _request( self, request, callback, single=False ) :
+    def _request( self, request, callback=None, error=None, single=False ) :
         global pnconn_pool
+
+        def _invoke(func, data):
+            if func is not None:
+                func(data)
 
         ## Build URL
         '''
@@ -65,7 +73,12 @@ class Pubnub(PubnubCoreAsync):
             pool = self.ssl and None or pnconn_pool
         )), [('gzip', GzipDecoder)])
 
-        request     = agent.request( 'GET', url, Headers(self.headers), None )
+        try:
+            request     = agent.request( 'GET', url, Headers(self.headers), None )
+        except TypeError as te:
+            print(url.encode())
+            request     = agent.request( 'GET', url.encode(), Headers(self.headers), None )
+
 
         if single is True:
             id = time.time()
@@ -73,35 +86,65 @@ class Pubnub(PubnubCoreAsync):
 
         def received(response):
             finished = Deferred()
-            response.deliverBody(PubNubResponse(finished))
+            if response.code == 403:
+                response.deliverBody(PubNub403Response(finished))
+            else:
+                response.deliverBody(PubNubResponse(finished))
+
+            return finished
+
+        def error_handler(response):
+            finished = Deferred()
+            if response.code == 403:
+                response.deliverBody(PubNub403Response(finished))
+            else:
+                response.deliverBody(PubNubResponse(finished))
+
             return finished
 
         def complete(data):
             if single is True:
-                if not id == self.id:
+                if id != self.id:
                     return None
             try:
-                callback(eval(data))
+                data = json.loads(data)
             except Exception as e:
-                pass
-                #need error handling here
+                try:
+                    data = json.loads(data.decode("utf-8"))
+                except:
+                    _invoke(error, {'error' : 'json decode error'})
+
+            if 'error' in data and 'status' in data and 'status' != 200:
+                _invoke(error, data)
+            else:
+                _invoke(callback, data)
 
         def abort():
             pass
 
         request.addCallback(received)
-        request.addBoth(complete)
+        request.addCallback(complete)
+        request.addErrback(error_handler)
 
         return abort
 
 class WebClientContextFactory(ClientContextFactory):
     def getContext(self, hostname, port):
         return ClientContextFactory.getContext(self)
+
+class PubNub403Response(Protocol):
+    def __init__( self, finished ):
+        self.finished = finished
+
+    def dataReceived( self, bytes ):
+        #print '403 resp ', bytes
+        self.finished.callback(bytes)
 	   
 class PubNubResponse(Protocol):
     def __init__( self, finished ):
         self.finished = finished
 
     def dataReceived( self, bytes ):
-            self.finished.callback(bytes)
+        #print bytes
+        self.finished.callback(bytes)
 

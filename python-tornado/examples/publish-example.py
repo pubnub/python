@@ -10,54 +10,59 @@
 ## -----------------------------------
 
 import sys
-import tornado
+from twisted.internet import reactor
 sys.path.append('../')
-sys.path.append('../..')
-sys.path.append('../../common')
+sys.path.append('../../')
 from Pubnub import Pubnub
 
 publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
 secret_key    = len(sys.argv) > 3 and sys.argv[3] or 'demo'
-cipher_key    = len(sys.argv) > 4 and sys.argv[4] or 'demo' ##(Cipher key is Optional)
+cipher_key    = len(sys.argv) > 4 and sys.argv[4] or ''     ##(Cipher key is Optional)
 ssl_on        = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 
 ## -----------------------------------------------------------------------
 ## Initiate Pubnub State
 ## -----------------------------------------------------------------------
-pubnub = Pubnub( publish_key=publish_key, subscribe_key=subscribe_key, secret_key=secret_key,cipher_key=cipher_key, ssl_on=ssl_on )
-#pubnub = Pubnub( publish_key, subscribe_key, secret_key, ssl_on )
+pubnub = Pubnub( publish_key, subscribe_key, secret_key, cipher_key, ssl_on )
 crazy  = 'hello_world'
 
+## -----------------------------------------------------------------------
+## Publish Example
+## -----------------------------------------------------------------------
 def publish_complete(info):
     print(info)
+
+def publish_error(info):
+    print('ERROR : ' +  str(info))
 
 ## Publish string
 pubnub.publish({
     'channel' : crazy,
     'message' : 'Hello World!',
-    'callback' : publish_complete
+    'callback' : publish_complete,
+    'error' : publish_error
 })
 
 ## Publish list
 li = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+
 pubnub.publish({
     'channel' : crazy,
     'message' : li,
-    'callback' : publish_complete
+    'callback' : publish_complete,
+    'error' : publish_error
 })
 
 def done_cb(info):
     publish_complete(info)
-    tornado.ioloop.IOLoop.instance().stop()
 
-## Publish Dictionary Object
 pubnub.publish({
     'channel' : crazy,
     'message' : { 'some_key' : 'some_val' },
-    'callback' : done_cb
+    'callback' : done_cb,
+    'error' : publish_error
 })
-## -----------------------------------------------------------------------
-## IO Event Loop
-## -----------------------------------------------------------------------
-tornado.ioloop.IOLoop.instance().start()
+
+
+pubnub.start()

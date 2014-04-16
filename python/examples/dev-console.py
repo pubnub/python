@@ -78,10 +78,16 @@ def get_input(message, t=None):
     while True:
         try:
             command = raw_input(message)
+            if t is not None and t == bool:
+                if command in ["True", "true", "1", 1, "y", "Y", "yes", "Yes", "YES"]:
+                    return True
+                else:
+                    return False
             if t is not None:
                 command = t(command)
             else:
                 command = eval("'" + command + "'")
+
             return command
         except ValueError:
             print_error("Invalid input : " + command)
@@ -120,19 +126,65 @@ def _subscribe_command_handler():
     })
 
 def _grant_command_handler():
-    pass
+    def _callback(r):
+        print_ok(r)
+    def _error(r):
+        print_error(r)
+    channel = get_input("[GRANT] Enter Channel Name ", str)
+    auth_key = get_input("[GRANT] Enter Auth Key ", str)
+    ttl = get_input("[GRANT] Enter ttl ", int)
+    read = get_input("[GRANT] Read ? ", bool)
+    write = get_input("[GRANT] Write ? ", bool)
+    pubnub.grant(channel, auth_key,read,write,ttl, _callback)
 
 def _revoke_command_handler():
-    pass
+    def _callback(r):
+        print_ok(r)
+    def _error(r):
+        print_error(r)
+    channel = get_input("[REVOKE] Enter Channel Name ", str)
+    auth_key = get_input("[REVOKE] Enter Auth Key ", str)
+    ttl = get_input("[REVOKE] Enter ttl ", int)
+
+    pubnub.revoke(channel, auth_key, ttl, _callback)
 
 def _audit_command_handler():
-    pass
+    def _callback(r):
+        print_ok(r)
+    def _error(r):
+        print_error(r)
+    channel = get_input("[AUDIT] Enter Channel Name ", str)
+    auth_key = get_input("[AUDIT] Enter Auth Key ", str)
+    pubnub.audit(channel, auth_key, _callback)
 
 def _history_command_handler():
-    pass
+    def _callback(r):
+        print_ok(r)
+    def _error(r):
+        print_error(r)
+    channel = get_input("[HISTORY] Enter Channel Name ", str)
+    count = get_input("[HISTORY] Enter Count ", int)
+
+    pubnub.history({
+        'channel' : channel,
+        'count'   : count,
+        'callback' : _callback,
+        'error'   : _error
+    })
+
 
 def _here_now_command_handler():
-    pass
+    def _callback(r):
+        print_ok(r)
+    def _error(r):
+        print_error(r)
+    channel = get_input("[HERE NOW] Enter Channel Name ", str)
+
+    pubnub.here_now({
+        'channel' : channel,
+        'callback' : _callback,
+        'error'   : _error
+    })
 
 
 
@@ -150,13 +202,12 @@ def kill_all_threads():
 commands = []
 commands.append({"command" : "publish", "handler" : _publish_command_handler})
 commands.append({"command" : "subscribe", "handler" : _subscribe_command_handler})
-'''
 commands.append({"command" : "here_now", "handler" : _here_now_command_handler})
 commands.append({"command" : "history", "handler" : _history_command_handler})
 commands.append({"command" : "grant", "handler" : _grant_command_handler})
 commands.append({"command" : "revoke", "handler" : _revoke_command_handler})
 commands.append({"command" : "audit", "handler" : _audit_command_handler})
-'''
+
 # last command is quit. add new commands before this line
 commands.append({"command" : "QUIT"})
 

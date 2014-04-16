@@ -291,7 +291,7 @@ class PubnubBase(object):
             params=params
         )
 
-        signature = self._pam_sign(sign_input)
+        query['signature'] = self._pam_sign(sign_input)
 
         '''
         url = ("https://pubsub.pubnub.com/v1/auth/{apitype}/sub-key/".format(apitype="audit" if (apicode) else "grant") +
@@ -304,7 +304,7 @@ class PubnubBase(object):
             'v1', 'auth', "audit" if (apicode) else "grant" , 
             'sub-key',
             self.subscribe_key
-        ], 'urlparams' : {'auth' : self.auth_key, 'signature' : signature}}, 
+        ], 'urlparams' : query}, 
         self._return_wrapped_callback(callback))
 
     def grant( self, channel, authkey=False, read=True, write=True, ttl=5, callback=None):

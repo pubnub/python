@@ -237,8 +237,12 @@ class PubnubBase(object):
             self.python_version  = 2
             self.pc              = PubnubCrypto2()
         else:
-            self.python_version = 3
-            self.pc             = PubnubCrypto3()
+            if sys.version_info.major == 2:
+                self.python_version  = 2
+                self.pc              = PubnubCrypto2()
+            else:
+                self.python_version = 3
+                self.pc             = PubnubCrypto3()
         
         if not isinstance(self.uuid, str):
             raise AttributeError("pres_uuid must be a string")
@@ -318,14 +322,14 @@ class PubnubBase(object):
             "ttl"     : ttl
         }, callback=callback)
 
-    def revoke( self, channel, authkey=False, read=False, write=False, ttl=1, callback=None):
+    def revoke( self, channel, authkey=False, ttl=1, callback=None):
         """Revoke Access on a Channel."""
 
         return self._pam_auth({
             "channel" : channel,
             "auth"    : authkey,
-            "r"       : read  and 1 or 0,
-            "w"       : write and 1 or 0,
+            "r"       : 0,
+            "w"       : 0,
             "ttl"     : ttl
         }, callback=callback)
 

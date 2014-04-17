@@ -66,8 +66,12 @@ class PubnubBase(object):
             self.python_version  = 2
             self.pc              = PubnubCrypto2()
         else:
-            self.python_version = 3
-            self.pc             = PubnubCrypto3()
+            if sys.version_info.major == 2:
+                self.python_version  = 2
+                self.pc              = PubnubCrypto2()
+            else:
+                self.python_version = 3
+                self.pc             = PubnubCrypto3()
         
         if not isinstance(self.uuid, str):
             raise AttributeError("pres_uuid must be a string")

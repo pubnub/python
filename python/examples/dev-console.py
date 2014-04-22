@@ -110,6 +110,12 @@ def get_input(message, t=None):
                 command = input(message)
             except KeyboardInterrupt:
                 return None
+
+            command = command.strip()
+
+            if command is None or len(command) == 0:
+                raise ValueError
+
             if t is not None and t == bool:
                 if command in ["True", "true", "1", 1, "y", "Y", "yes", "Yes", "YES"]:
                     return True

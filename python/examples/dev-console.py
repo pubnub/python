@@ -53,7 +53,7 @@ parser.add_option("--uuid",
 
 (options, args) = parser.parse_args()
 
-print options
+print(options)
 
 pubnub = Pubnub(options.publish_key, options.subscribe_key, options.secret_key, options.cipher_key, options.auth_key, options.ssl, options.origin, options.uuid)
 
@@ -88,7 +88,10 @@ def print_error(msg, channel=None):
 def get_input(message, t=None):
     while True:
         try:
-            command = raw_input(message)
+            try:
+                command = raw_input(message)
+            except NameError:
+                command = input(message)
             if t is not None and t == bool:
                 if command in ["True", "true", "1", 1, "y", "Y", "yes", "Yes", "YES"]:
                     return True
@@ -218,8 +221,11 @@ def kill_all_threads():
         if thread.isAlive():
             try:
                 thread._Thread__stop()
-            except:
-                print(str(thread.getName()) + ' could not be terminated')
+            except Exception as e:
+                pass
+                #print(e)
+                #thread.exit()
+                #print(str(thread.getName()) + ' could not be terminated')
 
 
 commands = []

@@ -26,6 +26,7 @@ class Pubnub(PubnubCoreAsync):
         subscribe_key,
         secret_key = False,
         cipher_key = False,
+        auth_key = False,
         ssl_on = False,
         origin = 'pubsub.pubnub.com'
     ) :
@@ -34,6 +35,7 @@ class Pubnub(PubnubCoreAsync):
             subscribe_key=subscribe_key,
             secret_key=secret_key,
             cipher_key=cipher_key,
+            auth_key=auth_key,
             ssl_on=ssl_on,
             origin=origin,
         )        

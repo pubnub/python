@@ -592,7 +592,6 @@ class PubnubBase(object):
             ]) for bit in request["urlcomponents"]])
         if ("urlparams" in request):
             url = url + '?' + "&".join([ x + "=" + str(y)  for x,y in request["urlparams"].items() if y is not None])
-        #print(url)
         return url
 
 
@@ -682,6 +681,15 @@ class PubnubCoreAsync(PubnubBase):
                 channel += ch
         return channel
 
+    def get_channel_array(self):
+        channels = self.subscriptions
+        channel = []
+        with self._channel_list_lock:
+            for ch in channels:
+                if not channels[ch]['subscribed']:
+                    continue
+                channel.append(ch)
+        return channel
 
     def each(l, func):
         if func is None:
@@ -790,7 +798,7 @@ class PubnubCoreAsync(PubnubBase):
 
 
         ## New Channel?
-        if not channel in self.subscriptions:
+        if not channel in self.subscriptions or self.subscriptions[channel]['subscribed'] is False:
             with self._channel_list_lock:
                 self.subscriptions[channel] = {
                     'name'          : channel,
@@ -819,7 +827,6 @@ class PubnubCoreAsync(PubnubBase):
 
             def sub_callback(response):
                 ## ERROR ?
-                #print response
                 if not response or ('message' in response and response['message'] == 'Forbidden'):
                     _invoke_error(response['payload']['channels'], response['message'])
                     _connect()
@@ -828,9 +835,7 @@ class PubnubCoreAsync(PubnubBase):
                 _invoke_connect()
 
                 with self._tt_lock:
-                    #print 'A tt : ', self.timetoken , ' last tt : ' , self.last_timetoken
                     self.timetoken = self.last_timetoken if self.timetoken == 0 and self.last_timetoken != 0 else response[1]
-                    #print 'B tt : ', self.timetoken , ' last tt : ' , self.last_timetoken
                     if len(response) > 2:
                         channel_list = response[2].split(',')
                         response_list = response[0]
@@ -845,12 +850,13 @@ class PubnubCoreAsync(PubnubBase):
                             if chobj:
                                 _invoke(chobj['callback'], self.decrypt(r))
 
-                    #with self._tt_lock:
-                    #    self.timetoken = self.last_timetoken if self.timetoken == 0 and self.last_timetoken != 0 else response[1]
                     _connect()
 
 
             channel_list = self.get_channel_list(self.subscriptions)
+            if len(channel_list) <= 0:
+                return
+
             ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
             try:
                 self.SUB_RECEIVER = self._request( { "urlcomponents" : [
@@ -866,7 +872,6 @@ class PubnubCoreAsync(PubnubBase):
                 return
 
         self._connect = _connect
-
 
         ## BEGIN SUBSCRIPTION (LISTEN FOR MESSAGES)
         _connect()

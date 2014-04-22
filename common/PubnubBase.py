@@ -421,5 +421,4 @@ class PubnubBase(object):
             ]) for bit in request["urlcomponents"]])
         if ("urlparams" in request):
             url = url + '?' + "&".join([ x + "=" + str(y)  for x,y in request["urlparams"].items() if y is not None])
-        #print(url)
         return url

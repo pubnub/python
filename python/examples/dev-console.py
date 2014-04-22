@@ -47,11 +47,15 @@ parser.add_option("--ssl-on",
                   action="store_false", dest="ssl", default=False,
                   help="SSL")
 
+parser.add_option("--uuid",
+                  dest="uuid", default=None,
+                  help="UUID")
+
 (options, args) = parser.parse_args()
 
 print options
 
-pubnub = Pubnub(options.publish_key, options.subscribe_key, options.secret_key, options.cipher_key, options.auth_key, options.ssl)
+pubnub = Pubnub(options.publish_key, options.subscribe_key, options.secret_key, options.cipher_key, options.auth_key, options.ssl, options.origin, options.uuid)
 
 
 class color:
@@ -67,11 +71,19 @@ class color:
    END = '\033[0m'
 
 
-def print_ok(msg):
-    print(color.GREEN + str(msg) + color.END)
+def print_ok(msg, channel=None):
+    chstr = " [Channel : " + channel + "] " if channel is not None else "" 
+    try:
+        print(color.GREEN + chstr + str(msg) + color.END)
+    except:
+        print(msg)
 
-def print_error(msg):
-    print(color.RED + color.BOLD +  str(msg) + color.END)
+def print_error(msg, channel=None):
+    chstr = " [Channel : " + channel + "] " if channel is not None else "" 
+    try:
+        print(color.RED + color.BOLD +  chstr + str(msg) + color.END)
+    except:
+        print(msg)
 
 def get_input(message, t=None):
     while True:
@@ -115,14 +127,26 @@ def _publish_command_handler():
 def _subscribe_command_handler():
     channel = get_input("[SUBSCRIBE] Enter Channel Name ", str)
     def _callback(r):
-        print_ok(r)
+        print_ok(r, channel)
     def _error(r):
-        print_error(r)
+        print_error(r, channel)
     pubnub.subscribe({
         'channel' : channel,
         'callback' : _callback,
         'error'   : _error
     })
+
+def _unsubscribe_command_handler():
+    channel = get_input("[UNSUBSCRIBE] Enter Channel Name ", str)
+    def _callback(r):
+        print_ok(r)
+    def _error(r):
+        print_error(r)
+    pubnub.unsubscribe({
+        'channel' : channel,
+        'callback' : _callback,
+        'error'   : _error
+    })    
 
 def _grant_command_handler():
     def _callback(r):
@@ -201,6 +225,7 @@ def kill_all_threads():
 commands = []
 commands.append({"command" : "publish", "handler" : _publish_command_handler})
 commands.append({"command" : "subscribe", "handler" : _subscribe_command_handler})
+commands.append({"command" : "unsubscribe", "handler" : _unsubscribe_command_handler})
 commands.append({"command" : "here_now", "handler" : _here_now_command_handler})
 commands.append({"command" : "history", "handler" : _history_command_handler})
 commands.append({"command" : "grant", "handler" : _grant_command_handler})
@@ -212,14 +237,20 @@ commands.append({"command" : "QUIT"})
 
 def get_help():
     help = ""
+    help += "Channels currently subscribed to : "
+    help += str(pubnub.get_channel_array())
+    help += "\n"
     for i,v in enumerate(commands):
         help += "Enter " + str(i) + " for " + v['command'] + "\n"
     return help
 
             
 while True:
-    command = get_input(color.BLUE + get_help(), int)
-
+    try:
+        command = get_input(color.BLUE + get_help(), int)
+    except KeyboardInterrupt:
+        kill_all_threads()
+        break
     if command == len(commands) - 1:
         kill_all_threads()
         break

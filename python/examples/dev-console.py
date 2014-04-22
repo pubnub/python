@@ -70,20 +70,36 @@ class color:
    UNDERLINE = '\033[4m'
    END = '\033[0m'
 
+from datetime import datetime
 
 def print_ok(msg, channel=None):
-    chstr = " [Channel : " + channel + "] " if channel is not None else "" 
+    chstr = color.PURPLE + "[" + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "] " + color.END
+    chstr += color.CYAN + "[Channel : " + channel + "] " if channel is not None else "" + color.END
     try:
-        print(color.GREEN + chstr + str(msg) + color.END)
-    except:
+        print(chstr + color.GREEN +  str(msg) + color.END)
+    except Exception as e:
         print(msg)
 
 def print_error(msg, channel=None):
-    chstr = " [Channel : " + channel + "] " if channel is not None else "" 
+    chstr = color.PURPLE + "[" + datetime.now().strftime('%Y-%m-%d %H:%M:%S') + "] " + color.END
+    chstr += color.CYAN + "[Channel : " + channel + "] " if channel is not None else "" + color.END
     try:
-        print(color.RED + color.BOLD +  chstr + str(msg) + color.END)
+        print( chstr + color.RED + color.BOLD +str(msg) + color.END)
     except:
         print(msg)
+
+import threading
+
+def kill_all_threads():
+    for thread in threading.enumerate():
+        if thread.isAlive():
+            try:
+                thread._Thread__stop()
+            except Exception as e:
+                pass
+                #print(e)
+                #thread.exit()
+                #print(str(thread.getName()) + ' could not be terminated')
 
 def get_input(message, t=None):
     while True:
@@ -92,6 +108,8 @@ def get_input(message, t=None):
                 command = raw_input(message)
             except NameError:
                 command = input(message)
+            except KeyboardInterrupt:
+                return None
             if t is not None and t == bool:
                 if command in ["True", "true", "1", 1, "y", "Y", "yes", "Yes", "YES"]:
                     return True
@@ -111,9 +129,11 @@ def get_input(message, t=None):
 def _publish_command_handler():
 
     channel = get_input("[PUBLISH] Enter Channel Name ", str)
+    if channel is None:
+        return
     while True:
-        message = get_input("[PUBLISH] Enter Message ( QUIT for exit from publish mode ) ")
-        if message == 'QUIT' or message == 'quit':
+        message = get_input("[PUBLISH] Enter Message ( QUIT or CTRL-C for exit from publish mode ) ")
+        if message == 'QUIT' or message == 'quit' or message == None:
             return  
         def _callback(r):
             print_ok(r)
@@ -214,19 +234,6 @@ def _here_now_command_handler():
 
 
 
-import threading
-
-def kill_all_threads():
-    for thread in threading.enumerate():
-        if thread.isAlive():
-            try:
-                thread._Thread__stop()
-            except Exception as e:
-                pass
-                #print(e)
-                #thread.exit()
-                #print(str(thread.getName()) + ' could not be terminated')
-
 
 commands = []
 commands.append({"command" : "publish", "handler" : _publish_command_handler})
@@ -252,12 +259,8 @@ def get_help():
 
             
 while True:
-    try:
-        command = get_input(color.BLUE + get_help(), int)
-    except KeyboardInterrupt:
-        kill_all_threads()
-        break
-    if command == len(commands) - 1:
+    command = get_input(color.BLUE + get_help(), int)
+    if command == len(commands) - 1 or command is None:
         kill_all_threads()
         break
     if command >= len(commands):

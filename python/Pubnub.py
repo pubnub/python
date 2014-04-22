@@ -666,6 +666,7 @@ class PubnubCoreAsync(PubnubBase):
         self._connect                   = None
         self._tt_lock                   = _tt_lock
         self._channel_list_lock         = _channel_list_lock
+        self._connect                   = lambda: None
 
     def get_channel_list(self, channels):
         channel = ''

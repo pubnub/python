@@ -10,9 +10,7 @@
 ## -----------------------------------
 
 import sys
-sys.path.append('..')
-sys.path.append('../../common')
-from Pubnub import Pubnub
+from Pubnub import PubnubTornado as Pubnub
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'

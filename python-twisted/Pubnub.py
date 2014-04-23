@@ -868,9 +868,8 @@ from twisted.python.compat import (
 
 pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
 pnconn_pool.maxPersistentPerHost = 100000
-pnconn_pool.cachedConnectionTimeout = 310
+pnconn_pool.cachedConnectionTimeout = 15
 pnconn_pool.retryAutomatically = True
-
 
 class Pubnub(PubnubCoreAsync):
 
@@ -937,11 +936,11 @@ class Pubnub(PubnubCoreAsync):
 
         def received(response):
             if not isinstance(response, twisted.web._newclient.Response):
-                _invoke(error, {"message": "Not Found"})
+                _invoke(error, {"message" : "Not Found"})
                 return
 
             finished = Deferred()
-            if response.code in [401, 403]:
+            if response.code in [401,403]:
                 response.deliverBody(PubNubPamResponse(finished))
             else:
                 response.deliverBody(PubNubResponse(finished))

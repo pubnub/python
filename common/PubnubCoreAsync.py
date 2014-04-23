@@ -210,6 +210,19 @@ class PubnubCoreAsync(PubnubBase):
 
             self._reset_offline()
 
+            def error_callback(response):
+                ## ERROR ?
+                if not response or \
+                    ('message' in response and
+                        response['message'] == 'Forbidden'):
+                            _invoke_error(response['payload'][
+                                'channels'], response['message'])
+                            _connect()
+                            return
+                if 'message' in response:
+                    _invoke_error(err=response['message'])
+   
+
             def sub_callback(response):
                 ## ERROR ?
                 if not response or \
@@ -257,7 +270,7 @@ class PubnubCoreAsync(PubnubBase):
                 str(self.timetoken)
             ], "urlparams": {"uuid": self.uuid, "auth": self.auth_key}},
                 sub_callback,
-                sub_callback,
+                error_callback,
                 single=True)
             '''
             except Exception as e:

@@ -760,6 +760,19 @@ class PubnubCoreAsync(PubnubBase):
 
             self._reset_offline()
 
+            def error_callback(response):
+                ## ERROR ?
+                if not response or \
+                    ('message' in response and
+                        response['message'] == 'Forbidden'):
+                            _invoke_error(response['payload'][
+                                'channels'], response['message'])
+                            _connect()
+                            return
+                if 'message' in response:
+                    _invoke_error(err=response['message'])
+   
+
             def sub_callback(response):
                 ## ERROR ?
                 if not response or \
@@ -807,7 +820,7 @@ class PubnubCoreAsync(PubnubBase):
                 str(self.timetoken)
             ], "urlparams": {"uuid": self.uuid, "auth": self.auth_key}},
                 sub_callback,
-                sub_callback,
+                error_callback,
                 single=True)
             '''
             except Exception as e:
@@ -847,7 +860,7 @@ class PubnubCoreAsync(PubnubBase):
 
 try:
     import urllib.request
-except:
+except ImportError:
     import urllib2
 
 import threading
@@ -905,20 +918,24 @@ class HTTPClient:
                 else:
                     if latest_sub_callback['callback'] is not None:
                         latest_sub_callback['id'] = 0
+                        print data
                         try:
                             data = json.loads(data)
-                        except:
+                        except ValueError as e:
                             _invoke(latest_sub_callback['error'],
                                     {'error': 'json decoding error'})
                             return
+                        print code
                         if code != 200:
+                            print 'ERROR'
                             _invoke(latest_sub_callback['error'], data)
                         else:
+                            print 'CALLBACK'
                             _invoke(latest_sub_callback['callback'], data)
         else:
             try:
                 data = json.loads(data)
-            except:
+            except ValueError:
                 _invoke(self.error, {'error': 'json decoding error'})
                 return
 
@@ -933,6 +950,12 @@ def _urllib_request_2(url, timeout=320):
         resp = urllib2.urlopen(url, timeout=timeout)
     except urllib2.HTTPError as http_error:
         resp = http_error
+    except urllib2.URLError as error:
+        #print error.reason
+        msg = { "message" : str(error.reason)}
+        #print str(msg)
+        return (json.dumps(msg),0)
+    
     return (resp.read(), resp.code)
 
 
@@ -940,7 +963,7 @@ def _urllib_request_3(url, timeout=320):
     #print(url)
     try:
         resp = urllib.request.urlopen(url, timeout=timeout)
-    except urllib.request.HTTPError as http_error:
+    except (urllib.request.HTTPError, urllib.request.URLError) as http_error:
         resp = http_error
     r = resp.read().decode("utf-8")
     #print(r)
@@ -1017,7 +1040,7 @@ class Pubnub(PubnubCoreAsync):
         response = _urllib_request(url, timeout=320)
         try:
             resp_json = json.loads(response[0])
-        except:
+        except ValueError:
             return [0, "JSON Error"]
 
         if response[1] != 200 and 'status' in resp_json:

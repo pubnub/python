@@ -55,17 +55,17 @@ parser.add_option("--uuid",
 
 print(options)
 
-pubnub = Pubnub(options.publish_key,
-                options.subscribe_key,
-                options.secret_key,
-                options.cipher_key,
-                options.auth_key,
-                options.ssl,
-                options.origin,
+pubnub = Pubnub(options.publish_key, 
+                options.subscribe_key, 
+                options.secret_key, 
+                options.cipher_key, 
+                options.auth_key, 
+                options.ssl, 
+                options.origin, 
                 options.uuid)
 
 
-class color:
+class color(object):
     PURPLE = '\033[95m'
     CYAN = '\033[96m'
     DARKCYAN = '\033[36m'

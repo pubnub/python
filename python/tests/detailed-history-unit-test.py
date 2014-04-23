@@ -10,9 +10,6 @@
 ## -----------------------------------
 
 import sys
-sys.path.append('.')
-sys.path.append('..')
-sys.path.append('../common')
 from Pubnub import Pubnub
 import unittest as unittest
 

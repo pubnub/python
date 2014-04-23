@@ -2,10 +2,6 @@
 import sys
 import time
 
-sys.path.append('../../common')
-sys.path.append('../common')
-sys.path.append('..')
-sys.path.append('.')
 
 from PubnubUnitTest import Suite
 from Pubnub import Pubnub

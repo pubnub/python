@@ -10,7 +10,6 @@
 ## -----------------------------------
 
 import sys
-sys.path.append('../')
 import datetime
 from Pubnub import Pubnub
 from functools import partial

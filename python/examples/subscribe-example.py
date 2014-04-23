@@ -1,6 +1,4 @@
 import sys
-sys.path.append('..')
-sys.path.append('.')
 import threading
 import time
 import random

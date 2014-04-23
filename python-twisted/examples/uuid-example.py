@@ -11,7 +11,6 @@
 
 import sys
 from twisted.internet import reactor
-sys.path.append('../')
 from Pubnub import Pubnub
 
 ## -----------------------------------------------------------------------

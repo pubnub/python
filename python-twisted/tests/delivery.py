@@ -14,7 +14,6 @@ import datetime
 import time
 import math
 
-sys.path.append('../')
 from Pubnub import Pubnub
 
 ## -----------------------------------------------------------------------

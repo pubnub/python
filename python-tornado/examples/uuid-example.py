@@ -11,7 +11,6 @@
 
 import sys
 import tornado
-sys.path.append('../')
 from Pubnub import Pubnub
 
 ## -----------------------------------------------------------------------

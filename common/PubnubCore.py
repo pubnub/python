@@ -45,7 +45,7 @@ class PubnubCore(PubnubCoreAsync):
         self.version = '3.4'
         self.accept_encoding = 'gzip'
 
-    def subscribe_sync(self, args):
+    def subscribe_sync(self, channel, callback, timetoken=0):
         """
         #**
         #* Subscribe
@@ -69,25 +69,11 @@ class PubnubCore(PubnubCoreAsync):
 
         """
 
-        ## Fail if missing channel
-        if not 'channel' in args:
-            raise Exception('Missing Channel.')
-            return False
-
-        ## Fail if missing callback
-        if not 'callback' in args:
-            raise Exception('Missing Callback.')
-            return False
-
-        ## Capture User Input
-        channel = str(args['channel'])
-        callback = args['callback']
-        subscribe_key = args.get('subscribe_key') or self.subscribe_key
+        subscribe_key = self.subscribe_key
 
         ## Begin Subscribe
         while True:
 
-            timetoken = 'timetoken' in args and args['timetoken'] or 0
             try:
                 ## Wait for Message
                 response = self._request({"urlcomponents": [
@@ -99,7 +85,7 @@ class PubnubCore(PubnubCoreAsync):
                 ], "urlparams": {"uuid": self.uuid}})
 
                 messages = response[0]
-                args['timetoken'] = response[1]
+                timetoken = response[1]
 
                 ## If it was a timeout
                 if not len(messages):

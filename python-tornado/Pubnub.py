@@ -186,7 +186,7 @@ import sys
 
 try:
     from urllib.parse import quote
-except:
+except ImportError:
     from urllib2 import quote
 
 from base64 import urlsafe_b64encode
@@ -397,7 +397,7 @@ class PubnubBase(object):
 
         """
 
-        message = self.encrypt(args['message'])
+        message = self.encrypt(message)
 
         ## Send Message
         return self._request({"urlcomponents": [
@@ -458,15 +458,6 @@ class PubnubBase(object):
         print(here_now['uuids'])
 
         """
-        channel = str(args['channel'])
-
-        callback = args['callback'] if 'callback' in args else None
-        error = args['error'] if 'error' in args else None
-
-        ## Fail if bad input.
-        if not channel:
-            raise Exception('Missing Channel')
-            return False
 
         ## Get Presence Here Now
         return self._request({"urlcomponents": [
@@ -807,21 +798,23 @@ class PubnubCoreAsync(PubnubBase):
                 return
 
             ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
-            try:
-                self.SUB_RECEIVER = self._request({"urlcomponents": [
-                    'subscribe',
-                    self.subscribe_key,
-                    channel_list,
-                    '0',
-                    str(self.timetoken)
-                ], "urlparams": {"uuid": self.uuid, "auth": self.auth_key}},
-                    sub_callback,
-                    sub_callback,
-                    single=True)
+            #try:
+            self.SUB_RECEIVER = self._request({"urlcomponents": [
+                'subscribe',
+                self.subscribe_key,
+                channel_list,
+                '0',
+                str(self.timetoken)
+            ], "urlparams": {"uuid": self.uuid, "auth": self.auth_key}},
+                sub_callback,
+                sub_callback,
+                single=True)
+            '''
             except Exception as e:
                 print(e)
                 self.timeout(1, _connect)
                 return
+            '''
 
         self._connect = _connect
 
@@ -905,7 +898,8 @@ class Pubnub(PubnubCoreAsync):
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
         self.id = None
 
-    def _request(self, request, callback=None, error=None, single=False):
+    def _request(self, request, callback=None, error=None,
+                 single=False, read_timeout=5, connect_timeout=5):
 
         def _invoke(func, data):
             if func is not None:
@@ -915,8 +909,8 @@ class Pubnub(PubnubCoreAsync):
         request = tornado.httpclient.HTTPRequest(
             url, 'GET',
             self.headers,
-            connect_timeout=10,
-            request_timeout=310)
+            connect_timeout=connect_timeout,
+            request_timeout=read_timeout)
         if single is True:
             id = time.time()
             self.id = id
@@ -930,20 +924,23 @@ class Pubnub(PubnubCoreAsync):
 
             if body is None:
                 return
-            #print(body)
 
             def handle_exc(*args):
                 return True
             if response.error is not None:
                 with ExceptionStackContext(handle_exc):
-                    response.rethrow()
+                    if response.code in [403, 401]:
+                        response.rethrow()
+                    else:
+                        _invoke(error, {"message": response.reason})
                     return
+
             try:
                 data = json.loads(body)
             except TypeError as e:
                 try:
                     data = json.loads(body.decode("utf-8"))
-                except:
+                except ValueError as ve:
                     _invoke(error, {'error': 'json decode error'})
 
             if 'error' in data and 'status' in data and 'status' != 200:

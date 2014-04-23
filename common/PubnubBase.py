@@ -10,7 +10,7 @@ import sys
 
 try:
     from urllib.parse import quote
-except:
+except ImportError:
     from urllib2 import quote
 
 from base64 import urlsafe_b64encode
@@ -221,7 +221,7 @@ class PubnubBase(object):
 
         """
 
-        message = self.encrypt(args['message'])
+        message = self.encrypt(message)
 
         ## Send Message
         return self._request({"urlcomponents": [
@@ -282,15 +282,6 @@ class PubnubBase(object):
         print(here_now['uuids'])
 
         """
-        channel = str(args['channel'])
-
-        callback = args['callback'] if 'callback' in args else None
-        error = args['error'] if 'error' in args else None
-
-        ## Fail if bad input.
-        if not channel:
-            raise Exception('Missing Channel')
-            return False
 
         ## Get Presence Here Now
         return self._request({"urlcomponents": [

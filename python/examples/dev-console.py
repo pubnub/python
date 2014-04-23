@@ -55,13 +55,13 @@ parser.add_option("--uuid",
 
 print(options)
 
-pubnub = Pubnub(options.publish_key, 
-                options.subscribe_key, 
-                options.secret_key, 
-                options.cipher_key, 
-                options.auth_key, 
-                options.ssl, 
-                options.origin, 
+pubnub = Pubnub(options.publish_key,
+                options.subscribe_key,
+                options.secret_key,
+                options.cipher_key,
+                options.auth_key,
+                options.ssl,
+                options.origin,
                 options.uuid)
 
 
@@ -87,7 +87,7 @@ def print_ok(msg, channel=None):
         "] " if channel is not None else "" + color.END
     try:
         print(chstr + color.GREEN + str(msg) + color.END)
-    except Exception as e:
+    except UnicodeEncodeError as e:
         print(msg)
 
 
@@ -98,7 +98,7 @@ def print_error(msg, channel=None):
         "] " if channel is not None else "" + color.END
     try:
         print(chstr + color.RED + color.BOLD + str(msg) + color.END)
-    except:
+    except UnicodeEncodeError as e:
         print(msg)
 
 import threading
@@ -107,13 +107,7 @@ import threading
 def kill_all_threads():
     for thread in threading.enumerate():
         if thread.isAlive():
-            try:
-                thread._Thread__stop()
-            except Exception as e:
-                pass
-                #print(e)
-                #thread.exit()
-                #print(str(thread.getName()) + ' could not be terminated')
+            thread._Thread__stop()
 
 
 def get_input(message, t=None):

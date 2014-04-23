@@ -248,21 +248,23 @@ class PubnubCoreAsync(PubnubBase):
                 return
 
             ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
-            try:
-                self.SUB_RECEIVER = self._request({"urlcomponents": [
-                    'subscribe',
-                    self.subscribe_key,
-                    channel_list,
-                    '0',
-                    str(self.timetoken)
-                ], "urlparams": {"uuid": self.uuid, "auth": self.auth_key}},
-                    sub_callback,
-                    sub_callback,
-                    single=True)
+            #try:
+            self.SUB_RECEIVER = self._request({"urlcomponents": [
+                'subscribe',
+                self.subscribe_key,
+                channel_list,
+                '0',
+                str(self.timetoken)
+            ], "urlparams": {"uuid": self.uuid, "auth": self.auth_key}},
+                sub_callback,
+                sub_callback,
+                single=True)
+            '''
             except Exception as e:
                 print(e)
                 self.timeout(1, _connect)
                 return
+            '''
 
         self._connect = _connect
 

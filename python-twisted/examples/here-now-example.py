@@ -10,7 +10,8 @@
 ## -----------------------------------
 
 import sys
-from twisted.internet import reactor
+sys.path.append('..')
+sys.path.append('../../common')
 from Pubnub import Pubnub
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -32,14 +33,12 @@ crazy = 'hello_world'
 
 def here_now_complete(messages):
     print(messages)
-    reactor.stop()
+    pubnub.stop()
 
-pubnub.here_now({
-    'channel': crazy,
-    'callback': here_now_complete
-})
+pubnub.here_now(
+    channel=crazy, callback=here_now_complete, error=here_now_complete)
 
 ## -----------------------------------------------------------------------
 ## IO Event Loop
 ## -----------------------------------------------------------------------
-reactor.run()
+pubnub.start()

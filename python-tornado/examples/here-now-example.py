@@ -10,7 +10,6 @@
 ## -----------------------------------
 
 import sys
-import tornado
 sys.path.append('..')
 sys.path.append('../../common')
 from Pubnub import Pubnub
@@ -34,12 +33,11 @@ crazy = 'hello_world'
 
 def here_now_complete(messages):
     print(messages)
+    print(type(messages))
     pubnub.stop()
 
-pubnub.here_now({
-    'channel': crazy,
-    'callback': here_now_complete
-})
+pubnub.here_now(
+    channel=crazy, callback=here_now_complete, error=here_now_complete)
 
 ## -----------------------------------------------------------------------
 ## IO Event Loop

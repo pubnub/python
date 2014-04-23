@@ -12,6 +12,10 @@ import twisted
 from hashlib import sha256
 import time
 import json
+
+import traceback
+
+
 from twisted.python.compat import (
     _PY3, unicode, intToBytes, networkString, nativeString)
 
@@ -64,13 +68,7 @@ class Pubnub(PubnubCoreAsync):
                 func(data)
 
         ## Build URL
-        '''
-        url = self.origin + '/' + "/".join([
-            "".join([ ' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
-                hex(ord(ch)).replace( '0x', '%' ).upper() or
-                ch for ch in list(bit)
-            ]) for bit in request])
-        '''
+
         url = self.getUrl(request)
 
         agent = ContentDecoderAgent(RedirectAgent(Agent(
@@ -83,7 +81,6 @@ class Pubnub(PubnubCoreAsync):
             request = agent.request(
                 'GET', url, Headers(self.headers), None)
         except TypeError as te:
-            print(url.encode())
             request = agent.request(
                 'GET', url.encode(), Headers(self.headers), None)
 
@@ -92,18 +89,13 @@ class Pubnub(PubnubCoreAsync):
             self.id = id
 
         def received(response):
-            finished = Deferred()
-            if response.code == 403:
-                response.deliverBody(PubNub403Response(finished))
-            else:
-                response.deliverBody(PubNubResponse(finished))
+            if not isinstance(response, twisted.web._newclient.Response):
+                _invoke(error, {"message": "Not Found"})
+                return
 
-            return finished
-
-        def error_handler(response):
             finished = Deferred()
-            if response.code == 403:
-                response.deliverBody(PubNub403Response(finished))
+            if response.code in [401, 403]:
+                response.deliverBody(PubNubPamResponse(finished))
             else:
                 response.deliverBody(PubNubResponse(finished))
 
@@ -115,10 +107,10 @@ class Pubnub(PubnubCoreAsync):
                     return None
             try:
                 data = json.loads(data)
-            except Exception as e:
+            except ValueError as e:
                 try:
                     data = json.loads(data.decode("utf-8"))
-                except:
+                except ValueError as e:
                     _invoke(error, {'error': 'json decode error'})
 
             if 'error' in data and 'status' in data and 'status' != 200:
@@ -131,7 +123,6 @@ class Pubnub(PubnubCoreAsync):
 
         request.addCallback(received)
         request.addCallback(complete)
-        request.addErrback(error_handler)
 
         return abort
 
@@ -141,12 +132,11 @@ class WebClientContextFactory(ClientContextFactory):
         return ClientContextFactory.getContext(self)
 
 
-class PubNub403Response(Protocol):
+class PubNubPamResponse(Protocol):
     def __init__(self, finished):
         self.finished = finished
 
     def dataReceived(self, bytes):
-        #print '403 resp ', bytes
         self.finished.callback(bytes)
 
 
@@ -155,5 +145,4 @@ class PubNubResponse(Protocol):
         self.finished = finished
 
     def dataReceived(self, bytes):
-        #print bytes
         self.finished.callback(bytes)

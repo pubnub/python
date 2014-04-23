@@ -145,12 +145,7 @@ def _publish_command_handler():
             print_ok(r)
         def _error(r):
             print_error(r)
-        pubnub.publish({
-            'channel' : channel,
-            'message' : message,
-            'callback' : _callback,
-            'error'   : _error
-        })
+        pubnub.publish(channel, message, _callback, _error)
 
 
 def _subscribe_command_handler():
@@ -159,11 +154,7 @@ def _subscribe_command_handler():
         print_ok(r, channel)
     def _error(r):
         print_error(r, channel)
-    pubnub.subscribe({
-        'channel' : channel,
-        'callback' : _callback,
-        'error'   : _error
-    })
+    pubnub.subscribe(channel, _callback, _error)
 
 def _unsubscribe_command_handler():
     channel = get_input("[UNSUBSCRIBE] Enter Channel Name ", str)
@@ -171,11 +162,7 @@ def _unsubscribe_command_handler():
         print_ok(r)
     def _error(r):
         print_error(r)
-    pubnub.unsubscribe({
-        'channel' : channel,
-        'callback' : _callback,
-        'error'   : _error
-    })    
+    pubnub.unsubscribe(channel)
 
 def _grant_command_handler():
     def _callback(r):
@@ -217,12 +204,7 @@ def _history_command_handler():
     channel = get_input("[HISTORY] Enter Channel Name ", str)
     count = get_input("[HISTORY] Enter Count ", int)
 
-    pubnub.history({
-        'channel' : channel,
-        'count'   : count,
-        'callback' : _callback,
-        'error'   : _error
-    })
+    pubnub.history(channel, count, callback=_callback, error=_error)
 
 
 def _here_now_command_handler():
@@ -232,13 +214,7 @@ def _here_now_command_handler():
         print_error(r)
     channel = get_input("[HERE NOW] Enter Channel Name ", str)
 
-    pubnub.here_now({
-        'channel' : channel,
-        'callback' : _callback,
-        'error'   : _error
-    })
-
-
+    pubnub.here_now(channel, callback=_callback, error=_error)
 
 
 commands = []

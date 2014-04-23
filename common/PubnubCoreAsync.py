@@ -101,7 +101,7 @@ class PubnubCoreAsync(PubnubBase):
         for i in l:
             func(i)
 
-    def subscribe( self, args=None, sync=False ) :
+    def subscribe( self, channel, callback, error=None, connect=None, disconnect=None, reconnect=None, sync=False ) :
         """
         #**
         #* Subscribe
@@ -133,26 +133,10 @@ class PubnubCoreAsync(PubnubBase):
         })
 
         """
-        if args is None:
-            _invoke(error, "Arguments Missing")
-            return
-        channel         = args['channel']       if 'channel'    in args else None
-        callback        = args['callback']      if 'callback'   in args else None
-        connect         = args['connect']       if 'connect'    in args else None
-        disconnect      = args['disconnect']    if 'disconnect' in args else None
-        reconnect       = args['reconnect']     if 'reconnect'  in args else None
-        error           = args['error']         if 'error'      in args else None
 
         with self._tt_lock:
             self.last_timetoken = self.timetoken if self.timetoken != 0 else self.last_timetoken
             self.timetoken = 0
-
-        if channel is None:
-            _invoke(error, "Channel Missing")
-            return
-        if callback is None:
-            _invoke(error, "Callback Missing")
-            return
 
         if sync is True and self.susbcribe_sync is not None:
             self.susbcribe_sync(args)
@@ -183,16 +167,6 @@ class PubnubCoreAsync(PubnubBase):
                 for ch in channel_list:
                     chobj = self.subscriptions[ch]
                     _invoke(chobj['error'],err)
-
-        '''
-        if callback is None:
-            _invoke(error, "Callback Missing")
-            return
-
-        if channel is None:
-            _invoke(error, "Channel Missing")
-            return
-        '''
 
         def _get_channel():
             for ch in self.subscriptions:
@@ -290,13 +264,10 @@ class PubnubCoreAsync(PubnubBase):
         self._connect()
 
 
-    def unsubscribe( self, args ):
+    def unsubscribe( self, channel ):
 
-        if 'channel' in self.subscriptions is False:
+        if channel in self.subscriptions is False:
             return False
-
-        channel = str(args['channel'])
-
 
         ## DISCONNECT
         with self._channel_list_lock:

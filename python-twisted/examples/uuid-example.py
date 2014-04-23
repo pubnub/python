@@ -1,4 +1,4 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud. 
+## www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
 ## PubNub Real-time Push APIs and Notifications Framework
@@ -17,7 +17,7 @@ from Pubnub import Pubnub
 ## -----------------------------------------------------------------------
 ## Initiate Pubnub State
 ## -----------------------------------------------------------------------
-pubnub = Pubnub( "", "", "", False )
+pubnub = Pubnub("", "", "", False)
 
 ## -----------------------------------------------------------------------
 ## UUID Example

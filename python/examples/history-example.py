@@ -4,12 +4,11 @@ sys.path.append('./')
 from Pubnub import Pubnub
 
 ## Initiat Class
-pubnub = Pubnub( 'demo', 'demo', None, False )
+pubnub = Pubnub('demo', 'demo', None, False)
 
 ## History Example
 history = pubnub.history({
-    'channel' : 'hello_world',
-    'limit'   : 1
+    'channel': 'hello_world',
+    'limit': 1
 })
 print(history)
-

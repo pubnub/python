@@ -1,4 +1,4 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud. 
+## www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
 ## PubNub Real-time Push APIs and Notifications Framework
@@ -15,53 +15,55 @@ sys.path.append('..')
 sys.path.append('../common')
 from Pubnub import Pubnub
 
-publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
+publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
-secret_key    = len(sys.argv) > 3 and sys.argv[3] or None
-ssl_on        = len(sys.argv) > 4 and bool(sys.argv[4]) or False
+secret_key = len(sys.argv) > 3 and sys.argv[3] or None
+ssl_on = len(sys.argv) > 4 and bool(sys.argv[4]) or False
 
 
 ## -----------------------------------------------------------------------
 ## Initiat Class
 ## -----------------------------------------------------------------------
 
-pubnub = Pubnub( publish_key, subscribe_key, secret_key, ssl_on )
-crazy  = 'demo'
+pubnub = Pubnub(publish_key, subscribe_key, secret_key, ssl_on)
+crazy = 'demo'
 
 ## ---------------------------------------------------------------------------
 ## Unit Test Function
 ## ---------------------------------------------------------------------------
-def test( trial, name ) :
-    if trial :
-        print( 'PASS: ' + name )
-    else :
-        print( 'FAIL: ' + name )
+
+
+def test(trial, name):
+    if trial:
+        print('PASS: ' + name)
+    else:
+        print('FAIL: ' + name)
 
 ## -----------------------------------------------------------------------
 ## Publish Example
 ## -----------------------------------------------------------------------
 publish_success = pubnub.publish({
-    'channel' : crazy,
-    'message' : crazy
+    'channel': crazy,
+    'message': crazy
 })
-test( publish_success[0] == 1, 'Publish First Message Success' )
+test(publish_success[0] == 1, 'Publish First Message Success')
 
 ## -----------------------------------------------------------------------
 ## History Example
 ## -----------------------------------------------------------------------
 history = pubnub.history({
-    'channel' : crazy,
-    'limit'   : 1
+    'channel': crazy,
+    'limit': 1
 })
 
 test(
     history[0] == crazy,
     'History Message: ' + history[0]
 )
-test( len(history) == 1, 'History Message Count' )
+test(len(history) == 1, 'History Message Count')
 
 ## -----------------------------------------------------------------------
 ## PubNub Server Time Example
 ## -----------------------------------------------------------------------
 timestamp = pubnub.time()
-test( timestamp > 0, 'PubNub Server Time: ' + str(timestamp) )
+test(timestamp > 0, 'PubNub Server Time: ' + str(timestamp))

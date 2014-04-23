@@ -3,13 +3,13 @@ class PubnubCore(PubnubCoreAsync):
         self,
         publish_key,
         subscribe_key,
-        secret_key = False,
-        cipher_key = False,
-        auth_key = None,
-        ssl_on = False,
-        origin = 'pubsub.pubnub.com',
-        uuid = None
-    ) :
+        secret_key=False,
+        cipher_key=False,
+        auth_key=None,
+        ssl_on=False,
+        origin='pubsub.pubnub.com',
+        uuid=None
+    ):
         """
         #**
         #* Pubnub
@@ -21,7 +21,8 @@ class PubnubCore(PubnubCoreAsync):
         #* @param string secret_key optional key to sign messages.
         #* @param boolean ssl required for 2048 bit encrypted messages.
         #* @param string origin PUBNUB Server Origin.
-        #* @param string pres_uuid optional identifier for presence (auto-generated if not supplied)
+        #* @param string pres_uuid optional
+        #*  identifier for presence (auto-generated if not supplied)
         #**
 
         ## Initiat Class
@@ -37,16 +38,14 @@ class PubnubCore(PubnubCoreAsync):
             ssl_on=ssl_on,
             origin=origin,
             UUID=uuid
-        )        
+        )
 
         self.subscriptions = {}
-        self.timetoken     = 0
-        self.version       = '3.4'
+        self.timetoken = 0
+        self.version = '3.4'
         self.accept_encoding = 'gzip'
 
-
-
-    def subscribe_sync( self, args ) :
+    def subscribe_sync(self, args):
         """
         #**
         #* Subscribe
@@ -65,50 +64,50 @@ class PubnubCore(PubnubCoreAsync):
 
         pubnub.subscribe({
             'channel'  : 'hello_world',
-            'callback' : receive 
+            'callback' : receive
         })
 
         """
 
         ## Fail if missing channel
-        if not 'channel' in args :
+        if not 'channel' in args:
             raise Exception('Missing Channel.')
             return False
 
         ## Fail if missing callback
-        if not 'callback' in args :
+        if not 'callback' in args:
             raise Exception('Missing Callback.')
             return False
 
         ## Capture User Input
-        channel   = str(args['channel'])
-        callback  = args['callback']
+        channel = str(args['channel'])
+        callback = args['callback']
         subscribe_key = args.get('subscribe_key') or self.subscribe_key
 
         ## Begin Subscribe
-        while True :
+        while True:
 
             timetoken = 'timetoken' in args and args['timetoken'] or 0
-            try :
+            try:
                 ## Wait for Message
-                response = self._request({"urlcomponents" : [
+                response = self._request({"urlcomponents": [
                     'subscribe',
                     subscribe_key,
                     channel,
                     '0',
                     str(timetoken)
-                ],"urlparams" : {"uuid" : self.uuid }})
+                ], "urlparams": {"uuid": self.uuid}})
 
-                messages          = response[0]
+                messages = response[0]
                 args['timetoken'] = response[1]
 
                 ## If it was a timeout
-                if not len(messages) :
+                if not len(messages):
                     continue
 
                 ## Run user Callback and Reconnect if user permits.
-                for message in messages :
-                    if not callback(self.decrypt(message)) :
+                for message in messages:
+                    if not callback(self.decrypt(message)):
                         return
 
             except Exception:

@@ -1,10 +1,11 @@
 from Crypto.Cipher import AES
 from Crypto.Hash import MD5
-from base64 import encodestring, decodestring 
+from base64 import encodestring, decodestring
 import hashlib
 import hmac
 
-class PubnubCrypto2() :
+
+class PubnubCrypto2():
     """
     #**
     #* PubnubCrypto
@@ -15,8 +16,8 @@ class PubnubCrypto2() :
     pc = PubnubCrypto
 
     """
-   
-    def pad( self, msg, block_size=16 ):
+
+    def pad(self, msg, block_size=16):
         """
         #**
         #* pad
@@ -28,9 +29,9 @@ class PubnubCrypto2() :
         #**
         """
         padding = block_size - (len(msg) % block_size)
-        return msg + chr(padding)*padding
-       
-    def depad( self, msg ):
+        return msg + chr(padding) * padding
+
+    def depad(self, msg):
         """
         #**
         #* depad
@@ -41,7 +42,7 @@ class PubnubCrypto2() :
         """
         return msg[0:-ord(msg[-1])]
 
-    def getSecret( self, key ):
+    def getSecret(self, key):
         """
         #**
         #* getSecret
@@ -52,7 +53,7 @@ class PubnubCrypto2() :
         """
         return hashlib.sha256(key).hexdigest()
 
-    def encrypt( self, key, msg ):
+    def encrypt(self, key, msg):
         """
         #**
         #* encrypt
@@ -62,11 +63,12 @@ class PubnubCrypto2() :
         #**
         """
         secret = self.getSecret(key)
-        Initial16bytes='0123456789012345'
-        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
+        Initial16bytes = '0123456789012345'
+        cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
         enc = encodestring(cipher.encrypt(self.pad(msg)))
         return enc
-    def decrypt( self, key, msg ):
+
+    def decrypt(self, key, msg):
         """
         #**
         #* decrypt
@@ -76,12 +78,12 @@ class PubnubCrypto2() :
         #**
         """
         secret = self.getSecret(key)
-        Initial16bytes='0123456789012345'
-        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
+        Initial16bytes = '0123456789012345'
+        cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
         return self.depad((cipher.decrypt(decodestring(msg))))
 
 
-class PubnubCrypto3() :
+class PubnubCrypto3():
     """
     #**
     #* PubnubCrypto
@@ -92,8 +94,8 @@ class PubnubCrypto3() :
     pc = PubnubCrypto
 
     """
-   
-    def pad( self, msg, block_size=16 ):
+
+    def pad(self, msg, block_size=16):
         """
         #**
         #* pad
@@ -105,9 +107,9 @@ class PubnubCrypto3() :
         #**
         """
         padding = block_size - (len(msg) % block_size)
-        return msg + (chr(padding)*padding).encode('utf-8')
-       
-    def depad( self, msg ):
+        return msg + (chr(padding) * padding).encode('utf-8')
+
+    def depad(self, msg):
         """
         #**
         #* depad
@@ -118,7 +120,7 @@ class PubnubCrypto3() :
         """
         return msg[0:-ord(msg[-1])]
 
-    def getSecret( self, key ):
+    def getSecret(self, key):
         """
         #**
         #* getSecret
@@ -129,7 +131,7 @@ class PubnubCrypto3() :
         """
         return hashlib.sha256(key.encode("utf-8")).hexdigest()
 
-    def encrypt( self, key, msg ):
+    def encrypt(self, key, msg):
         """
         #**
         #* encrypt
@@ -139,10 +141,12 @@ class PubnubCrypto3() :
         #**
         """
         secret = self.getSecret(key)
-        Initial16bytes='0123456789012345'
-        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
-        return encodestring(cipher.encrypt(self.pad(msg.encode('utf-8')))).decode('utf-8')
-    def decrypt( self, key, msg ):
+        Initial16bytes = '0123456789012345'
+        cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
+        return encodestring(
+            cipher.encrypt(self.pad(msg.encode('utf-8')))).decode('utf-8')
+
+    def decrypt(self, key, msg):
         """
         #**
         #* decrypt
@@ -152,6 +156,7 @@ class PubnubCrypto3() :
         #**
         """
         secret = self.getSecret(key)
-        Initial16bytes='0123456789012345'
-        cipher = AES.new(secret[0:32],AES.MODE_CBC,Initial16bytes)
-        return (cipher.decrypt(decodestring(msg.encode('utf-8')))).decode('utf-8')
+        Initial16bytes = '0123456789012345'
+        cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
+        return (cipher.decrypt(
+            decodestring(msg.encode('utf-8')))).decode('utf-8')

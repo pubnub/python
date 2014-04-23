@@ -2,7 +2,8 @@ from twisted.web.client import getPage
 from twisted.internet import reactor
 from twisted.internet.defer import Deferred
 from twisted.internet.protocol import Protocol
-from twisted.web.client import Agent, ContentDecoderAgent, RedirectAgent, GzipDecoder
+from twisted.web.client import Agent, ContentDecoderAgent
+from twisted.web.client import RedirectAgent, GzipDecoder
 from twisted.web.client import HTTPConnectionPool
 from twisted.web.http_headers import Headers
 from twisted.internet.ssl import ClientContextFactory
@@ -15,16 +16,21 @@ from twisted.python.compat import (
     _PY3, unicode, intToBytes, networkString, nativeString)
 
 pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
-pnconn_pool.maxPersistentPerHost    = 100000
+pnconn_pool.maxPersistentPerHost = 100000
 pnconn_pool.cachedConnectionTimeout = 310
 pnconn_pool.retryAutomatically = True
 
+
 class Pubnub(PubnubCoreAsync):
 
-    def start(self): reactor.run()
-    def stop(self):  reactor.stop()
-    def timeout( self, delay, callback ):
-        reactor.callLater( delay, callback )
+    def start(self):
+        reactor.run()
+
+    def stop(self):
+        reactor.stop()
+
+    def timeout(self, delay, callback):
+        reactor.callLater(delay, callback)
 
     def __init__(
         self,
@@ -33,9 +39,9 @@ class Pubnub(PubnubCoreAsync):
         secret_key=False,
         cipher_key=False,
         auth_key=None,
-        ssl_on = False,
-        origin = 'pubsub.pubnub.com'
-    ) :
+        ssl_on=False,
+        origin='pubsub.pubnub.com'
+    ):
         super(Pubnub, self).__init__(
             publish_key=publish_key,
             subscribe_key=subscribe_key,
@@ -44,13 +50,13 @@ class Pubnub(PubnubCoreAsync):
             auth_key=auth_key,
             ssl_on=ssl_on,
             origin=origin,
-        )        
+        )
         self.headers = {}
         self.headers['User-Agent'] = ['Python-Twisted']
         #self.headers['Accept-Encoding'] = [self.accept_encoding]
         self.headers['V'] = [self.version]
 
-    def _request( self, request, callback=None, error=None, single=False ) :
+    def _request(self, request, callback=None, error=None, single=False):
         global pnconn_pool
 
         def _invoke(func, data):
@@ -67,18 +73,19 @@ class Pubnub(PubnubCoreAsync):
         '''
         url = self.getUrl(request)
 
-        agent       = ContentDecoderAgent(RedirectAgent(Agent(
+        agent = ContentDecoderAgent(RedirectAgent(Agent(
             reactor,
-            contextFactory = WebClientContextFactory(),
-            pool = self.ssl and None or pnconn_pool
+            contextFactory=WebClientContextFactory(),
+            pool=self.ssl and None or pnconn_pool
         )), [('gzip', GzipDecoder)])
 
         try:
-            request     = agent.request( 'GET', url, Headers(self.headers), None )
+            request = agent.request(
+                'GET', url, Headers(self.headers), None)
         except TypeError as te:
             print(url.encode())
-            request     = agent.request( 'GET', url.encode(), Headers(self.headers), None )
-
+            request = agent.request(
+                'GET', url.encode(), Headers(self.headers), None)
 
         if single is True:
             id = time.time()
@@ -112,7 +119,7 @@ class Pubnub(PubnubCoreAsync):
                 try:
                     data = json.loads(data.decode("utf-8"))
                 except:
-                    _invoke(error, {'error' : 'json decode error'})
+                    _invoke(error, {'error': 'json decode error'})
 
             if 'error' in data and 'status' in data and 'status' != 200:
                 _invoke(error, data)
@@ -128,23 +135,25 @@ class Pubnub(PubnubCoreAsync):
 
         return abort
 
+
 class WebClientContextFactory(ClientContextFactory):
     def getContext(self, hostname, port):
         return ClientContextFactory.getContext(self)
 
+
 class PubNub403Response(Protocol):
-    def __init__( self, finished ):
+    def __init__(self, finished):
         self.finished = finished
 
-    def dataReceived( self, bytes ):
+    def dataReceived(self, bytes):
         #print '403 resp ', bytes
         self.finished.callback(bytes)
-	   
+
+
 class PubNubResponse(Protocol):
-    def __init__( self, finished ):
+    def __init__(self, finished):
         self.finished = finished
 
-    def dataReceived( self, bytes ):
+    def dataReceived(self, bytes):
         #print bytes
         self.finished.callback(bytes)
-

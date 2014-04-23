@@ -1,4 +1,4 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud. 
+## www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
 ## PubNub Real-time Push APIs and Notifications Framework
@@ -14,29 +14,31 @@ from twisted.internet import reactor
 sys.path.append('../')
 from Pubnub import Pubnub
 
-publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
+publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
-secret_key    = len(sys.argv) > 3 and sys.argv[3] or 'demo'
-cipher_key    = len(sys.argv) > 4 and sys.argv[4] or ''
-ssl_on        = len(sys.argv) > 5 and bool(sys.argv[5]) or False
+secret_key = len(sys.argv) > 3 and sys.argv[3] or 'demo'
+cipher_key = len(sys.argv) > 4 and sys.argv[4] or ''
+ssl_on = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 
 ## -----------------------------------------------------------------------
 ## Initiate Pubnub State
 ## -----------------------------------------------------------------------
-pubnub = Pubnub( publish_key, subscribe_key, secret_key, cipher_key, ssl_on )
-crazy  = 'hello_world'
+pubnub = Pubnub(publish_key, subscribe_key, secret_key, cipher_key, ssl_on)
+crazy = 'hello_world'
 
 ## -----------------------------------------------------------------------
 ## History Example
 ## -----------------------------------------------------------------------
+
+
 def history_complete(messages):
     print(messages)
     reactor.stop()
 
-pubnub.history( {
-    'channel'  : crazy,
-    'limit'    : 10,
-    'callback' : history_complete
+pubnub.history({
+    'channel': crazy,
+    'limit': 10,
+    'callback': history_complete
 })
 
 ## -----------------------------------------------------------------------

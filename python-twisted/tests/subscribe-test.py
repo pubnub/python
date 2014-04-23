@@ -1,4 +1,4 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud. 
+## www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
 ## PubNub Real-time Push APIs and Notifications Framework
@@ -16,18 +16,18 @@ from Pubnub import Pubnub
 from functools import partial
 from threading import current_thread
 import threading
-publish_key   = len(sys.argv) > 1 and sys.argv[1] or 'demo'
+publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
-secret_key    = len(sys.argv) > 3 and sys.argv[3] or 'demo'
-cipher_key    = len(sys.argv) > 4 and sys.argv[4] or None
-ssl_on        = len(sys.argv) > 5 and bool(sys.argv[5]) or False
+secret_key = len(sys.argv) > 3 and sys.argv[3] or 'demo'
+cipher_key = len(sys.argv) > 4 and sys.argv[4] or None
+ssl_on = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 
 ## -----------------------------------------------------------------------
 ## Initiate Pubnub State
 ## -----------------------------------------------------------------------
 #pubnub = Pubnub( publish_key, subscribe_key, secret_key, cipher_key, ssl_on )
-pubnub = Pubnub( publish_key, subscribe_key, secret_key, ssl_on )
-crazy  = 'hello_world'
+pubnub = Pubnub(publish_key, subscribe_key, secret_key, ssl_on)
+crazy = 'hello_world'
 
 current = -1
 
@@ -37,8 +37,11 @@ received = 0
 ## -----------------------------------------------------------------------
 ## Subscribe Example
 ## -----------------------------------------------------------------------
+
+
 def message_received(message):
     print message
+
 
 def check_received(message):
     global current
@@ -53,18 +56,19 @@ def check_received(message):
     else:
         received += 1
     print 'active thread count : ', threading.activeCount()
-    print 'errors = ' , errors
+    print 'errors = ', errors
     print current_thread().getName(), ' , ', 'received = ', received
 
     if received != message:
-        print '********** MISSED **************** ', message - received 
+        print '********** MISSED **************** ', message - received
     current = message
-    
 
-def connected_test(ch) :
-    print 'Connected' , ch
 
-def connected(ch) :
+def connected_test(ch):
+    print 'Connected', ch
+
+
+def connected(ch):
     pass
 
 
@@ -75,57 +79,63 @@ pubnub.subscribe({
     'callback' : message_received
 })
 '''
+
+
 def cb1():
-	pubnub.subscribe({
-	    'channel'  : 'efgh1',
-	    'connect'  : connected,
-	    'callback' : message_received
-	})
+    pubnub.subscribe({
+        'channel': 'efgh1',
+        'connect': connected,
+        'callback': message_received
+    })
+
 
 def cb2():
-	pubnub.subscribe({
-	    'channel'  : 'dsm-test',
-	    'connect'  : connected_test,
-	    'callback' : check_received
-	})
+    pubnub.subscribe({
+        'channel': 'dsm-test',
+        'connect': connected_test,
+        'callback': check_received
+    })
+
 
 def cb3():
-    pubnub.unsubscribe({'channel' : 'efgh1'})
+    pubnub.unsubscribe({'channel': 'efgh1'})
+
 
 def cb4():
-    pubnub.unsubscribe({'channel' : 'abcd1'})
+    pubnub.unsubscribe({'channel': 'abcd1'})
+
 
 def subscribe(channel):
-	pubnub.subscribe({
-	    'channel'  : channel,
-	    'connect'  : connected,
-	    'callback' : message_received
-	})
+    pubnub.subscribe({
+        'channel': channel,
+        'connect': connected,
+        'callback': message_received
+    })
 
 
 print threading.activeCount()
 
 
-pubnub.timeout(15,cb1)
+pubnub.timeout(15, cb1)
 
-pubnub.timeout(30,cb2)
+pubnub.timeout(30, cb2)
 
 
-pubnub.timeout(45,cb3)
+pubnub.timeout(45, cb3)
 
-pubnub.timeout(60,cb4)
+pubnub.timeout(60, cb4)
 
 #'''
-for x in range(1,1000):
+for x in range(1, 1000):
     #print x
     def y(t):
         subscribe('channel-' + str(t))
 
     def z(t):
-        pubnub.unsubscribe({'channel' : 'channel-' + str(t)})
+        pubnub.unsubscribe({'channel': 'channel-' + str(t)})
 
-    pubnub.timeout(x + 5, partial(y,x))
-    pubnub.timeout(x + 25, partial(z, x)) 
+    pubnub.timeout(x + 5, partial(y, x))
+    pubnub.timeout(x + 25, partial(z, x))
     x += 10
 #'''
 

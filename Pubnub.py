@@ -1,3 +1,17 @@
+
+## www.pubnub.com - PubNub Real-time push service in the cloud. 
+# coding=utf8
+
+## PubNub Real-time Push APIs and Notifications Framework
+## Copyright (c) 2010 Stephen Blum
+## http://www.pubnub.com/
+
+## -----------------------------------
+## PubNub 3.3.4 Real-time Push Cloud API
+## -----------------------------------
+
+
+
 try:
     import json
 except ImportError:
@@ -7,25 +21,75 @@ import time
 import hashlib
 import uuid
 import sys
+from base64 import urlsafe_b64encode
+import hmac
+from Crypto.Cipher import AES
+from Crypto.Hash import MD5
 
+
+try:
+    from hashlib import sha256
+    digestmod = sha256
+except ImportError:
+    import Crypto.Hash.SHA256 as digestmod
+    sha256 = digestmod.new
+
+
+##### vanilla python imports #####
 try:
     from urllib.parse import quote
 except ImportError:
     from urllib2 import quote
+try:
+    import urllib.request
+except ImportError:
+    import urllib2
 
-from base64 import urlsafe_b64encode
-from hashlib import sha256
+import threading
+from threading import current_thread
 
 
-import hmac
+##################################
 
 
+##### Tornado imports and globals #####
+try:
+    import tornado.httpclient
+    import tornado.ioloop
+    from tornado.stack_context import ExceptionStackContext
+    ioloop = tornado.ioloop.IOLoop.instance()
+except ImportError:
+    pass
 
-from Crypto.Cipher import AES
-from Crypto.Hash import MD5
-from base64 import encodestring, decodestring
-import hashlib
-import hmac
+#######################################
+
+
+##### Twisted imports and globals #####
+try:
+    from twisted.web.client import getPage
+    from twisted.internet import reactor
+    from twisted.internet.defer import Deferred
+    from twisted.internet.protocol import Protocol
+    from twisted.web.client import Agent, ContentDecoderAgent
+    from twisted.web.client import RedirectAgent, GzipDecoder
+    from twisted.web.client import HTTPConnectionPool
+    from twisted.web.http_headers import Headers
+    from twisted.internet.ssl import ClientContextFactory
+    from twisted.internet.task import LoopingCall
+    import twisted
+
+    from twisted.python.compat import (
+        _PY3, unicode, intToBytes, networkString, nativeString)
+
+    pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
+    pnconn_pool.maxPersistentPerHost = 100000
+    pnconn_pool.cachedConnectionTimeout = 15
+    pnconn_pool.retryAutomatically = True
+except ImportError:
+    pass
+
+
+#######################################
 
 
 class PubnubCrypto2():
@@ -245,23 +309,6 @@ class PubnubBase(object):
 
         if not isinstance(self.uuid, str):
             raise AttributeError("pres_uuid must be a string")
-
-    '''
-
-    def _sign(self, channel, message):
-        ## Sign Message
-        if self.secret_key:
-            signature = hashlib.md5('/'.join([
-                self.publish_key,
-                self.subscribe_key,
-                self.secret_key,
-                channel,
-                message
-            ])).hexdigest()
-        else:
-            signature = '0'
-        return signature
-    '''
 
     def _pam_sign(self, msg):
         """Calculate a signature by secret key and message."""
@@ -537,15 +584,6 @@ class PubnubBase(object):
         return url
 
 
-try:
-    from hashlib import sha256
-    digestmod = sha256
-except ImportError:
-    import Crypto.Hash.SHA256 as digestmod
-    sha256 = digestmod.new
-import hmac
-
-
 class EmptyLock():
     def __enter__(self):
         pass
@@ -760,7 +798,6 @@ class PubnubCoreAsync(PubnubBase):
                             return
                 if 'message' in response:
                     _invoke_error(err=response['message'])
-   
 
             def sub_callback(response):
                 ## ERROR ?
@@ -951,17 +988,6 @@ class PubnubCore(PubnubCoreAsync):
         return True
 
 
-try:
-    import urllib.request
-except ImportError:
-    import urllib2
-
-import threading
-import json
-import time
-import threading
-from threading import current_thread
-
 latest_sub_callback_lock = threading.RLock()
 latest_sub_callback = {'id': None, 'callback': None}
 
@@ -1045,10 +1071,10 @@ def _urllib_request_2(url, timeout=320):
         resp = http_error
     except urllib2.URLError as error:
         #print error.reason
-        msg = { "message" : str(error.reason)}
+        msg = {"message": str(error.reason)}
         #print str(msg)
-        return (json.dumps(msg),0)
-    
+        return (json.dumps(msg), 0)
+
     return (resp.read(), resp.code)
 
 
@@ -1064,6 +1090,8 @@ def _urllib_request_3(url, timeout=320):
 
 _urllib_request = None
 
+
+#  PubnubAsync
 
 class PubnubAsync(PubnubCoreAsync):
     def __init__(
@@ -1173,150 +1201,7 @@ class PubnubAsync(PubnubCoreAsync):
             '''
 
 
-import tornado.httpclient
-
-try:
-    from hashlib import sha256
-    digestmod = sha256
-except ImportError:
-    import Crypto.Hash.SHA256 as digestmod
-    sha256 = digestmod.new
-
-import hmac
-import tornado.ioloop
-from tornado.stack_context import ExceptionStackContext
-
-ioloop = tornado.ioloop.IOLoop.instance()
-
-
-class PubnubTornado(PubnubCoreAsync):
-
-    def stop(self):
-        ioloop.stop()
-
-    def start(self):
-        ioloop.start()
-
-    def timeout(self, delay, callback):
-        ioloop.add_timeout(time.time() + float(delay), callback)
-
-    def __init__(
-        self,
-        publish_key,
-        subscribe_key,
-        secret_key=False,
-        cipher_key=False,
-        auth_key=False,
-        ssl_on=False,
-        origin='pubsub.pubnub.com'
-    ):
-        super(PubnubTornado, self).__init__(
-            publish_key=publish_key,
-            subscribe_key=subscribe_key,
-            secret_key=secret_key,
-            cipher_key=cipher_key,
-            auth_key=auth_key,
-            ssl_on=ssl_on,
-            origin=origin,
-        )
-        self.headers = {}
-        self.headers['User-Agent'] = 'Python-Tornado'
-        self.headers['Accept-Encoding'] = self.accept_encoding
-        self.headers['V'] = self.version
-        self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
-        self.id = None
-
-    def _request(self, request, callback=None, error=None,
-                 single=False, read_timeout=5, connect_timeout=5):
-
-        def _invoke(func, data):
-            if func is not None:
-                func(data)
-
-        url = self.getUrl(request)
-        request = tornado.httpclient.HTTPRequest(
-            url, 'GET',
-            self.headers,
-            connect_timeout=connect_timeout,
-            request_timeout=read_timeout)
-        if single is True:
-            id = time.time()
-            self.id = id
-
-        def responseCallback(response):
-            if single is True:
-                if not id == self.id:
-                    return None
-
-            body = response._get_body()
-
-            if body is None:
-                return
-
-            def handle_exc(*args):
-                return True
-            if response.error is not None:
-                with ExceptionStackContext(handle_exc):
-                    if response.code in [403, 401]:
-                        response.rethrow()
-                    else:
-                        _invoke(error, {"message": response.reason})
-                    return
-
-            try:
-                data = json.loads(body)
-            except TypeError as e:
-                try:
-                    data = json.loads(body.decode("utf-8"))
-                except ValueError as ve:
-                    _invoke(error, {'error': 'json decode error'})
-
-            if 'error' in data and 'status' in data and 'status' != 200:
-                _invoke(error, data)
-            else:
-                _invoke(callback, data)
-
-        self.http.fetch(
-            request=request,
-            callback=responseCallback
-        )
-
-        def abort():
-            pass
-
-        return abort
-
-try:
-    from twisted.web.client import getPage
-    from twisted.internet import reactor
-    from twisted.internet.defer import Deferred
-    from twisted.internet.protocol import Protocol
-    from twisted.web.client import Agent, ContentDecoderAgent
-    from twisted.web.client import RedirectAgent, GzipDecoder
-    from twisted.web.client import HTTPConnectionPool
-    from twisted.web.http_headers import Headers
-    from twisted.internet.ssl import ClientContextFactory
-    from twisted.internet.task import LoopingCall
-    import twisted
-
-    from twisted.python.compat import (
-        _PY3, unicode, intToBytes, networkString, nativeString)
-
-    pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
-    pnconn_pool.maxPersistentPerHost = 100000
-    pnconn_pool.cachedConnectionTimeout = 15
-    pnconn_pool.retryAutomatically = True
-except ImportError:
-    pass
-
-from hashlib import sha256
-import time
-import json
-
-import traceback
-
-
-
+# Pubnub Twisted
 
 class PubnubTwisted(PubnubCoreAsync):
 
@@ -1383,11 +1268,11 @@ class PubnubTwisted(PubnubCoreAsync):
 
         def received(response):
             if not isinstance(response, twisted.web._newclient.Response):
-                _invoke(error, {"message" : "Not Found"})
+                _invoke(error, {"message": "Not Found"})
                 return
 
             finished = Deferred()
-            if response.code in [401,403]:
+            if response.code in [401, 403]:
                 response.deliverBody(PubNubPamResponse(finished))
             else:
                 response.deliverBody(PubNubResponse(finished))
@@ -1441,24 +1326,7 @@ class PubNubResponse(Protocol):
         self.finished.callback(bytes)
 
 
-import tornado.httpclient
-
-try:
-    from hashlib import sha256
-    digestmod = sha256
-except ImportError:
-    import Crypto.Hash.SHA256 as digestmod
-    sha256 = digestmod.new
-
-try:
-    import hmac
-    import tornado.ioloop
-    from tornado.stack_context import ExceptionStackContext
-    ioloop = tornado.ioloop.IOLoop.instance()
-except ImportError:
-    pass
-
-
+# PubnubTornado
 class PubnubTornado(PubnubCoreAsync):
 
     def stop(self):
@@ -1555,4 +1423,3 @@ class PubnubTornado(PubnubCoreAsync):
             pass
 
         return abort
-

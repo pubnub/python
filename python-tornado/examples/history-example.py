@@ -21,6 +21,7 @@ ssl_on = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 pubnub = Pubnub(publish_key, subscribe_key, secret_key, cipher_key, ssl_on)
 channel = 'hello_world'
 
+
 def history_complete(messages):
     print(messages)
     pubnub.stop()

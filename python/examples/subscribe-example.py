@@ -3,7 +3,7 @@ import threading
 import time
 import random
 import string
-from Pubnub import Pubnub
+from Pubnub import PubnubAsync as Pubnub
 
 ## Initiate Class
 pubnub = Pubnub('demo', 'demo', None, False)

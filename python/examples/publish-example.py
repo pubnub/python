@@ -5,13 +5,8 @@
 ## Copyright (c) 2010 Stephen Blum
 ## http://www.pubnub.com/
 
-## -----------------------------------
-## PubNub 3.1 Real-time Push Cloud API
-## -----------------------------------
-
 import sys
-from twisted.internet import reactor
-from Pubnub import Pubnub
+from Pubnub import PubnubAsync as Pubnub
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'

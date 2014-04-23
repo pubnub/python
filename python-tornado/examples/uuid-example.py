@@ -11,7 +11,7 @@
 
 import sys
 import tornado
-from Pubnub import Pubnub
+from Pubnub import PubnubTwisted as Pubnub
 
 ## -----------------------------------------------------------------------
 ## Initiate Pubnub State

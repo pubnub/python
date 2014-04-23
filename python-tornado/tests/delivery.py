@@ -14,7 +14,7 @@ import datetime
 import time
 import math
 
-from Pubnub import Pubnub
+from Pubnub import PubnubTwisted as Pubnub
 
 ## -----------------------------------------------------------------------
 ## Configuration

@@ -11,7 +11,7 @@
 
 import sys
 import datetime
-from Pubnub import Pubnub
+from Pubnub import PubnubAsync as Pubnub
 from functools import partial
 from threading import current_thread
 import threading

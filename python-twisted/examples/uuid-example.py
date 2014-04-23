@@ -11,7 +11,7 @@
 
 import sys
 from twisted.internet import reactor
-from Pubnub import Pubnub
+from Pubnub import PubnubTwisted as Pubnub
 
 ## -----------------------------------------------------------------------
 ## Initiate Pubnub State

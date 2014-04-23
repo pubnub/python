@@ -10,14 +10,12 @@
 ## -----------------------------------
 
 import sys
-from twisted.internet import reactor
-from Pubnub import Pubnub
+from Pubnub import PubnubTwisted as Pubnub
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
 secret_key = len(sys.argv) > 3 and sys.argv[3] or 'demo'
-cipher_key = len(
-    sys.argv) > 4 and sys.argv[4] or ''  # (Cipher key is Optional)
+cipher_key = len( sys.argv) > 4 and sys.argv[4] or ''
 ssl_on = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 
 ## -----------------------------------------------------------------------

@@ -4,7 +4,7 @@ import time
 
 
 from PubnubUnitTest import Suite
-from Pubnub import Pubnub
+from Pubnub import PubnubTwisted as Pubnub
 
 pubnub = Pubnub("demo", "demo")
 

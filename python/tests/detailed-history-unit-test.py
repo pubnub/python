@@ -10,7 +10,7 @@
 ## -----------------------------------
 
 import sys
-from Pubnub import Pubnub
+from Pubnub import PubnubAsync as Pubnub
 import unittest as unittest
 
 

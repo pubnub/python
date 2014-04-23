@@ -1,5 +1,5 @@
 import sys
-from Pubnub import Pubnub
+from Pubnub import PubnubAsync as Pubnub
 
 ## Initiat Class
 pubnub = Pubnub('demo', 'demo', None, False)

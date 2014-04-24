@@ -411,7 +411,7 @@ class PubnubBase(object):
         else:
             return None
 
-    def publish(channel, message, callback=None, error=None):
+    def publish(self, channel, message, callback=None, error=None):
         """
         #**
         #* Publish
@@ -1037,19 +1037,15 @@ class HTTPClient:
                 else:
                     if latest_sub_callback['callback'] is not None:
                         latest_sub_callback['id'] = 0
-                        print data
                         try:
                             data = json.loads(data)
                         except ValueError as e:
                             _invoke(latest_sub_callback['error'],
                                     {'error': 'json decoding error'})
                             return
-                        print code
                         if code != 200:
-                            print 'ERROR'
                             _invoke(latest_sub_callback['error'], data)
                         else:
-                            print 'CALLBACK'
                             _invoke(latest_sub_callback['callback'], data)
         else:
             try:
@@ -1070,22 +1066,18 @@ def _urllib_request_2(url, timeout=320):
     except urllib2.HTTPError as http_error:
         resp = http_error
     except urllib2.URLError as error:
-        #print error.reason
         msg = {"message": str(error.reason)}
-        #print str(msg)
         return (json.dumps(msg), 0)
 
     return (resp.read(), resp.code)
 
 
 def _urllib_request_3(url, timeout=320):
-    #print(url)
     try:
         resp = urllib.request.urlopen(url, timeout=timeout)
     except (urllib.request.HTTPError, urllib.request.URLError) as http_error:
         resp = http_error
     r = resp.read().decode("utf-8")
-    #print(r)
     return (r, resp.code)
 
 _urllib_request = None

@@ -16,40 +16,29 @@ import optparse
 
 of=sys.stdout
 
-
-class color(object):
-    PURPLE = '\033[95m'
-    CYAN = '\033[96m'
-    DARKCYAN = '\033[36m'
-    BLUE = '\033[94m'
-    GREEN = '\033[92m'
-    YELLOW = '\033[93m'
-    RED = '\033[91m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
-    END = '\033[0m'
+color = Cmd()
 
 def print_ok(msg, channel=None):
-    chstr = color.PURPLE + "[" + datetime.now().strftime(
-        '%Y-%m-%d %H:%M:%S') + "] " + color.END
-    chstr += color.CYAN + "[Channel : " + channel + \
-        "] " if channel is not None else "" + color.END
+    chstr = color.colorize("[" + datetime.now().strftime(
+        '%Y-%m-%d %H:%M:%S') + "] ","magenta")
+    chstr += color.colorize("[Channel : " + channel + \
+        "] " if channel is not None else "", "cyan")
     try:
-        print >>of, ("\n")
-        print >>of, (chstr + color.GREEN + str(msg) + color.END)
+        print >>of, (chstr + color.colorize(str(msg),"green"))
     except UnicodeEncodeError as e:
         print >>of, (msg)
+    of.flush()
 
 def print_error(msg, channel=None):
-    chstr = color.PURPLE + "[" + datetime.now().strftime(
-        '%Y-%m-%d %H:%M:%S') + "] " + color.END
-    chstr += color.CYAN + "[Channel : " + channel + \
-        "] " if channel is not None else "" + color.END
+    chstr = color.colorize("[" + datetime.now().strftime(
+        '%Y-%m-%d %H:%M:%S') + "] ", "magenta")
+    chstr += color.colorize("[Channel : " + channel + \
+        "] " if channel is not None else "", "cyan")
     try:
-        print >>of, ("\n")
-        print >>of, (chstr + color.RED + color.BOLD + str(msg) + color.END)
+        print >>of, (chstr + color.colorize(color.colorize(str(msg),"red"),"bold"))
     except UnicodeEncodeError as e:
         print >>of, (msg)
+    of.flush()
 
 class DefaultPubnub(object):
     def handlerFunctionClosure(self,name):
@@ -177,16 +166,16 @@ def _here_now_command_handler(channel):
     pubnub.here_now(channel, callback=_callback, error=_error)
 
 
-class DevConsole(Cmd):
-    multilineCommands = ['orate']
-    Cmd.shortcuts.update({'&': 'speak'})
-    maxrepeats = 3
-    Cmd.settable.append('maxrepeats')
 
+class DevConsole(Cmd):
+    
     def __init__(self):
         Cmd.__init__(self)
+        global pubnub
         self.prompt = "(PubNub Console) > "
         self.intro  = "Welcome to PubNub Developer Console!"  ## defaults to None
+        self.default_channel = None
+        pubnub = Pubnub("demo", "demo")
 
     def cmdloop(self):
         try:
@@ -215,10 +204,30 @@ class DevConsole(Cmd):
                 opts.origin,
                 opts.uuid)
 
+
+    @options([make_option('-c', '--channel', action="store", help="Default Channel")
+     ])
+    def do_set_default_channel(self, command, opts):
+
+        if opts.channel is None:
+            print_error("Missing channel")
+            return
+        self.default_channel = opts.channel
+
+    @options([make_option('-f', '--file', action="store", default="./pubnub-console.log", help="Output file")
+     ])
+    def do_set_output_file(self, command, opts):
+        global of
+        try:
+            of = file(opts.file,'w+')
+        except IOError as e:
+            print_error("Could not set output file. " + e.reason)
+
+
     @options([make_option('-c', '--channel', action="store", help="Channel for here now data")
          ])
     def do_here_now(self, command, opts):
-
+        opts.channel = self.default_channel if opts.channel is None else opts.channel
         if opts.channel is None:
             print_error("Missing channel")
             return
@@ -229,7 +238,7 @@ class DevConsole(Cmd):
             make_option('-n', '--count', action="store", default=5, help="Number of messages")
          ])
     def do_history(self, command, opts):
-
+        opts.channel = self.default_channel if opts.channel is None else opts.channel
         if opts.channel is None:
             print_error("Missing channel")
             return
@@ -241,7 +250,7 @@ class DevConsole(Cmd):
                 make_option('-m', '--message', action="store", help="Message to be published")
          ])
     def do_publish(self, command, opts):
-
+        opts.channel = self.default_channel if opts.channel is None else opts.channel
         if opts.channel is None:
             print_error("Missing channel")
             return
@@ -260,6 +269,7 @@ class DevConsole(Cmd):
                 make_option('-t', '--ttl', action="store", default=5, help="TTL")
          ])
     def do_grant(self, command, opts):
+        opts.channel = self.default_channel if opts.channel is None else opts.channel
         if opts.channel is None:
             print_error("Missing channel")
             return
@@ -274,6 +284,7 @@ class DevConsole(Cmd):
                 make_option('-t', '--ttl', action="store", default=5, help="TTL")
          ])
     def do_revoke(self, command, opts):
+        opts.channel = self.default_channel if opts.channel is None else opts.channel
         if opts.channel is None:
             print_error("Missing channel")
             return
@@ -295,6 +306,7 @@ class DevConsole(Cmd):
     @options([make_option('-c', '--channel', action="store", help="Channel for unsubscribe")
          ])
     def do_unsubscribe(self, command, opts):
+        opts.channel = self.default_channel if opts.channel is None else opts.channel
         if opts.channel is None:
             print_error("Missing channel")
             return
@@ -304,7 +316,7 @@ class DevConsole(Cmd):
     @options([make_option('-c', '--channel', action="store", help="Channel for subscribe")
          ])
     def do_subscribe(self, command, opts):
-
+        opts.channel = self.default_channel if opts.channel is None else opts.channel
         if opts is None:
             print_error("Missing argument")
             return

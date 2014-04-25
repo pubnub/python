@@ -340,7 +340,7 @@ class PubnubBase(object):
             sha256
         ).digest())
 
-    def _pam_auth(self, query, apicode=0, callback=None):
+    def _pam_auth(self, query, apicode=0, callback=None, error=None):
         """Issue an authenticated request."""
 
         if 'timestamp' not in query:
@@ -364,7 +364,6 @@ class PubnubBase(object):
             apitype="audit" if (apicode) else "grant",
             params=params
         )
-
         query['signature'] = self._pam_sign(sign_input)
 
         return self._request({"urlcomponents": [
@@ -372,10 +371,11 @@ class PubnubBase(object):
             'sub-key',
             self.subscribe_key
         ], 'urlparams': query},
-            self._return_wrapped_callback(callback))
+            self._return_wrapped_callback(callback),
+            self._return_wrapped_callback(error))
 
     def grant(self, channel, authkey=False, read=True,
-              write=True, ttl=5, callback=None):
+              write=True, ttl=5, callback=None, error=None):
         """Grant Access on a Channel."""
 
         return self._pam_auth({
@@ -384,9 +384,9 @@ class PubnubBase(object):
             "r": read and 1 or 0,
             "w": write and 1 or 0,
             "ttl": ttl
-        }, callback=callback)
+        }, callback=callback, error=error)
 
-    def revoke(self, channel, authkey=False, ttl=1, callback=None):
+    def revoke(self, channel, authkey=False, ttl=1, callback=None, error=None):
         """Revoke Access on a Channel."""
 
         return self._pam_auth({
@@ -395,13 +395,13 @@ class PubnubBase(object):
             "r": 0,
             "w": 0,
             "ttl": ttl
-        }, callback=callback)
+        }, callback=callback, error=error)
 
-    def audit(self, channel=False, authkey=False, callback=None):
+    def audit(self, channel=False, authkey=False, callback=None, error=None):
         return self._pam_auth({
             "channel": channel,
             "auth": authkey
-        }, 1, callback=callback)
+        }, 1, callback=callback, error=error)
 
     def encrypt(self, message):
         if self.cipher_key:
@@ -627,8 +627,8 @@ class PubnubCoreAsync(PubnubBase):
         self,
         publish_key,
         subscribe_key,
-        secret_key=False,
-        cipher_key=False,
+        secret_key=None,
+        cipher_key=None,
         auth_key=None,
         ssl_on=False,
         origin='pubsub.pubnub.com',
@@ -910,8 +910,8 @@ class PubnubCore(PubnubCoreAsync):
         self,
         publish_key,
         subscribe_key,
-        secret_key=False,
-        cipher_key=False,
+        secret_key=None,
+        cipher_key=None,
         auth_key=None,
         ssl_on=False,
         origin='pubsub.pubnub.com',
@@ -1111,8 +1111,8 @@ class PubnubAsync(PubnubCoreAsync):
         self,
         publish_key,
         subscribe_key,
-        secret_key=False,
-        cipher_key=False,
+        secret_key=None,
+        cipher_key=None,
         auth_key=None,
         ssl_on=False,
         origin='pubsub.pubnub.com',
@@ -1231,8 +1231,8 @@ class PubnubTwisted(PubnubCoreAsync):
         self,
         publish_key,
         subscribe_key,
-        secret_key=False,
-        cipher_key=False,
+        secret_key=None,
+        cipher_key=None,
         auth_key=None,
         ssl_on=False,
         origin='pubsub.pubnub.com'

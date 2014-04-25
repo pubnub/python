@@ -19,6 +19,8 @@ of=sys.stdout
 color = Cmd()
 
 def print_ok(msg, channel=None):
+    if msg is None:
+        return
     chstr = color.colorize("[" + datetime.now().strftime(
         '%Y-%m-%d %H:%M:%S') + "] ","magenta")
     chstr += color.colorize("[Channel : " + channel + \
@@ -30,6 +32,8 @@ def print_ok(msg, channel=None):
     of.flush()
 
 def print_error(msg, channel=None):
+    if msg is None:
+        return
     chstr = color.colorize("[" + datetime.now().strftime(
         '%Y-%m-%d %H:%M:%S') + "] ", "magenta")
     chstr += color.colorize("[Channel : " + channel + \
@@ -87,13 +91,13 @@ def get_input(message, t=None):
         except ValueError:
             print_error("Invalid input : " + command)
 
-def _publish_command_handler(channel, message):
+def _publish_command_handler(channel, message,async=False):
     def _callback(r):
         print_ok(r)
 
     def _error(r):
         print_error(r)
-    pubnub.publish(channel, message, _callback, _error)
+    print_ok(pubnub.publish(channel, message, _callback if async is True else None, _error if async is True else None))
 
 
 def _subscribe_command_handler(channel):
@@ -116,54 +120,54 @@ def _unsubscribe_command_handler(channel):
     pubnub.unsubscribe(channel)
 
 
-def _grant_command_handler(channel, auth_key, read, write, ttl):
+def _grant_command_handler(channel, auth_key, read, write, ttl,async=False):
     def _callback(r):
         print_ok(r)
 
     def _error(r):
         print_error(r)
 
-    pubnub.grant(channel, auth_key, read, write, ttl, _callback)
+    print_ok(pubnub.grant(channel, auth_key, read, write, ttl, _callback if async is True else None, _error if async is True else None))
 
 
-def _revoke_command_handler(channel, auth_key, ttl):
+def _revoke_command_handler(channel, auth_key, ttl,async=False):
     def _callback(r):
         print_ok(r)
 
     def _error(r):
         print_error(r)
 
-    pubnub.revoke(channel, auth_key, ttl, _callback)
+    print_ok(pubnub.revoke(channel, auth_key, ttl, _callback if async is True else None, _error if async is True else None))
 
 
-def _audit_command_handler(channel, auth_key):
+def _audit_command_handler(channel, auth_key,async=False):
     def _callback(r):
         print_ok(r)
 
     def _error(r):
         print_error(r)
 
-    pubnub.audit(channel, auth_key, _callback)
+    print_ok(pubnub.audit(channel, auth_key, _callback if async is True else None, _error if async is True else None))
 
 
-def _history_command_handler(channel, count):
+def _history_command_handler(channel, count,async=False):
     def _callback(r):
         print_ok(r)
 
     def _error(r):
         print_error(r)
 
-    pubnub.history(channel, count, callback=_callback, error=_error)
+    print_ok(pubnub.history(channel, count, _callback if async is True else None, _error if async is True else None))
 
 
-def _here_now_command_handler(channel):
+def _here_now_command_handler(channel,async=False):
     def _callback(r):
         print_ok(r)
 
     def _error(r):
         print_error(r)
 
-    pubnub.here_now(channel, callback=_callback, error=_error)
+    print_ok(pubnub.here_now(channel, _callback if async is True else None, _error if async is True else None))
 
 
 def kill_all_threads():
@@ -181,13 +185,13 @@ class DevConsole(Cmd):
         self.prompt = "(PubNub Console) > "
         self.intro  = "Welcome to PubNub Developer Console!"  ## defaults to None
         self.default_channel = None
+        self.async = False
         pubnub = Pubnub("demo", "demo")
 
     def cmdloop_with_keyboard_interrupt(self):
         try:
             self.cmdloop()
         except KeyboardInterrupt:
-            print 'KB KeyboardInterrupt'
             sys.stdout.write('\n')
             kill_all_threads()
 
@@ -211,6 +215,13 @@ class DevConsole(Cmd):
                 opts.ssl,
                 opts.origin,
                 opts.uuid)
+
+
+    def do_set_sync(self, command):
+        self.async = False
+
+    def do_set_async(self, command):
+        self.async = True
 
 
     @options([make_option('-c', '--channel', action="store", help="Default Channel")
@@ -240,7 +251,7 @@ class DevConsole(Cmd):
             print_error("Missing channel")
             return
 
-        _here_now_command_handler(opts.channel)
+        _here_now_command_handler(opts.channel,async=self.async)
 
     @options([make_option('-c', '--channel', action="store", help="Channel for history data"),
             make_option('-n', '--count', action="store", default=5, help="Number of messages")
@@ -251,7 +262,7 @@ class DevConsole(Cmd):
             print_error("Missing channel")
             return
 
-        _history_command_handler(opts.channel, opts.count)
+        _history_command_handler(opts.channel, opts.count,async=self.async)
 
 
     @options([make_option('-c', '--channel', action="store", help="Channel on which to publish")
@@ -271,7 +282,7 @@ class DevConsole(Cmd):
         except ValueError as ve:
             message = str(command)
 
-        _publish_command_handler(opts.channel,message)
+        _publish_command_handler(opts.channel,message,async=self.async)
 
     @options([make_option('-c', '--channel', action="store", help="Channel on which to grant"),
                 make_option('-a', '--auth-key', dest="auth_key", action="store",
@@ -288,7 +299,7 @@ class DevConsole(Cmd):
 
         opts.auth_key = pubnub.auth_key if opts.auth_key is None else opts.auth_key
 
-        _grant_command_handler(opts.channel,opts.auth_key, opts.read, opts.write, opts.ttl)
+        _grant_command_handler(opts.channel,opts.auth_key, opts.read, opts.write, opts.ttl,async=self.async)
 
     @options([make_option('-c', '--channel', action="store", help="Channel on which to revoke"),
                 make_option('-a', '--auth-key', dest="auth_key", action="store",
@@ -303,16 +314,21 @@ class DevConsole(Cmd):
 
         opts.auth_key = pubnub.auth_key if opts.auth_key is None else opts.auth_key
 
-        _revoke_command_handler(opts.channel,opts.auth_key, opts.ttl)
+        _revoke_command_handler(opts.channel,opts.auth_key, opts.ttl,async=self.async)
 
-    @options([make_option('-a', '--auth-key', dest="auth_key", action="store",
+    @options([make_option('-c', '--channel', action="store", help="Channel on which to revoke"),
+        make_option('-a', '--auth-key', dest="auth_key", action="store",
                     help="Auth Key")
          ])
     def do_audit(self, command, opts):
+        opts.channel = self.default_channel if opts.channel is None else opts.channel
+        if opts.channel is None:
+            print_error("Missing channel")
+            return
 
         opts.auth_key = pubnub.auth_key if opts.auth_key is None else opts.auth_key
 
-        _audit_command_handler(opts.auth_key)
+        _audit_command_handler(opts.channel, opts.auth_key,async=self.async)
 
 
     @options([make_option('-c', '--channel', action="store", help="Channel for unsubscribe")

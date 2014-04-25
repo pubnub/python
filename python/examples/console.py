@@ -166,6 +166,12 @@ def _here_now_command_handler(channel):
     pubnub.here_now(channel, callback=_callback, error=_error)
 
 
+def kill_all_threads():
+    for thread in threading.enumerate():
+        if thread.isAlive():
+            thread._Thread__stop()
+
+
 
 class DevConsole(Cmd):
     
@@ -177,11 +183,13 @@ class DevConsole(Cmd):
         self.default_channel = None
         pubnub = Pubnub("demo", "demo")
 
-    def cmdloop(self):
+    def cmdloop_with_keyboard_interrupt(self):
         try:
-            Cmd.cmdloop(self)
-        except KeyboardInterrupt as e:
             self.cmdloop()
+        except KeyboardInterrupt:
+            print 'KB KeyboardInterrupt'
+            sys.stdout.write('\n')
+            kill_all_threads()
 
 
     @options([make_option('-p', '--publish-key', action="store", default="demo", help="Publish Key"),
@@ -331,9 +339,20 @@ class DevConsole(Cmd):
 
         _subscribe_command_handler(opts.channel)
 
+    def do_exit(self, args):
+        kill_all_threads()
+        return -1
+
+    def do_EOF(self, args):
+        kill_all_threads()
+        return self.do_exit(args)
+
+    def handler(self, signum, frame):
+        kill_all_threads()
+
 def main():
     app = DevConsole()
-    app.cmdloop()
+    app.cmdloop_with_keyboard_interrupt()
   
 if __name__ == "__main__":
     main()    

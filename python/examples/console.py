@@ -256,7 +256,7 @@ class DevConsole(Cmd):
     @options([make_option('-c', '--channel', action="store", help="Channel for history data"),
             make_option('-n', '--count', action="store", default=5, help="Number of messages")
          ])
-    def do_history(self, command, opts):
+    def do_get_history(self, command, opts):
         opts.channel = self.default_channel if opts.channel is None else opts.channel
         if opts.channel is None:
             print_error("Missing channel")

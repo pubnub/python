@@ -12,7 +12,7 @@ from datetime import datetime
 
 from cmd2 import Cmd, make_option, options, Cmd2TestCase
 import optparse
-
+import json
 
 of=sys.stdout
 
@@ -246,8 +246,7 @@ class DevConsole(Cmd):
         _history_command_handler(opts.channel, opts.count)
 
 
-    @options([make_option('-c', '--channel', action="store", help="Channel on which to publish"),
-                make_option('-m', '--message', action="store", help="Message to be published")
+    @options([make_option('-c', '--channel', action="store", help="Channel on which to publish")
          ])
     def do_publish(self, command, opts):
         opts.channel = self.default_channel if opts.channel is None else opts.channel
@@ -255,11 +254,16 @@ class DevConsole(Cmd):
             print_error("Missing channel")
             return
 
-        if opts.message is None:
+        if command is None:
             print_error("Missing message")
             return
 
-        _publish_command_handler(opts.channel,opts.message)
+        try:
+            message = json.loads(str(command))
+        except ValueError as ve:
+            message = str(command)
+
+        _publish_command_handler(opts.channel,message)
 
     @options([make_option('-c', '--channel', action="store", help="Channel on which to grant"),
                 make_option('-a', '--auth-key', dest="auth_key", action="store",
@@ -326,8 +330,6 @@ class DevConsole(Cmd):
             return
 
         _subscribe_command_handler(opts.channel)
-
-
 
 def main():
     app = DevConsole()

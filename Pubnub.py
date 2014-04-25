@@ -22,6 +22,7 @@ import hashlib
 import uuid
 import sys
 from base64 import urlsafe_b64encode
+from base64 import encodestring, decodestring
 import hmac
 from Crypto.Cipher import AES
 from Crypto.Hash import MD5
@@ -85,6 +86,26 @@ try:
     pnconn_pool.maxPersistentPerHost = 100000
     pnconn_pool.cachedConnectionTimeout = 15
     pnconn_pool.retryAutomatically = True
+
+    class WebClientContextFactory(ClientContextFactory):
+        def getContext(self, hostname, port):
+            return ClientContextFactory.getContext(self)
+
+
+    class PubNubPamResponse(Protocol):
+        def __init__(self, finished):
+            self.finished = finished
+
+        def dataReceived(self, bytes):
+            self.finished.callback(bytes)
+
+
+    class PubNubResponse(Protocol):
+        def __init__(self, finished):
+            self.finished = finished
+
+        def dataReceived(self, bytes):
+            self.finished.callback(bytes)
 except ImportError:
     pass
 
@@ -1296,26 +1317,6 @@ class PubnubTwisted(PubnubCoreAsync):
 
         return abort
 
-
-class WebClientContextFactory(ClientContextFactory):
-    def getContext(self, hostname, port):
-        return ClientContextFactory.getContext(self)
-
-
-class PubNubPamResponse(Protocol):
-    def __init__(self, finished):
-        self.finished = finished
-
-    def dataReceived(self, bytes):
-        self.finished.callback(bytes)
-
-
-class PubNubResponse(Protocol):
-    def __init__(self, finished):
-        self.finished = finished
-
-    def dataReceived(self, bytes):
-        self.finished.callback(bytes)
 
 
 # PubnubTornado

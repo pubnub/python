@@ -14,6 +14,22 @@ from cmd2 import Cmd, make_option, options, Cmd2TestCase
 import optparse
 import json
 
+import atexit
+import os
+import readline
+import rlcompleter
+
+historyPath = os.path.expanduser("~/.pubnub_console_history")
+
+def save_history(historyPath=historyPath):
+    import readline
+    readline.write_history_file(historyPath)
+
+if os.path.exists(historyPath):
+    readline.read_history_file(historyPath)
+
+atexit.register(save_history)
+
 of=sys.stdout
 
 color = Cmd()

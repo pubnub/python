@@ -5,6 +5,7 @@
 ## Copyright (c) 2010 Stephen Blum
 ## http://www.pubnub.com/
 
+
 import sys
 from Pubnub import PubnubAsync as Pubnub
 import threading
@@ -18,6 +19,9 @@ import atexit
 import os
 import readline
 import rlcompleter
+
+if sys.argv[0] == "screen":
+    print "screen"
 
 historyPath = os.path.expanduser("~/.pubnub_console_history")
 

@@ -5,5 +5,5 @@ focus down
 screen -t console  python console.py "set_output_file"
 split -v
 focus down
-screen -t help vi ./console-help.txt
+screen -t help vi -R ./console-help.txt
 focus up

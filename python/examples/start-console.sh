@@ -9,8 +9,8 @@ set PYTHONPATH=../..
 screen -X -S pubnub-console quit 2>&1 > /dev/null
 OS="`uname`"
 case $OS in
-  'darwin') 
+  [dD]'arwin')
 	screen -c config_osx
     ;;
-  *) screen -c config;;
+  *) screen -c config ;;
 esac

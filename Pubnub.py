@@ -46,6 +46,11 @@ try:
 except ImportError:
     import urllib2
 
+try:
+    import requests
+except ImportError:
+    pass
+
 import threading
 from threading import current_thread
 
@@ -1092,6 +1097,18 @@ def _urllib_request_2(url, timeout=320):
 
     return (resp.read(), resp.code)
 
+s = requests.Session()
+def _requests_request(url, timeout=320):
+    try:
+        resp = s.get(url)
+    except requests.exceptions.HTTPError as http_error:
+        resp = http_error
+    except requests.exceptions.ConnectionError as error:
+        msg = {"message": str(error.reason)}
+        return (json.dumps(msg), 0)
+
+    return (resp.text, resp.status_code)
+
 
 def _urllib_request_3(url, timeout=320):
     try:
@@ -1116,7 +1133,8 @@ class PubnubAsync(PubnubCoreAsync):
         auth_key=None,
         ssl_on=False,
         origin='pubsub.pubnub.com',
-        pres_uuid=None
+        pres_uuid=None,
+        pooling=True
     ):
         super(PubnubAsync, self).__init__(
             publish_key=publish_key,
@@ -1135,6 +1153,9 @@ class PubnubAsync(PubnubCoreAsync):
             _urllib_request = _urllib_request_2
         else:
             _urllib_request = _urllib_request_3
+
+        if pooling is True:
+            _urllib_request = _requests_request
 
     def timeout(self, interval, func):
         def cb():

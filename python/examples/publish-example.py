@@ -21,7 +21,7 @@ ssl_on = len(sys.argv) > 6 and bool(sys.argv[5]) or False
 ## Initiate Pubnub State
 ## -----------------------------------------------------------------------
 pubnub = Pubnub(
-    publish_key, subscribe_key, secret_key, cipher_key, auth_key, ssl_on)
+    publish_key, subscribe_key, secret_key, cipher_key, auth_key, ssl_on, pooling=True)
 crazy = 'hello_world'
 
 ## -----------------------------------------------------------------------
@@ -36,35 +36,9 @@ def publish_complete(info):
 def publish_error(info):
     print('ERROR : ' + str(info))
 
-## Publish string
-pubnub.publish({
-    'channel': crazy,
-    'message': 'Hello World!',
-    'callback': publish_complete,
-    'error': publish_error
-})
-
-## Publish list
-li = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
-      'Saturday']
-
-pubnub.publish({
-    'channel': crazy,
-    'message': li,
-    'callback': publish_complete,
-    'error': publish_error
-})
-
-
-def done_cb(info):
-    publish_complete(info)
-
-pubnub.publish({
-    'channel': crazy,
-    'message': {'some_key': 'some_val'},
-    'callback': done_cb,
-    'error': publish_error
-})
-
-
-pubnub.start()
+import time
+start = time.time()
+for i in range(1,100):
+    print pubnub.publish(crazy, 'hello world-' + str(i))
+end = time.time()
+print(end - start);

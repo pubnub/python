@@ -233,7 +233,7 @@ class PubnubBase(object):
         #**
         #* presence
         #*
-        #* This is BLOCKING.
+        #* This is NON - BLOCKING.
         #* Listen for presence events on a channel.
         #*
         #* @param array args with channel and callback.
@@ -260,13 +260,17 @@ class PubnubBase(object):
         if not 'callback' in args :
             raise Exception('Missing Callback.')
             return False
+            
+        if not 'connect' in args:
+            raise Exception('Missing Connect Callback')
 
         ## Capture User Input
         channel   = str(args['channel'])
         callback  = args['callback']
+        connectcb = args['connect']
         subscribe_key = args.get('subscribe_key') or self.subscribe_key
         
-        return self.subscribe({'channel': channel+'-pnpres', 'subscribe_key':subscribe_key, 'callback': callback})
+        return self.subscribe({'channel': channel+'-pnpres', 'subscribe_key':subscribe_key, 'callback': callback,'connect' : connectcb})
     
     
     def here_now( self, args ) :

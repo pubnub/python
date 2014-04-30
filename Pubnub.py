@@ -379,6 +379,9 @@ class PubnubBase(object):
             self._return_wrapped_callback(callback),
             self._return_wrapped_callback(error))
 
+    def get_origin(self):
+        return self.origin
+        
     def grant(self, channel, authkey=False, read=True,
               write=True, ttl=5, callback=None, error=None):
         """Grant Access on a Channel."""

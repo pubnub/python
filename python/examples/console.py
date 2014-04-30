@@ -202,11 +202,12 @@ class DevConsole(Cmd):
     def __init__(self):
         Cmd.__init__(self)
         global pubnub
-        self.prompt = "(PubNub Console) > "
-        self.intro  = "Welcome to PubNub Developer Console!"  ## defaults to None
+        self.intro  = "For Help type ? or help . To quit/exit type exit"  ## defaults to None
         self.default_channel = None
         self.async = False
         pubnub = Pubnub("demo", "demo")
+        self.prompt = "(PubNub Console) [" + color.colorize(pubnub.get_origin(),"blue") + "] > "
+
 
     def cmdloop_with_keyboard_interrupt(self):
         try:
@@ -235,12 +236,17 @@ class DevConsole(Cmd):
                 opts.ssl,
                 opts.origin,
                 opts.uuid)
+        self.prompt = "(PubNub Console) [" + color.colorize(pubnub.get_origin(),"blue") + "] > "
 
 
     def do_set_sync(self, command):
+        """unset_async
+        Unset Async mode"""
         self.async = False
 
     def do_set_async(self, command):
+        """set_async
+        Set Async mode"""
         self.async = True
 
 
@@ -361,7 +367,9 @@ class DevConsole(Cmd):
         _unsubscribe_command_handler(opts.channel)
 
 
-    @options([make_option('-c', '--channel', action="store", help="Channel for subscribe")
+    @options([make_option('-c', '--channel', action="store", help="Channel for subscribe"),
+            make_option('-g', '--get-channel-list', action="store_true", dest="get",
+            default=False, help="Get susbcribed channel list")
          ])
     def do_subscribe(self, command, opts):
         opts.channel = self.default_channel if opts.channel is None else opts.channel
@@ -369,11 +377,11 @@ class DevConsole(Cmd):
             print_error("Missing argument")
             return
 
-        if opts.channel is None:
-            print_error("Missing channel")
-            return
+        if opts.channel is not None:
+            _subscribe_command_handler(opts.channel)
 
-        _subscribe_command_handler(opts.channel)
+        if opts.get is True:
+            print_ok(pubnub.get_channel_array())
 
     def do_exit(self, args):
         kill_all_threads()

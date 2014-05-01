@@ -127,7 +127,17 @@ def _subscribe_command_handler(channel):
 
     def _error(r):
         print_error(r, channel)
-    pubnub.subscribe(channel, _callback, _error)
+
+    def _disconnect(r):
+        print_error("DISCONNECTED", channel)
+
+    def _reconnect(r):
+        print_error("RECONNECTED", channel)
+
+    def _connect(r):
+        print_error("CONNECTED", channel)
+
+    pubnub.subscribe(channel, _callback, _error,connect=_connect, disconnect=_disconnect, reconnect=_reconnect)
 
 
 def _unsubscribe_command_handler(channel):

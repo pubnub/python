@@ -381,7 +381,7 @@ class PubnubBase(object):
 
     def get_origin(self):
         return self.origin
-        
+
     def grant(self, channel, authkey=False, read=True,
               write=True, ttl=5, callback=None, error=None):
         """Grant Access on a Channel."""
@@ -770,7 +770,22 @@ class PubnubCoreAsync(PubnubBase):
                         chobj = self.subscriptions[ch]
                         if chobj['connected'] is False:
                             chobj['connected'] = True
+                            chobj['disconnected'] = False
                             _invoke(chobj['connect'], chobj['name'])
+                        else:
+                            if chobj['disconnected'] is True:
+                                chobj['disconnected'] = False
+                                _invoke(chobj['reconnect'], chobj['name'])
+        
+        def _invoke_disconnect():
+            if self._channel_list_lock:
+                with self._channel_list_lock:
+                    for ch in self.subscriptions:
+                        chobj = self.subscriptions[ch]
+                        if chobj['connected'] is True:
+                            if chobj['disconnected'] is False:
+                                chobj['disconnected'] = True
+                                _invoke(chobj['disconnect'], chobj['name'])
 
         def _invoke_error(channel_list=None, err=None):
             if channel_list is None:
@@ -796,6 +811,7 @@ class PubnubCoreAsync(PubnubBase):
                         'name': channel,
                         'first': False,
                         'connected': False,
+                        'disconnected': True,
                         'subscribed': True,
                         'callback': callback,
                         'connect': connect,
@@ -823,10 +839,13 @@ class PubnubCoreAsync(PubnubBase):
                         response['message'] == 'Forbidden'):
                             _invoke_error(response['payload'][
                                 'channels'], response['message'])
-                            _connect()
+                            self.timeout(1, _connect)
                             return
                 if 'message' in response:
                     _invoke_error(err=response['message'])
+                else:
+                    _invoke_disconnect()
+                    self.timeout(1, _connect)
 
             def sub_callback(response):
                 ## ERROR ?
@@ -1103,11 +1122,16 @@ def _urllib_request_2(url, timeout=320):
 s = requests.Session()
 def _requests_request(url, timeout=320):
     try:
-        resp = s.get(url)
+        resp = s.get(url, timeout=timeout)
     except requests.exceptions.HTTPError as http_error:
         resp = http_error
     except requests.exceptions.ConnectionError as error:
-        msg = {"message": str(error.reason)}
+        msg = str(error)
+        return (json.dumps(msg), 0)
+    except requests.exceptions.Timeout as error:
+        #print(error);
+        #print('timeout');
+        msg = str(error)
         return (json.dumps(msg), 0)
 
     return (resp.text, resp.status_code)

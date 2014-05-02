@@ -129,13 +129,13 @@ def _subscribe_command_handler(channel):
         print_error(r, channel)
 
     def _disconnect(r):
-        print_error("DISCONNECTED", channel)
+        print_error("DISCONNECTED", r)
 
     def _reconnect(r):
-        print_error("RECONNECTED", channel)
+        print_error("RECONNECTED", r)
 
     def _connect(r):
-        print_error("CONNECTED", channel)
+        print_error("CONNECTED", r)
 
     pubnub.subscribe(channel, _callback, _error,connect=_connect, disconnect=_disconnect, reconnect=_reconnect)
 
@@ -216,16 +216,47 @@ class DevConsole(Cmd):
         self.default_channel = None
         self.async = False
         pubnub = Pubnub("demo", "demo")
-        self.prompt = "(PubNub Console) [" + color.colorize(pubnub.get_origin(),"blue") + "] > "
+        self.prompt = self.get_prompt()
 
+    def get_channel_origin(self):
+        cho = " ["
+        channels = pubnub.get_channel_array()
+        channels_str = ",".join(channels)
+        if len(channels) > 3:
+            cho += ",".join(channels[:3]) + " " + str(len(channels) - 3) + " more..."
+        else:
+            cho += ",".join(channels)
+
+        if len(channels) > 0:
+            cho = color.colorize(cho,"bold") + "@"
+
+        return cho + color.colorize(pubnub.get_origin(),"blue") + "] > "
+
+
+    def get_prompt(self):
+        prompt = color.colorize("[" + datetime.now().strftime(
+        '%Y-%m-%d %H:%M:%S') + "] ", "magenta")
+        if self.default_channel is not None and len(self.default_channel) > 0:
+            prompt += " [default channel: " + color.colorize(self.default_channel,"bold") + "]"
+         
+        prompt += self.get_channel_origin()
+        return prompt
+
+    def precmd(self, line):
+        self.prompt = self.get_prompt()
+        return line
+
+    def emptyline(self):
+        print('empty line')
+        self.prompt = get_date() + " [" + color.colorize(pubnub.get_origin(),"blue") + "] > "
 
     def cmdloop_with_keyboard_interrupt(self):
         try:
             self.cmdloop()
-        except KeyboardInterrupt:
-            sys.stdout.write('\n')
-            kill_all_threads()
-
+        except KeyboardInterrupt as e:
+            pass
+        sys.stdout.write('\n')
+        kill_all_threads()
 
     @options([make_option('-p', '--publish-key', action="store", default="demo", help="Publish Key"),
             make_option('-s', '--subscribe-key', action="store", default="demo", help="Subscribe Key"),
@@ -268,6 +299,7 @@ class DevConsole(Cmd):
             print_error("Missing channel")
             return
         self.default_channel = opts.channel
+        self.prompt = self.get_prompt()
 
     @options([make_option('-f', '--file', action="store", default="./pubnub-console.log", help="Output file")
      ])
@@ -375,6 +407,7 @@ class DevConsole(Cmd):
             print_error("Missing channel")
             return
         _unsubscribe_command_handler(opts.channel)
+        self.prompt = self.get_prompt()
 
 
     @options([make_option('-c', '--channel', action="store", help="Channel for subscribe"),
@@ -392,6 +425,7 @@ class DevConsole(Cmd):
 
         if opts.get is True:
             print_ok(pubnub.get_channel_array())
+        self.prompt = self.get_prompt()
 
     def do_exit(self, args):
         kill_all_threads()

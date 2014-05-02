@@ -713,7 +713,7 @@ class PubnubCoreAsync(PubnubBase):
         for i in l:
             func(i)
 
-    def subscribe(self, channel, callback, error=None,
+    def subscribe(self, channels, callback, error=None,
                   connect=None, disconnect=None, reconnect=None, sync=False):
         """
         #**
@@ -756,11 +756,13 @@ class PubnubCoreAsync(PubnubBase):
             self.susbcribe_sync(args)
             return
 
-        def _invoke(func, msg=None):
+        def _invoke(func, msg=None, channel=None):
             if func is not None:
-                if msg is not None:
+                if msg is not None and channel is not None:
+                    func(msg,channel)
+                elif msg is not None:
                     func(msg)
-                else:
+                else :
                     func()
 
         def _invoke_connect():
@@ -802,31 +804,32 @@ class PubnubCoreAsync(PubnubBase):
                 chobj = self.subscriptions[ch]
                 if chobj['subscribed'] is True:
                     return chobj
-
-        ## New Channel?
-        if not channel in self.subscriptions or \
-                self.subscriptions[channel]['subscribed'] is False:
-                with self._channel_list_lock:
-                    self.subscriptions[channel] = {
-                        'name': channel,
-                        'first': False,
-                        'connected': False,
-                        'disconnected': True,
-                        'subscribed': True,
-                        'callback': callback,
-                        'connect': connect,
-                        'disconnect': disconnect,
-                        'reconnect': reconnect,
-                        'error': error
-                    }
-
+        channels = channels if isinstance(channels,list) else channels.split(",")
+        for channel in channels:
+            ## New Channel?
+            if not channel in self.subscriptions or \
+                    self.subscriptions[channel]['subscribed'] is False:
+                    with self._channel_list_lock:
+                        self.subscriptions[channel] = {
+                            'name': channel,
+                            'first': False,
+                            'connected': False,
+                            'disconnected': True,
+                            'subscribed': True,
+                            'callback': callback,
+                            'connect': connect,
+                            'disconnect': disconnect,
+                            'reconnect': reconnect,
+                            'error': error
+                        }
+        '''
         ## return if already connected to channel
         if channel in self.subscriptions and \
             'connected' in self.subscriptions[channel] and \
                 self.subscriptions[channel]['connected'] is True:
                     _invoke(error, "Already Connected")
                     return
-
+        '''
         ## SUBSCRIPTION RECURSION
         def _connect():
 
@@ -845,6 +848,7 @@ class PubnubCoreAsync(PubnubBase):
                     _invoke_error(err=response['message'])
                 else:
                     _invoke_disconnect()
+                    self.timetoken = 0
                     self.timeout(1, _connect)
 
             def sub_callback(response):
@@ -1129,8 +1133,6 @@ def _requests_request(url, timeout=320):
         msg = str(error)
         return (json.dumps(msg), 0)
     except requests.exceptions.Timeout as error:
-        #print(error);
-        #print('timeout');
         msg = str(error)
         return (json.dumps(msg), 0)
 

@@ -5,7 +5,7 @@ if ! type "screen" > /dev/null; then
 fi
 rm ./pubnub-console.log
 touch ./pubnub-console.log
-set PYTHONPATH=../..
+export PYTHONPATH=../..
 screen -X -S pubnub-console quit 2>&1 > /dev/null
 OS="`uname`"
 case $OS in

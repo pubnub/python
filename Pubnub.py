@@ -874,13 +874,13 @@ class PubnubCoreAsync(PubnubBase):
                             if ch[1] in self.subscriptions:
                                 chobj = self.subscriptions[ch[1]]
                                 _invoke(chobj['callback'],
-                                        self.decrypt(response_list[ch[0]]))
+                                        self.decrypt(response_list[ch[0]]), chobj['name'])
                     else:
                         response_list = response[0]
                         chobj = _get_channel()
                         for r in response_list:
                             if chobj:
-                                _invoke(chobj['callback'], self.decrypt(r))
+                                _invoke(chobj['callback'], self.decrypt(r), chobj['name'])
 
                     _connect()
 
@@ -1133,6 +1133,8 @@ def _requests_request(url, timeout=320):
         msg = str(error)
         return (json.dumps(msg), 0)
     except requests.exceptions.Timeout as error:
+        #print(error);
+        #print('timeout');
         msg = str(error)
         return (json.dumps(msg), 0)
 

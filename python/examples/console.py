@@ -122,11 +122,11 @@ def _publish_command_handler(channel, message,async=False):
 
 def _subscribe_command_handler(channel):
 
-    def _callback(r):
-        print_ok(r, channel)
+    def _callback(r,ch):
+        print_ok(r, ch)
 
-    def _error(r):
-        print_error(r, channel)
+    def _error(r,ch=None):
+        print_error(r, ch if ch is not None else channel)
 
     def _disconnect(r):
         print_error("DISCONNECTED", r)

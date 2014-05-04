@@ -1,6 +1,9 @@
 ********************** HELP ******************************
 
-TO EXIT  .   Ctrl-A \  followed by y
+TO EXIT :   
+Ctrl-A \  followed by y ( on linux )
+Ctrl-A Ctrl-\ followed by y ( on mac osx )
+
 TO MOVE BETWEEN PANES  . Ctrl-A  TAB
 
 **********************************************************

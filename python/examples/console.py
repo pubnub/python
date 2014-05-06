@@ -20,9 +20,6 @@ import os
 import readline
 import rlcompleter
 
-if sys.argv[0] == "screen":
-    print "screen"
-
 historyPath = os.path.expanduser("~/.pubnub_console_history")
 
 def save_history(historyPath=historyPath):
@@ -38,6 +35,34 @@ of=sys.stdout
 
 color = Cmd()
 
+stop = None
+
+def stop_2(th):
+    th._Thread__stop()
+
+def stop_3(th):
+    th._stop()
+
+def print_console_2(of,message):
+    print >>of, message 
+
+def print_console_3(of,message):
+    of.write(message)
+    of.write("\n")
+
+print_console = None
+
+if type(sys.version_info) is tuple:
+    print_console = print_console_2
+    stop = stop_2
+else:
+    if sys.version_info.major == 2:
+        print_console = print_console_2
+        stop = stop_2
+    else:
+        print_console = print_console_3
+        stop = stop_3
+
 def print_ok(msg, channel=None):
     if msg is None:
         return
@@ -46,9 +71,9 @@ def print_ok(msg, channel=None):
     chstr += color.colorize("[Channel : " + channel + \
         "] " if channel is not None else "", "cyan")
     try:
-        print >>of, (chstr + color.colorize(str(msg),"green"))
+        print_console(of, (chstr + color.colorize(str(msg),"green")))
     except UnicodeEncodeError as e:
-        print >>of, (msg)
+        print_console(of, (msg))
     of.flush()
 
 def print_error(msg, channel=None):
@@ -59,9 +84,9 @@ def print_error(msg, channel=None):
     chstr += color.colorize("[Channel : " + channel + \
         "] " if channel is not None else "", "cyan")
     try:
-        print >>of, (chstr + color.colorize(color.colorize(str(msg),"red"),"bold"))
+        print_console(of, (chstr + color.colorize(color.colorize(str(msg),"red"),"bold")))
     except UnicodeEncodeError as e:
-        print >>of, (msg)
+        print_console(of, (msg))
     of.flush()
 
 class DefaultPubnub(object):
@@ -79,7 +104,7 @@ pubnub=DefaultPubnub()
 def kill_all_threads():
     for thread in threading.enumerate():
         if thread.isAlive():
-            thread._Thread__stop()
+            stop(thread)
 
 def get_input(message, t=None):
     while True:
@@ -209,7 +234,7 @@ def _here_now_command_handler(channel,async=False):
 def kill_all_threads():
     for thread in threading.enumerate():
         if thread.isAlive():
-            thread._Thread__stop()
+            stop(thread)
 
 
 def get_date(full=False):
@@ -240,7 +265,7 @@ class DevConsole(Cmd):
         channels = pubnub.get_channel_array()
         channels_str = ",".join(channels)
         sl = self.channel_truncation
-        if len(channels) > 0 and sl > 0:
+        if len(channels) > int(sl) and int(sl) > 0:
             cho += ",".join(channels[:int(sl)]) + " " + str(len(channels) - int(sl)) + " more..."
         else:
             cho += ",".join(channels)

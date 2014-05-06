@@ -140,14 +140,20 @@ def _subscribe_command_handler(channel):
     pubnub.subscribe(channel, _callback, _error,connect=_connect, disconnect=_disconnect, reconnect=_reconnect)
 
 
-def _unsubscribe_command_handler(channel):
+def _unsubscribe_command_handler(channels):
 
     def _callback(r):
         print_ok(r)
 
     def _error(r):
         print_error(r)
-    pubnub.unsubscribe(channel)
+    if not isinstance(channels,list):
+        ch = []
+        ch.append(channels)
+        channels = ch
+
+    for channel in channels:
+        pubnub.unsubscribe(channel)
 
 
 def _grant_command_handler(channel, auth_key, read, write, ttl,async=False):
@@ -230,7 +236,9 @@ class DevConsole(Cmd):
         if len(channels) > 0:
             cho = color.colorize(cho,"bold") + "@"
 
-        return cho + color.colorize(pubnub.get_origin(),"blue") + "] > "
+        origin = pubnub.get_origin().split("://")[1]
+        origin += color.colorize(" (SSL)","green") if pubnub.get_origin().split("://")[0] == "https" else ""
+        return cho + color.colorize(origin,"blue") + "] > "
 
 
     def get_prompt(self):
@@ -277,7 +285,7 @@ class DevConsole(Cmd):
                 opts.ssl,
                 opts.origin,
                 opts.uuid)
-        self.prompt = "(PubNub Console) [" + color.colorize(pubnub.get_origin(),"blue") + "] > "
+        self.prompt = self.get_prompt()
 
 
     def do_set_sync(self, command):
@@ -399,10 +407,14 @@ class DevConsole(Cmd):
         _audit_command_handler(opts.channel, opts.auth_key,async=self.async)
 
 
-    @options([make_option('-c', '--channel', action="store", help="Channel for unsubscribe")
+    @options([make_option('-c', '--channel', action="store", help="Channel for unsubscribe"),
+            make_option('-a', '--all', action="store_true", dest="all",
+                default=False, help="Unsubscribe from all channels")
          ])
     def do_unsubscribe(self, command, opts):
         opts.channel = self.default_channel if opts.channel is None else opts.channel
+        if (opts.all is True):
+            opts.channel = pubnub.get_channel_array()
         if opts.channel is None:
             print_error("Missing channel")
             return

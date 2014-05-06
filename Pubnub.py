@@ -504,7 +504,7 @@ class PubnubBase(object):
             'subscribe_key': self.subscribe_key,
             'callback': self._return_wrapped_callback(callback)})
 
-    def here_now(self, channel, callback, error=None):
+    def here_now(self, channel, callback=None, error=None):
         """
         #**
         #* Here Now
@@ -557,6 +557,7 @@ class PubnubBase(object):
         params['reverse'] = reverse
         params['start'] = start
         params['end'] = end
+        params['auth_key'] = self.auth_key
 
         ## Get History
         return self._request({'urlcomponents': [
@@ -566,7 +567,7 @@ class PubnubBase(object):
             self.subscribe_key,
             'channel',
             channel,
-        ], 'urlparams': {'auth': self.auth_key}},
+        ], 'urlparams': params},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
@@ -1137,7 +1138,6 @@ def _requests_request(url, timeout=320):
         #print('timeout');
         msg = str(error)
         return (json.dumps(msg), 0)
-
     return (resp.text, resp.status_code)
 
 

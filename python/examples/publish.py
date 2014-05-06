@@ -20,13 +20,18 @@ ssl_on = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 ## -----------------------------------------------------------------------
 pubnub = Pubnub(publish_key=publish_key, subscribe_key=subscribe_key,
                 secret_key=secret_key, cipher_key=cipher_key, ssl_on=ssl_on)
-crazy = 'hello_world'
+channel  = 'hello_world'
+message  = 'Hello World !!!'
 
 
-def print_cb(message):
+
+# Synchronous usage
+
+print pubnub.publish(channel, message)
+
+# Asynchronous usage
+
+def callback(message):
     print(message)
 
-pubnub.here_now({
-    'channel': crazy,
-    'callback': print_cb
-})
+pubnub.publish(channel, message, callback=callback, error=callback)

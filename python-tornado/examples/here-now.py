@@ -5,9 +5,6 @@
 ## Copyright (c) 2010 Stephen Blum
 ## http://www.pubnub.com/
 
-## -----------------------------------
-## PubNub 3.1 Real-time Push Cloud API
-## -----------------------------------
 
 import sys
 from Pubnub import PubnubTornado as Pubnub
@@ -21,23 +18,16 @@ ssl_on = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 ## -----------------------------------------------------------------------
 ## Initiate Pubnub State
 ## -----------------------------------------------------------------------
-pubnub = Pubnub(publish_key, subscribe_key, secret_key, cipher_key, ssl_on)
-crazy = 'hello_world'
-
-## -----------------------------------------------------------------------
-## History Example
-## -----------------------------------------------------------------------
+pubnub = Pubnub(publish_key=publish_key, subscribe_key=subscribe_key,
+                secret_key=secret_key, cipher_key=cipher_key, ssl_on=ssl_on)
+channel = 'hello_world'
 
 
-def here_now_complete(messages):
-    print(messages)
-    print(type(messages))
-    pubnub.stop()
+# Asynchronous usage
 
-pubnub.here_now(
-    channel=crazy, callback=here_now_complete, error=here_now_complete)
+def callback(message):
+    print(message)
 
-## -----------------------------------------------------------------------
-## IO Event Loop
-## -----------------------------------------------------------------------
+pubnub.here_now(channel, callback=callback, error=callback)
+
 pubnub.start()

@@ -212,6 +212,14 @@ def kill_all_threads():
             thread._Thread__stop()
 
 
+def get_date(full=False):
+    if full is True:
+        return color.colorize("[" + datetime.now().strftime(
+            '%Y-%m-%d %H:%M:%S') + "] ", "magenta")
+    else: 
+        return color.colorize("[" + datetime.now().strftime(
+            '%H:%M:%S') + "] ", "magenta")  
+
 
 class DevConsole(Cmd):
     
@@ -222,14 +230,18 @@ class DevConsole(Cmd):
         self.default_channel = None
         self.async = False
         pubnub = Pubnub("demo", "demo")
+        self.full_date = False
+        self.channel_truncation = 3
         self.prompt = self.get_prompt()
+
 
     def get_channel_origin(self):
         cho = " ["
         channels = pubnub.get_channel_array()
         channels_str = ",".join(channels)
-        if len(channels) > 3:
-            cho += ",".join(channels[:3]) + " " + str(len(channels) - 3) + " more..."
+        sl = self.channel_truncation
+        if len(channels) > 0 and sl > 0:
+            cho += ",".join(channels[:int(sl)]) + " " + str(len(channels) - int(sl)) + " more..."
         else:
             cho += ",".join(channels)
 
@@ -242,8 +254,8 @@ class DevConsole(Cmd):
 
 
     def get_prompt(self):
-        prompt = color.colorize("[" + datetime.now().strftime(
-        '%Y-%m-%d %H:%M:%S') + "] ", "magenta")
+        prompt = get_date(self.full_date)
+
         if self.default_channel is not None and len(self.default_channel) > 0:
             prompt += " [default channel: " + color.colorize(self.default_channel,"bold") + "]"
          
@@ -298,6 +310,33 @@ class DevConsole(Cmd):
         Set Async mode"""
         self.async = True
 
+    @options([make_option('-n', '--count', action="store", default=3, help="Number of channels on prompt")
+     ])
+    def do_set_channel_truncation(self, command, opts):
+        """set_channel_truncation
+        Set Channel Truncation"""
+
+        self.channel_truncation = opts.count
+
+        self.prompt = self.get_prompt()
+
+    def do_unset_channel_truncation(self, command):
+        """unset_channel_truncation
+        Unset Channel Truncation"""
+        self.channel_truncation = 0
+        self.prompt = self.get_prompt()
+
+    def do_set_full_date(self, command):
+        """do_set_full_date
+        Set Full Date"""
+        self.full_date = True
+        self.prompt = self.get_prompt()
+
+    def do_unset_full_date(self, command):
+        """do_unset_full_date
+        Unset Full Date"""
+        self.full_date = False
+        self.prompt = self.get_prompt()
 
     @options([make_option('-c', '--channel', action="store", help="Default Channel")
      ])

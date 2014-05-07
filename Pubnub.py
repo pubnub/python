@@ -115,6 +115,13 @@ except ImportError:
 #######################################
 
 
+def get_data_for_user(data):
+    if 'message' in data and 'payload' in data:
+        return {'message': data['message'], 'payload': data['payload']}
+    else:
+        return data
+
+
 class PubnubCrypto2():
     """
     #**
@@ -757,9 +764,9 @@ class PubnubCoreAsync(PubnubBase):
         def _invoke(func, msg=None, channel=None):
             if func is not None:
                 if msg is not None and channel is not None:
-                    func(msg, channel)
+                    func(get_data_for_user(msg), channel)
                 elif msg is not None:
-                    func(msg)
+                    func(get_data_for_user(msg))
                 else:
                     func()
 
@@ -1065,7 +1072,7 @@ class HTTPClient:
 
         def _invoke(func, data):
             if func is not None:
-                func(data)
+                func(get_data_for_user(data))
 
         if self._urllib_func is None:
             return
@@ -1132,15 +1139,11 @@ def _requests_request(url, timeout=320):
     try:
         resp = s.get(url, timeout=timeout)
     except requests.exceptions.HTTPError as http_error:
-        print http_error
         resp = http_error
     except requests.exceptions.ConnectionError as error:
-        print error
         msg = str(error)
         return (json.dumps(msg), 0)
     except requests.exceptions.Timeout as error:
-        print(error)
-        #print('timeout');
         msg = str(error)
         return (json.dumps(msg), 0)
     return (resp.text, resp.status_code)
@@ -1242,7 +1245,7 @@ class PubnubAsync(PubnubCoreAsync):
 
     def _request(self, request, callback=None, error=None, single=False):
         if callback is None:
-            return self._request_sync(request)
+            return get_data_for_user(self._request_sync(request))
         else:
             self._request_async(request, callback, error, single=single)
 
@@ -1313,7 +1316,7 @@ class PubnubTwisted(PubnubCoreAsync):
 
         def _invoke(func, data):
             if func is not None:
-                func(data)
+                func(get_data_for_user(data))
 
         ## Build URL
 
@@ -1418,7 +1421,7 @@ class PubnubTornado(PubnubCoreAsync):
 
         def _invoke(func, data):
             if func is not None:
-                func(data)
+                func(get_data_for_user(data))
 
         url = self.getUrl(request)
         request = tornado.httpclient.HTTPRequest(

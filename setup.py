@@ -6,7 +6,7 @@ setup(
     description='PubNub Real-time push service in the cloud',
     author='Stephen Blum',
     author_email='support@pubnub.com',
-    url='http://pubnub.s3.amazonaws.com/pip/pubnub-3.3.5.tar.gz',
+    url='https://github.com/pubnub/python/raw/async/dist/pubnub-3.5.0-beta.tar.gz',
     py_modules=['Pubnub'],
     license='MIT',
     classifiers=(

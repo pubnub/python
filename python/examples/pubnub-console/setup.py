@@ -6,7 +6,7 @@ setup(
     description='PubNub Developer Console',
     author='Stephen Blum',
     author_email='support@pubnub.com',
-    url='http://pubnub.s3.amazonaws.com/pip/pubnub-3.3.5.tar.gz',
+    url='https://github.com/pubnub/python/raw/async/python/examples/pubnub-console/dist/pubnub-console-3.5.0-beta.tar.gz',
     scripts=['pubnub-console'],
     license='MIT',
     classifiers=(

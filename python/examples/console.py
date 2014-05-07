@@ -328,9 +328,8 @@ class DevConsole(Cmd):
         self.prompt = self.get_prompt()
         return line
 
-    def emptyline(self):
-        self.prompt = get_date() + " [" + color.colorize(
-            pubnub.get_origin(), "blue") + "] > "
+    #def emptyline(self):
+    #    self.prompt = self.get_prompt()
 
     def cmdloop_with_keyboard_interrupt(self):
         try:
@@ -490,7 +489,10 @@ class DevConsole(Cmd):
                           action='store_true',
                           default=False, help="Write ?"),
               make_option('-t', '--ttl', action="store",
-                          default=5, help="TTL")
+                          default=5, help="TTL"),
+              make_option('-p', '--presence', action="store_true",
+                          dest="presence",
+                          default=False, help="Grant on presence channel ?")
               ])
     def do_grant(self, command, opts):
         opts.channel = self.default_channel \
@@ -506,12 +508,20 @@ class DevConsole(Cmd):
                                opts.read, opts.write,
                                opts.ttl, async=self.async)
 
+        if opts.presence is True:
+            _grant_command_handler(opts.channel + '-pnpres', opts.auth_key,
+                                   opts.read, opts.write,
+                                   opts.ttl, async=self.async)
+
     @options([make_option('-c', '--channel', action="store",
                           help="Channel on which to revoke"),
               make_option('-a', '--auth-key', dest="auth_key", action="store",
                           help="Auth Key"),
               make_option('-t', '--ttl', action="store",
-                          default=5, help="TTL")
+                          default=5, help="TTL"),
+              make_option('-p', '--presence', action="store_true",
+                          dest="presence",
+                          default=False, help="Revoke on presence channel ?")
               ])
     def do_revoke(self, command, opts):
         opts.channel = self.default_channel \
@@ -525,6 +535,11 @@ class DevConsole(Cmd):
 
         _revoke_command_handler(
             opts.channel, opts.auth_key, opts.ttl, async=self.async)
+
+        if opts.presence is True:
+            _revoke_command_handler(
+                opts.channel + '-pnpres', opts.auth_key,
+                opts.ttl, async=self.async)
 
     @options([make_option('-c', '--channel', action="store",
                           help="Channel on which to revoke"),
@@ -589,12 +604,12 @@ class DevConsole(Cmd):
         kill_all_threads()
         return -1
 
-    def do_EOF(self, args):
-        kill_all_threads()
-        return self.do_exit(args)
+    #def do_EOF(self, args):
+    #    kill_all_threads()
+    #    return self.do_exit(args)
 
-    def handler(self, signum, frame):
-        kill_all_threads()
+    #def handler(self, signum, frame):
+    #    kill_all_threads()
 
 
 def main():

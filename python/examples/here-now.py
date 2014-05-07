@@ -23,12 +23,11 @@ pubnub = Pubnub(publish_key=publish_key, subscribe_key=subscribe_key,
 channel = 'hello_world'
 
 
-
 # Synchronous usage
-
 print pubnub.here_now(channel)
 
 # Asynchronous usage
+
 
 def callback(message):
     print(message)

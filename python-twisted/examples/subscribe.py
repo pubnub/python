@@ -21,28 +21,31 @@ ssl_on = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 pubnub = Pubnub(publish_key=publish_key, subscribe_key=subscribe_key,
                 secret_key=secret_key, cipher_key=cipher_key, ssl_on=ssl_on)
 
-channel  = 'a'
-
+channel = 'a'
 
 
 # Asynchronous usage
-
 def callback(message, channel):
     print(message)
+
 
 def error(message):
     print("ERROR : " + str(message))
 
+
 def connect(message):
     print("CONNECTED")
 
+
 def reconnect(message):
     print("RECONNECTED")
+
 
 def disconnect(message):
     print("DISCONNECTED")
 
 
-pubnub.subscribe(channel, callback=callback, error=callback, connect=connect, reconnect=reconnect, disconnect=disconnect)
+pubnub.subscribe(channel, callback=callback, error=callback,
+                 connect=connect, reconnect=reconnect, disconnect=disconnect)
 
 pubnub.start()

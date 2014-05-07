@@ -1,5 +1,5 @@
 
-## www.pubnub.com - PubNub Real-time push service in the cloud. 
+## www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
 ## PubNub Real-time Push APIs and Notifications Framework
@@ -9,7 +9,6 @@
 ## -----------------------------------
 ## PubNub 3.3.4 Real-time Push Cloud API
 ## -----------------------------------
-
 
 
 try:
@@ -96,14 +95,12 @@ try:
         def getContext(self, hostname, port):
             return ClientContextFactory.getContext(self)
 
-
     class PubNubPamResponse(Protocol):
         def __init__(self, finished):
             self.finished = finished
 
         def dataReceived(self, bytes):
             self.finished.callback(bytes)
-
 
     class PubNubResponse(Protocol):
         def __init__(self, finished):
@@ -760,10 +757,10 @@ class PubnubCoreAsync(PubnubBase):
         def _invoke(func, msg=None, channel=None):
             if func is not None:
                 if msg is not None and channel is not None:
-                    func(msg,channel)
+                    func(msg, channel)
                 elif msg is not None:
                     func(msg)
-                else :
+                else:
                     func()
 
         def _invoke_connect():
@@ -779,7 +776,7 @@ class PubnubCoreAsync(PubnubBase):
                             if chobj['disconnected'] is True:
                                 chobj['disconnected'] = False
                                 _invoke(chobj['reconnect'], chobj['name'])
-        
+
         def _invoke_disconnect():
             if self._channel_list_lock:
                 with self._channel_list_lock:
@@ -805,7 +802,8 @@ class PubnubCoreAsync(PubnubBase):
                 chobj = self.subscriptions[ch]
                 if chobj['subscribed'] is True:
                     return chobj
-        channels = channels if isinstance(channels,list) else channels.split(",")
+        channels = channels if isinstance(
+            channels, list) else channels.split(",")
         for channel in channels:
             ## New Channel?
             if not channel in self.subscriptions or \
@@ -1125,6 +1123,8 @@ def _urllib_request_2(url, timeout=320):
     return (resp.read(), resp.code)
 
 s = requests.Session()
+
+
 def _requests_request(url, timeout=320):
     try:
         resp = s.get(url, timeout=timeout)
@@ -1368,7 +1368,6 @@ class PubnubTwisted(PubnubCoreAsync):
         request.addCallback(complete)
 
         return abort
-
 
 
 # PubnubTornado

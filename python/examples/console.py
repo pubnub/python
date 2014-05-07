@@ -37,11 +37,15 @@ color = Cmd()
 
 stop = None
 
+full_date = False
+
 def stop_2(th):
     th._Thread__stop()
 
 def stop_3(th):
     th._stop()
+
+
 
 def print_console_2(of,message):
     print >>of, message 
@@ -63,11 +67,20 @@ else:
         print_console = print_console_3
         stop = stop_3
 
+
+def get_date():
+    if full_date is True:
+        return color.colorize(datetime.now().strftime(
+            '%Y-%m-%d %H:%M:%S'), "magenta")
+    else: 
+        return color.colorize(datetime.now().strftime(
+            '%H:%M:%S'), "magenta")  
+
+
 def print_ok(msg, channel=None):
     if msg is None:
         return
-    chstr = color.colorize("[" + datetime.now().strftime(
-        '%Y-%m-%d %H:%M:%S') + "] ","magenta")
+    chstr = color.colorize("[" + get_date() + "] ","magenta")
     chstr += color.colorize("[Channel : " + channel + \
         "] " if channel is not None else "", "cyan")
     try:
@@ -79,8 +92,7 @@ def print_ok(msg, channel=None):
 def print_error(msg, channel=None):
     if msg is None:
         return
-    chstr = color.colorize("[" + datetime.now().strftime(
-        '%Y-%m-%d %H:%M:%S') + "] ", "magenta")
+    chstr = color.colorize("[" + get_date() + "] ", "magenta")
     chstr += color.colorize("[Channel : " + channel + \
         "] " if channel is not None else "", "cyan")
     try:
@@ -237,15 +249,6 @@ def kill_all_threads():
             stop(thread)
 
 
-def get_date(full=False):
-    if full is True:
-        return color.colorize("[" + datetime.now().strftime(
-            '%Y-%m-%d %H:%M:%S') + "] ", "magenta")
-    else: 
-        return color.colorize("[" + datetime.now().strftime(
-            '%H:%M:%S') + "] ", "magenta")  
-
-
 class DevConsole(Cmd):
     
     def __init__(self):
@@ -255,7 +258,6 @@ class DevConsole(Cmd):
         self.default_channel = None
         self.async = False
         pubnub = Pubnub("demo", "demo")
-        self.full_date = False
         self.channel_truncation = 3
         self.prompt = self.get_prompt()
 
@@ -279,7 +281,7 @@ class DevConsole(Cmd):
 
 
     def get_prompt(self):
-        prompt = get_date(self.full_date)
+        prompt = "[" + get_date() + "]"
 
         if self.default_channel is not None and len(self.default_channel) > 0:
             prompt += " [default channel: " + color.colorize(self.default_channel,"bold") + "]"
@@ -352,15 +354,17 @@ class DevConsole(Cmd):
         self.prompt = self.get_prompt()
 
     def do_set_full_date(self, command):
+        global full_date
         """do_set_full_date
         Set Full Date"""
-        self.full_date = True
+        full_date = True
         self.prompt = self.get_prompt()
 
     def do_unset_full_date(self, command):
+        global full_date
         """do_unset_full_date
         Unset Full Date"""
-        self.full_date = False
+        full_date = False
         self.prompt = self.get_prompt()
 
     @options([make_option('-c', '--channel', action="store", help="Default Channel")

@@ -203,6 +203,7 @@ def _unsubscribe_command_handler(channels):
 
     for channel in channels:
         pubnub.unsubscribe(channel)
+        pubnub.unsubscribe(channel + '-pnpres')
 
 
 def _grant_command_handler(channel, auth_key, read, write, ttl, async=False):
@@ -271,13 +272,23 @@ def kill_all_threads():
             stop(thread)
 
 
-class DevConsole(Cmd):
+def get_channel_array():
+    channels = pubnub.get_channel_array()
 
+    for channel in channels:
+        if "-pnpres" in channel:
+            i = channels.index(channel.split("-pnpres")[0])
+            channels[i] = channels[i] + color.colorize("(P)", "blue")
+            channels.remove(channel)
+    return channels
+
+
+class DevConsole(Cmd):
     def __init__(self):
         Cmd.__init__(self)
         global pubnub
-        self.intro = "For Help type ? or help . " +
-        "To quit/exit type exit"
+        self.intro = "For Help type ? or help . " + \
+            "To quit/exit type exit"
         self.default_channel = None
         self.async = False
         pubnub = Pubnub("demo", "demo")
@@ -286,7 +297,7 @@ class DevConsole(Cmd):
 
     def get_channel_origin(self):
         cho = " ["
-        channels = pubnub.get_channel_array()
+        channels = get_channel_array()
         channels_str = ",".join(channels)
         sl = self.channel_truncation
         if len(channels) > int(sl) and int(sl) > 0:
@@ -318,7 +329,6 @@ class DevConsole(Cmd):
         return line
 
     def emptyline(self):
-        print('empty line')
         self.prompt = get_date() + " [" + color.colorize(
             pubnub.get_origin(), "blue") + "] > "
 
@@ -553,7 +563,10 @@ class DevConsole(Cmd):
                           help="Channel for subscribe"),
               make_option('-g', '--get-channel-list', action="store_true",
                           dest="get",
-                          default=False, help="Get susbcribed channel list")
+                          default=False, help="Get susbcribed channel list"),
+              make_option('-p', '--presence', action="store_true",
+                          dest="presence",
+                          default=False, help="Presence events ?")
               ])
     def do_subscribe(self, command, opts):
         opts.channel = self.default_channel \
@@ -565,8 +578,11 @@ class DevConsole(Cmd):
         if opts.channel is not None:
             _subscribe_command_handler(opts.channel)
 
+        if opts.presence is True:
+            _subscribe_command_handler(opts.channel + '-pnpres')
+
         if opts.get is True:
-            print_ok(pubnub.get_channel_array())
+            print_ok(get_channel_array())
         self.prompt = self.get_prompt()
 
     def do_exit(self, args):

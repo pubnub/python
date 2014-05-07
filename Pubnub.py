@@ -806,8 +806,9 @@ class PubnubCoreAsync(PubnubBase):
             channels, list) else channels.split(",")
         for channel in channels:
             ## New Channel?
-            if not channel in self.subscriptions or \
-                    self.subscriptions[channel]['subscribed'] is False:
+            if len(channel) > 0 and \
+                    (not channel in self.subscriptions or
+                     self.subscriptions[channel]['subscribed'] is False):
                     with self._channel_list_lock:
                         self.subscriptions[channel] = {
                             'name': channel,
@@ -1131,12 +1132,14 @@ def _requests_request(url, timeout=320):
     try:
         resp = s.get(url, timeout=timeout)
     except requests.exceptions.HTTPError as http_error:
+        print http_error
         resp = http_error
     except requests.exceptions.ConnectionError as error:
+        print error
         msg = str(error)
         return (json.dumps(msg), 0)
     except requests.exceptions.Timeout as error:
-        #print(error);
+        print(error)
         #print('timeout');
         msg = str(error)
         return (json.dumps(msg), 0)

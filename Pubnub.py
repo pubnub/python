@@ -3,11 +3,11 @@
 # coding=utf8
 
 ## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2010 Stephen Blum
+## Copyright (c) 2014-15 Stephen Blum
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.3.4 Real-time Push Cloud API
+## PubNub 3.5.0-beta Real-time Push Cloud API
 ## -----------------------------------
 
 
@@ -123,62 +123,22 @@ def get_data_for_user(data):
 
 
 class PubnubCrypto2():
-    """
-    #**
-    #* PubnubCrypto
-    #*
-    #**
-
-    ## Initiate Class
-    pc = PubnubCrypto
-
-    """
 
     def pad(self, msg, block_size=16):
-        """
-        #**
-        #* pad
-        #*
-        #* pad the text to be encrypted
-        #* appends a padding character to the end of the String
-        #* until the string has block_size length
-        #* @return msg with padding.
-        #**
-        """
+
         padding = block_size - (len(msg) % block_size)
         return msg + chr(padding) * padding
 
     def depad(self, msg):
-        """
-        #**
-        #* depad
-        #*
-        #* depad the decryptet message"
-        #* @return msg without padding.
-        #**
-        """
+
         return msg[0:-ord(msg[-1])]
 
     def getSecret(self, key):
-        """
-        #**
-        #* getSecret
-        #*
-        #* hases the key to MD5
-        #* @return key in MD5 format
-        #**
-        """
+
         return hashlib.sha256(key).hexdigest()
 
     def encrypt(self, key, msg):
-        """
-        #**
-        #* encrypt
-        #*
-        #* encrypts the message
-        #* @return message in encrypted format
-        #**
-        """
+
         secret = self.getSecret(key)
         Initial16bytes = '0123456789012345'
         cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
@@ -186,14 +146,7 @@ class PubnubCrypto2():
         return enc
 
     def decrypt(self, key, msg):
-        """
-        #**
-        #* decrypt
-        #*
-        #* decrypts the message
-        #* @return message in decryped format
-        #**
-        """
+
         secret = self.getSecret(key)
         Initial16bytes = '0123456789012345'
         cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
@@ -201,62 +154,22 @@ class PubnubCrypto2():
 
 
 class PubnubCrypto3():
-    """
-    #**
-    #* PubnubCrypto
-    #*
-    #**
-
-    ## Initiate Class
-    pc = PubnubCrypto
-
-    """
 
     def pad(self, msg, block_size=16):
-        """
-        #**
-        #* pad
-        #*
-        #* pad the text to be encrypted
-        #* appends a padding character to the end of the String
-        #* until the string has block_size length
-        #* @return msg with padding.
-        #**
-        """
+
         padding = block_size - (len(msg) % block_size)
         return msg + (chr(padding) * padding).encode('utf-8')
 
     def depad(self, msg):
-        """
-        #**
-        #* depad
-        #*
-        #* depad the decryptet message"
-        #* @return msg without padding.
-        #**
-        """
+
         return msg[0:-ord(msg[-1])]
 
     def getSecret(self, key):
-        """
-        #**
-        #* getSecret
-        #*
-        #* hases the key to MD5
-        #* @return key in MD5 format
-        #**
-        """
+
         return hashlib.sha256(key.encode("utf-8")).hexdigest()
 
     def encrypt(self, key, msg):
-        """
-        #**
-        #* encrypt
-        #*
-        #* encrypts the message
-        #* @return message in encrypted format
-        #**
-        """
+
         secret = self.getSecret(key)
         Initial16bytes = '0123456789012345'
         cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
@@ -264,14 +177,7 @@ class PubnubCrypto3():
             cipher.encrypt(self.pad(msg.encode('utf-8')))).decode('utf-8')
 
     def decrypt(self, key, msg):
-        """
-        #**
-        #* decrypt
-        #*
-        #* decrypts the message
-        #* @return message in decryped format
-        #**
-        """
+
         secret = self.getSecret(key)
         Initial16bytes = '0123456789012345'
         cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
@@ -291,25 +197,20 @@ class PubnubBase(object):
         origin='pubsub.pubnub.com',
         UUID=None
     ):
-        """
-        #**
-        #* Pubnub
-        #*
-        #* Init the Pubnub Client API
-        #*
-        #* @param string publish_key required key to send messages.
-        #* @param string subscribe_key required key to receive messages.
-        #* @param string secret_key optional key to sign messages.
-        #* @param boolean ssl required for 2048 bit encrypted messages.
-        #* @param string origin PUBNUB Server Origin.
-        #* @param string pres_uuid optional identifier
-        #*    for presence (auto-generated if not supplied)
-        #**
+        """Pubnub Class
 
-        ## Initiat Class
-        pubnub = Pubnub( 'PUBLISH-KEY', 'SUBSCRIBE-KEY', 'SECRET-KEY', False )
+        Provides methods to communicate with Pubnub cloud
 
+        Attributes:
+            publish_key: Publish Key
+            subscribe_key: Subscribe Key
+            secret_key: Secret Key
+            cipher_key: Cipher Key
+            auth_key: Auth Key (used with Pubnub Access Manager i.e. PAM)
+            ssl: SSL enabled ? 
+            origin: Origin
         """
+
         self.origin = origin
         self.limit = 1800
         self.publish_key = publish_key
@@ -341,7 +242,6 @@ class PubnubBase(object):
             raise AttributeError("pres_uuid must be a string")
 
     def _pam_sign(self, msg):
-        """Calculate a signature by secret key and message."""
 
         return urlsafe_b64encode(hmac.new(
             self.secret_key.encode("utf-8"),
@@ -350,7 +250,6 @@ class PubnubBase(object):
         ).digest())
 
     def _pam_auth(self, query, apicode=0, callback=None, error=None):
-        """Issue an authenticated request."""
 
         if 'timestamp' not in query:
             query['timestamp'] = int(time.time())
@@ -384,38 +283,226 @@ class PubnubBase(object):
             self._return_wrapped_callback(error))
 
     def get_origin(self):
+
         return self.origin
 
-    def grant(self, channel, authkey=False, read=True,
+    def grant(self, channel, auth_key=False, read=True,
               write=True, ttl=5, callback=None, error=None):
-        """Grant Access on a Channel."""
+        """Method for granting permissions.
+
+        This function establishes subscribe and/or write permissions for
+        PubNub Access Manager (PAM) by setting the read or write attribute
+        to true. A grant with read or write set to false (or not included)
+        will revoke any previous grants with read or write set to true.
+
+        Permissions can be applied to any one of three levels:
+            1. Application level privileges are based on subscribe_key applying to all associated channels.
+            2. Channel level privileges are based on a combination of subscribe_key and channel name.
+            3. User level privileges are based on the combination of subscribe_key, channel and auth_key.
+
+        Args:
+            channel:    (string) (optional)
+                        Specifies channel name to grant permissions to.
+                        If channel is not specified, the grant applies to all
+                        channels associated with the subscribe_key. If auth_key
+                        is not specified, it is possible to grant permissions to
+                        multiple channels simultaneously by specifying the channels
+                        as a comma separated list.
+
+            auth_key:   (string) (optional) 
+                        Specifies auth_key to grant permissions to.
+                        It is possible to specify multiple auth_keys as comma
+                        separated list in combination with a single channel name.
+                        If auth_key is provided as the special-case value "null" 
+                        (or included in a comma-separated list, eg. "null,null,abc"), 
+                        a new auth_key will be generated and returned for each "null" value.
+
+            read:       (boolean) (default: True)
+                        Read permissions are granted by setting to True.
+                        Read permissions are removed by setting to False.
+
+            write:      (boolean) (default: True)
+                        Write permissions are granted by setting to true.
+                        Write permissions are removed by setting to false.
+
+            ttl:        (int) (default: 1440 i.e 24 hrs)
+                        Time in minutes for which granted permissions are valid.
+                        Max is 525600 , Min is 1.
+                        Setting ttl to 0 will apply the grant indefinitely.
+
+            callback:   (function) (optional)
+                        A callback method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado 
+
+            error:      (function) (optional)
+                        An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Returns a dict in sync mode i.e. when callback argument is not given
+            The dict returned contains values with keys 'message' and 'payload'
+
+            Sample Response:
+            {
+                "message":"Success",
+                "payload":{
+                    "ttl":5,
+                    "auths":{
+                        "my_ro_authkey":{"r":1,"w":0}
+                    },
+                    "subscribe_key":"my_subkey",
+                    "level":"user",
+                    "channel":"my_channel"
+                }
+            }
+        """
 
         return self._pam_auth({
             "channel": channel,
-            "auth": authkey,
+            "auth": auth_key,
             "r": read and 1 or 0,
             "w": write and 1 or 0,
             "ttl": ttl
         }, callback=callback, error=error)
 
-    def revoke(self, channel, authkey=False, ttl=1, callback=None, error=None):
-        """Revoke Access on a Channel."""
+    def revoke(self, channel, auth_key=False, ttl=1, callback=None, error=None):
+        """Method for revoking permissions.
+
+        Args:
+            channel:    (string) (optional)
+                        Specifies channel name to revoke permissions to.
+                        If channel is not specified, the revoke applies to all
+                        channels associated with the subscribe_key. If auth_key
+                        is not specified, it is possible to grant permissions to
+                        multiple channels simultaneously by specifying the channels
+                        as a comma separated list.
+
+            auth_key:   (string) (optional) 
+                        Specifies auth_key to revoke permissions to.
+                        It is possible to specify multiple auth_keys as comma
+                        separated list in combination with a single channel name.
+                        If auth_key is provided as the special-case value "null" 
+                        (or included in a comma-separated list, eg. "null,null,abc"), 
+                        a new auth_key will be generated and returned for each "null" value.
+
+            ttl:        (int) (default: 1440 i.e 24 hrs)
+                        Time in minutes for which granted permissions are valid.
+                        Max is 525600 , Min is 1.
+                        Setting ttl to 0 will apply the grant indefinitely.
+
+            callback:   (function) (optional)
+                        A callback method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado 
+
+            error:      (function) (optional)
+                        An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Returns a dict in sync mode i.e. when callback argument is not given
+            The dict returned contains values with keys 'message' and 'payload'
+
+            Sample Response:
+            {
+                "message":"Success",
+                "payload":{
+                    "ttl":5,
+                    "auths":{
+                        "my_authkey":{"r":0,"w":0}
+                    },
+                    "subscribe_key":"my_subkey",
+                    "level":"user",
+                    "channel":"my_channel"
+                }
+            }
+
+        """
 
         return self._pam_auth({
             "channel": channel,
-            "auth": authkey,
+            "auth": auth_key,
             "r": 0,
             "w": 0,
             "ttl": ttl
         }, callback=callback, error=error)
 
-    def audit(self, channel=False, authkey=False, callback=None, error=None):
+    def audit(self, channel=False, auth_key=False, callback=None, error=None):
+        """Method for fetching permissions from pubnub servers.
+
+        This method provides a mechanism to reveal existing PubNub Access Manager attributes
+        for any combination of subscribe_key, channel and auth_key.
+
+        Args:
+            channel:    (string) (optional)
+                        Specifies channel name to return PAM 
+                        attributes optionally in combination with auth_key.
+                        If channel is not specified, results for all channels
+                        associated with subscribe_key are returned.
+                        If auth_key is not specified, it is possible to return
+                        results for a comma separated list of channels.
+
+            auth_key:   (string) (optional) 
+                        Specifies the auth_key to return PAM attributes for.
+                        If only a single channel is specified, it is possible to return
+                        results for a comma separated list of auth_keys.
+
+            callback:   (function) (optional) 
+                        A callback method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado 
+
+            error:      (function) (optional)
+                        An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Returns a dict in sync mode i.e. when callback argument is not given
+            The dict returned contains values with keys 'message' and 'payload'
+
+            Sample Response
+            {
+                "message":"Success",
+                "payload":{
+                    "channels":{
+                        "my_channel":{
+                            "auths":{"my_ro_authkey":{"r":1,"w":0},
+                            "my_rw_authkey":{"r":0,"w":1},
+                            "my_admin_authkey":{"r":1,"w":1}
+                        }
+                    }
+                },
+            }
+
+        Usage:
+
+             pubnub.audit ('my_channel');  # Sync Mode 
+
+        """
+
         return self._pam_auth({
             "channel": channel,
-            "auth": authkey
+            "auth": auth_key
         }, 1, callback=callback, error=error)
 
     def encrypt(self, message):
+        """Method for encrypting data.
+
+        This method takes plaintext as input and returns encrypted data.
+        This need not be called directly as enncryption/decryption is
+        taken care of transparently by Pubnub class if cipher key is 
+        provided at time of initializing pubnub object
+
+        Args:
+            message: Message to be encrypted.
+
+        Returns:
+            Returns encrypted message if cipher key is set
+        """
         if self.cipher_key:
             message = json.dumps(self.pc.encrypt(
                 self.cipher_key, json.dumps(message)).replace('\n', ''))
@@ -425,6 +512,19 @@ class PubnubBase(object):
         return message
 
     def decrypt(self, message):
+        """Method for decrypting data.
+
+        This method takes ciphertext as input and returns decrypted data.
+        This need not be called directly as enncryption/decryption is
+        taken care of transparently by Pubnub class if cipher key is 
+        provided at time of initializing pubnub object
+
+        Args:
+            message: Message to be decrypted.
+
+        Returns:
+            Returns decrypted message if cipher key is set
+        """
         if self.cipher_key:
             message = self.pc.decrypt(self.cipher_key, message)
 
@@ -445,24 +545,43 @@ class PubnubBase(object):
             return None
 
     def publish(self, channel, message, callback=None, error=None):
-        """
-        #**
-        #* Publish
-        #*
-        #* Send a message to a channel.
-        #*
-        #* @param array args with channel and message.
-        #* @return array success information.
-        #**
+        """Publishes data on a channel.
 
-        ## Publish Example
-        info = pubnub.publish({
-            'channel' : 'hello_world',
-            'message' : {
-                'some_text' : 'Hello my World'
-            }
-        })
-        print(info)
+        The publish() method is used to send a message to all subscribers of a channel.
+        To publish a message you must first specify a valid publish_key at initialization.
+        A successfully published message is replicated across the PubNub Real-Time Network
+        and sent simultaneously to all subscribed clients on a channel.
+            Messages in transit can be secured from potential eavesdroppers with SSL/TLS by
+        setting ssl to True during initialization.
+
+        Published messages can also be encrypted with AES-256 simply by specifying a cipher_key
+        during initialization.
+
+        Args:
+            channel:    (string)
+                        Specifies channel name to publish messages to.
+            message:    (string/int/double/dict/list)
+                        Message to be published
+            callback:   (optional)
+                        A callback method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado
+            error:      (optional)
+                        An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado
+
+        Returns:
+            Sync Mode  : list
+            Async Mode : None
+
+            The function returns the following formatted response:
+
+                [ Number, "Status", "Time Token"]
+            
+            The output below demonstrates the response to a successful call:
+
+                [1,"Sent","13769558699541401"]
 
         """
 
@@ -482,26 +601,21 @@ class PubnubBase(object):
             error=self._return_wrapped_callback(error))
 
     def presence(self, channel, callback, error=None):
-        """
-        #**
-        #* presence
-        #*
-        #* This is BLOCKING.
-        #* Listen for presence events on a channel.
-        #*
-        #* @param array args with channel and callback.
-        #* @return false on fail, array on success.
-        #**
+        """Subscribe to presence data on a channel.
+           
+           Only works in async mode
 
-        ## Presence Example
-        def pres_event(message) :
-            print(message)
-            return True
+        Args:
+            channel: Channel name ( string ) on which to publish message
+            callback: A callback method should be passed to the method.
+                      If set, the api works in async mode. 
+                      Required argument when working with twisted or tornado .
+            error: Optional variable. An error method can be passed to the method.
+                      If set, the api works in async mode. 
+                      Required argument when working with twisted or tornado .
 
-        pubnub.presence({
-            'channel'  : 'hello_world',
-            'callback' : receive
-        })
+        Returns:
+            None
         """
         return self.subscribe({
             'channel': channel + '-pnpres',
@@ -509,23 +623,51 @@ class PubnubBase(object):
             'callback': self._return_wrapped_callback(callback)})
 
     def here_now(self, channel, callback=None, error=None):
-        """
-        #**
-        #* Here Now
-        #*
-        #* Load current occupancy from a channel.
-        #*
-        #* @param array args with 'channel'.
-        #* @return mixed false on fail, array on success.
-        #*
+        """Get here now data.
 
-        ## Presence Example
-        here_now = pubnub.here_now({
-            'channel' : 'hello_world',
-        })
-        print(here_now['occupancy'])
-        print(here_now['uuids'])
+        You can obtain information about the current state of a channel including
+        a list of unique user-ids currently subscribed to the channel and the total
+        occupancy count of the channel by calling the here_now() function in your 
+        application.
 
+
+        Args:
+            channel:    (string) (optional)
+                        Specifies the channel name to return occupancy results.
+                        If channel is not provided, here_now will return data for all channels.
+
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Sync  Mode: list
+            Async Mode: None
+
+            Response Format:
+
+            The here_now() method returns a list of uuid s currently subscribed to the channel.
+
+            uuids:["String","String", ... ,"String"] - List of UUIDs currently subscribed to the channel.
+
+            occupancy: Number - Total current occupancy of the channel.
+
+            Example Response:
+            {
+                occupancy: 4,
+                uuids: [
+                    '123123234t234f34fq3dq',
+                    '143r34f34t34fq34q34q3',
+                    '23f34d3f4rq34r34rq23q',
+                    'w34tcw45t45tcw435tww3',
+                ]
+            }
         """
 
         ## Get Presence Here Now
@@ -537,22 +679,54 @@ class PubnubBase(object):
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
+
     def history(self, channel, count=100, reverse=False,
                 start=None, end=None, callback=None, error=None):
-        """
-        #**
-        #* History
-        #*
-        #* Load history from a channel.
-        #*
+        """This method fetches historical messages of a channel.
 
-        ## History Example
-        history = pubnub.detailedHistory({
-            'channel' : 'hello_world',
-            'count'   : 5
-        })
-        print(history)
+        PubNub Storage/Playback Service provides real-time access to an unlimited
+        history for all messages published to PubNub. Stored messages are replicated
+        across multiple availability zones in several geographical data center
+        locations. Stored messages can be encrypted with AES-256 message encryption
+        ensuring that they are not readable while stored on PubNub's network.
 
+        It is possible to control how messages are returned and in what order,
+        for example you can:
+
+            Return messages in the order newest to oldest (default behavior).
+
+            Return messages in the order oldest to newest by setting reverse to true.
+
+            Page through results by providing a start or end time token.
+
+            Retrieve a "slice" of the time line by providing both a start and end time token.
+
+            Limit the number of messages to a specific quantity using the count parameter.
+
+
+
+        Args:
+            channel:    (string)
+                        Specifies channel to return history messages from
+
+            count:      (int) (default: 100)
+                        Specifies the number of historical messages to return
+
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+            error:      (optional)
+                        An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Returns a list in sync mode i.e. when callback argument is not given
+
+            Sample Response:
+                [["Pub1","Pub2","Pub3","Pub4","Pub5"],13406746729185766,13406746845892666]
         """
 
         params = dict()
@@ -576,19 +750,20 @@ class PubnubBase(object):
             error=self._return_wrapped_callback(error))
 
     def time(self, callback=None):
-        """
-        #**
-        #* Time
-        #*
-        #* Timestamp from PubNub Cloud.
-        #*
-        #* @return int timestamp.
-        #*
+        """This function will return a 17 digit precision Unix epoch.
 
-        ## PubNub Server Time Example
-        timestamp = pubnub.time()
-        print(timestamp)
+        Args:
 
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Returns a 17 digit number in sync mode i.e. when callback argument is not given
+
+            Sample:
+                13769501243685161
         """
 
         time = self._request({'urlcomponents': [
@@ -649,23 +824,16 @@ class PubnubCoreAsync(PubnubBase):
         _tt_lock=empty_lock,
         _channel_list_lock=empty_lock
     ):
-        """
-        #**
-        #* Pubnub
-        #*
-        #* Init the Pubnub Client API
-        #*
-        #* @param string publish_key required key to send messages.
-        #* @param string subscribe_key required key to receive messages.
-        #* @param string secret_key required key to sign messages.
-        #* @param boolean ssl required for 2048 bit encrypted messages.
-        #* @param string origin PUBNUB Server Origin.
-        #**
+        """Summary of class here.
 
-        ## Initiat Class
-        pubnub = Pubnub( 'PUBLISH-KEY', 'SUBSCRIBE-KEY', 'SECRET-KEY', False )
+        Longer class information....
+        Longer class information....
 
+        Attributes:
+            likes_spam: A boolean indicating if we like SPAM or not.
+            eggs: An integer count of the eggs we have laid.
         """
+
         super(PubnubCoreAsync, self).__init__(
             publish_key=publish_key,
             subscribe_key=subscribe_key,
@@ -703,6 +871,14 @@ class PubnubCoreAsync(PubnubBase):
         return channel
 
     def get_channel_array(self):
+        """Get List of currently subscribed channels
+
+        Returns:
+            Returns a list containing names of channels subscribed
+
+            Sample return value:
+                ["a","b","c]
+        """
         channels = self.subscriptions
         channel = []
         with self._channel_list_lock:
@@ -720,36 +896,37 @@ class PubnubCoreAsync(PubnubBase):
 
     def subscribe(self, channels, callback, error=None,
                   connect=None, disconnect=None, reconnect=None, sync=False):
-        """
-        #**
-        #* Subscribe
-        #*
-        #* This is NON-BLOCKING.
-        #* Listen for a message on a channel.
-        #*
-        #* @param array args with channel and message.
-        #* @return false on fail, array on success.
-        #**
+        """Subscribe to data on a channel.
 
-        ## Subscribe Example
-        def receive(message) :
-            print(message)
-            return True
+        This function causes the client to create an open TCP socket to the
+        PubNub Real-Time Network and begin listening for messages on a specified channel.
+        To subscribe to a channel the client must send the appropriate subscribe_key at
+        initialization.
+        
+        Only works in async mode
 
-        ## On Connect Callback
-        def connected() :
-            pubnub.publish({
-                'channel' : 'hello_world',
-                'message' : { 'some_var' : 'text' }
-            })
+        Args:
+            channel:    (string/list)
+                        Specifies the channel to subscribe to. It is possible to specify
+                        multiple channels as a comma separated list or andarray.
 
-        ## Subscribe
-        pubnub.subscribe({
-            'channel'  : 'hello_world',
-            'connect'  : connected,
-            'callback' : receive
-        })
+            callback:   (function)
+                        This callback is called on receiving a message from the channel.
 
+            error:      (function) (optional)
+                        This callback is called on an error event
+
+            connect:    (function) (optional)
+                        This callback is called on a successful connection to the PubNub cloud
+
+            disconnect: (function) (optional)
+                        This callback is called on client disconnect from the PubNub cloud
+            
+            reconnect:  (function) (optional)
+                        This callback is called on successfully re-connecting to the PubNub cloud
+        
+        Returns:
+            None
         """
 
         with self._tt_lock:
@@ -931,7 +1108,22 @@ class PubnubCoreAsync(PubnubBase):
         self._connect()
 
     def unsubscribe(self, channel):
+        """Subscribe to presence data on a channel.
+           Only works in async mode
 
+        Args:
+            channel: Channel name ( string ) on which to publish message
+            message: Message to be published ( String / int / double / dict / list ).
+            callback: A callback method should be passed to the method.
+                      If set, the api works in async mode. 
+                      Required argument when working with twisted or tornado .
+            error: Optional variable. An error method can be passed to the method.
+                      If set, the api works in async mode. 
+                      Required argument when working with twisted or tornado .
+
+        Returns:
+            Returns a list in sync mode i.e. when callback argument is not given
+        """
         if channel in self.subscriptions is False:
             return False
 
@@ -957,25 +1149,6 @@ class PubnubCore(PubnubCoreAsync):
         origin='pubsub.pubnub.com',
         uuid=None
     ):
-        """
-        #**
-        #* Pubnub
-        #*
-        #* Init the Pubnub Client API
-        #*
-        #* @param string publish_key required key to send messages.
-        #* @param string subscribe_key required key to receive messages.
-        #* @param string secret_key optional key to sign messages.
-        #* @param boolean ssl required for 2048 bit encrypted messages.
-        #* @param string origin PUBNUB Server Origin.
-        #* @param string pres_uuid optional
-        #*  identifier for presence (auto-generated if not supplied)
-        #**
-
-        ## Initiat Class
-        pubnub = Pubnub( 'PUBLISH-KEY', 'SUBSCRIBE-KEY', 'SECRET-KEY', False )
-
-        """
         super(PubnubCore, self).__init__(
             publish_key=publish_key,
             subscribe_key=subscribe_key,

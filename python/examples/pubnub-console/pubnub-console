@@ -9,7 +9,7 @@
 
 
 import sys
-from Pubnub import PubnubAsync as Pubnub
+from Pubnub import Pubnub
 import threading
 from datetime import datetime
 

@@ -283,10 +283,15 @@ class PubnubBase(object):
             self._return_wrapped_callback(error))
 
     def get_origin(self):
-
         return self.origin
 
-    def grant(self, channel, auth_key=False, read=True,
+    def set_auth_key(self, auth_key):
+        self.auth_key = auth_key
+
+    def get_auth_key(self):
+        return auth_key
+
+    def grant(self, channel=None, auth_key=False, read=True,
               write=True, ttl=5, callback=None, error=None):
         """Method for granting permissions.
 
@@ -367,7 +372,7 @@ class PubnubBase(object):
             "ttl": ttl
         }, callback=callback, error=error)
 
-    def revoke(self, channel, auth_key=False, ttl=1, callback=None, error=None):
+    def revoke(self, channel=None, auth_key=None, ttl=1, callback=None, error=None):
         """Method for revoking permissions.
 
         Args:
@@ -430,7 +435,7 @@ class PubnubBase(object):
             "ttl": ttl
         }, callback=callback, error=error)
 
-    def audit(self, channel=False, auth_key=False, callback=None, error=None):
+    def audit(self, channel=None, auth_key=None, callback=None, error=None):
         """Method for fetching permissions from pubnub servers.
 
         This method provides a mechanism to reveal existing PubNub Access Manager attributes
@@ -790,6 +795,7 @@ class PubnubBase(object):
         if ("urlparams" in request):
             url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
                 "urlparams"].items() if y is not None])
+        print url
         return url
 
 
@@ -824,15 +830,6 @@ class PubnubCoreAsync(PubnubBase):
         _tt_lock=empty_lock,
         _channel_list_lock=empty_lock
     ):
-        """Summary of class here.
-
-        Longer class information....
-        Longer class information....
-
-        Attributes:
-            likes_spam: A boolean indicating if we like SPAM or not.
-            eggs: An integer count of the eggs we have laid.
-        """
 
         super(PubnubCoreAsync, self).__init__(
             publish_key=publish_key,
@@ -1250,12 +1247,6 @@ class HTTPClient:
         if self._urllib_func is None:
             return
 
-        '''
-        try:
-            resp = urllib2.urlopen(self.url, timeout=320)
-        except urllib2.HTTPError as http_error:
-            resp = http_error
-        '''
         resp = self._urllib_func(self.url, timeout=320)
         data = resp[0]
         code = resp[1]
@@ -1335,7 +1326,7 @@ _urllib_request = None
 
 #  PubnubAsync
 
-class PubnubAsync(PubnubCoreAsync):
+class Pubnub(PubnubCoreAsync):
     def __init__(
         self,
         publish_key,
@@ -1348,7 +1339,7 @@ class PubnubAsync(PubnubCoreAsync):
         pres_uuid=None,
         pooling=True
     ):
-        super(PubnubAsync, self).__init__(
+        super(Pubnub, self).__init__(
             publish_key=publish_key,
             subscribe_key=subscribe_key,
             secret_key=secret_key,
@@ -1422,31 +1413,6 @@ class PubnubAsync(PubnubCoreAsync):
         else:
             self._request_async(request, callback, error, single=single)
 
-'''
-
-    def _request3_sync( self, request) :
-        ## Build URL
-        url = self.getUrl(request)
-        ## Send Request Expecting JSONP Response
-        try:
-            response = urllib.request.urlopen(url,timeout=310)
-            resp_json = json.loads(response.read().decode("utf-8"))
-        except Exception as e:
-            return None
-
-        return resp_json
-
-    def _request3_async( self, request, callback, single=False ) :
-        pass
-
-    def _request3(self, request, callback=None, single=False):
-        if callback is None:
-            return self._request3_sync(request,single=single)
-        else:
-            self._request3_async(request, callback, single=single)
-            '''
-
-
 # Pubnub Twisted
 
 class PubnubTwisted(PubnubCoreAsync):
@@ -1481,7 +1447,6 @@ class PubnubTwisted(PubnubCoreAsync):
         )
         self.headers = {}
         self.headers['User-Agent'] = ['Python-Twisted']
-        #self.headers['Accept-Encoding'] = [self.accept_encoding]
         self.headers['V'] = [self.version]
 
     def _request(self, request, callback=None, error=None, single=False):

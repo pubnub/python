@@ -116,9 +116,12 @@ except ImportError:
 
 
 def get_data_for_user(data):
-    if 'message' in data and 'payload' in data:
-        return {'message': data['message'], 'payload': data['payload']}
-    else:
+    try:
+        if 'message' in data and 'payload' in data:
+            return {'message': data['message'], 'payload': data['payload']}
+        else:
+            return data
+    except TypeError:
         return data
 
 
@@ -138,7 +141,6 @@ class PubnubCrypto2():
         return hashlib.sha256(key).hexdigest()
 
     def encrypt(self, key, msg):
-
         secret = self.getSecret(key)
         Initial16bytes = '0123456789012345'
         cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
@@ -150,8 +152,11 @@ class PubnubCrypto2():
         secret = self.getSecret(key)
         Initial16bytes = '0123456789012345'
         cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
-        return self.depad((cipher.decrypt(decodestring(msg))))
-
+        plain = self.depad(cipher.decrypt(decodestring(msg)))
+        try:
+            return eval(plain)
+        except SyntaxError:
+            return plain
 
 class PubnubCrypto3():
 
@@ -795,7 +800,7 @@ class PubnubBase(object):
         if ("urlparams" in request):
             url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
                 "urlparams"].items() if y is not None])
-        print url
+        #print url
         return url
 
 

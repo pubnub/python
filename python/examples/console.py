@@ -497,9 +497,6 @@ class DevConsole(Cmd):
     def do_grant(self, command, opts):
         opts.channel = self.default_channel \
             if opts.channel is None else opts.channel
-        if opts.channel is None:
-            print_error("Missing channel")
-            return
 
         opts.auth_key = pubnub.auth_key \
             if opts.auth_key is None else opts.auth_key
@@ -526,9 +523,6 @@ class DevConsole(Cmd):
     def do_revoke(self, command, opts):
         opts.channel = self.default_channel \
             if opts.channel is None else opts.channel
-        if opts.channel is None:
-            print_error("Missing channel")
-            return
 
         opts.auth_key = pubnub.auth_key \
             if opts.auth_key is None else opts.auth_key
@@ -549,9 +543,6 @@ class DevConsole(Cmd):
     def do_audit(self, command, opts):
         opts.channel = self.default_channel \
             if opts.channel is None else opts.channel
-        if opts.channel is None:
-            print_error("Missing channel")
-            return
 
         opts.auth_key = pubnub.auth_key \
             if opts.auth_key is None else opts.auth_key

@@ -204,6 +204,7 @@ def _unsubscribe_command_handler(channels):
     for channel in channels:
         pubnub.unsubscribe(channel)
         pubnub.unsubscribe(channel + '-pnpres')
+    print_ok('Unsubscribed from : ' + str(channels))
 
 
 def _grant_command_handler(channel, auth_key, read, write, ttl, async=False):

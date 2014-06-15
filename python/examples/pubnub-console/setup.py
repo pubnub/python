@@ -19,7 +19,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ),
     install_requires=[
-        'pubnub==3.5.0-beta',
+        'pubnub==3.5.0-beta-1',
         'cmd2>=0.6.7',
         'pygments >= 1.6'
     ],

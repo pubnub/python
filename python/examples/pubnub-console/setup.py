@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub-console',
-    version='3.5.0-beta',
+    version='3.5.0-beta-1',
     description='PubNub Developer Console',
     author='Stephen Blum',
     author_email='support@pubnub.com',
-    url='https://github.com/pubnub/python/raw/async/python/examples/pubnub-console/dist/pubnub-console-3.5.0-beta.tar.gz',
+    url='http://pubnub.com',
     scripts=['pubnub-console'],
     license='MIT',
     classifiers=(
@@ -21,6 +21,7 @@ setup(
     install_requires=[
         'pubnub==3.5.0-beta',
         'cmd2>=0.6.7',
+        'pygments >= 1.6'
     ],
     zip_safe=False,
 )

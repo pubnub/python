@@ -1406,7 +1406,7 @@ class Pubnub(PubnubCoreAsync):
         except ValueError:
             return [0, "JSON Error"]
 
-        if response[1] != 200 and 'status' in resp_json:
+        if response[1] != 200 and 'message' in resp_json and 'payload' in resp_json:
             return {'message': resp_json['message'],
                     'payload': resp_json['payload']}
 

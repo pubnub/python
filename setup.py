@@ -2,11 +2,11 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub',
-    version='3.5.0-beta',
+    version='3.5.0-beta-1',
     description='PubNub Real-time push service in the cloud',
     author='Stephen Blum',
     author_email='support@pubnub.com',
-    url='https://github.com/pubnub/python/raw/async/dist/pubnub-3.5.0-beta.tar.gz',
+    url='http://pubnub.com',
     py_modules=['Pubnub'],
     license='MIT',
     classifiers=(

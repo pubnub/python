@@ -20,6 +20,17 @@ import os
 import readline
 import rlcompleter
 
+import pygments
+from pygments.lexers import JsonLexer
+from pygments.formatters import TerminalFormatter
+
+lexer = JsonLexer()
+formatter = TerminalFormatter()
+def highlight(msg):
+    return pygments.highlight(msg, lexer, formatter)
+
+
+
 historyPath = os.path.expanduser("~/.pubnub_console_history")
 
 
@@ -79,8 +90,7 @@ def get_date():
         return color.colorize(datetime.now().strftime(
             '%H:%M:%S'), "magenta")
 
-
-def print_ok(msg, channel=None):
+def print_ok_normal(msg, channel=None):
     if msg is None:
         return
     chstr = color.colorize("[" + get_date() + "] ", "magenta")
@@ -90,10 +100,11 @@ def print_ok(msg, channel=None):
         print_console(of, (chstr + color.colorize(str(msg), "green")))
     except UnicodeEncodeError as e:
         print_console(of, (msg))
+
     of.flush()
 
 
-def print_error(msg, channel=None):
+def print_error_normal(msg, channel=None):
     if msg is None:
         return
     chstr = color.colorize("[" + get_date() + "] ", "magenta")
@@ -105,6 +116,37 @@ def print_error(msg, channel=None):
     except UnicodeEncodeError as e:
         print_console(of, (msg))
     of.flush()
+
+def print_ok_pretty(msg, channel=None):
+    if msg is None:
+        return
+    chstr = color.colorize("[" + get_date() + "] ", "magenta")
+    chstr += color.colorize("[Channel : " + channel +
+                            "] " if channel is not None else "", "cyan")
+    try:
+        print_console(of, (chstr + highlight(json.dumps(msg, indent=2))))
+    except UnicodeEncodeError as e:
+        print_console(of, (msg))
+
+    of.flush()
+
+
+def print_error_pretty(msg, channel=None):
+    if msg is None:
+        return
+    chstr = color.colorize("[" + get_date() + "] ", "magenta")
+    chstr += color.colorize("[Channel : " + channel +
+                            "] " if channel is not None else "", "cyan")
+    try:
+        print_console(of, (chstr + color.colorize(color.colorize(
+            "ERROR: ", "red"), "bold") +
+            highlight(json.dumps(msg, indent=2))))
+    except UnicodeEncodeError as e:
+        print_console(of, (msg))
+    of.flush()
+
+print_ok = print_ok_pretty
+print_error = print_error_pretty
 
 
 class DefaultPubnub(object):
@@ -295,6 +337,15 @@ class DevConsole(Cmd):
         pubnub = Pubnub("demo", "demo")
         self.channel_truncation = 3
         self.prompt = self.get_prompt()
+        self.publish_key = "demo"
+        self.subscribe_key = "demo"
+        self.origin = "pubsub.pubnub.com"
+        self.auth_key = None
+        self.cipher_key = None
+        self.secret_key = "demo"
+        self.ssl = False
+        self.uuid = None
+        self.disable_pretty = False
 
     def get_channel_origin(self):
         cho = " ["
@@ -341,33 +392,59 @@ class DevConsole(Cmd):
         kill_all_threads()
 
     @options([make_option('-p', '--publish-key', action="store",
-                          default="demo", help="Publish Key"),
+                          default=None, help="Publish Key"),
               make_option('-s', '--subscribe-key', action="store",
-                          default="demo", help="Subscribe Key"),
+                          default=None, help="Subscribe Key"),
               make_option('-k', '--secret-key', action="store",
-                          default="demo", help="cipher Key"),
+                          default=None, help="cipher Key"),
               make_option('-c', '--cipher-key', action="store",
-                          default="", help="Secret Key"),
+                          default=None, help="Secret Key"),
               make_option('-a', '--auth-key', action="store",
                           default=None, help="Auth Key"),
               make_option('--ssl-on', dest='ssl', action='store_true',
                           default=False, help="SSL Enabled ?"),
               make_option('-o', '--origin', action="store",
-                          default="pubsub.pubnub.com", help="Origin"),
+                          default=None, help="Origin"),
               make_option('-u', '--uuid', action="store",
-                          default=None, help="UUID")
+                          default=None, help="UUID"),
+              make_option('--disable-pretty-print', dest='disable_pretty', action='store_true',
+                          default=False, help="Disable Pretty Print ?")
               ])
     def do_init(self, command, opts):
         global pubnub
-        pubnub = Pubnub(opts.publish_key,
-                        opts.subscribe_key,
-                        opts.secret_key,
-                        opts.cipher_key,
-                        opts.auth_key,
-                        opts.ssl,
-                        opts.origin,
-                        opts.uuid)
+        global print_ok
+        global print_error
+        global print_ok_normal
+        global print_error_normal
+        global print_error_pretty
+        global print_ok_pretty
+
+        self.publish_key = opts.publish_key if opts.publish_key is not None else self.publish_key
+        self.subscribe_key = opts.subscribe_key if opts.subscribe_key is not None else self.subscribe_key
+        self.secret_key = opts.secret_key if opts.secret_key is not None else self.secret_key
+        self.cipher_key = opts.cipher_key if opts.cipher_key is not None else self.cipher_key
+        self.auth_key = opts.auth_key if opts.auth_key is not None else self.auth_key
+        self.origin = opts.origin if opts.origin is not None else self.origin
+        self.uuid = opts.uuid if opts.uuid is not None else self.uuid
+        self.ssl = opts.ssl if opts.ssl is not None else self.ssl
+        self.disable_pretty = opts.disable_pretty if opts.disable_pretty is not None else self.disable_pretty
+
+        pubnub = Pubnub(self.publish_key,
+                        self.subscribe_key,
+                        self.secret_key,
+                        self.cipher_key,
+                        self.auth_key,
+                        self.ssl,
+                        self.origin,
+                        self.uuid)
         self.prompt = self.get_prompt()
+
+        if opts.disable_pretty is True:
+            print_ok = print_ok_normal
+            print_error = print_error_normal
+        else:
+            print_ok = print_ok_pretty
+            print_error = print_error_pretty
 
     def do_set_sync(self, command):
         """unset_async

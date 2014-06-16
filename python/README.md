@@ -60,6 +60,16 @@ pubnub.subscribe(channel, callback=callback, error=callback,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
+#### UNSUBSCRIBE
+
+```
+# Listen for Messages
+
+channel = 'hello_world'
+
+pubnub.unsubscribe(channel=channel)
+```
+
 
 #### PRESENCE
 

@@ -1,4 +1,4 @@
-## PubNub 3.3 Web Data Push Cloud-hosted API - PYTHON
+## PubNub 3.5.0 Web Data Push Cloud-hosted API - PYTHON
 #### www.pubnub.com - PubNub Web Data Push Service in the Cloud. 
 #### http://github.com/pubnub/python
 

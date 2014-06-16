@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub',
-    version='3.5.0-beta-1',
+    version='3.5.0',
     description='PubNub Real-time push service in the cloud',
     author='Stephen Blum',
     author_email='support@pubnub.com',
@@ -20,7 +20,7 @@ setup(
     ),
     install_requires=[
         'pycrypto>=2.6.1',
-        'requests'
+        'requests>=2.3.0'
     ],
     zip_safe=False,
 )

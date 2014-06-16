@@ -7,7 +7,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.5.0-beta Real-time Push Cloud API
+## PubNub 3.5.0 Real-time Push Cloud API
 ## -----------------------------------
 
 
@@ -218,6 +218,7 @@ class PubnubBase(object):
         """
 
         self.origin = origin
+        self.version = '3.5.0'
         self.limit = 1800
         self.publish_key = publish_key
         self.subscribe_key = subscribe_key
@@ -850,7 +851,6 @@ class PubnubCoreAsync(PubnubBase):
         self.subscriptions = {}
         self.timetoken = 0
         self.last_timetoken = 0
-        self.version = '3.3.4'
         self.accept_encoding = 'gzip'
         self.SUB_RECEIVER = None
         self._connect = None
@@ -1164,7 +1164,6 @@ class PubnubCore(PubnubCoreAsync):
 
         self.subscriptions = {}
         self.timetoken = 0
-        self.version = '3.4'
         self.accept_encoding = 'gzip'
 
     def subscribe_sync(self, channel, callback, timetoken=0):

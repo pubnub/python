@@ -1,7 +1,7 @@
-## PubNub 3.5.0 Web Data Push Cloud-hosted API - PYTHON
-#### www.pubnub.com - PubNub Web Data Push Service in the Cloud. 
-#### http://github.com/pubnub/python
+## Contact support@pubnub.com for all questions
 
+#### [PubNub](http://www.pubnub.com) Real-time Data Network
+##### Standalone Python Migration
 
 #### Init
 
@@ -201,3 +201,5 @@ def callback(message):
 
 pubnub.history(channel, count=2, callback=callback, error=callback)
 ```
+
+## Contact support@pubnub.com for all questions

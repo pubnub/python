@@ -5,12 +5,14 @@
 
 #### Init
 
-
-
 ```
 
 # Pre 3.5:
-#
+pubnub = Pubnub(
+    "demo",  ## PUBLISH_KEY
+    "demo",  ## SUBSCRIBE_KEY
+    False    ## SSL_ON?
+)
 
 # New in 3.5+
 pubnub = Pubnub(publish_key="demo", subscribe_key="demo", ssl_on=False)
@@ -24,7 +26,11 @@ channel = 'hello_world'
 message = 'Hello World !!!'
 
 # Pre 3.5:
-#
+info = pubnub.publish({
+    'channel' : channel,
+    'message' : message
+})
+print(info)
 
 # New in 3.5+
 
@@ -51,7 +57,16 @@ Pre 3.5.x, subscribe was blocking and would only be terminated via a false retur
 channel = 'hello_world'
 
 # Pre 3.5:
-#
+# Listen for Messages *BLOCKING*
+def receive(message) :
+    print(message)
+    return True
+
+pubnub.subscribe({
+    'channel'  : channel,
+    'callback' : receive 
+})
+
 
 # New in 3.5+
 
@@ -88,21 +103,30 @@ Once subscribed, you can easily, gracefully, unsubscribe:
 
 # New in 3.5+
 
-Unsub example
+pubnub.unsubscribe(channel='hello_world')
 ```
 
 #### PRESENCE
 
 ```
 
+
+channel = 'hello_world'
+
 # Pre 3.5:
-#
+def pres_event(message) :
+    print(message)
+    return True
+
+pubnub.presence({
+    'channel'  : channel,
+    'callback' : receive 
+})
+
 
 # New in 3.5+
 
 # Listen for Presence Event Messages
-
-channel = 'hello_world'
 
 def callback(message, channel):
     print(message)
@@ -121,7 +145,15 @@ pubnub.presence(channel, callback=callback, error=callback)
 ```
 
 # Pre 3.5:
-#
+# Get info on who is here right now!
+
+here_now = pubnub.here_now({
+    'channel' : 'hello_world',
+})
+
+print(here_now['occupancy'])
+print(here_now['uuids'])
+
 
 # New in 3.5+
 
@@ -146,7 +178,14 @@ pubnub.here_now(channel, callback=callback, error=callback)
 ```
 
 # Pre 3.5:
-#
+# Load Previously Published Messages
+history = pubnub.detailedHistory({
+    'channel'   : 'my_channel',
+    'end'       : my_end_time_token, # Optional
+    'start'     : my_start_time_token, # Optional
+    'count'     : num_of_msgs_to_return # Optional, default is 100
+})
+print(history)
 
 # New in 3.5+
 

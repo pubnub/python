@@ -2,15 +2,28 @@
 #### www.pubnub.com - PubNub Web Data Push Service in the Cloud. 
 #### http://github.com/pubnub/python
 
+#### Import
+
+```
+# Pre 3.5:
+from Pubnub import Pubnub
+
+# New in 3.5+
+from Pubnub import PubnubTwisted as Pubnub
+
+```
+
 
 #### Init
-
-
 
 ```
 
 # Pre 3.5:
-#
+pubnub = Pubnub(
+    "demo",  ## PUBLISH_KEY
+    "demo",  ## SUBSCRIBE_KEY
+     False   ## SSL_ON?
+)
 
 # New in 3.5+
 pubnub = Pubnub(publish_key="demo", subscribe_key="demo", ssl_on=False)
@@ -24,14 +37,16 @@ channel = 'hello_world'
 message = 'Hello World !!!'
 
 # Pre 3.5:
-#
+def callback(messages):
+    print(messages)
+
+pubnub.publish( {
+    'channel'  : channel,
+    'message'    : message,
+    'callback' : callback
+})
 
 # New in 3.5+
-
-# Synchronous usage
-print pubnub.publish(channel='hello_world', message='Hello World !!!')
-
-# Asynchronous usage
 
 def callback(message):
     print(message)
@@ -42,7 +57,6 @@ pubnub.publish(channel, message, callback=callback, error=callback)
 
 
 #### SUBSCRIBE
-Pre 3.5.x, subscribe was blocking and would only be terminated via a false return from the callback. In our latest version of the SDK, subscribe is asyncronous, and because of this, usage is a bit different, but the experience is more like our other async SDKs.
 
 ```
 
@@ -51,7 +65,17 @@ Pre 3.5.x, subscribe was blocking and would only be terminated via a false retur
 channel = 'hello_world'
 
 # Pre 3.5:
-#
+def connected() :
+    print('CONNECTED')
+
+def message_received(message):
+    print(message)
+
+pubnub.subscribe({
+    'channel'  : channel,
+    'connect'  : connected,
+    'callback' : message_received
+})
 
 # New in 3.5+
 
@@ -84,11 +108,13 @@ Once subscribed, you can easily, gracefully, unsubscribe:
 
 ```
 # Pre 3.5:
-#
+pubnub.unsubscribe({
+    'channel' : 'hello_world'
+})
 
 # New in 3.5+
 
-Unsub example
+pubnub.unsubscribe(channel='hello_world')
 ```
 
 #### PRESENCE
@@ -111,8 +137,6 @@ def callback(message, channel):
 def error(message):
     print("ERROR : " + str(message))
 
-
-
 pubnub.presence(channel, callback=callback, error=callback)
 ```
 
@@ -120,20 +144,22 @@ pubnub.presence(channel, callback=callback, error=callback)
 
 ```
 
+channel = 'hello_world'
+
 # Pre 3.5:
-#
+def callback(messages):
+    print(messages)
+
+pubnub.here_now( {
+    'channel'  : channel,
+    'callback' : callback
+})
+
 
 # New in 3.5+
 
 # Get info on who is here right now!
 
-channel = 'hello_world'
-
-# Synchronous usage
-print pubnub.here_now(channel)
-
-
-# Asynchronous usage
 
 def callback(message):
     print(message)
@@ -144,21 +170,34 @@ pubnub.here_now(channel, callback=callback, error=callback)
 #### HISTORY
 
 ```
+channel = 'hello_world'
 
 # Pre 3.5:
-#
+def history_complete(messages):
+    print(messages)
+
+pubnub.history( {
+    'channel'  : channel,
+    'limit'    : 2,
+    'callback' : history_complete
+})
+
 
 # New in 3.5+
-
-# Synchronous usage
-
-print pubnub.history(channel, count=2)
-
-# Asynchronous usage
-
 
 def callback(message):
     print(message)
 
 pubnub.history(channel, count=2, callback=callback, error=callback)
+```
+
+#### IO Event Loop
+
+```
+
+# Pre 3.5:
+reactor.run()
+
+# New in 3.5+
+pubnub.start()
 ```

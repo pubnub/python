@@ -11,6 +11,20 @@ from Pubnub import PubnubTornado as Pubnub
 pubnub = Pubnub(publish_key="demo", subscribe_key="demo", ssl_on=False)
 
 
+#### Publish Example
+```
+channel = 'hello_world'
+message = 'Hello World !!!'
+
+# Asynchronous usage
+
+
+def callback(message):
+    print(message)
+
+pubnub.publish(channel, message, callback=callback, error=callback)
+```
+
 #### IO Event Loop
 ##### VERY IMPORTANT TO ADD THIS LINE AT THE VERY BOTTOM!
 

@@ -1,6 +1,7 @@
+## Contact support@pubnub.com with any questions or comments
 
-#### PubNub 3.5.0 Web Data Push Cloud-hosted API 
-#### www.pubnub.com - PubNub Web Data Push Service in the Cloud Clients for Python, including Twisted and Tornado
+#### [PubNub](http://www.pubnub.com) Real-time Data Network
+##### Clients for Python, including Twisted and Tornado
 
 
 ## Installation
@@ -25,3 +26,5 @@ presence etc from command line
 ```
 pip install pubnub-console
 ```
+
+## Contact support@pubnub.com with any questions or comments

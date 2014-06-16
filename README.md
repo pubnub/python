@@ -11,7 +11,7 @@ pip install pubnub==3.5.0
 Examples and instructions for migrating from older versions of sdk are available in 
 README.md, migration.md and examples directories under specific platforms.
 
-Base Python - Everyday python for your scripts and apps](python)
+[Base Python - Everyday python for your scripts and apps](python)
 
 [Tornado - For use with the Python Tornado Framework](tornado)
 

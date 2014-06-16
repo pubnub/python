@@ -40,7 +40,7 @@ message = 'Hello World !!!'
 def callback(messages):
     print(messages)
 
-pubnub.history( {
+pubnub.publish( {
     'channel'  : channel,
     'message'    : message,
     'callback' : callback

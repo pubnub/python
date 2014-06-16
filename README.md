@@ -1,4 +1,4 @@
-## Contact support@pubnub.com with any questions or comments
+## Contact support@pubnub.com for all questions
 
 #### [PubNub](http://www.pubnub.com) Real-time Data Network
 ##### Clients for Python, including Twisted and Tornado
@@ -27,4 +27,4 @@ presence etc from command line
 pip install pubnub-console
 ```
 
-## Contact support@pubnub.com with any questions or comments
+## Contact support@pubnub.com for all questions

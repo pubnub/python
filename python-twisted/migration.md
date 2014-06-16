@@ -1,6 +1,7 @@
-## PubNub 3.5.0 Web Data Push Cloud-hosted API - PYTHON
-#### www.pubnub.com - PubNub Web Data Push Service in the Cloud. 
-#### http://github.com/pubnub/python
+## Contact support@pubnub.com for all questions
+
+#### [PubNub](http://www.pubnub.com) Real-time Data Network
+##### Twisted Migration
 
 #### Import
 
@@ -201,3 +202,4 @@ reactor.run()
 # New in 3.5+
 pubnub.start()
 ```
+## Contact support@pubnub.com for all questions

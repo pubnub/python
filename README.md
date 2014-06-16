@@ -11,8 +11,8 @@
 pip install pubnub==3.5.0
 ```
 
-Examples are available in README and examples directories under specific
-platforms.
+Examples and instructions for migrating from older versions of sdk are available in 
+README.md, migration.md and examples directories under specific platforms.
 
 ### Pubnub Console
 Pubnub console is a command line app which allows you to do various 

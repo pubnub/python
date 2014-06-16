@@ -16,103 +16,63 @@
 ## This is a cloud-based service for broadcasting Real-time messages
 ## to thousands of web and mobile clients simultaneously.
 
-## ----------------------------------------------------
-## Python Twisted Setup
-## ----------------------------------------------------
-## Download BZ2 archive from http://twistedmatrix.com/
-## 
-## > tar xvfj Twisted-12.1.0.tar.bz2
-## > cd Twisted-12.1.0
-## > sudo python setup.py install
-## 
 
-## ----------------------------------------------------
-## Third Party Libraries Dependency
-## ----------------------------------------------------
-## You must download and install,
-##
-## 1. pyopenssl
-## Download from https://launchpad.net/pyopenssl
-##
-## 2. pycrypto
-## Download from https://github.com/dlitz/pycrypto OR
-## from http://code.google.com/p/uploadprj/downloads/detail?name=pycrypto-2.3.win32-py2.7.zip&can=2&q
+from Pubnub import PubnubTwisted as Pubnub
 
 ## ---------------
 ## Python Push API
 ## ---------------
-pubnub = Pubnub(
-    "demo",  ## PUBLISH_KEY
-    "demo",  ## SUBSCRIBE_KEY
-    "demo",  ## SECRET_KEY
-    "",      ## CIPHER_KEY (Cipher key is Optional)
-     False   ## SSL_ON?
-)
+pubnub = Pubnub(publish_key="demo", subscribe_key="demo", ssl_on=False)
 
 ## -----------------------------------------------------------------------
 ## IO Event Loop
 ## -----------------------------------------------------------------------
 ## VERY IMPORTANT TO ADD THIS LINE AT THE VERY BOTTOM!
 ##
-## reactor.run() ## IMPORTANT!
+## pubnub.start() ## IMPORTANT!
 ##
 
 ## -----------------------------------------------------------------------
 ## Subscribe Example
 ## -----------------------------------------------------------------------
 
-def connected() :
-    ## -----------------------------------------------------------------------
-    ## Publish Example
-    ## -----------------------------------------------------------------------
-    def publish_complete(info):
-        print(info)
+channel = 'hello_world'
 
-    pubnub.publish({
-        'channel' : "my-twisted-channel",
-        'message' : {
-            'some_text' : 'Hello World!'
-        },
-        'callback' : publish_complete
-    })
-
-def message_received(message):
+def callback(message, channel):
     print(message)
 
-pubnub.subscribe({
-    'channel'  : "my-twisted-channel",
-    'connect'  : connected,
-    'callback' : message_received
-})
 
-## -----------------------------------------------------------------------
-## Time Example
-## -----------------------------------------------------------------------
-def time_complete(timestamp):
-    print(timestamp)
+def error(message):
+    print("ERROR : " + str(message))
 
-pubnub.time({ 'callback' : time_complete })
+
+def connect(message):
+    print("CONNECTED")
+
+
+def reconnect(message):
+    print("RECONNECTED")
+
+
+def disconnect(message):
+    print("DISCONNECTED")
+
+
+pubnub.subscribe(channel, callback=callback, error=callback,
+                 connect=connect, reconnect=reconnect, disconnect=disconnect)
+
 
 ## -----------------------------------------------------------------------
 ## History Example
 ## -----------------------------------------------------------------------
-def history_complete(messages):
-    print(messages)
+def callback(message):
+    print(message)
 
-pubnub.history( {
-    'channel'  : "my-twisted-channel",
-    'limit'    : 10,
-    'callback' : history_complete
-})
+pubnub.history(channel, count=2, callback=callback, error=callback)
 
-## -----------------------------------------------------------------------
-## UUID Example
-## -----------------------------------------------------------------------
-uuid = pubnub.uuid()
-print "UUID"
-print uuid
+
 
 ## -----------------------------------------------------------------------
 ## IO Event Loop
 ## -----------------------------------------------------------------------
-reactor.run()
+pubnub.start()

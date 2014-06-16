@@ -6,7 +6,7 @@
 ## http://www.pubnub.com/
 
 import sys
-from Pubnub import PubnubAsync as Pubnub
+from Pubnub import Pubnub
 
 from optparse import OptionParser
 

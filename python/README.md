@@ -6,55 +6,78 @@
 #### Init
 
 ```
-pubnub = Pubnub(
-    "demo",  ## PUBLISH_KEY
-    "demo",  ## SUBSCRIBE_KEY
-    None,    ## SECRET_KEY
-    False    ## SSL_ON?
-)
+pubnub = Pubnub(publish_key="demo", subscribe_key="demo", ssl_on=False)
+
 ```
 
 #### PUBLISH
 
 ```
-info = pubnub.publish({
-    'channel' : 'hello_world',
-    'message' : {
-        'some_text' : 'Hello my World'
-    }
-})
-print(info)
+channel = 'hello_world'
+message = 'Hello World !!!'
+
+# Synchronous usage
+print pubnub.publish(channel='hello_world', message='Hello World !!!')
+
+# Asynchronous usage
+
+def callback(message):
+    print(message)
+
+pubnub.publish(channel, message, callback=callback, error=callback)
+
 ```
 
 
 #### SUBSCRIBE
 
 ```
-# Listen for Messages *BLOCKING*
-def receive(message) :
-    print(message)
-    return True
+# Listen for Messages
 
-pubnub.subscribe({
-    'channel'  : 'hello_world',
-    'callback' : receive 
-})
+channel = 'hello_world'
+
+def callback(message, channel):
+    print(message)
+
+
+def error(message):
+    print("ERROR : " + str(message))
+
+
+def connect(message):
+    print("CONNECTED")
+
+
+def reconnect(message):
+    print("RECONNECTED")
+
+
+def disconnect(message):
+    print("DISCONNECTED")
+
+
+pubnub.subscribe(channel, callback=callback, error=callback,
+                 connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
 
 #### PRESENCE
 
 ```
-# Listen for Presence Event Messages *BLOCKING*
+# Listen for Presence Event Messages
 
-def pres_event(message) :
+channel = 'hello_world'
+
+def callback(message, channel):
     print(message)
-    return True
 
-pubnub.presence({
-    'channel'  : 'hello_world',
-    'callback' : receive 
-})
+
+def error(message):
+    print("ERROR : " + str(message))
+
+
+
+pubnub.presence(channel, callback=callback, error=callback)
 ```
 
 #### HERE_NOW
@@ -62,36 +85,32 @@ pubnub.presence({
 ```
 # Get info on who is here right now!
 
-here_now = pubnub.here_now({
-    'channel' : 'hello_world',
-})
+channel = 'hello_world'
 
-print(here_now['occupancy'])
-print(here_now['uuids'])
-```
+# Synchronous usage
+print pubnub.here_now(channel)
 
-#### Channel Analytics
 
-```
-analytics = pubnub.analytics({
-    'channel'  : 'channel-name-here', ## Leave blank for all channels
-    'limit'    : 100,                 ## aggregation range
-    'ago'      : 0,                   ## minutes ago to look backward
-    'duration' : 100                  ## minutes offset
-})
-print(analytics)
+# Asynchronous usage
 
+def callback(message):
+    print(message)
+
+pubnub.here_now(channel, callback=callback, error=callback)
 ```
 
 #### HISTORY
 
 ```
-# Load Previously Published Messages
-history = pubnub.detailedHistory({
-    'channel'   : 'my_channel',
-    'end'       : my_end_time_token, # Optional
-    'start'     : my_start_time_token, # Optional
-    'count'     : num_of_msgs_to_return # Optional, default is 100
-})
-print(history)
+# Synchronous usage
+
+print pubnub.history(channel, count=2)
+
+# Asynchronous usage
+
+
+def callback(message):
+    print(message)
+
+pubnub.history(channel, count=2, callback=callback, error=callback)
 ```

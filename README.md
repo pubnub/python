@@ -3,7 +3,6 @@
 #### [PubNub](http://www.pubnub.com) Real-time Data Network
 ##### Clients for Python, including Twisted and Tornado
 
-
 ## Installation
 ```
 pip install pubnub==3.5.0
@@ -19,10 +18,13 @@ Examples and instructions for migrating from older versions of sdk are available
 README.md, migration.md and examples directories under specific platforms.
 
 [Standalone Python - Everyday python for your scripts and apps](python)
+Migration docs for Python Standalone are [found here.](python/migration.md)
 
-[Tornado - For use with the Python Tornado Framework](tornado)
+[Tornado - For use with the Python Tornado Framework](python-tornado)
+Migration docs for Tornado are [found here.](python-tornado/migration.md)
 
-[Twisted - For use with the Python Twisted Framework](twisted)
+[Twisted - For use with the Python Twisted Framework](python-twisted)
+Migration docs for Twisted [found here.](python-twisted/migration.md)
 
 ## Pubnub Console
 Pubnub console is a command line app which allows you to do various 

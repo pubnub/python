@@ -1410,6 +1410,9 @@ class Pubnub(PubnubCoreAsync):
             return {'message': resp_json['message'],
                     'payload': resp_json['payload']}
 
+        if response[1] == 0:
+            return [0, resp_json]
+
         return resp_json
 
     def _request(self, request, callback=None, error=None, single=False, timeout=5):

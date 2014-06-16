@@ -1,6 +1,14 @@
-## PubNub 3.5.0 Web Data Push Cloud-hosted API - PYTHON TWISTED
-#### www.pubnub.com - PubNub Web Data Push Service in the Cloud. 
-#### http://github.com/pubnub/python
+## Contact support@pubnub.com for all questions
+
+#### [PubNub](http://www.pubnub.com) Real-time Data Network
+##### Twisted Client
+
+## IO Event Loop
+Be sure to eventually start the event loop or PubNub won't run!
+
+```
+pubnub.start()
+```
 
 #### Import
 ```
@@ -24,13 +32,6 @@ def callback(message):
     print(message)
 
 pubnub.publish(channel, message, callback=callback, error=callback)
-```
-
-#### IO Event Loop
-##### VERY IMPORTANT TO ADD THIS LINE AT THE VERY BOTTOM!
-
-```
-pubnub.start()
 ```
 
 #### Subscribe Example
@@ -100,3 +101,5 @@ pubnub.unsubscribe(channel='hello_world')
 ```
 pubnub.start()
 ```
+
+## Contact support@pubnub.com for all questions

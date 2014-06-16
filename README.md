@@ -9,6 +9,12 @@
 pip install pubnub==3.5.0
 ```
 
+If you prefer to use the previous version of PubNub, run this pip commandline to revert
+```
+pip install pubnub==3.3.5
+```
+
+
 Examples and instructions for migrating from older versions of sdk are available in 
 README.md, migration.md and examples directories under specific platforms.
 

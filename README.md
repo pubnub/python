@@ -8,14 +8,14 @@
 pip install pubnub==3.5.0
 ```
 
+## Migration and Reversion
 If you prefer to use the previous version of PubNub, run this pip commandline to revert
+
 ```
 pip install pubnub==3.3.5
 ```
 
-
-Examples and instructions for migrating from older versions of sdk are available in 
-README.md, migration.md and examples directories under specific platforms.
+Examples and instructions for migrating from older versions of the SDK are available in their acompanying README.md, migration.md and examples directories under specific platforms.
 
 [Standalone Python - Everyday python for your scripts and apps](python)
 Migration docs for Python Standalone are [found here.](python/migration.md)

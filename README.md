@@ -7,7 +7,9 @@
 
 
 #### Installation
+```
 pip install pubnub==3.5.0
+```
 
 Examples are available in README and examples directories under specific
 platforms.
@@ -18,5 +20,6 @@ pubnub operations like publish, subscribe, getting history, here now,
 presence etc from command line
 
 #### Installation
-
+```
 pip install pubnub-console
+```

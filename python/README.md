@@ -60,6 +60,22 @@ pubnub.subscribe(channel, callback=callback, error=callback,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
+#### SUBSCRIBE Synchronous ( pre 3.5 version )
+Runs in tight loop if callback return True.
+Loop ends when callback return False
+```
+# Listen for Messages
+
+channel = 'hello_world'
+
+def callback(message):
+    print(message)
+    return True
+
+pubnub.subscribe_sync(channel, callback=callback)
+```
+
+
 #### UNSUBSCRIBE
 
 ```

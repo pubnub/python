@@ -60,7 +60,7 @@ pubnub.subscribe(channel, callback=callback, error=callback,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
-#### SUBSCRIBE Synchronous ( pre 3.5 version )
+#### SUBSCRIBE Synchronous ( compatible with pre-3.5 )
 Runs in tight loop if callback return True.
 Loop ends when callback return False
 ```

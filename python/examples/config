@@ -1,0 +1,9 @@
+sessionname pubnub-console
+screen -t output tail -f ./pubnub-console.log
+split
+focus down
+screen -t console  python console.py "set_output_file"
+split -v
+focus down
+screen -t help vi -R ./console-help.txt
+focus up

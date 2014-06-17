@@ -1,0 +1,37 @@
+********************** HELP ******************************
+
+TO EXIT :   
+Ctrl-A \  followed by y ( on linux )
+Ctrl-A Ctrl-\ followed by y ( on mac osx )
+
+TO MOVE BETWEEN PANES  . Ctrl-A  TAB
+
+**********************************************************
+
+PUBLISH
+
+Usage: publish [options] arg
+
+Options:
+  -h, --help            show this help message and exit
+  -c CHANNEL, --channel=CHANNEL
+                        Channel on which to publish
+
+Examples:
+   (1)  publish -c hello_world  hi how r u
+   (2)  pub -c hello_world  [1,2]
+
+
+
+SUBSCRIBE
+
+Usage: subscribe [options] arg
+
+Options:
+  -h, --help            show this help message and exit
+  -c CHANNEL, --channel=CHANNEL
+                        Channel for subscribe
+
+Examples:
+   (1)  subscribe -c hello_world
+   (2)  sub -c hello_world

@@ -1,39 +1,41 @@
 ## Contact support@pubnub.com for all questions
 
 #### [PubNub](http://www.pubnub.com) Real-time Data Network
-##### Standalone Python Client
+##### Tornado Client
+
+## IO Event Loop
+Be sure to eventually start the event loop or PubNub won't run!
+
+```
+pubnub.start()
+```
+
+#### Import
+```
+from Pubnub import PubnubTornado as Pubnub
+```
 
 #### Init
-
 ```
 pubnub = Pubnub(publish_key="demo", subscribe_key="demo", ssl_on=False)
-
 ```
 
-#### PUBLISH
-
+#### Publish Example
 ```
 channel = 'hello_world'
 message = 'Hello World !!!'
 
-# Synchronous usage
-print pubnub.publish(channel='hello_world', message='Hello World !!!')
-
 # Asynchronous usage
+
 
 def callback(message):
     print(message)
 
 pubnub.publish(channel, message, callback=callback, error=callback)
-
 ```
 
-
-#### SUBSCRIBE
-
+#### Subscribe Example
 ```
-# Listen for Messages
-
 channel = 'hello_world'
 
 def callback(message, channel):
@@ -60,22 +62,24 @@ pubnub.subscribe(channel, callback=callback, error=callback,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
-#### UNSUBSCRIBE
-
+#### History Example
 ```
-# Listen for Messages
+def callback(message):
+    print(message)
 
-channel = 'hello_world'
-
-pubnub.unsubscribe(channel=channel)
+pubnub.history(channel, count=2, callback=callback, error=callback)
 ```
 
-
-#### PRESENCE
-
+#### Here Now Example
 ```
-# Listen for Presence Event Messages
+def callback(message):
+    print(message)
 
+pubnub.here_now(channel, callback=callback, error=callback)
+```
+
+#### Presence Example
+```
 channel = 'hello_world'
 
 def callback(message, channel):
@@ -85,43 +89,17 @@ def callback(message, channel):
 def error(message):
     print("ERROR : " + str(message))
 
-
-
 pubnub.presence(channel, callback=callback, error=callback)
 ```
 
-#### HERE_NOW
-
+#### Unsubscribe Example
 ```
-# Get info on who is here right now!
-
-channel = 'hello_world'
-
-# Synchronous usage
-print pubnub.here_now(channel)
-
-
-# Asynchronous usage
-
-def callback(message):
-    print(message)
-
-pubnub.here_now(channel, callback=callback, error=callback)
+pubnub.unsubscribe(channel='hello_world')
 ```
 
-#### HISTORY
-
+#### IO Event Loop start
 ```
-# Synchronous usage
-
-print pubnub.history(channel, count=2)
-
-# Asynchronous usage
-
-
-def callback(message):
-    print(message)
-
-pubnub.history(channel, count=2, callback=callback, error=callback)
+pubnub.start()
 ```
+
 ## Contact support@pubnub.com for all questions

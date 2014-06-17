@@ -1,0 +1,4 @@
+3.5.0 - 6-16-14
+New version! Complete re-write!
+. Async subscribe allows for MX, unsubscribe calls
+. New method signatures -- be sure to check migration doc if upgrading

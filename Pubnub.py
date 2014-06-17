@@ -18,7 +18,7 @@ except ImportError:
 
 import time
 import hashlib
-import uuid
+import uuid as uuid_lib
 import sys
 from base64 import urlsafe_b64encode
 from base64 import encodestring, decodestring
@@ -201,7 +201,7 @@ class PubnubBase(object):
         auth_key=None,
         ssl_on=False,
         origin='pubsub.pubnub.com',
-        UUID=None
+        uuid=None
     ):
         """Pubnub Class
 
@@ -232,7 +232,7 @@ class PubnubBase(object):
         else:
             self.origin = 'http://' + self.origin
 
-        self.uuid = UUID or str(uuid.uuid4())
+        self.uuid = uuid or str(uuid_lib.uuid4())
 
         if type(sys.version_info) is tuple:
             self.python_version = 2
@@ -246,7 +246,7 @@ class PubnubBase(object):
                 self.pc = PubnubCrypto3()
 
         if not isinstance(self.uuid, str):
-            raise AttributeError("pres_uuid must be a string")
+            raise AttributeError("uuid must be a string")
 
     def _pam_sign(self, msg):
 
@@ -802,6 +802,7 @@ class PubnubBase(object):
         if ("urlparams" in request):
             url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
                 "urlparams"].items() if y is not None])
+        print(url)
         return url
 
 
@@ -845,7 +846,7 @@ class PubnubCoreAsync(PubnubBase):
             auth_key=auth_key,
             ssl_on=ssl_on,
             origin=origin,
-            UUID=uuid
+            uuid=uuid
         )
 
         self.subscriptions = {}
@@ -1149,7 +1150,9 @@ class PubnubCore(PubnubCoreAsync):
         auth_key=None,
         ssl_on=False,
         origin='pubsub.pubnub.com',
-        uuid=None
+        uuid=None,
+        _tt_lock=None,
+        _channel_list_lock=None
     ):
         super(PubnubCore, self).__init__(
             publish_key=publish_key,
@@ -1159,7 +1162,9 @@ class PubnubCore(PubnubCoreAsync):
             auth_key=auth_key,
             ssl_on=ssl_on,
             origin=origin,
-            UUID=uuid
+            uuid=uuid,
+            _tt_lock=_tt_lock,
+            _channel_list_lock=_channel_list_lock
         )
 
         self.subscriptions = {}
@@ -1194,7 +1199,6 @@ class PubnubCore(PubnubCoreAsync):
 
         ## Begin Subscribe
         while True:
-
             try:
                 ## Wait for Message
                 response = self._request({"urlcomponents": [
@@ -1325,9 +1329,9 @@ def _urllib_request_3(url, timeout=5):
 _urllib_request = None
 
 
-#  PubnubAsync
+#  Pubnub
 
-class Pubnub(PubnubCoreAsync):
+class Pubnub(PubnubCore):
     def __init__(
         self,
         publish_key,
@@ -1337,8 +1341,9 @@ class Pubnub(PubnubCoreAsync):
         auth_key=None,
         ssl_on=False,
         origin='pubsub.pubnub.com',
-        pres_uuid=None,
-        pooling=True
+        uuid=None,
+        pooling=True,
+        pres_uuid=None
     ):
         super(Pubnub, self).__init__(
             publish_key=publish_key,
@@ -1348,7 +1353,7 @@ class Pubnub(PubnubCoreAsync):
             auth_key=auth_key,
             ssl_on=ssl_on,
             origin=origin,
-            uuid=pres_uuid,
+            uuid=uuid or pres_uuid,
             _tt_lock=threading.RLock(),
             _channel_list_lock=threading.RLock()
         )

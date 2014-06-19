@@ -331,7 +331,9 @@ class DevConsole(Cmd):
         Cmd.__init__(self)
         global pubnub
         self.intro = "For Help type ? or help . " + \
-            "To quit/exit type exit"
+            "To quit/exit type exit" + "\n" + \
+            "Commands can also be provided on command line while starting console (in quotes) ex. " + \
+            "pubnub-console 'init -p demo -s demo'"
         self.default_channel = None
         self.async = False
         pubnub = Pubnub("demo", "demo")

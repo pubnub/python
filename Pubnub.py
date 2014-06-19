@@ -693,7 +693,7 @@ class PubnubBase(object):
 
 
     def history(self, channel, count=100, reverse=False,
-                start=None, end=None, callback=None, error=None):
+                start=None, end=None, callback=None, error=None, include_token=False):
         """This method fetches historical messages of a channel.
 
         PubNub Storage/Playback Service provides real-time access to an unlimited
@@ -734,6 +734,9 @@ class PubnubBase(object):
                         If set, the api works in async mode. 
                         Required argument when working with twisted or tornado .
 
+            include_token:    (optional)
+                        If True, return timetokens with individual messages.
+
         Returns:
             Returns a list in sync mode i.e. when callback argument is not given
 
@@ -748,6 +751,7 @@ class PubnubBase(object):
         params['start'] = start
         params['end'] = end
         params['auth_key'] = self.auth_key
+        params['include_token'] = "true" if include_token else "false"
 
         ## Get History
         return self._request({'urlcomponents': [

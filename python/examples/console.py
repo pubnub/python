@@ -219,13 +219,13 @@ def _subscribe_command_handler(channel):
         print_error(r, ch if ch is not None else channel)
 
     def _disconnect(r):
-        print_error("DISCONNECTED", r)
+        print_ok("DISCONNECTED", r)
 
     def _reconnect(r):
-        print_error("RECONNECTED", r)
+        print_ok("RECONNECTED", r)
 
     def _connect(r):
-        print_error("CONNECTED", r)
+        print_ok("CONNECTED", r)
 
     pubnub.subscribe(channel, _callback, _error, connect=_connect,
                      disconnect=_disconnect, reconnect=_reconnect)

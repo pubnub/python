@@ -372,11 +372,12 @@ class PubnubBase(object):
         """
 
         return self._pam_auth({
-            "channel": channel,
-            "auth": auth_key,
-            "r": read and 1 or 0,
-            "w": write and 1 or 0,
-            "ttl": ttl
+            'channel'   : channel,
+            'auth'      : auth_key,
+            'r'         : read and 1 or 0,
+            'w'         : write and 1 or 0,
+            'ttl'       : ttl,
+            'pnsdk'     : self.pnsdk
         }, callback=callback, error=error)
 
     def revoke(self, channel=None, auth_key=None, ttl=1, callback=None, error=None):
@@ -435,11 +436,12 @@ class PubnubBase(object):
         """
 
         return self._pam_auth({
-            "channel": channel,
-            "auth": auth_key,
-            "r": 0,
-            "w": 0,
-            "ttl": ttl
+            'channel'   : channel,
+            'auth'      : auth_key,
+            'r'         : 0,
+            'w'         : 0,
+            'ttl'       : ttl,
+            'pnsdk'     : self.pnsdk
         }, callback=callback, error=error)
 
     def audit(self, channel=None, auth_key=None, callback=None, error=None):
@@ -497,8 +499,9 @@ class PubnubBase(object):
         """
 
         return self._pam_auth({
-            "channel": channel,
-            "auth": auth_key
+            'channel'   : channel,
+            'auth'      : auth_key,
+            'pnsdk'     : self.pnsdk
         }, 1, callback=callback, error=error)
 
     def encrypt(self, message):
@@ -608,7 +611,7 @@ class PubnubBase(object):
             channel,
             '0',
             message
-        ], 'urlparams': {'auth': self.auth_key}},
+        ], 'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk}},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
@@ -687,7 +690,7 @@ class PubnubBase(object):
             'v2', 'presence',
             'sub_key', self.subscribe_key,
             'channel', channel
-        ], 'urlparams': {'auth': self.auth_key}},
+        ], 'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk}},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
@@ -748,6 +751,7 @@ class PubnubBase(object):
         params['start'] = start
         params['end'] = end
         params['auth_key'] = self.auth_key
+        params['pnsdk'] = self.pnsdk
 
         ## Get History
         return self._request({'urlcomponents': [
@@ -1084,7 +1088,7 @@ class PubnubCoreAsync(PubnubBase):
                 channel_list,
                 '0',
                 str(self.timetoken)
-            ], "urlparams": {"uuid": self.uuid, "auth": self.auth_key}},
+            ], "urlparams": {"uuid": self.uuid, "auth": self.auth_key, 'pnsdk' : self.pnsdk}},
                 sub_callback,
                 error_callback,
                 single=True, timeout=320)
@@ -1206,7 +1210,7 @@ class PubnubCore(PubnubCoreAsync):
                     channel,
                     '0',
                     str(timetoken)
-                ], "urlparams": {"uuid": self.uuid}})
+                ], "urlparams": {"uuid": self.uuid, 'pnsdk' : self.pnsdk}})
 
                 messages = response[0]
                 timetoken = response[1]
@@ -1367,6 +1371,7 @@ class Pubnub(PubnubCore):
 
         self.latest_sub_callback_lock = threading.RLock()
         self.latest_sub_callback = {'id': None, 'callback': None}
+        self.pnsdk = 'PubNub-Python' + '/' + self.version
 
     def timeout(self, interval, func):
         def cb():
@@ -1459,6 +1464,7 @@ class PubnubTwisted(PubnubCoreAsync):
         self.headers = {}
         self.headers['User-Agent'] = ['Python-Twisted']
         self.headers['V'] = [self.version]
+        self.pnsdk = 'PubNub-Python-' + 'Twisted' + '/' + self.version
 
     def _request(self, request, callback=None, error=None, single=False):
         global pnconn_pool
@@ -1564,6 +1570,7 @@ class PubnubTornado(PubnubCoreAsync):
         self.headers['V'] = self.version
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
         self.id = None
+        self.pnsdk = 'PubNub-Python-' + 'Tornado' + '/' + self.version
 
     def _request(self, request, callback=None, error=None,
                  single=False, timeout=5, connect_timeout=5):

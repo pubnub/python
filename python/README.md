@@ -140,4 +140,56 @@ def callback(message):
 
 pubnub.history(channel, count=2, callback=callback, error=callback)
 ```
+
+#### GRANT
+
+```
+authkey = "abcd"
+
+# Synchronous usage
+print pubnub.grant(channel, authkey, True, True)
+
+# Asynchronous usage
+
+
+def callback(message):
+    print(message)
+
+pubnub.grant(channel, authkey, True, True, callback=callback, error=callback)
+```
+
+#### AUDIT
+
+```
+authkey = "abcd"
+
+# Synchronous usage
+print pubnub.audit(channel, authkey)
+
+# Asynchronous usage
+
+
+def callback(message):
+    print(message)
+
+pubnub.audit(channel, authkey, callback=callback, error=callback)
+```
+
+#### REVOKE
+
+```
+authkey = "abcd"
+
+# Synchronous usage
+print pubnub.revoke(channel, authkey)
+
+# Asynchronous usage
+
+
+def callback(message):
+    print(message)
+
+pubnub.revoke(channel, authkey, callback=callback, error=callback)
+```
+
 ## Contact support@pubnub.com for all questions

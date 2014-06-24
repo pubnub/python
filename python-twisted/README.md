@@ -97,6 +97,38 @@ pubnub.presence(channel, callback=callback, error=callback)
 pubnub.unsubscribe(channel='hello_world')
 ```
 
+#### Grant Example
+```
+authkey = "abcd"
+
+def callback(message):
+    print(message)
+
+pubnub.grant(channel, authkey, True, True, callback=callback, error=callback)
+
+```
+
+#### Audit Example
+```
+authkey = "abcd"
+
+def callback(message):
+    print(message)
+
+pubnub.audit(channel, authkey, callback=callback, error=callback)
+```
+
+#### Revoke Example
+```
+authkey = "abcd"
+
+def callback(message):
+    print(message)
+
+pubnub.revoke(channel, authkey, callback=callback, error=callback)
+```
+
+
 #### IO Event Loop start
 ```
 pubnub.start()

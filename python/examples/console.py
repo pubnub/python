@@ -316,7 +316,10 @@ def get_channel_array():
 
     for channel in channels:
         if "-pnpres" in channel:
-            i = channels.index(channel.split("-pnpres")[0])
+            chname = channel.split("-pnpres")[0]
+            if chname not in channels:
+                continue
+            i = channels.index(chname)
             channels[i] = channels[i] + color.colorize("(P)", "blue")
             channels.remove(channel)
     return channels

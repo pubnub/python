@@ -93,9 +93,8 @@ def get_date():
 def print_ok_normal(msg, channel=None):
     if msg is None:
         return
-    chstr = color.colorize("[" + get_date() + "] ", "magenta")
-    chstr += color.colorize("[Channel : " + channel +
-                            "] " if channel is not None else "", "cyan")
+    chstr = "[" + color.colorize(get_date(), "magenta") + "] "
+    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] " 
     try:
         print_console(of, (chstr + color.colorize(str(msg), "green")))
     except UnicodeEncodeError as e:
@@ -107,9 +106,8 @@ def print_ok_normal(msg, channel=None):
 def print_error_normal(msg, channel=None):
     if msg is None:
         return
-    chstr = color.colorize("[" + get_date() + "] ", "magenta")
-    chstr += color.colorize("[Channel : " + channel +
-                            "] " if channel is not None else "", "cyan")
+    chstr = "[" + color.colorize(get_date(), "magenta") + "] "
+    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] " 
     try:
         print_console(of, (chstr + color.colorize(color.colorize(
             str(msg), "red"), "bold")))
@@ -120,9 +118,8 @@ def print_error_normal(msg, channel=None):
 def print_ok_pretty(msg, channel=None):
     if msg is None:
         return
-    chstr = color.colorize("[" + get_date() + "] ", "magenta")
-    chstr += color.colorize("[Channel : " + channel +
-                            "] " if channel is not None else "", "cyan")
+    chstr = "[" + color.colorize(get_date(), "magenta") + "] "
+    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] " 
     try:
         print_console(of, (chstr + highlight(json.dumps(msg, indent=2))))
     except UnicodeEncodeError as e:
@@ -134,9 +131,8 @@ def print_ok_pretty(msg, channel=None):
 def print_error_pretty(msg, channel=None):
     if msg is None:
         return
-    chstr = color.colorize("[" + get_date() + "] ", "magenta")
-    chstr += color.colorize("[Channel : " + channel +
-                            "] " if channel is not None else "", "cyan")
+    chstr = "[" + color.colorize(get_date(), "magenta") + "] "
+    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] " 
     try:
         print_console(of, (chstr + color.colorize(color.colorize(
             "ERROR: ", "red"), "bold") +
@@ -320,7 +316,10 @@ def get_channel_array():
 
     for channel in channels:
         if "-pnpres" in channel:
-            i = channels.index(channel.split("-pnpres")[0])
+            chname = channel.split("-pnpres")[0]
+            if chname not in channels:
+                continue
+            i = channels.index(chname)
             channels[i] = channels[i] + color.colorize("(P)", "blue")
             channels.remove(channel)
     return channels
@@ -350,7 +349,7 @@ class DevConsole(Cmd):
         self.disable_pretty = False
 
     def get_channel_origin(self):
-        cho = " ["
+        cho = ""
         channels = get_channel_array()
         channels_str = ",".join(channels)
         sl = self.channel_truncation
@@ -366,7 +365,7 @@ class DevConsole(Cmd):
         origin = pubnub.get_origin().split("://")[1]
         origin += color.colorize(" (SSL)", "green") if pubnub.get_origin(
         ).split("://")[0] == "https" else ""
-        return cho + color.colorize(origin, "blue") + "] > "
+        return " [" + cho + color.colorize(origin, "blue") + "] > "
 
     def get_prompt(self):
         prompt = "[" + get_date() + "]"

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub-console',
-    version='3.5.0',
+    version='3.5.1',
     description='PubNub Developer Console',
     author='Stephen Blum',
     author_email='support@pubnub.com',
@@ -19,7 +19,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ),
     install_requires=[
-        'pubnub>=3.5.0',
+        'pubnub>=3.5.2',
         'cmd2>=0.6.7',
         'pygments >= 1.6'
     ],

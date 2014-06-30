@@ -234,15 +234,23 @@ def _unsubscribe_command_handler(channels):
 
     def _error(r):
         print_error(r)
-    if not isinstance(channels, list):
-        ch = []
-        ch.append(channels)
-        channels = ch
+
+    unsub_list = []
+    current_channel_list = pubnub.get_channel_array()
 
     for channel in channels:
         pubnub.unsubscribe(channel)
-        pubnub.unsubscribe(channel + '-pnpres')
-    print_ok('Unsubscribed from : ' + str(channels))
+        if (channel in current_channel_list):
+            unsub_list.append(channel)
+
+        #pubnub.unsubscribe(channel + '-pnpres')
+        #if (channel + '-pnpres' in current_channel_list):
+        #    unsub_list.append(channel + ' (Presence)')
+
+    if len(unsub_list) > 0:
+        print_ok('Unsubscribed from : ' + str(unsub_list))
+    else:
+        print_error('Not subscribed to : ' + str(channels))
 
 
 def _grant_command_handler(channel, auth_key, read, write, ttl, async=False):
@@ -631,17 +639,43 @@ class DevConsole(Cmd):
     @options([make_option('-c', '--channel', action="store",
                           help="Channel for unsubscribe"),
               make_option('-a', '--all', action="store_true", dest="all",
-                          default=False, help="Unsubscribe from all channels")
+                          default=False, help="Unsubscribe from all channels"),
+              make_option('-p', '--presence', action="store_true",
+                          dest="presence",
+                          default=False, help="Unsubscribe from presence events ?")
               ])
     def do_unsubscribe(self, command, opts):
         opts.channel = self.default_channel \
             if opts.channel is None else opts.channel
+
         if (opts.all is True):
-            opts.channel = pubnub.get_channel_array()
+            opts.channel = []
+            chs = pubnub.get_channel_array()
+            for ch in chs:
+                if '-pnpres' not in ch:
+                    opts.channel.append(ch)
+                elif opts.presence is True:
+                    opts.channel.append(ch)
+
         if opts.channel is None:
             print_error("Missing channel")
             return
-        _unsubscribe_command_handler(opts.channel)
+
+        if not isinstance(opts.channel, list):
+            ch = []
+            ch.append(opts.channel)
+            opts.channel = ch
+
+        channels = []
+        if opts.presence is True and opts.all is False:
+            for c in opts.channel:
+                if '-pnpres' not in c:
+                    channels.append(c + '-pnpres')
+
+        for c in opts.channel:
+            channels.append(c)
+
+        _unsubscribe_command_handler(channels)
         self.prompt = self.get_prompt()
 
     @options([make_option('-c', '--channel', action="store",

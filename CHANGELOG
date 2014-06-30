@@ -1,3 +1,11 @@
+3.5.2 - 6-25-14 - 1f98c4
+. Added pnsdk URL param to each request
+. Added grant/revoke/audit examples to README
+. Fixed erroneous "Connected" error condition in console
+. Can now pass init vars via the CL on console
+. Fixed UI issue of bracket color on console
+. Enable subscribing to "-pnpres" channel on console
+
 3.5.1 - 6-17-14
 . Added subscribe_sync method
 . renamed pres_uuid argument for Pubnub constructor to uuid

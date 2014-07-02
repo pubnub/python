@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub-console',
-    version='3.5.1',
+    version='3.5.2',
     description='PubNub Developer Console',
     author='Stephen Blum',
     author_email='support@pubnub.com',

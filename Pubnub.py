@@ -1346,6 +1346,7 @@ class Pubnub(PubnubCore):
         origin='pubsub.pubnub.com',
         uuid=None,
         pooling=True,
+        daemon=False,
         pres_uuid=None
     ):
         super(Pubnub, self).__init__(
@@ -1372,12 +1373,14 @@ class Pubnub(PubnubCore):
         self.latest_sub_callback_lock = threading.RLock()
         self.latest_sub_callback = {'id': None, 'callback': None}
         self.pnsdk = 'PubNub-Python' + '/' + self.version
+        self.daemon = daemon
 
     def timeout(self, interval, func):
         def cb():
             time.sleep(interval)
             func()
         thread = threading.Thread(target=cb)
+        thread.daemon = self.daemon
         thread.start()
 
     def _request_async(self, request, callback=None, error=None, single=False, timeout=5):
@@ -1397,6 +1400,7 @@ class Pubnub(PubnubCore):
                                 callback=callback, error=error, timeout=timeout)
 
         thread = threading.Thread(target=client.run)
+        thread.daemon = self.daemon
         thread.start()
 
         def abort():

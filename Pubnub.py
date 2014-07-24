@@ -632,10 +632,7 @@ class PubnubBase(object):
         Returns:
             None
         """
-        return self.subscribe({
-            'channel': channel + '-pnpres',
-            'subscribe_key': self.subscribe_key,
-            'callback': self._return_wrapped_callback(callback)})
+        return self.subscribe(channel+'-pnpres', callback=callback)
 
     def here_now(self, channel, callback=None, error=None):
         """Get here now data.

@@ -51,9 +51,73 @@ try:
 except ImportError:
     pass
 
+import socket
+import sys
 import threading
 from threading import current_thread
 
+try:
+    import urllib3.HTTPConnection
+    default_socket_options = urllib3.HTTPConnection.default_socket_options
+except:
+    default_socket_options = []
+
+default_socket_options += [
+    # Enable TCP keepalive
+    (socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+]
+
+if sys.platform.startswith("linux"):
+    default_socket_options += [
+        # Send first keepalive packet 200 seconds after last data packet
+        (socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 200),
+        # Resend keepalive packets every second, when unanswered
+        (socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 1),
+        # Close the socket after 5 unanswered keepalive packets
+        (socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
+    ]
+elif sys.platform.startswith("darwin"):
+    # From /usr/include/netinet/tcp.h
+    socket.TCP_KEEPALIVE = 0x10 # idle time used when SO_KEEPALIVE is enabled
+
+    default_socket_options += [
+        # Send first keepalive packet 200 seconds after last data packet
+        (socket.IPPROTO_TCP, socket.TCP_KEEPALIVE, 200),
+        # Resend keepalive packets every second, when unanswered
+        (socket.IPPROTO_TCP, socket.TCP_KEEPINTVL, 1),
+        # Close the socket after 5 unanswered keepalive packets
+        (socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 5)
+    ]
+"""
+# The Windows code is currently untested
+elif sys.platform.startswith("win"):
+    import struct
+    from urllib3.connectionpool import HTTPConnectionPool, HTTPSConnectionPool
+
+    def patch_socket_keepalive(conn):
+        conn.sock.ioctl(socket.SIO_KEEPALIVE_VALS, (
+            # Enable TCP keepalive
+            1,
+            # Send first keepalive packet 200 seconds after last data packet
+            200,
+            # Resend keepalive packets every second, when unanswered
+            1
+        ))
+
+    class PubnubHTTPConnectionPool(HTTPConnectionPool):
+        def _validate_conn(self, conn):
+            super(PubnubHTTPConnectionPool, self)._validate_conn(conn)
+
+    class PubnubHTTPSConnectionPool(HTTPSConnectionPool):
+        def _validate_conn(self, conn):
+            super(PubnubHTTPSConnectionPool, self)._validate_conn(conn)
+
+    import urllib3.poolmanager
+    urllib3.poolmanager.pool_classes_by_scheme = {
+        'http'  : PubnubHTTPConnectionPool,
+        'https' : PubnubHTTPSConnectionPool
+    }
+"""
 
 ##################################
 
@@ -1300,9 +1364,15 @@ def _urllib_request_2(url, timeout=5):
 
     return (resp.read(), resp.code)
 
+class PubnubHTTPAdapter(HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        kwargs.setdefault('socket_options', default_socket_options)
+
+        super(PubnubHTTPAdapter, self).init_poolmanager(*args, **kwargs)
+
 s = requests.Session()
-s.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
-s.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
+s.mount('http://', PubnubHTTPAdapter(max_retries=1))
+s.mount('https://', PubnubHTTPAdapter(max_retries=1))
 
 def _requests_request(url, timeout=5):
     try:

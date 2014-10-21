@@ -7,7 +7,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.5.2 Real-time Push Cloud API
+## PubNub 3.5.3 Real-time Push Cloud API
 ## -----------------------------------
 
 

@@ -746,12 +746,18 @@ class PubnubBase(object):
             }
         """
 
-        ## Get Presence Here Now
-        return self._request({"urlcomponents": [
+        urlcomponents = [
             'v2', 'presence',
-            'sub_key', self.subscribe_key,
-            'channel', channel
-        ], 'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk}},
+            'sub_key', self.subscribe_key
+        ]
+
+        if (channel is not None and len(channel) > 0):
+            urlcomponents.append('channel')
+            urlcomponents.append(channel)
+
+        ## Get Presence Here Now
+        return self._request({"urlcomponents": urlcomponents,
+            'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk}},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 

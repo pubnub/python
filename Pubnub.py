@@ -613,8 +613,13 @@ class PubnubBase(object):
         def _new_format_callback(response):
             if 'payload' in response:
                 if (callback is not None):
-                    callback({'message': response['message'],
-                              'payload': response['payload']})
+                    callback_data = dict()
+                    callback_data['payload'] = response['payload']
+
+                    if 'message' in response:
+                        callback_data['message'] = response['message']
+                        
+                    callback(callback_data)
             else:
                 if (callback is not None):
                     callback(response)
@@ -873,7 +878,89 @@ class PubnubBase(object):
         if ("urlparams" in request):
             url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
                 "urlparams"].items() if y is not None])
+        print url
         return url
+
+    def _channel_registry(self, url=None, params=None, callback=None, error=None):
+
+        if (params is None):
+            params = dict()
+
+        urlcomponents = ['v1', 'channel-registration', 'sub-key', self.subscribe_key ]
+
+        if (url is not None):
+            urlcomponents += url
+
+        params['auth']  = self.auth_key
+        params['pnsdk'] = self.pnsdk
+
+        ## Get History
+        return self._request({'urlcomponents': urlcomponents, 'urlparams': params},
+            callback=self._return_wrapped_callback(callback),
+            error=self._return_wrapped_callback(error))
+
+    def _channel_group(self, channel_group=None, channels=None, cloak=None,mode='add', callback=None, error=None):
+        params = dict()
+        url = []
+        namespace = None
+
+        if (channel_group is not None and len(channel_group) > 0):
+            ns_ch_a = channel_group.split(':')
+
+            if len(ns_ch_a) > 1:
+                namespace = None if ns_ch_a[0] == '*' else ns_ch_a[0]
+                channel_group = ns_ch_a[1]
+            else:
+                channel_group = ns_ch_a[0]
+
+        if (namespace is not None):
+            url.append('namespace')
+            url.append(self._encode(namespace))
+
+        url.append('channel-group')
+
+        if channel_group is not None and channel_group != '*':
+            url.append(channel_group)
+
+        if (channels is not None):
+            if (type(channels) is list):
+                channels = channels.join(',')
+            params[mode] = channels
+            #params['cloak'] = 'true' if CLOAK is True else 'false'
+        else:
+            if mode == 'remove':
+                url.append('remove')
+
+        return self._channel_registry(url=url, params=params, callback=callback, error=error)
+
+
+    def channel_group_list_namespaces(self, callback=None, error=None):
+        url = ['namespace']
+        return self._channel_registry(url=url)
+
+    def channel_group_remove_namespace(self, namespace, callback=None, error=None):
+        url = ['namespace', self._encode(namespace), 'remove']
+        return self._channel_registry(url=url, callback=callback, error=error)
+
+    def channel_group_list_groups(self, namespace=None, channel_group=None, callback=None, error=None):
+
+        if (namespace is not None and len(namespace) > 0):
+            channel_group = namespace + ':*'
+
+        return self._channel_group(channel_group=channel_group, callback=callback, error=error)
+
+    def channel_group_list_channels(self, channel_group, callback=None, error=None):
+        return self._channel_group(channel_group=channel_group, callback=callback, error=error)
+
+    def channel_group_add_channel(self, channel_group, channel, callback=None, error=None):
+        return self._channel_group(channel_group=channel_group, channels=channel, mode='add', callback=callback, error=error)
+
+    def channel_group_remove_channel(self, channel_group, channel, callback=None, error=None):
+        return self._channel_group(channel_group=channel_group, channels=channel, mode='remove', callback=callback, error=error)
+
+    def channel_group_remove_group(self, channel_group, callback=None, error=None):
+        return self._channel_group(channel_group=channel_group, mode='remove', callback=callback, error=error)
+
 
 
 class EmptyLock():

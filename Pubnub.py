@@ -19,6 +19,7 @@ except ImportError:
 import time
 import hashlib
 import uuid as uuid_lib
+import random
 import sys
 from base64 import urlsafe_b64encode
 from base64 import encodestring, decodestring
@@ -320,6 +321,9 @@ class PubnubBase(object):
             sha256
         ).digest())
 
+    def set_u(self, u=False):
+        self.u = u
+
     def _pam_auth(self, query, apicode=0, callback=None, error=None):
 
         if 'timestamp' not in query:
@@ -331,6 +335,10 @@ class PubnubBase(object):
 
         if 'channel' in query and not query['channel']:
             del query['channel']
+
+        if 'channel-group' in query and not query['channel-group']:
+            del query['channel-group']
+
 
         params = "&".join([
             x + "=" + quote(
@@ -362,8 +370,8 @@ class PubnubBase(object):
     def get_auth_key(self):
         return auth_key
 
-    def grant(self, channel=None, auth_key=False, read=True,
-              write=True, ttl=5, callback=None, error=None):
+    def grant(self, channel=None, channel_group=None, auth_key=False, read=False,
+              write=False, manage=False, ttl=5, callback=None, error=None):
         """Method for granting permissions.
 
         This function establishes subscribe and/or write permissions for
@@ -437,14 +445,16 @@ class PubnubBase(object):
 
         return self._pam_auth({
             'channel'   : channel,
+            'channel-group'   : channel_group,
             'auth'      : auth_key,
             'r'         : read and 1 or 0,
             'w'         : write and 1 or 0,
+            'm'         : manage and 1 or 0,
             'ttl'       : ttl,
             'pnsdk'     : self.pnsdk
         }, callback=callback, error=error)
 
-    def revoke(self, channel=None, auth_key=None, ttl=1, callback=None, error=None):
+    def revoke(self, channel=None, channel_group=None, auth_key=None, ttl=1, callback=None, error=None):
         """Method for revoking permissions.
 
         Args:
@@ -501,6 +511,7 @@ class PubnubBase(object):
 
         return self._pam_auth({
             'channel'   : channel,
+            'channel-group' : channel_group,
             'auth'      : auth_key,
             'r'         : 0,
             'w'         : 0,
@@ -508,7 +519,7 @@ class PubnubBase(object):
             'pnsdk'     : self.pnsdk
         }, callback=callback, error=error)
 
-    def audit(self, channel=None, auth_key=None, callback=None, error=None):
+    def audit(self, channel=None, channel_group=None, auth_key=None, callback=None, error=None):
         """Method for fetching permissions from pubnub servers.
 
         This method provides a mechanism to reveal existing PubNub Access Manager attributes
@@ -564,6 +575,7 @@ class PubnubBase(object):
 
         return self._pam_auth({
             'channel'   : channel,
+            'channel-group' : channel_group,
             'auth'      : auth_key,
             'pnsdk'     : self.pnsdk
         }, 1, callback=callback, error=error)
@@ -869,6 +881,9 @@ class PubnubBase(object):
                      ]) for bit in request]
 
     def getUrl(self, request):
+ 
+        if self.u is True and "urlparams" in request:
+            request['urlparams']['u'] = str(random.randint(1, 100000000000))
         ## Build URL
         url = self.origin + '/' + "/".join([
             "".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
@@ -878,7 +893,7 @@ class PubnubBase(object):
         if ("urlparams" in request):
             url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
                 "urlparams"].items() if y is not None])
-        print url
+
         return url
 
     def _channel_registry(self, url=None, params=None, callback=None, error=None):
@@ -1015,6 +1030,7 @@ class PubnubCoreAsync(PubnubBase):
         self._tt_lock = _tt_lock
         self._channel_list_lock = _channel_list_lock
         self._connect = lambda: None
+        self.u = None
 
     def get_channel_list(self, channels):
         channel = ''

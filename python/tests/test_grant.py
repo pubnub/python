@@ -4,17 +4,18 @@ from Pubnub import Pubnub
 import time
 
 pubnub = Pubnub("demo","demo")
-pubnub_pam = Pubnub("pub-c-c077418d-f83c-4860-b213-2f6c77bde29a", 
-	"sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe", "sec-c-OGU3Y2Q4ZWUtNDQwMC00NTI1LThjNWYtNWJmY2M4OGIwNjEy")
+pubnub_pam = Pubnub("pam", 
+	"pam", "pam")
 
 
 # Grant permission read true, write true, on channel ( Sync Mode )
 def test_1():
 	resp = pubnub_pam.grant(channel="abcd", auth_key="abcd", read=True, write=True, ttl=1)
+	print resp
 	assert resp['message'] == 'Success'
 	assert resp['payload'] == {
-								'auths': {'abcd': {'r': 1, 'w': 1}},
-								'subscribe_key': 'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+								'auths': {'abcd': {'r': 1, 'w': 1, 'm' : 0}},
+								'subscribe_key': 'pam',
 								'level': 'user', 'channel': 'abcd', 'ttl': 1
 							  }
 							
@@ -24,8 +25,8 @@ def test_2():
 	resp = pubnub_pam.grant(channel="abcd", auth_key="abcd", read=False, write=False, ttl=1)
 	assert resp['message'] == 'Success'
 	assert resp['payload'] == {
-								'auths': {'abcd': {'r': 0, 'w': 0}},
-								'subscribe_key': 'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+								'auths': {'abcd': {'r': 0, 'w': 0, 'm' : 0}},
+								'subscribe_key': 'pam',
 								'level': 'user', 'channel': 'abcd', 'ttl': 1
 							  }
 
@@ -34,8 +35,8 @@ def test_3():
 	resp = pubnub_pam.grant(channel="abcd", auth_key="abcd", read=True, write=False, ttl=1)
 	assert resp['message'] == 'Success'
 	assert resp['payload'] == {
-								'auths': {'abcd': {'r': 1, 'w': 0}},
-								'subscribe_key': 'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+								'auths': {'abcd': {'r': 1, 'w': 0, 'm' : 0}},
+								'subscribe_key': 'pam',
 								'level': 'user', 'channel': 'abcd', 'ttl': 1
 							  }
 
@@ -44,8 +45,8 @@ def test_4():
 	resp = pubnub_pam.grant(channel="abcd", auth_key="abcd", read=True, write=False, ttl=1)
 	assert resp['message'] == 'Success'
 	assert resp['payload'] == {
-								'auths': {'abcd': {'r': 1, 'w': 0}},
-								'subscribe_key': 'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+								'auths': {'abcd': {'r': 1, 'w': 0, 'm' : 0}},
+								'subscribe_key': 'pam',
 								'level': 'user', 'channel': 'abcd', 'ttl': 1
 							  }
 
@@ -54,8 +55,8 @@ def test_5():
 	resp = pubnub_pam.grant(channel="abcd", auth_key="abcd", read=True, write=False, ttl=10)
 	assert resp['message'] == 'Success'
 	assert resp['payload'] == {
-								'auths': {'abcd': {'r': 1, 'w': 0}},
-								'subscribe_key': 'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+								'auths': {'abcd': {'r': 1, 'w': 0, 'm' : 0}},
+								'subscribe_key': 'pam',
 								'level': 'user', 'channel': 'abcd', 'ttl': 10
 							  }
 
@@ -64,8 +65,8 @@ def test_6():
 	resp = pubnub_pam.grant(auth_key="abcd", read=True, write=False, ttl=10)
 	assert resp['message'] == 'Success'
 	assert resp['payload'] == {
-								'subscribe_key': 'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
-								'level': 'subkey' , u'r': 1, u'w': 0, 'ttl': 10
+								'subscribe_key': 'pam',
+								'level': 'subkey' , u'r': 1, u'w': 0, 'm' : 0, 'ttl': 10
 							  }
 
 
@@ -74,8 +75,8 @@ def test_7():
 	resp = pubnub_pam.grant(auth_key="abcd", read=False, write=False)
 	assert resp['message'] == 'Success'
 	assert resp['payload'] == {
-								'subscribe_key': 'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
-								'level': 'subkey' , u'r': 0, u'w': 0, 'ttl': 1
+								'subscribe_key': 'pam',
+								'level': 'subkey' , u'r': 0, u'w': 0, 'm' : 0, 'ttl': 1
 							  }
 
 
@@ -92,8 +93,8 @@ def test_8():
 	resp = pubnub_pam.grant(channel=channel, read=True, write=True, auth_key=auth_key, ttl=10)
 	assert resp == 			{
 								'message': u'Success',
-								'payload': {u'auths': {auth_key : {u'r': 1, u'w': 1}},
-								u'subscribe_key': u'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+								'payload': {u'auths': {auth_key : {u'r': 1, u'w': 1, 'm' : 0}},
+								u'subscribe_key': u'pam',
 								u'level': u'user', u'channel': channel, u'ttl': 10}
 							}
 	resp = pubnub_pam.publish(channel=channel,message=message)
@@ -114,8 +115,8 @@ def test_9():
 	print resp
 	assert resp == 			{
 								'message': u'Success',
-								'payload': {u'auths': {auth_key : {u'r': 1, u'w': 1}},
-								u'subscribe_key': u'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+								'payload': {u'auths': {auth_key : {u'r': 1, u'w': 1, 'm' : 0}},
+								u'subscribe_key': u'pam',
 								u'level': u'user', u'channel': channel, u'ttl': 10}
 							}
 	resp = pubnub_pam.publish(channel=channel,message=message)
@@ -124,8 +125,8 @@ def test_9():
 	print resp
 	assert resp == 			{
 								'message': u'Success',
-								'payload': {u'auths': {auth_key : {u'r': 0, u'w': 0}},
-								u'subscribe_key': u'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+								'payload': {u'auths': {auth_key : {u'r': 0, u'w': 0, 'm' : 0}},
+								u'subscribe_key': u'pam',
 								u'level': u'user', u'channel': channel, u'ttl': 1}
 							}
 	resp = pubnub_pam.publish(channel=channel,message=message)
@@ -146,8 +147,8 @@ def test_10():
 	print resp
 	assert resp == 			{
 									'message': u'Success',
-									'payload': { u'channels': {channel: {u'r': 1, u'w': 1}},
-									u'subscribe_key': u'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+									'payload': { u'channels': {channel: {u'r': 1, u'w': 1, 'm' : 0}},
+									u'subscribe_key': u'pam',
 									u'level': u'channel', u'ttl': 10}
 								}
 	resp = pubnub_pam.publish(channel=channel,message=message)
@@ -156,8 +157,8 @@ def test_10():
 	print resp
 	assert resp == 			{
 									'message': u'Success',
-									'payload': { u'channels': {channel : {u'r': 0, u'w': 0}},
-									u'subscribe_key': u'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+									'payload': { u'channels': {channel : {u'r': 0, u'w': 0, 'm' : 0}},
+									u'subscribe_key': u'pam',
 									u'level': u'channel', u'ttl': 1}
 								}
 	resp = pubnub_pam.publish(channel=channel,message=message)
@@ -178,8 +179,8 @@ def test_11():
 	print resp
 	assert resp == 			{
 									'message': u'Success',
-									'payload': { u'r': 1, u'w': 1,
-									u'subscribe_key': u'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+									'payload': { u'r': 1, u'w': 1, 'm' : 0,
+									u'subscribe_key': u'pam',
 									u'level': u'subkey', u'ttl': 10}
 								}
 	resp = pubnub_pam.publish(channel=channel,message=message)
@@ -188,8 +189,8 @@ def test_11():
 	print resp
 	assert resp == 			{
 									'message': u'Success',
-									'payload': {u'r': 0, u'w': 0,
-									u'subscribe_key': u'sub-c-e8839098-f568-11e2-a11a-02ee2ddab7fe',
+									'payload': {u'r': 0, u'w': 0, 'm' : 0,
+									u'subscribe_key': u'pam',
 									u'level': u'subkey', u'ttl': 1}
 								}
 	resp = pubnub_pam.publish(channel=channel,message=message)

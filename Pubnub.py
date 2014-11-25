@@ -1110,8 +1110,8 @@ class PubnubCoreAsync(PubnubBase):
                 else self.last_timetoken
             self.timetoken = 0
 
-        if sync is True and self.susbcribe_sync is not None:
-            self.susbcribe_sync(args)
+        if sync is True and self.subscribe_sync is not None:
+            self.subscribe_sync(args)
             return
 
         def _invoke(func, msg=None, channel=None):

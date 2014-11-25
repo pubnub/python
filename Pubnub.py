@@ -215,10 +215,13 @@ class PubnubCrypto2():
 
     def decrypt(self, key, msg):
 
-        secret = self.getSecret(key)
-        Initial16bytes = '0123456789012345'
-        cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
-        plain = self.depad(cipher.decrypt(decodestring(msg)))
+        try:
+            secret = self.getSecret(key)
+            Initial16bytes = '0123456789012345'
+            cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
+            plain = self.depad(cipher.decrypt(decodestring(msg)))
+        except:
+            return msg
         try:
             return eval(plain)
         except SyntaxError:

@@ -1483,8 +1483,11 @@ class PubnubHTTPAdapter(HTTPAdapter):
         super(PubnubHTTPAdapter, self).init_poolmanager(*args, **kwargs)
 
 s = requests.Session()
-s.mount('http://', PubnubHTTPAdapter(max_retries=1))
-s.mount('https://', PubnubHTTPAdapter(max_retries=1))
+#s.mount('http://', PubnubHTTPAdapter(max_retries=1))
+#s.mount('https://', PubnubHTTPAdapter(max_retries=1))
+#s.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
+#s.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
+
 
 def _requests_request(url, timeout=5):
     try:
@@ -1526,7 +1529,8 @@ class Pubnub(PubnubCore):
         uuid=None,
         pooling=True,
         daemon=False,
-        pres_uuid=None
+        pres_uuid=None,
+        azure=False
     ):
         super(Pubnub, self).__init__(
             publish_key=publish_key,
@@ -1553,6 +1557,13 @@ class Pubnub(PubnubCore):
         self.latest_sub_callback = {'id': None, 'callback': None}
         self.pnsdk = 'PubNub-Python' + '/' + self.version
         self.daemon = daemon
+        
+        if azure is False:
+            s.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
+            s.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
+        else:
+            s.mount('http://', PubnubHTTPAdapter(max_retries=1))
+            s.mount('https://', PubnubHTTPAdapter(max_retries=1))         
 
     def timeout(self, interval, func):
         def cb():

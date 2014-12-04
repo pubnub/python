@@ -192,7 +192,7 @@ def callback(message):
 pubnub.revoke(channel, authkey, callback=callback, error=callback)
 ```
 
-### CHANNEL GROUP NAMESPACES
+### CHANNEL GROUP METHODS
 
 ```
 #### List Namespaces

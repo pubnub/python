@@ -1660,7 +1660,7 @@ class PubnubTwisted(PubnubCoreAsync):
         self.headers['V'] = [self.version]
         self.pnsdk = 'PubNub-Python-' + 'Twisted' + '/' + self.version
 
-    def _request(self, request, callback=None, error=None, single=False):
+    def _request(self, request, callback=None, error=None, single=False, timeout=5):
         global pnconn_pool
 
         def _invoke(func, data):

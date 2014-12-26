@@ -371,7 +371,7 @@ class PubnubBase(object):
         self.auth_key = auth_key
 
     def get_auth_key(self):
-        return auth_key
+        return self.auth_key
 
     def grant(self, channel=None, channel_group=None, auth_key=False, read=False,
               write=False, manage=False, ttl=5, callback=None, error=None):
@@ -943,7 +943,7 @@ class PubnubBase(object):
 
         if (channels is not None):
             if (type(channels) is list):
-                channels = channels.join(',')
+                channels = ','.join(channels)
             params[mode] = channels
             #params['cloak'] = 'true' if CLOAK is True else 'false'
         else:
@@ -1781,7 +1781,7 @@ class PubnubTwisted(PubnubCoreAsync):
         self.headers['V'] = [self.version]
         self.pnsdk = 'PubNub-Python-' + 'Twisted' + '/' + self.version
 
-    def _request(self, request, callback=None, error=None, single=False):
+    def _request(self, request, callback=None, error=None, single=False, timeout=5):
         global pnconn_pool
 
         def _invoke(func, data):

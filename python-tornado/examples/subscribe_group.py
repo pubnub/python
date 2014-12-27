@@ -7,7 +7,7 @@
 
 
 import sys
-from Pubnub import Pubnub as Pubnub
+from Pubnub import PubnubTornado as Pubnub
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
@@ -29,7 +29,7 @@ channel = 'ab'
 def callback_abc(message, channel, real_channel):
     print(str(message) + ' , ' + channel + ', ' + real_channel)
     pubnub.unsubscribe_group(channel_group='abc')
-    #pubnub.stop()
+    pubnub.stop()
 
 
 def callback_d(message, channel):

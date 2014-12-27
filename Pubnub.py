@@ -643,6 +643,33 @@ class PubnubBase(object):
         else:
             return None
 
+    def leave_channel(self, channel, callback=None, error=None):
+        ## Send leave
+        return self._request({"urlcomponents": [
+            'v2', 'presence',
+            'sub_key',
+            self.subscribe_key,
+            'channel',
+            channel,
+            'leave'
+        ], 'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk, "uuid": self.uuid,}},
+            callback=self._return_wrapped_callback(callback),
+            error=self._return_wrapped_callback(error))
+
+    def leave_group(self, channel_group, callback=None, error=None):
+        ## Send leave
+        return self._request({"urlcomponents": [
+            'v2', 'presence',
+            'sub_key',
+            self.subscribe_key,
+            'channel',
+            ',',
+            'leave'
+        ], 'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk, 'channel-group' : channel_group, "uuid": self.uuid,}},
+            callback=self._return_wrapped_callback(callback),
+            error=self._return_wrapped_callback(error))
+
+
     def publish(self, channel, message, callback=None, error=None):
         """Publishes data on a channel.
 
@@ -717,6 +744,25 @@ class PubnubBase(object):
             None
         """
         return self.subscribe(channel+'-pnpres', callback=callback)
+
+    def presence_group(self, channel_group, callback, error=None):
+        """Subscribe to presence data on a channel group.
+           
+           Only works in async mode
+
+        Args:
+            channel_group: Channel  group name ( string ) on which to publish message
+            callback: A callback method should be passed to the method.
+                      If set, the api works in async mode. 
+                      Required argument when working with twisted or tornado .
+            error: Optional variable. An error method can be passed to the method.
+                      If set, the api works in async mode. 
+                      Required argument when working with twisted or tornado .
+
+        Returns:
+            None
+        """
+        return self.subscribe_group(channel_group+'-pnpres', callback=callback)
 
     def here_now(self, channel, callback=None, error=None):
         """Get here now data.
@@ -1164,9 +1210,14 @@ class PubnubCoreAsync(PubnubBase):
             self.subscribe_sync(args)
             return
 
-        def _invoke(func, msg=None, channel=None):
+        def _invoke(func, msg=None, channel=None, real_channel=None):
             if func is not None:
-                if msg is not None and channel is not None:
+                if msg is not None and channel is not None and real_channel is not None:
+                    try:
+                        func(get_data_for_user(msg), channel, real_channel)
+                    except:
+                        func(get_data_for_user(msg), channel)
+                elif msg is not None and channel is not None:
                     func(get_data_for_user(msg), channel)
                 elif msg is not None:
                     func(get_data_for_user(msg))
@@ -1340,7 +1391,7 @@ class PubnubCoreAsync(PubnubBase):
                                     chobj = self.subscriptions[ch[1]]
                                 _invoke(chobj['callback'],
                                         self.decrypt(response_list[ch[0]]),
-                                        channel_list_2[ch[0]])                    
+                                        chobj['name'], channel_list_2[ch[0]])                    
                     elif len(response) > 2:
                         channel_list = response[2].split(',')
                         response_list = response[0]
@@ -1404,21 +1455,12 @@ class PubnubCoreAsync(PubnubBase):
         self._connect()
 
     def unsubscribe(self, channel):
-        """Subscribe to presence data on a channel.
+        """Unsubscribe from channel .
            Only works in async mode
 
         Args:
             channel: Channel name ( string ) on which to publish message
-            message: Message to be published ( String / int / double / dict / list ).
-            callback: A callback method should be passed to the method.
-                      If set, the api works in async mode. 
-                      Required argument when working with twisted or tornado .
-            error: Optional variable. An error method can be passed to the method.
-                      If set, the api works in async mode. 
-                      Required argument when working with twisted or tornado .
 
-        Returns:
-            Returns a list in sync mode i.e. when callback argument is not given
         """
         if channel in self.subscriptions is False:
             return False
@@ -1430,6 +1472,28 @@ class PubnubCoreAsync(PubnubBase):
                 self.subscriptions[channel]['subscribed'] = False
                 self.subscriptions[channel]['timetoken'] = 0
                 self.subscriptions[channel]['first'] = False
+                self.leave_channel(channel=channel)
+        self.CONNECT()
+
+    def unsubscribe_group(self, channel_group):
+        """Unsubscribe from channel group.
+           Only works in async mode
+
+        Args:
+            channel_group: Channel group name ( string ) on which to publish message
+
+        """
+        if channel_group in self.subscription_groups is False:
+            return False
+
+        ## DISCONNECT
+        with self._channel_group_list_lock:
+            if channel_group in self.subscription_groups:
+                self.subscription_groups[channel_group]['connected'] = 0
+                self.subscription_groups[channel_group]['subscribed'] = False
+                self.subscription_groups[channel_group]['timetoken'] = 0
+                self.subscription_groups[channel_group]['first'] = False
+                self.leave_group(channel_group=channel_group)
         self.CONNECT()
 
 

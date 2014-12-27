@@ -7,7 +7,7 @@
 
 
 import sys
-from Pubnub import Pubnub as Pubnub
+from Pubnub import PubnubTornado as Pubnub
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
@@ -28,7 +28,7 @@ channel = 'ab'
 
 def callback_abc(message, channel, real_channel):
     print(str(message) + ' , ' + channel + ', ' + real_channel)
-    pubnub.unsubscribe_group(channel_group='abc')
+    #pubnub.unsubscribe_group(channel_group='abc')
     #pubnub.stop()
 
 
@@ -56,12 +56,10 @@ def reconnect(message):
 def disconnect(message):
     print("DISCONNECTED " + str(message))
 
-print pubnub.channel_group_add_channel(channel_group='abc', channel="b")
+print pubnub.channel_group_add_channel(channel_group='abc', channel="bn")
 
-pubnub.subscribe_group(channel_groups='abc', callback=callback_abc, error=error,
-                 connect=connect_abc, reconnect=reconnect, disconnect=disconnect)
+pubnub.presence_group(channel_group='abc', callback=callback_abc, error=error)
 
-pubnub.subscribe(channels='d', callback=callback_d, error=error,
-                 connect=connect_d, reconnect=reconnect, disconnect=disconnect)
+pubnub.presence(channel='d', callback=callback_d, error=error)
 
 pubnub.start()

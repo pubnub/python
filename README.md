@@ -5,7 +5,7 @@
 
 ## Installation
 ```
-pip install pubnub==3.5.2
+pip install pubnub==3.5.3
 ```
 Examples and instructions for the SDK are available in their acompanying README.md, migration.md and examples directories under their specific platform directories:
 

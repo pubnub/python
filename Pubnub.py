@@ -286,7 +286,7 @@ class PubnubBase(object):
         """
 
         self.origin = origin
-        self.version = '3.5.2'
+        self.version = '3.5.3'
         self.limit = 1800
         self.publish_key = publish_key
         self.subscribe_key = subscribe_key

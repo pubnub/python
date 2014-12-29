@@ -941,7 +941,7 @@ class PubnubBase(object):
                      ]) for bit in request["urlcomponents"]])
         if ("urlparams" in request):
             url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
-                "urlparams"].items() if y is not None])
+                "urlparams"].items() if y is not None and len(str(y)) > 0])
 
         print url
         return url
@@ -1391,7 +1391,7 @@ class PubnubCoreAsync(PubnubBase):
                                     chobj = self.subscriptions[ch[1]]
                                 _invoke(chobj['callback'],
                                         self.decrypt(response_list[ch[0]]),
-                                        chobj['name'], channel_list_2[ch[0]])                    
+                                        chobj['name'].split('-pnpres')[0], channel_list_2[ch[0]].split('-pnpres')[0])                    
                     elif len(response) > 2:
                         channel_list = response[2].split(',')
                         response_list = response[0]
@@ -1400,14 +1400,14 @@ class PubnubCoreAsync(PubnubBase):
                                 chobj = self.subscriptions[ch[1]]
                                 _invoke(chobj['callback'],
                                         self.decrypt(response_list[ch[0]]),
-                                        chobj['name'])
+                                        chobj['name'].split('-pnpres')[0])
                     else:
                         response_list = response[0]
                         chobj = _get_channel()
                         for r in response_list:
                             if chobj:
                                 _invoke(chobj['callback'], self.decrypt(r),
-                                        chobj['name'])
+                                        chobj['name'].split('-pnpres')[0])
 
                     _connect()
 

@@ -390,10 +390,17 @@ class PubnubBase(object):
         Args:
             channel:    (string) (optional)
                         Specifies channel name to grant permissions to.
-                        If channel is not specified, the grant applies to all
+                        If channel/channel_group is not specified, the grant applies to all
                         channels associated with the subscribe_key. If auth_key
                         is not specified, it is possible to grant permissions to
                         multiple channels simultaneously by specifying the channels
+                        as a comma separated list.
+            channel_group:    (string) (optional)
+                        Specifies channel group name to grant permissions to.
+                        If channel/channel_group is not specified, the grant applies to all
+                        channels associated with the subscribe_key. If auth_key
+                        is not specified, it is possible to grant permissions to
+                        multiple channel groups simultaneously by specifying the channel groups
                         as a comma separated list.
 
             auth_key:   (string) (optional) 
@@ -411,6 +418,9 @@ class PubnubBase(object):
             write:      (boolean) (default: True)
                         Write permissions are granted by setting to true.
                         Write permissions are removed by setting to false.
+            manage:      (boolean) (default: True)
+                        Manage permissions are granted by setting to true.
+                        Manage permissions are removed by setting to false.
 
             ttl:        (int) (default: 1440 i.e 24 hrs)
                         Time in minutes for which granted permissions are valid.
@@ -463,10 +473,18 @@ class PubnubBase(object):
         Args:
             channel:    (string) (optional)
                         Specifies channel name to revoke permissions to.
-                        If channel is not specified, the revoke applies to all
+                        If channel/channel_group is not specified, the revoke applies to all
                         channels associated with the subscribe_key. If auth_key
                         is not specified, it is possible to grant permissions to
                         multiple channels simultaneously by specifying the channels
+                        as a comma separated list.
+
+            channel_group:    (string) (optional)
+                        Specifies channel group name to revoke permissions to.
+                        If channel/channel_group is not specified, the grant applies to all
+                        channels associated with the subscribe_key. If auth_key
+                        is not specified, it is possible to revoke permissions to
+                        multiple channel groups simultaneously by specifying the channel groups
                         as a comma separated list.
 
             auth_key:   (string) (optional) 
@@ -532,7 +550,14 @@ class PubnubBase(object):
             channel:    (string) (optional)
                         Specifies channel name to return PAM 
                         attributes optionally in combination with auth_key.
-                        If channel is not specified, results for all channels
+                        If channel/channel_group is not specified, results for all channels
+                        associated with subscribe_key are returned.
+                        If auth_key is not specified, it is possible to return
+                        results for a comma separated list of channels.
+            channel_group:    (string) (optional)
+                        Specifies channel group name to return PAM 
+                        attributes optionally in combination with auth_key.
+                        If channel/channel_group is not specified, results for all channels
                         associated with subscribe_key are returned.
                         If auth_key is not specified, it is possible to return
                         results for a comma separated list of channels.
@@ -727,18 +752,17 @@ class PubnubBase(object):
             error=self._return_wrapped_callback(error))
 
     def presence(self, channel, callback, error=None):
-        """Subscribe to presence data on a channel.
+        """Subscribe to presence events on a channel.
            
            Only works in async mode
 
         Args:
-            channel: Channel name ( string ) on which to publish message
-            callback: A callback method should be passed to the method.
-                      If set, the api works in async mode. 
+            channel: Channel name ( string ) on which to listen for events
+            callback: A callback method should be passed as parameter.
+                      If passed, the api works in async mode. 
                       Required argument when working with twisted or tornado .
-            error: Optional variable. An error method can be passed to the method.
+            error: Optional variable. An error method can be passed as parameter.
                       If set, the api works in async mode. 
-                      Required argument when working with twisted or tornado .
 
         Returns:
             None
@@ -746,18 +770,17 @@ class PubnubBase(object):
         return self.subscribe(channel+'-pnpres', callback=callback)
 
     def presence_group(self, channel_group, callback, error=None):
-        """Subscribe to presence data on a channel group.
+        """Subscribe to presence events on a channel group.
            
            Only works in async mode
 
         Args:
             channel_group: Channel  group name ( string ) on which to publish message
             callback: A callback method should be passed to the method.
-                      If set, the api works in async mode. 
+                      If passed, the api works in async mode. 
                       Required argument when working with twisted or tornado .
-            error: Optional variable. An error method can be passed to the method.
-                      If set, the api works in async mode. 
-                      Required argument when working with twisted or tornado .
+            error: Optional variable. An error method can be passed as parameter.
+                      If passed, the api works in async mode. 
 
         Returns:
             None
@@ -1000,30 +1023,355 @@ class PubnubBase(object):
 
 
     def channel_group_list_namespaces(self, callback=None, error=None):
+        """Get list of namespaces.
+
+        You can obtain list of namespaces for the subscribe key associated with PubNub
+        object using this method.
+
+
+        Args:
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado.
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado.
+
+        Returns:
+            Sync  Mode: dict
+            channel_group_list_namespaces method returns a dict which contains list of namespaces
+            in payload field
+            {
+                u'status': 200,
+                u'payload': {
+                    u'sub_key': u'demo',
+                    u'namespaces': [u'dev', u'foo']
+                }, 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+            Async Mode: None (callback gets the response as parameter)
+
+            Response Format:
+
+            The callback passed to channel_group_list_namespaces gets the a dict containing list of namespaces
+            under payload field
+
+            {
+                u'payload': {
+                    u'sub_key': u'demo',
+                    u'namespaces': [u'dev', u'foo']
+                }
+            }
+
+            namespaces is the list of namespaces for the given subscribe key
+
+
+        """
+
         url = ['namespace']
-        return self._channel_registry(url=url)
+        return self._channel_registry(url=url, callback=callback, error=error)
 
     def channel_group_remove_namespace(self, namespace, callback=None, error=None):
+        """Remove a namespace.
+
+        A namespace can be deleted using this method.
+
+
+        Args:
+            namespace:  (string) namespace to be deleted
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Sync  Mode: dict
+            channel_group_remove_namespace method returns a dict indicating status of the request
+
+            {
+                u'status': 200,
+                u'message': 'OK', 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+            Async Mode: None ( callback gets the response as parameter )
+
+            Response Format:
+
+            The callback passed to channel_group_list_namespaces gets the a dict indicating status of the request
+
+            {
+                u'status': 200,
+                u'message': 'OK', 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+        """
         url = ['namespace', self._encode(namespace), 'remove']
         return self._channel_registry(url=url, callback=callback, error=error)
 
-    def channel_group_list_groups(self, namespace=None, channel_group=None, callback=None, error=None):
+    def channel_group_list_groups(self, namespace=None, callback=None, error=None):
+        """Get list of groups.
+
+        Using this method, list of groups for the subscribe key associated with PubNub
+        object, can be obtained. If namespace is provided, groups within the namespace
+        only are listed
+
+        Args:
+            namespace:  (string) (optional) namespace
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Sync  Mode: dict
+            channel_group_list_groups method returns a dict which contains list of groups
+            in payload field
+            {
+                u'status': 200,
+                u'payload': {"namespace": "dev", "groups": ["abcd"]}, 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+            Async Mode: None ( callback gets the response as parameter )
+
+            Response Format:
+
+            The callback passed to channel_group_list_namespaces gets the a dict containing list of groups
+            under payload field
+
+            {
+                u'payload': {"namespace": "dev", "groups": ["abcd"]}
+            }
+
+
+
+        """
 
         if (namespace is not None and len(namespace) > 0):
             channel_group = namespace + ':*'
+        else:
+            channel_group = '*:*'
 
         return self._channel_group(channel_group=channel_group, callback=callback, error=error)
 
     def channel_group_list_channels(self, channel_group, callback=None, error=None):
+        """Get list of channels for a group.
+
+        Using this method, list of channels for a group, can be obtained. 
+
+        Args:
+            channel_group: (string) (optional) 
+                        Channel Group name. It can also contain namespace.
+                        If namespace is also specified, then the parameter
+                        will be in format namespace:channel_group
+
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado.
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado.
+
+        Returns:
+            Sync  Mode: dict
+            channel_group_list_channels method returns a dict which contains list of channels
+            in payload field
+            {
+                u'status': 200,
+                u'payload': {"channels": ["hi"], "group": "abcd"}, 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+            Async Mode: None ( callback gets the response as parameter )
+
+            Response Format:
+
+            The callback passed to channel_group_list_channels gets the a dict containing list of channels
+            under payload field
+
+            {
+                u'payload': {"channels": ["hi"], "group": "abcd"}
+            }
+
+
+        """
         return self._channel_group(channel_group=channel_group, callback=callback, error=error)
 
     def channel_group_add_channel(self, channel_group, channel, callback=None, error=None):
+        """Add a channel to group.
+
+        A channel can be added to group using this method.
+
+
+        Args:
+            channel_group:  (string) 
+                        Channel Group name. It can also contain namespace.
+                        If namespace is also specified, then the parameter
+                        will be in format namespace:channel_group
+            channel:        (string)
+                            Can be a channel name, a list of channel names,
+                            or a comma separated list of channel names
+            callback:       (optional)
+                            A callback method should be passed to the method.
+                            If set, the api works in async mode. 
+                            Required argument when working with twisted or tornado.
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado.
+
+        Returns:
+            Sync  Mode: dict
+            channel_group_add_channel method returns a dict indicating status of the request
+
+            {
+                u'status': 200,
+                u'message': 'OK', 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+            Async Mode: None ( callback gets the response as parameter )
+
+            Response Format:
+
+            The callback passed to channel_group_add_channel gets the a dict indicating status of the request
+
+            {
+                u'status': 200,
+                u'message': 'OK', 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+        """
+
         return self._channel_group(channel_group=channel_group, channels=channel, mode='add', callback=callback, error=error)
 
     def channel_group_remove_channel(self, channel_group, channel, callback=None, error=None):
+        """Remove channel.
+
+        A channel can be removed from a group method.
+
+
+        Args:
+            channel_group:  (string)
+                        Channel Group name. It can also contain namespace.
+                        If namespace is also specified, then the parameter
+                        will be in format namespace:channel_group
+            channel:        (string)
+                            Can be a channel name, a list of channel names,
+                            or a comma separated list of channel names
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Sync  Mode: dict
+            channel_group_remove_channel method returns a dict indicating status of the request
+
+            {
+                u'status': 200,
+                u'message': 'OK', 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+            Async Mode: None ( callback gets the response as parameter )
+
+            Response Format:
+
+            The callback passed to channel_group_remove_channel gets the a dict indicating status of the request
+
+            {
+                u'status': 200,
+                u'message': 'OK', 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+        """
+
         return self._channel_group(channel_group=channel_group, channels=channel, mode='remove', callback=callback, error=error)
 
     def channel_group_remove_group(self, channel_group, callback=None, error=None):
+        """Remove channel group.
+
+        A channel group can be removed using this method.
+
+
+        Args:
+            channel_group:  (string)
+                        Channel Group name. It can also contain namespace.
+                        If namespace is also specified, then the parameter
+                        will be in format namespace:channel_group
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado.
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado.
+
+        Returns:
+            Sync  Mode: dict
+            channel_group_remove_group method returns a dict indicating status of the request
+
+            {
+                u'status': 200,
+                u'message': 'OK', 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+            Async Mode: None ( callback gets the response as parameter )
+
+            Response Format:
+
+            The callback passed to channel_group_remove_group gets the a dict indicating status of the request
+
+            {
+                u'status': 200,
+                u'message': 'OK', 
+                u'service': u'channel-registry',
+                u'error': False
+            }
+
+        """
+
         return self._channel_group(channel_group=channel_group, mode='remove', callback=callback, error=error)
 
 
@@ -1158,15 +1506,43 @@ class PubnubCoreAsync(PubnubBase):
 
     def subscribe(self, channels, callback, error=None,
                   connect=None, disconnect=None, reconnect=None, sync=False):
+        """Subscribe to data on a channel.
+
+        This function causes the client to create an open TCP socket to the
+        PubNub Real-Time Network and begin listening for messages on a specified channel.
+        To subscribe to a channel the client must send the appropriate subscribe_key at
+        initialization.
+        
+        Only works in async mode
+
+        Args:
+            channel:    (string/list)
+                        Specifies the channel to subscribe to. It is possible to specify
+                        multiple channels as a comma separated list or andarray.
+
+            callback:   (function)
+                        This callback is called on receiving a message from the channel.
+
+            error:      (function) (optional)
+                        This callback is called on an error event
+
+            connect:    (function) (optional)
+                        This callback is called on a successful connection to the PubNub cloud
+
+            disconnect: (function) (optional)
+                        This callback is called on client disconnect from the PubNub cloud
+            
+            reconnect:  (function) (optional)
+                        This callback is called on successfully re-connecting to the PubNub cloud
+        
+        Returns:
+            None
+        """
+
         return self._subscribe(channels=channels, callback=callback, error=error,
             connect=connect, disconnect=disconnect, reconnect=reconnect, sync=sync)
 
     def subscribe_group(self, channel_groups, callback, error=None,
-                  connect=None, disconnect=None, reconnect=None, sync=False):
-        return self._subscribe(channel_groups=channel_groups, callback=callback, error=error,
-            connect=connect, disconnect=disconnect, reconnect=reconnect, sync=sync)
-
-    def _subscribe(self, channels=None, channel_groups=None, callback=None, error=None,
                   connect=None, disconnect=None, reconnect=None, sync=False):
         """Subscribe to data on a channel.
 
@@ -1200,6 +1576,12 @@ class PubnubCoreAsync(PubnubBase):
         Returns:
             None
         """
+
+        return self._subscribe(channel_groups=channel_groups, callback=callback, error=error,
+            connect=connect, disconnect=disconnect, reconnect=reconnect, sync=sync)
+
+    def _subscribe(self, channels=None, channel_groups=None, callback=None, error=None,
+                  connect=None, disconnect=None, reconnect=None, sync=False):
 
         with self._tt_lock:
             self.last_timetoken = self.timetoken if self.timetoken != 0 \
@@ -1684,6 +2066,7 @@ def _requests_request(url, timeout=5):
     except requests.exceptions.Timeout as error:
         msg = str(error)
         return (json.dumps(msg), 0)
+    print resp.text
     return (resp.text, resp.status_code)
 
 

@@ -125,6 +125,298 @@ The dict returned contains values with keys &#8216;message&#8217; and &#8216;pay
 </dd></dl>
 
 <dl class="method">
+<dt id="Pubnub.Pubnub.channel_group_list_channels">
+<tt class="descname">channel_group_list_channels</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_list_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of channels for a group.</p>
+<p>Using this method, list of channels for a group, can be obtained.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_group: (string) (optional) </dt>
+<dd>Channel Group name. It can also contain namespace.
+If namespace is also specified, then the parameter
+will be in format namespace:channel_group</dd>
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_list_channels method returns a dict which contains list of channels
+in payload field
+{</p>
+<blockquote>
+<div>u&#8217;status&#8217;: 200,
+u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</div></blockquote>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_channels gets the a dict containing list of channels
+under payload field</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.Pubnub.channel_group_list_groups">
+<tt class="descname">channel_group_list_groups</tt><big>(</big><em>namespace=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_list_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of groups.</p>
+<p>Using this method, list of groups for the subscribe key associated with PubNub
+object, can be obtained. If namespace is provided, groups within the namespace
+only are listed</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">namespace:  (string) (optional) namespace
+callback:   (optional)</p>
+<blockquote>
+<div>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</div></blockquote>
+<dl class="last docutils">
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_list_groups method returns a dict which contains list of groups
+in payload field
+{</p>
+<blockquote>
+<div>u&#8217;status&#8217;: 200,
+u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</div></blockquote>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_namespaces gets the a dict containing list of groups
+under payload field</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.Pubnub.channel_group_list_namespaces">
+<tt class="descname">channel_group_list_namespaces</tt><big>(</big><em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_list_namespaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of namespaces.</p>
+<p>You can obtain list of namespaces for the subscribe key associated with PubNub
+object using this method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_list_namespaces method returns a dict which contains list of namespaces
+in payload field
+{</p>
+<blockquote>
+<div><p>u&#8217;status&#8217;: 200,
+u&#8217;payload&#8217;: {</p>
+<blockquote>
+<div>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
+u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</div></blockquote>
+<p>}, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</p>
+</div></blockquote>
+<p>}</p>
+<p>Async Mode: None (callback gets the response as parameter)</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_namespaces gets the a dict containing list of namespaces
+under payload field</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd><dl class="first docutils">
+<dt>u&#8217;payload&#8217;: {</dt>
+<dd>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
+u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+<p>}</p>
+<p class="last">namespaces is the list of namespaces for the given subscribe key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.Pubnub.channel_group_remove_channel">
+<tt class="descname">channel_group_remove_channel</tt><big>(</big><em>channel_group</em>, <em>channel</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_remove_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove channel.</p>
+<p>A channel can be removed from a group method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_group:  (string)</dt>
+<dd>Channel Group name. It can also contain namespace.
+If namespace is also specified, then the parameter
+will be in format namespace:channel_group</dd>
+<dt>channel:        (string)</dt>
+<dd>Can be a channel name, a list of channel names,
+or a comma separated list of channel names</dd>
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_remove_channel method returns a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_remove_channel gets the a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.Pubnub.channel_group_remove_group">
+<tt class="descname">channel_group_remove_group</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_remove_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove channel group.</p>
+<p>A channel group can be removed using this method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_group:  (string)</dt>
+<dd>Channel Group name. It can also contain namespace.
+If namespace is also specified, then the parameter
+will be in format namespace:channel_group</dd>
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_remove_group method returns a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_remove_group gets the a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.Pubnub.channel_group_remove_namespace">
+<tt class="descname">channel_group_remove_namespace</tt><big>(</big><em>namespace</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_remove_namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a namespace.</p>
+<p>A namespace can be deleted using this method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">namespace:  (string) namespace to be deleted
+callback:   (optional)</p>
+<blockquote>
+<div>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</div></blockquote>
+<dl class="last docutils">
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_remove_namespace method returns a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_namespaces gets the a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="Pubnub.Pubnub.decrypt">
 <tt class="descname">decrypt</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.decrypt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for decrypting data.</p>
@@ -360,6 +652,29 @@ Required argument when working with twisted or tornado .</div></blockquote>
 </dd></dl>
 
 <dl class="method">
+<dt id="Pubnub.Pubnub.presence_group">
+<tt class="descname">presence_group</tt><big>(</big><em>channel_group</em>, <em>callback</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.presence_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to presence events on a channel group.</p>
+<blockquote>
+<div>Only works in async mode</div></blockquote>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">channel_group: Channel group name ( string )
+callback: A callback method should be passed to the method.</p>
+<blockquote>
+<div>If passed, the api works in async mode. 
+Required argument when working with twisted or tornado .</div></blockquote>
+<dl class="last docutils">
+<dt>error: Optional variable. An error method can be passed as parameter.</dt>
+<dd>If passed, the api works in async mode.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="Pubnub.Pubnub.publish">
 <tt class="descname">publish</tt><big>(</big><em>channel</em>, <em>message</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.publish" title="Permalink to this definition">¶</a></dt>
 <dd><p>Publishes data on a channel.</p>
@@ -502,6 +817,38 @@ multiple channels as a comma separated list or andarray.</dd>
 </dd></dl>
 
 <dl class="method">
+<dt id="Pubnub.Pubnub.subscribe_group">
+<tt class="descname">subscribe_group</tt><big>(</big><em>channel_groups</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.subscribe_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to data on a channel group.</p>
+<p>This function causes the client to create an open TCP socket to the
+PubNub Real-Time Network and begin listening for messages on a specified channel.
+To subscribe to a channel group the client must send the appropriate subscribe_key at
+initialization.</p>
+<p>Only works in async mode</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_groups:    (string/list)</dt>
+<dd>Specifies the channel groups to subscribe to. It is possible to specify
+multiple channel groups as a comma separated list or andarray.</dd>
+<dt>callback:   (function)</dt>
+<dd>This callback is called on receiving a message from the channel.</dd>
+<dt>error:      (function) (optional)</dt>
+<dd>This callback is called on an error event</dd>
+<dt>connect:    (function) (optional)</dt>
+<dd>This callback is called on a successful connection to the PubNub cloud</dd>
+<dt>disconnect: (function) (optional)</dt>
+<dd>This callback is called on client disconnect from the PubNub cloud</dd>
+<dt>reconnect:  (function) (optional)</dt>
+<dd>This callback is called on successfully re-connecting to the PubNub cloud</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="Pubnub.Pubnub.time">
 <tt class="descname">time</tt><big>(</big><em>callback=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function will return a 17 digit precision Unix epoch.</p>
@@ -532,7 +879,18 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Unsubscribe from channel .</dt>
 <dd>Only works in async mode</dd>
 <dt>Args:</dt>
-<dd>channel: Channel name ( string ) on which to publish message</dd>
+<dd>channel: Channel name ( string )</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.Pubnub.unsubscribe_group">
+<tt class="descname">unsubscribe_group</tt><big>(</big><em>channel_group</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.unsubscribe_group" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Unsubscribe from channel group.</dt>
+<dd>Only works in async mode</dd>
+<dt>Args:</dt>
+<dd>channel_group: Channel group name ( string )</dd>
 </dl>
 </dd></dl>
 
@@ -611,6 +969,298 @@ The dict returned contains values with keys &#8216;message&#8217; and &#8216;pay
 <p>Usage:</p>
 <blockquote>
 <div>pubnub.audit (&#8216;my_channel&#8217;);  # Sync Mode</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTwisted.channel_group_list_channels">
+<tt class="descname">channel_group_list_channels</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_list_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of channels for a group.</p>
+<p>Using this method, list of channels for a group, can be obtained.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_group: (string) (optional) </dt>
+<dd>Channel Group name. It can also contain namespace.
+If namespace is also specified, then the parameter
+will be in format namespace:channel_group</dd>
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_list_channels method returns a dict which contains list of channels
+in payload field
+{</p>
+<blockquote>
+<div>u&#8217;status&#8217;: 200,
+u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</div></blockquote>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_channels gets the a dict containing list of channels
+under payload field</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTwisted.channel_group_list_groups">
+<tt class="descname">channel_group_list_groups</tt><big>(</big><em>namespace=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_list_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of groups.</p>
+<p>Using this method, list of groups for the subscribe key associated with PubNub
+object, can be obtained. If namespace is provided, groups within the namespace
+only are listed</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">namespace:  (string) (optional) namespace
+callback:   (optional)</p>
+<blockquote>
+<div>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</div></blockquote>
+<dl class="last docutils">
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_list_groups method returns a dict which contains list of groups
+in payload field
+{</p>
+<blockquote>
+<div>u&#8217;status&#8217;: 200,
+u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</div></blockquote>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_namespaces gets the a dict containing list of groups
+under payload field</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTwisted.channel_group_list_namespaces">
+<tt class="descname">channel_group_list_namespaces</tt><big>(</big><em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_list_namespaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of namespaces.</p>
+<p>You can obtain list of namespaces for the subscribe key associated with PubNub
+object using this method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_list_namespaces method returns a dict which contains list of namespaces
+in payload field
+{</p>
+<blockquote>
+<div><p>u&#8217;status&#8217;: 200,
+u&#8217;payload&#8217;: {</p>
+<blockquote>
+<div>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
+u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</div></blockquote>
+<p>}, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</p>
+</div></blockquote>
+<p>}</p>
+<p>Async Mode: None (callback gets the response as parameter)</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_namespaces gets the a dict containing list of namespaces
+under payload field</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd><dl class="first docutils">
+<dt>u&#8217;payload&#8217;: {</dt>
+<dd>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
+u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+<p>}</p>
+<p class="last">namespaces is the list of namespaces for the given subscribe key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTwisted.channel_group_remove_channel">
+<tt class="descname">channel_group_remove_channel</tt><big>(</big><em>channel_group</em>, <em>channel</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_remove_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove channel.</p>
+<p>A channel can be removed from a group method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_group:  (string)</dt>
+<dd>Channel Group name. It can also contain namespace.
+If namespace is also specified, then the parameter
+will be in format namespace:channel_group</dd>
+<dt>channel:        (string)</dt>
+<dd>Can be a channel name, a list of channel names,
+or a comma separated list of channel names</dd>
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_remove_channel method returns a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_remove_channel gets the a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTwisted.channel_group_remove_group">
+<tt class="descname">channel_group_remove_group</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_remove_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove channel group.</p>
+<p>A channel group can be removed using this method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_group:  (string)</dt>
+<dd>Channel Group name. It can also contain namespace.
+If namespace is also specified, then the parameter
+will be in format namespace:channel_group</dd>
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_remove_group method returns a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_remove_group gets the a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTwisted.channel_group_remove_namespace">
+<tt class="descname">channel_group_remove_namespace</tt><big>(</big><em>namespace</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_remove_namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a namespace.</p>
+<p>A namespace can be deleted using this method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">namespace:  (string) namespace to be deleted
+callback:   (optional)</p>
+<blockquote>
+<div>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</div></blockquote>
+<dl class="last docutils">
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_remove_namespace method returns a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_namespaces gets the a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -849,6 +1499,29 @@ Required argument when working with twisted or tornado .</div></blockquote>
 </dd></dl>
 
 <dl class="method">
+<dt id="Pubnub.PubnubTwisted.presence_group">
+<tt class="descname">presence_group</tt><big>(</big><em>channel_group</em>, <em>callback</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.presence_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to presence events on a channel group.</p>
+<blockquote>
+<div>Only works in async mode</div></blockquote>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">channel_group: Channel group name ( string )
+callback: A callback method should be passed to the method.</p>
+<blockquote>
+<div>If passed, the api works in async mode. 
+Required argument when working with twisted or tornado .</div></blockquote>
+<dl class="last docutils">
+<dt>error: Optional variable. An error method can be passed as parameter.</dt>
+<dd>If passed, the api works in async mode.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="Pubnub.PubnubTwisted.publish">
 <tt class="descname">publish</tt><big>(</big><em>channel</em>, <em>message</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.publish" title="Permalink to this definition">¶</a></dt>
 <dd><p>Publishes data on a channel.</p>
@@ -991,6 +1664,38 @@ multiple channels as a comma separated list or andarray.</dd>
 </dd></dl>
 
 <dl class="method">
+<dt id="Pubnub.PubnubTwisted.subscribe_group">
+<tt class="descname">subscribe_group</tt><big>(</big><em>channel_groups</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.subscribe_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to data on a channel group.</p>
+<p>This function causes the client to create an open TCP socket to the
+PubNub Real-Time Network and begin listening for messages on a specified channel.
+To subscribe to a channel group the client must send the appropriate subscribe_key at
+initialization.</p>
+<p>Only works in async mode</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_groups:    (string/list)</dt>
+<dd>Specifies the channel groups to subscribe to. It is possible to specify
+multiple channel groups as a comma separated list or andarray.</dd>
+<dt>callback:   (function)</dt>
+<dd>This callback is called on receiving a message from the channel.</dd>
+<dt>error:      (function) (optional)</dt>
+<dd>This callback is called on an error event</dd>
+<dt>connect:    (function) (optional)</dt>
+<dd>This callback is called on a successful connection to the PubNub cloud</dd>
+<dt>disconnect: (function) (optional)</dt>
+<dd>This callback is called on client disconnect from the PubNub cloud</dd>
+<dt>reconnect:  (function) (optional)</dt>
+<dd>This callback is called on successfully re-connecting to the PubNub cloud</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="Pubnub.PubnubTwisted.time">
 <tt class="descname">time</tt><big>(</big><em>callback=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function will return a 17 digit precision Unix epoch.</p>
@@ -1021,7 +1726,18 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Unsubscribe from channel .</dt>
 <dd>Only works in async mode</dd>
 <dt>Args:</dt>
-<dd>channel: Channel name ( string ) on which to publish message</dd>
+<dd>channel: Channel name ( string )</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTwisted.unsubscribe_group">
+<tt class="descname">unsubscribe_group</tt><big>(</big><em>channel_group</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.unsubscribe_group" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Unsubscribe from channel group.</dt>
+<dd>Only works in async mode</dd>
+<dt>Args:</dt>
+<dd>channel_group: Channel group name ( string )</dd>
 </dl>
 </dd></dl>
 
@@ -1100,6 +1816,298 @@ The dict returned contains values with keys &#8216;message&#8217; and &#8216;pay
 <p>Usage:</p>
 <blockquote>
 <div>pubnub.audit (&#8216;my_channel&#8217;);  # Sync Mode</div></blockquote>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTornado.channel_group_list_channels">
+<tt class="descname">channel_group_list_channels</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_list_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of channels for a group.</p>
+<p>Using this method, list of channels for a group, can be obtained.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_group: (string) (optional) </dt>
+<dd>Channel Group name. It can also contain namespace.
+If namespace is also specified, then the parameter
+will be in format namespace:channel_group</dd>
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_list_channels method returns a dict which contains list of channels
+in payload field
+{</p>
+<blockquote>
+<div>u&#8217;status&#8217;: 200,
+u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</div></blockquote>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_channels gets the a dict containing list of channels
+under payload field</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTornado.channel_group_list_groups">
+<tt class="descname">channel_group_list_groups</tt><big>(</big><em>namespace=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_list_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of groups.</p>
+<p>Using this method, list of groups for the subscribe key associated with PubNub
+object, can be obtained. If namespace is provided, groups within the namespace
+only are listed</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">namespace:  (string) (optional) namespace
+callback:   (optional)</p>
+<blockquote>
+<div>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</div></blockquote>
+<dl class="last docutils">
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_list_groups method returns a dict which contains list of groups
+in payload field
+{</p>
+<blockquote>
+<div>u&#8217;status&#8217;: 200,
+u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</div></blockquote>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_namespaces gets the a dict containing list of groups
+under payload field</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTornado.channel_group_list_namespaces">
+<tt class="descname">channel_group_list_namespaces</tt><big>(</big><em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_list_namespaces" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get list of namespaces.</p>
+<p>You can obtain list of namespaces for the subscribe key associated with PubNub
+object using this method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_list_namespaces method returns a dict which contains list of namespaces
+in payload field
+{</p>
+<blockquote>
+<div><p>u&#8217;status&#8217;: 200,
+u&#8217;payload&#8217;: {</p>
+<blockquote>
+<div>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
+u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</div></blockquote>
+<p>}, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</p>
+</div></blockquote>
+<p>}</p>
+<p>Async Mode: None (callback gets the response as parameter)</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_namespaces gets the a dict containing list of namespaces
+under payload field</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd><dl class="first docutils">
+<dt>u&#8217;payload&#8217;: {</dt>
+<dd>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
+u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+<p>}</p>
+<p class="last">namespaces is the list of namespaces for the given subscribe key</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTornado.channel_group_remove_channel">
+<tt class="descname">channel_group_remove_channel</tt><big>(</big><em>channel_group</em>, <em>channel</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_remove_channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove channel.</p>
+<p>A channel can be removed from a group method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_group:  (string)</dt>
+<dd>Channel Group name. It can also contain namespace.
+If namespace is also specified, then the parameter
+will be in format namespace:channel_group</dd>
+<dt>channel:        (string)</dt>
+<dd>Can be a channel name, a list of channel names,
+or a comma separated list of channel names</dd>
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_remove_channel method returns a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_remove_channel gets the a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTornado.channel_group_remove_group">
+<tt class="descname">channel_group_remove_group</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_remove_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove channel group.</p>
+<p>A channel group can be removed using this method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_group:  (string)</dt>
+<dd>Channel Group name. It can also contain namespace.
+If namespace is also specified, then the parameter
+will be in format namespace:channel_group</dd>
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_remove_group method returns a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_remove_group gets the a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTornado.channel_group_remove_namespace">
+<tt class="descname">channel_group_remove_namespace</tt><big>(</big><em>namespace</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_remove_namespace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove a namespace.</p>
+<p>A namespace can be deleted using this method.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">namespace:  (string) namespace to be deleted
+callback:   (optional)</p>
+<blockquote>
+<div>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</div></blockquote>
+<dl class="last docutils">
+<dt>error:      (optional)</dt>
+<dd>Optional variable. An error method can be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><p class="first">Sync  Mode: dict
+channel_group_remove_namespace method returns a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p>}</p>
+<p>Async Mode: None ( callback gets the response as parameter )</p>
+<p>Response Format:</p>
+<p>The callback passed to channel_group_list_namespaces gets the a dict indicating status of the request</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd>u&#8217;status&#8217;: 200,
+u&#8217;message&#8217;: &#8216;OK&#8217;, 
+u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
+u&#8217;error&#8217;: False</dd>
+</dl>
+<p class="last">}</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
@@ -1338,6 +2346,29 @@ Required argument when working with twisted or tornado .</div></blockquote>
 </dd></dl>
 
 <dl class="method">
+<dt id="Pubnub.PubnubTornado.presence_group">
+<tt class="descname">presence_group</tt><big>(</big><em>channel_group</em>, <em>callback</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.presence_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to presence events on a channel group.</p>
+<blockquote>
+<div>Only works in async mode</div></blockquote>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">channel_group: Channel group name ( string )
+callback: A callback method should be passed to the method.</p>
+<blockquote>
+<div>If passed, the api works in async mode. 
+Required argument when working with twisted or tornado .</div></blockquote>
+<dl class="last docutils">
+<dt>error: Optional variable. An error method can be passed as parameter.</dt>
+<dd>If passed, the api works in async mode.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="Pubnub.PubnubTornado.publish">
 <tt class="descname">publish</tt><big>(</big><em>channel</em>, <em>message</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.publish" title="Permalink to this definition">¶</a></dt>
 <dd><p>Publishes data on a channel.</p>
@@ -1480,6 +2511,38 @@ multiple channels as a comma separated list or andarray.</dd>
 </dd></dl>
 
 <dl class="method">
+<dt id="Pubnub.PubnubTornado.subscribe_group">
+<tt class="descname">subscribe_group</tt><big>(</big><em>channel_groups</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.subscribe_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Subscribe to data on a channel group.</p>
+<p>This function causes the client to create an open TCP socket to the
+PubNub Real-Time Network and begin listening for messages on a specified channel.
+To subscribe to a channel group the client must send the appropriate subscribe_key at
+initialization.</p>
+<p>Only works in async mode</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>channel_groups:    (string/list)</dt>
+<dd>Specifies the channel groups to subscribe to. It is possible to specify
+multiple channel groups as a comma separated list or andarray.</dd>
+<dt>callback:   (function)</dt>
+<dd>This callback is called on receiving a message from the channel.</dd>
+<dt>error:      (function) (optional)</dt>
+<dd>This callback is called on an error event</dd>
+<dt>connect:    (function) (optional)</dt>
+<dd>This callback is called on a successful connection to the PubNub cloud</dd>
+<dt>disconnect: (function) (optional)</dt>
+<dd>This callback is called on client disconnect from the PubNub cloud</dd>
+<dt>reconnect:  (function) (optional)</dt>
+<dd>This callback is called on successfully re-connecting to the PubNub cloud</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>None</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="Pubnub.PubnubTornado.time">
 <tt class="descname">time</tt><big>(</big><em>callback=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function will return a 17 digit precision Unix epoch.</p>
@@ -1510,7 +2573,18 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Unsubscribe from channel .</dt>
 <dd>Only works in async mode</dd>
 <dt>Args:</dt>
-<dd>channel: Channel name ( string ) on which to publish message</dd>
+<dd>channel: Channel name ( string )</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="Pubnub.PubnubTornado.unsubscribe_group">
+<tt class="descname">unsubscribe_group</tt><big>(</big><em>channel_group</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.unsubscribe_group" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>Unsubscribe from channel group.</dt>
+<dd>Only works in async mode</dd>
+<dt>Args:</dt>
+<dd>channel_group: Channel group name ( string )</dd>
 </dl>
 </dd></dl>
 

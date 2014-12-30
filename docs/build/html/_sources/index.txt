@@ -14,18 +14,18 @@ Welcome to PubNub's documentation!
 Pubnub
 ---------------------------------
 .. autoclass:: Pubnub
-   :members: publish, subscribe, unsubscribe, presence, history, here_now, grant, audit, revoke, get_origin, set_origin, get_auth_key, set_auth_key, encrypt, decrypt, time
+   :members: publish, subscribe, subscribe_group, unsubscribe, unsubscribe_group, presence, presence_group, history, here_now, grant, audit, revoke, get_origin, set_origin, get_auth_key, set_auth_key, encrypt, decrypt, time, channel_group_list_namespaces, channel_group_remove_namespace, channel_group_list_groups, channel_group_list_channels, channel_groups_add_channel, channel_group_remove_channel, channel_group_remove_group
 
 PubnubTwisted
 ---------------------------------
 .. autoclass:: PubnubTwisted
-   :members: publish, subscribe, unsubscribe, presence, history, here_now, grant, audit, revoke, get_origin, set_origin, get_auth_key, set_auth_key, encrypt, decrypt, time
+   :members: publish, subscribe, subscribe_group, unsubscribe, unsubscribe_group, presence, presence_group, history, here_now, grant, audit, revoke, get_origin, set_origin, get_auth_key, set_auth_key, encrypt, decrypt, time, channel_group_list_namespaces, channel_group_remove_namespace, channel_group_list_groups, channel_group_list_channels, channel_groups_add_channel, channel_group_remove_channel, channel_group_remove_group
 
 
 PubnubTornado
 ---------------------------------
 .. autoclass:: PubnubTornado
-   :members: publish, subscribe, unsubscribe, presence, history, here_now, grant, audit, revoke, get_origin, set_origin, get_auth_key, set_auth_key, encrypt, decrypt, time
+   :members: publish, subscribe, subscribe_group, unsubscribe, unsubscribe_group, presence, presence_group, history, here_now, grant, audit, revoke, get_origin, set_origin, get_auth_key, set_auth_key, encrypt, decrypt, time, channel_group_list_namespaces, channel_group_remove_namespace, channel_group_list_groups, channel_group_list_channels, channel_groups_add_channel, channel_group_remove_channel, channel_group_remove_group
 
 Indices and tables
 ==================

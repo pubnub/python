@@ -60,6 +60,37 @@ pubnub.subscribe(channel, callback=callback, error=callback,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
+#### SUBSCRIBE to group
+
+```
+# Listen for Messages
+
+channel_group = 'group1'
+
+def callback(message, channel_group, channel):
+    print(message)
+
+
+def error(message):
+    print("ERROR : " + str(message))
+
+
+def connect(message):
+    print("CONNECTED")
+
+
+def reconnect(message):
+    print("RECONNECTED")
+
+
+def disconnect(message):
+    print("DISCONNECTED")
+
+
+pubnub.subscribe_group(channel_group, callback=callback, error=callback,
+                 connect=connect, reconnect=reconnect, disconnect=disconnect)
+```
+
 #### SUBSCRIBE Synchronous ( compatible with pre-3.5 )
 Runs in tight loop if callback return True.
 Loop ends when callback return False
@@ -104,6 +135,25 @@ def error(message):
 
 
 pubnub.presence(channel, callback=callback, error=callback)
+```
+
+#### PRESENCE channel group
+
+```
+# Listen for Presence Event Messages
+
+channel_group = 'group1'
+
+def callback(message, channel_group, channel):
+    print(message)
+
+
+def error(message):
+    print("ERROR : " + str(message))
+
+
+
+pubnub.presence_group(channel_group, callback=callback, error=callback)
 ```
 
 #### HERE_NOW

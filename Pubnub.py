@@ -775,7 +775,7 @@ class PubnubBase(object):
            Only works in async mode
 
         Args:
-            channel_group: Channel  group name ( string ) on which to publish message
+            channel_group: Channel group name ( string )
             callback: A callback method should be passed to the method.
                       If passed, the api works in async mode. 
                       Required argument when working with twisted or tornado .
@@ -1544,19 +1544,19 @@ class PubnubCoreAsync(PubnubBase):
 
     def subscribe_group(self, channel_groups, callback, error=None,
                   connect=None, disconnect=None, reconnect=None, sync=False):
-        """Subscribe to data on a channel.
+        """Subscribe to data on a channel group.
 
         This function causes the client to create an open TCP socket to the
         PubNub Real-Time Network and begin listening for messages on a specified channel.
-        To subscribe to a channel the client must send the appropriate subscribe_key at
+        To subscribe to a channel group the client must send the appropriate subscribe_key at
         initialization.
         
         Only works in async mode
 
         Args:
-            channel:    (string/list)
-                        Specifies the channel to subscribe to. It is possible to specify
-                        multiple channels as a comma separated list or andarray.
+            channel_groups:    (string/list)
+                        Specifies the channel groups to subscribe to. It is possible to specify
+                        multiple channel groups as a comma separated list or andarray.
 
             callback:   (function)
                         This callback is called on receiving a message from the channel.
@@ -1841,8 +1841,7 @@ class PubnubCoreAsync(PubnubBase):
            Only works in async mode
 
         Args:
-            channel: Channel name ( string ) on which to publish message
-
+            channel: Channel name ( string ) 
         """
         if channel in self.subscriptions is False:
             return False
@@ -1862,8 +1861,7 @@ class PubnubCoreAsync(PubnubBase):
            Only works in async mode
 
         Args:
-            channel_group: Channel group name ( string ) on which to publish message
-
+            channel_group: Channel group name ( string )
         """
         if channel_group in self.subscription_groups is False:
             return False

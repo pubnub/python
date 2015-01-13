@@ -1,3 +1,14 @@
+3.7.0 - 1-12-14 - f20e5e2
+. Channel Groups functionality
+. Added Python Echo Server example
+. Added missing timeout keyword arg
+. Bringing versioning up to standard (3.7)
+
+3.5.3 - 10-21-14 - dc617ed
+. Added patch to handle quick net calls in Azure environments
+. Presence fixes
+. added daemon flag
+
 3.5.2 - 6-25-14 - 1f98c4
 . Added pnsdk URL param to each request
 . Added grant/revoke/audit examples to README

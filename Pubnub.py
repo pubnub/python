@@ -966,7 +966,6 @@ class PubnubBase(object):
             url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
                 "urlparams"].items() if y is not None and len(str(y)) > 0])
 
-        print url
         return url
 
     def _channel_registry(self, url=None, params=None, callback=None, error=None):
@@ -1744,7 +1743,6 @@ class PubnubCoreAsync(PubnubBase):
                     self.timeout(1, _connect)
 
             def sub_callback(response):
-                print response
                 ## ERROR ?
                 if not response or \
                     ('message' in response and
@@ -2064,7 +2062,6 @@ def _requests_request(url, timeout=5):
     except requests.exceptions.Timeout as error:
         msg = str(error)
         return (json.dumps(msg), 0)
-    print resp.text
     return (resp.text, resp.status_code)
 
 

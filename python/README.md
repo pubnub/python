@@ -244,21 +244,6 @@ pubnub.revoke(channel, authkey, callback=callback, error=callback)
 
 ### CHANNEL GROUP METHODS
 
-```
-#### List Namespaces
-
-# Synchronous usage
-
-print pubnub.channel_group_list_namespaces()
-
-# Asynchronous usage
-
-def callback(message):
-    print(message)
-
-pubnub.channel_group_list_namespaces(callback=callback, error=callback)
-```
-
 #### List Groups
 
 ```

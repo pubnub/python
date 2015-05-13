@@ -866,7 +866,7 @@ class PubnubBase(object):
 
 
     def history(self, channel, count=100, reverse=False,
-                start=None, end=None, callback=None, error=None):
+                start=None, end=None, include_token=False, callback=None, error=None):
         """This method fetches historical messages of a channel.
 
         PubNub Storage/Playback Service provides real-time access to an unlimited
@@ -922,6 +922,7 @@ class PubnubBase(object):
         params['end'] = end
         params['auth_key'] = self.auth_key
         params['pnsdk'] = self.pnsdk
+        params['include_token'] = 'true' if include_token else 'false'
 
         ## Get History
         return self._request({'urlcomponents': [

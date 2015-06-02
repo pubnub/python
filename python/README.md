@@ -17,14 +17,14 @@ channel = 'hello_world'
 message = 'Hello World !!!'
 
 # Synchronous usage
-print pubnub.publish(channel='hello_world', message='Hello World !!!')
+print pubnub.publish(channel=channel, message=message)
 
 # Asynchronous usage
 
 def callback(message):
     print(message)
 
-pubnub.publish(channel, message, callback=callback, error=callback)
+pubnub.publish(channel=channel, message=message, callback=callback, error=callback)
 
 ```
 
@@ -56,7 +56,7 @@ def disconnect(message):
     print("DISCONNECTED")
 
 
-pubnub.subscribe(channel, callback=callback, error=callback,
+pubnub.subscribe(channels=channel, callback=callback, error=callback,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
@@ -87,7 +87,7 @@ def disconnect(message):
     print("DISCONNECTED")
 
 
-pubnub.subscribe_group(channel_group, callback=callback, error=callback,
+pubnub.subscribe_group(channel_groups=channel_group, callback=callback, error=callback,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
@@ -103,7 +103,7 @@ def callback(message):
     print(message)
     return True
 
-pubnub.subscribe_sync(channel, callback=callback)
+pubnub.subscribe_sync(channel=channel, callback=callback)
 ```
 
 
@@ -134,7 +134,7 @@ def error(message):
 
 
 
-pubnub.presence(channel, callback=callback, error=callback)
+pubnub.presence(channel=channel, callback=callback, error=callback)
 ```
 
 #### PRESENCE channel group
@@ -153,7 +153,7 @@ def error(message):
 
 
 
-pubnub.presence_group(channel_group, callback=callback, error=callback)
+pubnub.presence_group(channel_group=channel_group, callback=callback, error=callback)
 ```
 
 #### HERE_NOW
@@ -164,7 +164,7 @@ pubnub.presence_group(channel_group, callback=callback, error=callback)
 channel = 'hello_world'
 
 # Synchronous usage
-print pubnub.here_now(channel)
+print pubnub.here_now(channel=channel)
 
 
 # Asynchronous usage
@@ -172,7 +172,7 @@ print pubnub.here_now(channel)
 def callback(message):
     print(message)
 
-pubnub.here_now(channel, callback=callback, error=callback)
+pubnub.here_now(channel=channel, callback=callback, error=callback)
 ```
 
 #### HISTORY
@@ -180,7 +180,7 @@ pubnub.here_now(channel, callback=callback, error=callback)
 ```
 # Synchronous usage
 
-print pubnub.history(channel, count=2)
+print pubnub.history(channel=channel, count=2)
 
 # Asynchronous usage
 
@@ -188,7 +188,7 @@ print pubnub.history(channel, count=2)
 def callback(message):
     print(message)
 
-pubnub.history(channel, count=2, callback=callback, error=callback)
+pubnub.history(channel=channel, count=2, callback=callback, error=callback)
 ```
 
 #### GRANT
@@ -197,7 +197,7 @@ pubnub.history(channel, count=2, callback=callback, error=callback)
 authkey = "abcd"
 
 # Synchronous usage
-print pubnub.grant(channel, authkey, True, True)
+print pubnub.grant(channel=channel, auth_key=authkey, read=True, write=True)
 
 # Asynchronous usage
 
@@ -205,16 +205,17 @@ print pubnub.grant(channel, authkey, True, True)
 def callback(message):
     print(message)
 
-pubnub.grant(channel, authkey, True, True, callback=callback, error=callback)
+pubnub.grant(channel=channel, auth_key=authkey, read=True, write=True, callback=callback, error=callback)
 ```
 
 #### AUDIT
 
 ```
+channel = "hello_world"
 authkey = "abcd"
 
 # Synchronous usage
-print pubnub.audit(channel, authkey)
+print pubnub.audit(channel=channel, auth_key=authkey)
 
 # Asynchronous usage
 
@@ -222,16 +223,17 @@ print pubnub.audit(channel, authkey)
 def callback(message):
     print(message)
 
-pubnub.audit(channel, authkey, callback=callback, error=callback)
+pubnub.audit(channel=channel, auth_key=authkey, callback=callback, error=callback)
 ```
 
 #### REVOKE
 
 ```
+channel = "hello_world"
 authkey = "abcd"
 
 # Synchronous usage
-print pubnub.revoke(channel, authkey)
+print pubnub.revoke(channel=channel, auth_key=authkey)
 
 # Asynchronous usage
 
@@ -239,7 +241,7 @@ print pubnub.revoke(channel, authkey)
 def callback(message):
     print(message)
 
-pubnub.revoke(channel, authkey, callback=callback, error=callback)
+pubnub.revoke(channel=channel, auth_key=authkey, callback=callback, error=callback)
 ```
 
 ### CHANNEL GROUP METHODS

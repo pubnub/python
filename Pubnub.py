@@ -7,7 +7,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.7.1 Real-time Push Cloud API
+## PubNub 3.7.2 Real-time Push Cloud API
 ## -----------------------------------
 
 
@@ -286,7 +286,7 @@ class PubnubBase(object):
         """
 
         self.origin = origin
-        self.version = '3.7.1'
+        self.version = '3.7.2'
         self.limit = 1800
         self.publish_key = publish_key
         self.subscribe_key = subscribe_key
@@ -318,11 +318,16 @@ class PubnubBase(object):
 
     def _pam_sign(self, msg):
 
-        return urlsafe_b64encode(hmac.new(
+        sig = urlsafe_b64encode(hmac.new(
             self.secret_key.encode("utf-8"),
             msg.encode("utf-8"),
             sha256
         ).digest())
+        #In python3 urlsafe_b64encode returns a string
+        if isinstance(sig, str):
+            return sig
+        else:
+            return sig.decode('utf-8')
 
     def set_u(self, u=False):
         self.u = u

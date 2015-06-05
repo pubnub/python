@@ -332,11 +332,12 @@ class PubnubBase(object):
 
     def _pam_sign(self, msg):
 
-        return urlsafe_b64encode(hmac.new(
+        sign =  urlsafe_b64encode(hmac.new(
             self.secret_key.encode("utf-8"),
             msg.encode("utf-8"),
             sha256
         ).digest())
+        return quote(sign, safe="")
 
     def set_u(self, u=False):
         self.u = u

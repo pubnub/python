@@ -52,7 +52,7 @@ try:
 except ImportError:
     pass
 
-import urllib
+#import urllib
 import socket
 import sys
 import threading
@@ -989,7 +989,7 @@ class PubnubBase(object):
                      ch for ch in list(bit)
                      ]) for bit in request["urlcomponents"]])
         if ("urlparams" in request):
-            url = url + '?' + "&".join([x + "=" + urllib.quote(str(y), '') for x, y in request[
+            url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
                 "urlparams"].items() if y is not None and len(str(y)) > 0])
         return url
 

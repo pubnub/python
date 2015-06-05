@@ -1840,7 +1840,7 @@ class PubnubCoreAsync(PubnubBase):
             st = json.dumps(self.STATE)
 
             if len(st) > 2:
-                data['state'] = st
+                data['state'] = quote(st,safe="")
 
             ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
             #try:

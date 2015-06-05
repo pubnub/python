@@ -52,6 +52,7 @@ try:
 except ImportError:
     pass
 
+import urllib
 import socket
 import sys
 import threading
@@ -308,6 +309,7 @@ class PubnubBase(object):
         self.cipher_key = cipher_key
         self.ssl = ssl_on
         self.auth_key = auth_key
+        self.STATE = {}
 
         if self.ssl:
             self.origin = 'https://' + self.origin
@@ -802,7 +804,7 @@ class PubnubBase(object):
         """
         return self.subscribe_group(channel_group+'-pnpres', callback=callback)
 
-    def here_now(self, channel, callback=None, error=None):
+    def here_now(self, channel, uuids=True, state=False, callback=None, error=None):
         """Get here now data.
 
         You can obtain information about the current state of a channel including
@@ -859,9 +861,17 @@ class PubnubBase(object):
             urlcomponents.append('channel')
             urlcomponents.append(channel)
 
+        data = {'auth': self.auth_key, 'pnsdk' : self.pnsdk}
+
+        if state is True:
+            data['state'] = '1'
+
+        if uuids is False:
+            data['disable_uuids']  = '1'
+
         ## Get Presence Here Now
         return self._request({"urlcomponents": urlcomponents,
-            'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk}},
+            'urlparams': data},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
@@ -979,9 +989,8 @@ class PubnubBase(object):
                      ch for ch in list(bit)
                      ]) for bit in request["urlcomponents"]])
         if ("urlparams" in request):
-            url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
+            url = url + '?' + "&".join([x + "=" + urllib.quote(str(y), '') for x, y in request[
                 "urlparams"].items() if y is not None and len(str(y)) > 0])
-
         return url
 
     def _channel_registry(self, url=None, params=None, callback=None, error=None):
@@ -1519,7 +1528,7 @@ class PubnubCoreAsync(PubnubBase):
         for i in l:
             func(i)
 
-    def subscribe(self, channels, callback, error=None,
+    def subscribe(self, channels, callback, state=None, error=None,
                   connect=None, disconnect=None, reconnect=None, sync=False):
         """Subscribe to data on a channel.
 
@@ -1538,6 +1547,9 @@ class PubnubCoreAsync(PubnubBase):
             callback:   (function)
                         This callback is called on receiving a message from the channel.
 
+            state:      (dict)
+                        State to be set.
+
             error:      (function) (optional)
                         This callback is called on an error event
 
@@ -1554,7 +1566,7 @@ class PubnubCoreAsync(PubnubBase):
             None
         """
 
-        return self._subscribe(channels=channels, callback=callback, error=error,
+        return self._subscribe(channels=channels, callback=callback, state=state, error=error,
             connect=connect, disconnect=disconnect, reconnect=reconnect, sync=sync)
 
     def subscribe_group(self, channel_groups, callback, error=None,
@@ -1595,7 +1607,7 @@ class PubnubCoreAsync(PubnubBase):
         return self._subscribe(channel_groups=channel_groups, callback=callback, error=error,
             connect=connect, disconnect=disconnect, reconnect=reconnect, sync=sync)
 
-    def _subscribe(self, channels=None, channel_groups=None, callback=None, error=None,
+    def _subscribe(self, channels=None, channel_groups=None, state=None, callback=None, error=None,
                   connect=None, disconnect=None, reconnect=None, sync=False):
 
         with self._tt_lock:
@@ -1705,6 +1717,11 @@ class PubnubCoreAsync(PubnubBase):
                                 'reconnect': reconnect,
                                 'error': error
                             }
+                        if state is not None:
+                            if channel in self.STATE:
+                                self.STATE[channel] = state[channel]
+                            else:
+                                self.STATE[channel] = state
         
         if channel_groups is not None:
             channel_groups = channel_groups if isinstance(
@@ -1816,6 +1833,15 @@ class PubnubCoreAsync(PubnubBase):
             if len(channel_list) <= 0:
                 channel_list = ','
 
+            data = {"uuid": self.uuid, "auth": self.auth_key,
+            'pnsdk' : self.pnsdk, 'channel-group' : channel_group_list}
+            
+
+            st = json.dumps(self.STATE)
+
+            if len(st) > 2:
+                data['state'] = st
+
             ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
             #try:
             self.SUB_RECEIVER = self._request({"urlcomponents": [
@@ -1824,8 +1850,7 @@ class PubnubCoreAsync(PubnubBase):
                 channel_list,
                 '0',
                 str(self.timetoken)
-            ], "urlparams": {"uuid": self.uuid, "auth": self.auth_key,
-            'pnsdk' : self.pnsdk, 'channel-group' : channel_group_list}},
+            ], "urlparams": data},
                 sub_callback,
                 error_callback,
                 single=True, timeout=320)
@@ -1868,6 +1893,10 @@ class PubnubCoreAsync(PubnubBase):
                 self.subscriptions[channel]['timetoken'] = 0
                 self.subscriptions[channel]['first'] = False
                 self.leave_channel(channel=channel)
+
+            # remove channel from STATE
+            STATE.pop(channel, None)
+
         self.CONNECT()
 
     def unsubscribe_group(self, channel_group):

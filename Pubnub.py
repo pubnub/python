@@ -768,7 +768,7 @@ class PubnubBase(object):
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
-    def presence(self, channel, callback, error=None):
+    def presence(self, channel, callback, error=None, connect=None, disconnect=None, reconnect=None):
         """Subscribe to presence events on a channel.
            
            Only works in async mode
@@ -784,7 +784,7 @@ class PubnubBase(object):
         Returns:
             None
         """
-        return self.subscribe(channel+'-pnpres', callback=callback)
+        return self.subscribe(channel+'-pnpres', callback=callback, error=error, connect=connect, disconnect=disconnect, reconnect=reconnect)
 
     def presence_group(self, channel_group, callback, error=None):
         """Subscribe to presence events on a channel group.

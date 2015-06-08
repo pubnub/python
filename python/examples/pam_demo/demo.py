@@ -15,17 +15,20 @@ def get_unique(s):
 # This is the channel all clients announce themselves on -- or more generally speaking, a channel you expect the client
 # to "check-in" on to announce his state
 
-channel_public = get_unique("channel_public")
+#channel_public = get_unique("channel_public")
+channel_public = "channel_public"
 
 # server auth key
 # Only the server has/knows about this auth token. It will be used to grant read on the "check-in" Presence channel
 
-server_auth_token = get_unique("server_auth_token")
+#server_auth_token = get_unique("server_auth_token")
+server_auth_token = "server_auth_token"
 
 # client auth key
 # only clients will use this authey -- it does not provide presence channel read access
  
-client_auth_token = get_unique("client_auth_token")
+#client_auth_token = get_unique("client_auth_token")
+client_auth_token = "client_auth_token"
 
 # each client must have a unique id -- a UUID, for presence information/state to bind to
 
@@ -64,13 +67,18 @@ print(server.grant(channel=channel_public + '-pnpres', auth_key=client_auth_toke
 # Define some simple callabcks for the Server and Client
 
 def _server_message_callback(message, channel):
-	print("Server heard: " + message)
+	print("Server heard: " + json.dumps(message))
 
-def _client_callback(channel, message):
-    print("Client heard: " + message)
+def _client_message_callback(message, channel):
+    print("Client heard: " + json.dumps(message))
 
-def _error_callback(error):
-	print("Error: " + error)
+def _client_error_callback(error, channel):
+    print("Client Error: " + error + " on channel " + channel)
+    print("Client will now unsubscribe from this unauthorized channel.")
+    client.unsubscribe(channel=channel)
+
+def _server_error_callback(error):
+    print("Server Error: " + error)
 
 def _server_presence_callback(message, channel):
     print message
@@ -85,20 +93,20 @@ def _client_presence_callback(message, channel):
             print "Client can see that client with UUID " + message['uuid'] + " has a state of " + json.dumps(message['data'])
 
 # server subscribes to public channel
-server.subscribe(channels=channel_public, callback=_server_message_callback, error=_error_callback)
+server.subscribe(channels=channel_public, callback=_server_message_callback, error=_server_error_callback)
 
 # server subscribes to presence events on public channel
 # presence() is a convienence method that subscribes to channel-pnpres with special logic for handling
 # presence-event formatted messages
 
 ## uncomment out to see server able to read on presence channel
-server.presence(channel=channel_public, callback=_server_presence_callback, error=_error_callback)
+server.presence(channel=channel_public, callback=_server_presence_callback, error=_server_error_callback)
 
 # now if the client tried to subscribe on the presence channel, and therefore, get state info
 # he is explicitly denied!
 
 ## uncomment out to see client not able to read on presence channel
-#client.presence(channel=channel_public, callback=_client_presence_callback, error=_error_callback)
+client.presence(channel=channel_public, callback=_client_presence_callback, error=_client_error_callback)
 
 # client subscribes to public channel
-client.subscribe(channels=channel_public, state={ "myKey" : get_unique("foo")}, callback=_client_callback, error=_error_callback)
+client.subscribe(channels=channel_public, state={ "myKey" : get_unique("foo")}, callback=_client_message_callback, error=_client_error_callback)

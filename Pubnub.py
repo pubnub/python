@@ -991,6 +991,7 @@ class PubnubBase(object):
         if ("urlparams" in request):
             url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
                 "urlparams"].items() if y is not None and len(str(y)) > 0])
+        #print(url)
         return url
 
     def _channel_registry(self, url=None, params=None, callback=None, error=None):
@@ -1684,11 +1685,17 @@ class PubnubCoreAsync(PubnubBase):
             if channel_list is None:
                 for ch in self.subscriptions:
                     chobj = self.subscriptions[ch]
-                    _invoke(chobj['error'], error)
+                    try:
+                    	_invoke(chobj['error'], error, ch)
+                    except TypeError:
+						_invoke(chobj['error'], error)
             else:
                 for ch in channel_list:
                     chobj = self.subscriptions[ch]
-                    _invoke(chobj['error'], error)
+                    try:
+						_invoke(chobj['error'], error, ch)
+                    except TypeError:
+						_invoke(chobj['error'], error)
 
         def _get_channel():
             for ch in self.subscriptions:
@@ -2107,6 +2114,8 @@ def _requests_request(url, timeout=5):
     except requests.exceptions.Timeout as error:
         msg = str(error)
         return (json.dumps(msg), 0)
+    #print (resp.text)
+    #print (resp.status_code)
     return (resp.text, resp.status_code)
 
 

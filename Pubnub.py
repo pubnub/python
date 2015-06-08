@@ -1902,7 +1902,7 @@ class PubnubCoreAsync(PubnubBase):
                 self.leave_channel(channel=channel)
 
             # remove channel from STATE
-            STATE.pop(channel, None)
+            self.STATE.pop(channel, None)
 
         self.CONNECT()
 

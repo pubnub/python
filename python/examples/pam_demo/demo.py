@@ -74,11 +74,13 @@ def _client_message_callback(message, channel):
 
 def _client_error_callback(error, channel):
     print("Client Error: " + error + " on channel " + channel)
-    print("Client will now unsubscribe from this unauthorized channel.")
+    print("TTL on grant expired, or token was invalid, or revoked. Client will now unsubscribe from this unauthorized channel.")
     client.unsubscribe(channel=channel)
 
-def _server_error_callback(error):
-    print("Server Error: " + error)
+def _server_error_callback(error, channel):
+    print("Server Error: " + error + " on channel " + channel)
+    print("TTL on grant expired, or token was revoked. Server will now unsubscribe from this unauthorized channel.")
+    server.unsubscribe(channel=channel)
 
 def _server_presence_callback(message, channel):
     print message

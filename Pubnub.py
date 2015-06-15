@@ -1601,16 +1601,12 @@ class PubnubCoreAsync(PubnubBase):
             connect=connect, disconnect=disconnect, reconnect=reconnect, sync=sync)
 
     def _subscribe(self, channels=None, channel_groups=None, state=None, callback=None, error=None,
-                  connect=None, disconnect=None, reconnect=None, sync=False):
+                  connect=None, disconnect=None, reconnect=None):
 
         with self._tt_lock:
             self.last_timetoken = self.timetoken if self.timetoken != 0 \
                 else self.last_timetoken
             self.timetoken = 0
-
-        if sync is True and self.subscribe_sync is not None:
-            self.subscribe_sync(channel=channels, callback=callback)
-            return
 
         def _invoke(func, msg=None, channel=None, real_channel=None):
             if func is not None:
@@ -1952,62 +1948,6 @@ class PubnubCore(PubnubCoreAsync):
         self.subscriptions = {}
         self.timetoken = 0
         self.accept_encoding = 'gzip'
-
-    def subscribe_sync(self, channel, callback, timetoken=0):
-        """
-        #**
-        #* Subscribe
-        #*
-        #* This is BLOCKING.
-        #* Listen for a message on a channel.
-        #*
-        #* @param array args with channel and callback.
-        #* @return false on fail, array on success.
-        #**
-
-        ## Subscribe Example
-        def receive(message) :
-            print(message)
-            return True
-
-        pubnub.subscribe({
-            'channel'  : 'hello_world',
-            'callback' : receive
-        })
-
-        """
-
-        subscribe_key = self.subscribe_key
-
-        ## Begin Subscribe
-        while True:
-            try:
-                ## Wait for Message
-                response = self._request({"urlcomponents": [
-                    'subscribe',
-                    subscribe_key,
-                    channel,
-                    '0',
-                    str(timetoken)
-                ], "urlparams": {"uuid": self.uuid, 'pnsdk' : self.pnsdk}})
-
-                messages = response[0]
-                timetoken = response[1]
-
-                ## If it was a timeout
-                if not len(messages):
-                    continue
-
-                ## Run user Callback and Reconnect if user permits.
-                for message in messages:
-                    if not callback(self.decrypt(message)):
-                        return
-
-            except Exception:
-                time.sleep(1)
-
-        return True
-
 
 class HTTPClient:
     def __init__(self, pubnub, url, urllib_func=None,

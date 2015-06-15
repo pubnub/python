@@ -25,8 +25,6 @@ from base64 import urlsafe_b64encode
 from base64 import encodestring, decodestring
 import hmac
 from Crypto.Cipher import AES
-from Crypto.Hash import MD5
-
 
 try:
     from hashlib import sha256
@@ -54,9 +52,7 @@ except ImportError:
 
 #import urllib
 import socket
-import sys
 import threading
-from threading import current_thread
 
 try:
     import urllib3.HTTPConnection
@@ -152,7 +148,6 @@ except ImportError:
 
 ##### Twisted imports and globals #####
 try:
-    from twisted.web.client import getPage
     from twisted.internet import reactor
     from twisted.internet.defer import Deferred
     from twisted.internet.protocol import Protocol
@@ -161,11 +156,8 @@ try:
     from twisted.web.client import HTTPConnectionPool
     from twisted.web.http_headers import Headers
     from twisted.internet.ssl import ClientContextFactory
-    from twisted.internet.task import LoopingCall
     import twisted
 
-    from twisted.python.compat import (
-        _PY3, unicode, intToBytes, networkString, nativeString)
 
     pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
     pnconn_pool.maxPersistentPerHost = 100000
@@ -1617,7 +1609,7 @@ class PubnubCoreAsync(PubnubBase):
             self.timetoken = 0
 
         if sync is True and self.subscribe_sync is not None:
-            self.subscribe_sync(args)
+            self.subscribe_sync(channel=channels, callback=callback)
             return
 
         def _invoke(func, msg=None, channel=None, real_channel=None):
@@ -1807,7 +1799,7 @@ class PubnubCoreAsync(PubnubBase):
                             if ch[1] in self.subscription_groups or ch[1] in self.subscriptions:
                                 try:
                                     chobj = self.subscription_groups[ch[1]]
-                                except KeyError as k:
+                                except KeyError:
                                     chobj = self.subscriptions[ch[1]]
                                 _invoke(chobj['callback'],
                                         self.decrypt(response_list[ch[0]]),
@@ -2058,7 +2050,7 @@ class HTTPClient:
                         self.pubnub.latest_sub_callback['id'] = 0
                         try:
                             data = json.loads(data)
-                        except ValueError as e:
+                        except ValueError:
                             _invoke(self.pubnub.latest_sub_callback['error'],
                                     {'error': 'json decoding error'})
                             return
@@ -2297,7 +2289,7 @@ class PubnubTwisted(PubnubCoreAsync):
         try:
             request = agent.request(
                 'GET', url, Headers(self.headers), None)
-        except TypeError as te:
+        except TypeError:
             request = agent.request(
                 'GET', url.encode(), Headers(self.headers), None)
 
@@ -2324,10 +2316,10 @@ class PubnubTwisted(PubnubCoreAsync):
                     return None
             try:
                 data = json.loads(data)
-            except ValueError as e:
+            except ValueError:
                 try:
                     data = json.loads(data.decode("utf-8"))
-                except ValueError as e:
+                except ValueError:
                     _invoke(error, {'error': 'json decode error'})
 
             if 'error' in data and 'status' in data and 'status' != 200:
@@ -2422,10 +2414,10 @@ class PubnubTornado(PubnubCoreAsync):
 
             try:
                 data = json.loads(body)
-            except TypeError as e:
+            except TypeError:
                 try:
                     data = json.loads(body.decode("utf-8"))
-                except ValueError as ve:
+                except ValueError:
                     _invoke(error, {'error': 'json decode error'})
 
             if 'error' in data and 'status' in data and 'status' != 200:

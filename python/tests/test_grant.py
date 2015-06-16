@@ -1,6 +1,6 @@
 
 
-from Pubnub import Pubnub
+from pubnub import Pubnub
 import time
 
 pubnub = Pubnub("demo","demo")

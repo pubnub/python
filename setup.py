@@ -7,7 +7,7 @@ setup(
     author='Stephen Blum',
     author_email='support@pubnub.com',
     url='http://pubnub.com',
-    py_modules=['Pubnub'],
+    py_modules=['pubnub'],
     license='MIT',
     classifiers=(
         'Development Status :: 5 - Production/Stable',

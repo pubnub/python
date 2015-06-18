@@ -919,11 +919,14 @@ class PubnubBase(object):
         """
 
         def _get_decrypted_history(resp):
-            if resp and resp[1] is not None and self.cipher_key:
-                msgs  = resp[0]
-                for i in range(0,len(msgs)):
-                    msgs[i] = self.decrypt(msgs[i])
-            return resp
+           try:
+               if resp and resp[1] is not None and self.cipher_key:
+                   msgs  = resp[0]
+                   for i in range(0,len(msgs)):
+                       msgs[i] = self.decrypt(msgs[i])
+           except KeyError:
+                pass 
+           return resp
 
         def _history_callback(resp):
             if callback is not None:
@@ -940,7 +943,7 @@ class PubnubBase(object):
         params['reverse'] = reverse
         params['start'] = start
         params['end'] = end
-        params['auth_key'] = self.auth_key
+        params['auth'] = self.auth_key
         params['pnsdk'] = self.pnsdk
         params['include_token'] = 'true' if include_token else 'false'
 
@@ -2187,7 +2190,7 @@ class Pubnub(PubnubCore):
         if callback is None:
             return get_data_for_user(self._request_sync(request, timeout=timeout))
         else:
-            self._request_async(request, callback, error, single=single, timeout=timeout)
+            return self._request_async(request, callback, error, single=single, timeout=timeout)
 
 # Pubnub Twisted
 

@@ -667,8 +667,9 @@ class PubnubBase(object):
 
                     if 'message' in response:
                         callback_data['message'] = response['message']
-                        
-                    callback(callback_data)
+
+                    if (callback is not None):
+                        callback(callback_data)
             else:
                 if (callback is not None):
                     callback(response)
@@ -917,6 +918,22 @@ class PubnubBase(object):
                 [["Pub1","Pub2","Pub3","Pub4","Pub5"],13406746729185766,13406746845892666]
         """
 
+        def _get_decrypted_history(resp):
+            if resp and resp[1] is not None and self.cipher_key:
+                msgs  = resp[0]
+                for i in range(0,len(msgs)):
+                    msgs[i] = self.decrypt(msgs[i])
+            return resp
+
+        def _history_callback(resp):
+            if callback is not None:
+                callback(_get_decrypted_history(resp))
+
+        if callback is None:
+            history_cb = None
+        else:
+            history_cb = _history_callback
+
         params = dict()
 
         params['count'] = count
@@ -928,7 +945,7 @@ class PubnubBase(object):
         params['include_token'] = 'true' if include_token else 'false'
 
         ## Get History
-        return self._request({'urlcomponents': [
+        return _get_decrypted_history(self._request({'urlcomponents': [
             'v2',
             'history',
             'sub-key',
@@ -936,8 +953,8 @@ class PubnubBase(object):
             'channel',
             channel,
         ], 'urlparams': params},
-            callback=self._return_wrapped_callback(callback),
-            error=self._return_wrapped_callback(error))
+            callback=self._return_wrapped_callback(history_cb),
+            error=self._return_wrapped_callback(error)))
 
     def time(self, callback=None):
         """This function will return a 17 digit precision Unix epoch.

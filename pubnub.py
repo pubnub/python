@@ -1577,7 +1577,7 @@ class PubnubCoreAsync(PubnubBase):
         """
 
         return self._subscribe(channels=channels, callback=callback, state=state, error=error,
-            connect=connect, disconnect=disconnect, reconnect=reconnect, sync=sync)
+            connect=connect, disconnect=disconnect, reconnect=reconnect)
 
     def subscribe_group(self, channel_groups, callback, error=None,
                   connect=None, disconnect=None, reconnect=None, sync=False):
@@ -1615,7 +1615,7 @@ class PubnubCoreAsync(PubnubBase):
         """
 
         return self._subscribe(channel_groups=channel_groups, callback=callback, error=error,
-            connect=connect, disconnect=disconnect, reconnect=reconnect, sync=sync)
+            connect=connect, disconnect=disconnect, reconnect=reconnect)
 
     def _subscribe(self, channels=None, channel_groups=None, state=None, callback=None, error=None,
                   connect=None, disconnect=None, reconnect=None):

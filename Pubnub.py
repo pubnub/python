@@ -906,7 +906,7 @@ class PubnubBase(object):
         params['reverse'] = reverse
         params['start'] = start
         params['end'] = end
-        params['auth_key'] = self.auth_key
+        params['auth'] = self.auth_key
         params['pnsdk'] = self.pnsdk
 
         ## Get History

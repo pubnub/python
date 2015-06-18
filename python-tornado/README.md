@@ -12,7 +12,7 @@ pubnub.start()
 
 #### Import
 ```
-from Pubnub import PubnubTornado as Pubnub
+from pubnub import PubnubTornado as Pubnub
 ```
 
 #### Init

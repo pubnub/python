@@ -12,7 +12,7 @@ pubnub.start()
 
 #### Import
 ```
-from Pubnub import PubnubTwisted as Pubnub
+from pubnub import PubnubTwisted as Pubnub
 ```
 
 #### Init

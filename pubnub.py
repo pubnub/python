@@ -7,7 +7,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.7.1 Real-time Push Cloud API
+## PubNub 3.7.2 Real-time Push Cloud API
 ## -----------------------------------
 
 
@@ -25,8 +25,6 @@ from base64 import urlsafe_b64encode
 from base64 import encodestring, decodestring
 import hmac
 from Crypto.Cipher import AES
-from Crypto.Hash import MD5
-
 
 try:
     from hashlib import sha256
@@ -54,9 +52,7 @@ except ImportError:
 
 #import urllib
 import socket
-import sys
 import threading
-from threading import current_thread
 
 try:
     import urllib3.HTTPConnection
@@ -152,7 +148,6 @@ except ImportError:
 
 ##### Twisted imports and globals #####
 try:
-    from twisted.web.client import getPage
     from twisted.internet import reactor
     from twisted.internet.defer import Deferred
     from twisted.internet.protocol import Protocol
@@ -161,11 +156,8 @@ try:
     from twisted.web.client import HTTPConnectionPool
     from twisted.web.http_headers import Headers
     from twisted.internet.ssl import ClientContextFactory
-    from twisted.internet.task import LoopingCall
     import twisted
 
-    from twisted.python.compat import (
-        _PY3, unicode, intToBytes, networkString, nativeString)
 
     pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
     pnconn_pool.maxPersistentPerHost = 100000
@@ -301,7 +293,7 @@ class PubnubBase(object):
         """
 
         self.origin = origin
-        self.version = '3.7.1'
+        self.version = '3.7.2'
         self.limit = 1800
         self.publish_key = publish_key
         self.subscribe_key = subscribe_key
@@ -675,8 +667,9 @@ class PubnubBase(object):
 
                     if 'message' in response:
                         callback_data['message'] = response['message']
-                        
-                    callback(callback_data)
+
+                    if (callback is not None):
+                        callback(callback_data)
             else:
                 if (callback is not None):
                     callback(response)
@@ -786,7 +779,7 @@ class PubnubBase(object):
         """
         return self.subscribe(channel+'-pnpres', callback=callback, error=error, connect=connect, disconnect=disconnect, reconnect=reconnect)
 
-    def presence_group(self, channel_group, callback, error=None):
+    def presence_group(self, channel_group, callback, error=None, connect=None, disconnect=None, reconnect=None):
         """Subscribe to presence events on a channel group.
            
            Only works in async mode
@@ -802,7 +795,7 @@ class PubnubBase(object):
         Returns:
             None
         """
-        return self.subscribe_group(channel_group+'-pnpres', callback=callback)
+        return self.subscribe_group(channel_group+'-pnpres', callback=callback, error=error, connect=connect, disconnect=disconnect, reconnect=reconnect)
 
     def here_now(self, channel, uuids=True, state=False, callback=None, error=None):
         """Get here now data.
@@ -925,6 +918,22 @@ class PubnubBase(object):
                 [["Pub1","Pub2","Pub3","Pub4","Pub5"],13406746729185766,13406746845892666]
         """
 
+        def _get_decrypted_history(resp):
+            if resp and resp[1] is not None and self.cipher_key:
+                msgs  = resp[0]
+                for i in range(0,len(msgs)):
+                    msgs[i] = self.decrypt(msgs[i])
+            return resp
+
+        def _history_callback(resp):
+            if callback is not None:
+                callback(_get_decrypted_history(resp))
+
+        if callback is None:
+            history_cb = None
+        else:
+            history_cb = _history_callback
+
         params = dict()
 
         params['count'] = count
@@ -936,7 +945,7 @@ class PubnubBase(object):
         params['include_token'] = 'true' if include_token else 'false'
 
         ## Get History
-        return self._request({'urlcomponents': [
+        return _get_decrypted_history(self._request({'urlcomponents': [
             'v2',
             'history',
             'sub-key',
@@ -944,8 +953,8 @@ class PubnubBase(object):
             'channel',
             channel,
         ], 'urlparams': params},
-            callback=self._return_wrapped_callback(callback),
-            error=self._return_wrapped_callback(error))
+            callback=self._return_wrapped_callback(history_cb),
+            error=self._return_wrapped_callback(error)))
 
     def time(self, callback=None):
         """This function will return a 17 digit precision Unix epoch.
@@ -1609,16 +1618,12 @@ class PubnubCoreAsync(PubnubBase):
             connect=connect, disconnect=disconnect, reconnect=reconnect, sync=sync)
 
     def _subscribe(self, channels=None, channel_groups=None, state=None, callback=None, error=None,
-                  connect=None, disconnect=None, reconnect=None, sync=False):
+                  connect=None, disconnect=None, reconnect=None):
 
         with self._tt_lock:
             self.last_timetoken = self.timetoken if self.timetoken != 0 \
                 else self.last_timetoken
             self.timetoken = 0
-
-        if sync is True and self.subscribe_sync is not None:
-            self.subscribe_sync(args)
-            return
 
         def _invoke(func, msg=None, channel=None, real_channel=None):
             if func is not None:
@@ -1807,7 +1812,7 @@ class PubnubCoreAsync(PubnubBase):
                             if ch[1] in self.subscription_groups or ch[1] in self.subscriptions:
                                 try:
                                     chobj = self.subscription_groups[ch[1]]
-                                except KeyError as k:
+                                except KeyError:
                                     chobj = self.subscriptions[ch[1]]
                                 _invoke(chobj['callback'],
                                         self.decrypt(response_list[ch[0]]),
@@ -1961,62 +1966,6 @@ class PubnubCore(PubnubCoreAsync):
         self.timetoken = 0
         self.accept_encoding = 'gzip'
 
-    def subscribe_sync(self, channel, callback, timetoken=0):
-        """
-        #**
-        #* Subscribe
-        #*
-        #* This is BLOCKING.
-        #* Listen for a message on a channel.
-        #*
-        #* @param array args with channel and callback.
-        #* @return false on fail, array on success.
-        #**
-
-        ## Subscribe Example
-        def receive(message) :
-            print(message)
-            return True
-
-        pubnub.subscribe({
-            'channel'  : 'hello_world',
-            'callback' : receive
-        })
-
-        """
-
-        subscribe_key = self.subscribe_key
-
-        ## Begin Subscribe
-        while True:
-            try:
-                ## Wait for Message
-                response = self._request({"urlcomponents": [
-                    'subscribe',
-                    subscribe_key,
-                    channel,
-                    '0',
-                    str(timetoken)
-                ], "urlparams": {"uuid": self.uuid, 'pnsdk' : self.pnsdk}})
-
-                messages = response[0]
-                timetoken = response[1]
-
-                ## If it was a timeout
-                if not len(messages):
-                    continue
-
-                ## Run user Callback and Reconnect if user permits.
-                for message in messages:
-                    if not callback(self.decrypt(message)):
-                        return
-
-            except Exception:
-                time.sleep(1)
-
-        return True
-
-
 class HTTPClient:
     def __init__(self, pubnub, url, urllib_func=None,
                  callback=None, error=None, id=None, timeout=5):
@@ -2058,7 +2007,7 @@ class HTTPClient:
                         self.pubnub.latest_sub_callback['id'] = 0
                         try:
                             data = json.loads(data)
-                        except ValueError as e:
+                        except ValueError:
                             _invoke(self.pubnub.latest_sub_callback['error'],
                                     {'error': 'json decoding error'})
                             return
@@ -2297,7 +2246,7 @@ class PubnubTwisted(PubnubCoreAsync):
         try:
             request = agent.request(
                 'GET', url, Headers(self.headers), None)
-        except TypeError as te:
+        except TypeError:
             request = agent.request(
                 'GET', url.encode(), Headers(self.headers), None)
 
@@ -2324,10 +2273,10 @@ class PubnubTwisted(PubnubCoreAsync):
                     return None
             try:
                 data = json.loads(data)
-            except ValueError as e:
+            except ValueError:
                 try:
                     data = json.loads(data.decode("utf-8"))
-                except ValueError as e:
+                except ValueError:
                     _invoke(error, {'error': 'json decode error'})
 
             if 'error' in data and 'status' in data and 'status' != 200:
@@ -2422,10 +2371,10 @@ class PubnubTornado(PubnubCoreAsync):
 
             try:
                 data = json.loads(body)
-            except TypeError as e:
+            except TypeError:
                 try:
                     data = json.loads(body.decode("utf-8"))
-                except ValueError as ve:
+                except ValueError:
                     _invoke(error, {'error': 'json decode error'})
 
             if 'error' in data and 'status' in data and 'status' != 200:

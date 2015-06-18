@@ -7,7 +7,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.7.1 Real-time Push Cloud API
+## PubNub 3.7.2 Real-time Push Cloud API
 ## -----------------------------------
 
 
@@ -293,7 +293,7 @@ class PubnubBase(object):
         """
 
         self.origin = origin
-        self.version = '3.7.1'
+        self.version = '3.7.2'
         self.limit = 1800
         self.publish_key = publish_key
         self.subscribe_key = subscribe_key

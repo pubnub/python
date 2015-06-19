@@ -920,7 +920,7 @@ class PubnubBase(object):
 
         def _get_decrypted_history(resp):
            try:
-               if resp and resp[1] is not None and self.cipher_key:
+               if resp is not None and isinstance(resp, (list)) and resp[1] is not None and self.cipher_key:
                    msgs  = resp[0]
                    for i in range(0,len(msgs)):
                        msgs[i] = self.decrypt(msgs[i])

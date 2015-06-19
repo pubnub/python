@@ -42,5 +42,17 @@ def test_1():
 	assert hresp4['message'] == 'Forbidden'
 	assert channel_pam + "no_rw" in hresp4['payload']['channels']
 
-
-
+def test_2():
+	time.sleep(3)
+	hresp = pubnub.history(channel=channel, count=20, include_token=True)
+	hresp2 = pubnub_enc.history(channel=channel_enc, count=20, include_token=True)
+	hresp3 = pubnub_pam.history(channel=channel_pam, count=20, include_token=True)
+	hresp4 = pubnub_pam.history(channel=channel_pam + "no_rw", count=20, include_token=True)
+	assert len(hresp[0]) == len(messages)
+	assert hresp[0][0]['timetoken']
+	assert len(hresp2[0]) == len(messages)
+	assert hresp2[0][0]['timetoken']
+	assert len(hresp3[0]) == len(messages)
+	assert hresp3[0][0]['timetoken']
+	assert hresp4['message'] == 'Forbidden'
+	assert channel_pam + "no_rw" in hresp4['payload']['channels']

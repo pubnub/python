@@ -1,3 +1,14 @@
+3.7.2 - 6-25-15 - ad89de8
+. fix for decryption bug in history API
+. module name changed to pubnub ( it was Pubnub earlier ).
+  Developers need to do from pubnub import Pubnub, instead of from Pubnub import Pubnub now
+. fixed method arguments bug for presence API
+. subscribe_sync removed
+. fix for issue where error callback not invoked for presence
+. added state support in subscribe and here now
+. fix for grant API with python 3
+. added include_token option to history
+
 3.7.0 - 1-12-14 - f20e5e2
 . Channel Groups functionality
 . Added Python Echo Server example

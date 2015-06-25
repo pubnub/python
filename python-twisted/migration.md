@@ -7,10 +7,10 @@
 
 ```
 # Pre 3.5:
-from Pubnub import Pubnub
+from pubnub import Pubnub
 
 # New in 3.5+
-from Pubnub import PubnubTwisted as Pubnub
+from pubnub import PubnubTwisted as Pubnub
 
 ```
 

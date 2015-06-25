@@ -191,6 +191,23 @@ def callback(message):
 pubnub.history(channel=channel, count=2, callback=callback, error=callback)
 ```
 
+#### HISTORY (including timetokens)
+
+```
+# Synchronous usage
+
+print pubnub.history(channel, count=2, include_token=True)
+
+# Asynchronous usage
+
+
+def callback(message):
+    print(message)
+
+pubnub.history(channel, count=2, include_token=True, callback=callback, error=callback)
+```
+
+
 #### GRANT
 
 ```

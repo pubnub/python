@@ -7,7 +7,7 @@
 
 
 import sys
-from Pubnub import Pubnub
+from pubnub import Pubnub
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
 subscribe_key = len(sys.argv) > 2 and sys.argv[2] or 'demo'
@@ -33,3 +33,15 @@ def callback(message):
     print(message)
 
 pubnub.history(channel, count=2, callback=callback, error=callback)
+
+# Synchronous usage
+
+print pubnub.history(channel, count=2, include_token=True)
+
+# Asynchronous usage
+
+
+def callback(message):
+    print(message)
+
+pubnub.history(channel, count=2, include_token=True, callback=callback, error=callback)

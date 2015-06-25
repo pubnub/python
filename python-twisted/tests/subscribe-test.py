@@ -11,7 +11,7 @@
 
 import sys
 import datetime
-from Pubnub import PubnubTwisted as Pubnub
+from pubnub import PubnubTwisted as Pubnub
 from functools import partial
 from threading import current_thread
 import threading

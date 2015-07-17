@@ -70,6 +70,8 @@ def c():
 
 	def callback(message1, channel1, real_channel=None):
 		print(channel1 + " : " + real_channel + " : " + str(message1))
+		pubnub.unsubscribe(channel="c.*")
+		print pubnub.publish(channel=channel, message="c1")
 
 
 	def error(message):

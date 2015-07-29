@@ -7,7 +7,7 @@
 ## http://www.pubnub.com/
 
 ## -----------------------------------
-## PubNub 3.7.2 Real-time Push Cloud API
+## PubNub 3.7.3 Real-time Push Cloud API
 ## -----------------------------------
 
 
@@ -21,6 +21,7 @@ import hashlib
 import uuid as uuid_lib
 import random
 import sys
+import copy
 from base64 import urlsafe_b64encode
 from base64 import encodestring, decodestring
 import hmac
@@ -230,7 +231,7 @@ class PubnubCrypto2():
         except:
             return msg
         try:
-            return eval(plain)
+            return json.loads(plain)
         except SyntaxError:
             return plain
 
@@ -293,7 +294,7 @@ class PubnubBase(object):
         """
 
         self.origin = origin
-        self.version = '3.7.2'
+        self.version = '3.7.3'
         self.limit = 1800
         self.publish_key = publish_key
         self.subscribe_key = subscribe_key
@@ -1542,7 +1543,7 @@ class PubnubCoreAsync(PubnubBase):
             func(i)
 
     def subscribe(self, channels, callback, state=None, error=None,
-                  connect=None, disconnect=None, reconnect=None, sync=False):
+                  connect=None, disconnect=None, reconnect=None, presence=None, sync=False):
         """Subscribe to data on a channel.
 
         This function causes the client to create an open TCP socket to the
@@ -1580,7 +1581,7 @@ class PubnubCoreAsync(PubnubBase):
         """
 
         return self._subscribe(channels=channels, callback=callback, state=state, error=error,
-            connect=connect, disconnect=disconnect, reconnect=reconnect)
+            connect=connect, disconnect=disconnect, reconnect=reconnect, presence=presence)
 
     def subscribe_group(self, channel_groups, callback, error=None,
                   connect=None, disconnect=None, reconnect=None, sync=False):
@@ -1621,7 +1622,7 @@ class PubnubCoreAsync(PubnubBase):
             connect=connect, disconnect=disconnect, reconnect=reconnect)
 
     def _subscribe(self, channels=None, channel_groups=None, state=None, callback=None, error=None,
-                  connect=None, disconnect=None, reconnect=None):
+                  connect=None, disconnect=None, reconnect=None, presence=None):
 
         with self._tt_lock:
             self.last_timetoken = self.timetoken if self.timetoken != 0 \
@@ -1645,8 +1646,9 @@ class PubnubCoreAsync(PubnubBase):
         def _invoke_connect():
             if self._channel_list_lock:
                 with self._channel_list_lock:
-                    for ch in self.subscriptions:
-                        chobj = self.subscriptions[ch]
+                    x = copy.copy(self.subscriptions)
+                    for ch in x:
+                        chobj = x[ch]
                         if chobj['connected'] is False:
                             chobj['connected'] = True
                             chobj['disconnected'] = False
@@ -1730,7 +1732,8 @@ class PubnubCoreAsync(PubnubBase):
                                 'connect': connect,
                                 'disconnect': disconnect,
                                 'reconnect': reconnect,
-                                'error': error
+                                'error': error,
+                                'presence': presence
                             }
                         if state is not None:
                             if channel in self.STATE:
@@ -1758,7 +1761,8 @@ class PubnubCoreAsync(PubnubBase):
                                 'connect': connect,
                                 'disconnect': disconnect,
                                 'reconnect': reconnect,
-                                'error': error
+                                'error': error,
+                                'presence': presence
                             }
 
         '''
@@ -1769,6 +1773,7 @@ class PubnubCoreAsync(PubnubBase):
                     _invoke(error, "Already Connected")
                     return
         '''
+
         ## SUBSCRIPTION RECURSION
         def _connect():
 
@@ -1817,7 +1822,12 @@ class PubnubCoreAsync(PubnubBase):
                                     chobj = self.subscription_groups[ch[1]]
                                 except KeyError:
                                     chobj = self.subscriptions[ch[1]]
-                                _invoke(chobj['callback'],
+
+                                if ('-pnpres' in channel_list_2[ch[0]]):
+                                    cb = chobj['presence']
+                                else:
+                                    cb = chobj['callback']
+                                _invoke(cb,
                                         self.decrypt(response_list[ch[0]]),
                                         chobj['name'].split('-pnpres')[0], channel_list_2[ch[0]].split('-pnpres')[0])                    
                     elif len(response) > 2:
@@ -2056,6 +2066,7 @@ s = requests.Session()
 
 
 def _requests_request(url, timeout=5):
+    #print url
     try:
         resp = s.get(url, timeout=timeout)
     except requests.exceptions.HTTPError as http_error:

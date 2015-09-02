@@ -420,14 +420,14 @@ class PubnubBase(object):
                         (or included in a comma-separated list, eg. "null,null,abc"), 
                         a new auth_key will be generated and returned for each "null" value.
 
-            read:       (boolean) (default: True)
+            read:       (boolean) (default: False)
                         Read permissions are granted by setting to True.
                         Read permissions are removed by setting to False.
 
-            write:      (boolean) (default: True)
+            write:      (boolean) (default: False)
                         Write permissions are granted by setting to true.
                         Write permissions are removed by setting to false.
-            manage:      (boolean) (default: True)
+            manage:      (boolean) (default: False)
                         Manage permissions are granted by setting to true.
                         Manage permissions are removed by setting to false.
 

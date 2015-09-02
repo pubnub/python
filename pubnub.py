@@ -456,7 +456,11 @@ class PubnubBase(object):
                 "payload":{
                     "ttl":5,
                     "auths":{
-                        "my_ro_authkey":{"r":1,"w":0}
+                        "my_ro_authkey":{
+                            "m":0,
+                            "r":1,
+                            "w":0
+                        }
                     },
                     "subscribe_key":"my_subkey",
                     "level":"user",
@@ -529,7 +533,11 @@ class PubnubBase(object):
                 "payload":{
                     "ttl":5,
                     "auths":{
-                        "my_authkey":{"r":0,"w":0}
+                        "my_authkey":{
+                            "m":0,
+                            "r":0,
+                            "w":0
+                        }
                     },
                     "subscribe_key":"my_subkey",
                     "level":"user",
@@ -596,9 +604,23 @@ class PubnubBase(object):
                 "payload":{
                     "channels":{
                         "my_channel":{
-                            "auths":{"my_ro_authkey":{"r":1,"w":0},
-                            "my_rw_authkey":{"r":0,"w":1},
-                            "my_admin_authkey":{"r":1,"w":1}
+                            "auths":{
+                                "my_ro_authkey":{
+                                    "m":0,
+                                    "r":1,
+                                    "w":0
+                                },
+                                "my_rw_authkey":{
+                                    "m":0,
+                                    "r":0,
+                                    "w":1
+                                },
+                                "my_admin_authkey":{
+                                    "m":1,
+                                    "r":1,
+                                    "w":1
+                                }
+                            }
                         }
                     }
                 },

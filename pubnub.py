@@ -383,7 +383,7 @@ class PubnubBase(object):
         return self.auth_key
 
     def grant(self, channel=None, channel_group=None, auth_key=False, read=False,
-              write=False, manage=False, ttl=5, callback=None, error=None):
+              write=False, manage=False, ttl=1440, callback=None, error=None):
         """Method for granting permissions.
 
         This function establishes subscribe and/or write permissions for
@@ -476,7 +476,8 @@ class PubnubBase(object):
             'pnsdk'     : self.pnsdk
         }, callback=callback, error=error)
 
-    def revoke(self, channel=None, channel_group=None, auth_key=None, ttl=1, callback=None, error=None):
+    def revoke(self, channel=None, channel_group=None, auth_key=None, ttl=1440,
+               callback=None, error=None):
         """Method for revoking permissions.
 
         Args:

@@ -8,7 +8,7 @@
     
     <title>Welcome to PubNub’s documentation! &mdash; PubNub 3.7.2 documentation</title>
     
-    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="PubNub 3.7.2 documentation" href="#" /> 
   </head>
-  <body>
-    <div class="related">
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -35,14 +35,14 @@
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">PubNub 3.7.2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">PubNub 3.7.2 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="welcome-to-pubnub-s-documentation">
 <h1>Welcome to PubNub&#8217;s documentation!<a class="headerlink" href="#welcome-to-pubnub-s-documentation" title="Permalink to this headline">¶</a></h1>
@@ -50,14 +50,14 @@
 <ul class="simple">
 </ul>
 </div>
-<span class="target" id="module-Pubnub"></span><div class="section" id="pubnub">
+<span class="target" id="module-pubnub"></span><div class="section" id="pubnub">
 <h2>Pubnub<a class="headerlink" href="#pubnub" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="Pubnub.Pubnub">
-<em class="property">class </em><tt class="descclassname">Pubnub.</tt><tt class="descname">Pubnub</tt><big>(</big><em>publish_key</em>, <em>subscribe_key</em>, <em>secret_key=None</em>, <em>cipher_key=None</em>, <em>auth_key=None</em>, <em>ssl_on=False</em>, <em>origin='pubsub.pubnub.com'</em>, <em>uuid=None</em>, <em>pooling=True</em>, <em>daemon=False</em>, <em>pres_uuid=None</em>, <em>azure=False</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub">
+<em class="property">class </em><code class="descclassname">pubnub.</code><code class="descname">Pubnub</code><span class="sig-paren">(</span><em>publish_key</em>, <em>subscribe_key</em>, <em>secret_key=None</em>, <em>cipher_key=None</em>, <em>auth_key=None</em>, <em>ssl_on=False</em>, <em>origin='pubsub.pubnub.com'</em>, <em>uuid=None</em>, <em>pooling=True</em>, <em>daemon=False</em>, <em>pres_uuid=None</em>, <em>azure=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="Pubnub.Pubnub.audit">
-<tt class="descname">audit</tt><big>(</big><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.audit" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.audit">
+<code class="descname">audit</code><span class="sig-paren">(</span><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.audit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for fetching permissions from pubnub servers.</p>
 <p>This method provides a mechanism to reveal existing PubNub Access Manager attributes
 for any combination of subscribe_key, channel and auth_key.</p>
@@ -95,28 +95,21 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Returns a dict in sync mode i.e. when callback argument is not given
 The dict returned contains values with keys &#8216;message&#8217; and &#8216;payload&#8217;</p>
-<p>Sample Response
-{</p>
-<blockquote>
-<div><p>&#8220;message&#8221;:&#8221;Success&#8221;,
-&#8220;payload&#8221;:{</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>&#8220;channels&#8221;:{</dt>
-<dd><dl class="first docutils">
-<dt>&#8220;my_channel&#8221;:{</dt>
-<dd>&#8220;auths&#8221;:{&#8220;my_ro_authkey&#8221;:{&#8220;r&#8221;:1,&#8221;w&#8221;:0},
-&#8220;my_rw_authkey&#8221;:{&#8220;r&#8221;:0,&#8221;w&#8221;:1},
-&#8220;my_admin_authkey&#8221;:{&#8220;r&#8221;:1,&#8221;w&#8221;:1}</dd>
-</dl>
-<p class="last">}</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
-<p>},</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Sample Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre>{
+    &quot;message&quot;:&quot;Success&quot;,
+    &quot;payload&quot;:{
+        &quot;channels&quot;:{
+            &quot;my_channel&quot;:{
+                &quot;auths&quot;:{&quot;my_ro_authkey&quot;:{&quot;r&quot;:1,&quot;w&quot;:0},
+                &quot;my_rw_authkey&quot;:{&quot;r&quot;:0,&quot;w&quot;:1},
+                &quot;my_admin_authkey&quot;:{&quot;r&quot;:1,&quot;w&quot;:1}
+            }
+        }
+    },
+}
+</pre></div>
+</div>
 </dd>
 </dl>
 <p>Usage:</p>
@@ -125,8 +118,8 @@ The dict returned contains values with keys &#8216;message&#8217; and &#8216;pay
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.channel_group_list_channels">
-<tt class="descname">channel_group_list_channels</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_list_channels" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.channel_group_list_channels">
+<code class="descname">channel_group_list_channels</code><span class="sig-paren">(</span><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.channel_group_list_channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of channels for a group.</p>
 <p>Using this method, list of channels for a group, can be obtained.</p>
 <dl class="docutils">
@@ -149,43 +142,43 @@ Required argument when working with twisted or tornado.</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Sync  Mode: dict
 channel_group_list_channels method returns a dict which contains list of channels
-in payload field
-{</p>
-<blockquote>
-<div>u&#8217;status&#8217;: 200,
-u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</div></blockquote>
-<p>}</p>
+in payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">],</span> <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;abcd&quot;</span><span class="p">},</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
 <p>The callback passed to channel_group_list_channels gets the a dict containing list of channels
-under payload field</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}</dd>
-</dl>
-<p class="last">}</p>
+under payload field:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">],</span> <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;abcd&quot;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.channel_group_list_groups">
-<tt class="descname">channel_group_list_groups</tt><big>(</big><em>namespace=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_list_groups" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.channel_group_list_groups">
+<code class="descname">channel_group_list_groups</code><span class="sig-paren">(</span><em>namespace=None</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.channel_group_list_groups" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of groups.</p>
 <p>Using this method, list of groups for the subscribe key associated with PubNub
 object, can be obtained. If namespace is provided, groups within the namespace
 only are listed</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">namespace:  (string) (optional) namespace
-callback:   (optional)</p>
-<blockquote>
-<div>A callback method should be passed to the method.
-If set, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">namespace:  (string) (optional) namespace</p>
 <dl class="last docutils">
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error:      (optional)</dt>
 <dd>Optional variable. An error method can be passed to the method.
 If set, the api works in async mode. 
@@ -193,32 +186,33 @@ Required argument when working with twisted or tornado .</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_list_groups method returns a dict which contains list of groups
-in payload field
-{</p>
-<blockquote>
-<div>u&#8217;status&#8217;: 200,
-u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</div></blockquote>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_list_groups method returns a dict which contains list of groups
+in payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;namespace&quot;</span><span class="p">:</span> <span class="s">&quot;dev&quot;</span><span class="p">,</span> <span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;abcd&quot;</span><span class="p">]},</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
 <p>The callback passed to channel_group_list_namespaces gets the a dict containing list of groups
-under payload field</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}</dd>
-</dl>
-<p class="last">}</p>
+under payload field:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;namespace&quot;</span><span class="p">:</span> <span class="s">&quot;dev&quot;</span><span class="p">,</span> <span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;abcd&quot;</span><span class="p">]}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.channel_group_list_namespaces">
-<tt class="descname">channel_group_list_namespaces</tt><big>(</big><em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_list_namespaces" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.channel_group_list_namespaces">
+<code class="descname">channel_group_list_namespaces</code><span class="sig-paren">(</span><em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.channel_group_list_namespaces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of namespaces.</p>
 <p>You can obtain list of namespaces for the subscribe key associated with PubNub
 object using this method.</p>
@@ -236,44 +230,40 @@ Required argument when working with twisted or tornado.</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_list_namespaces method returns a dict which contains list of namespaces
-in payload field
-{</p>
-<blockquote>
-<div><p>u&#8217;status&#8217;: 200,
-u&#8217;payload&#8217;: {</p>
-<blockquote>
-<div>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
-u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</div></blockquote>
-<p>}, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</p>
-</div></blockquote>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_list_namespaces method returns a dict which contains list of namespaces
+in payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">u&#39;sub_key&#39;</span><span class="p">:</span> <span class="s">u&#39;demo&#39;</span><span class="p">,</span>
+        <span class="s">u&#39;namespaces&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">u&#39;dev&#39;</span><span class="p">,</span> <span class="s">u&#39;foo&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None (callback gets the response as parameter)</p>
 <p>Response Format:</p>
 <p>The callback passed to channel_group_list_namespaces gets the a dict containing list of namespaces
-under payload field</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd><dl class="first docutils">
-<dt>u&#8217;payload&#8217;: {</dt>
-<dd>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
-u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</dd>
-</dl>
-<p class="last">}</p>
-</dd>
-</dl>
-<p>}</p>
+under payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">u&#39;sub_key&#39;</span><span class="p">:</span> <span class="s">u&#39;demo&#39;</span><span class="p">,</span>
+        <span class="s">u&#39;namespaces&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">u&#39;dev&#39;</span><span class="p">,</span> <span class="s">u&#39;foo&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p class="last">namespaces is the list of namespaces for the given subscribe key</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.channel_group_remove_channel">
-<tt class="descname">channel_group_remove_channel</tt><big>(</big><em>channel_group</em>, <em>channel</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_remove_channel" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.channel_group_remove_channel">
+<code class="descname">channel_group_remove_channel</code><span class="sig-paren">(</span><em>channel_group</em>, <em>channel</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.channel_group_remove_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove channel.</p>
 <p>A channel can be removed from a group method.</p>
 <dl class="docutils">
@@ -297,34 +287,36 @@ Required argument when working with twisted or tornado .</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_remove_channel method returns a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_remove_channel method returns a dict indicating
+status of the request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
-<p>The callback passed to channel_group_remove_channel gets the a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p class="last">}</p>
+<p>The callback passed to channel_group_remove_channel gets the a dict
+indicating status of the request:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.channel_group_remove_group">
-<tt class="descname">channel_group_remove_group</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_remove_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.channel_group_remove_group">
+<code class="descname">channel_group_remove_group</code><span class="sig-paren">(</span><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.channel_group_remove_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove channel group.</p>
 <p>A channel group can be removed using this method.</p>
 <dl class="docutils">
@@ -345,45 +337,46 @@ Required argument when working with twisted or tornado.</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_remove_group method returns a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_remove_group method returns a dict indicating status
+of the request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
-<p>The callback passed to channel_group_remove_group gets the a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p class="last">}</p>
+<p>The callback passed to channel_group_remove_group gets the a dict
+indicating status of the request:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.channel_group_remove_namespace">
-<tt class="descname">channel_group_remove_namespace</tt><big>(</big><em>namespace</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.channel_group_remove_namespace" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.channel_group_remove_namespace">
+<code class="descname">channel_group_remove_namespace</code><span class="sig-paren">(</span><em>namespace</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.channel_group_remove_namespace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a namespace.</p>
 <p>A namespace can be deleted using this method.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">namespace:  (string) namespace to be deleted
-callback:   (optional)</p>
-<blockquote>
-<div>A callback method should be passed to the method.
-If set, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">namespace:  (string) namespace to be deleted</p>
 <dl class="last docutils">
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error:      (optional)</dt>
 <dd>Optional variable. An error method can be passed to the method.
 If set, the api works in async mode. 
@@ -391,34 +384,36 @@ Required argument when working with twisted or tornado .</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_remove_namespace method returns a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_remove_namespace method returns a dict indicating
+status of the request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
-<p>The callback passed to channel_group_list_namespaces gets the a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p class="last">}</p>
+<p>The callback passed to channel_group_list_namespaces gets the a
+dict indicating status of the request:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.decrypt">
-<tt class="descname">decrypt</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.decrypt" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.decrypt">
+<code class="descname">decrypt</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.decrypt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for decrypting data.</p>
 <p>This method takes ciphertext as input and returns decrypted data.
 This need not be called directly as enncryption/decryption is
@@ -433,8 +428,8 @@ provided at time of initializing pubnub object</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.encrypt">
-<tt class="descname">encrypt</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.encrypt" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.encrypt">
+<code class="descname">encrypt</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.encrypt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for encrypting data.</p>
 <p>This method takes plaintext as input and returns encrypted data.
 This need not be called directly as enncryption/decryption is
@@ -449,8 +444,8 @@ provided at time of initializing pubnub object</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.grant">
-<tt class="descname">grant</tt><big>(</big><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=False</em>, <em>read=False</em>, <em>write=False</em>, <em>manage=False</em>, <em>ttl=5</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.grant" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.grant">
+<code class="descname">grant</code><span class="sig-paren">(</span><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=False</em>, <em>read=False</em>, <em>write=False</em>, <em>manage=False</em>, <em>ttl=5</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.grant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for granting permissions.</p>
 <p>This function establishes subscribe and/or write permissions for
 PubNub Access Manager (PAM) by setting the read or write attribute
@@ -493,7 +488,7 @@ Read permissions are removed by setting to False.</dd>
 <dt>write:      (boolean) (default: True)</dt>
 <dd>Write permissions are granted by setting to true.
 Write permissions are removed by setting to false.</dd>
-<dt>manage:      (boolean) (default: True)</dt>
+<dt>manage:     (boolean) (default: True)</dt>
 <dd>Manage permissions are granted by setting to true.
 Manage permissions are removed by setting to false.</dd>
 <dt>ttl:        (int) (default: 1440 i.e 24 hrs)</dt>
@@ -513,31 +508,28 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Returns a dict in sync mode i.e. when callback argument is not given
 The dict returned contains values with keys &#8216;message&#8217; and &#8216;payload&#8217;</p>
-<p>Sample Response:
-{</p>
-<blockquote>
-<div><p>&#8220;message&#8221;:&#8221;Success&#8221;,
-&#8220;payload&#8221;:{</p>
-<blockquote>
-<div><p>&#8220;ttl&#8221;:5,
-&#8220;auths&#8221;:{</p>
-<blockquote>
-<div>&#8220;my_ro_authkey&#8221;:{&#8220;r&#8221;:1,&#8221;w&#8221;:0}</div></blockquote>
-<p>},
-&#8220;subscribe_key&#8221;:&#8221;my_subkey&#8221;,
-&#8220;level&#8221;:&#8221;user&#8221;,
-&#8220;channel&#8221;:&#8221;my_channel&#8221;</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Sample Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;Success&quot;</span><span class="p">,</span>
+    <span class="s">&quot;payload&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;ttl&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span>
+        <span class="s">&quot;auths&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;my_ro_authkey&quot;</span><span class="p">:{</span><span class="s">&quot;r&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s">&quot;subscribe_key&quot;</span><span class="p">:</span><span class="s">&quot;my_subkey&quot;</span><span class="p">,</span>
+        <span class="s">&quot;level&quot;</span><span class="p">:</span><span class="s">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s">&quot;channel&quot;</span><span class="p">:</span><span class="s">&quot;my_channel&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.here_now">
-<tt class="descname">here_now</tt><big>(</big><em>channel</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.here_now" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.here_now">
+<code class="descname">here_now</code><span class="sig-paren">(</span><em>channel</em>, <em>uuids=True</em>, <em>state=False</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.here_now" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get here now data.</p>
 <p>You can obtain information about the current state of a channel including
 a list of unique user-ids currently subscribed to the channel and the total
@@ -566,26 +558,25 @@ Async Mode: None</p>
 <p>The here_now() method returns a list of uuid s currently subscribed to the channel.</p>
 <p>uuids:[&#8220;String&#8221;,&#8221;String&#8221;, ... ,&#8221;String&#8221;] - List of UUIDs currently subscribed to the channel.</p>
 <p>occupancy: Number - Total current occupancy of the channel.</p>
-<p>Example Response:
-{</p>
-<blockquote>
-<div><p>occupancy: 4,
-uuids: [</p>
-<blockquote>
-<div>&#8216;123123234t234f34fq3dq&#8217;,
-&#8216;143r34f34t34fq34q34q3&#8217;,
-&#8216;23f34d3f4rq34r34rq23q&#8217;,
-&#8216;w34tcw45t45tcw435tww3&#8217;,</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Example Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="n">occupancy</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">uuids</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;123123234t234f34fq3dq&#39;</span><span class="p">,</span>
+        <span class="s">&#39;143r34f34t34fq34q34q3&#39;</span><span class="p">,</span>
+        <span class="s">&#39;23f34d3f4rq34r34rq23q&#39;</span><span class="p">,</span>
+        <span class="s">&#39;w34tcw45t45tcw435tww3&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.history">
-<tt class="descname">history</tt><big>(</big><em>channel</em>, <em>count=100</em>, <em>reverse=False</em>, <em>start=None</em>, <em>end=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.history" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.history">
+<code class="descname">history</code><span class="sig-paren">(</span><em>channel</em>, <em>count=100</em>, <em>reverse=False</em>, <em>start=None</em>, <em>end=None</em>, <em>include_token=False</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.history" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method fetches historical messages of a channel.</p>
 <p>PubNub Storage/Playback Service provides real-time access to an unlimited
 history for all messages published to PubNub. Stored messages are replicated
@@ -629,19 +620,18 @@ Required argument when working with twisted or tornado .</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.presence">
-<tt class="descname">presence</tt><big>(</big><em>channel</em>, <em>callback</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.presence" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.presence">
+<code class="descname">presence</code><span class="sig-paren">(</span><em>channel</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.presence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to presence events on a channel.</p>
 <blockquote>
 <div>Only works in async mode</div></blockquote>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">channel: Channel name ( string ) on which to listen for events
-callback: A callback method should be passed as parameter.</p>
-<blockquote>
-<div>If passed, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">channel: Channel name ( string ) on which to listen for events</p>
 <dl class="last docutils">
+<dt>callback: A callback method should be passed as parameter.</dt>
+<dd>If passed, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error: Optional variable. An error method can be passed as parameter.</dt>
 <dd>If set, the api works in async mode.</dd>
 </dl>
@@ -652,19 +642,18 @@ Required argument when working with twisted or tornado .</div></blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.presence_group">
-<tt class="descname">presence_group</tt><big>(</big><em>channel_group</em>, <em>callback</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.presence_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.presence_group">
+<code class="descname">presence_group</code><span class="sig-paren">(</span><em>channel_group</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.presence_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to presence events on a channel group.</p>
 <blockquote>
 <div>Only works in async mode</div></blockquote>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">channel_group: Channel group name ( string )
-callback: A callback method should be passed to the method.</p>
-<blockquote>
-<div>If passed, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">channel_group: Channel group name ( string )</p>
 <dl class="last docutils">
+<dt>callback: A callback method should be passed to the method.</dt>
+<dd>If passed, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error: Optional variable. An error method can be passed as parameter.</dt>
 <dd>If passed, the api works in async mode.</dd>
 </dl>
@@ -675,16 +664,15 @@ Required argument when working with twisted or tornado .</div></blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.publish">
-<tt class="descname">publish</tt><big>(</big><em>channel</em>, <em>message</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.publish" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.publish">
+<code class="descname">publish</code><span class="sig-paren">(</span><em>channel</em>, <em>message</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.publish" title="Permalink to this definition">¶</a></dt>
 <dd><p>Publishes data on a channel.</p>
 <p>The publish() method is used to send a message to all subscribers of a channel.
 To publish a message you must first specify a valid publish_key at initialization.
 A successfully published message is replicated across the PubNub Real-Time Network
 and sent simultaneously to all subscribed clients on a channel.</p>
-<blockquote>
-<div>Messages in transit can be secured from potential eavesdroppers with SSL/TLS by</div></blockquote>
-<p>setting ssl to True during initialization.</p>
+<p>Messages in transit can be secured from potential eavesdroppers with SSL/TLS by
+setting ssl to True during initialization.</p>
 <p>Published messages can also be encrypted with AES-256 simply by specifying a cipher_key
 during initialization.</p>
 <dl class="docutils">
@@ -718,8 +706,8 @@ Async Mode : None</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.revoke">
-<tt class="descname">revoke</tt><big>(</big><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>ttl=1</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.revoke" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.revoke">
+<code class="descname">revoke</code><span class="sig-paren">(</span><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>ttl=1</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.revoke" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for revoking permissions.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -762,31 +750,28 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Returns a dict in sync mode i.e. when callback argument is not given
 The dict returned contains values with keys &#8216;message&#8217; and &#8216;payload&#8217;</p>
-<p>Sample Response:
-{</p>
-<blockquote>
-<div><p>&#8220;message&#8221;:&#8221;Success&#8221;,
-&#8220;payload&#8221;:{</p>
-<blockquote>
-<div><p>&#8220;ttl&#8221;:5,
-&#8220;auths&#8221;:{</p>
-<blockquote>
-<div>&#8220;my_authkey&#8221;:{&#8220;r&#8221;:0,&#8221;w&#8221;:0}</div></blockquote>
-<p>},
-&#8220;subscribe_key&#8221;:&#8221;my_subkey&#8221;,
-&#8220;level&#8221;:&#8221;user&#8221;,
-&#8220;channel&#8221;:&#8221;my_channel&#8221;</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Sample Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;Success&quot;</span><span class="p">,</span>
+    <span class="s">&quot;payload&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;ttl&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span>
+        <span class="s">&quot;auths&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;my_authkey&quot;</span><span class="p">:{</span><span class="s">&quot;r&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s">&quot;subscribe_key&quot;</span><span class="p">:</span><span class="s">&quot;my_subkey&quot;</span><span class="p">,</span>
+        <span class="s">&quot;level&quot;</span><span class="p">:</span><span class="s">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s">&quot;channel&quot;</span><span class="p">:</span><span class="s">&quot;my_channel&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.subscribe">
-<tt class="descname">subscribe</tt><big>(</big><em>channels</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.subscribe" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.subscribe">
+<code class="descname">subscribe</code><span class="sig-paren">(</span><em>channels</em>, <em>callback</em>, <em>state=None</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.subscribe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to data on a channel.</p>
 <p>This function causes the client to create an open TCP socket to the
 PubNub Real-Time Network and begin listening for messages on a specified channel.
@@ -801,6 +786,8 @@ initialization.</p>
 multiple channels as a comma separated list or andarray.</dd>
 <dt>callback:   (function)</dt>
 <dd>This callback is called on receiving a message from the channel.</dd>
+<dt>state:      (dict)</dt>
+<dd>State to be set.</dd>
 <dt>error:      (function) (optional)</dt>
 <dd>This callback is called on an error event</dd>
 <dt>connect:    (function) (optional)</dt>
@@ -817,8 +804,8 @@ multiple channels as a comma separated list or andarray.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.subscribe_group">
-<tt class="descname">subscribe_group</tt><big>(</big><em>channel_groups</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.subscribe_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.subscribe_group">
+<code class="descname">subscribe_group</code><span class="sig-paren">(</span><em>channel_groups</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.subscribe_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to data on a channel group.</p>
 <p>This function causes the client to create an open TCP socket to the
 PubNub Real-Time Network and begin listening for messages on a specified channel.
@@ -849,8 +836,8 @@ multiple channel groups as a comma separated list or andarray.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.time">
-<tt class="descname">time</tt><big>(</big><em>callback=None</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.time" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.time">
+<code class="descname">time</code><span class="sig-paren">(</span><em>callback=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function will return a 17 digit precision Unix epoch.</p>
 <p>Args:</p>
 <blockquote>
@@ -873,8 +860,8 @@ Required argument when working with twisted or tornado .</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.unsubscribe">
-<tt class="descname">unsubscribe</tt><big>(</big><em>channel</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.unsubscribe" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.unsubscribe">
+<code class="descname">unsubscribe</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.unsubscribe" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Unsubscribe from channel .</dt>
 <dd>Only works in async mode</dd>
@@ -884,8 +871,8 @@ Required argument when working with twisted or tornado .</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.Pubnub.unsubscribe_group">
-<tt class="descname">unsubscribe_group</tt><big>(</big><em>channel_group</em><big>)</big><a class="headerlink" href="#Pubnub.Pubnub.unsubscribe_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.Pubnub.unsubscribe_group">
+<code class="descname">unsubscribe_group</code><span class="sig-paren">(</span><em>channel_group</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.Pubnub.unsubscribe_group" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Unsubscribe from channel group.</dt>
 <dd>Only works in async mode</dd>
@@ -900,11 +887,11 @@ Required argument when working with twisted or tornado .</dd>
 <div class="section" id="pubnubtwisted">
 <h2>PubnubTwisted<a class="headerlink" href="#pubnubtwisted" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="Pubnub.PubnubTwisted">
-<em class="property">class </em><tt class="descclassname">Pubnub.</tt><tt class="descname">PubnubTwisted</tt><big>(</big><em>publish_key</em>, <em>subscribe_key</em>, <em>secret_key=None</em>, <em>cipher_key=None</em>, <em>auth_key=None</em>, <em>ssl_on=False</em>, <em>origin='pubsub.pubnub.com'</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted">
+<em class="property">class </em><code class="descclassname">pubnub.</code><code class="descname">PubnubTwisted</code><span class="sig-paren">(</span><em>publish_key</em>, <em>subscribe_key</em>, <em>secret_key=None</em>, <em>cipher_key=None</em>, <em>auth_key=None</em>, <em>ssl_on=False</em>, <em>origin='pubsub.pubnub.com'</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="Pubnub.PubnubTwisted.audit">
-<tt class="descname">audit</tt><big>(</big><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.audit" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.audit">
+<code class="descname">audit</code><span class="sig-paren">(</span><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.audit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for fetching permissions from pubnub servers.</p>
 <p>This method provides a mechanism to reveal existing PubNub Access Manager attributes
 for any combination of subscribe_key, channel and auth_key.</p>
@@ -942,28 +929,21 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Returns a dict in sync mode i.e. when callback argument is not given
 The dict returned contains values with keys &#8216;message&#8217; and &#8216;payload&#8217;</p>
-<p>Sample Response
-{</p>
-<blockquote>
-<div><p>&#8220;message&#8221;:&#8221;Success&#8221;,
-&#8220;payload&#8221;:{</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>&#8220;channels&#8221;:{</dt>
-<dd><dl class="first docutils">
-<dt>&#8220;my_channel&#8221;:{</dt>
-<dd>&#8220;auths&#8221;:{&#8220;my_ro_authkey&#8221;:{&#8220;r&#8221;:1,&#8221;w&#8221;:0},
-&#8220;my_rw_authkey&#8221;:{&#8220;r&#8221;:0,&#8221;w&#8221;:1},
-&#8220;my_admin_authkey&#8221;:{&#8220;r&#8221;:1,&#8221;w&#8221;:1}</dd>
-</dl>
-<p class="last">}</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
-<p>},</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Sample Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre>{
+    &quot;message&quot;:&quot;Success&quot;,
+    &quot;payload&quot;:{
+        &quot;channels&quot;:{
+            &quot;my_channel&quot;:{
+                &quot;auths&quot;:{&quot;my_ro_authkey&quot;:{&quot;r&quot;:1,&quot;w&quot;:0},
+                &quot;my_rw_authkey&quot;:{&quot;r&quot;:0,&quot;w&quot;:1},
+                &quot;my_admin_authkey&quot;:{&quot;r&quot;:1,&quot;w&quot;:1}
+            }
+        }
+    },
+}
+</pre></div>
+</div>
 </dd>
 </dl>
 <p>Usage:</p>
@@ -972,8 +952,8 @@ The dict returned contains values with keys &#8216;message&#8217; and &#8216;pay
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.channel_group_list_channels">
-<tt class="descname">channel_group_list_channels</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_list_channels" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.channel_group_list_channels">
+<code class="descname">channel_group_list_channels</code><span class="sig-paren">(</span><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.channel_group_list_channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of channels for a group.</p>
 <p>Using this method, list of channels for a group, can be obtained.</p>
 <dl class="docutils">
@@ -996,43 +976,43 @@ Required argument when working with twisted or tornado.</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Sync  Mode: dict
 channel_group_list_channels method returns a dict which contains list of channels
-in payload field
-{</p>
-<blockquote>
-<div>u&#8217;status&#8217;: 200,
-u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</div></blockquote>
-<p>}</p>
+in payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">],</span> <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;abcd&quot;</span><span class="p">},</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
 <p>The callback passed to channel_group_list_channels gets the a dict containing list of channels
-under payload field</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}</dd>
-</dl>
-<p class="last">}</p>
+under payload field:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">],</span> <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;abcd&quot;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.channel_group_list_groups">
-<tt class="descname">channel_group_list_groups</tt><big>(</big><em>namespace=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_list_groups" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.channel_group_list_groups">
+<code class="descname">channel_group_list_groups</code><span class="sig-paren">(</span><em>namespace=None</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.channel_group_list_groups" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of groups.</p>
 <p>Using this method, list of groups for the subscribe key associated with PubNub
 object, can be obtained. If namespace is provided, groups within the namespace
 only are listed</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">namespace:  (string) (optional) namespace
-callback:   (optional)</p>
-<blockquote>
-<div>A callback method should be passed to the method.
-If set, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">namespace:  (string) (optional) namespace</p>
 <dl class="last docutils">
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error:      (optional)</dt>
 <dd>Optional variable. An error method can be passed to the method.
 If set, the api works in async mode. 
@@ -1040,32 +1020,33 @@ Required argument when working with twisted or tornado .</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_list_groups method returns a dict which contains list of groups
-in payload field
-{</p>
-<blockquote>
-<div>u&#8217;status&#8217;: 200,
-u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</div></blockquote>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_list_groups method returns a dict which contains list of groups
+in payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;namespace&quot;</span><span class="p">:</span> <span class="s">&quot;dev&quot;</span><span class="p">,</span> <span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;abcd&quot;</span><span class="p">]},</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
 <p>The callback passed to channel_group_list_namespaces gets the a dict containing list of groups
-under payload field</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}</dd>
-</dl>
-<p class="last">}</p>
+under payload field:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;namespace&quot;</span><span class="p">:</span> <span class="s">&quot;dev&quot;</span><span class="p">,</span> <span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;abcd&quot;</span><span class="p">]}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.channel_group_list_namespaces">
-<tt class="descname">channel_group_list_namespaces</tt><big>(</big><em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_list_namespaces" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.channel_group_list_namespaces">
+<code class="descname">channel_group_list_namespaces</code><span class="sig-paren">(</span><em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.channel_group_list_namespaces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of namespaces.</p>
 <p>You can obtain list of namespaces for the subscribe key associated with PubNub
 object using this method.</p>
@@ -1083,44 +1064,40 @@ Required argument when working with twisted or tornado.</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_list_namespaces method returns a dict which contains list of namespaces
-in payload field
-{</p>
-<blockquote>
-<div><p>u&#8217;status&#8217;: 200,
-u&#8217;payload&#8217;: {</p>
-<blockquote>
-<div>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
-u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</div></blockquote>
-<p>}, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</p>
-</div></blockquote>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_list_namespaces method returns a dict which contains list of namespaces
+in payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">u&#39;sub_key&#39;</span><span class="p">:</span> <span class="s">u&#39;demo&#39;</span><span class="p">,</span>
+        <span class="s">u&#39;namespaces&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">u&#39;dev&#39;</span><span class="p">,</span> <span class="s">u&#39;foo&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None (callback gets the response as parameter)</p>
 <p>Response Format:</p>
 <p>The callback passed to channel_group_list_namespaces gets the a dict containing list of namespaces
-under payload field</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd><dl class="first docutils">
-<dt>u&#8217;payload&#8217;: {</dt>
-<dd>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
-u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</dd>
-</dl>
-<p class="last">}</p>
-</dd>
-</dl>
-<p>}</p>
+under payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">u&#39;sub_key&#39;</span><span class="p">:</span> <span class="s">u&#39;demo&#39;</span><span class="p">,</span>
+        <span class="s">u&#39;namespaces&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">u&#39;dev&#39;</span><span class="p">,</span> <span class="s">u&#39;foo&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p class="last">namespaces is the list of namespaces for the given subscribe key</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.channel_group_remove_channel">
-<tt class="descname">channel_group_remove_channel</tt><big>(</big><em>channel_group</em>, <em>channel</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_remove_channel" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.channel_group_remove_channel">
+<code class="descname">channel_group_remove_channel</code><span class="sig-paren">(</span><em>channel_group</em>, <em>channel</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.channel_group_remove_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove channel.</p>
 <p>A channel can be removed from a group method.</p>
 <dl class="docutils">
@@ -1144,34 +1121,36 @@ Required argument when working with twisted or tornado .</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_remove_channel method returns a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_remove_channel method returns a dict indicating
+status of the request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
-<p>The callback passed to channel_group_remove_channel gets the a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p class="last">}</p>
+<p>The callback passed to channel_group_remove_channel gets the a dict
+indicating status of the request:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.channel_group_remove_group">
-<tt class="descname">channel_group_remove_group</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_remove_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.channel_group_remove_group">
+<code class="descname">channel_group_remove_group</code><span class="sig-paren">(</span><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.channel_group_remove_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove channel group.</p>
 <p>A channel group can be removed using this method.</p>
 <dl class="docutils">
@@ -1192,45 +1171,46 @@ Required argument when working with twisted or tornado.</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_remove_group method returns a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_remove_group method returns a dict indicating status
+of the request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
-<p>The callback passed to channel_group_remove_group gets the a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p class="last">}</p>
+<p>The callback passed to channel_group_remove_group gets the a dict
+indicating status of the request:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.channel_group_remove_namespace">
-<tt class="descname">channel_group_remove_namespace</tt><big>(</big><em>namespace</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.channel_group_remove_namespace" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.channel_group_remove_namespace">
+<code class="descname">channel_group_remove_namespace</code><span class="sig-paren">(</span><em>namespace</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.channel_group_remove_namespace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a namespace.</p>
 <p>A namespace can be deleted using this method.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">namespace:  (string) namespace to be deleted
-callback:   (optional)</p>
-<blockquote>
-<div>A callback method should be passed to the method.
-If set, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">namespace:  (string) namespace to be deleted</p>
 <dl class="last docutils">
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error:      (optional)</dt>
 <dd>Optional variable. An error method can be passed to the method.
 If set, the api works in async mode. 
@@ -1238,34 +1218,36 @@ Required argument when working with twisted or tornado .</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_remove_namespace method returns a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_remove_namespace method returns a dict indicating
+status of the request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
-<p>The callback passed to channel_group_list_namespaces gets the a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p class="last">}</p>
+<p>The callback passed to channel_group_list_namespaces gets the a
+dict indicating status of the request:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.decrypt">
-<tt class="descname">decrypt</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.decrypt" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.decrypt">
+<code class="descname">decrypt</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.decrypt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for decrypting data.</p>
 <p>This method takes ciphertext as input and returns decrypted data.
 This need not be called directly as enncryption/decryption is
@@ -1280,8 +1262,8 @@ provided at time of initializing pubnub object</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.encrypt">
-<tt class="descname">encrypt</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.encrypt" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.encrypt">
+<code class="descname">encrypt</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.encrypt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for encrypting data.</p>
 <p>This method takes plaintext as input and returns encrypted data.
 This need not be called directly as enncryption/decryption is
@@ -1296,8 +1278,8 @@ provided at time of initializing pubnub object</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.grant">
-<tt class="descname">grant</tt><big>(</big><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=False</em>, <em>read=False</em>, <em>write=False</em>, <em>manage=False</em>, <em>ttl=5</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.grant" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.grant">
+<code class="descname">grant</code><span class="sig-paren">(</span><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=False</em>, <em>read=False</em>, <em>write=False</em>, <em>manage=False</em>, <em>ttl=5</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.grant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for granting permissions.</p>
 <p>This function establishes subscribe and/or write permissions for
 PubNub Access Manager (PAM) by setting the read or write attribute
@@ -1340,7 +1322,7 @@ Read permissions are removed by setting to False.</dd>
 <dt>write:      (boolean) (default: True)</dt>
 <dd>Write permissions are granted by setting to true.
 Write permissions are removed by setting to false.</dd>
-<dt>manage:      (boolean) (default: True)</dt>
+<dt>manage:     (boolean) (default: True)</dt>
 <dd>Manage permissions are granted by setting to true.
 Manage permissions are removed by setting to false.</dd>
 <dt>ttl:        (int) (default: 1440 i.e 24 hrs)</dt>
@@ -1360,31 +1342,28 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Returns a dict in sync mode i.e. when callback argument is not given
 The dict returned contains values with keys &#8216;message&#8217; and &#8216;payload&#8217;</p>
-<p>Sample Response:
-{</p>
-<blockquote>
-<div><p>&#8220;message&#8221;:&#8221;Success&#8221;,
-&#8220;payload&#8221;:{</p>
-<blockquote>
-<div><p>&#8220;ttl&#8221;:5,
-&#8220;auths&#8221;:{</p>
-<blockquote>
-<div>&#8220;my_ro_authkey&#8221;:{&#8220;r&#8221;:1,&#8221;w&#8221;:0}</div></blockquote>
-<p>},
-&#8220;subscribe_key&#8221;:&#8221;my_subkey&#8221;,
-&#8220;level&#8221;:&#8221;user&#8221;,
-&#8220;channel&#8221;:&#8221;my_channel&#8221;</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Sample Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;Success&quot;</span><span class="p">,</span>
+    <span class="s">&quot;payload&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;ttl&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span>
+        <span class="s">&quot;auths&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;my_ro_authkey&quot;</span><span class="p">:{</span><span class="s">&quot;r&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s">&quot;subscribe_key&quot;</span><span class="p">:</span><span class="s">&quot;my_subkey&quot;</span><span class="p">,</span>
+        <span class="s">&quot;level&quot;</span><span class="p">:</span><span class="s">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s">&quot;channel&quot;</span><span class="p">:</span><span class="s">&quot;my_channel&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.here_now">
-<tt class="descname">here_now</tt><big>(</big><em>channel</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.here_now" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.here_now">
+<code class="descname">here_now</code><span class="sig-paren">(</span><em>channel</em>, <em>uuids=True</em>, <em>state=False</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.here_now" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get here now data.</p>
 <p>You can obtain information about the current state of a channel including
 a list of unique user-ids currently subscribed to the channel and the total
@@ -1413,26 +1392,25 @@ Async Mode: None</p>
 <p>The here_now() method returns a list of uuid s currently subscribed to the channel.</p>
 <p>uuids:[&#8220;String&#8221;,&#8221;String&#8221;, ... ,&#8221;String&#8221;] - List of UUIDs currently subscribed to the channel.</p>
 <p>occupancy: Number - Total current occupancy of the channel.</p>
-<p>Example Response:
-{</p>
-<blockquote>
-<div><p>occupancy: 4,
-uuids: [</p>
-<blockquote>
-<div>&#8216;123123234t234f34fq3dq&#8217;,
-&#8216;143r34f34t34fq34q34q3&#8217;,
-&#8216;23f34d3f4rq34r34rq23q&#8217;,
-&#8216;w34tcw45t45tcw435tww3&#8217;,</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Example Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="n">occupancy</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">uuids</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;123123234t234f34fq3dq&#39;</span><span class="p">,</span>
+        <span class="s">&#39;143r34f34t34fq34q34q3&#39;</span><span class="p">,</span>
+        <span class="s">&#39;23f34d3f4rq34r34rq23q&#39;</span><span class="p">,</span>
+        <span class="s">&#39;w34tcw45t45tcw435tww3&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.history">
-<tt class="descname">history</tt><big>(</big><em>channel</em>, <em>count=100</em>, <em>reverse=False</em>, <em>start=None</em>, <em>end=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.history" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.history">
+<code class="descname">history</code><span class="sig-paren">(</span><em>channel</em>, <em>count=100</em>, <em>reverse=False</em>, <em>start=None</em>, <em>end=None</em>, <em>include_token=False</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.history" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method fetches historical messages of a channel.</p>
 <p>PubNub Storage/Playback Service provides real-time access to an unlimited
 history for all messages published to PubNub. Stored messages are replicated
@@ -1476,19 +1454,18 @@ Required argument when working with twisted or tornado .</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.presence">
-<tt class="descname">presence</tt><big>(</big><em>channel</em>, <em>callback</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.presence" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.presence">
+<code class="descname">presence</code><span class="sig-paren">(</span><em>channel</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.presence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to presence events on a channel.</p>
 <blockquote>
 <div>Only works in async mode</div></blockquote>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">channel: Channel name ( string ) on which to listen for events
-callback: A callback method should be passed as parameter.</p>
-<blockquote>
-<div>If passed, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">channel: Channel name ( string ) on which to listen for events</p>
 <dl class="last docutils">
+<dt>callback: A callback method should be passed as parameter.</dt>
+<dd>If passed, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error: Optional variable. An error method can be passed as parameter.</dt>
 <dd>If set, the api works in async mode.</dd>
 </dl>
@@ -1499,19 +1476,18 @@ Required argument when working with twisted or tornado .</div></blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.presence_group">
-<tt class="descname">presence_group</tt><big>(</big><em>channel_group</em>, <em>callback</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.presence_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.presence_group">
+<code class="descname">presence_group</code><span class="sig-paren">(</span><em>channel_group</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.presence_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to presence events on a channel group.</p>
 <blockquote>
 <div>Only works in async mode</div></blockquote>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">channel_group: Channel group name ( string )
-callback: A callback method should be passed to the method.</p>
-<blockquote>
-<div>If passed, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">channel_group: Channel group name ( string )</p>
 <dl class="last docutils">
+<dt>callback: A callback method should be passed to the method.</dt>
+<dd>If passed, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error: Optional variable. An error method can be passed as parameter.</dt>
 <dd>If passed, the api works in async mode.</dd>
 </dl>
@@ -1522,16 +1498,15 @@ Required argument when working with twisted or tornado .</div></blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.publish">
-<tt class="descname">publish</tt><big>(</big><em>channel</em>, <em>message</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.publish" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.publish">
+<code class="descname">publish</code><span class="sig-paren">(</span><em>channel</em>, <em>message</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.publish" title="Permalink to this definition">¶</a></dt>
 <dd><p>Publishes data on a channel.</p>
 <p>The publish() method is used to send a message to all subscribers of a channel.
 To publish a message you must first specify a valid publish_key at initialization.
 A successfully published message is replicated across the PubNub Real-Time Network
 and sent simultaneously to all subscribed clients on a channel.</p>
-<blockquote>
-<div>Messages in transit can be secured from potential eavesdroppers with SSL/TLS by</div></blockquote>
-<p>setting ssl to True during initialization.</p>
+<p>Messages in transit can be secured from potential eavesdroppers with SSL/TLS by
+setting ssl to True during initialization.</p>
 <p>Published messages can also be encrypted with AES-256 simply by specifying a cipher_key
 during initialization.</p>
 <dl class="docutils">
@@ -1565,8 +1540,8 @@ Async Mode : None</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.revoke">
-<tt class="descname">revoke</tt><big>(</big><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>ttl=1</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.revoke" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.revoke">
+<code class="descname">revoke</code><span class="sig-paren">(</span><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>ttl=1</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.revoke" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for revoking permissions.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -1609,31 +1584,28 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Returns a dict in sync mode i.e. when callback argument is not given
 The dict returned contains values with keys &#8216;message&#8217; and &#8216;payload&#8217;</p>
-<p>Sample Response:
-{</p>
-<blockquote>
-<div><p>&#8220;message&#8221;:&#8221;Success&#8221;,
-&#8220;payload&#8221;:{</p>
-<blockquote>
-<div><p>&#8220;ttl&#8221;:5,
-&#8220;auths&#8221;:{</p>
-<blockquote>
-<div>&#8220;my_authkey&#8221;:{&#8220;r&#8221;:0,&#8221;w&#8221;:0}</div></blockquote>
-<p>},
-&#8220;subscribe_key&#8221;:&#8221;my_subkey&#8221;,
-&#8220;level&#8221;:&#8221;user&#8221;,
-&#8220;channel&#8221;:&#8221;my_channel&#8221;</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Sample Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;Success&quot;</span><span class="p">,</span>
+    <span class="s">&quot;payload&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;ttl&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span>
+        <span class="s">&quot;auths&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;my_authkey&quot;</span><span class="p">:{</span><span class="s">&quot;r&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s">&quot;subscribe_key&quot;</span><span class="p">:</span><span class="s">&quot;my_subkey&quot;</span><span class="p">,</span>
+        <span class="s">&quot;level&quot;</span><span class="p">:</span><span class="s">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s">&quot;channel&quot;</span><span class="p">:</span><span class="s">&quot;my_channel&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.subscribe">
-<tt class="descname">subscribe</tt><big>(</big><em>channels</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.subscribe" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.subscribe">
+<code class="descname">subscribe</code><span class="sig-paren">(</span><em>channels</em>, <em>callback</em>, <em>state=None</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.subscribe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to data on a channel.</p>
 <p>This function causes the client to create an open TCP socket to the
 PubNub Real-Time Network and begin listening for messages on a specified channel.
@@ -1648,6 +1620,8 @@ initialization.</p>
 multiple channels as a comma separated list or andarray.</dd>
 <dt>callback:   (function)</dt>
 <dd>This callback is called on receiving a message from the channel.</dd>
+<dt>state:      (dict)</dt>
+<dd>State to be set.</dd>
 <dt>error:      (function) (optional)</dt>
 <dd>This callback is called on an error event</dd>
 <dt>connect:    (function) (optional)</dt>
@@ -1664,8 +1638,8 @@ multiple channels as a comma separated list or andarray.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.subscribe_group">
-<tt class="descname">subscribe_group</tt><big>(</big><em>channel_groups</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.subscribe_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.subscribe_group">
+<code class="descname">subscribe_group</code><span class="sig-paren">(</span><em>channel_groups</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.subscribe_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to data on a channel group.</p>
 <p>This function causes the client to create an open TCP socket to the
 PubNub Real-Time Network and begin listening for messages on a specified channel.
@@ -1696,8 +1670,8 @@ multiple channel groups as a comma separated list or andarray.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.time">
-<tt class="descname">time</tt><big>(</big><em>callback=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.time" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.time">
+<code class="descname">time</code><span class="sig-paren">(</span><em>callback=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function will return a 17 digit precision Unix epoch.</p>
 <p>Args:</p>
 <blockquote>
@@ -1720,8 +1694,8 @@ Required argument when working with twisted or tornado .</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.unsubscribe">
-<tt class="descname">unsubscribe</tt><big>(</big><em>channel</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.unsubscribe" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.unsubscribe">
+<code class="descname">unsubscribe</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.unsubscribe" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Unsubscribe from channel .</dt>
 <dd>Only works in async mode</dd>
@@ -1731,8 +1705,8 @@ Required argument when working with twisted or tornado .</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTwisted.unsubscribe_group">
-<tt class="descname">unsubscribe_group</tt><big>(</big><em>channel_group</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTwisted.unsubscribe_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTwisted.unsubscribe_group">
+<code class="descname">unsubscribe_group</code><span class="sig-paren">(</span><em>channel_group</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTwisted.unsubscribe_group" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Unsubscribe from channel group.</dt>
 <dd>Only works in async mode</dd>
@@ -1747,11 +1721,11 @@ Required argument when working with twisted or tornado .</dd>
 <div class="section" id="pubnubtornado">
 <h2>PubnubTornado<a class="headerlink" href="#pubnubtornado" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="Pubnub.PubnubTornado">
-<em class="property">class </em><tt class="descclassname">Pubnub.</tt><tt class="descname">PubnubTornado</tt><big>(</big><em>publish_key</em>, <em>subscribe_key</em>, <em>secret_key=False</em>, <em>cipher_key=False</em>, <em>auth_key=False</em>, <em>ssl_on=False</em>, <em>origin='pubsub.pubnub.com'</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado">
+<em class="property">class </em><code class="descclassname">pubnub.</code><code class="descname">PubnubTornado</code><span class="sig-paren">(</span><em>publish_key</em>, <em>subscribe_key</em>, <em>secret_key=False</em>, <em>cipher_key=False</em>, <em>auth_key=False</em>, <em>ssl_on=False</em>, <em>origin='pubsub.pubnub.com'</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
-<dt id="Pubnub.PubnubTornado.audit">
-<tt class="descname">audit</tt><big>(</big><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.audit" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.audit">
+<code class="descname">audit</code><span class="sig-paren">(</span><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.audit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for fetching permissions from pubnub servers.</p>
 <p>This method provides a mechanism to reveal existing PubNub Access Manager attributes
 for any combination of subscribe_key, channel and auth_key.</p>
@@ -1789,28 +1763,21 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Returns a dict in sync mode i.e. when callback argument is not given
 The dict returned contains values with keys &#8216;message&#8217; and &#8216;payload&#8217;</p>
-<p>Sample Response
-{</p>
-<blockquote>
-<div><p>&#8220;message&#8221;:&#8221;Success&#8221;,
-&#8220;payload&#8221;:{</p>
-<blockquote>
-<div><dl class="docutils">
-<dt>&#8220;channels&#8221;:{</dt>
-<dd><dl class="first docutils">
-<dt>&#8220;my_channel&#8221;:{</dt>
-<dd>&#8220;auths&#8221;:{&#8220;my_ro_authkey&#8221;:{&#8220;r&#8221;:1,&#8221;w&#8221;:0},
-&#8220;my_rw_authkey&#8221;:{&#8220;r&#8221;:0,&#8221;w&#8221;:1},
-&#8220;my_admin_authkey&#8221;:{&#8220;r&#8221;:1,&#8221;w&#8221;:1}</dd>
-</dl>
-<p class="last">}</p>
-</dd>
-</dl>
-<p>}</p>
-</div></blockquote>
-<p>},</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Sample Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre>{
+    &quot;message&quot;:&quot;Success&quot;,
+    &quot;payload&quot;:{
+        &quot;channels&quot;:{
+            &quot;my_channel&quot;:{
+                &quot;auths&quot;:{&quot;my_ro_authkey&quot;:{&quot;r&quot;:1,&quot;w&quot;:0},
+                &quot;my_rw_authkey&quot;:{&quot;r&quot;:0,&quot;w&quot;:1},
+                &quot;my_admin_authkey&quot;:{&quot;r&quot;:1,&quot;w&quot;:1}
+            }
+        }
+    },
+}
+</pre></div>
+</div>
 </dd>
 </dl>
 <p>Usage:</p>
@@ -1819,8 +1786,8 @@ The dict returned contains values with keys &#8216;message&#8217; and &#8216;pay
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.channel_group_list_channels">
-<tt class="descname">channel_group_list_channels</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_list_channels" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.channel_group_list_channels">
+<code class="descname">channel_group_list_channels</code><span class="sig-paren">(</span><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.channel_group_list_channels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of channels for a group.</p>
 <p>Using this method, list of channels for a group, can be obtained.</p>
 <dl class="docutils">
@@ -1843,43 +1810,43 @@ Required argument when working with twisted or tornado.</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Sync  Mode: dict
 channel_group_list_channels method returns a dict which contains list of channels
-in payload field
-{</p>
-<blockquote>
-<div>u&#8217;status&#8217;: 200,
-u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</div></blockquote>
-<p>}</p>
+in payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">],</span> <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;abcd&quot;</span><span class="p">},</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
 <p>The callback passed to channel_group_list_channels gets the a dict containing list of channels
-under payload field</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;payload&#8217;: {&#8220;channels&#8221;: [&#8220;hi&#8221;], &#8220;group&#8221;: &#8220;abcd&#8221;}</dd>
-</dl>
-<p class="last">}</p>
+under payload field:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;channels&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;hi&quot;</span><span class="p">],</span> <span class="s">&quot;group&quot;</span><span class="p">:</span> <span class="s">&quot;abcd&quot;</span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.channel_group_list_groups">
-<tt class="descname">channel_group_list_groups</tt><big>(</big><em>namespace=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_list_groups" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.channel_group_list_groups">
+<code class="descname">channel_group_list_groups</code><span class="sig-paren">(</span><em>namespace=None</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.channel_group_list_groups" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of groups.</p>
 <p>Using this method, list of groups for the subscribe key associated with PubNub
 object, can be obtained. If namespace is provided, groups within the namespace
 only are listed</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">namespace:  (string) (optional) namespace
-callback:   (optional)</p>
-<blockquote>
-<div>A callback method should be passed to the method.
-If set, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">namespace:  (string) (optional) namespace</p>
 <dl class="last docutils">
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error:      (optional)</dt>
 <dd>Optional variable. An error method can be passed to the method.
 If set, the api works in async mode. 
@@ -1887,32 +1854,33 @@ Required argument when working with twisted or tornado .</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_list_groups method returns a dict which contains list of groups
-in payload field
-{</p>
-<blockquote>
-<div>u&#8217;status&#8217;: 200,
-u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</div></blockquote>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_list_groups method returns a dict which contains list of groups
+in payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;namespace&quot;</span><span class="p">:</span> <span class="s">&quot;dev&quot;</span><span class="p">,</span> <span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;abcd&quot;</span><span class="p">]},</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
 <p>The callback passed to channel_group_list_namespaces gets the a dict containing list of groups
-under payload field</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;payload&#8217;: {&#8220;namespace&#8221;: &#8220;dev&#8221;, &#8220;groups&#8221;: [&#8220;abcd&#8221;]}</dd>
-</dl>
-<p class="last">}</p>
+under payload field:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&quot;namespace&quot;</span><span class="p">:</span> <span class="s">&quot;dev&quot;</span><span class="p">,</span> <span class="s">&quot;groups&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s">&quot;abcd&quot;</span><span class="p">]}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.channel_group_list_namespaces">
-<tt class="descname">channel_group_list_namespaces</tt><big>(</big><em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_list_namespaces" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.channel_group_list_namespaces">
+<code class="descname">channel_group_list_namespaces</code><span class="sig-paren">(</span><em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.channel_group_list_namespaces" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get list of namespaces.</p>
 <p>You can obtain list of namespaces for the subscribe key associated with PubNub
 object using this method.</p>
@@ -1930,44 +1898,40 @@ Required argument when working with twisted or tornado.</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_list_namespaces method returns a dict which contains list of namespaces
-in payload field
-{</p>
-<blockquote>
-<div><p>u&#8217;status&#8217;: 200,
-u&#8217;payload&#8217;: {</p>
-<blockquote>
-<div>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
-u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</div></blockquote>
-<p>}, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</p>
-</div></blockquote>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_list_namespaces method returns a dict which contains list of namespaces
+in payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">u&#39;sub_key&#39;</span><span class="p">:</span> <span class="s">u&#39;demo&#39;</span><span class="p">,</span>
+        <span class="s">u&#39;namespaces&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">u&#39;dev&#39;</span><span class="p">,</span> <span class="s">u&#39;foo&#39;</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None (callback gets the response as parameter)</p>
 <p>Response Format:</p>
 <p>The callback passed to channel_group_list_namespaces gets the a dict containing list of namespaces
-under payload field</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd><dl class="first docutils">
-<dt>u&#8217;payload&#8217;: {</dt>
-<dd>u&#8217;sub_key&#8217;: u&#8217;demo&#8217;,
-u&#8217;namespaces&#8217;: [u&#8217;dev&#8217;, u&#8217;foo&#8217;]</dd>
-</dl>
-<p class="last">}</p>
-</dd>
-</dl>
-<p>}</p>
+under payload field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;payload&#39;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">u&#39;sub_key&#39;</span><span class="p">:</span> <span class="s">u&#39;demo&#39;</span><span class="p">,</span>
+        <span class="s">u&#39;namespaces&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s">u&#39;dev&#39;</span><span class="p">,</span> <span class="s">u&#39;foo&#39;</span><span class="p">]</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p class="last">namespaces is the list of namespaces for the given subscribe key</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.channel_group_remove_channel">
-<tt class="descname">channel_group_remove_channel</tt><big>(</big><em>channel_group</em>, <em>channel</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_remove_channel" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.channel_group_remove_channel">
+<code class="descname">channel_group_remove_channel</code><span class="sig-paren">(</span><em>channel_group</em>, <em>channel</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.channel_group_remove_channel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove channel.</p>
 <p>A channel can be removed from a group method.</p>
 <dl class="docutils">
@@ -1991,34 +1955,36 @@ Required argument when working with twisted or tornado .</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_remove_channel method returns a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_remove_channel method returns a dict indicating
+status of the request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
-<p>The callback passed to channel_group_remove_channel gets the a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p class="last">}</p>
+<p>The callback passed to channel_group_remove_channel gets the a dict
+indicating status of the request:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.channel_group_remove_group">
-<tt class="descname">channel_group_remove_group</tt><big>(</big><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_remove_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.channel_group_remove_group">
+<code class="descname">channel_group_remove_group</code><span class="sig-paren">(</span><em>channel_group</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.channel_group_remove_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove channel group.</p>
 <p>A channel group can be removed using this method.</p>
 <dl class="docutils">
@@ -2039,45 +2005,46 @@ Required argument when working with twisted or tornado.</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_remove_group method returns a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_remove_group method returns a dict indicating status
+of the request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
-<p>The callback passed to channel_group_remove_group gets the a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p class="last">}</p>
+<p>The callback passed to channel_group_remove_group gets the a dict
+indicating status of the request:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.channel_group_remove_namespace">
-<tt class="descname">channel_group_remove_namespace</tt><big>(</big><em>namespace</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.channel_group_remove_namespace" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.channel_group_remove_namespace">
+<code class="descname">channel_group_remove_namespace</code><span class="sig-paren">(</span><em>namespace</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.channel_group_remove_namespace" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a namespace.</p>
 <p>A namespace can be deleted using this method.</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">namespace:  (string) namespace to be deleted
-callback:   (optional)</p>
-<blockquote>
-<div>A callback method should be passed to the method.
-If set, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">namespace:  (string) namespace to be deleted</p>
 <dl class="last docutils">
+<dt>callback:   (optional)</dt>
+<dd>A callback method should be passed to the method.
+If set, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error:      (optional)</dt>
 <dd>Optional variable. An error method can be passed to the method.
 If set, the api works in async mode. 
@@ -2085,34 +2052,36 @@ Required argument when working with twisted or tornado .</dd>
 </dl>
 </dd>
 <dt>Returns:</dt>
-<dd><p class="first">Sync  Mode: dict
-channel_group_remove_namespace method returns a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p>}</p>
+<dd><p class="first">Sync  Mode: dict</p>
+<p>channel_group_remove_namespace method returns a dict indicating
+status of the request:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 <p>Async Mode: None ( callback gets the response as parameter )</p>
 <p>Response Format:</p>
-<p>The callback passed to channel_group_list_namespaces gets the a dict indicating status of the request</p>
-<dl class="docutils">
-<dt>{</dt>
-<dd>u&#8217;status&#8217;: 200,
-u&#8217;message&#8217;: &#8216;OK&#8217;, 
-u&#8217;service&#8217;: u&#8217;channel-registry&#8217;,
-u&#8217;error&#8217;: False</dd>
-</dl>
-<p class="last">}</p>
+<p>The callback passed to channel_group_list_namespaces gets the a
+dict indicating status of the request:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">u&#39;status&#39;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span>
+    <span class="s">u&#39;message&#39;</span><span class="p">:</span> <span class="s">&#39;OK&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;service&#39;</span><span class="p">:</span> <span class="s">u&#39;channel-registry&#39;</span><span class="p">,</span>
+    <span class="s">u&#39;error&#39;</span><span class="p">:</span> <span class="bp">False</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.decrypt">
-<tt class="descname">decrypt</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.decrypt" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.decrypt">
+<code class="descname">decrypt</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.decrypt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for decrypting data.</p>
 <p>This method takes ciphertext as input and returns decrypted data.
 This need not be called directly as enncryption/decryption is
@@ -2127,8 +2096,8 @@ provided at time of initializing pubnub object</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.encrypt">
-<tt class="descname">encrypt</tt><big>(</big><em>message</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.encrypt" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.encrypt">
+<code class="descname">encrypt</code><span class="sig-paren">(</span><em>message</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.encrypt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for encrypting data.</p>
 <p>This method takes plaintext as input and returns encrypted data.
 This need not be called directly as enncryption/decryption is
@@ -2143,8 +2112,8 @@ provided at time of initializing pubnub object</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.grant">
-<tt class="descname">grant</tt><big>(</big><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=False</em>, <em>read=False</em>, <em>write=False</em>, <em>manage=False</em>, <em>ttl=5</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.grant" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.grant">
+<code class="descname">grant</code><span class="sig-paren">(</span><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=False</em>, <em>read=False</em>, <em>write=False</em>, <em>manage=False</em>, <em>ttl=5</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.grant" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for granting permissions.</p>
 <p>This function establishes subscribe and/or write permissions for
 PubNub Access Manager (PAM) by setting the read or write attribute
@@ -2187,7 +2156,7 @@ Read permissions are removed by setting to False.</dd>
 <dt>write:      (boolean) (default: True)</dt>
 <dd>Write permissions are granted by setting to true.
 Write permissions are removed by setting to false.</dd>
-<dt>manage:      (boolean) (default: True)</dt>
+<dt>manage:     (boolean) (default: True)</dt>
 <dd>Manage permissions are granted by setting to true.
 Manage permissions are removed by setting to false.</dd>
 <dt>ttl:        (int) (default: 1440 i.e 24 hrs)</dt>
@@ -2207,31 +2176,28 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Returns a dict in sync mode i.e. when callback argument is not given
 The dict returned contains values with keys &#8216;message&#8217; and &#8216;payload&#8217;</p>
-<p>Sample Response:
-{</p>
-<blockquote>
-<div><p>&#8220;message&#8221;:&#8221;Success&#8221;,
-&#8220;payload&#8221;:{</p>
-<blockquote>
-<div><p>&#8220;ttl&#8221;:5,
-&#8220;auths&#8221;:{</p>
-<blockquote>
-<div>&#8220;my_ro_authkey&#8221;:{&#8220;r&#8221;:1,&#8221;w&#8221;:0}</div></blockquote>
-<p>},
-&#8220;subscribe_key&#8221;:&#8221;my_subkey&#8221;,
-&#8220;level&#8221;:&#8221;user&#8221;,
-&#8220;channel&#8221;:&#8221;my_channel&#8221;</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Sample Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;Success&quot;</span><span class="p">,</span>
+    <span class="s">&quot;payload&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;ttl&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span>
+        <span class="s">&quot;auths&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;my_ro_authkey&quot;</span><span class="p">:{</span><span class="s">&quot;r&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s">&quot;subscribe_key&quot;</span><span class="p">:</span><span class="s">&quot;my_subkey&quot;</span><span class="p">,</span>
+        <span class="s">&quot;level&quot;</span><span class="p">:</span><span class="s">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s">&quot;channel&quot;</span><span class="p">:</span><span class="s">&quot;my_channel&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.here_now">
-<tt class="descname">here_now</tt><big>(</big><em>channel</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.here_now" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.here_now">
+<code class="descname">here_now</code><span class="sig-paren">(</span><em>channel</em>, <em>uuids=True</em>, <em>state=False</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.here_now" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get here now data.</p>
 <p>You can obtain information about the current state of a channel including
 a list of unique user-ids currently subscribed to the channel and the total
@@ -2260,26 +2226,25 @@ Async Mode: None</p>
 <p>The here_now() method returns a list of uuid s currently subscribed to the channel.</p>
 <p>uuids:[&#8220;String&#8221;,&#8221;String&#8221;, ... ,&#8221;String&#8221;] - List of UUIDs currently subscribed to the channel.</p>
 <p>occupancy: Number - Total current occupancy of the channel.</p>
-<p>Example Response:
-{</p>
-<blockquote>
-<div><p>occupancy: 4,
-uuids: [</p>
-<blockquote>
-<div>&#8216;123123234t234f34fq3dq&#8217;,
-&#8216;143r34f34t34fq34q34q3&#8217;,
-&#8216;23f34d3f4rq34r34rq23q&#8217;,
-&#8216;w34tcw45t45tcw435tww3&#8217;,</div></blockquote>
-<p>]</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Example Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="n">occupancy</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+    <span class="n">uuids</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s">&#39;123123234t234f34fq3dq&#39;</span><span class="p">,</span>
+        <span class="s">&#39;143r34f34t34fq34q34q3&#39;</span><span class="p">,</span>
+        <span class="s">&#39;23f34d3f4rq34r34rq23q&#39;</span><span class="p">,</span>
+        <span class="s">&#39;w34tcw45t45tcw435tww3&#39;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.history">
-<tt class="descname">history</tt><big>(</big><em>channel</em>, <em>count=100</em>, <em>reverse=False</em>, <em>start=None</em>, <em>end=None</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.history" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.history">
+<code class="descname">history</code><span class="sig-paren">(</span><em>channel</em>, <em>count=100</em>, <em>reverse=False</em>, <em>start=None</em>, <em>end=None</em>, <em>include_token=False</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.history" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method fetches historical messages of a channel.</p>
 <p>PubNub Storage/Playback Service provides real-time access to an unlimited
 history for all messages published to PubNub. Stored messages are replicated
@@ -2323,19 +2288,18 @@ Required argument when working with twisted or tornado .</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.presence">
-<tt class="descname">presence</tt><big>(</big><em>channel</em>, <em>callback</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.presence" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.presence">
+<code class="descname">presence</code><span class="sig-paren">(</span><em>channel</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.presence" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to presence events on a channel.</p>
 <blockquote>
 <div>Only works in async mode</div></blockquote>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">channel: Channel name ( string ) on which to listen for events
-callback: A callback method should be passed as parameter.</p>
-<blockquote>
-<div>If passed, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">channel: Channel name ( string ) on which to listen for events</p>
 <dl class="last docutils">
+<dt>callback: A callback method should be passed as parameter.</dt>
+<dd>If passed, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error: Optional variable. An error method can be passed as parameter.</dt>
 <dd>If set, the api works in async mode.</dd>
 </dl>
@@ -2346,19 +2310,18 @@ Required argument when working with twisted or tornado .</div></blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.presence_group">
-<tt class="descname">presence_group</tt><big>(</big><em>channel_group</em>, <em>callback</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.presence_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.presence_group">
+<code class="descname">presence_group</code><span class="sig-paren">(</span><em>channel_group</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.presence_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to presence events on a channel group.</p>
 <blockquote>
 <div>Only works in async mode</div></blockquote>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd><p class="first">channel_group: Channel group name ( string )
-callback: A callback method should be passed to the method.</p>
-<blockquote>
-<div>If passed, the api works in async mode. 
-Required argument when working with twisted or tornado .</div></blockquote>
+<dd><p class="first">channel_group: Channel group name ( string )</p>
 <dl class="last docutils">
+<dt>callback: A callback method should be passed to the method.</dt>
+<dd>If passed, the api works in async mode. 
+Required argument when working with twisted or tornado .</dd>
 <dt>error: Optional variable. An error method can be passed as parameter.</dt>
 <dd>If passed, the api works in async mode.</dd>
 </dl>
@@ -2369,16 +2332,15 @@ Required argument when working with twisted or tornado .</div></blockquote>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.publish">
-<tt class="descname">publish</tt><big>(</big><em>channel</em>, <em>message</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.publish" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.publish">
+<code class="descname">publish</code><span class="sig-paren">(</span><em>channel</em>, <em>message</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.publish" title="Permalink to this definition">¶</a></dt>
 <dd><p>Publishes data on a channel.</p>
 <p>The publish() method is used to send a message to all subscribers of a channel.
 To publish a message you must first specify a valid publish_key at initialization.
 A successfully published message is replicated across the PubNub Real-Time Network
 and sent simultaneously to all subscribed clients on a channel.</p>
-<blockquote>
-<div>Messages in transit can be secured from potential eavesdroppers with SSL/TLS by</div></blockquote>
-<p>setting ssl to True during initialization.</p>
+<p>Messages in transit can be secured from potential eavesdroppers with SSL/TLS by
+setting ssl to True during initialization.</p>
 <p>Published messages can also be encrypted with AES-256 simply by specifying a cipher_key
 during initialization.</p>
 <dl class="docutils">
@@ -2412,8 +2374,8 @@ Async Mode : None</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.revoke">
-<tt class="descname">revoke</tt><big>(</big><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>ttl=1</em>, <em>callback=None</em>, <em>error=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.revoke" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.revoke">
+<code class="descname">revoke</code><span class="sig-paren">(</span><em>channel=None</em>, <em>channel_group=None</em>, <em>auth_key=None</em>, <em>ttl=1</em>, <em>callback=None</em>, <em>error=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.revoke" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method for revoking permissions.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -2456,31 +2418,28 @@ Required argument when working with twisted or tornado .</dd>
 <dt>Returns:</dt>
 <dd><p class="first">Returns a dict in sync mode i.e. when callback argument is not given
 The dict returned contains values with keys &#8216;message&#8217; and &#8216;payload&#8217;</p>
-<p>Sample Response:
-{</p>
-<blockquote>
-<div><p>&#8220;message&#8221;:&#8221;Success&#8221;,
-&#8220;payload&#8221;:{</p>
-<blockquote>
-<div><p>&#8220;ttl&#8221;:5,
-&#8220;auths&#8221;:{</p>
-<blockquote>
-<div>&#8220;my_authkey&#8221;:{&#8220;r&#8221;:0,&#8221;w&#8221;:0}</div></blockquote>
-<p>},
-&#8220;subscribe_key&#8221;:&#8221;my_subkey&#8221;,
-&#8220;level&#8221;:&#8221;user&#8221;,
-&#8220;channel&#8221;:&#8221;my_channel&#8221;</p>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p class="last">}</p>
+<p>Sample Response:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="p">{</span>
+    <span class="s">&quot;message&quot;</span><span class="p">:</span><span class="s">&quot;Success&quot;</span><span class="p">,</span>
+    <span class="s">&quot;payload&quot;</span><span class="p">:{</span>
+        <span class="s">&quot;ttl&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span>
+        <span class="s">&quot;auths&quot;</span><span class="p">:{</span>
+            <span class="s">&quot;my_authkey&quot;</span><span class="p">:{</span><span class="s">&quot;r&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="s">&quot;w&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">}</span>
+        <span class="p">},</span>
+        <span class="s">&quot;subscribe_key&quot;</span><span class="p">:</span><span class="s">&quot;my_subkey&quot;</span><span class="p">,</span>
+        <span class="s">&quot;level&quot;</span><span class="p">:</span><span class="s">&quot;user&quot;</span><span class="p">,</span>
+        <span class="s">&quot;channel&quot;</span><span class="p">:</span><span class="s">&quot;my_channel&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.subscribe">
-<tt class="descname">subscribe</tt><big>(</big><em>channels</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.subscribe" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.subscribe">
+<code class="descname">subscribe</code><span class="sig-paren">(</span><em>channels</em>, <em>callback</em>, <em>state=None</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.subscribe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to data on a channel.</p>
 <p>This function causes the client to create an open TCP socket to the
 PubNub Real-Time Network and begin listening for messages on a specified channel.
@@ -2495,6 +2454,8 @@ initialization.</p>
 multiple channels as a comma separated list or andarray.</dd>
 <dt>callback:   (function)</dt>
 <dd>This callback is called on receiving a message from the channel.</dd>
+<dt>state:      (dict)</dt>
+<dd>State to be set.</dd>
 <dt>error:      (function) (optional)</dt>
 <dd>This callback is called on an error event</dd>
 <dt>connect:    (function) (optional)</dt>
@@ -2511,8 +2472,8 @@ multiple channels as a comma separated list or andarray.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.subscribe_group">
-<tt class="descname">subscribe_group</tt><big>(</big><em>channel_groups</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.subscribe_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.subscribe_group">
+<code class="descname">subscribe_group</code><span class="sig-paren">(</span><em>channel_groups</em>, <em>callback</em>, <em>error=None</em>, <em>connect=None</em>, <em>disconnect=None</em>, <em>reconnect=None</em>, <em>sync=False</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.subscribe_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Subscribe to data on a channel group.</p>
 <p>This function causes the client to create an open TCP socket to the
 PubNub Real-Time Network and begin listening for messages on a specified channel.
@@ -2543,8 +2504,8 @@ multiple channel groups as a comma separated list or andarray.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.time">
-<tt class="descname">time</tt><big>(</big><em>callback=None</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.time" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.time">
+<code class="descname">time</code><span class="sig-paren">(</span><em>callback=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function will return a 17 digit precision Unix epoch.</p>
 <p>Args:</p>
 <blockquote>
@@ -2567,8 +2528,8 @@ Required argument when working with twisted or tornado .</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.unsubscribe">
-<tt class="descname">unsubscribe</tt><big>(</big><em>channel</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.unsubscribe" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.unsubscribe">
+<code class="descname">unsubscribe</code><span class="sig-paren">(</span><em>channel</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.unsubscribe" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Unsubscribe from channel .</dt>
 <dd>Only works in async mode</dd>
@@ -2578,8 +2539,8 @@ Required argument when working with twisted or tornado .</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="Pubnub.PubnubTornado.unsubscribe_group">
-<tt class="descname">unsubscribe_group</tt><big>(</big><em>channel_group</em><big>)</big><a class="headerlink" href="#Pubnub.PubnubTornado.unsubscribe_group" title="Permalink to this definition">¶</a></dt>
+<dt id="pubnub.PubnubTornado.unsubscribe_group">
+<code class="descname">unsubscribe_group</code><span class="sig-paren">(</span><em>channel_group</em><span class="sig-paren">)</span><a class="headerlink" href="#pubnub.PubnubTornado.unsubscribe_group" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="docutils">
 <dt>Unsubscribe from channel group.</dt>
 <dd>Only works in async mode</dd>
@@ -2595,8 +2556,8 @@ Required argument when working with twisted or tornado .</dd>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
+<li><a class="reference internal" href="genindex.html"><span>Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span>Search Page</span></a></li>
 </ul>
 </div>
 
@@ -2604,7 +2565,7 @@ Required argument when working with twisted or tornado .</dd>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="#">Table Of Contents</a></h3>
   <ul>
@@ -2617,12 +2578,14 @@ Required argument when working with twisted or tornado .</dd>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
@@ -2639,7 +2602,7 @@ Required argument when working with twisted or tornado .</dd>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
+    <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
         <li class="right" style="margin-right: 10px">
@@ -2648,12 +2611,12 @@ Required argument when working with twisted or tornado .</dd>
         <li class="right" >
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li><a href="#">PubNub 3.7.2 documentation</a> &raquo;</li> 
+        <li class="nav-item nav-item-0"><a href="#">PubNub 3.7.2 documentation</a> &raquo;</li> 
       </ul>
     </div>
-    <div class="footer">
+    <div class="footer" role="contentinfo">
         &copy; Copyright 2014, PubNub Inc..
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.1.
     </div>
   </body>
 </html>

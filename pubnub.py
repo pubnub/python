@@ -427,7 +427,8 @@ class PubnubBase(object):
             write:      (boolean) (default: True)
                         Write permissions are granted by setting to true.
                         Write permissions are removed by setting to false.
-            manage:      (boolean) (default: True)
+
+            manage:     (boolean) (default: True)
                         Manage permissions are granted by setting to true.
                         Manage permissions are removed by setting to false.
 
@@ -450,19 +451,20 @@ class PubnubBase(object):
             Returns a dict in sync mode i.e. when callback argument is not given
             The dict returned contains values with keys 'message' and 'payload'
 
-            Sample Response:
-            {
-                "message":"Success",
-                "payload":{
-                    "ttl":5,
-                    "auths":{
-                        "my_ro_authkey":{"r":1,"w":0}
-                    },
-                    "subscribe_key":"my_subkey",
-                    "level":"user",
-                    "channel":"my_channel"
+            Sample Response::
+
+                {
+                    "message":"Success",
+                    "payload":{
+                        "ttl":5,
+                        "auths":{
+                            "my_ro_authkey":{"r":1,"w":0}
+                        },
+                        "subscribe_key":"my_subkey",
+                        "level":"user",
+                        "channel":"my_channel"
+                    }
                 }
-            }
         """
 
         return self._pam_auth({
@@ -523,19 +525,20 @@ class PubnubBase(object):
             Returns a dict in sync mode i.e. when callback argument is not given
             The dict returned contains values with keys 'message' and 'payload'
 
-            Sample Response:
-            {
-                "message":"Success",
-                "payload":{
-                    "ttl":5,
-                    "auths":{
-                        "my_authkey":{"r":0,"w":0}
-                    },
-                    "subscribe_key":"my_subkey",
-                    "level":"user",
-                    "channel":"my_channel"
+            Sample Response::
+
+                {
+                    "message":"Success",
+                    "payload":{
+                        "ttl":5,
+                        "auths":{
+                            "my_authkey":{"r":0,"w":0}
+                        },
+                        "subscribe_key":"my_subkey",
+                        "level":"user",
+                        "channel":"my_channel"
+                    }
                 }
-            }
 
         """
 
@@ -590,19 +593,20 @@ class PubnubBase(object):
             Returns a dict in sync mode i.e. when callback argument is not given
             The dict returned contains values with keys 'message' and 'payload'
 
-            Sample Response
-            {
-                "message":"Success",
-                "payload":{
-                    "channels":{
-                        "my_channel":{
-                            "auths":{"my_ro_authkey":{"r":1,"w":0},
-                            "my_rw_authkey":{"r":0,"w":1},
-                            "my_admin_authkey":{"r":1,"w":1}
+            Sample Response::
+
+                {
+                    "message":"Success",
+                    "payload":{
+                        "channels":{
+                            "my_channel":{
+                                "auths":{"my_ro_authkey":{"r":1,"w":0},
+                                "my_rw_authkey":{"r":0,"w":1},
+                                "my_admin_authkey":{"r":1,"w":1}
+                            }
                         }
-                    }
-                },
-            }
+                    },
+                }
 
         Usage:
 
@@ -712,7 +716,8 @@ class PubnubBase(object):
         To publish a message you must first specify a valid publish_key at initialization.
         A successfully published message is replicated across the PubNub Real-Time Network
         and sent simultaneously to all subscribed clients on a channel.
-            Messages in transit can be secured from potential eavesdroppers with SSL/TLS by
+
+        Messages in transit can be secured from potential eavesdroppers with SSL/TLS by
         setting ssl to True during initialization.
 
         Published messages can also be encrypted with AES-256 simply by specifying a cipher_key
@@ -768,9 +773,11 @@ class PubnubBase(object):
 
         Args:
             channel: Channel name ( string ) on which to listen for events
+
             callback: A callback method should be passed as parameter.
                       If passed, the api works in async mode. 
                       Required argument when working with twisted or tornado .
+
             error: Optional variable. An error method can be passed as parameter.
                       If set, the api works in async mode. 
 
@@ -786,9 +793,11 @@ class PubnubBase(object):
 
         Args:
             channel_group: Channel group name ( string )
+
             callback: A callback method should be passed to the method.
                       If passed, the api works in async mode. 
                       Required argument when working with twisted or tornado .
+
             error: Optional variable. An error method can be passed as parameter.
                       If passed, the api works in async mode. 
 
@@ -833,16 +842,17 @@ class PubnubBase(object):
 
             occupancy: Number - Total current occupancy of the channel.
 
-            Example Response:
-            {
-                occupancy: 4,
-                uuids: [
-                    '123123234t234f34fq3dq',
-                    '143r34f34t34fq34q34q3',
-                    '23f34d3f4rq34r34rq23q',
-                    'w34tcw45t45tcw435tww3',
-                ]
-            }
+            Example Response::
+
+                {
+                    occupancy: 4,
+                    uuids: [
+                        '123123234t234f34fq3dq',
+                        '143r34f34t34fq34q34q3',
+                        '23f34d3f4rq34r34rq23q',
+                        'w34tcw45t45tcw435tww3',
+                    ]
+                }
         """
 
         urlcomponents = [
@@ -1079,31 +1089,33 @@ class PubnubBase(object):
 
         Returns:
             Sync  Mode: dict
+
             channel_group_list_namespaces method returns a dict which contains list of namespaces
-            in payload field
-            {
-                u'status': 200,
-                u'payload': {
-                    u'sub_key': u'demo',
-                    u'namespaces': [u'dev', u'foo']
-                }, 
-                u'service': u'channel-registry',
-                u'error': False
-            }
+            in payload field::
+
+                {
+                    u'status': 200,
+                    u'payload': {
+                        u'sub_key': u'demo',
+                        u'namespaces': [u'dev', u'foo']
+                    },
+                    u'service': u'channel-registry',
+                    u'error': False
+                }
 
             Async Mode: None (callback gets the response as parameter)
 
             Response Format:
 
             The callback passed to channel_group_list_namespaces gets the a dict containing list of namespaces
-            under payload field
+            under payload field::
 
-            {
-                u'payload': {
-                    u'sub_key': u'demo',
-                    u'namespaces': [u'dev', u'foo']
+                {
+                    u'payload': {
+                        u'sub_key': u'demo',
+                        u'namespaces': [u'dev', u'foo']
+                    }
                 }
-            }
 
             namespaces is the list of namespaces for the given subscribe key
 
@@ -1121,6 +1133,7 @@ class PubnubBase(object):
 
         Args:
             namespace:  (string) namespace to be deleted
+
             callback:   (optional)
                         A callback method should be passed to the method.
                         If set, the api works in async mode. 
@@ -1133,27 +1146,30 @@ class PubnubBase(object):
 
         Returns:
             Sync  Mode: dict
-            channel_group_remove_namespace method returns a dict indicating status of the request
 
-            {
-                u'status': 200,
-                u'message': 'OK', 
-                u'service': u'channel-registry',
-                u'error': False
-            }
+            channel_group_remove_namespace method returns a dict indicating
+            status of the request::
+
+                {
+                    u'status': 200,
+                    u'message': 'OK',
+                    u'service': u'channel-registry',
+                    u'error': False
+                }
 
             Async Mode: None ( callback gets the response as parameter )
 
             Response Format:
 
-            The callback passed to channel_group_list_namespaces gets the a dict indicating status of the request
+            The callback passed to channel_group_list_namespaces gets the a
+            dict indicating status of the request::
 
-            {
-                u'status': 200,
-                u'message': 'OK', 
-                u'service': u'channel-registry',
-                u'error': False
-            }
+                {
+                    u'status': 200,
+                    u'message': 'OK',
+                    u'service': u'channel-registry',
+                    u'error': False
+                }
 
         """
         url = ['namespace', self._encode(namespace), 'remove']
@@ -1168,6 +1184,7 @@ class PubnubBase(object):
 
         Args:
             namespace:  (string) (optional) namespace
+
             callback:   (optional)
                         A callback method should be passed to the method.
                         If set, the api works in async mode. 
@@ -1180,27 +1197,27 @@ class PubnubBase(object):
 
         Returns:
             Sync  Mode: dict
+
             channel_group_list_groups method returns a dict which contains list of groups
-            in payload field
-            {
-                u'status': 200,
-                u'payload': {"namespace": "dev", "groups": ["abcd"]}, 
-                u'service': u'channel-registry',
-                u'error': False
-            }
+            in payload field::
+
+                {
+                    u'status': 200,
+                    u'payload': {"namespace": "dev", "groups": ["abcd"]},
+                    u'service': u'channel-registry',
+                    u'error': False
+                }
 
             Async Mode: None ( callback gets the response as parameter )
 
             Response Format:
 
             The callback passed to channel_group_list_namespaces gets the a dict containing list of groups
-            under payload field
+            under payload field::
 
-            {
-                u'payload': {"namespace": "dev", "groups": ["abcd"]}
-            }
-
-
+                {
+                    u'payload': {"namespace": "dev", "groups": ["abcd"]}
+                }
 
         """
 
@@ -1235,24 +1252,25 @@ class PubnubBase(object):
         Returns:
             Sync  Mode: dict
             channel_group_list_channels method returns a dict which contains list of channels
-            in payload field
-            {
-                u'status': 200,
-                u'payload': {"channels": ["hi"], "group": "abcd"}, 
-                u'service': u'channel-registry',
-                u'error': False
-            }
+            in payload field::
+
+                {
+                    u'status': 200,
+                    u'payload': {"channels": ["hi"], "group": "abcd"},
+                    u'service': u'channel-registry',
+                    u'error': False
+                }
 
             Async Mode: None ( callback gets the response as parameter )
 
             Response Format:
 
             The callback passed to channel_group_list_channels gets the a dict containing list of channels
-            under payload field
+            under payload field::
 
-            {
-                u'payload': {"channels": ["hi"], "group": "abcd"}
-            }
+                {
+                    u'payload': {"channels": ["hi"], "group": "abcd"}
+                }
 
 
         """
@@ -1288,7 +1306,7 @@ class PubnubBase(object):
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1301,7 +1319,7 @@ class PubnubBase(object):
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1336,27 +1354,30 @@ class PubnubBase(object):
 
         Returns:
             Sync  Mode: dict
-            channel_group_remove_channel method returns a dict indicating status of the request
 
-            {
-                u'status': 200,
-                u'message': 'OK', 
-                u'service': u'channel-registry',
-                u'error': False
-            }
+            channel_group_remove_channel method returns a dict indicating
+            status of the request::
+
+                {
+                    u'status': 200,
+                    u'message': 'OK',
+                    u'service': u'channel-registry',
+                    u'error': False
+                }
 
             Async Mode: None ( callback gets the response as parameter )
 
             Response Format:
 
-            The callback passed to channel_group_remove_channel gets the a dict indicating status of the request
+            The callback passed to channel_group_remove_channel gets the a dict
+            indicating status of the request::
 
-            {
-                u'status': 200,
-                u'message': 'OK', 
-                u'service': u'channel-registry',
-                u'error': False
-            }
+                {
+                    u'status': 200,
+                    u'message': 'OK',
+                    u'service': u'channel-registry',
+                    u'error': False
+                }
 
         """
 
@@ -1385,27 +1406,30 @@ class PubnubBase(object):
 
         Returns:
             Sync  Mode: dict
-            channel_group_remove_group method returns a dict indicating status of the request
 
-            {
-                u'status': 200,
-                u'message': 'OK', 
-                u'service': u'channel-registry',
-                u'error': False
-            }
+            channel_group_remove_group method returns a dict indicating status
+            of the request::
+
+                {
+                    u'status': 200,
+                    u'message': 'OK',
+                    u'service': u'channel-registry',
+                    u'error': False
+                }
 
             Async Mode: None ( callback gets the response as parameter )
 
             Response Format:
 
-            The callback passed to channel_group_remove_group gets the a dict indicating status of the request
+            The callback passed to channel_group_remove_group gets the a dict
+            indicating status of the request::
 
-            {
-                u'status': 200,
-                u'message': 'OK', 
-                u'service': u'channel-registry',
-                u'error': False
-            }
+                {
+                    u'status': 200,
+                    u'message': 'OK',
+                    u'service': u'channel-registry',
+                    u'error': False
+                }
 
         """
 

@@ -9,7 +9,7 @@ Welcome to PubNub's documentation!
 .. toctree::
    :maxdepth: 5
 
-.. automodule:: Pubnub
+.. automodule:: pubnub
 
 Pubnub
 ---------------------------------

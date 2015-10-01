@@ -303,6 +303,7 @@ class PubnubBase(object):
         self.ssl = ssl_on
         self.auth_key = auth_key
         self.STATE = {}
+        self.http_debug = None
 
         if self.ssl:
             self.origin = 'https://' + self.origin
@@ -324,6 +325,9 @@ class PubnubBase(object):
 
         if not isinstance(self.uuid, str):
             raise AttributeError("uuid must be a string")
+
+    def set_http_debug(self, func=None):
+        self.http_debug = func
 
     def _pam_sign(self, msg):
 
@@ -383,8 +387,8 @@ class PubnubBase(object):
     def get_auth_key(self):
         return self.auth_key
 
-    def grant(self, channel=None, channel_group=None, auth_key=False, read=False,
-              write=False, manage=False, ttl=5, callback=None, error=None):
+    def grant(self, channel=None, channel_group=None, auth_key=False,
+                read=False,write=False, manage=False, ttl=5, callback=None, error=None):
         """Method for granting permissions.
 
         This function establishes subscribe and/or write permissions for
@@ -661,6 +665,8 @@ class PubnubBase(object):
 
     def _return_wrapped_callback(self, callback=None):
         def _new_format_callback(response):
+            if self.http_debug is not None:
+                self.http_debug(response)
             if 'payload' in response:
                 if (callback is not None):
                     callback_data = dict()
@@ -991,6 +997,11 @@ class PubnubBase(object):
                      ch for ch in list(bit)
                      ]) for bit in request]
 
+    def _encode_param(self, val):
+        return "".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
+                     hex(ord(ch)).replace('0x', '%').upper() or
+                     ch for ch in list(val)])
+
     def getUrl(self, request):
  
         if self.u is True and "urlparams" in request:
@@ -1001,10 +1012,13 @@ class PubnubBase(object):
                      hex(ord(ch)).replace('0x', '%').upper() or
                      ch for ch in list(bit)
                      ]) for bit in request["urlcomponents"]])
+
+
         if ("urlparams" in request):
-            url = url + '?' + "&".join([x + "=" + str(y) for x, y in request[
+            url = url + '?' + "&".join([x + "=" + self._encode_param(str(y)) for x, y in request[
                 "urlparams"].items() if y is not None and len(str(y)) > 0])
-        #print(url)
+        if self.http_debug is not None:
+            self.http_debug(url)
         return url
 
     def _channel_registry(self, url=None, params=None, callback=None, error=None):
@@ -1432,6 +1446,9 @@ class PubnubCoreAsync(PubnubBase):
     def stop(self):
         pass
 
+    def nop(self):
+        pass
+
     def __init__(
         self,
         publish_key,
@@ -1470,12 +1487,21 @@ class PubnubCoreAsync(PubnubBase):
         self._channel_group_list_lock = _channel_group_list_lock
         self._connect = lambda: None
         self.u = None
+        self.heartbeat = 0
+        self.heartbeat_interval = 0
+        self.heartbeat_running = False
+        self.heartbeat_stop_flag = False
+        self.abort_heartbeat = self.nop
+        self.heartbeat_callback = self.nop
+        self.heartbeat_error = self.nop
 
-    def get_channel_list(self, channels):
+    def get_channel_list(self, channels, nopresence=False):
         channel = ''
         first = True
         with self._channel_list_lock:
             for ch in channels:
+                if nopresence is True and ch.find("-pnpres") >= 0:
+                    continue
                 if not channels[ch]['subscribed']:
                     continue
                 if not first:
@@ -1485,11 +1511,13 @@ class PubnubCoreAsync(PubnubBase):
                 channel += ch
         return channel
 
-    def get_channel_group_list(self, channel_groups):
+    def get_channel_group_list(self, channel_groups, nopresence=False):
         channel_group = ''
         first = True
         with self._channel_group_list_lock:
             for ch in channel_groups:
+                if nopresence is True and ch.find("-pnpres") >= 0:
+                    continue
                 if not channel_groups[ch]['subscribed']:
                     continue
                 if not first:
@@ -1500,7 +1528,7 @@ class PubnubCoreAsync(PubnubBase):
         return channel_group
 
 
-    def get_channel_array(self):
+    def get_channel_array(self, nopresence=False):
         """Get List of currently subscribed channels
 
         Returns:
@@ -1513,12 +1541,14 @@ class PubnubCoreAsync(PubnubBase):
         channel = []
         with self._channel_list_lock:
             for ch in channels:
+                if nopresence is True and ch.find("-pnpres") >= 0:
+                    continue
                 if not channels[ch]['subscribed']:
                     continue
                 channel.append(ch)
         return channel
 
-    def get_channel_group_array(self):
+    def get_channel_group_array(self, nopresence=False):
         """Get List of currently subscribed channel groups
 
         Returns:
@@ -1531,6 +1561,8 @@ class PubnubCoreAsync(PubnubBase):
         channel_group = []
         with self._channel_group_list_lock:
             for ch in channel_groups:
+                if nopresence is True and ch.find("-pnpres") >= 0:
+                    continue
                 if not channel_groups[ch]['subscribed']:
                     continue
                 channel_group.append(ch)
@@ -1541,6 +1573,105 @@ class PubnubCoreAsync(PubnubBase):
             return
         for i in l:
             func(i)
+
+    def restart_heartbeat(self):
+        self.stop_heartbeat()
+        self.start_heartbeat()
+
+    def stop_heartbeat(self):
+        self.abort_heartbeat()
+        self.heartbeat_running = False
+        self.heartbeat_stop_flag = False
+
+    def start_heartbeat(self):
+        if self.heartbeat_running is True:
+            return
+        self._presence_heartbeat()
+
+    def _presence_heartbeat(self):
+        if self.heartbeat_interval is None or self.heartbeat_interval > 500 \
+            or self.heartbeat_interval < 1:
+            self.heartbeat_stop_flag = True
+
+        if len(self.get_channel_list(self.subscriptions, True)) == 0 and \
+            len(self.get_channel_group_list(self.subscription_groups, True)) == 0:
+            self.heartbeat_stop_flag = True
+
+        if self.heartbeat_stop_flag is True:
+            self.heartbeat_running = False
+            self.heartbeat_stop_flag = False
+            return
+
+        def _callback(resp):
+            if self.heartbeat_callback is not None:
+                self.heartbeat_callback(resp)
+            self.abort_heartbeat = self.timeout(self.heartbeat_interval, self._presence_heartbeat)
+
+        def _error(resp):
+            if self.heartbeat_error is not None:
+                self.heartbeat_error(resp)
+            self.abort_heartbeat = self.timeout(self.heartbeat_interval, self._presence_heartbeat)
+
+
+        self.heartbeat_running = True
+        self.presence_heartbeat(_callback, _error)            
+        
+
+    def set_heartbeat(self, heartbeat, callback=None, error=None):
+        self.heartbeat = heartbeat
+        self.heartbeat_interval = (self.heartbeat/2) - 1
+        if self.heartbeat == 2:
+            self.heartbeat_interval = 1
+        self.restart_heartbeat()
+        with self._tt_lock:
+            self.last_timetoken = self.timetoken if self.timetoken != 0 \
+                else self.last_timetoken
+            self.timetoken = 0
+        self._connect()
+        self.heartbeat_callback = callback
+        self.heartbeat_error = error
+
+    def get_heartbeat(self):
+        return self.heartbeat
+
+    def set_heartbeat_interval(self, heartbeat_interval):
+        self.heartbeat_interval = heartbeat_interval
+        self.start_heartbeat()
+
+    def get_heartbeat_interval(self):
+        return self.heartbeat_interval
+
+    def presence_heartbeat(self, callback=None, error=None):
+
+        data = {'auth': self.auth_key, 'pnsdk' : self.pnsdk, 'uuid' : self.uuid}
+
+        st = json.dumps(self.STATE)
+
+        if len(st) > 2:
+            data['state'] = st
+
+        channels = self.get_channel_list(self.subscriptions, True)
+        channel_groups = self.get_channel_group_list(self.subscription_groups, True)
+
+        if channels is None:
+            channels = ','
+
+        if channel_groups is not None and len(channel_groups) > 0:
+            data['channel-group'] = channel_groups
+
+        if self.heartbeat > 0 and self.heartbeat < 320:
+            data['heartbeat'] = self.heartbeat
+
+        ## Send Heartbeat
+        return self._request({"urlcomponents": [
+            'v2', 'presence', 'sub-key',
+            self.subscribe_key,
+            'channel',
+            channels,
+            'heartbeat'
+        ], 'urlparams': data},
+            callback=self._return_wrapped_callback(callback),
+            error=self._return_wrapped_callback(error))
 
     def subscribe(self, channels, callback, state=None, error=None,
                   connect=None, disconnect=None, reconnect=None, presence=None, sync=False):
@@ -1774,6 +1905,8 @@ class PubnubCoreAsync(PubnubBase):
                     return
         '''
 
+        self.restart_heartbeat()
+
         ## SUBSCRIPTION RECURSION
         def _connect():
 
@@ -1862,10 +1995,14 @@ class PubnubCoreAsync(PubnubBase):
             'pnsdk' : self.pnsdk, 'channel-group' : channel_group_list}
             
 
+
             st = json.dumps(self.STATE)
 
             if len(st) > 2:
                 data['state'] = quote(st,safe="")
+
+            if self.heartbeat > 0:
+                data["heartbeat"] = self.heartbeat
 
             ## CONNECT TO PUBNUB SUBSCRIBE SERVERS
             #try:
@@ -1881,7 +2018,6 @@ class PubnubCoreAsync(PubnubBase):
                 single=True, timeout=320)
             '''
             except Exception as e:
-                print(e)
                 self.timeout(1, _connect)
                 return
             '''
@@ -1979,6 +2115,33 @@ class PubnubCore(PubnubCoreAsync):
         self.timetoken = 0
         self.accept_encoding = 'gzip'
 
+class Timer:
+    def __init__(self, timeout, func, daemon=False, *argv):
+        self.timeout = timeout
+        self.func = func
+        self.argv = argv
+        self.stop = False
+        self.thread = None
+        self.daemon = daemon
+
+    def cancel(self):
+        self.stop = True
+        self.func = None
+
+    def run(self):
+        time.sleep(self.timeout)
+        if self.func is not None:
+            if self.argv is None and len(self.argv) == 0:
+                self.func()
+            else:
+                self.func(*(self.argv))
+
+    def start(self):
+        self.thread = threading.Thread(target=self.run)
+        self.thread.daemon = self.daemon
+        self.thread.start()
+
+
 class HTTPClient:
     def __init__(self, pubnub, url, urllib_func=None,
                  callback=None, error=None, id=None, timeout=5):
@@ -2066,7 +2229,6 @@ s = requests.Session()
 
 
 def _requests_request(url, timeout=5):
-    #print url
     try:
         resp = s.get(url, timeout=timeout)
     except requests.exceptions.HTTPError as http_error:
@@ -2077,8 +2239,6 @@ def _requests_request(url, timeout=5):
     except requests.exceptions.Timeout as error:
         msg = str(error)
         return (json.dumps(msg), 0)
-    #print (resp.text)
-    #print (resp.status_code)
     return (resp.text, resp.status_code)
 
 
@@ -2145,13 +2305,11 @@ class Pubnub(PubnubCore):
             s.mount('http://', PubnubHTTPAdapter(max_retries=1))
             s.mount('https://', PubnubHTTPAdapter(max_retries=1))         
 
-    def timeout(self, interval, func):
-        def cb():
-            time.sleep(interval)
-            func()
-        thread = threading.Thread(target=cb)
-        thread.daemon = self.daemon
-        thread.start()
+    def timeout(self, interval, func1, *argv):
+        timer = Timer(interval, func1, False, *argv)
+        timer.start()
+
+        return timer.cancel
 
     def _request_async(self, request, callback=None, error=None, single=False, timeout=5):
         global _urllib_request
@@ -2213,8 +2371,18 @@ class PubnubTwisted(PubnubCoreAsync):
     def stop(self):
         reactor.stop()
 
-    def timeout(self, delay, callback):
-        reactor.callLater(delay, callback)
+    def timeout(self, delay, callback, *args):
+        def cb():
+            if callback is not None:
+                callback(*args)
+
+        timeout = reactor.callLater(delay, cb)
+
+        def cancel():
+            if timeout.active():
+                timeout.cancel()
+            
+        return cancel
 
     def __init__(
         self,
@@ -2224,7 +2392,8 @@ class PubnubTwisted(PubnubCoreAsync):
         cipher_key=None,
         auth_key=None,
         ssl_on=False,
-        origin='pubsub.pubnub.com'
+        origin='pubsub.pubnub.com',
+        uuid=None
     ):
         super(PubnubTwisted, self).__init__(
             publish_key=publish_key,
@@ -2234,6 +2403,7 @@ class PubnubTwisted(PubnubCoreAsync):
             auth_key=auth_key,
             ssl_on=ssl_on,
             origin=origin,
+            uuid=uuid
         )
         self.headers = {}
         self.headers['User-Agent'] = ['Python-Twisted']
@@ -2316,8 +2486,18 @@ class PubnubTornado(PubnubCoreAsync):
     def start(self):
         ioloop.start()
 
-    def timeout(self, delay, callback):
-        ioloop.add_timeout(time.time() + float(delay), callback)
+    def timeout(self, delay, callback, *args):
+        handle = None
+        def cancel():
+            ioloop.remove_timeout(handle)
+
+        def cb():
+            if callback is not None:
+                callback(*args)
+
+        handle = ioloop.add_timeout(time.time() + float(delay), cb)
+
+        return cancel
 
     def __init__(
         self,
@@ -2327,7 +2507,8 @@ class PubnubTornado(PubnubCoreAsync):
         cipher_key=False,
         auth_key=False,
         ssl_on=False,
-        origin='pubsub.pubnub.com'
+        origin='pubsub.pubnub.com',
+        uuid=None
     ):
         super(PubnubTornado, self).__init__(
             publish_key=publish_key,
@@ -2337,6 +2518,7 @@ class PubnubTornado(PubnubCoreAsync):
             auth_key=auth_key,
             ssl_on=ssl_on,
             origin=origin,
+            uuid=uuid
         )
         self.headers = {}
         self.headers['User-Agent'] = 'Python-Tornado'

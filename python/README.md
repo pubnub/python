@@ -56,7 +56,7 @@ def disconnect(message):
     print("DISCONNECTED")
 
 
-pubnub.subscribe(channels=channel, callback=callback, error=callback,
+pubnub.subscribe(channels=channel, callback=callback, error=error,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
@@ -87,7 +87,7 @@ def disconnect(message):
     print("DISCONNECTED")
 
 
-pubnub.subscribe_group(channel_groups=channel_group, callback=callback, error=callback,
+pubnub.subscribe_group(channel_groups=channel_group, callback=callback, error=error,
                  connect=connect, reconnect=reconnect, disconnect=disconnect)
 ```
 
@@ -134,7 +134,7 @@ def error(message):
 
 
 
-pubnub.presence(channel=channel, callback=callback, error=callback)
+pubnub.presence(channel=channel, callback=callback, error=error)
 ```
 
 #### PRESENCE channel group
@@ -153,7 +153,7 @@ def error(message):
 
 
 
-pubnub.presence_group(channel_group=channel_group, callback=callback, error=callback)
+pubnub.presence_group(channel_group=channel_group, callback=callback, error=error)
 ```
 
 #### HERE_NOW

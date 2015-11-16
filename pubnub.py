@@ -1,4 +1,4 @@
- 
+
 ## www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
@@ -159,7 +159,6 @@ try:
     from twisted.internet.ssl import ClientContextFactory
     import twisted
 
-
     pnconn_pool = HTTPConnectionPool(reactor, persistent=True)
     pnconn_pool.maxPersistentPerHost = 100000
     pnconn_pool.cachedConnectionTimeout = 15
@@ -235,6 +234,7 @@ class PubnubCrypto2():
         except SyntaxError:
             return plain
 
+
 class PubnubCrypto3():
 
     def pad(self, msg, block_size=16):
@@ -289,7 +289,7 @@ class PubnubBase(object):
             secret_key: Secret Key
             cipher_key: Cipher Key
             auth_key: Auth Key (used with Pubnub Access Manager i.e. PAM)
-            ssl: SSL enabled ? 
+            ssl: SSL enabled ?
             origin: Origin
         """
 
@@ -331,7 +331,7 @@ class PubnubBase(object):
 
     def _pam_sign(self, msg):
 
-        sign =  urlsafe_b64encode(hmac.new(
+        sign = urlsafe_b64encode(hmac.new(
             self.secret_key.encode("utf-8"),
             msg.encode("utf-8"),
             sha256
@@ -355,7 +355,6 @@ class PubnubBase(object):
 
         if 'channel-group' in query and not query['channel-group']:
             del query['channel-group']
-
 
         params = "&".join([
             x + "=" + quote(
@@ -388,7 +387,8 @@ class PubnubBase(object):
         return self.auth_key
 
     def grant(self, channel=None, channel_group=None, auth_key=False,
-                read=False,write=False, manage=False, ttl=5, callback=None, error=None):
+              read=False, write=False, manage=False, ttl=5, callback=None,
+              error=None):
         """Method for granting permissions.
 
         This function establishes subscribe and/or write permissions for
@@ -397,33 +397,39 @@ class PubnubBase(object):
         will revoke any previous grants with read or write set to true.
 
         Permissions can be applied to any one of three levels:
-            1. Application level privileges are based on subscribe_key applying to all associated channels.
-            2. Channel level privileges are based on a combination of subscribe_key and channel name.
-            3. User level privileges are based on the combination of subscribe_key, channel and auth_key.
+            1. Application level privileges are based on subscribe_key applying
+               to all associated channels.
+            2. Channel level privileges are based on a combination of
+               subscribe_key and channel name.
+            3. User level privileges are based on the combination of
+               subscribe_key, channel and auth_key.
 
         Args:
             channel:    (string) (optional)
                         Specifies channel name to grant permissions to.
-                        If channel/channel_group is not specified, the grant applies to all
-                        channels associated with the subscribe_key. If auth_key
-                        is not specified, it is possible to grant permissions to
-                        multiple channels simultaneously by specifying the channels
+                        If channel/channel_group is not specified, the grant
+                        applies to all channels associated with the
+                        subscribe_key. If auth_key is not specified, it is
+                        possible to grant permissions to multiple channels
+                        simultaneously by specifying the channels
                         as a comma separated list.
             channel_group:    (string) (optional)
                         Specifies channel group name to grant permissions to.
-                        If channel/channel_group is not specified, the grant applies to all
-                        channels associated with the subscribe_key. If auth_key
-                        is not specified, it is possible to grant permissions to
-                        multiple channel groups simultaneously by specifying the channel groups
+                        If channel/channel_group is not specified, the grant
+                        applies to all channels associated with the
+                        subscribe_key. If auth_key is not specified, it is
+                        possible to grant permissions to multiple channel
+                        groups simultaneously by specifying the channel groups
                         as a comma separated list.
 
-            auth_key:   (string) (optional) 
+            auth_key:   (string) (optional)
                         Specifies auth_key to grant permissions to.
                         It is possible to specify multiple auth_keys as comma
-                        separated list in combination with a single channel name.
-                        If auth_key is provided as the special-case value "null" 
-                        (or included in a comma-separated list, eg. "null,null,abc"), 
-                        a new auth_key will be generated and returned for each "null" value.
+                        separated list in combination with a single channel
+                        name. If auth_key is provided as the special-case
+                        value "null" (or included in a comma-separated list,
+                        eg. "null,null,abc"), a new auth_key will be generated
+                        and returned for each "null" value.
 
             read:       (boolean) (default: True)
                         Read permissions are granted by setting to True.
@@ -437,22 +443,23 @@ class PubnubBase(object):
                         Manage permissions are removed by setting to false.
 
             ttl:        (int) (default: 1440 i.e 24 hrs)
-                        Time in minutes for which granted permissions are valid.
-                        Max is 525600 , Min is 1.
+                        Time in minutes for which granted permissions are
+                        valid. Max is 525600 , Min is 1.
                         Setting ttl to 0 will apply the grant indefinitely.
 
             callback:   (function) (optional)
                         A callback method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado 
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or tornado
 
             error:      (function) (optional)
                         An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or tornado
 
         Returns:
-            Returns a dict in sync mode i.e. when callback argument is not given
+            Returns a dict in sync mode i.e. when callback argument is not
+            given
             The dict returned contains values with keys 'message' and 'payload'
 
             Sample Response:
@@ -471,61 +478,69 @@ class PubnubBase(object):
         """
 
         return self._pam_auth({
-            'channel'   : channel,
-            'channel-group'   : channel_group,
-            'auth'      : auth_key,
-            'r'         : read and 1 or 0,
-            'w'         : write and 1 or 0,
-            'm'         : manage and 1 or 0,
-            'ttl'       : ttl,
-            'pnsdk'     : self.pnsdk
+            'channel': channel,
+            'channel-group': channel_group,
+            'auth': auth_key,
+            'r': read and 1 or 0,
+            'w': write and 1 or 0,
+            'm': manage and 1 or 0,
+            'ttl': ttl,
+            'pnsdk': self.pnsdk
         }, callback=callback, error=error)
 
-    def revoke(self, channel=None, channel_group=None, auth_key=None, ttl=1, callback=None, error=None):
+    def revoke(self, channel=None, channel_group=None, auth_key=None, ttl=1,
+               callback=None, error=None):
         """Method for revoking permissions.
 
         Args:
             channel:    (string) (optional)
                         Specifies channel name to revoke permissions to.
-                        If channel/channel_group is not specified, the revoke applies to all
-                        channels associated with the subscribe_key. If auth_key
-                        is not specified, it is possible to grant permissions to
-                        multiple channels simultaneously by specifying the channels
-                        as a comma separated list.
+                        If channel/channel_group is not specified, the revoke
+                        applies to all channels associated with the
+                        subscribe_key. If auth_key is not specified, it is
+                        possible to grant permissions to multiple channels
+                        simultaneously by specifying the channels as a comma
+                        separated list.
 
             channel_group:    (string) (optional)
                         Specifies channel group name to revoke permissions to.
-                        If channel/channel_group is not specified, the grant applies to all
-                        channels associated with the subscribe_key. If auth_key
-                        is not specified, it is possible to revoke permissions to
-                        multiple channel groups simultaneously by specifying the channel groups
+                        If channel/channel_group is not specified, the grant
+                        applies to all channels associated with the
+                        subscribe_key. If auth_key is not specified, it is
+                        possible to revoke permissions to multiple channel
+                        groups simultaneously by specifying the channel groups
                         as a comma separated list.
 
-            auth_key:   (string) (optional) 
+            auth_key:   (string) (optional)
                         Specifies auth_key to revoke permissions to.
                         It is possible to specify multiple auth_keys as comma
-                        separated list in combination with a single channel name.
-                        If auth_key is provided as the special-case value "null" 
-                        (or included in a comma-separated list, eg. "null,null,abc"), 
-                        a new auth_key will be generated and returned for each "null" value.
+                        separated list in combination with a single channel
+                        name. If auth_key is provided as the special-case
+                        value "null" (or included in a comma-separated list,
+                        eg. "null,null,abc"), a new auth_key will be generated
+                        and returned for each "null" value.
 
             ttl:        (int) (default: 1440 i.e 24 hrs)
-                        Time in minutes for which granted permissions are valid.
+                        Time in minutes for which granted permissions are
+                        valid.
                         Max is 525600 , Min is 1.
                         Setting ttl to 0 will apply the grant indefinitely.
 
             callback:   (function) (optional)
                         A callback method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado 
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (function) (optional)
                         An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
-            Returns a dict in sync mode i.e. when callback argument is not given
+            Returns a dict in sync mode i.e. when callback argument is not
+            given.
             The dict returned contains values with keys 'message' and 'payload'
 
             Sample Response:
@@ -545,54 +560,62 @@ class PubnubBase(object):
         """
 
         return self._pam_auth({
-            'channel'   : channel,
-            'channel-group' : channel_group,
-            'auth'      : auth_key,
-            'r'         : 0,
-            'w'         : 0,
-            'ttl'       : ttl,
-            'pnsdk'     : self.pnsdk
+            'channel': channel,
+            'channel-group': channel_group,
+            'auth': auth_key,
+            'r': 0,
+            'w': 0,
+            'ttl': ttl,
+            'pnsdk': self.pnsdk
         }, callback=callback, error=error)
 
-    def audit(self, channel=None, channel_group=None, auth_key=None, callback=None, error=None):
+    def audit(self, channel=None, channel_group=None, auth_key=None,
+              callback=None, error=None):
         """Method for fetching permissions from pubnub servers.
 
-        This method provides a mechanism to reveal existing PubNub Access Manager attributes
-        for any combination of subscribe_key, channel and auth_key.
+        This method provides a mechanism to reveal existing PubNub Access
+        Manager attributes for any combination of subscribe_key, channel
+        and auth_key.
 
         Args:
             channel:    (string) (optional)
-                        Specifies channel name to return PAM 
+                        Specifies channel name to return PAM
                         attributes optionally in combination with auth_key.
-                        If channel/channel_group is not specified, results for all channels
-                        associated with subscribe_key are returned.
-                        If auth_key is not specified, it is possible to return
-                        results for a comma separated list of channels.
+                        If channel/channel_group is not specified, results
+                        for all channels associated with subscribe_key are
+                        returned. If auth_key is not specified, it is possible
+                        to return results for a comma separated list of
+                        channels.
             channel_group:    (string) (optional)
-                        Specifies channel group name to return PAM 
+                        Specifies channel group name to return PAM
                         attributes optionally in combination with auth_key.
-                        If channel/channel_group is not specified, results for all channels
-                        associated with subscribe_key are returned.
-                        If auth_key is not specified, it is possible to return
-                        results for a comma separated list of channels.
+                        If channel/channel_group is not specified, results
+                        for all channels associated with subscribe_key are
+                        returned. If auth_key is not specified, it is possible
+                        to return results for a comma separated list of
+                        channels.
 
-            auth_key:   (string) (optional) 
+            auth_key:   (string) (optional)
                         Specifies the auth_key to return PAM attributes for.
-                        If only a single channel is specified, it is possible to return
-                        results for a comma separated list of auth_keys.
+                        If only a single channel is specified, it is possible
+                        to return results for a comma separated list of
+                        auth_keys.
 
-            callback:   (function) (optional) 
+            callback:   (function) (optional)
                         A callback method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado 
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (function) (optional)
                         An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
-            Returns a dict in sync mode i.e. when callback argument is not given
+            Returns a dict in sync mode i.e. when callback argument is not
+            given
             The dict returned contains values with keys 'message' and 'payload'
 
             Sample Response
@@ -611,15 +634,15 @@ class PubnubBase(object):
 
         Usage:
 
-             pubnub.audit ('my_channel');  # Sync Mode 
+             pubnub.audit ('my_channel');  # Sync Mode
 
         """
 
         return self._pam_auth({
-            'channel'   : channel,
-            'channel-group' : channel_group,
-            'auth'      : auth_key,
-            'pnsdk'     : self.pnsdk
+            'channel': channel,
+            'channel-group': channel_group,
+            'auth': auth_key,
+            'pnsdk': self.pnsdk
         }, 1, callback=callback, error=error)
 
     def encrypt(self, message):
@@ -627,7 +650,7 @@ class PubnubBase(object):
 
         This method takes plaintext as input and returns encrypted data.
         This need not be called directly as enncryption/decryption is
-        taken care of transparently by Pubnub class if cipher key is 
+        taken care of transparently by Pubnub class if cipher key is
         provided at time of initializing pubnub object
 
         Args:
@@ -649,7 +672,7 @@ class PubnubBase(object):
 
         This method takes ciphertext as input and returns decrypted data.
         This need not be called directly as enncryption/decryption is
-        taken care of transparently by Pubnub class if cipher key is 
+        taken care of transparently by Pubnub class if cipher key is
         provided at time of initializing pubnub object
 
         Args:
@@ -694,7 +717,8 @@ class PubnubBase(object):
             'channel',
             channel,
             'leave'
-        ], 'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk, "uuid": self.uuid,}},
+        ], 'urlparams':
+            {'auth': self.auth_key, 'pnsdk': self.pnsdk, "uuid": self.uuid, }},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
@@ -707,23 +731,26 @@ class PubnubBase(object):
             'channel',
             ',',
             'leave'
-        ], 'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk, 'channel-group' : channel_group, "uuid": self.uuid,}},
+        ], 'urlparams':
+            {'auth': self.auth_key, 'pnsdk': self.pnsdk,
+             'channel-group': channel_group,
+             "uuid": self.uuid, }},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
-
 
     def publish(self, channel, message, callback=None, error=None):
         """Publishes data on a channel.
 
-        The publish() method is used to send a message to all subscribers of a channel.
-        To publish a message you must first specify a valid publish_key at initialization.
-        A successfully published message is replicated across the PubNub Real-Time Network
-        and sent simultaneously to all subscribed clients on a channel.
-            Messages in transit can be secured from potential eavesdroppers with SSL/TLS by
-        setting ssl to True during initialization.
+        The publish() method is used to send a message to all subscribers of
+        a channel. To publish a message you must first specify a valid
+        publish_key at initialization. A successfully published message is
+        replicated across the PubNub Real-Time Network and sent simultaneously
+        to all subscribed clients on a channel. Messages in transit can be
+        secured from potential eavesdroppers with SSL/TLS by setting ssl to
+        True during initialization.
 
-        Published messages can also be encrypted with AES-256 simply by specifying a cipher_key
-        during initialization.
+        Published messages can also be encrypted with AES-256 simply by
+        specifying a cipher_key during initialization.
 
         Args:
             channel:    (string)
@@ -732,12 +759,14 @@ class PubnubBase(object):
                         Message to be published
             callback:   (optional)
                         A callback method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
             error:      (optional)
                         An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync Mode  : list
@@ -746,7 +775,7 @@ class PubnubBase(object):
             The function returns the following formatted response:
 
                 [ Number, "Status", "Time Token"]
-            
+
             The output below demonstrates the response to a successful call:
 
                 [1,"Sent","13769558699541401"]
@@ -764,77 +793,96 @@ class PubnubBase(object):
             channel,
             '0',
             message
-        ], 'urlparams': {'auth': self.auth_key, 'pnsdk' : self.pnsdk}},
+        ], 'urlparams': {'auth': self.auth_key, 'pnsdk': self.pnsdk}},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
-    def presence(self, channel, callback, error=None, connect=None, disconnect=None, reconnect=None):
+    def presence(self, channel, callback, error=None, connect=None,
+                 disconnect=None, reconnect=None):
         """Subscribe to presence events on a channel.
-           
+
            Only works in async mode
 
         Args:
             channel: Channel name ( string ) on which to listen for events
             callback: A callback method should be passed as parameter.
-                      If passed, the api works in async mode. 
-                      Required argument when working with twisted or tornado .
-            error: Optional variable. An error method can be passed as parameter.
-                      If set, the api works in async mode. 
+                      If passed, the api works in async mode.
+                      Required argument when working with twisted or tornado.
+            error: Optional variable.
+                    An error method can be passed as
+                    parameter. If set, the api works in async mode.
 
         Returns:
             None
         """
-        return self.subscribe(channel+'-pnpres', callback=callback, error=error, connect=connect, disconnect=disconnect, reconnect=reconnect)
+        return self.subscribe(channel + '-pnpres', callback=callback,
+                              error=error, connect=connect,
+                              disconnect=disconnect,
+                              reconnect=reconnect)
 
-    def presence_group(self, channel_group, callback, error=None, connect=None, disconnect=None, reconnect=None):
+    def presence_group(self, channel_group, callback, error=None,
+                       connect=None, disconnect=None, reconnect=None):
         """Subscribe to presence events on a channel group.
-           
+
            Only works in async mode
 
         Args:
             channel_group: Channel group name ( string )
             callback: A callback method should be passed to the method.
-                      If passed, the api works in async mode. 
-                      Required argument when working with twisted or tornado .
-            error: Optional variable. An error method can be passed as parameter.
-                      If passed, the api works in async mode. 
+                      If passed, the api works in async mode.
+                      Required argument when working with twisted or tornado.
+            error: Optional variable. An error method can be passed as
+                    parameter.
+                      If passed, the api works in async mode.
 
         Returns:
             None
         """
-        return self.subscribe_group(channel_group+'-pnpres', callback=callback, error=error, connect=connect, disconnect=disconnect, reconnect=reconnect)
+        return self.subscribe_group(channel_group + '-pnpres',
+                                    callback=callback, error=error,
+                                    connect=connect,
+                                    disconnect=disconnect,
+                                    reconnect=reconnect)
 
-    def state(self, channel=None, channel_group=None, uuid=None, state=None, callback=None, error=None):
+    def state(self, channel=None, channel_group=None, uuid=None, state=None,
+              callback=None, error=None):
         """Get/Set state data.
 
-        The state API is used to set key/value pairs specific to a subscriber uuid.
+        The state API is used to set key/value pairs specific to a subscriber
+        uuid.
         State information is supplied as a dict of key/value pairs.
 
 
         Args:
             state:      (string) (optional)
-                        Specifies the channel name to return occupancy results.
-                        If channel is not provided, here_now will return data for all channels.
+                        Specifies the channel name to return occupancy
+                        results. If channel is not provided, here_now will
+                        return data for all channels.
 
             uuid:       (string) (optional)
-                        The subscriber uuid to set state for or get current state from.
+                        The subscriber uuid to set state for or get current
+                        state from.
                         Default is current uuid.
 
             channel:    (string) (optional)
-                        Specifies the channel for which state is to be set/get.
+                        Specifies the channel for which state is to be
+                        set/get.
 
             channel_group:    (string) (optional)
-                        Specifies the channel_group for which state is to be set/get.
+                        Specifies the channel_group for which state is to
+                        be set/get.
 
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        Optional variable. An error method can be passed to
+                        the method. If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync  Mode: Object
@@ -852,19 +900,20 @@ class PubnubBase(object):
               region  : "UK"
             }
         """
-        data = {'auth': self.auth_key, 'pnsdk' : self.pnsdk}
+        data = {'auth': self.auth_key, 'pnsdk': self.pnsdk}
 
         try:
-            if channel and self.subscriptions[channel] and \
-            self.subscriptions[channel].subscribed and state is not None:
+            if (channel and self.subscriptions[channel] and
+                    self.subscriptions[channel].subscribed and
+                    state is not None):
                 self.STATE[channel] = state
         except KeyError:
             pass
 
         if channel_group and state is not None:
             try:
-                if self.subscription_groups[channel_group] and \
-                self.subscription_groups[channel_group].subscribed:
+                if (self.subscription_groups[channel_group] and
+                        self.subscription_groups[channel_group].subscribed):
                     self.STATE[channel_group] = state
             except KeyError:
                 pass
@@ -892,22 +941,19 @@ class PubnubBase(object):
                 'sub-key', self.subscribe_key,
                 'channel', channel,
                 'uuid', uuid
-            ]           
-
+            ]
 
         ## Get Presence Here Now
         return self._request({"urlcomponents": urlcomponents,
-            'urlparams': data},
-            callback=self._return_wrapped_callback(callback),
-            error=self._return_wrapped_callback(error))
-
-
+                             'urlparams': data},
+                             callback=self._return_wrapped_callback(callback),
+                             error=self._return_wrapped_callback(error))
 
     def where_now(self, uuid=None, callback=None, error=None):
         """Get here now data.
 
-        You can obtain information about the current list of a channels to 
-        which a uuid is subscribed to by calling the where_now() function 
+        You can obtain information about the current list of a channels to
+        which a uuid is subscribed to by calling the where_now() function
         in your application.
 
 
@@ -919,13 +965,16 @@ class PubnubBase(object):
 
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        Optional variable. An error method can be passed
+                        to the method.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync  Mode: list
@@ -933,13 +982,15 @@ class PubnubBase(object):
 
             Response Format:
 
-            The where_now() method returns a list of channels to which uuid is currently subscribed.
+            The where_now() method returns a list of channels to which
+            uuid is currently subscribed.
 
-            channels:["String","String", ... ,"String"] - List of Channels uuid is currently subscribed to.
+            channels:["String","String", ... ,"String"] - List of Channels
+            uuid is currently subscribed to.
 
             Example Response:
             {
-                "channels": 
+                "channels":
                     [
                         "lobby",
                         "game01",
@@ -959,39 +1010,42 @@ class PubnubBase(object):
         else:
             urlcomponents.append(self.uuid)
 
-        data = {'auth': self.auth_key, 'pnsdk' : self.pnsdk}
-
+        data = {'auth': self.auth_key, 'pnsdk': self.pnsdk}
 
         ## Get Presence Where Now
         return self._request({"urlcomponents": urlcomponents,
-            'urlparams': data},
-            callback=self._return_wrapped_callback(callback),
-            error=self._return_wrapped_callback(error))
+                             'urlparams': data},
+                             callback=self._return_wrapped_callback(callback),
+                             error=self._return_wrapped_callback(error))
 
-
-    def here_now(self, channel, uuids=True, state=False, callback=None, error=None):
+    def here_now(self, channel, uuids=True, state=False,
+                 callback=None, error=None):
         """Get here now data.
 
-        You can obtain information about the current state of a channel including
-        a list of unique user-ids currently subscribed to the channel and the total
-        occupancy count of the channel by calling the here_now() function in your 
-        application.
+        You can obtain information about the current state of a channel
+        including a list of unique user-ids currently subscribed to the
+        channel and the total occupancy count of the channel by calling
+        the here_now() function in your application.
 
 
         Args:
             channel:    (string) (optional)
-                        Specifies the channel name to return occupancy results.
-                        If channel is not provided, here_now will return data for all channels.
+                        Specifies the channel name to return occupancy
+                        results. If channel is not provided, here_now will
+                        return data for all channels.
 
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        Optional variable. An error method can be passed
+                        to the method.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado .
 
         Returns:
             Sync  Mode: list
@@ -999,9 +1053,11 @@ class PubnubBase(object):
 
             Response Format:
 
-            The here_now() method returns a list of uuid s currently subscribed to the channel.
+            The here_now() method returns a list of uuid s currently
+            subscribed to the channel.
 
-            uuids:["String","String", ... ,"String"] - List of UUIDs currently subscribed to the channel.
+            uuids:["String","String", ... ,"String"] - List of UUIDs currently
+            subscribed to the channel.
 
             occupancy: Number - Total current occupancy of the channel.
 
@@ -1026,43 +1082,47 @@ class PubnubBase(object):
             urlcomponents.append('channel')
             urlcomponents.append(channel)
 
-        data = {'auth': self.auth_key, 'pnsdk' : self.pnsdk}
+        data = {'auth': self.auth_key, 'pnsdk': self.pnsdk}
 
         if state is True:
             data['state'] = '1'
 
         if uuids is False:
-            data['disable_uuids']  = '1'
+            data['disable_uuids'] = '1'
 
         ## Get Presence Here Now
         return self._request({"urlcomponents": urlcomponents,
-            'urlparams': data},
-            callback=self._return_wrapped_callback(callback),
-            error=self._return_wrapped_callback(error))
-
+                             'urlparams': data},
+                             callback=self._return_wrapped_callback(callback),
+                             error=self._return_wrapped_callback(error))
 
     def history(self, channel, count=100, reverse=False,
-                start=None, end=None, include_token=False, callback=None, error=None):
+                start=None, end=None, include_token=False, callback=None,
+                error=None):
         """This method fetches historical messages of a channel.
 
-        PubNub Storage/Playback Service provides real-time access to an unlimited
-        history for all messages published to PubNub. Stored messages are replicated
-        across multiple availability zones in several geographical data center
-        locations. Stored messages can be encrypted with AES-256 message encryption
-        ensuring that they are not readable while stored on PubNub's network.
+        PubNub Storage/Playback Service provides real-time access to an
+        unlimited history for all messages published to PubNub. Stored
+        messages are replicated across multiple availability zones in several
+        geographical data center locations. Stored messages can be encrypted
+        with AES-256 message encryption ensuring that they are not readable
+        while stored on PubNub's network.
 
         It is possible to control how messages are returned and in what order,
         for example you can:
 
             Return messages in the order newest to oldest (default behavior).
 
-            Return messages in the order oldest to newest by setting reverse to true.
+            Return messages in the order oldest to newest by setting reverse
+            to true.
 
             Page through results by providing a start or end time token.
 
-            Retrieve a "slice" of the time line by providing both a start and end time token.
+            Retrieve a "slice" of the time line by providing both a start
+            and end time token.
 
-            Limit the number of messages to a specific quantity using the count parameter.
+            Limit the number of messages to a specific quantity using
+            the count parameter.
 
 
 
@@ -1075,30 +1135,35 @@ class PubnubBase(object):
 
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
                         An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
-            Returns a list in sync mode i.e. when callback argument is not given
+            Returns a list in sync mode i.e. when callback argument is not
+            given
 
             Sample Response:
-                [["Pub1","Pub2","Pub3","Pub4","Pub5"],13406746729185766,13406746845892666]
+                [["Pub1","Pub2","Pub3","Pub4","Pub5"],
+                    13406746729185766,13406746845892666]
         """
 
         def _get_decrypted_history(resp):
-           try:
-               if resp is not None and isinstance(resp, (list)) and resp[1] is not None and self.cipher_key:
-                   msgs  = resp[0]
-                   for i in range(0,len(msgs)):
-                       msgs[i] = self.decrypt(msgs[i])
-           except KeyError:
-                pass 
-           return resp
+            try:
+                if (resp is not None and isinstance(resp, (list)) and
+                        resp[1] is not None and self.cipher_key):
+                    msgs = resp[0]
+                    for i in range(0, len(msgs)):
+                        msgs[i] = self.decrypt(msgs[i])
+            except KeyError:
+                pass
+            return resp
 
         def _history_callback(resp):
             if callback is not None:
@@ -1138,11 +1203,13 @@ class PubnubBase(object):
 
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
-            Returns a 17 digit number in sync mode i.e. when callback argument is not given
+            Returns a 17 digit number in sync mode i.e. when callback
+            argument is not given
 
             Sample:
                 13769501243685161
@@ -1164,11 +1231,11 @@ class PubnubBase(object):
 
     def _encode_param(self, val):
         return "".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
-                     hex(ord(ch)).replace('0x', '%').upper() or
-                     ch for ch in list(val)])
+                        hex(ord(ch)).replace('0x', '%').upper() or
+                        ch for ch in list(val)])
 
     def getUrl(self, request):
- 
+
         if self.u is True and "urlparams" in request:
             request['urlparams']['u'] = str(random.randint(1, 100000000000))
         ## Build URL
@@ -1178,33 +1245,38 @@ class PubnubBase(object):
                      ch for ch in list(bit)
                      ]) for bit in request["urlcomponents"]])
 
-
         if ("urlparams" in request):
-            url = url + '?' + "&".join([x + "=" + self._encode_param(str(y)) for x, y in request[
-                "urlparams"].items() if y is not None and len(str(y)) > 0])
+            url = url + '?' + "&".join([x + "=" + self._encode_param(str(y))
+                        for x, y in request[
+                        "urlparams"].items() if y is not None and
+                len(str(y)) > 0])
         if self.http_debug is not None:
             self.http_debug(url)
         return url
 
-    def _channel_registry(self, url=None, params=None, callback=None, error=None):
+    def _channel_registry(self, url=None, params=None, callback=None,
+                          error=None):
 
         if (params is None):
             params = dict()
 
-        urlcomponents = ['v1', 'channel-registration', 'sub-key', self.subscribe_key ]
+        urlcomponents = ['v1', 'channel-registration', 'sub-key',
+                         self.subscribe_key]
 
         if (url is not None):
             urlcomponents += url
 
-        params['auth']  = self.auth_key
+        params['auth'] = self.auth_key
         params['pnsdk'] = self.pnsdk
 
         ## Get History
-        return self._request({'urlcomponents': urlcomponents, 'urlparams': params},
-            callback=self._return_wrapped_callback(callback),
-            error=self._return_wrapped_callback(error))
+        return self._request({'urlcomponents': urlcomponents,
+                             'urlparams': params},
+                             callback=self._return_wrapped_callback(callback),
+                             error=self._return_wrapped_callback(error))
 
-    def _channel_group(self, channel_group=None, channels=None, cloak=None,mode='add', callback=None, error=None):
+    def _channel_group(self, channel_group=None, channels=None, cloak=None,
+                       mode='add', callback=None, error=None):
         params = dict()
         url = []
         namespace = None
@@ -1236,37 +1308,40 @@ class PubnubBase(object):
             if mode == 'remove':
                 url.append('remove')
 
-        return self._channel_registry(url=url, params=params, callback=callback, error=error)
-
+        return self._channel_registry(url=url, params=params,
+                                      callback=callback, error=error)
 
     def channel_group_list_namespaces(self, callback=None, error=None):
         """Get list of namespaces.
 
-        You can obtain list of namespaces for the subscribe key associated with PubNub
-        object using this method.
+        You can obtain list of namespaces for the subscribe key associated with
+        PubNub object using this method.
 
 
         Args:
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado.
+                        Optional variable. An error method can be passed
+                        to the method.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync  Mode: dict
-            channel_group_list_namespaces method returns a dict which contains list of namespaces
-            in payload field
+            channel_group_list_namespaces method returns a dict which
+            contains list of namespaces in payload field
             {
                 u'status': 200,
                 u'payload': {
                     u'sub_key': u'demo',
                     u'namespaces': [u'dev', u'foo']
-                }, 
+                },
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1275,8 +1350,8 @@ class PubnubBase(object):
 
             Response Format:
 
-            The callback passed to channel_group_list_namespaces gets the a dict containing list of namespaces
-            under payload field
+            The callback passed to channel_group_list_namespaces gets the a
+            dict containing list of namespaces under payload field
 
             {
                 u'payload': {
@@ -1293,7 +1368,8 @@ class PubnubBase(object):
         url = ['namespace']
         return self._channel_registry(url=url, callback=callback, error=error)
 
-    def channel_group_remove_namespace(self, namespace, callback=None, error=None):
+    def channel_group_remove_namespace(self, namespace, callback=None,
+                                       error=None):
         """Remove a namespace.
 
         A namespace can be deleted using this method.
@@ -1303,21 +1379,25 @@ class PubnubBase(object):
             namespace:  (string) namespace to be deleted
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        Optional variable. An error method can be passed to
+                        the method.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync  Mode: dict
-            channel_group_remove_namespace method returns a dict indicating status of the request
+            channel_group_remove_namespace method returns a dict indicating
+            status of the request
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1326,11 +1406,12 @@ class PubnubBase(object):
 
             Response Format:
 
-            The callback passed to channel_group_list_namespaces gets the a dict indicating status of the request
+            The callback passed to channel_group_list_namespaces gets the a
+            dict indicating status of the request
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1339,32 +1420,36 @@ class PubnubBase(object):
         url = ['namespace', self._encode(namespace), 'remove']
         return self._channel_registry(url=url, callback=callback, error=error)
 
-    def channel_group_list_groups(self, namespace=None, callback=None, error=None):
+    def channel_group_list_groups(self, namespace=None, callback=None,
+                                  error=None):
         """Get list of groups.
 
-        Using this method, list of groups for the subscribe key associated with PubNub
-        object, can be obtained. If namespace is provided, groups within the namespace
-        only are listed
+        Using this method, list of groups for the subscribe key associated
+        with PubNub object, can be obtained. If namespace is provided, groups
+        within the namespace only are listed
 
         Args:
             namespace:  (string) (optional) namespace
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        Optional variable. An error method can be passed to
+                        the method.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync  Mode: dict
-            channel_group_list_groups method returns a dict which contains list of groups
-            in payload field
+            channel_group_list_groups method returns a dict which contains
+            list of groups in payload field
             {
                 u'status': 200,
-                u'payload': {"namespace": "dev", "groups": ["abcd"]}, 
+                u'payload': {"namespace": "dev", "groups": ["abcd"]},
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1373,8 +1458,8 @@ class PubnubBase(object):
 
             Response Format:
 
-            The callback passed to channel_group_list_namespaces gets the a dict containing list of groups
-            under payload field
+            The callback passed to channel_group_list_namespaces gets the a
+            dict containing list of groups under payload field
 
             {
                 u'payload': {"namespace": "dev", "groups": ["abcd"]}
@@ -1389,36 +1474,41 @@ class PubnubBase(object):
         else:
             channel_group = '*:*'
 
-        return self._channel_group(channel_group=channel_group, callback=callback, error=error)
+        return self._channel_group(channel_group=channel_group,
+                                   callback=callback, error=error)
 
-    def channel_group_list_channels(self, channel_group, callback=None, error=None):
+    def channel_group_list_channels(self, channel_group,
+                                    callback=None, error=None):
         """Get list of channels for a group.
 
-        Using this method, list of channels for a group, can be obtained. 
+        Using this method, list of channels for a group, can be obtained.
 
         Args:
-            channel_group: (string) (optional) 
+            channel_group: (string) (optional)
                         Channel Group name. It can also contain namespace.
                         If namespace is also specified, then the parameter
                         will be in format namespace:channel_group
 
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado.
+                        Optional variable. An error method can be passed to the
+                        method.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync  Mode: dict
-            channel_group_list_channels method returns a dict which contains list of channels
-            in payload field
+            channel_group_list_channels method returns a dict which contains
+            list of channels in payload field
             {
                 u'status': 200,
-                u'payload': {"channels": ["hi"], "group": "abcd"}, 
+                u'payload': {"channels": ["hi"], "group": "abcd"},
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1427,8 +1517,8 @@ class PubnubBase(object):
 
             Response Format:
 
-            The callback passed to channel_group_list_channels gets the a dict containing list of channels
-            under payload field
+            The callback passed to channel_group_list_channels gets the a
+            dict containing list of channels under payload field
 
             {
                 u'payload': {"channels": ["hi"], "group": "abcd"}
@@ -1436,16 +1526,18 @@ class PubnubBase(object):
 
 
         """
-        return self._channel_group(channel_group=channel_group, callback=callback, error=error)
+        return self._channel_group(channel_group=channel_group,
+                                   callback=callback, error=error)
 
-    def channel_group_add_channel(self, channel_group, channel, callback=None, error=None):
+    def channel_group_add_channel(self, channel_group, channel,
+                                  callback=None, error=None):
         """Add a channel to group.
 
         A channel can be added to group using this method.
 
 
         Args:
-            channel_group:  (string) 
+            channel_group:  (string)
                         Channel Group name. It can also contain namespace.
                         If namespace is also specified, then the parameter
                         will be in format namespace:channel_group
@@ -1454,21 +1546,25 @@ class PubnubBase(object):
                             or a comma separated list of channel names
             callback:       (optional)
                             A callback method should be passed to the method.
-                            If set, the api works in async mode. 
-                            Required argument when working with twisted or tornado.
+                            If set, the api works in async mode.
+                            Required argument when working with twisted or
+                            tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado.
+                        Optional variable. An error method can be passed to
+                        the method.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync  Mode: dict
-            channel_group_add_channel method returns a dict indicating status of the request
+            channel_group_add_channel method returns a dict indicating
+            status of the request
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1477,20 +1573,24 @@ class PubnubBase(object):
 
             Response Format:
 
-            The callback passed to channel_group_add_channel gets the a dict indicating status of the request
+            The callback passed to channel_group_add_channel gets the a
+            dict indicating status of the request
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
 
         """
 
-        return self._channel_group(channel_group=channel_group, channels=channel, mode='add', callback=callback, error=error)
+        return self._channel_group(channel_group=channel_group,
+                                   channels=channel, mode='add',
+                                   callback=callback, error=error)
 
-    def channel_group_remove_channel(self, channel_group, channel, callback=None, error=None):
+    def channel_group_remove_channel(self, channel_group, channel,
+                                     callback=None, error=None):
         """Remove channel.
 
         A channel can be removed from a group method.
@@ -1506,21 +1606,25 @@ class PubnubBase(object):
                             or a comma separated list of channel names
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado .
+                        Optional variable. An error method can be passed
+                        to the method.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync  Mode: dict
-            channel_group_remove_channel method returns a dict indicating status of the request
+            channel_group_remove_channel method returns a dict indicating
+            status of the request
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1529,20 +1633,24 @@ class PubnubBase(object):
 
             Response Format:
 
-            The callback passed to channel_group_remove_channel gets the a dict indicating status of the request
+            The callback passed to channel_group_remove_channel gets the
+            a dict indicating status of the request
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
 
         """
 
-        return self._channel_group(channel_group=channel_group, channels=channel, mode='remove', callback=callback, error=error)
+        return self._channel_group(channel_group=channel_group,
+                                   channels=channel, mode='remove',
+                                   callback=callback, error=error)
 
-    def channel_group_remove_group(self, channel_group, callback=None, error=None):
+    def channel_group_remove_group(self, channel_group,
+                                   callback=None, error=None):
         """Remove channel group.
 
         A channel group can be removed using this method.
@@ -1555,21 +1663,25 @@ class PubnubBase(object):
                         will be in format namespace:channel_group
             callback:   (optional)
                         A callback method should be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
             error:      (optional)
-                        Optional variable. An error method can be passed to the method.
-                        If set, the api works in async mode. 
-                        Required argument when working with twisted or tornado.
+                        Optional variable. An error method can be passed
+                        to the method.
+                        If set, the api works in async mode.
+                        Required argument when working with twisted or
+                        tornado.
 
         Returns:
             Sync  Mode: dict
-            channel_group_remove_group method returns a dict indicating status of the request
+            channel_group_remove_group method returns a dict indicating
+            status of the request
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
@@ -1578,19 +1690,21 @@ class PubnubBase(object):
 
             Response Format:
 
-            The callback passed to channel_group_remove_group gets the a dict indicating status of the request
+            The callback passed to channel_group_remove_group gets the a
+            dict indicating status of the request
 
             {
                 u'status': 200,
-                u'message': 'OK', 
+                u'message': 'OK',
                 u'service': u'channel-registry',
                 u'error': False
             }
 
         """
 
-        return self._channel_group(channel_group=channel_group, mode='remove', callback=callback, error=error)
-
+        return self._channel_group(channel_group=channel_group,
+                                   mode='remove', callback=callback,
+                                   error=error)
 
 
 class EmptyLock():
@@ -1692,7 +1806,6 @@ class PubnubCoreAsync(PubnubBase):
                 channel_group += ch
         return channel_group
 
-
     def get_channel_array(self, nopresence=False):
         """Get List of currently subscribed channels
 
@@ -1754,12 +1867,13 @@ class PubnubCoreAsync(PubnubBase):
         self._presence_heartbeat()
 
     def _presence_heartbeat(self):
-        if self.heartbeat_interval is None or self.heartbeat_interval > 500 \
-            or self.heartbeat_interval < 1:
+        if (self.heartbeat_interval is None or self.heartbeat_interval > 500 or
+                self.heartbeat_interval < 1):
             self.heartbeat_stop_flag = True
 
-        if len(self.get_channel_list(self.subscriptions, True)) == 0 and \
-            len(self.get_channel_group_list(self.subscription_groups, True)) == 0:
+        if (len(self.get_channel_list(self.subscriptions, True)) == 0 and
+            len(self.get_channel_group_list(self.subscription_groups, True))
+                == 0):
             self.heartbeat_stop_flag = True
 
         if self.heartbeat_stop_flag is True:
@@ -1770,21 +1884,21 @@ class PubnubCoreAsync(PubnubBase):
         def _callback(resp):
             if self.heartbeat_callback is not None:
                 self.heartbeat_callback(resp)
-            self.abort_heartbeat = self.timeout(self.heartbeat_interval, self._presence_heartbeat)
+            self.abort_heartbeat = self.timeout(
+                self.heartbeat_interval, self._presence_heartbeat)
 
         def _error(resp):
             if self.heartbeat_error is not None:
                 self.heartbeat_error(resp)
-            self.abort_heartbeat = self.timeout(self.heartbeat_interval, self._presence_heartbeat)
-
+            self.abort_heartbeat = self.timeout(
+                self.heartbeat_interval, self._presence_heartbeat)
 
         self.heartbeat_running = True
-        self.presence_heartbeat(_callback, _error)            
-        
+        self.presence_heartbeat(_callback, _error)
 
     def set_heartbeat(self, heartbeat, callback=None, error=None):
         self.heartbeat = heartbeat
-        self.heartbeat_interval = (self.heartbeat/2) - 1
+        self.heartbeat_interval = (self.heartbeat / 2) - 1
         if self.heartbeat == 2:
             self.heartbeat_interval = 1
         self.restart_heartbeat()
@@ -1808,7 +1922,8 @@ class PubnubCoreAsync(PubnubBase):
 
     def presence_heartbeat(self, callback=None, error=None):
 
-        data = {'auth': self.auth_key, 'pnsdk' : self.pnsdk, 'uuid' : self.uuid}
+        data = {'auth': self.auth_key, 'pnsdk': self.pnsdk,
+                'uuid': self.uuid}
 
         st = json.dumps(self.STATE)
 
@@ -1816,7 +1931,8 @@ class PubnubCoreAsync(PubnubBase):
             data['state'] = st
 
         channels = self.get_channel_list(self.subscriptions, True)
-        channel_groups = self.get_channel_group_list(self.subscription_groups, True)
+        channel_groups = self.get_channel_group_list(
+            self.subscription_groups, True)
 
         if channels is None:
             channels = ','
@@ -1839,23 +1955,26 @@ class PubnubCoreAsync(PubnubBase):
             error=self._return_wrapped_callback(error))
 
     def subscribe(self, channels, callback, state=None, error=None,
-                  connect=None, disconnect=None, reconnect=None, presence=None, sync=False):
+                  connect=None, disconnect=None, reconnect=None,
+                  presence=None, sync=False):
         """Subscribe to data on a channel.
 
         This function causes the client to create an open TCP socket to the
-        PubNub Real-Time Network and begin listening for messages on a specified channel.
-        To subscribe to a channel the client must send the appropriate subscribe_key at
-        initialization.
-        
+        PubNub Real-Time Network and begin listening for messages on a
+        specified channel. To subscribe to a channel the client must send
+        the appropriate subscribe_key at initialization.
+
         Only works in async mode
 
         Args:
             channel:    (string/list)
-                        Specifies the channel to subscribe to. It is possible to specify
-                        multiple channels as a comma separated list or andarray.
+                        Specifies the channel to subscribe to. It is possible
+                        to specify multiple channels as a comma separated list
+                        or array.
 
             callback:   (function)
-                        This callback is called on receiving a message from the channel.
+                        This callback is called on receiving a message from
+                        the channel.
 
             state:      (dict)
                         State to be set.
@@ -1864,61 +1983,75 @@ class PubnubCoreAsync(PubnubBase):
                         This callback is called on an error event
 
             connect:    (function) (optional)
-                        This callback is called on a successful connection to the PubNub cloud
+                        This callback is called on a successful connection to
+                        the PubNub cloud
 
             disconnect: (function) (optional)
-                        This callback is called on client disconnect from the PubNub cloud
-            
+                        This callback is called on client disconnect from the
+                        PubNub cloud
+
             reconnect:  (function) (optional)
-                        This callback is called on successfully re-connecting to the PubNub cloud
-        
+                        This callback is called on successfully re-connecting
+                        to the PubNub cloud
+
         Returns:
             None
         """
 
-        return self._subscribe(channels=channels, callback=callback, state=state, error=error,
-            connect=connect, disconnect=disconnect, reconnect=reconnect, presence=presence)
+        return self._subscribe(
+            channels=channels, callback=callback, state=state, error=error,
+            connect=connect, disconnect=disconnect, reconnect=reconnect,
+            presence=presence)
 
     def subscribe_group(self, channel_groups, callback, error=None,
-                  connect=None, disconnect=None, reconnect=None, sync=False):
+                        connect=None, disconnect=None, reconnect=None,
+                        sync=False):
         """Subscribe to data on a channel group.
 
         This function causes the client to create an open TCP socket to the
-        PubNub Real-Time Network and begin listening for messages on a specified channel.
-        To subscribe to a channel group the client must send the appropriate subscribe_key at
-        initialization.
-        
+        PubNub Real-Time Network and begin listening for messages on a
+        specified channel. To subscribe to a channel group the client must
+        send the appropriate subscribe_key at initialization.
+
         Only works in async mode
 
         Args:
             channel_groups:    (string/list)
-                        Specifies the channel groups to subscribe to. It is possible to specify
-                        multiple channel groups as a comma separated list or andarray.
+                        Specifies the channel groups to subscribe to. It is
+                        possible to specify multiple channel groups as a comma
+                        separated list or array.
 
             callback:   (function)
-                        This callback is called on receiving a message from the channel.
+                        This callback is called on receiving a message from
+                        the channel.
 
             error:      (function) (optional)
                         This callback is called on an error event
 
             connect:    (function) (optional)
-                        This callback is called on a successful connection to the PubNub cloud
+                        This callback is called on a successful connection to
+                        the PubNub cloud
 
             disconnect: (function) (optional)
-                        This callback is called on client disconnect from the PubNub cloud
-            
+                        This callback is called on client disconnect from the
+                        PubNub cloud
+
             reconnect:  (function) (optional)
-                        This callback is called on successfully re-connecting to the PubNub cloud
-        
+                        This callback is called on successfully re-connecting
+                        to the PubNub cloud
+
         Returns:
             None
         """
 
-        return self._subscribe(channel_groups=channel_groups, callback=callback, error=error,
+        return self._subscribe(
+            channel_groups=channel_groups, callback=callback, error=error,
             connect=connect, disconnect=disconnect, reconnect=reconnect)
 
-    def _subscribe(self, channels=None, channel_groups=None, state=None, callback=None, error=None,
-                  connect=None, disconnect=None, reconnect=None, presence=None):
+    def _subscribe(
+        self, channels=None, channel_groups=None, state=None, callback=None,
+            error=None, connect=None, disconnect=None, reconnect=None,
+            presence=None):
 
         with self._tt_lock:
             self.last_timetoken = self.timetoken if self.timetoken != 0 \
@@ -1927,7 +2060,8 @@ class PubnubCoreAsync(PubnubBase):
 
         def _invoke(func, msg=None, channel=None, real_channel=None):
             if func is not None:
-                if msg is not None and channel is not None and real_channel is not None:
+                if (msg is not None and channel is not None and
+                        real_channel is not None):
                     try:
                         func(get_data_for_user(msg), channel, real_channel)
                     except:
@@ -1967,7 +2101,6 @@ class PubnubCoreAsync(PubnubBase):
                                 chobj['disconnected'] = False
                                 _invoke(chobj['reconnect'], chobj['name'])
 
-
         def _invoke_disconnect():
             if self._channel_list_lock:
                 with self._channel_list_lock:
@@ -1985,7 +2118,6 @@ class PubnubCoreAsync(PubnubBase):
                             if chobj['disconnected'] is False:
                                 chobj['disconnected'] = True
                                 _invoke(chobj['disconnect'], chobj['name'])
-
 
         def _invoke_error(channel_list=None, error=None):
             if channel_list is None:
@@ -2017,49 +2149,50 @@ class PubnubCoreAsync(PubnubBase):
                 if len(channel) > 0 and \
                         (not channel in self.subscriptions or
                          self.subscriptions[channel]['subscribed'] is False):
-                        with self._channel_list_lock:
-                            self.subscriptions[channel] = {
-                                'name': channel,
-                                'first': False,
-                                'connected': False,
-                                'disconnected': True,
-                                'subscribed': True,
-                                'callback': callback,
-                                'connect': connect,
-                                'disconnect': disconnect,
-                                'reconnect': reconnect,
-                                'error': error,
-                                'presence': presence
-                            }
-                        if state is not None:
-                            if channel in self.STATE:
-                                self.STATE[channel] = state[channel]
-                            else:
-                                self.STATE[channel] = state
-        
+                    with self._channel_list_lock:
+                        self.subscriptions[channel] = {
+                            'name': channel,
+                            'first': False,
+                            'connected': False,
+                            'disconnected': True,
+                            'subscribed': True,
+                            'callback': callback,
+                            'connect': connect,
+                            'disconnect': disconnect,
+                            'reconnect': reconnect,
+                            'error': error,
+                            'presence': presence
+                        }
+                    if state is not None:
+                        if channel in self.STATE:
+                            self.STATE[channel] = state[channel]
+                        else:
+                            self.STATE[channel] = state
+
         if channel_groups is not None:
             channel_groups = channel_groups if isinstance(
                 channel_groups, list) else channel_groups.split(",")
 
             for channel_group in channel_groups:
                 ## New Channel?
-                if len(channel_group) > 0 and \
+                if (len(channel_group) > 0 and
                         (not channel_group in self.subscription_groups or
-                         self.subscription_groups[channel_group]['subscribed'] is False):
-                        with self._channel_group_list_lock:
-                            self.subscription_groups[channel_group] = {
-                                'name': channel_group,
-                                'first': False,
-                                'connected': False,
-                                'disconnected': True,
-                                'subscribed': True,
-                                'callback': callback,
-                                'connect': connect,
-                                'disconnect': disconnect,
-                                'reconnect': reconnect,
-                                'error': error,
-                                'presence': presence
-                            }
+                    self.subscription_groups[channel_group]['subscribed']
+                            is False)):
+                    with self._channel_group_list_lock:
+                        self.subscription_groups[channel_group] = {
+                            'name': channel_group,
+                            'first': False,
+                            'connected': False,
+                            'disconnected': True,
+                            'subscribed': True,
+                            'callback': callback,
+                            'connect': connect,
+                            'disconnect': disconnect,
+                            'reconnect': reconnect,
+                            'error': error,
+                            'presence': presence
+                        }
 
         '''
         ## return if already connected to channel
@@ -2082,10 +2215,10 @@ class PubnubCoreAsync(PubnubBase):
                 if not response or \
                     ('message' in response and
                         response['message'] == 'Forbidden'):
-                            _invoke_error(channel_list=response['payload'][
-                                'channels'], error=response['message'])
-                            self.timeout(1, _connect)
-                            return
+                    _invoke_error(channel_list=response['payload'][
+                        'channels'], error=response['message'])
+                    self.timeout(1, _connect)
+                    return
                 if 'message' in response:
                     _invoke_error(error=response['message'])
                 else:
@@ -2098,10 +2231,10 @@ class PubnubCoreAsync(PubnubBase):
                 if not response or \
                     ('message' in response and
                         response['message'] == 'Forbidden'):
-                            _invoke_error(channel_list=response['payload'][
-                                'channels'], error=response['message'])
-                            _connect()
-                            return
+                    _invoke_error(channel_list=response['payload'][
+                        'channels'], error=response['message'])
+                    _connect()
+                    return
 
                 _invoke_connect()
 
@@ -2115,7 +2248,8 @@ class PubnubCoreAsync(PubnubBase):
                         channel_list_2 = response[3].split(',')
                         response_list = response[0]
                         for ch in enumerate(channel_list):
-                            if ch[1] in self.subscription_groups or ch[1] in self.subscriptions:
+                            if (ch[1] in self.subscription_groups or
+                                    ch[1] in self.subscriptions):
                                 try:
                                     chobj = self.subscription_groups[ch[1]]
                                 except KeyError:
@@ -2127,7 +2261,9 @@ class PubnubCoreAsync(PubnubBase):
                                     cb = chobj['callback']
                                 _invoke(cb,
                                         self.decrypt(response_list[ch[0]]),
-                                        chobj['name'].split('-pnpres')[0], channel_list_2[ch[0]].split('-pnpres')[0])                    
+                                        chobj['name'].split('-pnpres')[0],
+                                        channel_list_2[ch[0]].split
+                                        ('-pnpres')[0])
                     elif len(response) > 2:
                         channel_list = response[2].split(',')
                         response_list = response[0]
@@ -2148,7 +2284,8 @@ class PubnubCoreAsync(PubnubBase):
                     _connect()
 
             channel_list = self.get_channel_list(self.subscriptions)
-            channel_group_list = self.get_channel_group_list(self.subscription_groups)
+            channel_group_list = self.get_channel_group_list(
+                self.subscription_groups)
 
             if len(channel_list) <= 0 and len(channel_group_list) <= 0:
                 return
@@ -2157,14 +2294,12 @@ class PubnubCoreAsync(PubnubBase):
                 channel_list = ','
 
             data = {"uuid": self.uuid, "auth": self.auth_key,
-            'pnsdk' : self.pnsdk, 'channel-group' : channel_group_list}
-            
-
+                    'pnsdk': self.pnsdk, 'channel-group': channel_group_list}
 
             st = json.dumps(self.STATE)
 
             if len(st) > 2:
-                data['state'] = quote(st,safe="")
+                data['state'] = quote(st, safe="")
 
             if self.heartbeat > 0:
                 data["heartbeat"] = self.heartbeat
@@ -2206,7 +2341,7 @@ class PubnubCoreAsync(PubnubBase):
            Only works in async mode
 
         Args:
-            channel: Channel name ( string ) 
+            channel: Channel name ( string )
         """
         if channel in self.subscriptions is False:
             return False
@@ -2280,6 +2415,7 @@ class PubnubCore(PubnubCoreAsync):
         self.timetoken = 0
         self.accept_encoding = 'gzip'
 
+
 class Timer:
     def __init__(self, timeout, func, daemon=False, *argv):
         self.timeout = timeout
@@ -2344,7 +2480,8 @@ class HTTPClient:
                 if self.pubnub.latest_sub_callback['id'] != self.id:
                     return
                 else:
-                    if self.pubnub.latest_sub_callback['callback'] is not None:
+                    if (self.pubnub.latest_sub_callback['callback']
+                            is not None):
                         self.pubnub.latest_sub_callback['id'] = 0
                         try:
                             data = json.loads(data)
@@ -2353,9 +2490,11 @@ class HTTPClient:
                                     {'error': 'json decoding error'})
                             return
                         if code != 200:
-                            _invoke(self.pubnub.latest_sub_callback['error'], data)
+                            _invoke(self.pubnub.latest_sub_callback[
+                                'error'], data)
                         else:
-                            _invoke(self.pubnub.latest_sub_callback['callback'], data)
+                            _invoke(self.pubnub.latest_sub_callback[
+                                'callback'], data)
         else:
             try:
                 data = json.loads(data)
@@ -2379,6 +2518,7 @@ def _urllib_request_2(url, timeout=5):
         return (json.dumps(msg), 0)
 
     return (resp.read(), resp.code)
+
 
 class PubnubHTTPAdapter(HTTPAdapter):
     def init_poolmanager(self, *args, **kwargs):
@@ -2462,13 +2602,13 @@ class Pubnub(PubnubCore):
         self.latest_sub_callback = {'id': None, 'callback': None}
         self.pnsdk = 'PubNub-Python' + '/' + self.version
         self.daemon = daemon
-        
+
         if azure is False:
             s.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
             s.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
         else:
             s.mount('http://', PubnubHTTPAdapter(max_retries=1))
-            s.mount('https://', PubnubHTTPAdapter(max_retries=1))         
+            s.mount('https://', PubnubHTTPAdapter(max_retries=1))
 
     def timeout(self, interval, func1, *argv):
         timer = Timer(interval, func1, False, *argv)
@@ -2476,21 +2616,24 @@ class Pubnub(PubnubCore):
 
         return timer.cancel
 
-    def _request_async(self, request, callback=None, error=None, single=False, timeout=5):
+    def _request_async(self, request, callback=None, error=None, single=False,
+                       timeout=5):
         global _urllib_request
         ## Build URL
         url = self.getUrl(request)
         if single is True:
             id = time.time()
             client = HTTPClient(self, url=url, urllib_func=_urllib_request,
-                                callback=None, error=None, id=id, timeout=timeout)
+                                callback=None, error=None, id=id,
+                                timeout=timeout)
             with self.latest_sub_callback_lock:
                 self.latest_sub_callback['id'] = id
                 self.latest_sub_callback['callback'] = callback
                 self.latest_sub_callback['error'] = error
         else:
             client = HTTPClient(self, url=url, urllib_func=_urllib_request,
-                                callback=callback, error=error, timeout=timeout)
+                                callback=callback, error=error,
+                                timeout=timeout)
 
         thread = threading.Thread(target=client.run)
         thread.daemon = self.daemon
@@ -2511,7 +2654,8 @@ class Pubnub(PubnubCore):
         except ValueError:
             return [0, "JSON Error"]
 
-        if response[1] != 200 and 'message' in resp_json and 'payload' in resp_json:
+        if (response[1] != 200 and 'message' in resp_json and
+                'payload' in resp_json):
             return {'message': resp_json['message'],
                     'payload': resp_json['payload']}
 
@@ -2520,13 +2664,17 @@ class Pubnub(PubnubCore):
 
         return resp_json
 
-    def _request(self, request, callback=None, error=None, single=False, timeout=5):
+    def _request(self, request, callback=None, error=None, single=False,
+                 timeout=5):
         if callback is None:
-            return get_data_for_user(self._request_sync(request, timeout=timeout))
+            return get_data_for_user(self._request_sync(request,
+                                     timeout=timeout))
         else:
-            return self._request_async(request, callback, error, single=single, timeout=timeout)
+            return self._request_async(request, callback, error,
+                                       single=single, timeout=timeout)
 
 # Pubnub Twisted
+
 
 class PubnubTwisted(PubnubCoreAsync):
 
@@ -2546,7 +2694,7 @@ class PubnubTwisted(PubnubCoreAsync):
         def cancel():
             if timeout.active():
                 timeout.cancel()
-            
+
         return cancel
 
     def __init__(
@@ -2575,7 +2723,8 @@ class PubnubTwisted(PubnubCoreAsync):
         self.headers['V'] = [self.version]
         self.pnsdk = 'PubNub-Python-' + 'Twisted' + '/' + self.version
 
-    def _request(self, request, callback=None, error=None, single=False, timeout=5):
+    def _request(self, request, callback=None, error=None,
+                 single=False, timeout=5):
         global pnconn_pool
 
         def _invoke(func, data):
@@ -2653,6 +2802,7 @@ class PubnubTornado(PubnubCoreAsync):
 
     def timeout(self, delay, callback, *args):
         handle = None
+
         def cancel():
             ioloop.remove_timeout(handle)
 

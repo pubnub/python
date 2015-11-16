@@ -1,4 +1,4 @@
-
+ 
 ## www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
@@ -803,6 +803,171 @@ class PubnubBase(object):
             None
         """
         return self.subscribe_group(channel_group+'-pnpres', callback=callback, error=error, connect=connect, disconnect=disconnect, reconnect=reconnect)
+
+    def state(self, channel=None, channel_group=None, uuid=None, state=None, callback=None, error=None):
+        """Get/Set state data.
+
+        The state API is used to set key/value pairs specific to a subscriber uuid.
+        State information is supplied as a dict of key/value pairs.
+
+
+        Args:
+            state:      (string) (optional)
+                        Specifies the channel name to return occupancy results.
+                        If channel is not provided, here_now will return data for all channels.
+
+            uuid:       (string) (optional)
+                        The subscriber uuid to set state for or get current state from.
+                        Default is current uuid.
+
+            channel:    (string) (optional)
+                        Specifies the channel for which state is to be set/get.
+
+            channel_group:    (string) (optional)
+                        Specifies the channel_group for which state is to be set/get.
+
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Sync  Mode: Object
+            Async Mode: None
+
+            Response Format:
+
+            The state API returns a JSON object containing key value pairs.
+
+            Example Response:
+            {
+              first   : "Robert",
+              last    : "Plant",
+              age     : 59,
+              region  : "UK"
+            }
+        """
+        data = {'auth': self.auth_key, 'pnsdk' : self.pnsdk}
+
+        try:
+            if channel and self.subscriptions[channel] and \
+            self.subscriptions[channel].subscribed and state is not None:
+                self.STATE[channel] = state
+        except KeyError:
+            pass
+
+        if channel_group and state is not None:
+            try:
+                if self.subscription_groups[channel_group] and \
+                self.subscription_groups[channel_group].subscribed:
+                    self.STATE[channel_group] = state
+            except KeyError:
+                pass
+
+            data['channel-group'] = channel_group
+
+            if channel is None or len(channel) >= 0:
+                channel = ','
+
+        if uuid is None:
+            uuid = self.uuid
+
+        if state is not None:
+            data['state'] = json.dumps(state)
+            urlcomponents = [
+                'v2', 'presence',
+                'sub-key', self.subscribe_key,
+                'channel', channel,
+                'uuid', uuid,
+                'data'
+            ]
+        else:
+            urlcomponents = [
+                'v2', 'presence',
+                'sub-key', self.subscribe_key,
+                'channel', channel,
+                'uuid', uuid
+            ]           
+
+
+        ## Get Presence Here Now
+        return self._request({"urlcomponents": urlcomponents,
+            'urlparams': data},
+            callback=self._return_wrapped_callback(callback),
+            error=self._return_wrapped_callback(error))
+
+
+
+    def where_now(self, uuid=None, callback=None, error=None):
+        """Get here now data.
+
+        You can obtain information about the current list of a channels to 
+        which a uuid is subscribed to by calling the where_now() function 
+        in your application.
+
+
+        Args:
+
+            uuid:       (optional)
+                        Specifies the uuid to return channel list for.
+                        Default is current uuid.
+
+            callback:   (optional)
+                        A callback method should be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+            error:      (optional)
+                        Optional variable. An error method can be passed to the method.
+                        If set, the api works in async mode. 
+                        Required argument when working with twisted or tornado .
+
+        Returns:
+            Sync  Mode: list
+            Async Mode: None
+
+            Response Format:
+
+            The where_now() method returns a list of channels to which uuid is currently subscribed.
+
+            channels:["String","String", ... ,"String"] - List of Channels uuid is currently subscribed to.
+
+            Example Response:
+            {
+                "channels": 
+                    [
+                        "lobby",
+                        "game01",
+                        "chat"
+                    ]
+            }
+        """
+
+        urlcomponents = [
+            'v2', 'presence',
+            'sub_key', self.subscribe_key,
+            'uuid'
+        ]
+
+        if (uuid is not None and len(uuid) > 0):
+            urlcomponents.append(uuid)
+        else:
+            urlcomponents.append(self.uuid)
+
+        data = {'auth': self.auth_key, 'pnsdk' : self.pnsdk}
+
+
+        ## Get Presence Where Now
+        return self._request({"urlcomponents": urlcomponents,
+            'urlparams': data},
+            callback=self._return_wrapped_callback(callback),
+            error=self._return_wrapped_callback(error))
+
 
     def here_now(self, channel, uuids=True, state=False, callback=None, error=None):
         """Get here now data.

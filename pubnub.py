@@ -375,7 +375,8 @@ class PubnubBase(object):
             self.subscribe_key
         ], 'urlparams': query},
             self._return_wrapped_callback(callback),
-            self._return_wrapped_callback(error))
+            self._return_wrapped_callback(error),
+            encoder_map={'signature': self._encode_pam})
 
     def get_origin(self):
         return self.origin
@@ -1235,11 +1236,9 @@ class PubnubBase(object):
                         ch for ch in list(val)])
 
     def _encode_pam(self, val):
-        return "".join([' ~`!@#$%^&*()+[]\\{}|;\':",./<>?'.find(ch) > -1 and
-                        hex(ord(ch)).replace('0x', '%').upper() or
-                        ch for ch in list(val)])
+        return val
 
-    def getUrl(self, request):
+    def getUrl(self, request, encoder_map=None):
 
         if self.u is True and "urlparams" in request:
             request['urlparams']['u'] = str(random.randint(1, 100000000000))
@@ -1251,10 +1250,14 @@ class PubnubBase(object):
                      ]) for bit in request["urlcomponents"]])
 
         if ("urlparams" in request):
-            url = url + '?' + "&".join([x + "=" + str(y)
+
+            url = url + '?' + "&".join(
+                [x + "=" + (self._encode_param(str(y))
+                        if encoder_map is None or
+                        x not in encoder_map else encoder_map[x](str(y)))
                         for x, y in request[
                         "urlparams"].items() if y is not None and
-                len(str(y)) > 0])
+                    len(str(y)) > 0])
         if self.http_debug is not None:
             self.http_debug(url)
         return url
@@ -2621,11 +2624,10 @@ class Pubnub(PubnubCore):
 
         return timer.cancel
 
-    def _request_async(self, request, callback=None, error=None, single=False,
+    def _request_async(self, url, callback=None, error=None, single=False,
                        timeout=5):
         global _urllib_request
-        ## Build URL
-        url = self.getUrl(request)
+
         if single is True:
             id = time.time()
             client = HTTPClient(self, url=url, urllib_func=_urllib_request,
@@ -2648,10 +2650,9 @@ class Pubnub(PubnubCore):
             client.cancel()
         return abort
 
-    def _request_sync(self, request, timeout=5):
+    def _request_sync(self, url, timeout=5):
         global _urllib_request
-        ## Build URL
-        url = self.getUrl(request)
+
         ## Send Request Expecting JSONP Response
         response = _urllib_request(url, timeout=timeout)
         try:
@@ -2670,12 +2671,15 @@ class Pubnub(PubnubCore):
         return resp_json
 
     def _request(self, request, callback=None, error=None, single=False,
-                 timeout=5):
+                 timeout=5, encoder_map=None):
+
+        url = self.getUrl(request, encoder_map)
+
         if callback is None:
-            return get_data_for_user(self._request_sync(request,
+            return get_data_for_user(self._request_sync(url,
                                      timeout=timeout))
         else:
-            return self._request_async(request, callback, error,
+            return self._request_async(url, callback, error,
                                        single=single, timeout=timeout)
 
 # Pubnub Twisted
@@ -2729,7 +2733,7 @@ class PubnubTwisted(PubnubCoreAsync):
         self.pnsdk = 'PubNub-Python-' + 'Twisted' + '/' + self.version
 
     def _request(self, request, callback=None, error=None,
-                 single=False, timeout=5):
+                 single=False, timeout=5, encoder_map=None):
         global pnconn_pool
 
         def _invoke(func, data):
@@ -2738,7 +2742,7 @@ class PubnubTwisted(PubnubCoreAsync):
 
         ## Build URL
 
-        url = self.getUrl(request)
+        url = self.getUrl(request, encoder_map)
 
         agent = ContentDecoderAgent(RedirectAgent(Agent(
             reactor,
@@ -2849,13 +2853,13 @@ class PubnubTornado(PubnubCoreAsync):
         self.pnsdk = 'PubNub-Python-' + 'Tornado' + '/' + self.version
 
     def _request(self, request, callback=None, error=None,
-                 single=False, timeout=5, connect_timeout=5):
+                 single=False, timeout=5, connect_timeout=5, encoder_map=None):
 
         def _invoke(func, data):
             if func is not None:
                 func(get_data_for_user(data))
 
-        url = self.getUrl(request)
+        url = self.getUrl(request, encoder_map)
         request = tornado.httpclient.HTTPRequest(
             url, 'GET',
             self.headers,

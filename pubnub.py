@@ -1234,6 +1234,11 @@ class PubnubBase(object):
                         hex(ord(ch)).replace('0x', '%').upper() or
                         ch for ch in list(val)])
 
+    def _encode_pam(self, val):
+        return "".join([' ~`!@#$%^&*()+[]\\{}|;\':",./<>?'.find(ch) > -1 and
+                        hex(ord(ch)).replace('0x', '%').upper() or
+                        ch for ch in list(val)])
+
     def getUrl(self, request):
 
         if self.u is True and "urlparams" in request:
@@ -1246,7 +1251,7 @@ class PubnubBase(object):
                      ]) for bit in request["urlcomponents"]])
 
         if ("urlparams" in request):
-            url = url + '?' + "&".join([x + "=" + self._encode_param(str(y))
+            url = url + '?' + "&".join([x + "=" + str(y)
                         for x, y in request[
                         "urlparams"].items() if y is not None and
                 len(str(y)) > 0])

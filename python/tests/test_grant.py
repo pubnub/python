@@ -59,7 +59,7 @@ def test_5():
 								'subscribe_key': 'pam',
 								'level': 'user', 'channel': 'abcd', 'ttl': 10
 							  }
-
+'''
 # Grant permission read False, write True, without channel ( Sync Mode ), TTL 10
 def test_6():
 	resp = pubnub_pam.grant(auth_key="abcd", read=True, write=False, ttl=10)
@@ -78,7 +78,7 @@ def test_7():
 								'subscribe_key': 'pam',
 								'level': 'subkey' , u'r': 0, u'w': 0, 'm' : 0, 'ttl': 1
 							  }
-
+'''
 
 # Complete flow , try publish on forbidden channel, grant permission to auth key and try again. ( Sync Mode)
 

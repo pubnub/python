@@ -951,7 +951,7 @@ class PubnubBase(object):
                              error=self._return_wrapped_callback(error))
 
     def where_now(self, uuid=None, callback=None, error=None):
-        """Get here now data.
+        """Get where now data.
 
         You can obtain information about the current list of a channels to
         which a uuid is subscribed to by calling the where_now() function

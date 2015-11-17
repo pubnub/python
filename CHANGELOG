@@ -1,3 +1,7 @@
+3.7.4 - 11-17-15 - 8a00782
+. added state and here_now
+. added presence heartbeat support
+
 3.7.2 - 6-25-15 - ad89de8
 . fix for decryption bug in history API
 . module name changed to pubnub ( it was Pubnub earlier ).

@@ -2453,7 +2453,7 @@ class Timer:
 
 class HTTPClient:
     def __init__(self, pubnub, url, urllib_func=None,
-                 callback=None, error=None, id=None, timeout=5):
+                 callback=None, error=None, id=None, timeout=15):
         self.url = url
         self.id = id
         self.callback = callback
@@ -2516,7 +2516,7 @@ class HTTPClient:
                 _invoke(self.callback, data)
 
 
-def _urllib_request_2(url, timeout=5):
+def _urllib_request_2(url, timeout=15):
     try:
         resp = urllib2.urlopen(url, timeout=timeout)
     except urllib2.HTTPError as http_error:
@@ -2541,7 +2541,7 @@ s = requests.Session()
 #s.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
 
 
-def _requests_request(url, timeout=5):
+def _requests_request(url, timeout=15):
     try:
         resp = s.get(url, timeout=timeout)
     except requests.exceptions.HTTPError as http_error:
@@ -2555,7 +2555,7 @@ def _requests_request(url, timeout=5):
     return (resp.text, resp.status_code)
 
 
-def _urllib_request_3(url, timeout=5):
+def _urllib_request_3(url, timeout=15):
     try:
         resp = urllib.request.urlopen(url, timeout=timeout)
     except (urllib.request.HTTPError, urllib.request.URLError) as http_error:
@@ -2625,7 +2625,7 @@ class Pubnub(PubnubCore):
         return timer.cancel
 
     def _request_async(self, url, callback=None, error=None, single=False,
-                       timeout=5):
+                       timeout=15):
         global _urllib_request
 
         if single is True:
@@ -2650,7 +2650,7 @@ class Pubnub(PubnubCore):
             client.cancel()
         return abort
 
-    def _request_sync(self, url, timeout=5):
+    def _request_sync(self, url, timeout=15):
         global _urllib_request
 
         ## Send Request Expecting JSONP Response
@@ -2671,7 +2671,7 @@ class Pubnub(PubnubCore):
         return resp_json
 
     def _request(self, request, callback=None, error=None, single=False,
-                 timeout=5, encoder_map=None):
+                 timeout=15, encoder_map=None):
 
         url = self.getUrl(request, encoder_map)
 
@@ -2733,7 +2733,7 @@ class PubnubTwisted(PubnubCoreAsync):
         self.pnsdk = 'PubNub-Python-' + 'Twisted' + '/' + self.version
 
     def _request(self, request, callback=None, error=None,
-                 single=False, timeout=5, encoder_map=None):
+                 single=False, timeout=15, encoder_map=None):
         global pnconn_pool
 
         def _invoke(func, data):
@@ -2853,7 +2853,7 @@ class PubnubTornado(PubnubCoreAsync):
         self.pnsdk = 'PubNub-Python-' + 'Tornado' + '/' + self.version
 
     def _request(self, request, callback=None, error=None,
-                 single=False, timeout=5, connect_timeout=5, encoder_map=None):
+                 single=False, timeout=15, connect_timeout=5, encoder_map=None):
 
         def _invoke(func, data):
             if func is not None:

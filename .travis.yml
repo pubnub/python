@@ -1,0 +1,11 @@
+language: python
+install:
+- make init
+- python setup.py install
+sudo: false
+python:
+  - "2.6"
+  - "2.7"
+script:
+- make test
+- make lint

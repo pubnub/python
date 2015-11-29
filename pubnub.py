@@ -1,14 +1,14 @@
 
-## www.pubnub.com - PubNub Real-time push service in the cloud.
+# www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
-## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2014-15 Stephen Blum
-## http://www.pubnub.com/
+# PubNub Real-time Push APIs and Notifications Framework
+# Copyright (c) 2014-15 Stephen Blum
+# http://www.pubnub.com/
 
-## -----------------------------------
-## PubNub 3.7.4 Real-time Push Cloud API
-## -----------------------------------
+# -----------------------------------
+# PubNub 3.7.4 Real-time Push Cloud API
+# -----------------------------------
 
 
 try:
@@ -35,7 +35,7 @@ except ImportError:
     sha256 = digestmod.new
 
 
-##### vanilla python imports #####
+# vanilla python imports
 try:
     from urllib.parse import quote
 except ImportError:
@@ -785,7 +785,7 @@ class PubnubBase(object):
 
         message = self.encrypt(message)
 
-        ## Send Message
+        # Send Message
         return self._request({"urlcomponents": [
             'publish',
             self.publish_key,
@@ -1185,7 +1185,7 @@ class PubnubBase(object):
         params['pnsdk'] = self.pnsdk
         params['include_token'] = 'true' if include_token else 'false'
 
-        ## Get History
+        # Get History
         return _get_decrypted_history(self._request({'urlcomponents': [
             'v2',
             'history',
@@ -1307,8 +1307,8 @@ class PubnubBase(object):
         if channel_group is not None and channel_group != '*':
             url.append(channel_group)
 
-        if (channels is not None):
-            if (type(channels) is list):
+        if channels is not None:
+            if type(channels) is list:
                 channels = ','.join(channels)
             params[mode] = channels
             #params['cloak'] = 'true' if CLOAK is True else 'false'
@@ -1477,7 +1477,7 @@ class PubnubBase(object):
 
         """
 
-        if (namespace is not None and len(namespace) > 0):
+        if namespace is not None and len(namespace) > 0:
             channel_group = namespace + ':*'
         else:
             channel_group = '*:*'
@@ -1716,6 +1716,9 @@ class PubnubBase(object):
 
 
 class EmptyLock():
+    def __init__(self):
+        pass
+
     def __enter__(self):
         pass
 
@@ -1951,7 +1954,7 @@ class PubnubCoreAsync(PubnubBase):
         if self.heartbeat > 0 and self.heartbeat < 320:
             data['heartbeat'] = self.heartbeat
 
-        ## Send Heartbeat
+        # Send Heartbeat
         return self._request({"urlcomponents": [
             'v2', 'presence', 'sub-key',
             self.subscribe_key,
@@ -2332,7 +2335,7 @@ class PubnubCoreAsync(PubnubBase):
 
         self._connect = _connect
 
-        ## BEGIN SUBSCRIPTION (LISTEN FOR MESSAGES)
+        # BEGIN SUBSCRIPTION (LISTEN FOR MESSAGES)
         _connect()
 
     def _reset_offline(self):
@@ -2354,7 +2357,7 @@ class PubnubCoreAsync(PubnubBase):
         if channel in self.subscriptions is False:
             return False
 
-        ## DISCONNECT
+        # DISCONNECT
         with self._channel_list_lock:
             if channel in self.subscriptions:
                 self.subscriptions[channel]['connected'] = 0

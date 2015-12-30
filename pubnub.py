@@ -1220,7 +1220,7 @@ class PubnubBase(object):
             'time',
             '0'
         ]}, callback)
-        if time is not None:
+        if callback is None and time is not None:
             return time[0]
 
     def _encode(self, request):

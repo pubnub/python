@@ -2781,6 +2781,10 @@ class PubnubTwisted(PubnubCoreAsync):
             return finished
 
         def complete(data):
+            
+            if data is None:
+                return
+
             if single is True:
                 if id != self.id:
                     return None

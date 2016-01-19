@@ -2762,7 +2762,14 @@ class PubnubTwisted(PubnubCoreAsync):
 
         def received(response):
             if not isinstance(response, twisted.web._newclient.Response):
-                _invoke(error, {"message": "Not Found"})
+                if response is None:
+                    return
+                message = "not found"
+                try:
+                    message = response.getErrorMessage()
+                except:
+                    pass
+                _invoke(error, {"message": message})
                 return
 
             finished = Deferred()
@@ -2793,6 +2800,7 @@ class PubnubTwisted(PubnubCoreAsync):
         def abort():
             pass
 
+        request.addErrback(received)
         request.addCallback(received)
         request.addCallback(complete)
 

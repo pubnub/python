@@ -1,14 +1,13 @@
-
-## www.pubnub.com - PubNub Real-time push service in the cloud.
+# www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
-## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2014-15 Stephen Blum
-## http://www.pubnub.com/
+# PubNub Real-time Push APIs and Notifications Framework
+# Copyright (c) 2016 Stephen Blum
+# http://www.pubnub.com/
 
-## -----------------------------------
-## PubNub 3.7.5 Real-time Push Cloud API
-## -----------------------------------
+# -----------------------------------
+# PubNub 3.7.5 Real-time Push Cloud API
+# -----------------------------------
 
 
 try:
@@ -1185,7 +1184,7 @@ class PubnubBase(object):
         params['pnsdk'] = self.pnsdk
         params['include_token'] = 'true' if include_token else 'false'
 
-        ## Get History
+        # Get History
         return _get_decrypted_history(self._request({'urlcomponents': [
             'v2',
             'history',
@@ -1276,7 +1275,7 @@ class PubnubBase(object):
         params['auth'] = self.auth_key
         params['pnsdk'] = self.pnsdk
 
-        ## Get History
+        # Get History
         return self._request({'urlcomponents': urlcomponents,
                              'urlparams': params},
                              callback=self._return_wrapped_callback(callback),
@@ -1288,7 +1287,7 @@ class PubnubBase(object):
         url = []
         namespace = None
 
-        if (channel_group is not None and len(channel_group) > 0):
+        if channel_group is not None and len(channel_group) > 0:
             ns_ch_a = channel_group.split(':')
 
             if len(ns_ch_a) > 1:
@@ -1297,7 +1296,7 @@ class PubnubBase(object):
             else:
                 channel_group = ns_ch_a[0]
 
-        if (namespace is not None):
+        if namespace is not None:
             url.append('namespace')
             url.append(self._encode(namespace))
 
@@ -1306,11 +1305,11 @@ class PubnubBase(object):
         if channel_group is not None and channel_group != '*':
             url.append(channel_group)
 
-        if (channels is not None):
+        if channels is not None:
             if (type(channels) is list):
                 channels = ','.join(channels)
             params[mode] = channels
-            #params['cloak'] = 'true' if CLOAK is True else 'false'
+            # params['cloak'] = 'true' if CLOAK is True else 'false'
         else:
             if mode == 'remove':
                 url.append('remove')
@@ -1476,7 +1475,7 @@ class PubnubBase(object):
 
         """
 
-        if (namespace is not None and len(namespace) > 0):
+        if namespace is not None and len(namespace) > 0:
             channel_group = namespace + ':*'
         else:
             channel_group = '*:*'
@@ -1715,6 +1714,10 @@ class PubnubBase(object):
 
 
 class EmptyLock():
+
+    def __init__(self):
+        pass
+
     def __enter__(self):
         pass
 

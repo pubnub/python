@@ -35,7 +35,7 @@ except ImportError:
     sha256 = digestmod.new
 
 
-##### vanilla python imports #####
+# vanilla python imports
 try:
     from urllib.parse import quote
 except ImportError:
@@ -135,7 +135,7 @@ elif sys.platform.startswith("win"):
 ##################################
 
 
-##### Tornado imports and globals #####
+# Tornado imports and globals
 try:
     import tornado.httpclient
     import tornado.ioloop
@@ -147,7 +147,7 @@ except ImportError:
 #######################################
 
 
-##### Twisted imports and globals #####
+# Twisted imports and globals
 try:
     from twisted.internet import reactor
     from twisted.internet.defer import Deferred

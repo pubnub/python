@@ -1,0 +1,19 @@
+language: python
+sudo: false
+python:
+  - '2.6'
+  - '2.7'
+
+before_install:
+  pip install -r dev-requirements.txt
+
+install:
+  python setup.py install
+
+
+script:
+  - python python/tests/test_cg.py
+  - python python/tests/test_grant.py
+  - python python/tests/test_history.py
+  - python python/tests/test_wildcad.py
+  - flake8 pubnub.py

@@ -12,8 +12,8 @@ install:
 
 
 script:
-  - python python/tests/test_cg.py
-  - python python/tests/test_grant.py
-  - python python/tests/test_history.py
-  - python python/tests/test_wildcad.py
+  - nosetests python/tests/test_cg.py
+  - nosetests python/tests/test_grant.py
+  - nosetests python/tests/test_history.py
+  - python python/tests/test_wildcard.py
   - flake8 pubnub.py

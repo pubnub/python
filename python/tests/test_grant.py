@@ -1,8 +1,10 @@
 from pubnub import Pubnub
 import time
 
-pubnub = Pubnub("demo", "demo")
-pubnub_pam = Pubnub("pam", "pam", "pam")
+subkey = "sub-c-9aeec0d4-cdf4-11e5-bcee-0619f8945a4f"
+pubkey = "pub-c-b3fdf8fc-4516-4ab2-8836-6fb22ba7870d"
+secretkey = "sec-c-ZDQwNTUwMDctZDViYi00MzhlLTg2NTctYjViZDcwNTA5Zjhj"
+pubnub_pam = Pubnub(pubkey, subkey, secretkey)
 
 
 # Grant permission read true, write true, on channel ( Sync Mode )

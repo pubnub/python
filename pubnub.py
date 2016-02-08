@@ -178,9 +178,15 @@ try:
     class PubNubResponse(Protocol):
         def __init__(self, finished):
             self.finished = finished
+            self.data = ""
 
         def dataReceived(self, bytes):
-            self.finished.callback(bytes)
+            self.data += bytes
+
+        def connectionLost(self, reason):
+            self.finished.callback(self.data)
+
+
 except ImportError:
     pass
 
@@ -2761,7 +2767,8 @@ class PubnubTwisted(PubnubCoreAsync):
             self.id = id
 
         def received(response):
-            if not isinstance(response, twisted.web._newclient.Response):
+            if not isinstance(response, twisted.web._newclient.Response) and \
+                    not isinstance(response, twisted.web.client.GzipDecoder):
                 if response is None:
                     return
                 message = "not found"
@@ -2781,7 +2788,6 @@ class PubnubTwisted(PubnubCoreAsync):
             return finished
 
         def complete(data):
-            
             if data is None:
                 return
 
@@ -2864,7 +2870,8 @@ class PubnubTornado(PubnubCoreAsync):
         self.pnsdk = 'PubNub-Python-' + 'Tornado' + '/' + self.version
 
     def _request(self, request, callback=None, error=None,
-                 single=False, timeout=15, connect_timeout=5, encoder_map=None):
+                 single=False, timeout=15, connect_timeout=5,
+                 encoder_map=None):
 
         def _invoke(func, data):
             if func is not None:

@@ -6,20 +6,19 @@
 # http://www.pubnub.com/
 
 
+import time
+import random
+from pubnub import Pubnub
 from inspect import currentframe, getouterframes
+from gevent import monkey
+
+monkey.patch_all()
 
 
 def get_line():
     # print getouterframes(currentframe())[3]
     return getouterframes(currentframe())[2][2]
 
-
-from gevent import monkey;
-
-monkey.patch_all()
-
-import time
-import random
 
 DELAY = 5
 
@@ -48,10 +47,6 @@ def get_random():
     return str(random.randint(1, 99999))
 
 
-import sys
-from pubnub import Pubnub
-
-
 def red(name): print '\033[1;31m' + name + '\033[1;m'
 
 
@@ -65,7 +60,7 @@ def test(cond, desc=None, test_name=None, conf=None):
     else:
         red("[" + test_name + " " + conf + " ""][" + str(get_line()) + "] FAIL : " + str(desc))
         RESULTS[test_name + conf]['failed'] = RESULTS[test_name + conf]['failed'] + 1
-    # exit(0)
+        # exit(0)
 
 
 def run_tests(tests):
@@ -135,7 +130,7 @@ def test_2(pubnub, pubnub2, conf=None, msg=None):
             test(channel == real_channel, "On pubnub2 subscribe presence event as channel as real channel", "test_2",
                  conf)
         else:
-            test(false, "Wrong presence event", "test_2", conf)
+            test(False, "Wrong presence event", "test_2", conf)
 
     def connect(channel1=None):
         # print(channel1)

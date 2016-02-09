@@ -1,15 +1,14 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud.
+# www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
-## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2010 Stephen Blum
-## http://www.pubnub.com/
+# PubNub Real-time Push APIs and Notifications Framework
+# Copyright (c) 2010 Stephen Blum
+# http://www.pubnub.com/
 
-import sys
 from pubnub import Pubnub
-
 from optparse import OptionParser
-
+from datetime import datetime
+import threading
 
 parser = OptionParser()
 
@@ -71,8 +70,6 @@ class color(object):
     UNDERLINE = '\033[4m'
     END = '\033[0m'
 
-from datetime import datetime
-
 
 def print_ok(msg, channel=None):
     chstr = color.PURPLE + "[" + datetime.now().strftime(
@@ -81,7 +78,7 @@ def print_ok(msg, channel=None):
         "] " if channel is not None else "" + color.END
     try:
         print(chstr + color.GREEN + str(msg) + color.END)
-    except UnicodeEncodeError as e:
+    except UnicodeEncodeError:
         print(msg)
 
 
@@ -92,10 +89,8 @@ def print_error(msg, channel=None):
         "] " if channel is not None else "" + color.END
     try:
         print(chstr + color.RED + color.BOLD + str(msg) + color.END)
-    except UnicodeEncodeError as e:
+    except UnicodeEncodeError:
         print(msg)
-
-import threading
 
 
 def kill_all_threads():
@@ -275,4 +270,4 @@ while True:
 
     commands[command]['handler']()
 
-#pubnub.start()
+# pubnub.start()

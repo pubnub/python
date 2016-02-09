@@ -1,12 +1,13 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud.
+# www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
-## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2010 Stephen Blum
-## http://www.pubnub.com/
+# PubNub Real-time Push APIs and Notifications Framework
+# Copyright (c) 2010 Stephen Blum
+# http://www.pubnub.com/
 
 
 import sys
+
 from pubnub import PubnubTornado as Pubnub
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'demo'
@@ -15,9 +16,9 @@ secret_key = len(sys.argv) > 3 and sys.argv[3] or 'demo'
 cipher_key = len(sys.argv) > 4 and sys.argv[4] or 'abcd'
 ssl_on = len(sys.argv) > 5 and bool(sys.argv[5]) or False
 
-## -----------------------------------------------------------------------
-## Initiate Pubnub State
-## -----------------------------------------------------------------------
+# -----------------------------------------------------------------------
+# Initiate Pubnub State
+# -----------------------------------------------------------------------
 pubnub = Pubnub(publish_key=publish_key, subscribe_key=subscribe_key,
                 secret_key=secret_key, cipher_key=cipher_key, ssl_on=ssl_on)
 
@@ -36,13 +37,13 @@ def callback_d(message, channel):
     print(str(message) + ' , ' + channel)
 
 
-
 def error(message):
     print("ERROR : " + str(message))
 
 
 def connect_abc(message):
     print("CONNECTED " + str(message))
+
 
 def connect_d(message):
     print("CONNECTED " + str(message))
@@ -56,10 +57,11 @@ def reconnect(message):
 def disconnect(message):
     print("DISCONNECTED " + str(message))
 
+
 print pubnub.channel_group_add_channel(channel_group='abc', channel="b")
 
 pubnub.subscribe_group(channel_groups='abc', callback=callback_abc, error=error,
-                 connect=connect_abc, reconnect=reconnect, disconnect=disconnect)
+                       connect=connect_abc, reconnect=reconnect, disconnect=disconnect)
 
 pubnub.subscribe(channels='d', callback=callback_d, error=error,
                  connect=connect_d, reconnect=reconnect, disconnect=disconnect)

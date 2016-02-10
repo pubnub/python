@@ -15,5 +15,6 @@ script:
   - nosetests python/tests/test_cg.py
   - nosetests python/tests/test_grant.py
   - nosetests python/tests/test_history.py
-  - python python/tests/test_wildcard.py
-  - flake8 pubnub.py
+  - python python-twisted/tests/test_publish_async.py
+  - python python-twisted/tests/test_grant_async.py
+  - flake8 --ignore=E501 .

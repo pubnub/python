@@ -28,6 +28,7 @@ channel = 'hello_world'
 
 def callback(message):
     print(message)
+    pubnub.stop()
 
 
 pubnub.here_now(channel, callback=callback, error=callback)

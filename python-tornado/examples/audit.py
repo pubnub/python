@@ -7,6 +7,7 @@
 
 
 import sys
+
 from pubnub import PubnubTornado as Pubnub
 
 publish_key = len(sys.argv) > 1 and sys.argv[1] or 'pam'
@@ -26,7 +27,9 @@ authkey = "abcd"
 
 def callback(message):
     print(message)
+    pubnub.stop()
 
-pubnub.audit(channel, authkey, callback=callback, error=callback)
+
+pubnub.audit(channel, auth_key=authkey, callback=callback, error=callback)
 
 pubnub.start()

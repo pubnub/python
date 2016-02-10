@@ -26,10 +26,9 @@ message = 'Hello World !!!'
 
 
 # Asynchronous usage
-
-
 def callback(message):
     print(message)
+    pubnub.stop()
 
 
 pubnub.publish(channel, message, callback=callback, error=callback)

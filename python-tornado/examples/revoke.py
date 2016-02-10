@@ -27,6 +27,7 @@ authkey = "abcd"
 
 def callback(message):
     print(message)
+    pubnub.stop()
 
 
 pubnub.revoke(channel, authkey, callback=callback, error=callback)

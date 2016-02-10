@@ -29,6 +29,7 @@ channel = 'a'
 
 def callback(message):
     print(message)
+    pubnub.stop()
 
 
 pubnub.history(channel, count=2, callback=callback, error=callback)

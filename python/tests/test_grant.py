@@ -6,6 +6,7 @@ pubkey = "pub-c-b3fdf8fc-4516-4ab2-8836-6fb22ba7870d"
 secretkey = "sec-c-ZDQwNTUwMDctZDViYi00MzhlLTg2NTctYjViZDcwNTA5Zjhj"
 pubnub = Pubnub(pubkey, subkey)
 pubnub_pam = Pubnub(pubkey, subkey, secretkey)
+pam_timeout = 10
 
 
 # Grant permission read true, write true, on channel ( Sync Mode )
@@ -84,7 +85,7 @@ def test_8():
                     u'subscribe_key': subkey,
                     u'level': u'user', u'channel': channel, u'ttl': 10}
     }
-    time.sleep(5)
+    time.sleep(pam_timeout)
     resp = pubnub.publish(channel=channel, message=message)
     assert resp[0] == 1
 
@@ -105,7 +106,7 @@ def test_9():
                     u'subscribe_key': subkey,
                     u'level': u'user', u'channel': channel, u'ttl': 10}
     }
-    time.sleep(5)
+    time.sleep(pam_timeout)
     resp = pubnub.publish(channel=channel, message=message)
     assert resp[0] == 1
     resp = pubnub_pam.revoke(channel=channel, auth_key=auth_key)
@@ -116,7 +117,7 @@ def test_9():
                     u'subscribe_key': subkey,
                     u'level': u'user', u'channel': channel, u'ttl': 1}
     }
-    time.sleep(5)
+    time.sleep(pam_timeout)
     resp = pubnub.publish(channel=channel, message=message)
     assert resp['message'] == 'Forbidden'
     assert resp['payload'] == {u'channels': [channel]}
@@ -146,7 +147,7 @@ def test_10():
                     u'subscribe_key': subkey,
                     u'level': u'channel', u'ttl': 1}
     }
-    time.sleep(5)
+    time.sleep(pam_timeout)
     resp = pubnub.publish(channel=channel, message=message)
     assert resp['message'] == 'Forbidden'
     assert resp['payload'] == {u'channels': [channel]}
@@ -167,7 +168,7 @@ def test_11():
                     u'subscribe_key': subkey,
                     u'level': u'subkey', u'ttl': 10}
     }
-    time.sleep(5)
+    time.sleep(pam_timeout)
     resp = pubnub_pam.audit()
     print resp
     resp = pubnub.publish(channel=channel, message=message)
@@ -181,7 +182,7 @@ def test_11():
                     u'subscribe_key': subkey,
                     u'level': u'subkey', u'ttl': 1}
     }
-    time.sleep(5)
+    time.sleep(pam_timeout)
     resp = pubnub.publish(channel=channel, message=message)
     assert resp['message'] == 'Forbidden'
     assert resp['payload'] == {u'channels': [channel]}

@@ -5,16 +5,12 @@ python:
   - '2.7'
 
 before_install:
-  pip install -r dev-requirements.txt
+  - pip install -r dev-requirements.txt
+  - if ! [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then pip install twisted tornado; fi
 
 install:
   python setup.py install
 
 
 script:
-  - nosetests python/tests/test_cg.py
-  - nosetests python/tests/test_grant.py
-  - nosetests python/tests/test_history.py
-  - python python-twisted/tests/test_publish_async.py
-  - python python-twisted/tests/test_grant_async.py
-  - flake8 --ignore=E501 .
+  - sh ./run-tests.sh

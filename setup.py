@@ -20,7 +20,9 @@ setup(
     ),
     install_requires=[
         'pycrypto>=2.6.1',
-        'requests>=2.4.0'
+        'requests>=2.4.0',
+        'twisted>=15.5.0',
+        'tornado>=4.3.0'
     ],
     zip_safe=False,
 )

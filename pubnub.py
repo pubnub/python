@@ -15,16 +15,16 @@ try:
 except ImportError:
     import simplejson as json
 
-import time
+import copy
 import hashlib
-import uuid as uuid_lib
+import hmac
 import random
 import sys
-import copy
-from base64 import urlsafe_b64encode
-from base64 import encodestring, decodestring
-import hmac
+import time
+import uuid as uuid_lib
 from Crypto.Cipher import AES
+from base64 import encodestring, decodestring
+from base64 import urlsafe_b64encode
 
 try:
     from hashlib import sha256
@@ -1242,20 +1242,15 @@ class PubnubBase(object):
             request['urlparams']['u'] = str(random.randint(1, 100000000000))
         ## Build URL
         url = self.origin + '/' + "/".join([
-            "".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
-                     hex(ord(ch)).replace('0x', '%').upper() or
-                     ch for ch in list(bit)
-                     ]) for bit in request["urlcomponents"]])
+                                           "".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
+                                                    hex(ord(ch)).replace('0x', '%').upper() or
+                                                    ch for ch in list(bit)
+                                                    ]) for bit in request["urlcomponents"]])
 
         if ("urlparams" in request):
-
-            url = url + '?' + "&".join(
-                [x + "=" + (self._encode_param(str(y))
-                        if encoder_map is None or
-                        x not in encoder_map else encoder_map[x](str(y)))
-                        for x, y in request[
-                        "urlparams"].items() if y is not None and
-                    len(str(y)) > 0])
+            url = url + '?' + "&".join([x + "=" +
+                                        (self._encode_param(str(y)) if encoder_map is None or x not in encoder_map else encoder_map[x](str(y)))
+                                        for x, y in request["urlparams"].items() if y is not None and len(str(y)) > 0])
         if self.http_debug is not None:
             self.http_debug(url)
         return url
@@ -1882,8 +1877,7 @@ class PubnubCoreAsync(PubnubBase):
             self.heartbeat_stop_flag = True
 
         if (len(self.get_channel_list(self.subscriptions, True)) == 0 and
-            len(self.get_channel_group_list(self.subscription_groups, True))
-                == 0):
+                len(self.get_channel_group_list(self.subscription_groups, True)) == 0):
             self.heartbeat_stop_flag = True
 
         if self.heartbeat_stop_flag is True:
@@ -2157,7 +2151,7 @@ class PubnubCoreAsync(PubnubBase):
             for channel in channels:
                 ## New Channel?
                 if len(channel) > 0 and \
-                        (not channel in self.subscriptions or
+                        (channel not in self.subscriptions or
                          self.subscriptions[channel]['subscribed'] is False):
                     with self._channel_list_lock:
                         self.subscriptions[channel] = {
@@ -2186,7 +2180,7 @@ class PubnubCoreAsync(PubnubBase):
             for channel_group in channel_groups:
                 ## New Channel?
                 if (len(channel_group) > 0 and
-                        (not channel_group in self.subscription_groups or
+                        (channel_group not in self.subscription_groups or
                     self.subscription_groups[channel_group]['subscribed']
                             is False)):
                     with self._channel_group_list_lock:
@@ -2784,7 +2778,7 @@ class PubnubTwisted(PubnubCoreAsync):
             return finished
 
         def complete(data):
-            
+
             if data is None:
                 return
 

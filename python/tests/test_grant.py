@@ -88,4 +88,3 @@ def test_8():
     time.sleep(pam_timeout)
     resp = pubnub.publish(channel=channel, message=message)
     assert resp[0] == 1
-

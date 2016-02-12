@@ -94,7 +94,7 @@ def _server_presence_callback(message, channel):
     if 'action' in message:
         if message['action'] == 'join' and message['uuid'] == client_uuid:
             print "Server can see that client with UUID " + message['uuid'] + " has a state of " + json.dumps(
-                    message['data'])
+                message['data'])
 
 
 def _client_presence_callback(message, channel):
@@ -102,7 +102,7 @@ def _client_presence_callback(message, channel):
     if 'action' in message:
         if message['action'] == 'join' and message['uuid'] == client_uuid:
             print "Client can see that client with UUID " + message['uuid'] + " has a state of " + json.dumps(
-                    message['data'])
+                message['data'])
 
 
 # server subscribes to public channel

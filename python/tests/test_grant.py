@@ -97,6 +97,7 @@ def test_9():
     message = "Hello World"
     auth_key = "auth-" + channel
     pubnub.set_auth_key(auth_key)
+    pubnub_pam.revoke()
     resp = pubnub_pam.grant(channel=channel, read=True, write=True,
                             auth_key=auth_key, ttl=10)
     print resp
@@ -128,8 +129,6 @@ def test_9():
 def test_10():
     channel = "test_10-" + str(time.time())
     message = "Hello World"
-    auth_key = "auth-" + channel
-    pubnub.set_auth_key(auth_key)
     resp = pubnub_pam.grant(channel=channel, read=True, write=True, ttl=10)
     assert resp == {
         'message': u'Success',
@@ -137,7 +136,7 @@ def test_10():
                     u'subscribe_key': subkey,
                     u'level': u'channel', u'ttl': 10}
     }
-    time.sleep(5)
+    time.sleep(pam_timeout)
     resp = pubnub.publish(channel=channel, message=message)
     assert resp[0] == 1
     resp = pubnub_pam.revoke(channel=channel)
@@ -158,8 +157,7 @@ def test_10():
 def test_11():
     channel = "test_11-" + str(time.time())
     message = "Hello World"
-    auth_key = "auth-" + channel
-    pubnub.set_auth_key(auth_key)
+    pubnub_pam.revoke()
     resp = pubnub_pam.grant(read=True, write=True, ttl=10)
     print resp
     assert resp == {

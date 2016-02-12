@@ -47,10 +47,12 @@ def get_random():
     return str(random.randint(1, 99999))
 
 
-def red(name): print '\033[1;31m' + name + '\033[1;m'
+def red(name):
+    print '\033[1;31m' + name + '\033[1;m'
 
 
-def green(name): print '\033[1;92m' + name + '\033[1;m'
+def green(name):
+    print '\033[1;92m' + name + '\033[1;m'
 
 
 def test(cond, desc=None, test_name=None, conf=None):

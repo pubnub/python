@@ -10,7 +10,6 @@
 ## -----------------------------------
 
 import sys
-import datetime
 from pubnub import PubnubTwisted as Pubnub
 from functools import partial
 from threading import current_thread

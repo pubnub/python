@@ -1,3 +1,6 @@
+#!/bin/bash
+set -ev
+
 nosetests python/tests/test_cg.py
 nosetests python/tests/test_grant.py
 nosetests python/tests/test_history.py

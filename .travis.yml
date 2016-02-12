@@ -12,5 +12,4 @@ install:
   python setup.py install
 
 
-script:
-  - bash ./run-tests.sh
+script: ./run-tests.sh

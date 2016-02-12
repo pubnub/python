@@ -84,10 +84,10 @@ else:
 def get_date():
     if full_date is True:
         return color.colorize(datetime.now().strftime(
-                '%Y-%m-%d %H:%M:%S'), "magenta")
+            '%Y-%m-%d %H:%M:%S'), "magenta")
     else:
         return color.colorize(datetime.now().strftime(
-                '%H:%M:%S'), "magenta")
+            '%H:%M:%S'), "magenta")
 
 
 def print_ok_normal(msg, channel=None):
@@ -110,7 +110,7 @@ def print_error_normal(msg, channel=None):
     chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] "
     try:
         print_console(of, (chstr + color.colorize(color.colorize(
-                str(msg), "red"), "bold")))
+            str(msg), "red"), "bold")))
     except UnicodeEncodeError:
         print_console(of, (msg))
     of.flush()
@@ -136,8 +136,7 @@ def print_error_pretty(msg, channel=None):
     chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] "
     try:
         print_console(of, (chstr + color.colorize(color.colorize(
-                "ERROR: ", "red"), "bold") +
-                           highlight(json.dumps(msg, indent=2))))
+            "ERROR: ", "red"), "bold") + highlight(json.dumps(msg, indent=2))))
     except UnicodeEncodeError:
         print_console(of, (msg))
     of.flush()
@@ -359,7 +358,7 @@ class DevConsole(Cmd):
         sl = self.channel_truncation
         if len(channels) > int(sl) and int(sl) > 0:
             cho += ",".join(channels[:int(sl)]) + " " + str(
-                    len(channels) - int(sl)) + " more..."
+                len(channels) - int(sl)) + " more..."
         else:
             cho += ",".join(channels)
 
@@ -376,7 +375,7 @@ class DevConsole(Cmd):
 
         if self.default_channel is not None and len(self.default_channel) > 0:
             prompt += " [default channel: " + color.colorize(
-                    self.default_channel, "bold") + "]"
+                self.default_channel, "bold") + "]"
 
         prompt += self.get_channel_origin()
         return prompt
@@ -611,12 +610,11 @@ class DevConsole(Cmd):
             if opts.auth_key is None else opts.auth_key
 
         _revoke_command_handler(
-                opts.channel, opts.auth_key, opts.ttl, async=self.async)
+            opts.channel, opts.auth_key, opts.ttl, async=self.async)
 
         if opts.presence is True:
             _revoke_command_handler(
-                    opts.channel + '-pnpres', opts.auth_key,
-                    opts.ttl, async=self.async)
+                opts.channel + '-pnpres', opts.auth_key, opts.ttl, async=self.async)
 
     @options([make_option('-c', '--channel', action="store",
                           help="Channel on which to revoke"),

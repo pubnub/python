@@ -181,7 +181,11 @@ try:
         def dataReceived(self, bytes):
             self.finished.callback(bytes)
 except ImportError as e:
+    print "@@@err"
     print e
+    import traceback
+    traceback.format_exc()
+    print "@@@err"
     pass
 
 

@@ -24,7 +24,7 @@ channel = 'hello_world'
 authkey = "abcd"
 
 # Synchronous usage
-print pubnub.grant(channel, authkey, True, True)
+print(pubnub.grant(channel, authkey, True, True))
 
 # Asynchronous usage
 

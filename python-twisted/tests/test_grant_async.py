@@ -36,8 +36,8 @@ def test_2():
         }
 
     def _error(response):
-        print "error"
-        print response
+        print("error")
+        print(response)
         assert False
 
     pubnub_pam.grant(channel="abcd", auth_key="abcd", read=False, write=False, ttl=1, callback=_callback, error=_error)
@@ -102,7 +102,7 @@ def test_6():
         }
 
     def _error(response):
-        print response
+        print(response)
         assert False
 
     pubnub_pam.grant(read=False, write=True, ttl=10, callback=_callback, error=_error)
@@ -144,7 +144,7 @@ def test_8():
             assert resp[0] == 1
 
         def _err3(resp):
-            print resp
+            print(resp)
             assert False
 
         time.sleep(7)
@@ -184,7 +184,7 @@ def test_9():
                 }
 
                 def _cb5(resp, ch=None):
-                    print resp
+                    print(resp)
                     assert False
 
                 def _err5(resp):
@@ -246,7 +246,7 @@ def test_10():
                     }
 
                     def _cb5(resp, ch=None):
-                        print resp
+                        print(resp)
                         assert False
 
                     def _err5(resp):
@@ -284,7 +284,7 @@ def test_11():
     pubnub.set_auth_key(auth_key)
 
     def _cb2(resp, ch=None):
-        print resp
+        print(resp)
         assert resp == {
             'message': u'Success',
             'payload': {u'r': 1, u'm': 0, u'w': 1,

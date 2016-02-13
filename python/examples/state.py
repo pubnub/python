@@ -28,13 +28,13 @@ pubnub = Pubnub(publish_key=publish_key, subscribe_key=subscribe_key,
 
 
 def log(a):
-    print a
+    print(a)
 
 
 pubnub.set_http_debug(log)
 
 # Synchronous usage
-print pubnub.state(channel='abcd', uuid='33c72389-1110-4312-9444-4dd24ade1d57', state={'a': 'b'})
+print(pubnub.state(channel='abcd', uuid='33c72389-1110-4312-9444-4dd24ade1d57', state={'a': 'b'}))
 
 
 # Asynchronous usage
@@ -50,7 +50,7 @@ pubnub.state(channel='abcd', uuid='33c72389-1110-4312-9444-4dd24ade1d57', state=
 time.sleep(5)
 
 # Synchronous usage
-print pubnub.state(channel='abcd', uuid='33c72389-1110-4312-9444-4dd24ade1d57')
+print(pubnub.state(channel='abcd', uuid='33c72389-1110-4312-9444-4dd24ade1d57'))
 
 
 # Asynchronous usage
@@ -65,7 +65,7 @@ pubnub.state(channel='abcd', uuid='33c72389-1110-4312-9444-4dd24ade1d57', callba
 time.sleep(5)
 
 # Synchronous usage
-print pubnub.state(channel='abcd')
+print(pubnub.state(channel='abcd'))
 
 
 # Asynchronous usage
@@ -80,7 +80,7 @@ pubnub.state(channel='abcd', callback=callback, error=callback)
 time.sleep(5)
 
 # Synchronous usage
-print pubnub.state(channel='abcd', state={'a': 'b'})
+print(pubnub.state(channel='abcd', state={'a': 'b'}))
 
 
 # Asynchronous usage
@@ -95,7 +95,7 @@ pubnub.state(channel='abcd', state={'a': 'b'}, callback=callback, error=callback
 time.sleep(5)
 
 # Synchronous usage
-print pubnub.state(channel='abcd')
+print(pubnub.state(channel='abcd'))
 
 
 # Asynchronous usage
@@ -110,7 +110,7 @@ pubnub.state(channel='abcd', callback=callback, error=callback)
 time.sleep(5)
 
 # Synchronous usage
-print pubnub.state(channel='abcd')
+print(pubnub.state(channel='abcd'))
 
 
 # Asynchronous usage

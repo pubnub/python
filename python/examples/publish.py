@@ -25,7 +25,7 @@ message = 'Hello World !!!'
 
 
 # Synchronous usage
-print pubnub.publish(channel, message)
+print(pubnub.publish(channel, message))
 
 # Asynchronous usage
 

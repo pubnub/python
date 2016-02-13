@@ -24,7 +24,7 @@ channel = 'a'
 
 # Synchronous usage
 
-print pubnub.history(channel, count=2)
+print(pubnub.history(channel, count=2))
 
 # Asynchronous usage
 
@@ -36,7 +36,7 @@ pubnub.history(channel, count=2, callback=callback, error=callback)
 
 # Synchronous usage
 
-print pubnub.history(channel, count=2, include_token=True)
+print(pubnub.history(channel, count=2, include_token=True))
 
 # Asynchronous usage
 

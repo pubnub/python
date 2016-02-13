@@ -47,7 +47,7 @@ def test_2():
             assert resp[0] == 1
 
         def _err1(resp):
-            print resp
+            print(resp)
             assert False
 
         pubnub.publish(channel, message, callback=_cb1, error=_err1)

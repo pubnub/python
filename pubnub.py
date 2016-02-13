@@ -184,7 +184,7 @@ except ImportError as e:
     print "@@@err"
     print e
     import traceback
-    traceback.format_exc()
+    print traceback.format_exc()
     print "@@@err"
     pass
 

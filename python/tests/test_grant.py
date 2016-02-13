@@ -13,7 +13,7 @@ pam_timeout = 10
 def test_1():
     resp = pubnub_pam.grant(channel="abcd", auth_key="abcd", read=True,
                             write=True, ttl=1)
-    print resp
+    print(resp)
     assert resp['message'] == 'Success'
     assert resp['payload'] == {
         'auths': {'abcd': {'r': 1, 'w': 1, 'm': 0}},

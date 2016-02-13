@@ -42,13 +42,13 @@ def test_1():
     assert len(resp['payload']['channels']) == 2
 
     resp = pubnub.channel_group_remove_channel(channel_group=namespace + ':' + channel_group, channel=channel2)
-    print resp
+    print(resp)
     assert resp['status'] == 200
     assert resp['message'] == 'OK'
     assert resp['error'] == False
 
     resp = pubnub.channel_group_list_channels(channel_group=namespace + ':' + channel_group)
-    print resp
+    print(resp)
     assert channel in resp['payload']['channels']
     assert len(resp['payload']['channels']) == 1
 
@@ -58,13 +58,13 @@ def test_1():
     assert len(resp['payload']['channels']) == 2
 
     resp = pubnub.channel_group_remove_channel(channel_group=namespace + ':' + channel_group2, channel=channel2)
-    print resp
+    print(resp)
     assert resp['status'] == 200
     assert resp['message'] == 'OK'
     assert resp['error'] == False
 
     resp = pubnub.channel_group_list_channels(channel_group=namespace + ':' + channel_group2)
-    print resp
+    print(resp)
     assert channel in resp['payload']['channels']
     assert len(resp['payload']['channels']) == 1
 
@@ -74,7 +74,7 @@ def test_1():
     assert len(resp['payload']['groups']) == 2
 
     resp = pubnub.channel_group_remove_group(channel_group=namespace + ':' + channel_group2)
-    print resp
+    print(resp)
     assert resp['status'] == 200
     assert resp['message'] == 'OK'
     assert resp['error'] == False
@@ -87,7 +87,7 @@ def test_1():
     assert namespace in resp['payload']['namespaces']
 
     resp = pubnub.channel_group_remove_namespace(namespace=namespace)
-    print resp
+    print(resp)
     assert resp['status'] == 200
     assert resp['message'] == 'OK'
     assert resp['error'] == False

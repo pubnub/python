@@ -48,20 +48,20 @@ def get_random():
 
 
 def red(name):
-    print '\033[1;31m' + name + '\033[1;m'
+    print('\033[1;31m' + name + '\033[1;m')
 
 
 def green(name):
-    print '\033[1;92m' + name + '\033[1;m'
+    print('\033[1;92m' + name + '\033[1;m')
 
 
 def test(cond, desc=None, test_name=None, conf=None):
     if (cond):
-        green("[" + test_name + " " + conf + " ""][" + str(get_line()) + "] PASS : " + str(desc))
-        RESULTS[test_name + conf]['passed'] = RESULTS[test_name + conf]['passed'] + 1
+        green("[" + test_name + " " + str(conf) + " ""][" + str(get_line()) + "] PASS : " + str(desc))
+        RESULTS[test_name + conf]['passed'] = RESULTS[test_name + str(conf)]['passed'] + 1
     else:
-        red("[" + test_name + " " + conf + " ""][" + str(get_line()) + "] FAIL : " + str(desc))
-        RESULTS[test_name + conf]['failed'] = RESULTS[test_name + conf]['failed'] + 1
+        red("[" + test_name + " " + str(conf) + " ""][" + str(get_line()) + "] FAIL : " + str(desc))
+        RESULTS[test_name + conf]['failed'] = RESULTS[test_name + str(conf)]['failed'] + 1
         # exit(0)
 
 

@@ -22,7 +22,7 @@ def a():
 
     def connect(channel1=None):
         print("Connect on " + channel1)
-        print pubnub.publish(channel=channel, message="a")
+        print(pubnub.publish(channel=channel, message="a"))
 
     def disconnect(channel1=None):
         print("Disconnect on " + channel1)
@@ -51,7 +51,7 @@ def b():
 
     def connect(channel1=None):
         print("Connect on " + channel1)
-        print pubnub.publish(channel=channel, message="b")
+        print(pubnub.publish(channel=channel, message="b"))
 
     def disconnect(channel1=None):
         print("Disconnect on " + channel1)
@@ -72,14 +72,14 @@ def c():
     def callback(message1, channel1, real_channel=None):
         print(channel1 + " : " + real_channel + " : " + str(message1))
         pubnub.unsubscribe(channel="c.*")
-        print pubnub.publish(channel=channel, message="c1")
+        print(pubnub.publish(channel=channel, message="c1"))
 
     def error(message):
         print("ERROR : " + str(message))
 
     def connect(channel1=None):
         print("Connect on " + channel1)
-        print pubnub.publish(channel=channel, message="c")
+        print(pubnub.publish(channel=channel, message="c"))
 
     def disconnect(channel1=None):
         print("Disconnect on " + channel1)

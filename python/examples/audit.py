@@ -24,7 +24,7 @@ channel = 'hello_world'
 authkey = "abcd"
 
 # Synchronous usage
-print pubnub.audit(channel, authkey)
+print(pubnub.audit(channel, authkey))
 
 # Asynchronous usage
 

@@ -24,7 +24,7 @@ channel = 'hello_world'
 
 
 # Synchronous usage
-print pubnub.here_now(channel)
+print(pubnub.here_now(channel))
 
 # Asynchronous usage
 

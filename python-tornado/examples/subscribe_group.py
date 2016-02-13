@@ -58,7 +58,7 @@ def disconnect(message):
     print("DISCONNECTED " + str(message))
 
 
-print pubnub.channel_group_add_channel(channel_group='abc', channel="b")
+print(pubnub.channel_group_add_channel(channel_group='abc', channel="b"))
 
 pubnub.subscribe_group(channel_groups='abc', callback=callback_abc, error=error,
                        connect=connect_abc, reconnect=reconnect, disconnect=disconnect)

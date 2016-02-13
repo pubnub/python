@@ -40,7 +40,7 @@ channel_group = "abg,cdg"
 
 
 def set_heartbeat(*argv):
-    print "Change Heartbeat to ", argv[0]
+    print("Change Heartbeat to ", argv[0])
     pubnub.set_heartbeat(argv[0], argv[1], argv[2])
 
 
@@ -82,11 +82,11 @@ pubnub.subscribe_group(channel_groups=channel_group, callback=callback, error=ca
 
 
 def cb(resp):
-    print datetime.now().strftime('%H:%M:%S'), resp
+    print(datetime.now().strftime('%H:%M:%S'), resp)
 
 
 def err(resp):
-    print datetime.now().strftime('%H:%M:%S'), resp
+    print(datetime.now().strftime('%H:%M:%S'), resp)
 
 
 pubnub.timeout(5, set_heartbeat, 120, cb, err)

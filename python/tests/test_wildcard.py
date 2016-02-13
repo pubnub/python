@@ -85,7 +85,7 @@ def test_1(pubnub, pubnub2, conf=None, msg=None):
     # Asynchronous usage
     def callback(message1, channel1, real_channel=None):
         # print(str(message1) + ' : ' + str(channel1) + ' : ' + str(real_channel))
-        test(message1 == unicode(message, 'utf-8'), "message received", "test_1", conf)
+        test(message1 == str(message, 'utf-8'), "message received", "test_1", conf)
         test(channel1 == channel_wc, "Channel == wildcard channel", "test_1", conf)
         test(real_channel == channel, "Real channel == publish channel", "test_1", conf)
 
@@ -117,7 +117,7 @@ def test_2(pubnub, pubnub2, conf=None, msg=None):
     # Asynchronous usage
     def callback(message1, channel1, real_channel=None):
         # print(str(message1) + ' : ' + str(channel1) + ' : ' + str(real_channel))
-        test(message1 == unicode(message, 'utf-8'), "message received", "test_2", conf)
+        test(message1 == str(message, 'utf-8'), "message received", "test_2", conf)
         test(channel1 == channel_wc, "Channel == wildcard channel", "test_2", conf)
         test(real_channel == channel, "Real channel == publish channel", "test_2", conf)
 
@@ -172,7 +172,7 @@ def test_3(pubnub, pubnub2, conf=None, msg=None):
             test(False, "Presence event received without presence callback", "test_3", conf)
             return
 
-        test(message1 == unicode(message, 'utf-8'), "message received", "test_3", conf)
+        test(message1 == str(message, 'utf-8'), "message received", "test_3", conf)
         test(channel1 == channel_wc, "Channel == wildcard channel", "test_3", conf)
         test(real_channel == channel, "Real channel == publish channel", "test_3", conf)
 
@@ -217,17 +217,17 @@ def test_4(pubnub, pubnub2, conf=None, msg=None):
     def _callback(resp):
         # Asynchronous usage
         def callback_wc(message1, channel1, real_channel=None):
-            test(message1 == unicode(message, 'utf-8'), "message received", "test_4", conf)
+            test(message1 == str(message, 'utf-8'), "message received", "test_4", conf)
             test(channel1 == channel_wc, "Channel == wildcard channel", "test_4", conf)
             test(real_channel == channel, "Real channel == publish channel", "test_4", conf)
 
         def callback_group(message1, channel1, real_channel=None):
-            test(message1 == unicode(message, 'utf-8'), "message received", "test_4", conf)
+            test(message1 == str(message, 'utf-8'), "message received", "test_4", conf)
             test(channel1 == channel_group, "Channel == group", "test_4", conf)
             test(real_channel == channel_g, "Real channel == publish channel", "test_4", conf)
 
         def callback_n(message1, channel1, real_channel=None):
-            test(message1 == unicode(message, 'utf-8'), "message received", "test_4", conf)
+            test(message1 == str(message, 'utf-8'), "message received", "test_4", conf)
             test(channel1 == channel_n, "Channel ==  channel", "test_4", conf)
             test(real_channel == channel_n, "Real channel == publish channel", "test_4", conf)
 

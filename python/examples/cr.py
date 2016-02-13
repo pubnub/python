@@ -26,17 +26,17 @@ channel = 'hello_world'
 def callback(message):
     print(message)
 
-print pubnub.revoke(channel_group='dev:abcd', auth_key="abcd")
-print pubnub.audit(channel_group="dev:abcd")
-print pubnub.grant(channel_group='dev:abcd', read=True, write=True, manage=True, auth_key="abcd")
-print pubnub.channel_group_list_namespaces()
-print pubnub.channel_group_list_groups(namespace='aaa')
-print pubnub.channel_group_list_groups(namespace='foo')
-print pubnub.channel_group_list_channels(channel_group='dev:abcd')
-print pubnub.channel_group_add_channel(channel_group='dev:abcd', channel="hi")
-print pubnub.channel_group_list_channels(channel_group='dev:abcd')
-print pubnub.channel_group_remove_channel(channel_group='dev:abcd', channel="hi")
-print pubnub.channel_group_list_channels(channel_group='dev:abcd')
+print(pubnub.revoke(channel_group='dev:abcd', auth_key="abcd"))
+print(pubnub.audit(channel_group="dev:abcd"))
+print(pubnub.grant(channel_group='dev:abcd', read=True, write=True, manage=True, auth_key="abcd"))
+print(pubnub.channel_group_list_namespaces())
+print(pubnub.channel_group_list_groups(namespace='aaa'))
+print(pubnub.channel_group_list_groups(namespace='foo'))
+print(pubnub.channel_group_list_channels(channel_group='dev:abcd'))
+print(pubnub.channel_group_add_channel(channel_group='dev:abcd', channel="hi"))
+print(pubnub.channel_group_list_channels(channel_group='dev:abcd'))
+print(pubnub.channel_group_remove_channel(channel_group='dev:abcd', channel="hi"))
+print(pubnub.channel_group_list_channels(channel_group='dev:abcd'))
 
 
 pubnub.revoke(channel_group='dev:abcd', auth_key="abcd", callback=callback, error=callback)

@@ -25,7 +25,7 @@ pubnub = Pubnub(publish_key=publish_key, subscribe_key=subscribe_key,
                 secret_key=secret_key, cipher_key=cipher_key, ssl_on=ssl_on)
 
 # Synchronous usage
-print pubnub.where_now(uuid='33c72389-1110-4312-9444-4dd24ade1d57')
+print(pubnub.where_now(uuid='33c72389-1110-4312-9444-4dd24ade1d57'))
 
 
 # Asynchronous usage

@@ -24,7 +24,7 @@ channel = 'hello_world'
 authkey = "abcd"
 
 # Synchronous usage
-print pubnub.revoke(channel, authkey)
+print(pubnub.revoke(channel, authkey))
 
 # Asynchronous usage
 

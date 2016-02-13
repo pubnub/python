@@ -35,7 +35,7 @@ crazy = ' ~`!@#$%^&*( 顶顅 Ȓ)+=[]\\{}|;\':",./<>?abcd'
 # BENCHMARK
 # -----------------------------------------------------------------------
 def success(msg):
-    print msg
+    print(msg)
 
 
 def connected(msg):
@@ -43,7 +43,7 @@ def connected(msg):
 
 
 def error(err):
-    print err
+    print(err)
 
 trips = {'last': None, 'current': None, 'max': 0, 'avg': 0}
 

@@ -90,19 +90,19 @@ def _server_error_callback(error, channel):
 
 
 def _server_presence_callback(message, channel):
-    print message
+    print(message)
     if 'action' in message:
         if message['action'] == 'join' and message['uuid'] == client_uuid:
-            print "Server can see that client with UUID " + message['uuid'] + " has a state of " + json.dumps(
-                message['data'])
+            print("Server can see that client with UUID " + message['uuid'] + " has a state of " + json.dumps(
+                message['data']))
 
 
 def _client_presence_callback(message, channel):
-    print message
+    print(message)
     if 'action' in message:
         if message['action'] == 'join' and message['uuid'] == client_uuid:
-            print "Client can see that client with UUID " + message['uuid'] + " has a state of " + json.dumps(
-                message['data'])
+            print("Client can see that client with UUID " + message['uuid'] + " has a state of " + json.dumps(
+                message['data']))
 
 
 # server subscribes to public channel

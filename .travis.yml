@@ -1,11 +1,12 @@
 language: python
 python:
+  - '2.6'
   - '2.7'
 
 before_install:
   - sudo apt-get install -y libssl-dev libffi-dev
   - pip install -r dev-requirements.txt
-  # - if ! [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then pip install twisted; fi
+   - if ! [[ $TRAVIS_PYTHON_VERSION == 2.6 ]]; then pip install twisted; fi
 
 install:
   python setup.py install

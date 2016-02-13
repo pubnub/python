@@ -508,7 +508,7 @@ class DevConsole(Cmd):
     def do_set_output_file(self, command, opts):
         global of
         try:
-            of = file(opts.file, 'w+')
+            of = open(opts.file, 'w+')
         except IOError as e:
             print_error("Could not set output file. " + e.reason)
 

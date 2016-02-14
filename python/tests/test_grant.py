@@ -80,10 +80,10 @@ def test_8():
     resp = pubnub_pam.grant(channel=channel, read=True, write=True,
                             auth_key=auth_key, ttl=10)
     assert resp == {
-        'message': u'Success',
-        'payload': {u'auths': {auth_key: {u'r': 1, u'w': 1, 'm': 0}},
-                    u'subscribe_key': subkey,
-                    u'level': u'user', u'channel': channel, u'ttl': 10}
+        'message': 'Success',
+        'payload': {'auths': {auth_key: {'r': 1, 'w': 1, 'm': 0}},
+                    'subscribe_key': subkey,
+                    'level': 'user', 'channel': channel, 'ttl': 10}
     }
     time.sleep(pam_timeout)
     resp = pubnub.publish(channel=channel, message=message)

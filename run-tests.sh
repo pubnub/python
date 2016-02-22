@@ -8,6 +8,7 @@ nosetests python/tests/test_history.py
 if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then
   python python-twisted/tests/test_publish_async.py
   python python-twisted/tests/test_grant_async.py
+  python python-tornado/tests/test_grant_async.py
   flake8 --ignore=E501,E265,E266,E712 python-twisted/
 fi
 

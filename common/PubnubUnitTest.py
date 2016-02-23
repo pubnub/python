@@ -1,7 +1,4 @@
 
-import time
-
-
 class Suite():
     def __init__(self, pubnub, expected):
         self.pubnub = pubnub
@@ -19,7 +16,7 @@ class Suite():
                 msg += ", " + message
             if response:
                 msg += ", " + response
-            print msg
+            print(msg)
         else:
             self.failed += 1
             msg = "FAIL : " + name
@@ -27,11 +24,11 @@ class Suite():
                 msg += ", " + message
             if response:
                 msg += ", " + response
-            print msg
+            print(msg)
 
         if self.total == self.failed + self.passed:
-            print "\n======== RESULT ========"
-            print "Total\t:\t", self.total
-            print "Passed\t:\t", self.passed
-            print "Failed\t:\t", self.failed
+            print("\n======== RESULT ========")
+            print("Total\t:\t", self.total)
+            print("Passed\t:\t", self.passed)
+            print("Failed\t:\t", self.failed)
             self.pubnub.stop()

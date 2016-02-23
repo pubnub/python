@@ -10,7 +10,6 @@
 ## -----------------------------------
 
 import sys
-import datetime
 from pubnub import PubnubTwisted as Pubnub
 from functools import partial
 from threading import current_thread
@@ -39,32 +38,32 @@ received = 0
 
 
 def message_received(message):
-    print message
+    print(message)
 
 
 def check_received(message):
     global current
     global errors
     global received
-    print message
-    print current
+    print(message)
+    print(current)
     if message <= current:
-        print 'ERROR'
+        print('ERROR')
         #sys.exit()
         errors += 1
     else:
         received += 1
-    print 'active thread count : ', threading.activeCount()
-    print 'errors = ', errors
-    print current_thread().getName(), ' , ', 'received = ', received
+    print('active thread count : ', threading.activeCount())
+    print('errors = ', errors)
+    print(current_thread().getName(), ' , ', 'received = ', received)
 
     if received != message:
-        print '********** MISSED **************** ', message - received
+        print('********** MISSED **************** ', message - received)
     current = message
 
 
 def connected_test(ch):
-    print 'Connected', ch
+    print('Connected', ch)
 
 
 def connected(ch):
@@ -112,7 +111,7 @@ def subscribe(channel):
     })
 
 
-print threading.activeCount()
+print(threading.activeCount())
 
 
 pubnub.timeout(15, cb1)

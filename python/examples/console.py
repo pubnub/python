@@ -1,34 +1,31 @@
-## www.pubnub.com - PubNub Real-time push service in the cloud.
+# www.pubnub.com - PubNub Real-time push service in the cloud.
 # coding=utf8
 
-## PubNub Real-time Push APIs and Notifications Framework
-## Copyright (c) 2010 Stephen Blum
-## http://www.pubnub.com/
+# PubNub Real-time Push APIs and Notifications Framework
+# Copyright (c) 2010 Stephen Blum
+# http://www.pubnub.com/
 
-
-import sys
-from pubnub import Pubnub
-import threading
-from datetime import datetime
-
-from cmd2 import Cmd, make_option, options, Cmd2TestCase
-import optparse
-import json
 
 import atexit
+import json
 import os
-import readline
-import rlcompleter
-
 import pygments
-from pygments.lexers import JsonLexer
+import readline
+import sys
+import threading
+from cmd2 import Cmd, make_option, options
+from datetime import datetime
 from pygments.formatters import TerminalFormatter
+from pygments.lexers import JsonLexer
+
+from pubnub import Pubnub
 
 lexer = JsonLexer()
 formatter = TerminalFormatter()
+
+
 def highlight(msg):
     return pygments.highlight(msg, lexer, formatter)
-
 
 
 historyPath = os.path.expanduser("~/.pubnub_console_history")
@@ -37,6 +34,7 @@ historyPath = os.path.expanduser("~/.pubnub_console_history")
 def save_history(historyPath=historyPath):
     import readline
     readline.write_history_file(historyPath)
+
 
 if os.path.exists(historyPath):
     readline.read_history_file(historyPath)
@@ -61,12 +59,13 @@ def stop_3(th):
 
 
 def print_console_2(of, message):
-    print >>of, message
+    print >> of, message
 
 
 def print_console_3(of, message):
     of.write(message)
     of.write("\n")
+
 
 print_console = None
 
@@ -90,14 +89,15 @@ def get_date():
         return color.colorize(datetime.now().strftime(
             '%H:%M:%S'), "magenta")
 
+
 def print_ok_normal(msg, channel=None):
     if msg is None:
         return
     chstr = "[" + color.colorize(get_date(), "magenta") + "] "
-    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] " 
+    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] "
     try:
         print_console(of, (chstr + color.colorize(str(msg), "green")))
-    except UnicodeEncodeError as e:
+    except UnicodeEncodeError:
         print_console(of, (msg))
 
     of.flush()
@@ -107,22 +107,23 @@ def print_error_normal(msg, channel=None):
     if msg is None:
         return
     chstr = "[" + color.colorize(get_date(), "magenta") + "] "
-    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] " 
+    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] "
     try:
         print_console(of, (chstr + color.colorize(color.colorize(
             str(msg), "red"), "bold")))
-    except UnicodeEncodeError as e:
+    except UnicodeEncodeError:
         print_console(of, (msg))
     of.flush()
+
 
 def print_ok_pretty(msg, channel=None):
     if msg is None:
         return
     chstr = "[" + color.colorize(get_date(), "magenta") + "] "
-    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] " 
+    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] "
     try:
         print_console(of, (chstr + highlight(json.dumps(msg, indent=2))))
-    except UnicodeEncodeError as e:
+    except UnicodeEncodeError:
         print_console(of, (msg))
 
     of.flush()
@@ -132,14 +133,14 @@ def print_error_pretty(msg, channel=None):
     if msg is None:
         return
     chstr = "[" + color.colorize(get_date(), "magenta") + "] "
-    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] " 
+    chstr += "[" + color.colorize("Channel : " + channel if channel is not None else "", "cyan") + "] "
     try:
         print_console(of, (chstr + color.colorize(color.colorize(
-            "ERROR: ", "red"), "bold") +
-            highlight(json.dumps(msg, indent=2))))
-    except UnicodeEncodeError as e:
+            "ERROR: ", "red"), "bold") + highlight(json.dumps(msg, indent=2))))
+    except UnicodeEncodeError:
         print_console(of, (msg))
     of.flush()
+
 
 print_ok = print_ok_pretty
 print_error = print_error_pretty
@@ -150,10 +151,12 @@ class DefaultPubnub(object):
         def handlerFunction(*args, **kwargs):
             print_error("Pubnub not initialized." +
                         "Use init command to initialize")
+
         return handlerFunction
 
     def __getattr__(self, name):
         return self.handlerFunctionClosure(name)
+
 
 pubnub = DefaultPubnub()
 
@@ -201,13 +204,13 @@ def _publish_command_handler(channel, message, async=False):
 
     def _error(r):
         print_error(r)
+
     print_ok(pubnub.publish(channel, message,
                             _callback if async is True else None,
                             _error if async is True else None))
 
 
 def _subscribe_command_handler(channel):
-
     def _callback(r, ch):
         print_ok(r, ch)
 
@@ -228,7 +231,6 @@ def _subscribe_command_handler(channel):
 
 
 def _unsubscribe_command_handler(channels):
-
     def _callback(r):
         print_ok(r)
 
@@ -243,9 +245,9 @@ def _unsubscribe_command_handler(channels):
         if (channel in current_channel_list):
             unsub_list.append(channel)
 
-        #pubnub.unsubscribe(channel + '-pnpres')
-        #if (channel + '-pnpres' in current_channel_list):
-        #    unsub_list.append(channel + ' (Presence)')
+            # pubnub.unsubscribe(channel + '-pnpres')
+            # if (channel + '-pnpres' in current_channel_list):
+            #    unsub_list.append(channel + ' (Presence)')
 
     if len(unsub_list) > 0:
         print_ok('Unsubscribed from : ' + str(unsub_list))
@@ -313,12 +315,6 @@ def _here_now_command_handler(channel, async=False):
                              _error if async is True else None))
 
 
-def kill_all_threads():
-    for thread in threading.enumerate():
-        if thread.isAlive():
-            stop(thread)
-
-
 def get_channel_array():
     channels = pubnub.get_channel_array()
 
@@ -338,9 +334,9 @@ class DevConsole(Cmd):
         Cmd.__init__(self)
         global pubnub
         self.intro = "For Help type ? or help . " + \
-            "To quit/exit type exit" + "\n" + \
-            "Commands can also be provided on command line while starting console (in quotes) ex. " + \
-            "pubnub-console 'init -p demo -s demo'"
+                     "To quit/exit type exit" + "\n" + \
+                     "Commands can also be provided on command line while starting console (in quotes) ex. " + \
+                     "pubnub-console 'init -p demo -s demo'"
         self.default_channel = None
         self.async = False
         pubnub = Pubnub("demo", "demo")
@@ -359,7 +355,6 @@ class DevConsole(Cmd):
     def get_channel_origin(self):
         cho = ""
         channels = get_channel_array()
-        channels_str = ",".join(channels)
         sl = self.channel_truncation
         if len(channels) > int(sl) and int(sl) > 0:
             cho += ",".join(channels[:int(sl)]) + " " + str(
@@ -389,13 +384,13 @@ class DevConsole(Cmd):
         self.prompt = self.get_prompt()
         return line
 
-    #def emptyline(self):
+    # def emptyline(self):
     #    self.prompt = self.get_prompt()
 
     def cmdloop_with_keyboard_interrupt(self):
         try:
             self.cmdloop()
-        except KeyboardInterrupt as e:
+        except KeyboardInterrupt:
             pass
         sys.stdout.write('\n')
         kill_all_threads()
@@ -513,7 +508,7 @@ class DevConsole(Cmd):
     def do_set_output_file(self, command, opts):
         global of
         try:
-            of = file(opts.file, 'w+')
+            of = open(opts.file, 'w+')
         except IOError as e:
             print_error("Could not set output file. " + e.reason)
 
@@ -559,7 +554,7 @@ class DevConsole(Cmd):
 
         try:
             message = json.loads(str(command))
-        except ValueError as ve:
+        except ValueError:
             message = str(command)
 
         _publish_command_handler(opts.channel, message, async=self.async)
@@ -619,8 +614,7 @@ class DevConsole(Cmd):
 
         if opts.presence is True:
             _revoke_command_handler(
-                opts.channel + '-pnpres', opts.auth_key,
-                opts.ttl, async=self.async)
+                opts.channel + '-pnpres', opts.auth_key, opts.ttl, async=self.async)
 
     @options([make_option('-c', '--channel', action="store",
                           help="Channel on which to revoke"),
@@ -708,17 +702,18 @@ class DevConsole(Cmd):
         kill_all_threads()
         return -1
 
-    #def do_EOF(self, args):
-    #    kill_all_threads()
-    #    return self.do_exit(args)
+        # def do_EOF(self, args):
+        #    kill_all_threads()
+        #    return self.do_exit(args)
 
-    #def handler(self, signum, frame):
-    #    kill_all_threads()
+        # def handler(self, signum, frame):
+        #    kill_all_threads()
 
 
 def main():
     app = DevConsole()
     app.cmdloop_with_keyboard_interrupt()
+
 
 if __name__ == "__main__":
     main()

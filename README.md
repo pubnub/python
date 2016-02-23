@@ -1,6 +1,7 @@
 # PubNub Python SDK
 
 [![Build Status](https://travis-ci.org/pubnub/python.svg?branch=master)](https://travis-ci.org/pubnub/python)
+[![PyPI](https://img.shields.io/pypi/v/pubnub.svg)](http://github.com/pubnub/python)
 
 #### [PubNub](http://www.pubnub.com) Real-time Data Network
 ##### Clients for Python, including Twisted and Tornado
@@ -11,7 +12,7 @@
 
 ## Installation
 ```
-pip install pubnub==3.7.6
+pip install pubnub
 ```
 Examples and instructions for the SDK are available in their accompanying README.md, migration.md and examples directories under their specific platform directories:
 

@@ -1,13 +1,19 @@
-## Contact support@pubnub.com for all questions
+# PubNub Python SDK
+
+[![Build Status](https://travis-ci.org/pubnub/python.svg?branch=master)](https://travis-ci.org/pubnub/python)
 
 #### [PubNub](http://www.pubnub.com) Real-time Data Network
 ##### Clients for Python, including Twisted and Tornado
+
+## Communication
+- If you **need help** or have a **general question**, contact <support@pubnub.com>
+- If you **want to contribute**, please open a pull request against the `develop` branch.
 
 ## Installation
 ```
 pip install pubnub==3.7.6
 ```
-Examples and instructions for the SDK are available in their acompanying README.md, migration.md and examples directories under their specific platform directories:
+Examples and instructions for the SDK are available in their accompanying README.md, migration.md and examples directories under their specific platform directories:
 
 [Standalone Python - Everyday python for your scripts and apps](python)
 
@@ -31,7 +37,7 @@ Migration docs for Tornado are [found here.](python-tornado/migration.md)
 Migration docs for Twisted [found here.](python-twisted/migration.md)
 
 ## Pubnub Console
-Pubnub console is a command line app which allows you to do various 
+Pubnub console is a command line app which allows you to do various
 pubnub operations like publish, subscribe, getting history, here now,
 presence etc from command line
 

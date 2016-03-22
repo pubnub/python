@@ -9,7 +9,7 @@ python:
   - '3.5'
 
 before_install:
-  - sudo apt-get install -y libssl-dev libffi-dev
+  - apt-get install -y libssl-dev libffi-dev
   - pip install -r dev-requirements.txt
   - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install twisted tornado pyopenssl; fi
 

@@ -1733,7 +1733,7 @@ class PubnubCoreAsync(PubnubBase):
         pass
 
     def stop(self):
-        pass
+        self._reset_offline()
 
     def nop(self):
         pass

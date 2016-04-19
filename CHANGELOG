@@ -1,3 +1,7 @@
+
+3.7.7 - 02-10-2015 - 3012d7e
+. Adding .stop() method for base python async operations to exit the listener
+
 3.7.6 - 02-10-2015 - 3012d7e
 . fixed issues in receiving gzipped response for twisted
 . fix for non reporting of dns lookup failure

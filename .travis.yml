@@ -6,4 +6,4 @@ python:
   - "3.4"
   - "3.5"
 sudo: false
-script: bash runt-tests.sh
+script: python runt-tests.sh

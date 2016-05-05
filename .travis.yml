@@ -6,5 +6,5 @@ python:
   - "3.4"
   - "3.5"
 sudo: false
-install: bash scripts/install
+install: bash scripts/install.sh
 script: python scripts/run-tests

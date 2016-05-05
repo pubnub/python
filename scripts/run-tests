@@ -8,8 +8,7 @@ from subprocess import check_call
 
 _dname = os.path.dirname
 
-#REPO_ROOT = _dname(_dname(_dname(os.path.abspath(__file__))))
-REPO_ROOT = _dname(os.path.abspath(__file__))
+REPO_ROOT = _dname(_dname(os.path.abspath(__file__)))
 os.chdir(os.path.join(REPO_ROOT, 'tests'))
 
 
@@ -18,5 +17,3 @@ def run(command):
 
 
 run('nose2')
-#run('nosetests --with-coverage --cover-erase --cover-package botocore '
-#    '--with-xunit --cover-xml -v unit/ functional/')

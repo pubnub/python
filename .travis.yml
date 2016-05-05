@@ -6,4 +6,4 @@ python:
   - "3.4"
   - "3.5"
 sudo: false
-script: python runt-tests.sh
+script: python run-tests

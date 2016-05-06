@@ -24,9 +24,6 @@ class HereNow(Endpoint):
         self._include_state = should_include_state
         return self
 
-    def do_work(self):
-        return self.pubnub.request(self.here_now_path(), self.build_params())
-
     def build_params(self):
         params = self.default_params()
 
@@ -37,7 +34,7 @@ class HereNow(Endpoint):
 
         return params
 
-    def here_now_path(self):
+    def build_path(self):
         if len(self._channels) > 0:
             channels = ','.join(self._channels)
         else:
@@ -55,6 +52,7 @@ class HereNow(Endpoint):
         return "qwer"
 
     def parse_multiple_channel_response(self, envelope):
+        print(envelope)
 
         json_env = envelope.json()
         payload = json_env['payload']

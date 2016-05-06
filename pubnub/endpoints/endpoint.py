@@ -1,8 +1,9 @@
-import string
 from abc import ABCMeta, abstractmethod
 
 # from pubnub import pubnub.PubNub
 from pip._vendor import requests
+
+from pubnub.exceptions import PubNubException
 
 
 class Endpoint:
@@ -13,7 +14,7 @@ class Endpoint:
         self.pubnub = pubnub
 
     @abstractmethod
-    def do_work(self):
+    def build_path(self):
         pass
 
     @abstractmethod
@@ -25,7 +26,8 @@ class Endpoint:
         pass
 
     def sync(self):
-        server_response = self.do_work()
+        # TODO: validate_params()
+        server_response = self.pubnub.request_sync(self.build_path(), self.build_params())
 
         # TODO: verify http success
         if server_response.status_code != requests.codes.ok:
@@ -35,6 +37,18 @@ class Endpoint:
 
         response = self.create_response(server_response)
         return response
+
+    def async(self, success, error):
+        def success_wrapper(server_response):
+            print("success")
+            success(self.create_response(server_response))
+
+        def error_wrapper(msg):
+            error(PubNubException(
+                pn_error=msg
+            ))
+
+        return self.pubnub.request_async(self.build_path(), self.build_params(), success_wrapper, error_wrapper)
 
     def default_params(self):
         return {

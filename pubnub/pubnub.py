@@ -1,10 +1,8 @@
-from pip._vendor import requests
-from pip._vendor.requests import ConnectionError
-from pip._vendor.requests.packages.urllib3.exceptions import HTTPError
+import json
+import threading
 
 from .exceptions import PubNubException
-from .errors import PNERR_CLIENT_TIMEOUT, PNERR_HTTP_ERROR, PNERR_CONNECTION_ERROR, PNERR_TOO_MANY_REDIRECTS_ERROR, \
-    PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR
+
 from .pubnub_core import PubNubCore
 
 
@@ -13,54 +11,50 @@ class PubNub(PubNubCore):
 
     def __init__(self, config):
         PubNubCore.__init__(self, config)
-        self.session = requests.Session()
 
-    def request(self, path, query):
+    def request_async(self, path, query, success, error):
         url = self.config.scheme_and_host() + path
-        print(url)
 
-        # connection error
-        try:
-            res = self.session.get(url, params=query)
-        except ConnectionError as e:
-            raise PubNubException(
-                pn_error=PNERR_CONNECTION_ERROR,
-                errormsg=str(e)
-            )
-        except HTTPError as e:
-            raise PubNubException(
-                pn_error=PNERR_HTTP_ERROR,
-                errormsg=str(e)
-            )
-        except requests.exceptions.Timeout as e:
-            raise PubNubException(
-                pn_error=PNERR_CLIENT_TIMEOUT,
-                errormsg=str(e)
-            )
-        except requests.exceptions.TooManyRedirects as e:
-            raise PubNubException(
-                pn_error=PNERR_TOO_MANY_REDIRECTS_ERROR,
-                errormsg=str(e)
-            )
-        except:
-            raise PubNubException(pn_error=PNERR_UNKNOWN_ERROR)
+        client = AsyncHTTPClient(self, url=url,callback=success, error=error)
 
-        # server error
-        if res.status_code != requests.codes.ok:
-            if res.text is None:
-                text = "N/A"
-            else:
-                text = res.text
+        thread = threading.Thread(target=client.run)
+        thread.start()
 
-            if res.status_code >= 500:
-                err = PNERR_SERVER_ERROR
-            else:
-                err = PNERR_CLIENT_ERROR
+        return thread
 
-            raise PubNubException(
-                pn_error=err,
-                errormsg=text,
-                status_code=res.status_code
-            )
 
-        return res
+class AsyncHTTPClient:
+    """A wrapper for threaded calls"""
+
+    def __init__(self, pubnub, url,callback=None, error=None, id=None):
+        # TODO: introduce timeouts
+        self.url = url
+        self.id = id
+        self.success = callback
+        self.error = error
+        self.pubnub = pubnub
+
+    def cancel(self):
+        self.success = None
+        self.error = None
+
+    def run(self):
+        def _invoke(func, data):
+            if func is not None:
+                func(get_data_for_user(data))
+
+        resp = self.pubnub.session.get(self.url)
+        if resp.status_code == 200:
+            _invoke(self.success, resp)
+        else:
+            _invoke(self.error, resp)
+
+
+def get_data_for_user(data):
+    try:
+        if 'message' in data and 'payload' in data:
+            return {'message': data['message'], 'payload': data['payload']}
+        else:
+            return data
+    except TypeError:
+        return data

@@ -1,8 +1,5 @@
 from abc import ABCMeta, abstractmethod
 
-# from pubnub import pubnub.PubNub
-from pip._vendor import requests
-
 from pubnub.exceptions import PubNubException
 
 
@@ -30,9 +27,9 @@ class Endpoint:
         server_response = self.pubnub.request_sync(self.build_path(), self.build_params())
 
         # TODO: verify http success
-        if server_response.status_code != requests.codes.ok:
-            response_body_text = server_response.text
-            print(response_body_text)
+        # if server_response.status_code != requests.codes.ok:
+        #     response_body_text = server_response.text
+        #     print(response_body_text)
             # TODO: try to get text
 
         response = self.create_response(server_response)

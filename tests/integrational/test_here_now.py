@@ -38,4 +38,3 @@ class TestPubNubAsyncHereNow(unittest.TestCase):
         print("awaiting")
         thread.join()
         print("finished")
-

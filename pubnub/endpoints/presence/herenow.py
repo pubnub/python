@@ -52,10 +52,12 @@ class HereNow(Endpoint):
         return "qwer"
 
     def parse_multiple_channel_response(self, envelope):
-        print(envelope)
+        """
+        :param envelope: an already serialized json response
+        :return:
+        """
 
-        json_env = envelope.json()
-        payload = json_env['payload']
+        payload = envelope['payload']
         raw_channels = payload['channels']
         channels = []
 

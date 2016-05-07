@@ -1,7 +1,6 @@
-import json
 import threading
 
-from .exceptions import PubNubException
+from pubnub.utils import get_data_for_user
 
 from .pubnub_core import PubNubCore
 
@@ -45,16 +44,7 @@ class AsyncHTTPClient:
 
         resp = self.pubnub.session.get(self.url)
         if resp.status_code == 200:
-            _invoke(self.success, resp)
+            _invoke(self.success, resp.json())
         else:
             _invoke(self.error, resp)
 
-
-def get_data_for_user(data):
-    try:
-        if 'message' in data and 'payload' in data:
-            return {'message': data['message'], 'payload': data['payload']}
-        else:
-            return data
-    except TypeError:
-        return data

@@ -67,7 +67,7 @@ class PubNubCore:
                 status_code=res.status_code
             )
 
-        return res
+        return res.json()
 
     @abstractmethod
     def request_async(self, path, query, success, error):

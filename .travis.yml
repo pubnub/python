@@ -1,9 +1,14 @@
 language: python
 python:
+  - "2.6"
   - "2.7"
+  - "3.0"
+  - "3.1"
+  - "3.2"
   - "3.3"
   - "3.4"
   - "3.5"
+  - "pypy"
 sudo: false
 install: bash scripts/install.sh
 script: python scripts/run-tests

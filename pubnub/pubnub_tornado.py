@@ -1,7 +1,7 @@
 import json
 import time
 
-from pubnub.utils import get_data_for_user
+from .utils import get_data_for_user
 from .pubnub_core import PubNubCore
 
 import tornado.httpclient

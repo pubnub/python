@@ -16,4 +16,4 @@ def run(command):
     return check_call(command, shell=True)
 
 
-run('nose2')
+run('py.test --cov=./tests/')

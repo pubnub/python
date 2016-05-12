@@ -1,2 +1,4 @@
-nose2==0.6.4
+pytest
+pytest-cov
+codecov
 tornado

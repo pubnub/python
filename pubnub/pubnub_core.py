@@ -46,8 +46,11 @@ class PubNubCore:
                 pn_error=PNERR_TOO_MANY_REDIRECTS_ERROR,
                 errormsg=str(e)
             )
-        except:
-            raise PubNubException(pn_error=PNERR_UNKNOWN_ERROR)
+        except Exception as e:
+            raise PubNubException (
+                pn_error=PNERR_UNKNOWN_ERROR,
+                errormsg=str(e)
+            )
 
         # server error
         if res.status_code != requests.codes.ok:
@@ -68,10 +71,6 @@ class PubNubCore:
             )
 
         return res.json()
-
-    @abstractmethod
-    def request_async(self, path, query, success, error):
-        pass
 
     def here_now(self):
         return HereNow(self)

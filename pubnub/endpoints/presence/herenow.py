@@ -27,8 +27,8 @@ class HereNow(Endpoint):
     def build_params(self):
         params = self.default_params()
 
-        if len(self._channels) > 0:
-            params['channels'] = ",".join(self._channels)
+        if len(self._channel_groups) > 0:
+            params['channel-groups'] = ",".join(self._channels)
 
         params['state'] = "1"
 
@@ -75,5 +75,3 @@ class HereNow(Endpoint):
         res = PNHereNowResult(int(payload['total_channels']), int(payload['total_channels']), channels)
 
         return res
-
-# Endpoint.register(HereNow)

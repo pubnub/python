@@ -47,7 +47,7 @@ class PubNubTornado(PubNubCore):
         self.pnsdk = 'PubNub-Python-' + 'Tornado' + '/' + self.version
 
     def request_async(self, path, query, success, error):
-        print("async req")
+        # TODO: query param is not used
         url = self.config.scheme_and_host() + path
         self._request(
             url=url,

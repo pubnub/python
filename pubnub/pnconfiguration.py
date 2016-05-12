@@ -14,12 +14,15 @@ class PNConfiguration(object):
 
     def scheme(self):
         if self.ssl:
-            return "https://"
+            return "https"
         else:
-            return "http://"
+            return "http"
+
+    def scheme_extended(self):
+        return self.scheme() + "://"
 
     def scheme_and_host(self):
-        return self.scheme() + self.origin
+        return self.scheme_extended() + self.origin
 
         # TODO: set log level
         # TODO: set log level

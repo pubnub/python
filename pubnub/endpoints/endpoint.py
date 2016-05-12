@@ -7,7 +7,6 @@ class Endpoint:
     __metaclass__ = ABCMeta
 
     def __init__(self, pubnub):
-        # assert isinstance(pubnub, pubnub.PubNub)
         self.pubnub = pubnub
 
     @abstractmethod
@@ -26,18 +25,11 @@ class Endpoint:
         # TODO: validate_params()
         server_response = self.pubnub.request_sync(self.build_path(), self.build_params())
 
-        # TODO: verify http success
-        # if server_response.status_code != requests.codes.ok:
-        #     response_body_text = server_response.text
-        #     print(response_body_text)
-            # TODO: try to get text
-
         response = self.create_response(server_response)
         return response
 
     def async(self, success, error):
         def success_wrapper(server_response):
-            print("success")
             success(self.create_response(server_response))
 
         def error_wrapper(msg):
@@ -45,7 +37,12 @@ class Endpoint:
                 pn_error=msg
             ))
 
-        return self.pubnub.request_async(self.build_path(), self.build_params(), success_wrapper, error_wrapper)
+        return self.pubnub.request_async(self.build_path(), self.build_params(),
+                                         success_wrapper, error_wrapper)
+
+    def deferred(self):
+        return self.pubnub.request_deferred(self.build_path(), self.build_params())\
+            .addCallback(self.create_response)
 
     def default_params(self):
         return {

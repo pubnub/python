@@ -66,3 +66,6 @@ target/
 .python-version
 
 .idea
+
+# Twisted
+_trial_temp

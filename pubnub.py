@@ -847,7 +847,7 @@ class PubnubBase(object):
                                     callback=callback, error=error,
                                     connect=connect,
                                     disconnect=disconnect,
-                                    reconnect=reconnect)
+                                    reconnect=reconnect, presence=callback)
 
     def state(self, channel=None, channel_group=None, uuid=None, state=None,
               callback=None, error=None):
@@ -2014,7 +2014,7 @@ class PubnubCoreAsync(PubnubBase):
 
     def subscribe_group(self, channel_groups, callback, error=None,
                         connect=None, disconnect=None, reconnect=None,
-                        sync=False):
+                        sync=False, presence=None):
         """Subscribe to data on a channel group.
 
         This function causes the client to create an open TCP socket to the
@@ -2055,7 +2055,7 @@ class PubnubCoreAsync(PubnubBase):
 
         return self._subscribe(
             channel_groups=channel_groups, callback=callback, error=error,
-            connect=connect, disconnect=disconnect, reconnect=reconnect)
+            connect=connect, disconnect=disconnect, reconnect=reconnect, presence=presence)
 
     def _subscribe(
         self, channels=None, channel_groups=None, state=None, callback=None,

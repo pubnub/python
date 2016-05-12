@@ -15,5 +15,5 @@ os.chdir(os.path.join(REPO_ROOT, 'tests'))
 def run(command):
     return check_call(command, shell=True)
 
-
-run('py.test --cov=./tests/')
+print(os.environ.get('TRAVIS_PYTHON_VERSION'))
+run('py.test --cov=./tests/ --ignore=integrational/twisted/')

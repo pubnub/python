@@ -12,7 +12,7 @@ class TestPublish(unittest.TestCase):
         self.pubnub = MagicMock(
             spec=PubNub,
             config=pnconf,
-            sdk_name=Mock(return_value=sdk_name)
+            sdk_name=sdk_name
         )
         self.pubnub.uuid = "UUID_PublishUnitTest"
         self.pub = Publish(self.pubnub)

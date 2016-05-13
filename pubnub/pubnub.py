@@ -11,6 +11,9 @@ class PubNub(PubNubCore):
     def __init__(self, config):
         PubNubCore.__init__(self, config)
 
+    def sdk_platform(self):
+        return ""
+
     def request_async(self, path, query, success, error):
         # TODO: query param not used
         url = self.config.scheme_and_host() + path

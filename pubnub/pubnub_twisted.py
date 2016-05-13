@@ -31,6 +31,9 @@ class PubNubResponse(Protocol):
 class PubNubTwisted(PubNubCore):
     """PubNub Python API for Twisted framework"""
 
+    def sdk_platform(self):
+        return "-Twisted"
+
     def __init__(self, config, pool=None, reactor=None):
         super(PubNubTwisted, self).__init__(config)
 
@@ -47,8 +50,7 @@ class PubNubTwisted(PubNubCore):
         else:
             self.pnconn_pool = pool
 
-        self.headers = {'User-Agent': ['Python-Twisted'], 'V': [self.version]}
-        self.pnsdk = 'PubNub-Python-' + 'Twisted' + '/' + self.version
+        self.headers = {'User-Agent': ['Python-Twisted'], 'V': [self.SDK_VERSION]}
 
     def start(self):
         self.reactor.run()

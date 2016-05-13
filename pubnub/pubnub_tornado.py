@@ -35,16 +35,19 @@ class PubNubTornado(PubNubCore):
     def set_ioloop(self, ioloop):
         self._ioloop = ioloop
 
+    def sdk_platform(self):
+        return "-Tornado"
+
     def __init__(self, config):
         super(PubNubTornado, self).__init__(config)
         self._ioloop = default_ioloop
 
         # self.headers = {'User-Agent': 'Python-Tornado', 'Accept-Encoding': self.accept_encoding, 'V': self.version}
         # TODO: add accept encoding
-        self.headers = {'User-Agent': 'Python-Tornado', 'V': self.version}
+        self.headers = {'User-Agent': 'Python-Tornado', 'V': self.SDK_VERSION}
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
         self.id = None
-        self.pnsdk = 'PubNub-Python-' + 'Tornado' + '/' + self.version
+        self.pnsdk = 'PubNub-Python-' + 'Tornado' + '/' + self.SDK_VERSION
 
     def request_async(self, path, query, success, error):
         # TODO: query param is not used

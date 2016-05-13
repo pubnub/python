@@ -82,7 +82,7 @@ class PubNubCore:
 
     @property
     def sdk_name(self):
-        return "%s-%s/%s" % (PubNubCore.SDK_NAME, self.sdk_platform(), PubNubCore.SDK_NAME)
+        return "%s%s/%s" % (PubNubCore.SDK_NAME, self.sdk_platform(), PubNubCore.SDK_NAME)
 
     @abstractmethod
     def sdk_platform(self): pass

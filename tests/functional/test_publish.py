@@ -1,6 +1,4 @@
-import json
 import unittest
-import urllib
 
 from mock import Mock, MagicMock
 

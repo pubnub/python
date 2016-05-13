@@ -12,6 +12,7 @@ class PubNub(PubNubCore):
         PubNubCore.__init__(self, config)
 
     def request_async(self, path, query, success, error):
+        # TODO: query param not used
         url = self.config.scheme_and_host() + path
 
         client = AsyncHTTPClient(self, url=url,callback=success, error=error)

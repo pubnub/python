@@ -1,9 +1,10 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 
 from pip._vendor import requests
 from pip._vendor.requests import ConnectionError
 from pip._vendor.requests.packages.urllib3.exceptions import HTTPError
 
+from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.herenow import HereNow
 from .exceptions import PubNubException
 from .errors import PNERR_CLIENT_TIMEOUT, PNERR_HTTP_ERROR, PNERR_CONNECTION_ERROR, PNERR_TOO_MANY_REDIRECTS_ERROR, \
@@ -21,7 +22,6 @@ class PubNubCore:
 
     def request_sync(self, path, query):
         url = self.config.scheme_and_host() + path
-        print(url)
 
         # connection error
         try:
@@ -74,6 +74,9 @@ class PubNubCore:
 
     def here_now(self):
         return HereNow(self)
+
+    def publish(self):
+        return Publish(self)
 
     @property
     def version(self):

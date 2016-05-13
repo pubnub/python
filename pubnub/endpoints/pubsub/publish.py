@@ -49,7 +49,6 @@ class Publish(Endpoint):
         return params
 
     def build_path(self):
-        # TODO: encode
         message = self.encode(self._message)
 
         return Publish.PUBLISH_PATH % (self.pubnub.config.publish_key, self.pubnub.config.subscribe_key,

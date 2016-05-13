@@ -46,7 +46,7 @@ class Endpoint:
 
     def default_params(self):
         return {
-            'pnsdk': 'Python/' + self.pubnub.version,
+            'pnsdk': self.pubnub.sdk_name(),
             'uuid': self.pubnub.uuid
         }
 

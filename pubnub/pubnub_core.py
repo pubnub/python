@@ -1,4 +1,4 @@
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 
 from pip._vendor import requests
 from pip._vendor.requests import ConnectionError
@@ -13,6 +13,8 @@ from .errors import PNERR_CLIENT_TIMEOUT, PNERR_HTTP_ERROR, PNERR_CONNECTION_ERR
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
+    SDK_VERSION = "4.0.0"
+    SDK_NAME = "PubNub-Python"
 
     __metaclass__ = ABCMeta
 
@@ -79,8 +81,11 @@ class PubNubCore:
         return Publish(self)
 
     @property
-    def version(self):
-        return "4.0.0"
+    def sdk_name(self):
+        return "%s-%s/%s" % (PubNubCore.SDK_NAME, self.sdk_platform(), PubNubCore.SDK_NAME)
+
+    @abstractmethod
+    def sdk_platform(self): pass
 
     @property
     def uuid(self):

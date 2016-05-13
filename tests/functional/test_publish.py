@@ -1,6 +1,6 @@
 import unittest
 
-from mock import Mock, MagicMock
+from mock import MagicMock
 
 from pubnub.endpoints.pubsub.publish import Publish
 from pubnub.pubnub import PubNub

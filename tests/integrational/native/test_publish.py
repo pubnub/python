@@ -4,11 +4,9 @@ from pubnub.pubnub import PubNub
 from tests.helper import pnconf
 
 import unittest
-import vcr
 
 
 class TestPubNubSyncPublish(unittest.TestCase):
-    @vcr.use_cassette('fixtures/vcr_cassettes/synopsis.yaml')
     def test_success(self):
         pubnub = PubNub(pnconf)
 

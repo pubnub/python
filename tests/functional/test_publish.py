@@ -1,6 +1,9 @@
 import unittest
 
-from mock import MagicMock
+try:
+    from mock import MagicMock
+except ImportError:
+    from unittest.mock import MagicMock
 
 from pubnub.endpoints.pubsub.publish import Publish
 from pubnub.pubnub import PubNub

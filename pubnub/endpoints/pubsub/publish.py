@@ -1,6 +1,7 @@
 import json
 import urllib
 
+from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.models.consumer.pubsub import PNPublishResult
 
@@ -37,19 +38,13 @@ class Publish(Endpoint):
         self._meta = meta
         return self
 
-    def encode(self, data):
-        if isinstance(data, str):
-            return urllib.quote("\"%s\"" % data)
-        else:
-            return urllib.quote(json.dumps(data))
-
     def build_params(self):
         params = self.default_params()
 
         return params
 
     def build_path(self):
-        message = self.encode(self._message)
+        message = utils.encode(self._message)
 
         return Publish.PUBLISH_PATH % (self.pubnub.config.publish_key, self.pubnub.config.subscribe_key,
                                        self._channel, 0, message)

@@ -1,5 +1,4 @@
-import json
-import urllib
+from pubnub import utils
 
 from pubnub.pnconfiguration import PNConfiguration
 
@@ -11,4 +10,4 @@ sdk_name = "Python-UnitTest"
 
 
 def encode(data):
-    return urllib.quote(json.dumps(data))
+    return utils.encode(data)

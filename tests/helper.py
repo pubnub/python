@@ -10,4 +10,4 @@ sdk_name = "Python-UnitTest"
 
 
 def encode(data):
-    return utils.encode(data)
+    return utils.url_encode(utils.write_value_as_string(data))

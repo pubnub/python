@@ -1,15 +1,20 @@
+import logging
 from abc import ABCMeta, abstractmethod
 
 from pip._vendor import requests
 from pip._vendor.requests import ConnectionError
 from pip._vendor.requests.packages.urllib3.exceptions import HTTPError
 
+from .enums import HttpMethod
 from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.herenow import HereNow
 from .structures import RequestOptions
 from .exceptions import PubNubException
 from .errors import PNERR_CLIENT_TIMEOUT, PNERR_HTTP_ERROR, PNERR_CONNECTION_ERROR, PNERR_TOO_MANY_REDIRECTS_ERROR, \
     PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR
+
+
+logger = logging.getLogger("pubnub")
 
 
 class PubNubCore:
@@ -27,7 +32,7 @@ class PubNubCore:
         assert isinstance(options, RequestOptions)
 
         url = self.config.scheme_and_host() + options.path
-        # TODO: log url here
+        logger.debug("%s %s, %s" % (HttpMethod.string(options.method), url, options.params))
 
         # connection error
         try:

@@ -9,8 +9,8 @@ class PNConfiguration(object):
         self.non_subscribe_request_timeout = 10
         self.subscribe_timeout = 310
         self.connect_timeout = 5
-        self.subscribe_key = "demo"
-        self.publish_key = "demo"
+        self.subscribe_key = None
+        self.publish_key = None
 
     def scheme(self):
         if self.ssl:

@@ -1,4 +1,3 @@
-# PubNub HereNow usage example
 import logging
 import sys
 
@@ -8,13 +7,12 @@ import pubnub
 from examples import pnconf
 from pubnub.pubnub import PubNub
 
+# Default log-level is ERROR, to override it use pubnub.set_stream_logger helper:
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 pubnub = PubNub(pnconf)
 
-res = pubnub.here_now() \
-    .channels(["ch1", "ch2", "ch3", "demo"]) \
-    .include_state(False) \
+pubnub.publish() \
+    .channel("logging") \
+    .message("hello") \
     .sync()
-
-print(res.total_occupancy)

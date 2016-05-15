@@ -2,6 +2,10 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 
 import unittest
+import logging
+import pubnub
+
+pubnub.set_stream_logger('pubnub', logging.INFO)
 
 
 class TestPubNubSyncHereNow(unittest.TestCase):

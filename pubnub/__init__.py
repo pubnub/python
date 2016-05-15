@@ -10,7 +10,7 @@ def set_stream_logger(name='pubnub', level=logging.ERROR, format_string=None, st
 
     logger = logging.getLogger(name)
     logger.setLevel(level)
-    handler = logging.StreamHandler(stream=stream)
+    handler = logging.StreamHandler(stream)
     handler.setLevel(level)
     formatter = logging.Formatter(format_string)
     handler.setFormatter(formatter)

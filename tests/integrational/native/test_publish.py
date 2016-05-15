@@ -16,8 +16,8 @@ class TestPubNubSyncPublish(unittest.TestCase):
                 .message("hi") \
                 .sync()
 
-            self.assertIsInstance(res, PNPublishResult)
-            self.assertGreater(res.timetoken, 1)
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -30,8 +30,8 @@ class TestPubNubSyncPublish(unittest.TestCase):
                 .message(["hi", "hi2", "hi3"]) \
                 .sync()
 
-            self.assertIsInstance(res, PNPublishResult)
-            self.assertGreater(res.timetoken, 1)
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -41,8 +41,8 @@ class TestPubNubAsyncPublish(unittest.TestCase):
         pubnub = PubNub(pnconf)
 
         def success(res):
-            self.assertIsInstance(res, PNPublishResult)
-            self.assertGreater(res.timetoken, 1)
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
 
         def error(e):
             self.fail(e)
@@ -58,8 +58,8 @@ class TestPubNubAsyncPublish(unittest.TestCase):
         pubnub = PubNub(pnconf)
 
         def success(res):
-            self.assertIsInstance(res, PNPublishResult)
-            self.assertGreater(res.timetoken, 1)
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
 
         def error(e):
             self.fail(e)

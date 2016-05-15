@@ -1,4 +1,5 @@
 from pubnub.endpoints.endpoint import Endpoint
+from pubnub.enums import HttpMethod
 from pubnub.models.consumer.presence import PNHereNowResult, PNOccupantsData, PNHereNowChannelData
 
 
@@ -41,6 +42,12 @@ class HereNow(Endpoint):
             channels = ','
 
         return HereNow.HERE_NOW_PATH % (self.pubnub.config.subscribe_key, channels)
+
+    def http_method(self):
+        return HttpMethod.GET
+
+    def validate_params(self):
+        self.validate_subscribe_key()
 
     def create_response(self, envelope):
         if len(self._channels) > 1 or len(self._channel_groups) > 0:

@@ -9,3 +9,8 @@ PNERR_SERVER_ERROR = "HTTP Server Error"
 # For 4xx server responses
 PNERR_CLIENT_ERROR = "HTTP Client Error"
 PNERR_UNKNOWN_ERROR = "Unknown Error"
+PNERR_CHANNEL_MISSING = "Channel missing"
+PNERR_MESSAGE_MISSING = "Message missing"
+PNERR_SUBSCRIBE_KEY_MISSING = "Subscribe key not configured"
+PNERR_PUBLISH_KEY_MISSING = "Publish key not configured"
+PNERR_PUBLISH_META_WRONG_TYPE = "Publish meta should be dict"

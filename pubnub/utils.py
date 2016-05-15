@@ -1,5 +1,4 @@
 import json
-import urllib
 
 
 def get_data_for_user(data):
@@ -12,17 +11,17 @@ def get_data_for_user(data):
         return data
 
 
-def encode(data):
+def write_value_as_string(data):
     if isinstance(data, str):
-        return quote("\"%s\"" % data)
+        return "\"%s\"" % data
     else:
-        return quote(json.dumps(data))
+        return json.dumps(data)
 
 
-def quote(data):
+def url_encode(data):
     try:
         from urllib.parse import quote as q
     except ImportError:
-        import urllib.quote as q
+        from urllib import quote as q
 
-    q(data)
+    return q(data)

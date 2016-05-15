@@ -2,7 +2,7 @@ import threading
 
 from .utils import get_data_for_user
 
-from .pubnub_core import PubNubCore
+from .pubnub_core import PubNubCore, RequestOptions
 
 
 class PubNub(PubNubCore):
@@ -14,11 +14,14 @@ class PubNub(PubNubCore):
     def sdk_platform(self):
         return ""
 
-    def request_async(self, path, query, success, error):
-        # TODO: query param not used
-        url = self.config.scheme_and_host() + path
+    def request_async(self, options, success, error):
+        assert isinstance(options, RequestOptions)
 
-        client = AsyncHTTPClient(self, url=url,callback=success, error=error)
+        # TODO: query param not used
+        url = self.config.scheme_and_host() + options.path
+        # TODO: log url here
+
+        client = AsyncHTTPClient(self, url=url, callback=success, error=error)
 
         thread = threading.Thread(target=client.run)
         thread.start()

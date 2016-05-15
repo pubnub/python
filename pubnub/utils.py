@@ -1,4 +1,5 @@
 import json
+import uuid as u
 
 
 def get_data_for_user(data):
@@ -25,3 +26,7 @@ def url_encode(data):
         from urllib import quote as q
 
     return q(data)
+
+
+def uuid():
+    return str(u.uuid4())

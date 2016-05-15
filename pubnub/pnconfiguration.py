@@ -1,9 +1,11 @@
+from . import utils
+
 
 class PNConfiguration(object):
     def __init__(self):
+        # TODO: add validation
         self.presence_timeout = 300
-        # TODO: generate a random uuid
-        self.uuid = ""
+        self.uuid = None
         self.origin = "pubsub.pubnub.com"
         self.ssl = False
         self.non_subscribe_request_timeout = 10
@@ -11,6 +13,12 @@ class PNConfiguration(object):
         self.connect_timeout = 5
         self.subscribe_key = None
         self.publish_key = None
+
+    def validate(self):
+        assert self.uuid is None or isinstance(self.uuid, str)
+
+        if self.uuid is None:
+            self.uuid = utils.uuid()
 
     def scheme(self):
         if self.ssl:

@@ -28,6 +28,8 @@ class PubNubCore:
         self.config = config
         self.session = requests.Session()
 
+        self.config.validate()
+
     def request_sync(self, options):
         assert isinstance(options, RequestOptions)
 

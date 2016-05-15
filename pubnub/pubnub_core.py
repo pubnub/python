@@ -1,9 +1,9 @@
 import logging
 from abc import ABCMeta, abstractmethod
 
-from pip._vendor import requests
-from pip._vendor.requests import ConnectionError
-from pip._vendor.requests.packages.urllib3.exceptions import HTTPError
+import requests
+from requests import ConnectionError
+from requests.packages.urllib3.exceptions import HTTPError
 
 from .enums import HttpMethod
 from .endpoints.pubsub.publish import Publish

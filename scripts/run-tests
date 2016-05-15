@@ -22,6 +22,6 @@ def run(command):
     return check_call(command, shell=True)
 
 if version.startswith('2.7'):
-    run('py.test --cov=./tests/')
+    run('py.test --cov=../pubnub')
 else:
-    run('py.test --cov=./tests/ --ignore=integrational/twisted/')
+    run('py.test --cov=../pubnub/ --ignore=integrational/twisted/')

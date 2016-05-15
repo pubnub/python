@@ -1,9 +1,11 @@
 import json
+import logging
 import urllib
 import urlparse
 
 from twisted.internet import reactor as _reactor
 from twisted.internet.defer import Deferred
+from twisted.internet import defer
 from twisted.internet.protocol import Protocol
 from twisted.web.client import Agent, ContentDecoderAgent
 from twisted.web.client import RedirectAgent, GzipDecoder
@@ -11,8 +13,13 @@ from twisted.web.client import HTTPConnectionPool
 from twisted.web.http_headers import Headers
 from twisted.internet.ssl import ClientContextFactory
 
+from .enums import HttpMethod
+from .exceptions import PubNubException
 from .utils import get_data_for_user
 from .pubnub_core import PubNubCore
+
+
+logger = logging.getLogger("pubnub")
 
 
 class WebClientContextFactory(ClientContextFactory):
@@ -71,15 +78,14 @@ class PubNubTwisted(PubNubCore):
 
         return cancel
 
-    def request_async(self, path, query, success, error):
+    def request_async(self, options, success, error):
         """
         Request in non-common for Twisted way - using callbacks
         WARNING: currently is buggy
 
         :param error:
         :param success:
-        :param path:
-        :param query:
+        :param options:
         :return: async handler
         """
         def handler():
@@ -93,21 +99,25 @@ class PubNubTwisted(PubNubCore):
             def e(err):
                 _invoke(error, err)
 
-            self.request_deferred(path, query).addCallbacks(s, e)
+            self.request_deferred(options).addCallbacks(s, e)
 
         return handler()
 
-    def request_deferred(self, path, query):
+    def request_deferred(self, options_func):
         # TODO: handle timeout and encoder_map
         # TODO: unify error objects
         rc = self.reactor
         pnconn_pool = self.pnconn_pool
         headers = self.headers
+        try:
+            options = options_func()
+        except PubNubException as e:
+            return defer.fail(e)
 
         url = urlparse.urlunsplit((self.config.scheme(), self.config.origin,
-                                   path, urllib.urlencode(query), ''))
+                                   options.path, urllib.urlencode(options.params), ''))
 
-        print(url)
+        logger.debug("%s %s" % (HttpMethod.string(options.method), url))
 
         def handler():
             # url = self.getUrl(request, encoder_map)

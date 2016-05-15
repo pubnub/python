@@ -62,8 +62,11 @@ class Endpoint:
         return self.pubnub.request_async(options, success_wrapper, error_wrapper)
 
     def deferred(self):
-        return self.pubnub.request_deferred(self.build_path(), self.build_params())\
-            .addCallback(self.create_response)
+        def handler():
+            self.validate_params()
+            return self.options()
+
+        return self.pubnub.request_deferred(handler).addCallback(self.create_response)
 
     def default_params(self):
         return {

@@ -5,8 +5,12 @@ from twisted.internet import reactor
 from twisted.trial import unittest
 from twisted.web.client import HTTPConnectionPool
 
-from pubnub.pnconfiguration import PNConfiguration
+import logging
+import pubnub
 from pubnub.pubnub_twisted import PubNubTwisted
+from tests.helper import pnconf
+
+pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
 class TestPubNubAsyncAsyncHereNow(unittest.TestCase):
@@ -27,12 +31,11 @@ class TestPubNubAsyncAsyncHereNow(unittest.TestCase):
         # self.assertEqual(res.total_occupancy, 1)
 
     def error(self, error):
-        return defer.fail(Exception("Error callback should not be invoked", error))
+        return defer.fail(error)
 
     def test_success_deferred(self):
         d = defer.Deferred()
 
-        pnconf = PNConfiguration()
         pubnub = PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
 
         pubnub.here_now() \
@@ -44,10 +47,19 @@ class TestPubNubAsyncAsyncHereNow(unittest.TestCase):
 
         return d
 
+    def test_success_sync(self):
+        pubnub = PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
+
+        res = pubnub.here_now() \
+            .channels(["ch1", "ch2", "ch3", "demo"]) \
+            .include_state(False) \
+            .sync()
+
+        print('sync', res)
+
     def xtest_success_async(self):
         d = defer.Deferred()
 
-        pnconf = PNConfiguration()
         pubnub = PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
 
         success = self.success

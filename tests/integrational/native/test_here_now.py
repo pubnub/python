@@ -1,6 +1,5 @@
 from pubnub.pubnub import PubNub
 
-import sys
 import unittest
 import logging
 import pubnub

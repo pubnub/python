@@ -1,6 +1,8 @@
 import json
 import time
 
+from .errors import PNERR_DEFERRED_NOT_IMPLEMENTED
+from .exceptions import PubNubException
 from .utils import get_data_for_user
 from .pubnub_core import PubNubCore
 
@@ -60,6 +62,9 @@ class PubNubTornado(PubNubCore):
             timeout=15,
             connect_timeout=5,
         )
+
+    def request_deferred(self, options_func):
+        raise PubNubException(pn_error=PNERR_DEFERRED_NOT_IMPLEMENTED)
 
     def _request(self, url, callback=None, error=None,
                  single=False, timeout=15, connect_timeout=5, encoder_map=None):

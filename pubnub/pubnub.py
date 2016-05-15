@@ -1,6 +1,8 @@
 import logging
 import threading
 
+from .errors import PNERR_DEFERRED_NOT_IMPLEMENTED
+from .exceptions import PubNubException
 from .enums import HttpMethod
 from .utils import get_data_for_user
 
@@ -32,6 +34,9 @@ class PubNub(PubNubCore):
 
         return thread
 
+
+    def request_deferred(self, options_func):
+        raise PubNubException(pn_error=PNERR_DEFERRED_NOT_IMPLEMENTED)
 
 class AsyncHTTPClient:
     """A wrapper for threaded calls"""

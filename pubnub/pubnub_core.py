@@ -85,6 +85,14 @@ class PubNubCore:
 
         return res.json()
 
+    @abstractmethod
+    def request_async(self, options, success, error):
+        pass
+
+    @abstractmethod
+    def request_deferred(self, options_func):
+        pass
+
     def here_now(self):
         return HereNow(self)
 

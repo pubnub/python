@@ -64,7 +64,10 @@ class Publish(Endpoint):
                                        self._channel, 0, stringified_message)
 
     def http_method(self):
-        return HttpMethod.GET
+        if self._use_post is True:
+            return HttpMethod.POST
+        else:
+            return HttpMethod.GET
 
     def validate_params(self):
         if self._channel is None or len(self._channel) is 0:

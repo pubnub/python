@@ -1,3 +1,5 @@
+import vcr
+
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
@@ -7,6 +9,8 @@ import unittest
 
 
 class TestPubNubSyncPublish(unittest.TestCase):
+    @vcr.use_cassette('integrational/fixtures/publish/sync_success.yaml',
+                      filter_query_parameters=['uuid'])
     def test_success(self):
         pubnub = PubNub(pnconf)
 
@@ -21,6 +25,8 @@ class TestPubNubSyncPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @vcr.use_cassette('integrational/fixtures/publish/sync_success_list.yaml',
+                      filter_query_parameters=['uuid'])
     def test_success_list(self):
         pubnub = PubNub(pnconf)
 
@@ -37,6 +43,8 @@ class TestPubNubSyncPublish(unittest.TestCase):
 
 
 class TestPubNubAsyncPublish(unittest.TestCase):
+    @vcr.use_cassette('integrational/fixtures/publish/async_success.yaml',
+                      filter_query_parameters=['uuid'])
     def test_success(self):
         pubnub = PubNub(pnconf)
 
@@ -54,6 +62,8 @@ class TestPubNubAsyncPublish(unittest.TestCase):
 
         thread.join()
 
+    @vcr.use_cassette('integrational/fixtures/publish/async_success_list.yaml',
+                      filter_query_parameters=['uuid'])
     def test_success_list(self):
         pubnub = PubNub(pnconf)
 

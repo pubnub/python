@@ -34,11 +34,12 @@ class PubNubCore:
         assert isinstance(options, RequestOptions)
 
         url = self.config.scheme_and_host() + options.path
-        logger.debug("%s %s %s" % (HttpMethod.string(options.method), url, options.params))
+        method = HttpMethod.string(options.method)
+        logger.debug("%s %s %s" % (method, url, options.params))
 
         # connection error
         try:
-            res = self.session.get(url, params=options.params)
+            res = self.session.request(method, url, params=options.params)
         except ConnectionError as e:
             raise PubNubException(
                 pn_error=PNERR_CONNECTION_ERROR,

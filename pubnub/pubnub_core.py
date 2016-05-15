@@ -32,7 +32,7 @@ class PubNubCore:
         assert isinstance(options, RequestOptions)
 
         url = self.config.scheme_and_host() + options.path
-        logger.debug("%s %s, %s" % (HttpMethod.string(options.method), url, options.params))
+        logger.debug("%s %s %s" % (HttpMethod.string(options.method), url, options.params))
 
         # connection error
         try:

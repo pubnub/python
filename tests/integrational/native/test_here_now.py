@@ -1,16 +1,16 @@
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 
+import sys
 import unittest
 import logging
 import pubnub
+from tests.helper import pnconf
 
-pubnub.set_stream_logger('pubnub', logging.INFO)
+pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
 class TestPubNubSyncHereNow(unittest.TestCase):
     def test_success(self):
-        pnconf = PNConfiguration()
         pubnub = PubNub(pnconf)
 
         res = pubnub.here_now() \
@@ -23,7 +23,6 @@ class TestPubNubSyncHereNow(unittest.TestCase):
 
 class TestPubNubAsyncHereNow(unittest.TestCase):
     def test_success(self):
-        pnconf = PNConfiguration()
         pubnub = PubNub(pnconf)
 
         def success(res):

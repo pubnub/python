@@ -1,8 +1,12 @@
+import logging
 import threading
 
+from .enums import HttpMethod
 from .utils import get_data_for_user
 
 from .pubnub_core import PubNubCore, RequestOptions
+
+logger = logging.getLogger("pubnub")
 
 
 class PubNub(PubNubCore):
@@ -19,7 +23,7 @@ class PubNub(PubNubCore):
 
         # TODO: query param not used
         url = self.config.scheme_and_host() + options.path
-        # TODO: log url here
+        logger.debug("%s %s %s" % (HttpMethod.string(options.method), url, options.params))
 
         client = AsyncHTTPClient(self, url=url, callback=success, error=error)
 

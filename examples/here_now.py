@@ -8,7 +8,7 @@ import pubnub
 from examples import pnconf
 from pubnub.pubnub import PubNub
 
-pubnub.set_stream_logger('pubnub', logging.DEBUG)
+pubnub.set_stream_logger('pubnub', logging.DEBUG, stream=sys.stdout)
 
 pubnub = PubNub(pnconf)
 

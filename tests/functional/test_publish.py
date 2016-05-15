@@ -29,7 +29,7 @@ class TestPublish(unittest.TestCase):
         self.assertEquals(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
-        self.assertDictEqual(self.pub.build_params(), {
+        self.assertEqual(self.pub.build_params(), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
@@ -45,7 +45,7 @@ class TestPublish(unittest.TestCase):
         self.assertEquals(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
-        self.assertDictEqual(self.pub.build_params(), {
+        self.assertEqual(self.pub.build_params(), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })

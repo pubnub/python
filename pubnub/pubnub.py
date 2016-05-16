@@ -3,9 +3,8 @@ import threading
 
 from .errors import PNERR_DEFERRED_NOT_IMPLEMENTED
 from .exceptions import PubNubException
-from .enums import HttpMethod
 
-from .pubnub_core import PubNubCore, RequestOptions, pn_request
+from .pubnub_core import PubNubCore, pn_request
 
 logger = logging.getLogger("pubnub")
 
@@ -20,11 +19,6 @@ class PubNub(PubNubCore):
         return ""
 
     def request_async(self, options, success, error):
-        assert isinstance(options, RequestOptions)
-
-        url = self.config.scheme_and_host() + options.path
-        logger.debug("%s %s %s" % (HttpMethod.string(options.method), url, options.params))
-
         client = AsyncHTTPClient(self, options, success, error)
 
         thread = threading.Thread(target=client.run)

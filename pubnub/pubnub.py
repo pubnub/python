@@ -4,9 +4,8 @@ import threading
 from .errors import PNERR_DEFERRED_NOT_IMPLEMENTED
 from .exceptions import PubNubException
 from .enums import HttpMethod
-from .utils import get_data_for_user
 
-from .pubnub_core import PubNubCore, RequestOptions
+from .pubnub_core import PubNubCore, RequestOptions, pn_request
 
 logger = logging.getLogger("pubnub")
 
@@ -23,27 +22,26 @@ class PubNub(PubNubCore):
     def request_async(self, options, success, error):
         assert isinstance(options, RequestOptions)
 
-        # TODO: query param not used
         url = self.config.scheme_and_host() + options.path
         logger.debug("%s %s %s" % (HttpMethod.string(options.method), url, options.params))
 
-        client = AsyncHTTPClient(self, url=url, callback=success, error=error)
+        client = AsyncHTTPClient(self, options, success, error)
 
         thread = threading.Thread(target=client.run)
         thread.start()
 
         return thread
 
-
     def request_deferred(self, options_func):
         raise PubNubException(pn_error=PNERR_DEFERRED_NOT_IMPLEMENTED)
+
 
 class AsyncHTTPClient:
     """A wrapper for threaded calls"""
 
-    def __init__(self, pubnub, url,callback=None, error=None, id=None):
+    def __init__(self, pubnub, options, callback=None, error=None, id=None):
         # TODO: introduce timeouts
-        self.url = url
+        self.options = options
         self.id = id
         self.success = callback
         self.error = error
@@ -54,13 +52,8 @@ class AsyncHTTPClient:
         self.error = None
 
     def run(self):
-        def _invoke(func, data):
-            if func is not None:
-                func(get_data_for_user(data))
-
-        resp = self.pubnub.session.get(self.url)
-        if resp.status_code == 200:
-            _invoke(self.success, resp.json())
-        else:
-            _invoke(self.error, resp)
-
+        try:
+            res = pn_request(self.pubnub.session, self.pubnub.config.scheme_and_host(), self.options)
+            self.success(res)
+        except PubNubException as e:
+            self.error(e)

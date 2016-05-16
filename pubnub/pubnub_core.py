@@ -31,60 +31,7 @@ class PubNubCore:
         self.config.validate()
 
     def request_sync(self, options):
-        assert isinstance(options, RequestOptions)
-
-        url = self.config.scheme_and_host() + options.path
-        method = HttpMethod.string(options.method)
-        logger.debug("%s %s %s" % (method, url, options.params))
-
-        # connection error
-        try:
-            res = self.session.request(method, url, params=options.params)
-        except ConnectionError as e:
-            raise PubNubException(
-                pn_error=PNERR_CONNECTION_ERROR,
-                errormsg=str(e)
-            )
-        except HTTPError as e:
-            raise PubNubException(
-                pn_error=PNERR_HTTP_ERROR,
-                errormsg=str(e)
-            )
-        except requests.exceptions.Timeout as e:
-            raise PubNubException(
-                pn_error=PNERR_CLIENT_TIMEOUT,
-                errormsg=str(e)
-            )
-        except requests.exceptions.TooManyRedirects as e:
-            raise PubNubException(
-                pn_error=PNERR_TOO_MANY_REDIRECTS_ERROR,
-                errormsg=str(e)
-            )
-        except Exception as e:
-            raise PubNubException(
-                pn_error=PNERR_UNKNOWN_ERROR,
-                errormsg=str(e)
-            )
-
-        # http error
-        if res.status_code != requests.codes.ok:
-            if res.text is None:
-                text = "N/A"
-            else:
-                text = res.text
-
-            if res.status_code >= 500:
-                err = PNERR_SERVER_ERROR
-            else:
-                err = PNERR_CLIENT_ERROR
-
-            raise PubNubException(
-                pn_error=err,
-                errormsg=text,
-                status_code=res.status_code
-            )
-
-        return res.json()
+        return pn_request(self.session, self.config.scheme_and_host(), options)
 
     @abstractmethod
     def request_async(self, options, success, error):
@@ -110,3 +57,59 @@ class PubNubCore:
     @property
     def uuid(self):
         return self.config.uuid
+
+
+def pn_request(session, scheme_and_host, options):
+    assert isinstance(options, RequestOptions)
+    url = scheme_and_host + options.path
+    method = HttpMethod.string(options.method)
+    logger.debug("%s %s %s" % (method, url, options.params))
+
+    # connection error
+    try:
+        res = session.request(method, url, params=options.params)
+    except ConnectionError as e:
+        raise PubNubException(
+            pn_error=PNERR_CONNECTION_ERROR,
+            errormsg=str(e)
+        )
+    except HTTPError as e:
+        raise PubNubException(
+            pn_error=PNERR_HTTP_ERROR,
+            errormsg=str(e)
+        )
+    except requests.exceptions.Timeout as e:
+        raise PubNubException(
+            pn_error=PNERR_CLIENT_TIMEOUT,
+            errormsg=str(e)
+        )
+    except requests.exceptions.TooManyRedirects as e:
+        raise PubNubException(
+            pn_error=PNERR_TOO_MANY_REDIRECTS_ERROR,
+            errormsg=str(e)
+        )
+    except Exception as e:
+        raise PubNubException(
+            pn_error=PNERR_UNKNOWN_ERROR,
+            errormsg=str(e)
+        )
+
+    # http error
+    if res.status_code != requests.codes.ok:
+        if res.text is None:
+            text = "N/A"
+        else:
+            text = res.text
+
+        if res.status_code >= 500:
+            err = PNERR_SERVER_ERROR
+        else:
+            err = PNERR_CLIENT_ERROR
+
+        raise PubNubException(
+            pn_error=err,
+            errormsg=text,
+            status_code=res.status_code
+        )
+
+    return res.json()

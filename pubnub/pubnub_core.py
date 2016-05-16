@@ -31,7 +31,8 @@ class PubNubCore:
         self.config.validate()
 
     def request_sync(self, options):
-        return pn_request(self.session, self.config.scheme_and_host(), options)
+        return pn_request(self.session, self.config.scheme_and_host(), options,
+                          self.config.connect_timeout, self.config.non_subscribe_request_timeout)
 
     @abstractmethod
     def request_async(self, options, success, error):
@@ -59,7 +60,7 @@ class PubNubCore:
         return self.config.uuid
 
 
-def pn_request(session, scheme_and_host, options):
+def pn_request(session, scheme_and_host, options, connect_timeout, read_timeout):
     assert isinstance(options, RequestOptions)
     url = scheme_and_host + options.path
     method = HttpMethod.string(options.method)
@@ -67,7 +68,12 @@ def pn_request(session, scheme_and_host, options):
 
     # connection error
     try:
-        res = session.request(method, url, params=options.params)
+        res = session.request(
+            method=method,
+            url=url,
+            params=options.params,
+            timeout=(connect_timeout, read_timeout)
+        )
     except ConnectionError as e:
         raise PubNubException(
             pn_error=PNERR_CONNECTION_ERROR,

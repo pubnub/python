@@ -47,7 +47,9 @@ class AsyncHTTPClient:
 
     def run(self):
         try:
-            res = pn_request(self.pubnub.session, self.pubnub.config.scheme_and_host(), self.options)
+            res = pn_request(self.pubnub.session, self.pubnub.config.scheme_and_host(), self.options,
+                             self.pubnub.config.connect_timeout,
+                             self.pubnub.config.non_subscribe_request_timeout)
             self.success(res)
         except PubNubException as e:
             self.error(e)

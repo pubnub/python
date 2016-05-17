@@ -57,6 +57,10 @@ class PubNubTwisted(PubNubCore):
         else:
             self.pnconn_pool = pool
 
+        self.headers = {
+            'User-Agent': [self.sdk_name],
+        }
+
     def start(self):
         self.reactor.run()
 

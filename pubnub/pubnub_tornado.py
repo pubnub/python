@@ -47,6 +47,9 @@ class PubNubTornado(PubNubCore):
         # TODO: add accept encoding
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
         self.id = None
+        self.headers = {
+            'User-Agent': [self.sdk_name],
+        }
 
     def request_async(self, options, success, error):
         # TODO: query param is not used

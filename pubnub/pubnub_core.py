@@ -29,6 +29,9 @@ class PubNubCore:
         self.session = requests.Session()
 
         self.config.validate()
+        self.headers = {
+            'User-Agent': self.sdk_name,
+        }
 
     def request_sync(self, options):
         return pn_request(self.session, self.config.scheme_and_host(), self.headers, options,
@@ -54,13 +57,6 @@ class PubNubCore:
 
     @abstractmethod
     def sdk_platform(self): pass
-
-    @property
-    def headers(self):
-        # TODO: add Accept-Encoding
-        return {
-            'User-Agent': [self.sdk_name],
-        }
 
     @property
     def uuid(self):

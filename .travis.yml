@@ -8,4 +8,4 @@ python:
   - "pypy"
 sudo: false
 install: bash scripts/install.sh
-script: python scripts/run-tests
+script: python scripts/run-tests.py

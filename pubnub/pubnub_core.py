@@ -31,7 +31,7 @@ class PubNubCore:
         self.config.validate()
 
     def request_sync(self, options):
-        return pn_request(self.session, self.config.scheme_and_host(), options,
+        return pn_request(self.session, self.config.scheme_and_host(), self.headers, options,
                           self.config.connect_timeout, self.config.non_subscribe_request_timeout)
 
     @abstractmethod
@@ -56,17 +56,25 @@ class PubNubCore:
     def sdk_platform(self): pass
 
     @property
+    def headers(self):
+        # TODO: add Accept-Encoding
+        return {
+            'User-Agent': [self.sdk_name],
+        }
+
+    @property
     def uuid(self):
         return self.config.uuid
 
 
-def pn_request(session, scheme_and_host, options, connect_timeout, read_timeout):
+def pn_request(session, scheme_and_host, headers, options, connect_timeout, read_timeout):
     assert isinstance(options, RequestOptions)
     url = scheme_and_host + options.path
     method = HttpMethod.string(options.method)
 
     args = {
         "method": method,
+        'headers': headers,
         "url": url,
         'params': options.params,
         'timeout': (connect_timeout, read_timeout)

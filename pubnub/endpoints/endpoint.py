@@ -19,6 +19,9 @@ class Endpoint:
     def build_params(self):
         pass
 
+    def build_data(self):
+        return None
+
     @abstractmethod
     def http_method(self):
         pass
@@ -32,7 +35,8 @@ class Endpoint:
         pass
 
     def options(self):
-        return RequestOptions(self.build_path(), self.build_params(), self.http_method())
+        return RequestOptions(self.build_path(), self.build_params(),
+                              self.http_method(), self.build_data())
 
     def sync(self):
         self.validate_params()

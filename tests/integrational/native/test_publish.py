@@ -1,12 +1,19 @@
-import vcr
+import logging
+import threading
 
+import time
+import vcr
+import unittest
+
+import pubnub
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf
 
-import unittest
+pubnub.set_stream_logger('pubnub', logging.DEBUG)
+
 
 # TODO: server error handling test
 # TODO: arguments error handling test
@@ -48,21 +55,28 @@ class TestPubNubSyncPublish(unittest.TestCase):
             self.fail(e)
 
     def test_server_error(self):
-        # TODO: should throw error
         config = PNConfiguration()
-        config.publish_key = "demo"
-        config.subscribe_key = "demos"
-        pubnub = PubNub(config)
+        config.publish_key = "demo2"
+        config.subscribe_key = "demo"
 
         try:
-            pubnub.publish() \
+            PubNub(config).publish() \
                 .channel("ch1") \
                 .message("hey") \
                 .sync()
 
             self.fail(Exception("Should throw exception"))
         except PubNubException as e:
-            assert e is not None
+            assert "Invalid Key" in str(e)
+
+    def test_post(self):
+        res = PubNub(pnconf).publish() \
+            .channel("ch1") \
+            .message("hey") \
+            .use_post(True) \
+            .sync()
+
+        assert res.timetoken > 0
 
 
 class TestPubNubAsyncPublish(unittest.TestCase):
@@ -100,6 +114,42 @@ class TestPubNubAsyncPublish(unittest.TestCase):
         thread = pubnub.publish() \
             .channel("ch1") \
             .message(["hi", "hi2", "hi3"]) \
+            .async(success, error)
+
+        thread.join()
+
+    def test_server_error(self):
+        config = PNConfiguration()
+        config.publish_key = "demo2"
+        config.subscribe_key = "demo"
+        await = threading.Event()
+
+        def success():
+            await.set()
+
+        def error(e):
+            await.set()
+
+        thread = PubNub(config).publish() \
+            .channel("ch1") \
+            .message("hey") \
+            .async(success, error)
+
+        res = await.wait()
+        # thread.join()
+
+    def test_post(self):
+        def success(res):
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+
+        def error(e):
+            self.fail(e)
+
+        thread = PubNub(pnconf).publish() \
+            .channel("ch1") \
+            .message("hey") \
+            .use_post(True) \
             .async(success, error)
 
         thread.join()

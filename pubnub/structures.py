@@ -3,7 +3,7 @@ from .enums import HttpMethod
 
 
 class RequestOptions(object):
-    def __init__(self, path, params, method):
+    def __init__(self, path, params, method, data=None):
         assert len(path) > 0
         assert len(params) > 0
         assert isinstance(method, int)
@@ -12,3 +12,4 @@ class RequestOptions(object):
         self.path = path
         self.params = params
         self.method = method
+        self.data = data

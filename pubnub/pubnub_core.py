@@ -64,16 +64,23 @@ def pn_request(session, scheme_and_host, options, connect_timeout, read_timeout)
     assert isinstance(options, RequestOptions)
     url = scheme_and_host + options.path
     method = HttpMethod.string(options.method)
-    logger.debug("%s %s %s" % (method, url, options.params))
+
+    args = {
+        "method": method,
+        "url": url,
+        'params': options.params,
+        'timeout': (connect_timeout, read_timeout)
+    }
+
+    if options.method == HttpMethod.POST:
+        args['data'] = options.data
+        logger.debug("%s %s %s %s" % (method, url, options.params, options.data))
+    else:
+        logger.debug("%s %s %s" % (method, url, options.params))
 
     # connection error
     try:
-        res = session.request(
-            method=method,
-            url=url,
-            params=options.params,
-            timeout=(connect_timeout, read_timeout)
-        )
+        res = session.request(**args)
     except ConnectionError as e:
         raise PubNubException(
             pn_error=PNERR_CONNECTION_ERROR,
@@ -111,7 +118,6 @@ def pn_request(session, scheme_and_host, options, connect_timeout, read_timeout)
             err = PNERR_SERVER_ERROR
         else:
             err = PNERR_CLIENT_ERROR
-
         raise PubNubException(
             pn_error=err,
             errormsg=text,

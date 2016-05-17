@@ -9,7 +9,8 @@ from pubnub.enums import HttpMethod
 
 class Publish(Endpoint):
     # /publish/<pub_key>/<sub_key>/<signature>/<channel>/<callback>/<message>[?argument(s)]
-    PUBLISH_PATH = "/publish/%s/%s/0/%s/%s/%s"
+    PUBLISH_GET_PATH = "/publish/%s/%s/0/%s/%s/%s"
+    PUBLISH_POST_PATH = "/publish/%s/%s/0/%s/%s"
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
@@ -39,6 +40,10 @@ class Publish(Endpoint):
         self._meta = meta
         return self
 
+    def build_data(self):
+        # TODO: encrypt if cipher key is set
+        return utils.write_value_as_string(self._message)
+
     def build_params(self):
         params = self.default_params()
 
@@ -56,12 +61,17 @@ class Publish(Endpoint):
         return params
 
     def build_path(self):
-        # TODO: encrypt if cipher key is set
-        stringified_message = utils.url_encode(utils.write_value_as_string(self._message))
+        if self._use_post:
+            return Publish.PUBLISH_POST_PATH % (self.pubnub.config.publish_key,
+                                                self.pubnub.config.subscribe_key,
+                                                self._channel, 0)
+        else:
+            # TODO: encrypt if cipher key is set
+            stringified_message = utils.url_encode(utils.write_value_as_string(self._message))
 
-        # TODO: add option to publish with POST
-        return Publish.PUBLISH_PATH % (self.pubnub.config.publish_key, self.pubnub.config.subscribe_key,
-                                       self._channel, 0, stringified_message)
+            return Publish.PUBLISH_GET_PATH % (self.pubnub.config.publish_key,
+                                               self.pubnub.config.subscribe_key,
+                                               self._channel, 0, stringified_message)
 
     def http_method(self):
         if self._use_post is True:

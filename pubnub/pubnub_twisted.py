@@ -3,6 +3,8 @@ import logging
 import urllib
 import urlparse
 
+from StringIO import StringIO
+
 from twisted.internet import reactor as _reactor
 from twisted.internet.defer import Deferred
 from twisted.internet import defer
@@ -12,10 +14,10 @@ from twisted.web.client import RedirectAgent, GzipDecoder
 from twisted.web.client import HTTPConnectionPool
 from twisted.web.http_headers import Headers
 from twisted.internet.ssl import ClientContextFactory
+from twisted.web.client import FileBodyProducer
 
-from .enums import HttpMethod
+from .errors import PNERR_JSON_DECODING_FAILED, PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR
 from .exceptions import PubNubException
-from .utils import get_data_for_user
 from .pubnub_core import PubNubCore
 
 
@@ -27,12 +29,14 @@ class WebClientContextFactory(ClientContextFactory):
         return ClientContextFactory.getContext(self)
 
 
+# class PubNubResponse(Protocol, TimeoutMixin):
 class PubNubResponse(Protocol):
-    def __init__(self, finished):
+    def __init__(self, finished, code):
         self.finished = finished
+        self.code = code
 
-    def dataReceived(self, bytes):
-        self.finished.callback(bytes)
+    def dataReceived(self, body):
+        self.finished.callback(TwistedResponse(body, self.code))
 
 
 class PubNubTwisted(PubNubCore):
@@ -93,7 +97,7 @@ class PubNubTwisted(PubNubCore):
         def handler():
             def _invoke(func, data):
                 if func is not None:
-                    func(get_data_for_user(data))
+                    func(data)
 
             def s(data):
                 _invoke(success, data)
@@ -119,7 +123,7 @@ class PubNubTwisted(PubNubCore):
         url = urlparse.urlunsplit((self.config.scheme(), self.config.origin,
                                    options.path, urllib.urlencode(options.params), ''))
 
-        logger.debug("%s %s" % (HttpMethod.string(options.method), url))
+        logger.debug("%s %s %s" % (options.method_string, url, options.data))
 
         def handler():
             # url = self.getUrl(request, encoder_map)
@@ -130,46 +134,77 @@ class PubNubTwisted(PubNubCore):
                 pool=pnconn_pool
             )), [('gzip', GzipDecoder)])
 
+            if options.data is not None:
+                print(options.data)
+                body = FileBodyProducer(StringIO(options.data))
+            else:
+                body = None
+
             try:
                 request = agent.request(
-                    'GET', url, Headers(headers), None)
+                    options.method_string,
+                    url,
+                    Headers(headers),
+                    body)
             except TypeError:
                 request = agent.request(
-                    'GET', url.encode(), Headers(headers), None)
+                    options.method_string,
+                    url.encode(),
+                    Headers(headers),
+                    body)
 
             def received(response):
                 finished = Deferred()
-                response.deliverBody(PubNubResponse(finished))
+
+                response.deliverBody(PubNubResponse(finished, response.code))
                 return finished
 
-            def complete(data):
+            def success(response):
+                response_body = response.body
+                code = response.code
                 d = Deferred()
 
                 try:
-                    data = json.loads(data)
+                    data = json.loads(response_body)
                 except ValueError:
                     try:
-                        data = json.loads(data.decode("utf-8"))
+                        data = json.loads(response_body.decode("utf-8"))
                     except ValueError:
-                        d.errback('json decode error')
+                        d.errback(PubNubException(
+                            pn_error=PNERR_JSON_DECODING_FAILED,
+                            errormsg='json decode error'
+                        ))
                         return
 
-                if 'error' in data and 'status' in data and 'status' != 200:
-                    d.errback(data)
+                if code != 200:
+                    if code >= 500:
+                        err = PNERR_SERVER_ERROR
+                    else:
+                        err = PNERR_CLIENT_ERROR
+
+                    if data is None:
+                        data = "N/A"
+
+                    d.errback(PubNubException(
+                        pn_error=err,
+                        errormsg=data,
+                        status_code=code
+                    ))
                 else:
                     d.callback(data)
 
                 return d
 
-            def errback(msg):
-                print("TODO: handle errback")
-                # TODO: handle this case
-                d = Deferred()
-                d.errback(msg)
-                return d
-
-            request.addCallbacks(received, errback)
-            request.addCallbacks(complete, errback)
+            request.addCallback(received)
+            # request.addErrback(error)
+            request.addCallback(success)
+            # request.addErrback(error)
             return request
 
         return handler()
+
+
+class TwistedResponse(object):
+    def __init__(self, body, code):
+        self.body = body
+        self.code = code

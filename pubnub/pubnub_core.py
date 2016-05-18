@@ -5,7 +5,6 @@ import requests
 from requests import ConnectionError
 from requests.packages.urllib3.exceptions import HTTPError
 
-from .enums import HttpMethod
 from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.herenow import HereNow
 from .structures import RequestOptions
@@ -66,21 +65,20 @@ class PubNubCore:
 def pn_request(session, scheme_and_host, headers, options, connect_timeout, read_timeout):
     assert isinstance(options, RequestOptions)
     url = scheme_and_host + options.path
-    method = HttpMethod.string(options.method)
 
     args = {
-        "method": method,
+        "method": options.method_string,
         'headers': headers,
         "url": url,
         'params': options.params,
         'timeout': (connect_timeout, read_timeout)
     }
 
-    if options.method == HttpMethod.POST:
+    if options.is_post():
         args['data'] = options.data
-        logger.debug("%s %s %s %s" % (method, url, options.params, options.data))
+        logger.debug("%s %s %s %s" % (options.method_string, url, options.params, options.data))
     else:
-        logger.debug("%s %s %s" % (method, url, options.params))
+        logger.debug("%s %s %s" % (options.method_string, url, options.params))
 
     # connection error
     try:

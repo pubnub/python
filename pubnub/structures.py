@@ -11,5 +11,12 @@ class RequestOptions(object):
 
         self.path = path
         self.params = params
-        self.method = method
+        self._method = method
         self.data = data
+
+    @property
+    def method_string(self):
+        return HttpMethod.string(self._method)
+
+    def is_post(self):
+        return self._method is HttpMethod.POST

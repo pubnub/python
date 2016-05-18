@@ -42,7 +42,10 @@ class Publish(Endpoint):
 
     def build_data(self):
         # TODO: encrypt if cipher key is set
-        return utils.write_value_as_string(self._message)
+        if self._use_post is True:
+            return utils.write_value_as_string(self._message)
+        else:
+            return None
 
     def build_params(self):
         params = self.default_params()
@@ -96,9 +99,8 @@ class Publish(Endpoint):
         :param envelope: an already serialized json response
         :return:
         """
-
         timetoken = int(envelope[2])
 
-        res = PNPublishResult(timetoken)
+        res = PNPublishResult(envelope, timetoken)
 
         return res

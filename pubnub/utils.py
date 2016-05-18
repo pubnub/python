@@ -14,9 +14,9 @@ def get_data_for_user(data):
 
 def write_value_as_string(data):
     if isinstance(data, str):
-        return "\"%s\"" % data
+        return ("\"%s\"" % data).replace("+", "%20")
     else:
-        return json.dumps(data)
+        return json.dumps(data).replace("+", "%20")
 
 
 def url_encode(data):

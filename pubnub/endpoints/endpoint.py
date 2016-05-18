@@ -70,7 +70,9 @@ class Endpoint:
             self.validate_params()
             return self.options()
 
-        return self.pubnub.request_deferred(handler).addCallback(self.create_response)
+        return self.pubnub\
+            .request_deferred(handler)\
+            .addCallback(self.create_response)
 
     def default_params(self):
         return {

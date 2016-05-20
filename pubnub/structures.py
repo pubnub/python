@@ -12,6 +12,7 @@ class RequestOptions(object):
         self.path = path
         self.params = params
         self._method = method
+        # TODO: rename to 'body'
         self.data = data
 
     @property

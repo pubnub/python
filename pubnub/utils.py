@@ -1,5 +1,16 @@
 import json
+import urllib
 import uuid as u
+
+try:
+    from urllib.parse import urlunsplit as pn_urlunsplit
+except ImportError:
+    from urlparse import urlunsplit as pn_urlunsplit
+
+try:
+    from urllib.parse import urlencode as pn_urlencode
+except ImportError:
+    from urlparse import urlencode as pn_urlencode
 
 
 def get_data_for_user(data):
@@ -30,3 +41,7 @@ def url_encode(data):
 
 def uuid():
     return str(u.uuid4())
+
+
+def build_url(scheme, origin, path, params):
+    return pn_urlunsplit((scheme, origin, path, pn_urlencode(params), ''))

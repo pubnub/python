@@ -1,7 +1,5 @@
 import json
 import logging
-import urllib
-import urlparse
 
 from StringIO import StringIO
 
@@ -16,6 +14,7 @@ from twisted.web.http_headers import Headers
 from twisted.internet.ssl import ClientContextFactory
 from twisted.web.client import FileBodyProducer
 
+from . import utils
 from .errors import PNERR_JSON_DECODING_FAILED, PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR
 from .exceptions import PubNubException
 from .pubnub_core import PubNubCore
@@ -120,8 +119,8 @@ class PubNubTwisted(PubNubCore):
         except PubNubException as e:
             return defer.fail(e)
 
-        url = urlparse.urlunsplit((self.config.scheme(), self.config.origin,
-                                   options.path, urllib.urlencode(options.params), ''))
+        url = utils.build_url(self.config.scheme(), self.config.origin,
+                              options.path, options.params)
 
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 

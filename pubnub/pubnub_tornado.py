@@ -1,8 +1,7 @@
 import json
 import time
-import urllib
-import urlparse
 
+from . import utils
 from .exceptions import PubNubException
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED
 from .pubnub_core import PubNubCore
@@ -58,8 +57,8 @@ class PubNubTornado(PubNubCore):
             if func is not None:
                 func(data)
 
-        url = urlparse.urlunsplit((self.config.scheme(), self.config.origin,
-                                   options.path, urllib.urlencode(options.params), ''))
+        url = utils.build_url(self.config.scheme(), self.config.origin,
+                              options.path, options.params)
         # TODO: encode url
         # url = self.getUrl(url, encoder_map)
 

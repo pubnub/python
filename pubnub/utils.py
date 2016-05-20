@@ -1,5 +1,4 @@
 import json
-import urllib
 import uuid as u
 
 try:
@@ -10,7 +9,7 @@ except ImportError:
 try:
     from urllib.parse import urlencode as pn_urlencode
 except ImportError:
-    from urlparse import urlencode as pn_urlencode
+    from urllib import urlencode as pn_urlencode
 
 
 def get_data_for_user(data):

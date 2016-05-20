@@ -1,14 +1,15 @@
 import json
 import time
+import urllib
+import urlparse
 
-from .errors import PNERR_DEFERRED_NOT_IMPLEMENTED
 from .exceptions import PubNubException
-from .utils import get_data_for_user
+from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED
 from .pubnub_core import PubNubCore
 
 import tornado.httpclient
 import tornado.ioloop
-from tornado.stack_context import ExceptionStackContext
+from tornado.concurrent import Future
 
 default_ioloop = tornado.ioloop.IOLoop.instance()
 
@@ -44,85 +45,76 @@ class PubNubTornado(PubNubCore):
         super(PubNubTornado, self).__init__(config)
         self._ioloop = default_ioloop
 
-        # TODO: add accept encoding
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
         self.id = None
+        # TODO: add accept encoding should be configurable
         self.headers = {
-            'User-Agent': [self.sdk_name],
+            'User-Agent': self.sdk_name,
+            'Accept-Encoding': 'utf-8'
         }
 
     def request_async(self, options, success, error):
-        # TODO: query param is not used
-        url = self.config.scheme_and_host() + options.path
-        self._request(
-            url=url,
-            callback=success,
-            error=error,
-            # TODO: set correct timeout
-            timeout=15,
-            connect_timeout=5,
-        )
-
-    def request_deferred(self, options_func):
-        raise PubNubException(pn_error=PNERR_DEFERRED_NOT_IMPLEMENTED)
-
-    def _request(self, url, callback=None, error=None,
-                 single=False, timeout=15, connect_timeout=5, encoder_map=None):
-
         def _invoke(func, data):
             if func is not None:
-                func(get_data_for_user(data))
+                func(data)
 
+        url = urlparse.urlunsplit((self.config.scheme(), self.config.origin,
+                                   options.path, urllib.urlencode(options.params), ''))
         # TODO: encode url
         # url = self.getUrl(url, encoder_map)
 
         request = tornado.httpclient.HTTPRequest(
-            url, 'GET',
-            self.headers,
-            connect_timeout=connect_timeout,
-            request_timeout=timeout)
+            url=url,
+            method=options.method_string,
+            headers=self.headers,
+            body=options.data if options.data is not None else None,
+            connect_timeout=self.config.connect_timeout,
+            request_timeout=self.config.non_subscribe_request_timeout)
 
-        if single is True:
-            id = time.time()
-            self.id = id
+        def response_callback(response):
+            body = response.body
 
-        def responseCallback(response):
-            if single is True:
-                if not id == self.id:
-                    return None
-
-            body = response._get_body()
-
-            if body is None:
-                # TODO: handle exception
-                return
-
-            def handle_exc(*args):
-                return True
+            if body is not None and len(body) > 0:
+                try:
+                    data = json.loads(body)
+                except TypeError:
+                    try:
+                        data = json.loads(body.decode("utf-8"))
+                    except ValueError:
+                        _invoke(error, PubNubException(
+                            pn_error=PNERR_JSON_DECODING_FAILED,
+                            errormsg='json decode error'
+                        ))
+                        return
+            else:
+                data = "N/A"
 
             if response.error is not None:
-                with ExceptionStackContext(handle_exc):
-                    if response.code in [403, 401]:
-                        response.rethrow()
-                    else:
-                        _invoke(error, response.reason)
-                    return
+                if response.code >= 500:
+                    err = PNERR_SERVER_ERROR
+                else:
+                    err = PNERR_CLIENT_ERROR
 
-            try:
-                data = json.loads(body)
-            except TypeError:
-                try:
-                    data = json.loads(body.decode("utf-8"))
-                except ValueError:
-                    _invoke(error, 'json decode error')
-                    return
-
-            if 'error' in data and 'status' in data and 'status' != 200:
-                _invoke(error, data)
+                _invoke(error, PubNubException(
+                    errormsg=data,
+                    pn_error=err,
+                    status_code=response.code
+                ))
             else:
-                _invoke(callback, data)
+                _invoke(success, data)
 
         self.http.fetch(
             request=request,
-            callback=responseCallback
+            callback=response_callback
         )
+
+    # TODO: add Tornado Feature support
+    def request_deferred(self, options_func):
+        options = options_func()
+        future = Future()
+        self.request_async(
+            options,
+            lambda res: future.set_result(res),
+            lambda err: future.set_exception(err)
+        )
+        return future

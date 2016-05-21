@@ -45,9 +45,9 @@ def encrypt(key, msg):
     secret = get_secret(key)
     cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
     if v == 3:
-        return encodestring(cipher.encrypt(pad(msg.encode('utf-8')))).decode('utf-8')
+        return encodestring(cipher.encrypt(pad(msg.encode('utf-8')))).decode('utf-8').replace("\n", "")
     else:
-        return encodestring(cipher.encrypt(pad(msg)))
+        return encodestring(cipher.encrypt(pad(msg))).replace("\n", "")
 
 
 def decrypt(key, msg):

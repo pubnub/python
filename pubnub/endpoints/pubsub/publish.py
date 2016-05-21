@@ -70,11 +70,15 @@ class Publish(Endpoint):
                                                 self.pubnub.config.subscribe_key,
                                                 self._channel, 0)
         else:
-            stringified_message = utils.url_encode(utils.write_value_as_string(self._message))
+
             cipher = self.pubnub.config.cipher_key
 
+            stringified_message = utils.write_value_as_string(self._message)
+
             if cipher is not None:
-                stringified_message = pn_crypto.encrypt(cipher, stringified_message)
+                stringified_message = '"' + pn_crypto.encrypt(cipher, stringified_message) + '"'
+
+            stringified_message = utils.url_encode(stringified_message)
 
             return Publish.PUBLISH_GET_PATH % (self.pubnub.config.publish_key,
                                                self.pubnub.config.subscribe_key,

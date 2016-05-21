@@ -9,7 +9,7 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf
+from tests.helper import pnconf, pnconf_enc
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -72,6 +72,30 @@ class TestPubNubSyncPublish(unittest.TestCase):
             res = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(5) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    def test_publish_encrypted_string_get(self):
+        try:
+            res = PubNub(pnconf_enc).publish() \
+                .channel("ch1") \
+                .message("encrypted string") \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    def test_publish_encrypted_list_get(self):
+        try:
+            res = PubNub(pnconf_enc).publish() \
+                .channel("ch1") \
+                .message(["encrypted", "list"]) \
                 .sync()
 
             assert isinstance(res, PNPublishResult)

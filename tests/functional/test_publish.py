@@ -64,7 +64,7 @@ class TestPublish(unittest.TestCase):
         pub = Publish(pubnub)
 
         message = ["hi", "hi2", "hi3"]
-        encoded_message = "gN2gKwKS2FUwTbXVBn3mYzNxBTw02OogJzzOYE0bNWhIWRFygiZSFqk9TEBjxpLH\n"
+        encoded_message = "%22FQyKoIWWm7oN27zKyoU0bpjpgx49JxD04EI/0a8rg/o%3D%22"
 
         pub.channel("ch1").message(message)
 

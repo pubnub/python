@@ -1,4 +1,5 @@
 # TODO: choose a better name for this module
+from . import utils
 from .enums import HttpMethod
 
 
@@ -21,3 +22,19 @@ class RequestOptions(object):
 
     def is_post(self):
         return self._method is HttpMethod.POST
+
+    @property
+    def query_string(self, do_not_encode=None):
+        # TODO: add option to sort params alphabetically(for PAM requests)
+        if do_not_encode is None:
+            do_not_encode = []
+
+        s = []
+        e = utils.url_encode
+
+        for k, v in self.params.items():
+            if k in do_not_encode:
+                continue
+            s.append(e(k) + "=" + e(v))
+
+        return str('&'.join(s))

@@ -29,7 +29,7 @@ class PubNubCore:
 
         self.config.validate()
         self.headers = {
-            'User-Agent': self.sdk_name,
+            'User-Agent': self.sdk_name
         }
 
     def request_sync(self, options):
@@ -70,7 +70,7 @@ def pn_request(session, scheme_and_host, headers, options, connect_timeout, read
         "method": options.method_string,
         'headers': headers,
         "url": url,
-        'params': options.params,
+        'params': options.query_string,
         'timeout': (connect_timeout, read_timeout)
     }
 

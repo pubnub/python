@@ -245,13 +245,26 @@ class TestPubNubSyncPublish(unittest.TestCase):
             assert "not JSON serializable" in str(e)
 
     def test_publish_with_meta(self):
-        meta = ["m2", "m1"]
+        meta = {'a': 2, 'b': 'qwer'}
 
         try:
             res = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
-                .message("encrypted string") \
+                .message("hey") \
                 .meta(meta) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    def test_publish_do_not_store(self):
+        try:
+            res = PubNub(pnconf_enc).publish() \
+                .channel("ch1") \
+                .message("hey") \
+                .should_store(False) \
                 .sync()
 
             assert isinstance(res, PNPublishResult)

@@ -55,7 +55,7 @@ class Publish(Endpoint):
         params = self.default_params()
 
         if self._meta is not None:
-            params['meta'] = utils.url_encode(utils.write_value_as_string(self._meta))
+            params['meta'] = utils.write_value_as_string(self._meta)
 
         if self._should_store is not None:
             if self._should_store:

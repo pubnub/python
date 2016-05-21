@@ -63,6 +63,9 @@ class Publish(Endpoint):
             else:
                 params["store"] = "0"
 
+        if self.pubnub.config.auth_key is not None:
+            params["auth"] = self.pubnub.config.auth_key
+
         return params
 
     def build_path(self):

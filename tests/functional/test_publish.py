@@ -104,6 +104,31 @@ class TestPublish(unittest.TestCase):
             'store': '0'
         })
 
+    def test_pub_with_auth(self):
+        conf = copy.copy(pnconf)
+        conf.auth_key = "my_auth"
+
+        pubnub = MagicMock(
+            spec=PubNub,
+            config=conf,
+            sdk_name=sdk_name,
+            uuid="UUID_PublishUnitTest"
+        )
+        pub = Publish(pubnub)
+        message = "hey"
+        encoded_message = url_encode(message)
+        pub.channel("ch1").message(message)
+
+        print(pub.build_path())
+        self.assertEquals(pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
+                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+
+        self.assertEqual(pub.build_params(), {
+            'pnsdk': sdk_name,
+            'uuid': pubnub.uuid,
+            'auth': conf.auth_key
+        })
+
     def test_pub_encrypted_list_message(self):
         conf = copy.copy(pnconf)
         conf.cipher_key = "testCipher"
@@ -121,7 +146,6 @@ class TestPublish(unittest.TestCase):
 
         pub.channel("ch1").message(message)
 
-        print(pub.build_path())
         self.assertEquals(pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 

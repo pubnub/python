@@ -14,6 +14,7 @@ class PNConfiguration(object):
         self.subscribe_key = None
         self.publish_key = None
         self.cipher_key = None
+        self.auth_key = None
 
     def validate(self):
         assert self.uuid is None or isinstance(self.uuid, str)

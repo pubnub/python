@@ -42,9 +42,12 @@ class Publish(Endpoint):
         return self
 
     def build_data(self):
-        # TODO: encrypt if cipher key is set
         if self._use_post is True:
-            return utils.write_value_as_string(self._message)
+            cipher = self.pubnub.config.cipher_key
+            if cipher is not None:
+                return '"' + pn_crypto.encrypt(cipher, utils.write_value_as_string(self._message)) + '"'
+            else:
+                return utils.write_value_as_string(self._message)
         else:
             return None
 
@@ -70,9 +73,7 @@ class Publish(Endpoint):
                                                 self.pubnub.config.subscribe_key,
                                                 self._channel, 0)
         else:
-
             cipher = self.pubnub.config.cipher_key
-
             stringified_message = utils.write_value_as_string(self._message)
 
             if cipher is not None:

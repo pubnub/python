@@ -167,6 +167,32 @@ class TestPubNubSyncPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    def test_publish_encrypted_string_post(self):
+        try:
+            res = PubNub(pnconf_enc).publish() \
+                .channel("ch1") \
+                .message("encrypted string POST") \
+                .use_post(True) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    def test_publish_encrypted_list_post(self):
+        try:
+            res = PubNub(pnconf_enc).publish() \
+                .channel("ch1") \
+                .message(["encrypted", "list", "POST"]) \
+                .use_post(True) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
     def test_server_error(self):
         config = PNConfiguration()
         config.publish_key = "fake"

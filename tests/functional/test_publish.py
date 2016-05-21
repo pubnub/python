@@ -1,3 +1,4 @@
+import copy
 import unittest
 
 try:
@@ -7,7 +8,7 @@ except ImportError:
 
 from pubnub.endpoints.pubsub.publish import Publish
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, sdk_name, encode
+from tests.helper import pnconf, sdk_name, url_encode
 
 
 class TestPublish(unittest.TestCase):
@@ -22,7 +23,7 @@ class TestPublish(unittest.TestCase):
 
     def test_pub_message(self):
         message = "hi"
-        encoded_message = encode(message)
+        encoded_message = url_encode(message)
 
         self.pub.channel("ch1").message(message)
 
@@ -38,7 +39,7 @@ class TestPublish(unittest.TestCase):
         self.pubnub.uuid = "UUID_PublishUnitTest"
 
         message = ["hi", "hi2", "hi3"]
-        encoded_message = encode(message)
+        encoded_message = url_encode(message)
 
         self.pub.channel("ch1").message(message)
 
@@ -50,5 +51,29 @@ class TestPublish(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
+    def test_pub_encrypted_list_message(self):
+        conf = copy.copy(pnconf)
+        conf.cipher_key = "testCipher"
 
-# TODO: auth key
+        pubnub = MagicMock(
+            spec=PubNub,
+            config=conf,
+            sdk_name=sdk_name,
+            uuid="UUID_PublishUnitTest"
+        )
+        pub = Publish(pubnub)
+
+        message = ["hi", "hi2", "hi3"]
+        encoded_message = "gN2gKwKS2FUwTbXVBn3mYzNxBTw02OogJzzOYE0bNWhIWRFygiZSFqk9TEBjxpLH\n"
+
+        pub.channel("ch1").message(message)
+
+        print(pub.build_path())
+        self.assertEquals(pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
+                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+
+        self.assertEqual(pub.build_params(), {
+            'pnsdk': sdk_name,
+            'uuid': pubnub.uuid
+        })
+

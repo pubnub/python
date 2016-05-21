@@ -1,4 +1,5 @@
 from pubnub import utils
+from pubnub import crypto as pn_crypto
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_MESSAGE_MISSING, PNERR_CHANNEL_MISSING, \
     PNERR_PUBLISH_META_WRONG_TYPE
@@ -69,8 +70,11 @@ class Publish(Endpoint):
                                                 self.pubnub.config.subscribe_key,
                                                 self._channel, 0)
         else:
-            # TODO: encrypt if cipher key is set
             stringified_message = utils.url_encode(utils.write_value_as_string(self._message))
+            cipher = self.pubnub.config.cipher_key
+
+            if cipher is not None:
+                stringified_message = pn_crypto.encrypt(cipher, stringified_message)
 
             return Publish.PUBLISH_GET_PATH % (self.pubnub.config.publish_key,
                                                self.pubnub.config.subscribe_key,

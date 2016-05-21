@@ -9,5 +9,5 @@ pnconf.subscribe_key = "sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe"
 sdk_name = "Python-UnitTest"
 
 
-def encode(data):
+def url_encode(data):
     return utils.url_encode(utils.write_value_as_string(data))

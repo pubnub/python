@@ -13,6 +13,7 @@ class PNConfiguration(object):
         self.connect_timeout = 5
         self.subscribe_key = None
         self.publish_key = None
+        self.cipher_key = None
 
     def validate(self):
         assert self.uuid is None or isinstance(self.uuid, str)

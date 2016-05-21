@@ -55,8 +55,6 @@ class Publish(Endpoint):
         params = self.default_params()
 
         if self._meta is not None:
-            if not isinstance(self._meta, dict):
-                raise PubNubException(pn_error=PNERR_PUBLISH_META_WRONG_TYPE)
             params['meta'] = utils.url_encode(utils.write_value_as_string(self._meta))
 
         if self._should_store is not None:

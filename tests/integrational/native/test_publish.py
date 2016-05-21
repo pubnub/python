@@ -244,6 +244,21 @@ class TestPubNubSyncPublish(unittest.TestCase):
         except PubNubException as e:
             assert "not JSON serializable" in str(e)
 
+    def test_publish_with_meta(self):
+        meta = ["m2", "m1"]
+
+        try:
+            res = PubNub(pnconf_enc).publish() \
+                .channel("ch1") \
+                .message("encrypted string") \
+                .meta(meta) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
 
 class xTestPubNubAsyncPublish():
     @vcr.use_cassette('integrational/fixtures/publish/async_success.yaml',

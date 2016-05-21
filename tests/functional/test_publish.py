@@ -51,6 +51,24 @@ class TestPublish(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
+    def test_pub_with_meta(self):
+        self.pubnub.uuid = "UUID_PublishUnitTest"
+
+        message = ["hi", "hi2", "hi3"]
+        encoded_message = url_encode(message)
+        meta = ['m1', 'm2']
+
+        self.pub.channel("ch1").message(message).meta(meta)
+
+        self.assertEquals(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
+                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+
+        self.assertEqual(self.pub.build_params(), {
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid,
+            'meta': url_encode(meta)
+        })
+
     def test_pub_encrypted_list_message(self):
         conf = copy.copy(pnconf)
         conf.cipher_key = "testCipher"

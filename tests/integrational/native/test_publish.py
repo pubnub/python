@@ -193,7 +193,7 @@ class TestPubNubSyncPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    def test_server_error(self):
+    def test_invalid_key(self):
         config = PNConfiguration()
         config.publish_key = "fake"
         config.subscribe_key = "demo"
@@ -208,14 +208,41 @@ class TestPubNubSyncPublish(unittest.TestCase):
         except PubNubException as e:
             assert "Invalid Key" in str(e)
 
-    def test_post(self):
-        res = PubNub(pnconf).publish() \
-            .channel("ch1") \
-            .message("hey") \
-            .use_post(True) \
-            .sync()
+    def test_missing_message_error(self):
+        try:
+            PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message(None) \
+                .sync()
 
-        assert res.timetoken > 0
+            self.fail(Exception("Should throw exception"))
+        except PubNubException as e:
+            assert "Message missing" in str(e)
+
+    def test_missing_channel_error(self):
+        try:
+            PubNub(pnconf).publish() \
+                .channel("") \
+                .message("hey") \
+                .sync()
+
+            self.fail(Exception("Should throw exception"))
+        except PubNubException as e:
+            assert "Channel missing" in str(e)
+
+    def test_non_serializable_error(self):
+        def func():
+            pass
+
+        try:
+            PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message(func) \
+                .sync()
+
+            self.fail(Exception("Should throw exception"))
+        except PubNubException as e:
+            assert "not JSON serializable" in str(e)
 
 
 class xTestPubNubAsyncPublish():

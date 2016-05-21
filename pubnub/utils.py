@@ -1,6 +1,9 @@
 import json
 import uuid as u
 
+from .errors import PNERR_JSON_NOT_SERIALIZABLE
+from .exceptions import PubNubException
+
 try:
     from urllib.parse import urlunsplit as pn_urlunsplit
 except ImportError:
@@ -23,10 +26,15 @@ def get_data_for_user(data):
 
 
 def write_value_as_string(data):
-    if isinstance(data, str):
-        return ("\"%s\"" % data).replace("+", "%20")
-    else:
-        return json.dumps(data).replace("+", "%20")
+    try:
+        if isinstance(data, str):
+            return ("\"%s\"" % data).replace("+", "%20")
+        else:
+            return json.dumps(data).replace("+", "%20")
+    except TypeError as e:
+        raise PubNubException(
+            pn_error=PNERR_JSON_NOT_SERIALIZABLE
+        )
 
 
 def url_encode(data):

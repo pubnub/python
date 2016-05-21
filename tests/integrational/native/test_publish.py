@@ -1,7 +1,6 @@
 import logging
 import threading
 
-import time
 import vcr
 import unittest
 
@@ -15,20 +14,12 @@ from tests.helper import pnconf
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
-# TODO: server error handling test
-# TODO: arguments error handling test
-# TODO: post method test
-# TODO: meta argument method test
-
-
 class TestPubNubSyncPublish(unittest.TestCase):
-    @vcr.use_cassette('integrational/fixtures/publish/sync_success.yaml',
-                      filter_query_parameters=['uuid'])
-    def test_success(self):
-        pubnub = PubNub(pnconf)
-
+    # @vcr.use_cassette('integrational/fixtures/publish/publish_string_get.yaml',
+    #                   filter_query_parameters=['uuid'])
+    def test_publish_string_get(self):
         try:
-            res = pubnub.publish() \
+            res = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message("hi") \
                 .sync()
@@ -38,13 +29,11 @@ class TestPubNubSyncPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    @vcr.use_cassette('integrational/fixtures/publish/sync_success_list.yaml',
-                      filter_query_parameters=['uuid'])
-    def test_success_list(self):
-        pubnub = PubNub(pnconf)
-
+    # @vcr.use_cassette('integrational/fixtures/publish/publish_list_get.yaml',
+    #                   filter_query_parameters=['uuid'])
+    def test_publish_list_get(self):
         try:
-            res = pubnub.publish() \
+            res = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(["hi", "hi2", "hi3"]) \
                 .sync()
@@ -54,9 +43,109 @@ class TestPubNubSyncPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    def test_publish_object_get(self):
+        try:
+            res = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message({"name": "Alex", "online": True}) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    def test_publish_bool_get(self):
+        try:
+            res = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message(True) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    def test_publish_int_get(self):
+        try:
+            res = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message(5) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    # @vcr.use_cassette('integrational/fixtures/publish/publish_string_post.yaml',
+    #                   filter_query_parameters=['uuid'])
+    def test_publish_string_post(self):
+        try:
+            res = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message("hi") \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    # @vcr.use_cassette('integrational/fixtures/publish/publish_list_post.yaml',
+    #                   filter_query_parameters=['uuid'])
+    def test_publish_list_post(self):
+        try:
+            res = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message(["hi", "hi2", "hi3"]) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    def test_publish_object_post(self):
+        try:
+            res = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message({"name": "Alex", "online": True}) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    def test_publish_bool_post(self):
+        try:
+            res = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message(True) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    def test_publish_int_post(self):
+        try:
+            res = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message(5) \
+                .sync()
+
+            assert isinstance(res, PNPublishResult)
+            assert res.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
     def test_server_error(self):
         config = PNConfiguration()
-        config.publish_key = "demo2"
+        config.publish_key = "fake"
         config.subscribe_key = "demo"
 
         try:
@@ -77,7 +166,6 @@ class TestPubNubSyncPublish(unittest.TestCase):
             .sync()
 
         assert res.timetoken > 0
-
 
 class xTestPubNubAsyncPublish():
     @vcr.use_cassette('integrational/fixtures/publish/async_success.yaml',

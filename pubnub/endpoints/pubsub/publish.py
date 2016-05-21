@@ -1,8 +1,7 @@
 from pubnub import utils
 from pubnub import crypto as pn_crypto
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.errors import PNERR_MESSAGE_MISSING, PNERR_CHANNEL_MISSING, \
-    PNERR_PUBLISH_META_WRONG_TYPE
+from pubnub.errors import PNERR_MESSAGE_MISSING, PNERR_CHANNEL_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.enums import HttpMethod
@@ -13,8 +12,9 @@ class Publish(Endpoint):
     PUBLISH_GET_PATH = "/publish/%s/%s/0/%s/%s/%s"
     PUBLISH_POST_PATH = "/publish/%s/%s/0/%s/%s"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, publish_sequence_manager):
         Endpoint.__init__(self, pubnub)
+        self.publish_sequence_manager = publish_sequence_manager
         self._channel = None
         self._message = None
         self._should_store = None
@@ -65,6 +65,8 @@ class Publish(Endpoint):
 
         if self.pubnub.config.auth_key is not None:
             params["auth"] = self.pubnub.config.auth_key
+
+        params['seqn'] = str(self.publish_sequence_manager.get_next_sequence())
 
         return params
 

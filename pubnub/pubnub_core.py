@@ -5,6 +5,7 @@ import requests
 from requests import ConnectionError
 from requests.packages.urllib3.exceptions import HTTPError
 
+from .managers.publish_sequence_manager import PublishSequenceManager
 from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.herenow import HereNow
 from .structures import RequestOptions
@@ -21,6 +22,9 @@ class PubNubCore:
     SDK_VERSION = "4.0.0"
     SDK_NAME = "PubNub-Python"
 
+    TIMESTAMP_DIVIDER = 1000
+    MAX_SEQUENCE = 65535
+
     __metaclass__ = ABCMeta
 
     def __init__(self, config):
@@ -31,6 +35,8 @@ class PubNubCore:
         self.headers = {
             'User-Agent': self.sdk_name
         }
+
+        self.publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
 
     def request_sync(self, options):
         return pn_request(self.session, self.config.scheme_and_host(), self.headers, options,
@@ -48,7 +54,7 @@ class PubNubCore:
         return HereNow(self)
 
     def publish(self):
-        return Publish(self)
+        return Publish(self, self.publish_sequence_manager)
 
     @property
     def sdk_name(self):

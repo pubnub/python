@@ -1,7 +1,7 @@
 import logging
 import threading
 
-from .errors import PNERR_DEFERRED_NOT_IMPLEMENTED
+from .errors import PNERR_DEFERRED_NOT_IMPLEMENTED, PNERR_UNKNOWN_ERROR
 from .exceptions import PubNubException
 
 from .pubnub_core import PubNubCore, pn_request
@@ -25,6 +25,10 @@ class PubNub(PubNubCore):
         thread.start()
 
         return thread
+
+    def async_error_to_return(self, e, errback):
+        errback(e)
+        return FakeThread()
 
     def request_deferred(self, options_func):
         raise PubNubException(pn_error=PNERR_DEFERRED_NOT_IMPLEMENTED)
@@ -53,3 +57,13 @@ class AsyncHTTPClient:
             self.success(res)
         except PubNubException as e:
             self.error(e)
+        except Exception as e:
+            self.error(PubNubException(
+                pn_error=PNERR_UNKNOWN_ERROR,
+                errormsg=str(e)
+            ))
+
+
+class FakeThread:
+    def join(self):
+        pass

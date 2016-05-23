@@ -48,22 +48,22 @@ class Endpoint:
         return response
 
     def async(self, success, error):
+
         try:
             self.validate_params()
             options = self.options()
         except PubNubException as e:
-            error(e)
-            return
+            return self.pubnub.async_error_to_return(e, error)
 
         def success_wrapper(server_response):
             success(self.create_response(server_response))
 
-        def error_wrapper(msg):
-            error(PubNubException(
-                pn_error=msg
-            ))
+        # def error_wrapper(msg):
+        #     error(PubNubException(
+        #         pn_error=msg
+        #     ))
 
-        return self.pubnub.request_async(options, success_wrapper, error_wrapper)
+        return self.pubnub.request_async(options, success_wrapper, error)
 
     def deferred(self):
         def handler():

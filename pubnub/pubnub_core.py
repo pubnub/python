@@ -50,6 +50,10 @@ class PubNubCore:
     def request_deferred(self, options_func):
         pass
 
+    @abstractmethod
+    def async_error_to_return(self, e, errback):
+        pass
+
     def here_now(self):
         return HereNow(self)
 

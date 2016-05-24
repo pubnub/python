@@ -51,4 +51,4 @@ def uuid():
 
 
 def build_url(scheme, origin, path, params):
-    return pn_urlunsplit((scheme, origin, path, pn_urlencode(params), ''))
+    return pn_urlunsplit((scheme, origin, path, params, ''))

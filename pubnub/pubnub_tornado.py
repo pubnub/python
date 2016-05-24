@@ -1,4 +1,5 @@
 import json
+import logging
 import time
 
 from . import utils
@@ -11,6 +12,7 @@ import tornado.ioloop
 from tornado.concurrent import Future
 
 default_ioloop = tornado.ioloop.IOLoop.instance()
+logger = logging.getLogger("pubnub")
 
 
 class PubNubTornado(PubNubCore):
@@ -61,9 +63,8 @@ class PubNubTornado(PubNubCore):
                 func(data)
 
         url = utils.build_url(self.config.scheme(), self.config.origin,
-                              options.path, options.params)
-        # TODO: encode url
-        # url = self.getUrl(url, encoder_map)
+                              options.path, options.query_string)
+        logger.debug("%s %s %s" % (options.method_string, url, options.data))
 
         request = tornado.httpclient.HTTPRequest(
             url=url,

@@ -1,10 +1,13 @@
-from tornado.testing import AsyncTestCase
+import logging
+import pubnub
 
+from tornado.testing import AsyncTestCase
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
-
 from pubnub.pubnub_tornado import PubNubTornado
 from tests.helper import pnconf, pnconf_enc
+
+pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 ch = "tornado-int-publish"
 
@@ -120,3 +123,15 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         self.pubnub.set_ioloop(self.io_loop)
 
         self.assert_error(self.pubnub.publish().channel(ch).message("hey"), "Invalid Key")
+
+    def test_publish_with_meta(self):
+        self.pubnub = PubNubTornado(pnconf)
+
+        self.assert_success(
+            self.pubnub.publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
+
+    def test_publish_do_not_store(self):
+        self.pubnub = PubNubTornado(pnconf)
+
+        self.assert_success(
+            self.pubnub.publish().channel(ch).message("hey").should_store(False))

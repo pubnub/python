@@ -23,8 +23,7 @@ class RequestOptions(object):
     def is_post(self):
         return self._method is HttpMethod.POST
 
-    @property
-    def query_string(self, do_not_encode=None):
+    def query_list(self, do_not_encode=None):
         # TODO: add option to sort params alphabetically(for PAM requests)
         if do_not_encode is None:
             do_not_encode = []
@@ -37,4 +36,8 @@ class RequestOptions(object):
                 continue
             s.append(e(k) + "=" + e(v))
 
-        return str('&'.join(s))
+        return s
+
+    @property
+    def query_string(self):
+        return str('&'.join(self.query_list()))

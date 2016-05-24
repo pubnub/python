@@ -46,7 +46,7 @@ class TestBuildUrl(unittest.TestCase):
             self.assertEqual(parse_qs(expected.query), parse_qs(actual.query))
 
         match("http://ex.com/news?a=2&b=qwer",
-                     build_url("http", "ex.com", "/news", {"a": 2, "b": "qwer"}))
+                     build_url("http", "ex.com", "/news", "a=2&b=qwer"))
         match("https://ex.com/?a=2&b=qwer",
-                     build_url("https", "ex.com", "/", {"a": 2, "b": "qwer"}))
+                     build_url("https", "ex.com", "/", "a=2&b=qwer"))
 

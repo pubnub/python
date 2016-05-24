@@ -7,16 +7,20 @@ from twisted.web.client import HTTPConnectionPool
 
 import logging
 import pubnub
+from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_twisted import PubNubTwisted
 from tests.helper import pnconf
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 defer.setDebugging(True)
 
+ch = "twisted-int-publish"
 
-class TestPubNubPublish(unittest.TestCase):
+
+class TwistedTest(unittest.TestCase):
     def setUp(self):
-            self.pool = HTTPConnectionPool(reactor, False)
+        self.pool = HTTPConnectionPool(reactor, False)
+        self.pubnub = PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
 
     def tearDown(self):
         def _check_fds(_):
@@ -27,81 +31,109 @@ class TestPubNubPublish(unittest.TestCase):
 
         return self.pool.closeCachedConnections().addBoth(_check_fds)
 
-    def success(self, res, third=None):
+
+class TestPubNubPublishSuccess(TwistedTest):
+    def callback(self, res, third=None):
         print(res.timetoken)
         assert res.timetoken > 0
 
-    def error(self, error):
+    def errback(self, error):
         return defer.fail(error)
 
-    def test_publish_deferred(self):
+    def assert_success(self, pub):
         d = defer.Deferred()
+        pub.deferred().addCallback(self.callback, self.errback).addCallbacks(d.callback, d.errback)
+        return d
 
-        pubnub = PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
+    def assert_success_publish_get(self, msg):
+        return self.assert_success(
+            PubNubTwisted(pnconf, reactor=reactor, pool=self.pool).publish().channel(ch).message(msg))
 
-        pubnub.publish() \
-            .channel("my_channel") \
-            .message("deferred hello using GET") \
-            .deferred() \
-            .addCallback(self.success) \
+    def assert_success_publish_post(self, msg):
+        return self.assert_success(
+            PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
+                .publish().channel(ch).message(msg).use_post(True))
+
+    def test_success_publish_string_get(self):
+        return self.assert_success_publish_get("hey")
+
+    def test_success_publish_int_get(self):
+        return self.assert_success_publish_get(5)
+
+    def test_success_publish_bool_get(self):
+        return self.assert_success_publish_get(True)
+
+    def test_success_publish_list_get(self):
+        return self.assert_success_publish_get(["hi", "hi2", "hi3"])
+
+    def test_success_publish_dict_get(self):
+        return self.assert_success_publish_get({"name": "Alex", "online": True})
+
+    def test_success_publish_string_post(self):
+        return self.assert_success_publish_get("hey")
+
+    def test_success_publish_int_post(self):
+        return self.assert_success_publish_get(5)
+
+    def test_success_publish_bool_post(self):
+        return self.assert_success_publish_get(True)
+
+    def test_success_publish_list_post(self):
+        return self.assert_success_publish_get(["hi", "hi2", "hi3"])
+
+    def test_success_publish_dict_post(self):
+        return self.assert_success_publish_get({"name": "Alex", "online": True})
+
+
+class TestPubNubPublishError(TwistedTest):
+    def callback(self, res, third=None):
+        return defer.fail("Success while while is expected: " + str(res))
+
+    def errback_message_missing(self, error):
+        self.assertIn("Message missing", error.getErrorMessage())
+        return defer.succeed(None)
+
+    def errback_channel_missing(self, error):
+        self.assertIn("Channel missing", error.getErrorMessage())
+        return defer.succeed(None)
+
+    def errback_non_serializable(self, error):
+        self.assertIn("not JSON serializable", error.getErrorMessage())
+        return defer.succeed(None)
+
+    def errback_invalid_key(self, error):
+        self.assertIn("HTTP Client Error (400)", error.getErrorMessage())
+        self.assertIn("Invalid Key", error.getErrorMessage())
+        return defer.succeed(None)
+
+    def assert_error(self, pub, errback):
+        d = defer.Deferred()
+        pub.deferred()\
+            .addCallbacks(self.callback, errback) \
             .addCallbacks(d.callback, d.errback)
 
         return d
 
-    def test_publish_sync(self):
-        pubnub = PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
+    def test_error_missing_message(self):
+        return self.assert_error(self.pubnub.publish().channel(ch).message(None),
+                                 self.errback_message_missing)
 
-        res = pubnub.publish() \
-            .channel("my_channel") \
-            .message("sync hello using GET") \
-            .sync()
+    def test_error_missing_channel(self):
+        return self.assert_error(self.pubnub.publish().channel("").message("hey"),
+                                 self.errback_channel_missing)
 
-        assert res.timetoken > 0
+    def test_error_non_serializable(self):
+        def method():
+            pass
 
-    def test_publish_list_deferred(self):
-        d = defer.Deferred()
+        return self.assert_error(self.pubnub.publish().channel(ch).message(method),
+                                 self.errback_non_serializable)
 
-        pubnub = PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
+    def test_error_invalid_key(self):
+        conf = PNConfiguration()
+        conf.publish_key = "fake"
+        conf.subscribe_key = "demo"
+        self.pubnub = PubNubTwisted(conf, reactor=reactor, pool=self.pool)
 
-        pubnub.publish() \
-            .channel("my_channel") \
-            .message(["deferred", "hello", "using", "GET"]) \
-            .deferred() \
-            .addCallback(self.success) \
-            .addCallbacks(d.callback, d.errback)
-
-        return d
-
-    def test_publish_post_deferred(self):
-        d = defer.Deferred()
-
-        # delayedCall = reactor.callLater(3, d.cancel)
-        #
-        # def gotResult(result):
-        #     if delayedCall.active():
-        #         delayedCall.cancel()
-        #     return result
-
-        PubNubTwisted(pnconf, reactor=reactor, pool=self.pool).publish() \
-            .channel("my_channel") \
-            .message("deferred string hello using POST") \
-            .use_post(True) \
-            .deferred() \
-            .addCallback(self.success, self.error) \
-            .addCallbacks(d.callback, d.errback)
-            # .addBoth(gotResult)
-
-        return d
-
-    def test_publish_post_list_deferred(self):
-        d = defer.Deferred()
-
-        PubNubTwisted(pnconf, reactor=reactor, pool=self.pool).publish() \
-            .channel("my_channel") \
-            .message(["deferred", "list", "using", "POST"]) \
-            .use_post(True) \
-            .deferred() \
-            .addCallback(self.success, self.error) \
-            .addCallbacks(d.callback, d.errback)
-
-        return d
+        return self.assert_error(self.pubnub.publish().channel(ch).message("hey"),
+                                 self.errback_invalid_key)

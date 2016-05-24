@@ -52,6 +52,9 @@ class PubNubTornado(PubNubCore):
             'Accept-Encoding': 'utf-8'
         }
 
+    def async_error_to_return(self, e, errback):
+        errback(e)
+
     def request_async(self, options, success, error):
         def _invoke(func, data):
             if func is not None:

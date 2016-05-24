@@ -83,6 +83,9 @@ class PubNubTwisted(PubNubCore):
 
         return cancel
 
+    def async_error_to_return(self, e, errback):
+        errback(e)
+
     def request_async(self, options, success, error):
         """
         Request in non-common for Twisted way - using callbacks

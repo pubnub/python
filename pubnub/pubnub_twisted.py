@@ -123,7 +123,7 @@ class PubNubTwisted(PubNubCore):
             return defer.fail(e)
 
         url = utils.build_url(self.config.scheme(), self.config.origin,
-                              options.path, options.params)
+                              options.path, options.query_string)
 
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 

@@ -84,6 +84,16 @@ class TestPubNubPublishSuccess(TwistedTest):
     def test_success_publish_dict_post(self):
         return self.assert_success_publish_get({"name": "Alex", "online": True})
 
+    def test_success_publish_do_not_store(self):
+        return self.assert_success(
+            PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
+                .publish().channel(ch).message("hey").should_store(False))
+
+    def test_success_publish_with_meta(self):
+        return self.assert_success(
+            PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
+                .publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
+
 
 class TestPubNubPublishError(TwistedTest):
     def callback(self, res, third=None):

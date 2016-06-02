@@ -258,7 +258,12 @@ class PubnubCrypto3():
 
         secret = self.getSecret(key)
         Initial16bytes = '0123456789012345'
-        cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
+
+        # import code;
+        # code.interact(local=dict(globals(), **locals()))
+
+        cipher = AES.new(bytes(secret[0:32], "UTF-8"), AES.MODE_CBC, bytes(Initial16bytes, "UTF-8"))
+
         return encodestring(
             cipher.encrypt(self.pad(msg.encode('utf-8')))).decode('utf-8')
 
@@ -266,7 +271,9 @@ class PubnubCrypto3():
 
         secret = self.getSecret(key)
         Initial16bytes = '0123456789012345'
-        cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
+
+        cipher = AES.new(bytes(secret[0:32], "UTF-8"), AES.MODE_CBC, bytes(Initial16bytes, "UTF-8"))
+
         return (cipher.decrypt(
             decodestring(msg.encode('utf-8')))).decode('utf-8')
 
@@ -298,7 +305,7 @@ class PubnubBase(object):
         """
 
         self.origin = origin
-        self.version = '3.7.6'
+        self.version = '3.7.7'
         self.limit = 1800
         self.publish_key = publish_key
         self.subscribe_key = subscribe_key

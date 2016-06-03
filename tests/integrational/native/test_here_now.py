@@ -10,9 +10,7 @@ pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 class TestPubNubSyncHereNow(unittest.TestCase):
     def test_success(self):
-        pubnub = PubNub(pnconf)
-
-        res = pubnub.here_now() \
+        res = PubNub(pnconf).here_now() \
             .channels(["ch1", "ch2", "ch3", "demo"]) \
             .include_state(False) \
             .sync()
@@ -22,20 +20,14 @@ class TestPubNubSyncHereNow(unittest.TestCase):
 
 class TestPubNubAsyncHereNow(unittest.TestCase):
     def test_success(self):
-        pubnub = PubNub(pnconf)
+        def callback(res, status):
+            print("response", res)
+            print("status", status)
 
-        def success(res):
-            print("success")
-            print(res.total_occupancy)
-
-        def error(err):
-            print("error")
-            print(err)
-
-        thread = pubnub.here_now() \
+        thread = PubNub(pnconf).here_now() \
             .channels(["ch1", "ch2", "ch3", "demo"]) \
             .include_state(False) \
-            .async(success, error)
+            .async(callback)
 
         print("awaiting")
         thread.join()

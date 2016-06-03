@@ -1,5 +1,5 @@
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.enums import HttpMethod
+from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.presence import PNHereNowResult, PNOccupantsData, PNHereNowChannelData
 
 
@@ -82,3 +82,9 @@ class HereNow(Endpoint):
         res = PNHereNowResult(int(payload['total_channels']), int(payload['total_channels']), channels)
 
         return res
+
+    def operation_type(self):
+        return PNOperationType.PNPublishOperation
+
+    def name(self):
+        return "HereNow"

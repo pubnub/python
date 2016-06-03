@@ -5,6 +5,7 @@ import threading
 from .errors import PNERR_JSON_NOT_SERIALIZABLE
 from .exceptions import PubNubException
 
+# TODO: migrate to :six: helpers instead of following
 try:
     from urllib.parse import urlunsplit as pn_urlunsplit
 except ImportError:

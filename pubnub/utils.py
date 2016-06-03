@@ -1,5 +1,6 @@
 import json
 import uuid as u
+import threading
 
 from .errors import PNERR_JSON_NOT_SERIALIZABLE
 from .exceptions import PubNubException
@@ -10,9 +11,19 @@ except ImportError:
     from urlparse import urlunsplit as pn_urlunsplit
 
 try:
+    from urllib.parse import urlparse as pn_urlparse
+except ImportError:
+    from urlparse import urlparse as pn_urlparse
+
+try:
     from urllib.parse import urlencode as pn_urlencode
 except ImportError:
     from urllib import urlencode as pn_urlencode
+
+try:
+    from urllib.parse import parse_qs as pn_parse_qs
+except ImportError:
+    from urlparse import parse_qs as pn_parse_qs
 
 
 def get_data_for_user(data):
@@ -43,12 +54,41 @@ def url_encode(data):
     except ImportError:
         from urllib import quote as q
 
-    return q(data)
+    try:
+        r = q(data)
+    except Exception as e:
+        print(e)
+
+    return r
 
 
 def uuid():
     return str(u.uuid4())
 
 
+def split_items(items_string):
+    if len(items_string) is 0:
+        return []
+    else:
+        return items_string.split(",")
+
+
+def join_items(items_list):
+    return ",".join(items_list)
+
+
 def build_url(scheme, origin, path, params):
     return pn_urlunsplit((scheme, origin, path, params, ''))
+
+
+def synchronized(func):
+    func.__lock__ = threading.Lock()
+
+    def synced_func(*args, **kws):
+        with func.__lock__:
+            return func(*args, **kws)
+
+    return synced_func
+
+urlparse = pn_urlparse
+parse_qs = pn_parse_qs

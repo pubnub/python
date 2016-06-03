@@ -4,7 +4,7 @@ from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_MESSAGE_MISSING, PNERR_CHANNEL_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
-from pubnub.enums import HttpMethod
+from pubnub.enums import HttpMethod, PNOperationType
 
 
 class Publish(Endpoint):
@@ -116,3 +116,15 @@ class Publish(Endpoint):
         res = PNPublishResult(envelope, timetoken)
 
         return res
+
+    def affected_channels(self):
+        return None
+
+    def affected_channels_groups(self):
+        return None
+
+    def operation_type(self):
+        return PNOperationType.PNPublishOperation
+
+    def name(self):
+        return "Publish"

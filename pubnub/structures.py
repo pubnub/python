@@ -34,10 +34,20 @@ class RequestOptions(object):
         for k, v in self.params.items():
             if k in do_not_encode:
                 continue
-            s.append(e(k) + "=" + e(v))
+            s.append(e(str(k)) + "=" + e(str(v)))
 
         return s
 
     @property
     def query_string(self):
         return str('&'.join(self.query_list()))
+
+
+class ResponseInfo(object):
+    def __init__(self, status_code, tls_enabled, origin, uuid, auth_key, client_request):
+        self.status_code = status_code
+        self.tls_enabled = tls_enabled
+        self.origin = origin
+        self.uuid = uuid
+        self.auth_key = auth_key
+        self.client_request = client_request

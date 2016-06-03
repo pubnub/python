@@ -1,8 +1,8 @@
 import logging
 import threading
-
-import vcr
 import unittest
+
+import time
 
 import pubnub
 from pubnub.exceptions import PubNubException
@@ -11,6 +11,7 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, pnconf_enc
 
+# import pydevd as pydevd
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
@@ -274,27 +275,36 @@ class TestPubNubSyncPublish(unittest.TestCase):
 
 
 class TestPubNubAsyncSuccessPublish(unittest.TestCase):
-    def success(self, res):
-        assert isinstance(res, PNPublishResult)
-        assert res.timetoken > 1
+    def setUp(self):
+        self.event = threading.Event()
 
-    def error(self, e):
-        self.fail(e)
+    def callback(self, response, status):
+        self.response = response
+        self.status = status
+        self.event.set()
+
+    def assert_success(self):
+        self.event.wait()
+        assert not self.status.is_error()
+        assert isinstance(self.response, PNPublishResult)
+        assert self.response.timetoken > 1
 
     def assert_success_publish_get(self, msg):
         PubNub(pnconf).publish() \
             .channel("ch1") \
             .message(msg) \
-            .async(self.success, self.error) \
-            .join()
+            .async(self.callback)
+
+        self.assert_success()
 
     def assert_success_publish_post(self, msg):
         PubNub(pnconf).publish() \
             .channel("ch1") \
             .message(msg) \
             .use_post(True) \
-            .async(self.success, self.error) \
-            .join()
+            .async(self.callback)
+
+        self.assert_success()
 
     def test_publish_get(self):
         self.assert_success_publish_get("hi")
@@ -311,34 +321,41 @@ class TestPubNubAsyncSuccessPublish(unittest.TestCase):
         self.assert_success_publish_post({"name": "Alex", "online": True})
 
     def test_publish_encrypted_list_get(self):
-        PubNub(pnconf_enc).publish() \
+        pubnub = PubNub(pnconf_enc)
+
+        pubnub.publish() \
             .channel("ch1") \
             .message(["encrypted", "list"]) \
-            .async(self.success, self.error) \
-            .join()
+            .async(self.callback)
+
+        self.assert_success()
+        pubnub.stop()
 
     def test_publish_encrypted_string_get(self):
         PubNub(pnconf_enc).publish() \
             .channel("ch1") \
             .message("encrypted string") \
-            .async(self.success, self.error) \
-            .join()
+            .async(self.callback)
+
+        self.assert_success()
 
     def test_publish_encrypted_list_post(self):
         PubNub(pnconf_enc).publish() \
             .channel("ch1") \
             .message(["encrypted", "list"]) \
             .use_post(True) \
-            .async(self.success, self.error) \
-            .join()
+            .async(self.callback)
+
+        self.assert_success()
 
     def test_publish_encrypted_string_post(self):
         PubNub(pnconf_enc).publish() \
             .channel("ch1") \
             .message("encrypted string") \
             .use_post(True) \
-            .async(self.success, self.error) \
-            .join()
+            .async(self.callback)
+
+        self.assert_success()
 
     def test_publish_with_meta(self):
         meta = {'a': 2, 'b': 'qwer'}
@@ -347,29 +364,30 @@ class TestPubNubAsyncSuccessPublish(unittest.TestCase):
             .channel("ch1") \
             .message("hey") \
             .meta(meta) \
-            .async(self.success, self.error) \
-            .join()
+            .async(self.callback)
+
+        self.assert_success()
 
     def test_publish_do_not_store(self):
         PubNub(pnconf_enc).publish() \
             .channel("ch1") \
             .message("hey") \
             .should_store(False) \
-            .async(self.success, self.error) \
-            .join()
+            .async(self.callback)
+
+        self.assert_success()
 
 
 class TestPubNubAsyncErrorPublish(unittest.TestCase):
-    def success(self, res):
-        self.invalid_key_message = "Success callback invoked: " + str(res)
+    def setUp(self):
+        self.event = threading.Event()
 
-    def error_invalid_key(self):
-        def handler(ex):
-            self.invalid_key_message = str(ex)
+    def callback(self, response, status):
+        self.response = response
+        self.status = status
+        self.event.set()
 
-        return handler
-
-    def test_invalid_key(self):
+    def test_invalid_k(self):
         self.invalid_key_message = ""
         config = PNConfiguration()
         config.publish_key = "fake"
@@ -378,37 +396,37 @@ class TestPubNubAsyncErrorPublish(unittest.TestCase):
         PubNub(config).publish() \
             .channel("ch1") \
             .message("hey") \
-            .async(self.success, self.error_invalid_key()) \
-            .join()
+            .async(self.callback)
 
-        assert "HTTP Client Error (400):" in self.invalid_key_message
-        assert "Invalid Key" in self.invalid_key_message
+        self.event.wait()
 
-    def error_missing_message(self, err):
-        assert "Message missing" in str(err)
-        pass
+        assert self.status.is_error()
+        assert self.response.envelope[0] is 0
+        assert self.response.envelope[1] == 'Invalid Key'
+        assert "HTTP Client Error (400):" in str(self.status.error_data.exception)
+        assert "Invalid Key" in str(self.status.error_data.exception)
 
     def test_missing_message(self):
         PubNub(pnconf).publish() \
             .channel("ch1") \
             .message(None) \
-            .async(self.success, self.error_missing_message) \
-            .join()
+            .async(self.callback)
 
-    def error_missing_channel(self, err):
-        assert "Channel missing" in str(err)
-        pass
+        self.event.wait()
+
+        assert self.status.is_error()
+        assert self.response is None
+        assert "Message missing" in str(self.status.error_data.exception)
 
     def test_missing_chanel(self):
         PubNub(pnconf).publish() \
             .channel("") \
             .message("hey") \
-            .async(self.success, self.error_missing_channel) \
-            .join()
+            .async(self.callback)
 
-    def error_non_serializable(self, err):
-        assert "not JSON serializable" in str(err)
-        pass
+        assert self.status.is_error()
+        assert self.response is None
+        assert "Channel missing" in str(self.status.error_data.exception)
 
     def test_non_serializable(self):
         def method():
@@ -417,5 +435,10 @@ class TestPubNubAsyncErrorPublish(unittest.TestCase):
         PubNub(pnconf).publish() \
             .channel("ch1") \
             .message(method) \
-            .async(self.success, self.error_non_serializable) \
-            .join()
+            .async(self.callback)
+
+        self.event.wait()
+
+        assert self.status.is_error()
+        assert self.response is None
+        assert "not JSON serializable" in str(self.status.error_data.exception)

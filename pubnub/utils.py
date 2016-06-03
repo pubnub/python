@@ -54,12 +54,7 @@ def url_encode(data):
     except ImportError:
         from urllib import quote as q
 
-    try:
-        r = q(data)
-    except Exception as e:
-        print(e)
-
-    return r
+    return q(data)
 
 
 def uuid():

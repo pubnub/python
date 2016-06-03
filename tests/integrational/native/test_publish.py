@@ -1,17 +1,14 @@
 import logging
 import threading
 import unittest
-
-import time
-
 import pubnub
+
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, pnconf_enc
 
-# import pydevd as pydevd
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
@@ -198,6 +195,7 @@ class TestPubNubSyncPublish(unittest.TestCase):
         config = PNConfiguration()
         config.publish_key = "fake"
         config.subscribe_key = "demo"
+        config.enable_subscribe = False
 
         try:
             PubNub(config).publish() \
@@ -329,7 +327,6 @@ class TestPubNubAsyncSuccessPublish(unittest.TestCase):
             .async(self.callback)
 
         self.assert_success()
-        pubnub.stop()
 
     def test_publish_encrypted_string_get(self):
         PubNub(pnconf_enc).publish() \
@@ -387,11 +384,12 @@ class TestPubNubAsyncErrorPublish(unittest.TestCase):
         self.status = status
         self.event.set()
 
-    def test_invalid_k(self):
+    def test_invalid_key(self):
         self.invalid_key_message = ""
         config = PNConfiguration()
         config.publish_key = "fake"
         config.subscribe_key = "demo"
+        config.enable_subscribe = False
 
         PubNub(config).publish() \
             .channel("ch1") \

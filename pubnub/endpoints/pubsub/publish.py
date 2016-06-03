@@ -111,6 +111,9 @@ class Publish(Endpoint):
         :param envelope: an already serialized json response
         :return:
         """
+        if envelope is None:
+            return None
+
         timetoken = int(envelope[2])
 
         res = PNPublishResult(envelope, timetoken)

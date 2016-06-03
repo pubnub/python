@@ -1,9 +1,12 @@
+import six
+
+
 class PNMessageResult(object):
     def __init__(self, message, subscribed_channel, actual_channel, timetoken, user_metadata=None):
         assert message is not None
-        assert isinstance(subscribed_channel, (str, unicode))
-        assert isinstance(actual_channel, (str, unicode))
-        assert isinstance(timetoken, long)
+        assert isinstance(subscribed_channel, six.string_types)
+        assert isinstance(actual_channel, six.string_types)
+        assert isinstance(timetoken, six.integer_types)
 
         if user_metadata is not None:
             assert isinstance(user_metadata, object)

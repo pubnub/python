@@ -7,7 +7,7 @@ import pubnub
 from pubnub.callbacks import SubscribeCallback
 from pubnub.exceptions import PubNubException
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, CountDownLatch
+from tests.helper import CountDownLatch, pnconf_sub
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -16,7 +16,7 @@ class TestPubNubSubscribe(unittest.TestCase):
     # @vcr.use_cassette('integrational/fixtures/publish/publish_string_get.yaml',
     #                   filter_query_parameters=['uuid'])
     def test_subscribe_latched(self):
-        pubnub = PubNub(pnconf)
+        pubnub = PubNub(pnconf_sub)
         latch = CountDownLatch()
 
         class MyCallback(SubscribeCallback):

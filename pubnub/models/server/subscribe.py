@@ -1,3 +1,6 @@
+import six
+
+
 class SubscribeEnvelope:
     def __init__(self, messages=None, metadata=None):
         assert isinstance(messages, (list, None))
@@ -66,7 +69,7 @@ class PresenceEnvelope:
         assert isinstance(action, str)
         assert isinstance(uuid, str)
         assert isinstance(occupancy, int)
-        assert isinstance(timestamp, long)
+        assert isinstance(timestamp, six.integer_types)
 
         self.action = action
         self.uuid = uuid
@@ -89,4 +92,4 @@ class PublishMetadata:
         assert 'r' in json_input
         assert 't' in json_input
 
-        return PublishMetadata(long(json_input['t']), int(json_input['r']))
+        return PublishMetadata(int(json_input['t']), int(json_input['r']))

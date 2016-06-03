@@ -3,7 +3,6 @@ from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.errors import PNERR_CHANNEL_OR_GROUP_MISSING
 from pubnub.exceptions import PubNubException
-from pubnub.models.server.subscribe import SubscribeEnvelope, SubscribeMessage, SubscribeMetadata
 
 
 class Subscribe(Endpoint):

@@ -1,6 +1,6 @@
 import threading
-from Queue import Queue
 
+from . import utils
 from .dtos import SubscribeOperation
 from .models.server.subscribe import SubscribeEnvelope
 from .enums import PNStatusCategory
@@ -100,10 +100,10 @@ class SubscriptionManager(object):
         self._pubnub = pubnub_instance
         self._subscription_status_announced = False
         # TODO: ensure this is a correct Queue
-        self._message_queue = Queue()
+        self._message_queue = utils.Queue()
         self._subscription_state = StateManager()
         self._listener_manager = ListenerManager(self._pubnub)
-        self._timetoken = 0
+        self._timetoken = int(0)
         self._region = None
 
         self._should_stop = False
@@ -183,7 +183,8 @@ class SubscriptionManager(object):
                 for message in result.messages:
                     self._message_queue.put(message)
 
-            self._timetoken = long(result.metadata.timetoken)
+            # REVIEW: is int compatible with long for Python 2
+            self._timetoken = int(result.metadata.timetoken)
             self._region = int(result.metadata.region)
             self._start_subscribe_loop()
 

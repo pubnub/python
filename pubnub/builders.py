@@ -28,7 +28,7 @@ class SubscribeBuilder(PubSubBuilder):
     def __init__(self, subscription_manager):
         super(SubscribeBuilder, self).__init__(subscription_manager)
         self._presence_enabled = False
-        self._timetoken = 0L
+        self._timetoken = 0
 
     def with_presence(self):
         self._presence_enabled = True

@@ -82,7 +82,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
             self.pubnub.start()
             self.wait()
         except PubNubException as e:
-            self.assertIn(expected_err_msg, str(e))
+            assert expected_err_msg in str(e)
 
         self.pubnub.stop()
         self.stop()
@@ -143,7 +143,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         self.pubnub.stop()
         # this kind of assertion will not fail the test if'll be moved below `self.stop()` call
         # but also not raises correct exception, timeout exception will be raised on fail instead
-        self.assertIn(self.expected_err_msg, str(exception))
+        assert self.expected_err_msg in str(exception)
         self.stop()
 
     def assert_server_side_error(self, pub, expected_err_msg):

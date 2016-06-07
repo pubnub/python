@@ -2,6 +2,8 @@ import json
 import logging
 import time
 
+from .enums import PNStatusCategory
+from .structures import ResponseInfo
 from . import utils
 from .exceptions import PubNubException
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED
@@ -54,13 +56,18 @@ class PubNubTornado(PubNubCore):
             'Accept-Encoding': 'utf-8'
         }
 
-    def async_error_to_return(self, e, errback):
-        errback(e)
+    def request_sync(self, *args):
+        raise NotImplementedError
 
-    def request_async(self, options, success, error):
-        def _invoke(func, data):
-            if func is not None:
-                func(data)
+    def request_async(self, *args):
+        raise NotImplementedError
+
+    def request_deferred(self, *args):
+        raise NotImplementedError
+
+    def request_future(self, options_func, create_response, create_status_response):
+        options = options_func()
+        future = Future()
 
         url = utils.build_url(self.config.scheme(), self.config.origin,
                               options.path, options.query_string)
@@ -76,18 +83,44 @@ class PubNubTornado(PubNubCore):
 
         def response_callback(response):
             body = response.body
+            response_info = None
+            status_category = PNStatusCategory.PNUnknownCategory
 
             if body is not None and len(body) > 0:
+                url = utils.urlparse(response.effective_url)
+                query = utils.parse_qs(url.query)
+                uuid = None
+                auth_key = None
+
+                if 'uuid' in query and len(query['uuid']) > 0:
+                    uuid = query['uuid'][0]
+
+                if 'auth_key' in query and len(query['auth_key']) > 0:
+                    auth_key = query['auth_key'][0]
+
+                response_info = ResponseInfo(
+                    status_code=response.code,
+                    tls_enabled='https' == url.scheme,
+                    origin=url.hostname,
+                    uuid=uuid,
+                    auth_key=auth_key,
+                    client_request=response.request
+                )
+
                 try:
                     data = json.loads(body)
                 except TypeError:
                     try:
                         data = json.loads(body.decode("utf-8"))
                     except ValueError:
-                        _invoke(error, PubNubException(
+                        tornado_result = TornadoEnvelope(
+                            create_response(None),
+                            create_status_response(status_category, response, response_info, PubNubException(
                             pn_error=PNERR_JSON_DECODING_FAILED,
-                            errormsg='json decode error'
-                        ))
+                            errormsg='json decode error')
+                                                   )
+                        )
+                        future.set_exception(tornado_result)
                         return
             else:
                 data = "N/A"
@@ -98,26 +131,35 @@ class PubNubTornado(PubNubCore):
                 else:
                     err = PNERR_CLIENT_ERROR
 
-                _invoke(error, PubNubException(
-                    errormsg=data,
-                    pn_error=err,
-                    status_code=response.code
+                if response.code == 403:
+                    status_category = PNStatusCategory.PNAccessDeniedCategory
+
+                if response.code == 400:
+                    status_category = PNStatusCategory.PNBadRequestCategory
+
+                future.set_exception(PubNubException(
+                        errormsg=data,
+                        pn_error=err,
+                        status_code=response.code
                 ))
+
+                # future.set_exception(tornado_result)
             else:
-                _invoke(success, data)
+                future.set_result(TornadoEnvelope(
+                    result=create_response(data),
+                    status=create_status_response(status_category, data, response_info, None)
+                    )
+                )
 
         self.http.fetch(
             request=request,
             callback=response_callback
         )
 
-    # TODO: add Tornado Feature support
-    def request_deferred(self, options_func):
-        options = options_func()
-        future = Future()
-        self.request_async(
-            options,
-            lambda res: future.set_result(res),
-            lambda err: future.set_exception(err)
-        )
         return future
+
+
+class TornadoEnvelope(object):
+    def __init__(self, result, status):
+        self.result = result
+        self.status = status

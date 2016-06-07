@@ -88,11 +88,23 @@ class Endpoint(object):
 
         return self.pubnub.request_async(self.name(), options, callback_wrapper, self._cancellation_event)
 
+    def future(self):
+        def handler():
+            self.validate_params()
+            return self.options()
+
+        return self.pubnub \
+            .request_future(handler,
+                            create_response=self.create_response,
+                            create_status_response=self.create_status_response
+                            )
+
     def deferred(self):
         def handler():
             self.validate_params()
             return self.options()
 
+        # TODO: move .addCallback(self.create_response) logic to request_deferred()
         return self.pubnub \
             .request_deferred(handler) \
             .addCallback(self.create_response)

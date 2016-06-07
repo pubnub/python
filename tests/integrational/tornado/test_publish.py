@@ -162,7 +162,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
             self.pubnub.start()
             self.wait()
         except PubNubException as e:
-            self.assertIn(expected_err_msg, str(e))
+            assert expected_err_msg in str(e)
 
         self.pubnub.stop()
         self.stop()

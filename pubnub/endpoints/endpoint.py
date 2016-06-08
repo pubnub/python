@@ -142,11 +142,13 @@ class Endpoint(object):
         if response is None or exception is not None:
             pn_status.error = True
 
+        if response is not None:
+            pn_status.original_response = response
+
         if exception is not None:
             pn_status.error_data = PNErrorData(str(exception), exception)
 
         if response_info is not None:
-
             pn_status.status_code = response_info.status_code
             pn_status.tls_enabled = response_info.tls_enabled
             pn_status.origin = response_info.origin

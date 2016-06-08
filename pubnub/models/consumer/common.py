@@ -13,6 +13,7 @@ class PNStatus:
         self.auth_key = None
         self.origin = None
         self.client_request = None
+        self.original_response = None
 
         self.affected_channels = None
         self.affected_groups = None

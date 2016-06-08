@@ -41,7 +41,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         assert isinstance(self.env.result, PNPublishResult)
         assert isinstance(self.env.status, PNStatus)
         assert self.env.result.timetoken > 0
-        assert len(self.env.result.original_response) > 0
+        assert len(self.env.status.original_response) > 0
 
     @tornado.testing.gen_test
     def assert_success_yield(self, pub):
@@ -53,7 +53,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         assert isinstance(envelope.result, PNPublishResult)
         assert isinstance(envelope.status, PNStatus)
         assert envelope.result.timetoken > 0
-        assert len(envelope.result.original_response) > 0
+        assert len(envelope.status.original_response) > 0
 
     def assert_success_publish_get(self, msg):
         self.pubnub = PubNubTornado(pnconf)

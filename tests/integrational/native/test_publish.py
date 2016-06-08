@@ -399,8 +399,8 @@ class TestPubNubAsyncErrorPublish(unittest.TestCase):
         self.event.wait()
 
         assert self.status.is_error()
-        assert self.response.envelope[0] is 0
-        assert self.response.envelope[1] == 'Invalid Key'
+        assert self.status.original_response[0] is 0
+        assert self.status.original_response[1] == 'Invalid Key'
         assert "HTTP Client Error (400):" in str(self.status.error_data.exception)
         assert "Invalid Key" in str(self.status.error_data.exception)
 

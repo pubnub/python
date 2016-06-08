@@ -56,6 +56,10 @@ class PubNubTornado(PubNubCore):
             'Accept-Encoding': 'utf-8'
         }
 
+    def subscribe(self):
+        pass
+        # return SubscribeBuilder(self._subscription_manager)
+
     def request_sync(self, *args):
         raise NotImplementedError
 
@@ -116,8 +120,8 @@ class PubNubTornado(PubNubCore):
                         tornado_result = TornadoEnvelope(
                             create_response(None),
                             create_status_response(status_category, response, response_info, PubNubException(
-                            pn_error=PNERR_JSON_DECODING_FAILED,
-                            errormsg='json decode error')
+                                pn_error=PNERR_JSON_DECODING_FAILED,
+                                errormsg='json decode error')
                                                    )
                         )
                         future.set_exception(tornado_result)
@@ -138,9 +142,9 @@ class PubNubTornado(PubNubCore):
                     status_category = PNStatusCategory.PNBadRequestCategory
 
                 future.set_exception(PubNubException(
-                        errormsg=data,
-                        pn_error=err,
-                        status_code=response.code
+                    errormsg=data,
+                    pn_error=err,
+                    status_code=response.code
                 ))
 
                 # future.set_exception(tornado_result)
@@ -148,7 +152,7 @@ class PubNubTornado(PubNubCore):
                 future.set_result(TornadoEnvelope(
                     result=create_response(data),
                     status=create_status_response(status_category, data, response_info, None)
-                    )
+                )
                 )
 
         self.http.fetch(

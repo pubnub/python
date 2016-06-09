@@ -1,10 +1,8 @@
 import logging
+from abc import abstractmethod
 
-from . import utils
 from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult
 from .models.server.subscribe import SubscribeMessage, PresenceEnvelope
-# from .pubnub_core import PubNubCore
-# from .managers import ListenerManager
 
 logger = logging.getLogger("pubnub")
 
@@ -13,7 +11,7 @@ class SubscribeMessageWorker(object):
     def __init__(self, pubnub_instnace, listener_manager_instance, queue_instance, event):
         # assert isinstance(pubnub_instnace, PubNubCore)
         # assert isinstance(listener_manager_instance, ListenerManager)
-        assert isinstance(queue_instance, utils.Queue)
+        # assert isinstance(queue_instance, utils.Queue)
 
         self._pubnub = pubnub_instnace
         self._listener_manager = listener_manager_instance
@@ -24,20 +22,9 @@ class SubscribeMessageWorker(object):
     def run(self):
         self._take_message()
 
+    @abstractmethod
     def _take_message(self):
-        while not self._event.isSet():
-            try:
-                # TODO: get rid of 1s timeout
-                msg = self._queue.get(True, 1)
-                if msg is not None:
-                    self._process_incoming_payload(msg)
-                self._queue.task_done()
-            except utils.QueueEmpty:
-                continue
-            except Exception as e:
-                self._queue.task_done()
-                self._event.set()
-                logger.warn("take message interrupted: %s" % str(e))
+        pass
 
     def _process_message(self, message_input):
         if self._pubnub.config.cipher_key is None:

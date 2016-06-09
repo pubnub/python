@@ -2,6 +2,8 @@ import logging
 import threading
 import requests
 
+from .endpoints.pubsub.subscribe import Subscribe
+from .workers import SubscribeMessageWorker
 from .pnconfiguration import PNConfiguration
 from .builders import SubscribeBuilder
 from .managers import SubscriptionManager
@@ -26,7 +28,7 @@ class PubNub(PubNubCore):
         PubNubCore.__init__(self, config)
 
         if self.config.enable_subscribe:
-            self._subscription_manager = SubscriptionManager(self)
+            self._subscription_manager = NativeSubscriptionManager(self)
 
     def subscribe(self):
         return SubscribeBuilder(self._subscription_manager)
@@ -257,3 +259,70 @@ class Call(object):
     def executed_cb(self):
         self.is_executed = True
 
+
+class NativeSubscriptionManager(SubscriptionManager):
+    def __init__(self, pubnub_instance):
+        self._message_queue = utils.Queue()
+        self._consumer_event = threading.Event()
+        super(NativeSubscriptionManager, self).__init__(pubnub_instance)
+
+    def _set_consumer_event(self):
+        self._consumer_event.set()
+
+    def _message_queue_put(self, message):
+        self._message_queue.put(message)
+
+    def _start_worker(self):
+        consumer = NativeSubscribeMessageWorker(self._pubnub, self._listener_manager,
+                                          self._message_queue, self._consumer_event)
+        self._consumer_thread = threading.Thread(target=consumer.run,
+                                                 name="SubscribeMessageWorker")
+        self._consumer_thread.start()
+
+    def _start_subscribe_loop(self):
+        self._stop_subscribe_loop()
+
+        combined_channels = self._subscription_state.prepare_channel_list(True)
+        combined_groups = self._subscription_state.prepare_channel_group_list(True)
+
+        if len(combined_channels) == 0 and len(combined_groups) == 0:
+            return
+
+        def callback(raw_result, status):
+            """ SubscribeEndpoint callback"""
+            if status.is_error():
+                if status.category is PNStatusCategory.PNTimeoutCategory and not self._should_stop:
+                    self._start_subscribe_loop()
+                else:
+                    self._listener_manager.announce_status(status)
+
+                return
+
+            self._handle_endpoint_call(raw_result, status)
+
+        try:
+            self._subscribe_call = Subscribe(self._pubnub) \
+                .channels(combined_channels).groups(combined_groups) \
+                .timetoken(self._timetoken).region(self._region) \
+                .filter_expression(self._pubnub.config.filter_expression) \
+                .async(callback)
+        except Exception as e:
+            print("failed", e)
+
+
+class NativeSubscribeMessageWorker(SubscribeMessageWorker):
+    def _take_message(self):
+        while not self._event.isSet():
+            try:
+                # TODO: get rid of 1s timeout
+                msg = self._queue.get(True, 1)
+                if msg is not None:
+                    self._process_incoming_payload(msg)
+                self._queue.task_done()
+            except utils.QueueEmpty:
+                continue
+            except Exception as e:
+                # TODO: move to finally
+                self._queue.task_done()
+                self._event.set()
+                logger.warn("take message interrupted: %s" % str(e))

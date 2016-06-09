@@ -1,15 +1,12 @@
-import threading
+from abc import abstractmethod, ABCMeta
 
-from . import utils
-from .dtos import SubscribeOperation
-from .models.server.subscribe import SubscribeEnvelope
 from .enums import PNStatusCategory
+from .models.consumer.common import PNStatus
+from .models.server.subscribe import SubscribeEnvelope
+from .dtos import SubscribeOperation, UnsubscribeOperation
 from .callbacks import SubscribeCallback
 from .models.subscription_item import SubscriptionItem
-from .endpoints.pubsub.subscribe import Subscribe
-from .workers import SubscribeMessageWorker
 from .utils import synchronized
-from .models.consumer.common import PNStatus
 
 
 class PublishSequenceManager(object):
@@ -55,6 +52,15 @@ class StateManager(object):
             if subscribe_operation.presence_enabled:
                 self._presence_groups[group] = SubscriptionItem(name=group)
 
+    def adapt_unsubscribe_builder(self, unsubscribe_operation):
+        for channel in unsubscribe_operation.channels:
+            self._channels.pop(channel)
+            self._presence_channels.pop(channel)
+
+        for group in unsubscribe_operation.channel_groups:
+            self._groups.pop(group)
+            self._presence_groups.pop(group)
+
     @staticmethod
     def _prepare_membership_list(data_storage, presence_storage, include_presence):
         response = []
@@ -96,11 +102,12 @@ class ListenerManager(object):
 
 
 class SubscriptionManager(object):
+    __metaclass__ = ABCMeta
+
     def __init__(self, pubnub_instance):
         self._pubnub = pubnub_instance
         self._subscription_status_announced = False
-        # TODO: ensure this is a correct Queue
-        self._message_queue = utils.Queue()
+
         self._subscription_state = StateManager()
         self._listener_manager = ListenerManager(self._pubnub)
         self._timetoken = int(0)
@@ -111,12 +118,23 @@ class SubscriptionManager(object):
         self._subscribe_call = None
         self._heartbeat_call = None
 
-        self._consumer_event = threading.Event()
-        consumer = SubscribeMessageWorker(self._pubnub, self._listener_manager,
-                                          self._message_queue, self._consumer_event)
-        self._consumer_thread = threading.Thread(target=consumer.run,
-                                                 name="SubscribeMessageWorker")
-        self._consumer_thread.start()
+        self._start_worker()
+
+    @abstractmethod
+    def _start_worker(self):
+        pass
+
+    @abstractmethod
+    def _set_consumer_event(self):
+        pass
+
+    @abstractmethod
+    def _message_queue_put(self, message):
+        pass
+
+    @abstractmethod
+    def _start_subscribe_loop(self):
+        pass
 
     def add_listener(self, listener):
         self._listener_manager.add_listener(listener)
@@ -133,6 +151,16 @@ class SubscriptionManager(object):
         self.reconnect()
 
     @synchronized
+    def adapt_unsubscribe_builder(self, unsubscribe_operation):
+        assert isinstance(unsubscribe_operation, UnsubscribeOperation)
+
+        self._subscription_state.adapt_unsubscribe_builder(unsubscribe_operation)
+
+        # TODO: invoke leave request with callback
+        # Leave()
+        self.reconnect()
+
+    @synchronized
     def reconnect(self):
         self._should_stop = False
         self._start_subscribe_loop()
@@ -142,60 +170,33 @@ class SubscriptionManager(object):
         # self._stop_heartbeat_timer()
         self._stop_subscribe_loop()
         self._should_stop = True
-        self._consumer_event.set()
+        self._set_consumer_event()
 
-    def _start_subscribe_loop(self):
-        self._stop_subscribe_loop()
+    def _handle_endpoint_call(self, raw_result, status):
+        assert isinstance(status, PNStatus)
 
-        combined_channels = self._subscription_state.prepare_channel_list(True)
-        combined_groups = self._subscription_state.prepare_channel_group_list(True)
+        if not self._subscription_status_announced:
+            pn_status = PNStatus()
+            pn_status.category = PNStatusCategory.PNConnectedCategory,
+            pn_status.status_code = status.status_code
+            pn_status.auth_key = status.auth_key
+            pn_status.operation = status.operation
+            pn_status.client_request = status.client_request
+            pn_status.origin = status.origin
+            pn_status.tls_enabled = status.tls_enabled
 
-        if len(combined_channels) == 0 and len(combined_groups) == 0:
-            return
+            self._subscription_status_announced = True
+            self._listener_manager.announce_status(pn_status)
 
-        def callback(raw_result, status):
-            """ SubscribeEndpoint callback"""
-            assert isinstance(status, PNStatus)
+        result = SubscribeEnvelope.from_json(raw_result)
+        if result.messages is not None and len(result.messages) > 0:
+            for message in result.messages:
+                self._message_queue_put(message)
 
-            if status.is_error():
-                if status.category is PNStatusCategory.PNTimeoutCategory and not self._should_stop:
-                    self._start_subscribe_loop()
-                else:
-                    self._listener_manager.announce_status(status)
-
-                return
-
-            if not self._subscription_status_announced:
-                pn_status = PNStatus()
-                pn_status.category = PNStatusCategory.PNConnectedCategory,
-                pn_status.status_code = status.status_code
-                pn_status.auth_key = status.auth_key
-                pn_status.operation = status.operation
-                pn_status.client_request = status.client_request
-                pn_status.origin = status.origin
-                pn_status.tls_enabled = status.tls_enabled
-
-                self._subscription_status_announced = True
-                self._listener_manager.announce_status(pn_status)
-
-            result = SubscribeEnvelope.from_json(raw_result)
-            if result.messages is not None and len(result.messages) > 0:
-                for message in result.messages:
-                    self._message_queue.put(message)
-
-            # REVIEW: is int compatible with long for Python 2
-            self._timetoken = int(result.metadata.timetoken)
-            self._region = int(result.metadata.region)
-            self._start_subscribe_loop()
-
-        try:
-            self._subscribe_call = Subscribe(self._pubnub) \
-                .channels(combined_channels).groups(combined_groups) \
-                .timetoken(self._timetoken).region(self._region) \
-                .filter_expression(self._pubnub.config.filter_expression) \
-                .async(callback)
-        except Exception as e:
-            print("failed", e)
+        # REVIEW: is int compatible with long for Python 2
+        self._timetoken = int(result.metadata.timetoken)
+        self._region = int(result.metadata.region)
+        self._start_subscribe_loop()
 
     def _stop_subscribe_loop(self):
         sc = self._subscribe_call

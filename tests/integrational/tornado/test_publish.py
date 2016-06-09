@@ -11,7 +11,7 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
-from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope
+from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope, PubNubTornadoException
 from tests.helper import pnconf, pnconf_enc
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
@@ -161,7 +161,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
             self.pubnub.start()
             self.wait()
-        except PubNubException as e:
+        except PubNubTornadoException as e:
             assert expected_err_msg in str(e)
 
         self.pubnub.stop()

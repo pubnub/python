@@ -1,17 +1,12 @@
 import json
 import logging
 import time
-
 import datetime
 
 from . import utils
-from .callbacks import SubscribeCallback
-from .models.server.subscribe import SubscribeEnvelope
 from .workers import SubscribeMessageWorker
 from .endpoints.pubsub.subscribe import Subscribe
-from .models.consumer.common import PNStatus
-from .dtos import SubscribeOperation, UnsubscribeOperation
-from .managers import StateManager, ListenerManager, SubscriptionManager
+from .managers import SubscriptionManager
 from .builders import SubscribeBuilder
 from .enums import PNStatusCategory
 from .structures import ResponseInfo
@@ -21,13 +16,12 @@ from .pubnub_core import PubNubCore
 
 import tornado.httpclient
 import tornado.ioloop
+import tornado.gen
 from tornado.concurrent import Future
 from tornado.queues import Queue
 from tornado.locks import Event
 from tornado import ioloop
-from tornado import gen
 
-# default_ioloop = tornado.ioloop.IOLoop.instance()
 logger = logging.getLogger("pubnub")
 
 
@@ -172,7 +166,6 @@ class PubNubTornado(PubNubCore):
                 if response.code == 599:
                     status_category = PNStatusCategory.PNTimeoutCategory
 
-                # TODO: return exception with stateinfo
                 future.set_exception(PubNubTornadoException(
                     result=data,
                     status=create_status_response(status_category, data, response_info,
@@ -182,8 +175,6 @@ class PubNubTornado(PubNubCore):
                                                       status_code=response.code,
                                                   ))
                 ))
-
-                # future.set_exception(tornado_result)
             else:
                 future.set_result(TornadoEnvelope(
                     result=create_response(data),
@@ -223,7 +214,6 @@ class TornadoSubscribeMessageWorker(SubscribeMessageWorker):
             #     break
 
 
-# TODO: inherit from managers.SubscriptionManager
 class TornadoSubscriptionManager(SubscriptionManager):
     def __init__(self, pubnub_instance):
         self._message_queue = Queue()

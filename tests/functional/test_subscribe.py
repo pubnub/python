@@ -73,7 +73,7 @@ class TestSubscribe(unittest.TestCase):
         self.assertEqual(self.sub._channels, ['ch1', 'ch2', 'ch3'])
 
     def test_sub_single_group(self):
-        self.sub.groups("gr")
+        self.sub.channel_groups("gr")
 
         self.assertEquals(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
                           % (pnconf.subscribe_key, ","))
@@ -87,7 +87,7 @@ class TestSubscribe(unittest.TestCase):
         self.assertEqual(self.sub._groups, ['gr'])
 
     def test_sub_multiple_groups_using_string(self):
-        self.sub.groups("gr1,gr2,gr3")
+        self.sub.channel_groups("gr1,gr2,gr3")
 
         self.assertEquals(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
                           % (pnconf.subscribe_key, ","))
@@ -101,7 +101,7 @@ class TestSubscribe(unittest.TestCase):
         self.assertEqual(self.sub._groups, ['gr1', 'gr2', 'gr3'])
 
     def test_sub_multiple_groups_using_list(self):
-        self.sub.groups(['gr1', 'gr2', 'gr3'])
+        self.sub.channel_groups(['gr1', 'gr2', 'gr3'])
 
         self.assertEquals(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
                           % (pnconf.subscribe_key, ","))

@@ -30,26 +30,26 @@ class PNStatusCategory(object):
 
 
 class PNOperationType(object):
-    PNSubscribeOperation = 1,
-    PNUnsubscribeOperation = 2,
-    PNPublishOperation = 3,
-    PNHistoryOperation = 4,
-    PNWhereNowOperation = 5,
+    PNSubscribeOperation = 1
+    PNUnsubscribeOperation = 2
+    PNPublishOperation = 3
+    PNHistoryOperation = 4
+    PNWhereNowOperation = 5
 
-    PNHeartbeatOperation = 6,
-    PNSetStateOperation = 7,
-    PNAddChannelsToGroupOperation = 8,
-    PNRemoveChannelsFromGroupOperation = 9,
-    PNChannelGroupsOperation = 10,
-    PNRemoveGroupOperation = 11,
-    PNChannelsForGroupOperation = 12,
-    PNPushNotificationEnabledChannelsOperation = 13,
-    PNAddPushNotificationsOnChannelsOperation = 14,
-    PNRemovePushNotificationsFromChannelsOperation = 15,
-    PNRemoveAllPushNotificationsOperation = 16,
-    PNTimeOperation = 17,
+    PNHeartbeatOperation = 6
+    PNSetStateOperation = 7
+    PNAddChannelsToGroupOperation = 8
+    PNRemoveChannelsFromGroupOperation = 9
+    PNChannelGroupsOperation = 10
+    PNRemoveGroupOperation = 11
+    PNChannelsForGroupOperation = 12
+    PNPushNotificationEnabledChannelsOperation = 13
+    PNAddPushNotificationsOnChannelsOperation = 14
+    PNRemovePushNotificationsFromChannelsOperation = 15
+    PNRemoveAllPushNotificationsOperation = 16
+    PNTimeOperation = 17
 
-    PNHereNowOperation = 18,
-    PNGetState = 19,
-    PNAccessManagerAudit = 20,
+    PNHereNowOperation = 18
+    PNGetState = 19
+    PNAccessManagerAudit = 20
     PNAccessManagerGrant = 21

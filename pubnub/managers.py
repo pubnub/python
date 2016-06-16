@@ -31,13 +31,17 @@ class StateManager(object):
         self._presence_channels = {}
         self._presence_groups = {}
 
+    def is_empty(self):
+        return len(self._channels) == 0 and len(self._groups) == 0 and\
+               len(self._presence_channels) == 0 and len(self._presence_groups) == 0
+
     def prepare_channel_list(self, include_presence):
         return StateManager._prepare_membership_list(
             self._channels, self._presence_channels, include_presence)
 
     def prepare_channel_group_list(self, include_presence):
         return StateManager._prepare_membership_list(
-            self._channels, self._presence_channels, include_presence)
+            self._groups, self._presence_groups, include_presence)
 
     def adapt_subscribe_builder(self, subscribe_operation):
         for channel in subscribe_operation.channels:
@@ -54,8 +58,8 @@ class StateManager(object):
 
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         for channel in unsubscribe_operation.channels:
-            self._channels.pop(channel)
-            self._presence_channels.pop(channel)
+            self._channels.pop(channel, None)
+            self._presence_channels.pop(channel, None)
 
         for group in unsubscribe_operation.channel_groups:
             self._groups.pop(group)
@@ -136,6 +140,14 @@ class SubscriptionManager(object):
     def _start_subscribe_loop(self):
         pass
 
+    @abstractmethod
+    def _stop_subscribe_loop(self):
+        pass
+
+    @abstractmethod
+    def _send_leave(self, unsubscribe_operation):
+        pass
+
     def add_listener(self, listener):
         self._listener_manager.add_listener(listener)
 
@@ -156,8 +168,11 @@ class SubscriptionManager(object):
 
         self._subscription_state.adapt_unsubscribe_builder(unsubscribe_operation)
 
-        # TODO: invoke leave request with callback
-        # Leave()
+        self._send_leave(unsubscribe_operation)
+
+        if self._subscription_state.is_empty():
+            self._region = None
+            self._timetoken = 0
         self.reconnect()
 
     @synchronized
@@ -177,7 +192,7 @@ class SubscriptionManager(object):
 
         if not self._subscription_status_announced:
             pn_status = PNStatus()
-            pn_status.category = PNStatusCategory.PNConnectedCategory,
+            pn_status.category = PNStatusCategory.PNConnectedCategory
             pn_status.status_code = status.status_code
             pn_status.auth_key = status.auth_key
             pn_status.operation = status.operation
@@ -197,12 +212,6 @@ class SubscriptionManager(object):
         self._timetoken = int(result.metadata.timetoken)
         self._region = int(result.metadata.region)
         self._start_subscribe_loop()
-
-    def _stop_subscribe_loop(self):
-        sc = self._subscribe_call
-
-        if sc is not None and not sc.is_executed and not sc.is_canceled:
-            sc.cancel()
 
     # TODO: implement
     def _stop_heartbeat_timer(self):

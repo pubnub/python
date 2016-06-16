@@ -27,11 +27,11 @@ class Subscribe(Endpoint):
 
         return self
 
-    def groups(self, groups):
-        if isinstance(groups, (list, tuple)):
-            self._groups.extend(groups)
+    def channel_groups(self, channel_groups):
+        if isinstance(channel_groups, (list, tuple)):
+            self._groups.extend(channel_groups)
         else:
-            self._groups.extend(utils.split_items(groups))
+            self._groups.extend(utils.split_items(channel_groups))
 
         return self
 

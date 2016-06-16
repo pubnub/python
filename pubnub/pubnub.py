@@ -309,6 +309,12 @@ class NativeSubscriptionManager(SubscriptionManager):
         except Exception as e:
             print("failed", e)
 
+    def _stop_subscribe_loop(self):
+        sc = self._subscribe_call
+
+        if sc is not None and not sc.is_executed and not sc.is_canceled:
+            sc.cancel()
+
 
 class NativeSubscribeMessageWorker(SubscribeMessageWorker):
     def _take_message(self):

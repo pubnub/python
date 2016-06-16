@@ -5,7 +5,8 @@ class PNMessageResult(object):
     def __init__(self, message, subscribed_channel, actual_channel, timetoken, user_metadata=None):
         assert message is not None
         assert isinstance(subscribed_channel, six.string_types)
-        assert isinstance(actual_channel, six.string_types)
+        if actual_channel is not None:
+            assert isinstance(actual_channel, six.string_types)
         assert isinstance(timetoken, six.integer_types)
 
         if user_metadata is not None:

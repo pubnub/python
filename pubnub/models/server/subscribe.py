@@ -37,7 +37,8 @@ class SubscribeMessage:
     def from_json(cls, json_input):
         message = SubscribeMessage()
         message.shard = json_input['a']
-        message.subscription_match = json_input['b']
+        if 'b' in json_input:
+            message.subscription_match = json_input['b']
         message.channel = json_input['c']
         message.payload = json_input['d']
         message.flags = json_input['f']

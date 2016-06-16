@@ -6,8 +6,8 @@ import datetime
 from tornado.log import gen_log
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
 
-from pubnub.endpoints.pubsub.leave import Leave
 from . import utils
+from .endpoints.pubsub.leave import Leave
 from .workers import SubscribeMessageWorker
 from .endpoints.pubsub.subscribe import Subscribe
 from .managers import SubscriptionManager

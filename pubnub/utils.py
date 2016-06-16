@@ -83,6 +83,13 @@ def join_items(items_list):
     return ",".join(items_list)
 
 
+def join_channels(items_list):
+    if len(items_list) == 0:
+        return ","
+    else:
+        return join_items(items_list)
+
+
 def build_url(scheme, origin, path, params):
     return pn_urlunsplit((scheme, origin, path, params, ''))
 
@@ -98,4 +105,3 @@ def synchronized(func):
 
 urlparse = pn_urlparse
 parse_qs = pn_parse_qs
-

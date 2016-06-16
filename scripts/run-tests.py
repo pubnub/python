@@ -23,5 +23,7 @@ def run(command):
 
 if version.startswith('2.7'):
     run('py.test --cov=../pubnub')
+elif version.startswith('2.6'):
+    run('py.test --cov=../pubnub --ignore=integrational/tornado/  --ignore=integrational/twisted/')
 else:
     run('py.test --cov=../pubnub/ --ignore=integrational/twisted/')

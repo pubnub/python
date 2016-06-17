@@ -1,5 +1,9 @@
 import threading
 
+import string
+
+import random
+
 from pubnub import utils
 from pubnub.enums import PNOperationType, PNStatusCategory
 from pubnub.models.consumer.common import PNStatus
@@ -34,6 +38,14 @@ sdk_name = "Python-UnitTest"
 
 def url_encode(data):
     return utils.url_encode(utils.write_value_as_string(data))
+
+
+def gen_channel(prefix):
+    return "%s-%s" % (prefix, gen_string(8))
+
+
+def gen_string(l):
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(l))
 
 
 def is_subscribed_event(status):

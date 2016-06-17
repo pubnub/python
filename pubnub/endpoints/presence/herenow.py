@@ -65,29 +65,7 @@ class HereNow(Endpoint):
         return "qwer"
 
     def parse_multiple_channel_response(self, envelope):
-        """
-        :param envelope: an already serialized json response
-        :return:
-        """
-
-        payload = envelope['payload']
-        raw_channels = payload['channels']
-        channels = []
-
-        for raw_channel, raw_data in raw_channels.items():
-            occupants = []
-            for uuid, state in raw_data.items():
-                occupants.append(PNOccupantsData(uuid, state))
-
-            channels.append(PNHereNowChannelData(
-                channel_name=raw_channel,
-                occupancy=int(raw_data['occupancy']),
-                occupants=occupants
-            ))
-
-        res = PNHereNowResult(int(payload['total_channels']), int(payload['total_channels']), channels)
-
-        return res
+        return PNHereNowResult.from_json(envelope['payload'])
 
     def operation_type(self):
         return PNOperationType.PNPublishOperation

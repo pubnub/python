@@ -2,6 +2,8 @@ import json
 import uuid as u
 import threading
 
+import six
+
 from .errors import PNERR_JSON_NOT_SERIALIZABLE
 from .exceptions import PubNubException
 
@@ -88,6 +90,13 @@ def join_channels(items_list):
         return ","
     else:
         return join_items(items_list)
+
+
+def extend_list(existing_items, new_items):
+    if isinstance(new_items, six.string_types):
+        existing_items.extend(split_items(new_items))
+    else:
+        existing_items.extend(new_items)
 
 
 def build_url(scheme, origin, path, params):

@@ -1,3 +1,4 @@
+from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.presence import PNHereNowResult, PNOccupantsData, PNHereNowChannelData
@@ -12,36 +13,41 @@ class HereNow(Endpoint):
         self._channels = []
         self._channel_groups = []
         self._include_state = False
+        self._include_uuids = True
 
     def channels(self, channels):
-        self._channels = channels
+        utils.extend_list(self._channels, channels)
         return self
 
     def channel_groups(self, channel_groups):
-        self._channel_groups = channel_groups
+        utils.extend_list(self._channel_groups, channel_groups)
         return self
 
     def include_state(self, should_include_state):
         self._include_state = should_include_state
         return self
 
+    def include_uuids(self, include_uuids):
+        self._include_uuids= include_uuids
+        return self
+
     def build_params(self):
         params = self.default_params()
 
         if len(self._channel_groups) > 0:
-            params['channel-groups'] = ",".join(self._channels)
+            params['channel-groups'] = utils.join_items(self._channel_groups)
 
-        params['state'] = "1"
+        if self._include_state:
+            params['state'] = "1"
+
+        if not self._include_uuids:
+            params['disable_uuids'] = "1"
 
         return params
 
     def build_path(self):
-        if len(self._channels) > 0:
-            channels = ','.join(self._channels)
-        else:
-            channels = ','
-
-        return HereNow.HERE_NOW_PATH % (self.pubnub.config.subscribe_key, channels)
+        return HereNow.HERE_NOW_PATH % (self.pubnub.config.subscribe_key,
+                                        utils.join_channels(self._channels))
 
     def http_method(self):
         return HttpMethod.GET

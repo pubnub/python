@@ -4,3 +4,4 @@ codecov
 tornado
 vcrpy
 pycrypto
+pytest-benchmark

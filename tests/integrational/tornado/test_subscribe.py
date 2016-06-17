@@ -3,26 +3,14 @@ import pubnub as pn
 
 from tornado.testing import AsyncTestCase
 from pubnub.callbacks import SubscribeCallback
-from pubnub.enums import PNStatusCategory, PNOperationType
-from pubnub.models.consumer.common import PNStatus
 from pubnub.pubnub_tornado import PubNubTornado
+from tests import helper
 from tests.helper import pnconf
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 ch1 = "ch1"
 ch2 = "ch2"
-
-
-def is_subscribed_event(status):
-    assert isinstance(status, PNStatus)
-    return status.category == PNStatusCategory.PNConnectedCategory
-
-
-def is_unsubscribed_event(status):
-    assert isinstance(status, PNStatus)
-    return status.category == PNStatusCategory.PNAcknowledgmentCategory \
-        and status.operation == PNOperationType.PNUnsubscribeOperation
 
 
 class SubscriptionTest(object):
@@ -51,10 +39,10 @@ class TestMultipleChannelSubscriptions(AsyncTestCase, SubscriptionTest):
                 # connect event triggers only once, but probably should be triggered once for each channel
                 # TODO collect 3 subscribe
                 # TODO collect 3 unsubscribe
-                if is_subscribed_event(status):
+                if helper.is_subscribed_event(status):
                     self.subscribe = True
                     _test.io_loop.add_callback(_test._publish)
-                elif is_unsubscribed_event(status):
+                elif helper.is_unsubscribed_event(status):
                     self.unsubscribe = True
                     pubnub.stop()
                     _test.stop()
@@ -94,9 +82,9 @@ class TestSubscribeUnsubscribe(AsyncTestCase, SubscriptionTest):
                 pass
 
             def status(self, pubnub, status):
-                if is_subscribed_event(status):
+                if helper.is_subscribed_event(status):
                     _test.io_loop.add_callback(_test._unsubscribe)
-                elif is_unsubscribed_event(status):
+                elif helper.is_unsubscribed_event(status):
                     pubnub.stop()
                     _test.stop()
 

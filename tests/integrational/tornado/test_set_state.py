@@ -8,21 +8,8 @@ from pubnub.pubnub_tornado import PubNubTornado
 from tests import helper
 from tests.helper import pnconf
 
-
-class ConnectionEvent(SubscribeCallback):
-    def __init__(self, event, expected_status_checker):
-        self.event = event
-        self.expected_status_checker = expected_status_checker
-
-    def status(self, pubnub, status):
-        if self.expected_status_checker(status):
-            self.event.set()
-
-    def presence(self, pubnub, presence):
-        pass
-
-    def message(self, pubnub, message):
-        pass
+# TODO: test for 'No valid channels specified'
+# TODO: test for CG state getter (after implementation of CG methods)
 
 
 class TestPubNubState(AsyncTestCase):

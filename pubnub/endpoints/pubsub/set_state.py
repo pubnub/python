@@ -1,6 +1,7 @@
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.errors import PNERR_CHANNEL_OR_GROUP_MISSING, PNERR_STATE_MISSING
+from pubnub.errors import PNERR_CHANNEL_OR_GROUP_MISSING, PNERR_STATE_MISSING, \
+    PNERR_STATE_SETTER_FOR_GROUPS_NOT_SUPPORTED_YET
 from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.presence import PNSetStateResult
@@ -53,11 +54,17 @@ class SetState(Endpoint):
         self.validate_subscribe_key()
         self.validate_channels_and_groups()
 
+        if len(self._channels) == 0 and len(self._groups) > 0:
+            raise PubNubException(pn_error=PNERR_STATE_SETTER_FOR_GROUPS_NOT_SUPPORTED_YET)
+
         if self._state is None or not isinstance(self._state, dict):
             raise PubNubException(pn_error=PNERR_STATE_MISSING)
 
     def create_response(self, envelope):
-        return PNSetStateResult(envelope['payload'])
+        if 'status' in envelope and envelope['status'] is 200:
+            return PNSetStateResult(envelope['payload'])
+        else:
+            return envelope
 
     def affected_channels(self):
         return self._channels

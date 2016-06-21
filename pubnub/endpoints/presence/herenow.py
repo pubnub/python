@@ -1,7 +1,7 @@
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
-from pubnub.models.consumer.presence import PNHereNowResult, PNOccupantsData, PNHereNowChannelData
+from pubnub.models.consumer.presence import PNHereNowResult, PNHereNowOccupantsData, PNHereNowChannelData
 
 
 class HereNow(Endpoint):
@@ -62,10 +62,17 @@ class HereNow(Endpoint):
             return self.parse_single_channel_response(envelope)
 
     def parse_single_channel_response(self, envelope):
-        return "qwer"
+        channels = None
+        occupants = None
+        if self._include_uuids:
+            channels = [PNHereNowChannelData(self._channels[0],
+                                             envelope['occupancy'],
+                                             occupants)]
+
+        return PNHereNowChannelData(1, int(envelope['total_occupancy']), channels)
 
     def parse_multiple_channel_response(self, envelope):
-        return PNHereNowResult.from_json(envelope['payload'])
+        return PNHereNowResult.from_json(envelope)
 
     def operation_type(self):
         return PNOperationType.PNPublishOperation

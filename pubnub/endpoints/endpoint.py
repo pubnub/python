@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from pubnub.enums import PNStatusCategory
-from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING
+from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pn_error_data import PNErrorData
@@ -117,6 +117,10 @@ class Endpoint(object):
     def validate_subscribe_key(self):
         if self.pubnub.config.subscribe_key is None or len(self.pubnub.config.subscribe_key) == 0:
             raise PubNubException(pn_error=PNERR_SUBSCRIBE_KEY_MISSING)
+
+    def validate_channels_and_groups(self):
+        if len(self._channels) == 0 and len(self._groups) == 0:
+            raise PubNubException(pn_error=PNERR_CHANNEL_OR_GROUP_MISSING)
 
     def validate_publish_key(self):
         if self.pubnub.config.publish_key is None or len(self.pubnub.config.publish_key) == 0:

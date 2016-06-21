@@ -65,3 +65,15 @@ class PNHereNowOccupantsData(object):
     def __init__(self, uuid, state):
         self.uuid = uuid
         self.state = state
+
+
+class PNSetStateResult(object):
+    def __init__(self, state):
+        assert isinstance(state, dict)
+        self.state = state
+
+
+class PNGetStateResult(object):
+    def __init__(self, channels):
+        assert isinstance(channels, dict)
+        self.channels = channels

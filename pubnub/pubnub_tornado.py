@@ -6,6 +6,8 @@ import datetime
 from tornado.log import gen_log
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
 
+from pubnub.endpoints.pubsub.get_state import GetState
+from pubnub.endpoints.pubsub.set_state import SetState
 from . import utils
 from .endpoints.pubsub.leave import Leave
 from .workers import SubscribeMessageWorker
@@ -121,6 +123,12 @@ class PubNubTornado(PubNubCore):
 
     def unsubscribe(self):
         return UnsubscribeBuilder(self._subscription_manager)
+
+    def set_state(self):
+        return SetState(self, self._subscription_manager)
+
+    def get_state(self):
+        return GetState(self)
 
     # TODO: extract this into a separate class
     def request_sync(self, *args):

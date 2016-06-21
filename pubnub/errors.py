@@ -18,3 +18,4 @@ PNERR_DEFERRED_NOT_IMPLEMENTED = "Deferred endpoint call is not implemented by t
 PNERR_JSON_DECODING_FAILED = "JSON decoding failed"
 PNERR_JSON_NOT_SERIALIZABLE = "Trying to publish not JSON serializable object"
 PNERR_CHANNEL_OR_GROUP_MISSING = "Channel or group missing"
+PNERR_STATE_MISSING = "State missing or not a dict"

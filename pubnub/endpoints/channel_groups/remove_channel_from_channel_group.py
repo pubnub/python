@@ -2,7 +2,7 @@ import six
 
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.errors import PNERR_CHANNELS_MISSING
+from pubnub.errors import PNERR_CHANNELS_MISSING, PNERR_GROUP_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType
 
@@ -51,7 +51,7 @@ class RemoveChannelFromChannelGroup(Endpoint):
 
         if not isinstance(self._channel_group, six.string_types)\
                 or len(self._channel_group) == 0:
-            raise PubNubException(pn_error=PNERR_CHANNELS_MISSING)
+            raise PubNubException(pn_error=PNERR_GROUP_MISSING)
 
     def create_response(self, envelope):
         return envelope

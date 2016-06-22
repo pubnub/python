@@ -6,12 +6,12 @@ import datetime
 from tornado.log import gen_log
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
 
-from pubnub.endpoints.pubsub.get_state import GetState
-from pubnub.endpoints.pubsub.set_state import SetState
 from . import utils
 from .endpoints.pubsub.leave import Leave
 from .workers import SubscribeMessageWorker
 from .endpoints.pubsub.subscribe import Subscribe
+from .endpoints.pubsub.set_state import SetState
+from .endpoints.pubsub.get_state import GetState
 from .managers import SubscriptionManager
 from .builders import SubscribeBuilder, UnsubscribeBuilder
 from .enums import PNStatusCategory

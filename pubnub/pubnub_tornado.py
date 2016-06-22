@@ -6,12 +6,17 @@ import datetime
 from tornado.log import gen_log
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
 
+
 from . import utils
 from .endpoints.pubsub.leave import Leave
 from .workers import SubscribeMessageWorker
 from .endpoints.pubsub.subscribe import Subscribe
 from .endpoints.pubsub.set_state import SetState
 from .endpoints.pubsub.get_state import GetState
+from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
+from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
+from .endpoints.channel_groups.remove_channel_from_channel_group import RemoveChannelFromChannelGroup
+from .endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
 from .managers import SubscriptionManager
 from .builders import SubscribeBuilder, UnsubscribeBuilder
 from .enums import PNStatusCategory
@@ -129,6 +134,18 @@ class PubNubTornado(PubNubCore):
 
     def get_state(self):
         return GetState(self)
+
+    def add_channel_to_channel_group(self):
+        return AddChannelToChannelGroup(self)
+
+    def remove_channel_from_channel_group(self):
+        return RemoveChannelFromChannelGroup(self)
+
+    def list_channels_in_channel_group(self):
+        return ListChannelsInChannelGroup(self)
+
+    def remove_channel_group(self):
+        return RemoveChannelGroup(self)
 
     # TODO: extract this into a separate class
     def request_sync(self, *args):

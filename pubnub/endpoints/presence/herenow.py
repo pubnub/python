@@ -46,8 +46,11 @@ class HereNow(Endpoint):
         return params
 
     def build_path(self):
-        return HereNow.HERE_NOW_PATH % (self.pubnub.config.subscribe_key,
-                                        utils.join_channels(self._channels))
+        if len(self._channels) == 0 and len(self._channel_groups) == 0:
+            return HereNow.HERE_NOW_GLOBAL_PATH % self.pubnub.config.subscribe_key
+        else:
+            return HereNow.HERE_NOW_PATH % (self.pubnub.config.subscribe_key,
+                                            utils.join_channels(self._channels))
 
     def http_method(self):
         return HttpMethod.GET

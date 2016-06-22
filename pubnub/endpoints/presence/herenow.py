@@ -56,23 +56,7 @@ class HereNow(Endpoint):
         self.validate_subscribe_key()
 
     def create_response(self, envelope):
-        if len(self._channels) > 1 or len(self._channel_groups) > 0:
-            return self.parse_multiple_channel_response(envelope)
-        else:
-            return self.parse_single_channel_response(envelope)
-
-    def parse_single_channel_response(self, envelope):
-        channels = None
-        occupants = None
-        if self._include_uuids:
-            channels = [PNHereNowChannelData(self._channels[0],
-                                             envelope['occupancy'],
-                                             occupants)]
-
-        return PNHereNowChannelData(1, int(envelope['total_occupancy']), channels)
-
-    def parse_multiple_channel_response(self, envelope):
-        return PNHereNowResult.from_json(envelope)
+        return PNHereNowResult.from_json(envelope, self._channels)
 
     def operation_type(self):
         return PNOperationType.PNPublishOperation

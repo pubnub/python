@@ -58,17 +58,14 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
             .include_uuids(True) \
             .future()
 
-        print(env.result)
-        assert env.result.total_channels == 2
+        assert env.result.total_channels == 1
         assert env.result.total_occupancy >= 1
 
         channels = env.result.channels
 
-        assert len(channels) == 2
+        assert len(channels) == 1
         assert channels[0].occupancy == 1
         assert channels[0].occupants[0].uuid == self.pubnub.uuid
-        assert channels[1].occupancy == 1
-        assert channels[1].occupants[0].uuid == self.pubnub.uuid
 
         yield disconnect_from_channel(self.pubnub, ch)
         self.pubnub.stop()
@@ -82,10 +79,8 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
         yield gen.sleep(2)
         env = yield self.pubnub.here_now() \
             .channels([ch1, ch2]) \
-            .include_uuids(False) \
             .future()
 
-        print(env.result)
         assert env.result.total_channels == 2
         assert env.result.total_occupancy >= 1
 

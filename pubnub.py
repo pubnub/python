@@ -815,33 +815,6 @@ class PubnubBase(object):
     def fire(self, channel, message, callback=None, error=None):
         return self.publish(channel=channel, message=message, callback=callback, error=error, store=False, replicate=False)
 
-    def mobile_gw_provision(self, device_id, remove_device=False, callback=None, channel_to_add=None, channel_to_remove=None, gw_type=None, error=None):
-        allowed_gw_types = ['gcm', 'apns', 'mpns']
-
-        if gw_type is None:
-            gw_type = 'apns'
-
-        if gw_type not in allowed_gw_types:
-            raise AttributeError('Invalid gw_type')
-
-        if remove_device and (channel_to_add or channel_to_remove):
-            raise AttributeError('Can\'t add or remove channels while removing device')
-
-        urlcomponents = ['v1', 'push', 'sub-key', self.subscribe_key, 'devices', device_id]
-
-        if remove_device:
-            urlcomponents.append('remove')
-
-        specific_urlparams = {'add': channel_to_add, 'remove': channel_to_remove, 'type': gw_type}
-        default_urlparams = {'auth': self.auth_key, 'pnsdk': self.pnsdk}
-
-        urlparams = specific_urlparams
-        urlparams.update(default_urlparams)
-
-        return self._request({'urlcomponents': urlcomponents, 'urlparams': urlparams},
-                             callback=self._return_wrapped_callback(callback),
-                             error=self._return_wrapped_callback(error))
-
     def presence(self, channel, callback, error=None, connect=None,
                  disconnect=None, reconnect=None):
         """Subscribe to presence events on a channel.
@@ -1147,7 +1120,7 @@ class PubnubBase(object):
         if channel_group is not None and len(channel_group) > 0:
             data['channel-group'] = channel_group
 
-        ## Get Presence Here Now
+        # Get Presence Here Now
         return self._request({"urlcomponents": urlcomponents,
                              'urlparams': data},
                              callback=self._return_wrapped_callback(callback),
@@ -2595,8 +2568,6 @@ s = requests.Session()
 
 
 def _requests_request(url, timeout=15):
-    print(url)
-
     try:
         resp = s.get(url, timeout=timeout)
     except requests.exceptions.HTTPError as http_error:

@@ -812,6 +812,36 @@ class PubnubBase(object):
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
+    def fire(self, channel, message, callback=None, error=None):
+        return self.publish(channel=channel, message=message, callback=callback, error=error, store=False, replicate=False)
+
+    def mobile_gw_provision(self, device_id, remove_device=False, callback=None, channel_to_add=None, channel_to_remove=None, gw_type=None, error=None):
+        allowed_gw_types = ['gcm', 'apns', 'mpns']
+
+        if gw_type is None:
+            gw_type = 'apns'
+
+        if gw_type not in allowed_gw_types:
+            raise AttributeError('Invalid gw_type')
+
+        if remove_device and (channel_to_add or channel_to_remove):
+            raise AttributeError('Can\'t add or remove channels while removing device')
+
+        urlcomponents = ['v1', 'push', 'sub-key', self.subscribe_key, 'devices', device_id]
+
+        if remove_device:
+            urlcomponents.append('remove')
+
+        specific_urlparams = {'add': channel_to_add, 'remove': channel_to_remove, 'type': gw_type}
+        default_urlparams = {'auth': self.auth_key, 'pnsdk': self.pnsdk}
+
+        urlparams = specific_urlparams
+        urlparams.update(default_urlparams)
+
+        return self._request({'urlcomponents': urlcomponents, 'urlparams': urlparams},
+                             callback=self._return_wrapped_callback(callback),
+                             error=self._return_wrapped_callback(error))
+
     def presence(self, channel, callback, error=None, connect=None,
                  disconnect=None, reconnect=None):
         """Subscribe to presence events on a channel.
@@ -1033,7 +1063,7 @@ class PubnubBase(object):
                              callback=self._return_wrapped_callback(callback),
                              error=self._return_wrapped_callback(error))
 
-    def here_now(self, channel, uuids=True, state=False,
+    def here_now(self, channel=None, channel_group=None, uuids=True, state=False,
                  callback=None, error=None):
         """Get here now data.
 
@@ -1044,23 +1074,28 @@ class PubnubBase(object):
 
 
         Args:
-            channel:    (string) (optional)
-                        Specifies the channel name to return occupancy
-                        results. If channel is not provided, here_now will
-                        return data for all channels.
+            channel:       (string) (optional)
+                           Specifies the channel name to return occupancy
+                           results. If channel is not provided, here_now will
+                           return data for all channels.
 
-            callback:   (optional)
-                        A callback method should be passed to the method.
-                        If set, the api works in async mode.
-                        Required argument when working with twisted or
-                        tornado.
+            channel_group: (string) (optional)
+                           Specifies the channel name to return occupancy
+                           results. If channel is not provided, here_now will
+                           return data for all channels.
 
-            error:      (optional)
-                        Optional variable. An error method can be passed
-                        to the method.
-                        If set, the api works in async mode.
-                        Required argument when working with twisted or
-                        tornado .
+            callback:      (optional)
+                           A callback method should be passed to the method.
+                           If set, the api works in async mode.
+                           Required argument when working with twisted or
+                           tornado.
+
+            error:         (optional)
+                           Optional variable. An error method can be passed
+                           to the method.
+                           If set, the api works in async mode.
+                           Required argument when working with twisted or
+                           tornado .
 
         Returns:
             Sync  Mode: list
@@ -1093,8 +1128,12 @@ class PubnubBase(object):
             'sub_key', self.subscribe_key
         ]
 
-        if (channel is not None and len(channel) > 0):
+        if channel is not None and len(channel) > 0 or channel_group is not None and len(channel_group) > 0:
             urlcomponents.append('channel')
+
+            if channel is None or len(channel) == 0:
+                channel = ','
+
             urlcomponents.append(channel)
 
         data = {'auth': self.auth_key, 'pnsdk': self.pnsdk}
@@ -1104,6 +1143,9 @@ class PubnubBase(object):
 
         if uuids is False:
             data['disable_uuids'] = '1'
+
+        if channel_group is not None and len(channel_group) > 0:
+            data['channel-group'] = channel_group
 
         ## Get Presence Here Now
         return self._request({"urlcomponents": urlcomponents,
@@ -2553,6 +2595,8 @@ s = requests.Session()
 
 
 def _requests_request(url, timeout=15):
+    print(url)
+
     try:
         resp = s.get(url, timeout=timeout)
     except requests.exceptions.HTTPError as http_error:

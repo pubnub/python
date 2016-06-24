@@ -1,4 +1,9 @@
 
+3.8.0
+. Mobile Gateway Functions.
+. Here Now for channel groups
+. no-rep, store and fire()
+
 3.7.7 - 02-10-2015 - 3012d7e
 . Adding .stop() method for base python async operations to exit the listener
 

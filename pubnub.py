@@ -6,7 +6,7 @@
 # http://www.pubnub.com/
 
 # -----------------------------------
-# PubNub 3.7.8 Real-time Push Cloud API
+# PubNub 3.8.0 Real-time Push Cloud API
 # -----------------------------------
 
 
@@ -305,7 +305,7 @@ class PubnubBase(object):
         """
 
         self.origin = origin
-        self.version = '3.7.9'
+        self.version = '3.8.0'
         self.limit = 1800
         self.publish_key = publish_key
         self.subscribe_key = subscribe_key
@@ -814,6 +814,30 @@ class PubnubBase(object):
 
     def fire(self, channel, message, callback=None, error=None):
         return self.publish(channel=channel, message=message, callback=callback, error=error, store=False, replicate=False)
+
+    def mobile_gw_provision(self, device_id, remove_device=False, callback=None, channel_to_add=None, channel_to_remove=None, gw_type='apns', error=None):
+        allowed_gw_types = ['gcm', 'apns', 'mpns']
+
+        if gw_type not in allowed_gw_types:
+            raise AttributeError('Invalid gw_type')
+
+        if remove_device and (channel_to_add or channel_to_remove):
+            raise AttributeError('Can\'t add or remove channels while removing device')
+
+        urlcomponents = ['v1', 'push', 'sub-key', self.subscribe_key, 'devices', device_id]
+
+        if remove_device:
+            urlcomponents.append('remove')
+
+        specific_urlparams = {'add': channel_to_add, 'remove': channel_to_remove, 'type': gw_type}
+        default_urlparams = {'auth': self.auth_key, 'pnsdk': self.pnsdk}
+
+        urlparams = specific_urlparams
+        urlparams.update(default_urlparams)
+
+        return self._request({'urlcomponents': urlcomponents, 'urlparams': urlparams},
+                             callback=self._return_wrapped_callback(callback),
+                             error=self._return_wrapped_callback(error))
 
     def presence(self, channel, callback, error=None, connect=None,
                  disconnect=None, reconnect=None):

@@ -750,7 +750,7 @@ class PubnubBase(object):
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
-    def publish(self, channel, message, callback=None, error=None):
+    def publish(self, channel, message, store=True, replicate=True, callback=None, error=None):
         """Publishes data on a channel.
 
         The publish() method is used to send a message to all subscribers of
@@ -794,9 +794,12 @@ class PubnubBase(object):
 
         """
 
+        norep = 'false' if replicate else 'true'
+        store = '1' if store else '0'
+
         message = self.encrypt(message)
 
-        ## Send Message
+        # Send Message
         return self._request({"urlcomponents": [
             'publish',
             self.publish_key,
@@ -805,7 +808,7 @@ class PubnubBase(object):
             channel,
             '0',
             message
-        ], 'urlparams': {'auth': self.auth_key, 'pnsdk': self.pnsdk}},
+        ], 'urlparams': {'auth': self.auth_key, 'pnsdk': self.pnsdk, 'store': store, 'norep': norep}},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 

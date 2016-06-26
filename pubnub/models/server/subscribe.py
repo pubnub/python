@@ -42,7 +42,8 @@ class SubscribeMessage:
         message.channel = json_input['c']
         message.payload = json_input['d']
         message.flags = json_input['f']
-        message.issuing_client_id = json_input['i']
+        if 'i' in json_input:
+            message.issuing_client_id = json_input['i']
         message.subscribe_key = json_input['k']
         if 'o' in json_input:
             message.origination_timetoken = json_input['o']
@@ -66,20 +67,29 @@ class SubscribeMetadata:
 
 
 class PresenceEnvelope:
-    def __init__(self, action, uuid, occupancy, timestamp):
-        assert isinstance(action, str)
-        assert isinstance(uuid, str)
-        assert isinstance(occupancy, int)
+    def __init__(self, action, uuid, occupancy, timestamp, data=None):
+        assert isinstance(action, six.string_types)
+        assert isinstance(uuid, six.string_types)
+        assert isinstance(occupancy, six.integer_types)
         assert isinstance(timestamp, six.integer_types)
+        if data is not None:
+            assert isinstance(data, dict)
 
         self.action = action
         self.uuid = uuid
         self.occupancy = occupancy
         self.timestamp = timestamp
+        self.data = data
 
     @classmethod
     def from_json_payload(cls, json):
-        return False
+        return PresenceEnvelope(
+            action=json['action'],
+            uuid=json['uuid'],
+            occupancy=json['occupancy'],
+            timestamp=json['timestamp'],
+            data=json['data'] if 'data' in json else None
+        )
 
 
 # TODO: refactor this file to server.py

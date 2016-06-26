@@ -1,4 +1,4 @@
 class SubscriptionItem(object):
-    def __init__(self, name=None, object=None):
+    def __init__(self, name=None, state=None):
         self.name = name
-        self.object = object
+        self.state = state

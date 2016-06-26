@@ -5,11 +5,12 @@ import time
 import datetime
 from tornado.log import gen_log
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
-
+from tornado.ioloop import PeriodicCallback
 
 from . import utils
-from .endpoints.pubsub.leave import Leave
 from .workers import SubscribeMessageWorker
+from .endpoints.pubsub.leave import Leave
+from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.pubsub.subscribe import Subscribe
 from .endpoints.pubsub.set_state import SetState
 from .endpoints.pubsub.get_state import GetState
@@ -19,7 +20,7 @@ from .endpoints.channel_groups.remove_channel_from_channel_group import RemoveCh
 from .endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
 from .managers import SubscriptionManager
 from .builders import SubscribeBuilder, UnsubscribeBuilder
-from .enums import PNStatusCategory
+from .enums import PNStatusCategory, PNHeartbeatNotificationOptions
 from .structures import ResponseInfo
 from .exceptions import PubNubException
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED
@@ -28,6 +29,7 @@ from .pubnub_core import PubNubCore
 import tornado.httpclient
 import tornado.ioloop
 import tornado.gen
+from tornado import stack_context
 from tornado.concurrent import Future
 from tornado.queues import Queue
 from tornado.locks import Event, Semaphore
@@ -122,6 +124,9 @@ class PubNubTornado(PubNubCore):
             self._subscription_manager.add_listener(listener)
         else:
             raise Exception("Subscription manager is not enabled for this instance")
+
+    def heartbeat(self):
+        return Heartbeat(self)
 
     def subscribe(self):
         return SubscribeBuilder(self._subscription_manager)
@@ -246,6 +251,8 @@ class PubNubTornado(PubNubCore):
                 else:
                     data = "N/A"
 
+                logger.debug(data)
+
                 if response.error is not None:
                     if response.code >= 500:
                         err = PNERR_SERVER_ERROR
@@ -293,7 +300,7 @@ class PubNubTornado(PubNubCore):
 class TornadoSubscribeMessageWorker(SubscribeMessageWorker):
     @tornado.gen.coroutine
     def run(self):
-        yield self._take_message()
+        self._take_message()
 
     @tornado.gen.coroutine
     def _take_message(self):
@@ -307,11 +314,6 @@ class TornadoSubscribeMessageWorker(SubscribeMessageWorker):
             except tornado.gen.TimeoutError:
                 i += 1
                 continue
-            # TODO: should context of callback be changed to not affect on this loop?
-            # errors are skipped for now
-            # TODO:check http://www.tornadoweb.org/en/stable/ioloop.html#tornado.ioloop.IOLoop.handle_callback_exception
-            except Exception as e:
-                print("!!! ex", str(e))
 
 
 class TornadoSubscriptionManager(SubscriptionManager):
@@ -320,6 +322,7 @@ class TornadoSubscriptionManager(SubscriptionManager):
         self._consumer_event = Event()
         self._subscription_lock = Semaphore(1)
         self._current_request_key_object = None
+        self._task = None
         super(TornadoSubscriptionManager, self).__init__(pubnub_instance)
 
     def _set_consumer_event(self):
@@ -329,10 +332,12 @@ class TornadoSubscriptionManager(SubscriptionManager):
         self._message_queue.put(message)
 
     def _start_worker(self):
-        self._consumer = TornadoSubscribeMessageWorker(self._pubnub, self._listener_manager,
-                                                       self._message_queue, self._consumer_event)
-
-        self._pubnub.ioloop.spawn_callback(self._consumer.run)
+        self._consumer = TornadoSubscribeMessageWorker(self._pubnub,
+                                                       self._listener_manager,
+                                                       self._message_queue,
+                                                       self._consumer_event)
+        run = stack_context.wrap(self._consumer.run)
+        self._pubnub.ioloop.spawn_callback(run)
 
     @tornado.gen.coroutine
     def _start_subscribe_loop(self):
@@ -369,6 +374,60 @@ class TornadoSubscriptionManager(SubscriptionManager):
 
     def _stop_subscribe_loop(self):
         self._pubnub.http.reset_request(self._current_request_key_object)
+
+    def _stop_heartbeat_timer(self):
+        if self._task is not None:
+            self._task.stop()
+
+    def _register_heartbeat_timer(self):
+        super(TornadoSubscriptionManager, self)._register_heartbeat_timer()
+
+        self._task = PeriodicCallback(self._perform_heartbeat_loop,
+                                      self._pubnub.config.heartbeat_interval *
+                                      TornadoSubscriptionManager.HEARTBEAT_INTERVAL_MULTIPLIER,
+                                      self._pubnub.ioloop)
+        self._task.start()
+
+    def _perform_heartbeat_loop(self):
+        if self._heartbeat_call is not None:
+            # TODO: cancel call
+            pass
+
+        cancellation_event = Event()
+        state_payload = self._subscription_state.state_payload()
+        presence_channels = self._subscription_state.prepare_channel_list(False)
+        presence_groups = self._subscription_state.prepare_channel_group_list(False)
+
+        if len(presence_channels) == 0 and len(presence_groups) == 0:
+            return
+
+        try:
+            key_object, heartbeat = yield self._pubnub.heartbeat() \
+                .channels(presence_channels) \
+                .channel_groups(presence_groups) \
+                .state(state_payload) \
+                .cancellation_event(cancellation_event) \
+                .future(intermediate_key_future=True)
+
+            self._current_request_key_object = key_object
+            envelope = yield heartbeat
+
+            heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
+            if envelope.status.is_error:
+                if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
+                                heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                    self._listener_manager.announce_stateus(envelope.status)
+            else:
+                if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                    self._listener_manager.announce_stateus(envelope.status)
+
+        except PubNubTornadoException as e:
+            if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
+                self._start_subscribe_loop()
+            else:
+                self._listener_manager.announce_status(e.status)
+        finally:
+            cancellation_event.set()
 
     @tornado.gen.coroutine
     def _send_leave(self, unsubscribe_operation):

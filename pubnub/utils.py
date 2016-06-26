@@ -51,11 +51,11 @@ def get_data_for_user(data):
 
 def write_value_as_string(data):
     try:
-        if isinstance(data, str):
+        if isinstance(data, six.string_types):
             return ("\"%s\"" % data).replace("+", "%20")
         else:
             return json.dumps(data).replace("+", "%20")
-    except TypeError as e:
+    except TypeError:
         raise PubNubException(
             pn_error=PNERR_JSON_NOT_SERIALIZABLE
         )

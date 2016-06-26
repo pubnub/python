@@ -23,12 +23,12 @@ class PNPresenceEventResult(object):
     def __init__(self, event, uuid, timestamp, occupancy, subscribed_channel, actual_channel,
                  timetoken, user_metadata=None):
 
-        assert isinstance(event, str)
-        assert isinstance(uuid, str)
-        assert isinstance(timestamp, long)
-        assert isinstance(occupancy, int)
-        assert isinstance(actual_channel, str)
-        assert isinstance(timetoken, long)
+        assert isinstance(event, six.string_types)
+        assert isinstance(uuid, six.string_types)
+        assert isinstance(timestamp, six.integer_types)
+        assert isinstance(occupancy, six.integer_types)
+        assert isinstance(actual_channel, six.string_types)
+        assert isinstance(timetoken, six.integer_types)
 
         if user_metadata is not None:
             assert isinstance(user_metadata, object)

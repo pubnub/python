@@ -1,11 +1,12 @@
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.errors import PNERR_CHANNEL_OR_GROUP_MISSING, PNERR_STATE_MISSING, \
-    PNERR_STATE_SETTER_FOR_GROUPS_NOT_SUPPORTED_YET
+from pubnub.errors import PNERR_STATE_MISSING, PNERR_STATE_SETTER_FOR_GROUPS_NOT_SUPPORTED_YET
 from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.presence import PNSetStateResult
 
+
+# TODO: save state inside internal key/val storage
 
 class SetState(Endpoint):
     # /v2/presence/sub-key/<subscribe_key>/channel/<channel>/uuid/<uuid>/data?state=<state>

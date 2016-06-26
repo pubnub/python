@@ -1,46 +1,11 @@
 import tornado
 from tornado import gen
-from tornado.locks import Event
 from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
 
-from pubnub.callbacks import SubscribeCallback
 from pubnub.pubnub_tornado import PubNubTornado
 from tests import helper
 from tests.helper import pnconf
-
-
-class ConnectionEvent(SubscribeCallback):
-    def __init__(self, event, expected_status_checker):
-        self.event = event
-        self.expected_status_checker = expected_status_checker
-
-    def status(self, pubnub, status):
-        if self.expected_status_checker(status):
-            self.event.set()
-
-    def presence(self, pubnub, presence):
-        pass
-
-    def message(self, pubnub, message):
-        pass
-
-
-@tornado.gen.coroutine
-def connect_to_channel(pubnub, channel):
-    event = Event()
-    callback = ConnectionEvent(event, helper.is_subscribed_event)
-    pubnub.add_listener(callback)
-    pubnub.subscribe().channels(channel).execute()
-    yield event.wait()
-
-
-@tornado.gen.coroutine
-def disconnect_from_channel(pubnub, channel):
-    event = Event()
-    callback = ConnectionEvent(event, helper.is_unsubscribed_event)
-    pubnub.add_listener(callback)
-    pubnub.unsubscribe().channels(channel).execute()
-    yield event.wait()
+from tests.integrational.tornado.tornado_helper import connect_to_channel, disconnect_from_channel
 
 
 class TestPubNubAsyncHereNow(AsyncTestCase):

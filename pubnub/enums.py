@@ -53,3 +53,14 @@ class PNOperationType(object):
     PNGetState = 19
     PNAccessManagerAudit = 20
     PNAccessManagerGrant = 21
+
+
+class PNHeartbeatNotificationOptions(object):
+    NONE = 1
+    FAILURES = 2
+    ALL = 3
+
+
+class PNReconnectionPolicy(object):
+    NONE = 1
+    LINEAR = 2

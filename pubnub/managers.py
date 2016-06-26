@@ -65,6 +65,19 @@ class StateManager(object):
             self._groups.pop(group)
             self._presence_groups.pop(group)
 
+    def state_payload(self):
+        state = {}
+
+        for channel in self._channels.values():
+            if channel.state is not None:
+                state[channel.name] = channel.state
+
+        for group in self._groups.values():
+            if group.state is not None:
+                state[group.name] = group.state
+
+        return state
+
     @staticmethod
     def _prepare_membership_list(data_storage, presence_storage, include_presence):
         response = []
@@ -108,6 +121,8 @@ class ListenerManager(object):
 class SubscriptionManager(object):
     __metaclass__ = ABCMeta
 
+    HEARTBEAT_INTERVAL_MULTIPLIER = 1000
+
     def __init__(self, pubnub_instance):
         self._pubnub = pubnub_instance
         self._subscription_status_announced = False
@@ -142,6 +157,14 @@ class SubscriptionManager(object):
 
     @abstractmethod
     def _stop_subscribe_loop(self):
+        pass
+
+    @abstractmethod
+    def _stop_heartbeat_timer(self):
+        pass
+
+    @abstractmethod
+    def _perform_heartbeat_loop(self):
         pass
 
     @abstractmethod
@@ -214,9 +237,5 @@ class SubscriptionManager(object):
         self._start_subscribe_loop()
 
     # TODO: implement
-    def _stop_heartbeat_timer(self):
-        pass
-
-    # TODO: implement
     def _register_heartbeat_timer(self):
-        pass
+        self._stop_heartbeat_timer()

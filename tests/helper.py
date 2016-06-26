@@ -3,6 +3,7 @@ import threading
 import string
 
 import random
+from copy import copy
 
 from pubnub import utils
 from pubnub.enums import PNOperationType, PNStatusCategory
@@ -32,6 +33,10 @@ pnconf_enc_sub = PNConfiguration()
 pnconf_enc_sub.publish_key = pub_key
 pnconf_enc_sub.subscribe_key = sub_key
 pnconf_enc_sub.cipher_key = "testKey"
+
+
+def pnconf_copy():
+    return copy(pnconf)
 
 sdk_name = "Python-UnitTest"
 

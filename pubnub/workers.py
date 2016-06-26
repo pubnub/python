@@ -39,6 +39,12 @@ class SubscribeMessageWorker(object):
         subscription_match = message.subscription_match
         publish_meta_data = message.publish_metadata
 
+        # if channel == subscription_match:
+        #     subscription_match = None
+
+        # if message.only_channel_subscription:
+        #     channel = subscription_match
+
         if "-pnpres" in message.channel:
             presence_payload = PresenceEnvelope.from_json_payload(message.payload)
             pn_presence_event_result = PNPresenceEventResult(
@@ -63,4 +69,8 @@ class SubscribeMessageWorker(object):
                 subscribed_channel=(subscription_match if subscription_match is not None else channel),
                 timetoken=publish_meta_data.publish_timetoken
             )
+
+            if message.only_channel_subscription:
+                pn_message_result.actual_channel = pn_message_result.subscribed_channel
+
             self._listener_manager.announce_message(pn_message_result)

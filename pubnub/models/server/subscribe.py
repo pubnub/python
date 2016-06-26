@@ -32,6 +32,7 @@ class SubscribeMessage:
         self.subscribe_key = None
         self.origination_timetoken = None
         self.publish_metadata = None
+        self.only_channel_subscription = False
 
     @classmethod
     def from_json(cls, json_input):

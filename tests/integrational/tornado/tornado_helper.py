@@ -37,7 +37,7 @@ class ExtendedSubscribeCallback(SubscribeCallback):
             self.disconnected_event.set()
 
     def message(self, pubnub, message):
-        pass
+        self.message_queue.put(message)
 
     def presence(self, pubnub, presence):
         self.presence_queue.put(presence)
@@ -57,6 +57,19 @@ class ExtendedSubscribeCallback(SubscribeCallback):
             raise Exception("instance is already disconnected")
 
     @gen.coroutine
+    def wait_for_message_on(self, *channel_names):
+        channel_names = list(channel_names)
+        while True:
+            try:
+                env = yield self.message_queue.get()
+                if env.actual_channel in channel_names:
+                    raise gen.Return(env)
+                else:
+                    continue
+            finally:
+                self.message_queue.task_done()
+
+    @gen.coroutine
     def wait_for_presence_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
@@ -68,8 +81,6 @@ class ExtendedSubscribeCallback(SubscribeCallback):
                     continue
             finally:
                 self.presence_queue.task_done()
-        if not self.connected_event.is_set():
-            yield self.connected_event.wait()
 
 
 @gen.coroutine

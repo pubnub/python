@@ -21,9 +21,9 @@ class SubscriptionTest(object):
         self.pubnub_listener = None
 
 
-class TestSubscription(AsyncTestCase, SubscriptionTest):
+class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
     def setUp(self):
-        super(TestSubscription, self).setUp()
+        super(TestChannelSubscription, self).setUp()
         self.pubnub = PubNubTornado(pnconf_copy(), custom_ioloop=self.io_loop)
         self.pubnub_listener = PubNubTornado(pnconf_copy(), custom_ioloop=self.io_loop)
 
@@ -33,6 +33,30 @@ class TestSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub.add_listener(callback_messages)
         self.pubnub.subscribe().channels("ch1").execute()
         yield callback_messages.wait_for_connect()
+
+        self.pubnub.unsubscribe().channels("ch1").execute()
+        yield callback_messages.wait_for_disconnect()
+
+    @tornado.testing.gen_test(timeout=30)
+    def test_subscribe_publish_unsubscribe(self):
+        ch = helper.gen_channel("subscribe-test")
+        message = "hey"
+
+        callback_messages = ExtendedSubscribeCallback()
+        self.pubnub.add_listener(callback_messages)
+        self.pubnub.subscribe().channels(ch).execute()
+        yield callback_messages.wait_for_connect()
+
+        sub_env, pub_env = yield [
+            callback_messages.wait_for_message_on(ch),
+            self.pubnub.publish().channel(ch).message(message).future()]
+
+        assert pub_env.status.original_response[0] == 1
+        assert pub_env.status.original_response[1] == 'Sent'
+
+        assert sub_env.actual_channel == ch
+        assert sub_env.subscribed_channel == ch
+        assert sub_env.message == message
 
         self.pubnub.unsubscribe().channels("ch1").execute()
         yield callback_messages.wait_for_disconnect()

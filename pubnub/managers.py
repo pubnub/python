@@ -35,6 +35,10 @@ class StateManager(object):
         return len(self._channels) == 0 and len(self._groups) == 0 and\
                len(self._presence_channels) == 0 and len(self._presence_groups) == 0
 
+    def subscribed_to_the_only_channel(self):
+        return len(self._channels) == 1 and len(self._groups) == 0 and\
+               len(self._presence_channels) == 0 and len(self._presence_groups) == 0
+
     def prepare_channel_list(self, include_presence):
         return StateManager._prepare_membership_list(
             self._channels, self._presence_channels, include_presence)
@@ -227,8 +231,11 @@ class SubscriptionManager(object):
             self._listener_manager.announce_status(pn_status)
 
         result = SubscribeEnvelope.from_json(raw_result)
+        only_channel = self._subscription_state.subscribed_to_the_only_channel()
         if result.messages is not None and len(result.messages) > 0:
             for message in result.messages:
+                if only_channel:
+                    message.only_channel_subscription = True
                 self._message_queue_put(message)
 
         # REVIEW: is int compatible with long for Python 2

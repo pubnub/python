@@ -159,3 +159,60 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
+
+    @tornado.testing.gen_test(timeout=30)
+    def test_join_leave(self):
+        self.pubnub.config.uuid = helper.gen_channel("messenger")
+        self.pubnub_listener.config.uuid = helper.gen_channel("listener")
+
+        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
+        gr = helper.gen_channel("test-subscribe-unsubscirbe-group")
+
+        envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
+        assert envelope.status.original_response['status'] == 200
+
+        yield gen.sleep(1)
+
+        callback_messages = ExtendedSubscribeCallback()
+        callback_presence = ExtendedSubscribeCallback()
+
+        self.pubnub_listener.add_listener(callback_presence)
+        self.pubnub_listener.subscribe().channel_groups(gr).with_presence().execute()
+        yield callback_presence.wait_for_connect()
+
+        prs_envelope = yield callback_presence.wait_for_presence_on(ch)
+        assert prs_envelope.event == 'join'
+        assert prs_envelope.uuid == self.pubnub_listener.uuid
+        assert prs_envelope.actual_channel == ch + "-pnpres"
+        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+
+        self.pubnub.add_listener(callback_messages)
+        self.pubnub.subscribe().channel_groups(gr).execute()
+
+        useless, prs_envelope = yield [
+            callback_messages.wait_for_connect(),
+            callback_presence.wait_for_presence_on(ch)
+        ]
+
+        assert prs_envelope.event == 'join'
+        assert prs_envelope.uuid == self.pubnub.uuid
+        assert prs_envelope.actual_channel == ch + "-pnpres"
+        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+
+        self.pubnub.unsubscribe().channel_groups(gr).execute()
+
+        useless, prs_envelope = yield [
+            callback_messages.wait_for_disconnect(),
+            callback_presence.wait_for_presence_on(ch)
+        ]
+
+        assert prs_envelope.event == 'leave'
+        assert prs_envelope.uuid == self.pubnub.uuid
+        assert prs_envelope.actual_channel == ch + "-pnpres"
+        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+
+        self.pubnub_listener.unsubscribe().channel_groups(gr).execute()
+        yield callback_presence.wait_for_disconnect()
+
+        envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
+        assert envelope.status.original_response['status'] == 200

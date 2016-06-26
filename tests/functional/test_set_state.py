@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from pubnub.endpoints.pubsub.set_state import SetState
+from pubnub.endpoints.presence.set_state import SetState
 
 try:
     from mock import MagicMock

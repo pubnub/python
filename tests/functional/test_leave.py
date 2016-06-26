@@ -1,6 +1,6 @@
 import unittest
 
-from pubnub.endpoints.pubsub.leave import Leave
+from pubnub.endpoints.presence.leave import Leave
 
 try:
     from mock import MagicMock

@@ -1,6 +1,6 @@
 import unittest
 
-from pubnub.endpoints.pubsub.get_state import GetState
+from pubnub.endpoints.presence.get_state import GetState
 
 try:
     from mock import MagicMock

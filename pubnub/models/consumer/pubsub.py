@@ -13,6 +13,7 @@ class PNMessageResult(object):
             assert isinstance(user_metadata, object)
 
         self.message = message
+        # RENAME: Confusing name (can be channel, wildcard channel or group)
         self.subscribed_channel = subscribed_channel
         self.actual_channel = actual_channel
         self.timetoken = timetoken

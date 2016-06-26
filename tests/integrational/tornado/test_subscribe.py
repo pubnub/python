@@ -126,3 +126,36 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
+
+    @tornado.testing.gen_test(timeout=30)
+    def test_subscribe_publish_unsubscribe(self):
+        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
+        gr = helper.gen_channel("test-subscribe-unsubscirbe-group")
+        message = "hey"
+
+        envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
+        assert envelope.status.original_response['status'] == 200
+
+        yield gen.sleep(1)
+
+        callback_messages = ExtendedSubscribeCallback()
+        self.pubnub.add_listener(callback_messages)
+        self.pubnub.subscribe().channel_groups(gr).execute()
+        yield callback_messages.wait_for_connect()
+
+        sub_envelope, pub_envelope = yield [
+            callback_messages.wait_for_message_on(ch),
+            self.pubnub.publish().channel(ch).message(message).future()]
+
+        assert pub_envelope.status.original_response[0] == 1
+        assert pub_envelope.status.original_response[1] == 'Sent'
+
+        assert sub_envelope.actual_channel == ch
+        assert sub_envelope.subscribed_channel == gr
+        assert sub_envelope.message == message
+
+        self.pubnub.unsubscribe().channel_groups(gr).execute()
+        yield callback_messages.wait_for_disconnect()
+
+        envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
+        assert envelope.status.original_response['status'] == 200

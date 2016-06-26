@@ -3,6 +3,7 @@ import tornado
 import pubnub as pn
 
 from tornado.testing import AsyncTestCase
+from tornado import gen
 from pubnub.pubnub_tornado import PubNubTornado
 from tests import helper
 from tests.helper import pnconf_copy
@@ -97,3 +98,31 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         yield callback_presence.wait_for_disconnect()
         self.pubnub.stop()
         self.stop()
+
+
+class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
+    def setUp(self):
+        super(TestChannelGroupSubscription, self).setUp()
+        self.pubnub = PubNubTornado(pnconf_copy(), custom_ioloop=self.io_loop)
+        self.pubnub_listener = PubNubTornado(pnconf_copy(), custom_ioloop=self.io_loop)
+
+    @tornado.testing.gen_test(timeout=30)
+    def test_subscribe_unsubscribe(self):
+        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
+        gr = helper.gen_channel("test-subscribe-unsubscirbe-group")
+
+        envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
+        assert envelope.status.original_response['status'] == 200
+
+        yield gen.sleep(1)
+
+        callback_messages = ExtendedSubscribeCallback()
+        self.pubnub.add_listener(callback_messages)
+        self.pubnub.subscribe().channel_groups(gr).execute()
+        yield callback_messages.wait_for_connect()
+
+        self.pubnub.unsubscribe().channel_groups(gr).execute()
+        yield callback_messages.wait_for_disconnect()
+
+        envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
+        assert envelope.status.original_response['status'] == 200

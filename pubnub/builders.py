@@ -1,8 +1,6 @@
 from abc import ABCMeta, abstractmethod
-
-import six
-
 from .dtos import SubscribeOperation, UnsubscribeOperation
+import utils
 
 
 class PubSubBuilder(object):
@@ -14,16 +12,13 @@ class PubSubBuilder(object):
         self._channel_group_subscriptions = []
 
     def channels(self, channels_list):
-        if isinstance(channels_list, six.string_types):
-            self._channel_subscriptions.append(channels_list)
-        elif isinstance(channels_list, (list, dict)):
-            self._channel_subscriptions.extend(channels_list)
+        utils.extend_list(self._channel_subscriptions, channels_list)
 
         return self
 
     def channel_groups(self, channel_groups_list):
-        # TODO: do the same if block as for channels
-        self._channel_group_subscriptions.extend(channel_groups_list)
+        utils.extend_list(self._channel_group_subscriptions, channel_groups_list)
+
         return self
 
     @abstractmethod

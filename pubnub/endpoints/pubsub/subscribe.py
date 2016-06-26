@@ -20,18 +20,12 @@ class Subscribe(Endpoint):
         self._with_presence = None
 
     def channels(self, channels):
-        if isinstance(channels, (list, tuple)):
-            self._channels.extend(channels)
-        else:
-            self._channels.extend(utils.split_items(channels))
+        utils.extend_list(self._channels, channels)
 
         return self
 
-    def channel_groups(self, channel_groups):
-        if isinstance(channel_groups, (list, tuple)):
-            self._groups.extend(channel_groups)
-        else:
-            self._groups.extend(utils.split_items(channel_groups))
+    def channel_groups(self, groups):
+        utils.extend_list(self._groups, groups)
 
         return self
 
@@ -60,7 +54,7 @@ class Subscribe(Endpoint):
             raise PubNubException(pn_error=PNERR_CHANNEL_OR_GROUP_MISSING)
 
     def build_path(self):
-        channels = "," if len(self._channels) is 0 else utils.join_items(self._channels)
+        channels = utils.join_channels(self._channels)
         return Subscribe.SUBSCRIBE_PATH % (self.pubnub.config.subscribe_key, channels)
 
     def build_params(self):

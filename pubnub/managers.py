@@ -63,11 +63,13 @@ class StateManager(object):
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         for channel in unsubscribe_operation.channels:
             self._channels.pop(channel, None)
-            self._presence_channels.pop(channel, None)
+            if channel in self._presence_channels:
+                self._presence_channels.pop(channel, None)
 
         for group in unsubscribe_operation.channel_groups:
             self._groups.pop(group)
-            self._presence_groups.pop(group)
+            if group in self._presence_groups:
+                self._presence_groups.pop(group)
 
     def state_payload(self):
         state = {}

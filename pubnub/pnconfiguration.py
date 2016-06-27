@@ -3,13 +3,16 @@ from . import utils
 
 
 class PNConfiguration(object):
+    DEFAULT_PRESENCE_TIMEOUT = 300
+    DEFAULT_HEARTBEAT_INTERVAL = 280
+
     def __init__(self):
         # TODO: add validation
         self.uuid = None
         self.origin = "pubsub.pubnub.com"
         self.ssl = False
         self.non_subscribe_request_timeout = 10
-        self.subscribe_timeout = 310
+        self.subscribe_request_timeout = 310
         self.connect_timeout = 5
         self.subscribe_key = None
         self.publish_key = None
@@ -20,10 +23,9 @@ class PNConfiguration(object):
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.NONE
 
-        self._presence_timeout = None
-        self._heartbeat_interval = None
-
-        self.set_presence_timeout(10)
+        self.heartbeat_default_values = True
+        self._presence_timeout = PNConfiguration.DEFAULT_PRESENCE_TIMEOUT
+        self._heartbeat_interval = PNConfiguration.DEFAULT_HEARTBEAT_INTERVAL
 
     def validate(self):
         assert self.uuid is None or isinstance(self.uuid, str)
@@ -44,6 +46,7 @@ class PNConfiguration(object):
         return self.scheme_extended() + self.origin
 
     def set_presence_timeout_with_custom_interval(self, timeout, interval):
+        self.heartbeat_default_values = False
         self._presence_timeout = timeout
         self._heartbeat_interval = interval
 

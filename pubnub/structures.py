@@ -1,18 +1,23 @@
-# TODO: choose a better name for this module
+import six
+
 from . import utils
 from .enums import HttpMethod
 
 
 class RequestOptions(object):
-    def __init__(self, path, params, method, data=None):
+    def __init__(self, path, params, method, request_timeout, connect_timeout, data=None):
         assert len(path) > 0
         assert len(params) > 0
-        assert isinstance(method, int)
+        assert isinstance(method, six.integer_types)
+        assert isinstance(request_timeout, six.integer_types)
+        assert isinstance(connect_timeout, six.integer_types)
         assert method is HttpMethod.GET or method is HttpMethod.POST
 
         self.path = path
         self.params = params
         self._method = method
+        self.request_timeout = request_timeout
+        self.connect_timeout = connect_timeout
         # TODO: rename to 'body'
         self.data = data
 

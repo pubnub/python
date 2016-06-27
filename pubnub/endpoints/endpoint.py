@@ -54,6 +54,14 @@ class Endpoint(object):
     def name(self):
         pass
 
+    @abstractmethod
+    def request_timeout(self):
+        pass
+
+    @abstractmethod
+    def connect_timeout(self):
+        pass
+
     def affected_channels(self):
         return None
 
@@ -62,7 +70,8 @@ class Endpoint(object):
 
     def options(self):
         return RequestOptions(self.build_path(), self.build_params(),
-                              self.http_method(), self.build_data())
+                              self.http_method(), self.request_timeout(),
+                              self.connect_timeout(), self.build_data())
 
     def sync(self):
         self.validate_params()

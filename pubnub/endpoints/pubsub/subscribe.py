@@ -72,6 +72,9 @@ class Subscribe(Endpoint):
         if self._region is not None:
             params['tr'] = self._region
 
+        if not self.pubnub.config.heartbeat_default_values:
+            params['heartbeat'] = self.pubnub.config.presence_timeout
+
         return params
 
     def create_response(self, envelope):
@@ -82,6 +85,12 @@ class Subscribe(Endpoint):
 
     def affected_channels_groups(self):
         return None
+
+    def request_timeout(self):
+        return self.pubnub.config.subscribe_request_timeout
+
+    def connect_timeout(self):
+        return self.pubnub.config.connect_timeout
 
     def operation_type(self):
         return PNOperationType.PNSubscribeOperation

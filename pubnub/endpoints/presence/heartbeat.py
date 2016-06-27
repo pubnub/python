@@ -51,7 +51,7 @@ class Heartbeat(Endpoint):
         if len(self._groups) > 0:
             params['channel-group'] = utils.join_items(self._groups)
 
-        if self._state is not None:
+        if self._state is not None and len(self._state) > 0:
             params['state'] = utils.write_value_as_string(self._state)
 
         return params
@@ -64,6 +64,12 @@ class Heartbeat(Endpoint):
 
     def affected_channels_groups(self):
         return None
+
+    def request_timeout(self):
+        return self.pubnub.config.non_subscribe_request_timeout
+
+    def connect_timeout(self):
+        return self.pubnub.config.connect_timeout
 
     def operation_type(self):
         return PNOperationType.PNHeartbeatOperation

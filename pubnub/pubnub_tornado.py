@@ -16,7 +16,6 @@ from tornado.log import gen_log
 from tornado.queues import Queue
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
 
-
 from . import utils
 from .builders import SubscribeBuilder, UnsubscribeBuilder
 from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
@@ -197,8 +196,8 @@ class PubNubTornado(PubNubCore):
             method=options.method_string,
             headers=self.headers,
             body=options.data if options.data is not None else None,
-            connect_timeout=self.config.connect_timeout,
-            request_timeout=self.config.non_subscribe_request_timeout)
+            connect_timeout=options.connect_timeout,
+            request_timeout=options.request_timeout)
 
         def key_callback(key_response):
             future = Future()
@@ -323,7 +322,7 @@ class TornadoSubscriptionManager(SubscriptionManager):
         self._consumer_event = Event()
         self._subscription_lock = Semaphore(1)
         self._current_request_key_object = None
-        self._task = None
+        self._heartbeat_periodic_callback = None
         super(TornadoSubscriptionManager, self).__init__(pubnub_instance)
 
     def _set_consumer_event(self):
@@ -339,6 +338,11 @@ class TornadoSubscriptionManager(SubscriptionManager):
                                                        self._consumer_event)
         run = stack_context.wrap(self._consumer.run)
         self._pubnub.ioloop.spawn_callback(run)
+
+    def reconnect(self):
+        self._should_stop = False
+        self._pubnub.ioloop.add_callback(self._start_subscribe_loop)
+        self._register_heartbeat_timer()
 
     @tornado.gen.coroutine
     def _start_subscribe_loop(self):
@@ -366,7 +370,7 @@ class TornadoSubscriptionManager(SubscriptionManager):
             self._handle_endpoint_call(envelope.result, envelope.status)
         except PubNubTornadoException as e:
             if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
-                self._start_subscribe_loop()
+                self._pubnub.ioloop.add_callback(self._start_subscribe_loop)
             else:
                 self._listener_manager.announce_status(e.status)
         finally:
@@ -377,18 +381,20 @@ class TornadoSubscriptionManager(SubscriptionManager):
         self._pubnub.http.reset_request(self._current_request_key_object)
 
     def _stop_heartbeat_timer(self):
-        if self._task is not None:
-            self._task.stop()
+        if self._heartbeat_periodic_callback is not None:
+            self._heartbeat_periodic_callback.stop()
 
     def _register_heartbeat_timer(self):
         super(TornadoSubscriptionManager, self)._register_heartbeat_timer()
 
-        self._task = PeriodicCallback(self._perform_heartbeat_loop,
-                                      self._pubnub.config.heartbeat_interval *
-                                      TornadoSubscriptionManager.HEARTBEAT_INTERVAL_MULTIPLIER,
-                                      self._pubnub.ioloop)
-        self._task.start()
+        self._heartbeat_periodic_callback = PeriodicCallback(
+            stack_context.wrap(self._perform_heartbeat_loop),
+            self._pubnub.config.heartbeat_interval *
+            TornadoSubscriptionManager.HEARTBEAT_INTERVAL_MULTIPLIER,
+            self._pubnub.ioloop)
+        self._heartbeat_periodic_callback.start()
 
+    @tornado.gen.coroutine
     def _perform_heartbeat_loop(self):
         if self._heartbeat_call is not None:
             # TODO: cancel call
@@ -403,15 +409,12 @@ class TornadoSubscriptionManager(SubscriptionManager):
             return
 
         try:
-            key_object, heartbeat = yield self._pubnub.heartbeat() \
+            envelope = yield self._pubnub.heartbeat() \
                 .channels(presence_channels) \
                 .channel_groups(presence_groups) \
                 .state(state_payload) \
                 .cancellation_event(cancellation_event) \
-                .future(intermediate_key_future=True)
-
-            self._current_request_key_object = key_object
-            envelope = yield heartbeat
+                .future()
 
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if envelope.status.is_error:
@@ -423,10 +426,11 @@ class TornadoSubscriptionManager(SubscriptionManager):
                     self._listener_manager.announce_stateus(envelope.status)
 
         except PubNubTornadoException as e:
-            if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
-                self._start_subscribe_loop()
-            else:
-                self._listener_manager.announce_status(e.status)
+            pass
+            # if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
+            #     self._start_subscribe_loop()
+            # else:
+            #     self._listener_manager.announce_status(e.status)
         finally:
             cancellation_event.set()
 

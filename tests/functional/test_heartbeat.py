@@ -10,14 +10,14 @@ except ImportError:
     from unittest.mock import MagicMock
 
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, sdk_name
+from tests.helper import pnconf, sdk_name, pnconf_copy
 
 
 class TestHeartbeat(unittest.TestCase):
     def setUp(self):
         self.pubnub = MagicMock(
             spec=PubNub,
-            config=pnconf,
+            config=pnconf_copy(),
             sdk_name=sdk_name
         )
         self.pubnub.uuid = "UUID_HeartbeatUnitTest"

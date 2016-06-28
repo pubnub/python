@@ -61,6 +61,12 @@ class HereNow(Endpoint):
     def create_response(self, envelope):
         return PNHereNowResult.from_json(envelope, self._channels)
 
+    def request_timeout(self):
+        return self.pubnub.config.non_subscribe_request_timeout
+
+    def connect_timeout(self):
+        return self.pubnub.config.connect_timeout
+
     def operation_type(self):
         return PNOperationType.PNPublishOperation
 

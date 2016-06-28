@@ -57,6 +57,12 @@ class AddChannelToChannelGroup(Endpoint):
     def create_response(self, envelope):
         return PNChannelGroupsAddChannelResult()
 
+    def request_timeout(self):
+        return self.pubnub.config.non_subscribe_request_timeout
+
+    def connect_timeout(self):
+        return self.pubnub.config.connect_timeout
+
     def operation_type(self):
         return PNOperationType.PNAddChannelsToGroupOperation
 

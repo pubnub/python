@@ -40,6 +40,12 @@ class RemoveChannelGroup(Endpoint):
     def create_response(self, envelope):
         return PNChannelGroupsRemoveGroupResult()
 
+    def request_timeout(self):
+        return self.pubnub.config.non_subscribe_request_timeout
+
+    def connect_timeout(self):
+        return self.pubnub.config.connect_timeout
+
     def operation_type(self):
         return PNOperationType.PNRemoveGroupOperation
 

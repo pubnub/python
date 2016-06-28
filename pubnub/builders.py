@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from .dtos import SubscribeOperation, UnsubscribeOperation
-import utils
+from . import utils
 
 
 class PubSubBuilder(object):

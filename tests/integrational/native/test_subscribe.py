@@ -1,8 +1,5 @@
 import logging
 import unittest
-
-# import pydevd as pydevd
-
 import pubnub
 from pubnub.callbacks import SubscribeCallback
 from pubnub.exceptions import PubNubException
@@ -26,10 +23,16 @@ class TestPubNubSubscribe(unittest.TestCase):
                 assert isinstance(l, CountDownLatch)
                 self._latch = l
                 self.done = False
+                self.once = False
                 self.msg = None
 
             def status(self, p, status):
-                p.publish().channel('ch1').message('hey').sync()
+                if not self.once:
+                    self.once = True
+                    p.publish().channel('ch1').message('hey').sync()
+
+                if status.is_error():
+                    print("error here")
 
             def presence(self, p, presence):
                 pass

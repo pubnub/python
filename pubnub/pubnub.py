@@ -37,8 +37,12 @@ class PubNub(PubNubCore):
         return ""
 
     def request_sync(self, options):
-        res = self.pn_request(self.session, self.config.scheme_and_host(), self.headers, options,
-                              self.config.connect_timeout, self.config.non_subscribe_request_timeout)
+        res = self.pn_request(self.session,
+                              self.config.scheme_and_host(),
+                              self.headers,
+                              options,
+                              self.config.connect_timeout,
+                              self.config.non_subscribe_request_timeout)
 
         # http error
         if res.status_code != requests.codes.ok:
@@ -131,7 +135,11 @@ class PubNub(PubNubCore):
             callback(status_category, None, None, e)
             call.executed_cb()
 
-        client = AsyncHTTPClient(self, success_callback, error_callback, options, cancellation_event)
+        client = AsyncHTTPClient(self,
+                                 success_callback,
+                                 error_callback,
+                                 options,
+                                 cancellation_event)
 
         thread = threading.Thread(
             target=client.run,
@@ -169,9 +177,21 @@ class PubNub(PubNubCore):
 
         if options.is_post():
             args['data'] = options.data
-            logger.debug("%s %s %s %s" % (options.method_string, url, options.params, options.data))
+            logger.debug("%s %s %s" % (
+                options.method_string,
+                utils.build_url(
+                    self.config.scheme(),
+                    self.config.origin,
+                    options.path,
+                    options.query_string), options.data))
         else:
-            logger.debug("%s %s %s" % (options.method_string, url, options.params))
+            logger.debug("%s %s" % (
+                options.method_string,
+                utils.build_url(
+                    self.config.scheme(),
+                    self.config.origin,
+                    options.path,
+                    options.query_string)))
 
         # connection error
         try:
@@ -224,13 +244,19 @@ class AsyncHTTPClient:
                  self.pubnub.config.connect_timeout,
                  self.pubnub.config.non_subscribe_request_timeout)
 
-            if self.cancellation_event.isSet():
+            if self.cancellation_event is not None and self.cancellation_event.isSet():
                 # Since there are no way to affect on ongoing request it's response will be just ignored on cancel call
                 return
 
             self.success(res)
         except PubNubException as e:
             self.error(e)
+        except Exception as e:
+            # TODO: log the exception
+            self.error(PubNubException(
+                pn_error=PNERR_UNKNOWN_ERROR,
+                errormsg="Exception in request thread: %s" % str(e)
+            ))
 
 
 class Call(object):
@@ -249,7 +275,8 @@ class Call(object):
           only after ongoing request will be finished
         :return: nothing
         """
-        self.cancellation_event.set()
+        if self.cancellation_event is not None:
+            self.cancellation_event.set()
         self.is_canceled = True
 
     def join(self):
@@ -261,6 +288,15 @@ class Call(object):
 
 
 class NativeSubscriptionManager(SubscriptionManager):
+    def _send_leave(self, unsubscribe_operation):
+        pass
+
+    def _perform_heartbeat_loop(self):
+        pass
+
+    def _stop_heartbeat_timer(self):
+        pass
+
     def __init__(self, pubnub_instance):
         self._message_queue = utils.Queue()
         self._consumer_event = threading.Event()
@@ -302,7 +338,7 @@ class NativeSubscriptionManager(SubscriptionManager):
 
         try:
             self._subscribe_call = Subscribe(self._pubnub) \
-                .channels(combined_channels).groups(combined_groups) \
+                .channels(combined_channels).channel_groups(combined_groups) \
                 .timetoken(self._timetoken).region(self._region) \
                 .filter_expression(self._pubnub.config.filter_expression) \
                 .async(callback)

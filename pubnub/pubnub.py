@@ -25,6 +25,7 @@ class PubNub(PubNubCore):
 
     def __init__(self, config):
         assert isinstance(config, PNConfiguration)
+        self.session = requests.Session()
         PubNubCore.__init__(self, config)
 
         if self.config.enable_subscribe:

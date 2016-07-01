@@ -23,13 +23,12 @@ class PubNubCore:
 
     def __init__(self, config):
         self.config = config
-        self.session = requests.Session()
-
         self.config.validate()
         self.headers = {
             'User-Agent': self.sdk_name
         }
 
+        # TODO: move to platform-specific initializer
         self.publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
 
     @abstractmethod

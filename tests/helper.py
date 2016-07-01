@@ -38,6 +38,10 @@ pnconf_enc_sub.cipher_key = "testKey"
 def pnconf_copy():
     return copy(pnconf)
 
+
+def pnconf_enc_copy():
+    return copy(pnconf_enc)
+
 sdk_name = "Python-UnitTest"
 
 

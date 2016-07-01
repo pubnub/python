@@ -99,7 +99,7 @@ def extend_list(existing_items, new_items):
         existing_items.extend(new_items)
 
 
-def build_url(scheme, origin, path, params):
+def build_url(scheme, origin, path, params={}):
     return pn_urlunsplit((scheme, origin, path, params, ''))
 
 

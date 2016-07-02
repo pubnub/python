@@ -5,18 +5,17 @@ import aiohttp
 import math
 
 from asyncio import Event, Queue, Semaphore
-
-from pubnub.builders import SubscribeBuilder, UnsubscribeBuilder
-from pubnub.endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
-from pubnub.endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
-from pubnub.endpoints.channel_groups.remove_channel_from_channel_group import RemoveChannelFromChannelGroup
-from pubnub.endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
-from pubnub.endpoints.presence.get_state import GetState
-from pubnub.endpoints.presence.heartbeat import Heartbeat
-from pubnub.endpoints.presence.leave import Leave
-from pubnub.endpoints.presence.set_state import SetState
-from pubnub.pubnub_core import PubNubCore
+from .builders import SubscribeBuilder, UnsubscribeBuilder
+from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
+from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
+from .endpoints.channel_groups.remove_channel_from_channel_group import RemoveChannelFromChannelGroup
+from .endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
+from .endpoints.presence.get_state import GetState
+from .endpoints.presence.heartbeat import Heartbeat
+from .endpoints.presence.leave import Leave
+from .endpoints.presence.set_state import SetState
 from .endpoints.pubsub.subscribe import Subscribe
+from .pubnub_core import PubNubCore
 from .workers import SubscribeMessageWorker
 from .managers import SubscriptionManager
 from . import utils
@@ -44,6 +43,7 @@ class PubNubAsyncio(PubNubCore):
             self._subscription_manager = AsyncioSubscriptionManager(self)
 
     def stop(self):
+        self.session.close()
         if self._subscription_manager is not None:
             self._subscription_manager.stop()
 
@@ -100,9 +100,10 @@ class PubNubAsyncio(PubNubCore):
 
         options = options_func()
 
-        url = utils.build_url(self.config.scheme(), self.config.origin,
-                              options.path)
-        logger.debug("%s %s %s" % (options.method_string, url, options.data))
+        url = utils.build_url(self.config.scheme(), self.config.origin, options.path)
+        log_url = utils.build_url(self.config.scheme(), self.config.origin,
+                                  options.path, options.query_string)
+        logger.debug("%s %s %s" % (options.method_string, log_url, options.data))
 
         if options.is_post():
             request_func = self.session.post
@@ -116,7 +117,6 @@ class PubNubAsyncio(PubNubCore):
                              headers=self.headers,
                              data=options.data if options.data is not None else None),
                 options.connect_timeout)
-
         except asyncio.TimeoutError:
             print('error')
             return
@@ -213,34 +213,39 @@ class PubNubAsyncio(PubNubCore):
 class AsyncioSubscriptionManager(SubscriptionManager):
     def __init__(self, pubnub_instance):
         self._message_queue = Queue()
-        self._consumer_event = Event()
         self._subscription_lock = Semaphore(1)
-        self._current_request_key_object = None
+        self._subscribe_loop_task = None
         self._heartbeat_periodic_callback = None
         super(AsyncioSubscriptionManager, self).__init__(pubnub_instance)
 
     def _set_consumer_event(self):
-        self._consumer_event.set()
+        if not self._message_worker.cancelled():
+            self._message_worker.cancel()
 
     def _message_queue_put(self, message):
         self._message_queue.put(message)
 
     def _start_worker(self):
-        self._consumer = AsyncioSubscribeMessageWorker(self._pubnub,
-                                                       self._listener_manager,
-                                                       self._message_queue,
-                                                       self._consumer_event)
-        asyncio.ensure_future(self._consumer.run(), loop=self._pubnub.event_loop)
+        consumer = AsyncioSubscribeMessageWorker(self._pubnub,
+                                                 self._listener_manager,
+                                                 self._message_queue, None)
+        self._message_worker = asyncio.ensure_future(consumer.run(),
+                                                     loop=self._pubnub.event_loop)
 
     def reconnect(self):
         self._should_stop = False
-        self._pubnub.event_loop.call_soon(self._start_subscribe_loop)
+        self._subscribe_loop_task = asyncio.ensure_future(self._start_subscribe_loop())
         self._register_heartbeat_timer()
+
+    def stop(self):
+        super(AsyncioSubscriptionManager, self).stop()
+        if self._subscribe_loop_task is not None and not self._subscribe_loop_task.cancelled():
+            self._subscribe_loop_task.cancel()
 
     async def _start_subscribe_loop(self):
         self._stop_subscribe_loop()
+
         await self._subscription_lock.acquire()
-        cancellation_event = Event()
 
         combined_channels = self._subscription_state.prepare_channel_list(True)
         combined_groups = self._subscription_state.prepare_channel_group_list(True)
@@ -249,28 +254,33 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             return
 
         try:
-            self._subscribe_call = Subscribe(self._pubnub) \
-                .channels(combined_channels).channel_groups(combined_groups) \
-                .timetoken(self._timetoken).region(self._region) \
-                .filter_expression(self._pubnub.config.filter_expression) \
-                .cancellation_event(cancellation_event) \
-                .future()
+            self._subscribe_request_task = asyncio.ensure_future(
+                Subscribe(self._pubnub)
+                    .channels(combined_channels)
+                    .channel_groups(combined_groups)
+                    .timetoken(self._timetoken).region(self._region)
+                    .filter_expression(self._pubnub.config.filter_expression)
+                    .future())
 
-            envelope = await self.subscribe_call
+            envelope = await self._subscribe_request_task
 
             self._handle_endpoint_call(envelope.result, envelope.status)
+            self._subscribe_loop_task = asyncio.ensure_future(self._start_subscribe_loop())
         except PubNubAsyncioException as e:
             if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
                 self._pubnub.event_loop.call_soon(self._start_subscribe_loop)
             else:
                 self._listener_manager.announce_status(e.status)
+        except asyncio.CancelledError as e:
+            print('cancelled')
+        except Exception as e:
+            print(str(e))
         finally:
-            cancellation_event.set()
             self._subscription_lock.release()
 
     def _stop_subscribe_loop(self):
-        if self._subscribe_call is not None:
-            self._subscribe_call.cancel()
+        if self._subscribe_request_task is not None and not self._subscribe_request_task.cancelled():
+            self._subscribe_request_task.cancel()
 
     def _stop_heartbeat_timer(self):
         if self._heartbeat_periodic_callback is not None:
@@ -281,10 +291,10 @@ class AsyncioSubscriptionManager(SubscriptionManager):
 
         self._heartbeat_periodic_callback = AsyncioPeriodicCallback(
             self._perform_heartbeat_loop,
-            self._pubnub.config.heartbeat_interval *
-            AsyncioSubscriptionManager.HEARTBEAT_INTERVAL_MULTIPLIER,
-            self._pubnub.ioloop)
-        self._heartbeat_periodic_callback.start()
+            self._pubnub.config.heartbeat_interval * 1000,
+            self._pubnub.event_loop)
+        if not self._should_stop:
+            self._heartbeat_periodic_callback.start()
 
     async def _perform_heartbeat_loop(self):
         if self._heartbeat_call is not None:
@@ -300,12 +310,14 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             return
 
         try:
-            envelope = await self._pubnub.heartbeat() \
-                .channels(presence_channels) \
-                .channel_groups(presence_groups) \
-                .state(state_payload) \
-                .cancellation_event(cancellation_event) \
-                .future()
+            heartbeat_call = (Heartbeat(self._pubnub)
+                              .channels(presence_channels)
+                              .channel_groups(presence_groups)
+                              .state(state_payload)
+                              .cancellation_event(cancellation_event)
+                              .future())
+
+            envelope = await heartbeat_call
 
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if envelope.status.is_error:
@@ -325,10 +337,14 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         finally:
             cancellation_event.set()
 
-    async def _send_leave(self, unsubscribe_operation):
+    def _send_leave(self, unsubscribe_operation):
+        asyncio.ensure_future(self._send_leave_helper(unsubscribe_operation))
+
+    async def _send_leave_helper(self, unsubscribe_operation):
         envelope = await Leave(self._pubnub) \
             .channels(unsubscribe_operation.channels) \
             .channel_groups(unsubscribe_operation.channel_groups).future()
+
         self._listener_manager.announce_status(envelope.status)
 
 
@@ -337,7 +353,7 @@ class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):
         await self._take_message()
 
     async def _take_message(self):
-        while not self._event.is_set():
+        while True:
             try:
                 msg = await self._queue.get()
                 if msg is not None:
@@ -345,8 +361,8 @@ class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):
                 self._queue.task_done()
             except Exception as e:
                 # TODO: move to finally
-                self._event.set()
                 logger.warn("take message interrupted: %s" % str(e))
+                break
 
 
 class AsyncioPeriodicCallback(object):
@@ -373,11 +389,10 @@ class AsyncioPeriodicCallback(object):
         if not self._running:
             return
         try:
-            return self._callback()
+            asyncio.ensure_future(self._callback())
         except Exception:
             # TODO: handle the exception
             pass
-            # self.event_loop.call_exception_handler()
         finally:
             self._schedule_next()
 
@@ -386,10 +401,11 @@ class AsyncioPeriodicCallback(object):
 
         if self._next_timeout <= current_time:
             callback_time_sec = self._callback_time / 1000.0
+            print("cb time", callback_time_sec)
             self._next_timeout += (math.floor(
                 (current_time - self._next_timeout) / callback_time_sec) + 1) * callback_time_sec
 
-        self._timeout = self._event_loop.call_later(self._next_timeout, self._run)
+        self._timeout = self._event_loop.call_at(self._next_timeout, self._run)
 
 
 class AsyncioEnvelope(object):

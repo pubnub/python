@@ -39,6 +39,10 @@ def pnconf_copy():
     return copy(pnconf)
 
 
+def pnconf_sub_copy():
+    return copy(pnconf_sub)
+
+
 def pnconf_enc_copy():
     return copy(pnconf_enc)
 

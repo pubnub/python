@@ -368,6 +368,7 @@ class TornadoSubscriptionManager(SubscriptionManager):
             envelope = yield subscribe
 
             self._handle_endpoint_call(envelope.result, envelope.status)
+            self._start_subscribe_loop()
         except PubNubTornadoException as e:
             if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
                 self._pubnub.ioloop.add_callback(self._start_subscribe_loop)

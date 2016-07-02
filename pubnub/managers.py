@@ -140,7 +140,7 @@ class SubscriptionManager(object):
 
         self._should_stop = False
 
-        self._subscribe_call = None
+        self._subscribe_request_task = None
         self._heartbeat_call = None
 
         self._start_worker()
@@ -180,7 +180,6 @@ class SubscriptionManager(object):
     def add_listener(self, listener):
         self._listener_manager.add_listener(listener)
 
-    @synchronized
     def adapt_subscribe_builder(self, subscribe_operation):
         assert isinstance(subscribe_operation, SubscribeOperation)
         self._subscription_state.adapt_subscribe_builder(subscribe_operation)
@@ -191,7 +190,6 @@ class SubscriptionManager(object):
 
         self.reconnect()
 
-    @synchronized
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         assert isinstance(unsubscribe_operation, UnsubscribeOperation)
 
@@ -204,17 +202,16 @@ class SubscriptionManager(object):
             self._timetoken = 0
         self.reconnect()
 
-    @synchronized
     def reconnect(self):
         self._should_stop = False
         self._start_subscribe_loop()
         self._register_heartbeat_timer()
 
     def stop(self):
-        # self._stop_heartbeat_timer()
-        self._stop_subscribe_loop()
         self._should_stop = True
+        self._stop_subscribe_loop()
         self._set_consumer_event()
+        self._stop_heartbeat_timer()
 
     def _handle_endpoint_call(self, raw_result, status):
         assert isinstance(status, PNStatus)
@@ -243,7 +240,6 @@ class SubscriptionManager(object):
         # REVIEW: is int compatible with long for Python 2
         self._timetoken = int(result.metadata.timetoken)
         self._region = int(result.metadata.region)
-        self._start_subscribe_loop()
 
     # TODO: implement
     def _register_heartbeat_timer(self):

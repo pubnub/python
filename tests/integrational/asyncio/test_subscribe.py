@@ -5,6 +5,7 @@ import pytest
 import pubnub as pn
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
+from tests import helper
 from tests.helper import pnconf_sub_copy
 from tests.integrational.native.native_helper import SubscribeListener
 
@@ -62,5 +63,52 @@ async def test_subscribe_publish_unsubscribe(event_loop):
 
     pubnub.unsubscribe().channels(channel).execute()
     await callback.wait_for_disconnect()
+
+    pubnub.stop()
+
+
+@pytest.mark.asyncio
+async def test_join_leave(event_loop):
+    channel = "ch1"
+    message = "hey"
+
+    pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub_listener = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+
+    pubnub.config.uuid = helper.gen_channel("messenger")
+    pubnub_listener.config.uuid = helper.gen_channel("listener")
+
+    callback_presence = SubscribeListener()
+    callback_messages = SubscribeListener()
+
+    pubnub_listener.add_listener(callback_presence)
+    pubnub_listener.subscribe().channels("ch1").with_presence().execute()
+
+    await callback_presence.wait_for_connect()
+
+    envelope = await callback_presence.wait_for_presence_on("ch1")
+    assert envelope.actual_channel == "ch1-pnpres"
+    assert envelope.event == 'join'
+    assert envelope.uuid == pubnub_listener.uuid
+
+    pubnub.add_listener(callback_messages)
+    pubnub.subscribe().channels("ch1").execute()
+    await callback_messages.wait_for_connect()
+
+    envelope = await callback_presence.wait_for_presence_on("ch1")
+    assert envelope.actual_channel == "ch1-pnpres"
+    assert envelope.event == 'join'
+    assert envelope.uuid == pubnub.uuid
+
+    pubnub.unsubscribe().channels("ch1").execute()
+    await callback_messages.wait_for_disconnect()
+
+    envelope = await callback_presence.wait_for_presence_on("ch1")
+    assert envelope.actual_channel == "ch1-pnpres"
+    assert envelope.event == 'leave'
+    assert envelope.uuid == pubnub.uuid
+
+    pubnub_listener.unsubscribe().channels("ch1").execute()
+    await callback_presence.wait_for_disconnect()
 
     pubnub.stop()

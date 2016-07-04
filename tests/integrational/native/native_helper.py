@@ -23,7 +23,7 @@ class SubscribeListener(SubscribeCallback):
         self.message_queue.put_nowait(message)
 
     def presence(self, pubnub, presence):
-        self.presence_queue.put(presence)
+        self.presence_queue.put_nowait(presence)
 
     async def wait_for_connect(self):
         if not self.connected_event.is_set():

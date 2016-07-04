@@ -6,7 +6,6 @@ from .models.server.subscribe import SubscribeEnvelope
 from .dtos import SubscribeOperation, UnsubscribeOperation
 from .callbacks import SubscribeCallback
 from .models.subscription_item import SubscriptionItem
-from .utils import synchronized
 
 
 class PublishSequenceManager(object):

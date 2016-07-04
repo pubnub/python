@@ -36,14 +36,16 @@ class PubNubAsyncio(PubNubCore):
     def __init__(self, config, custom_event_loop=None):
         super(PubNubAsyncio, self).__init__(config)
         self.event_loop = custom_event_loop or asyncio.get_event_loop()
-        self.session = aiohttp.ClientSession(loop=self.event_loop)
+        # TODO: add proxies and option to reinitialize connector&session
+        self._connector = aiohttp.BaseConnector(conn_timeout=config.connect_timeout)
+        self._session = aiohttp.ClientSession(loop=self.event_loop)
         self._subscription_manager = None
 
         if self.config.enable_subscribe:
             self._subscription_manager = AsyncioSubscriptionManager(self)
 
     def stop(self):
-        self.session.close()
+        self._session.close()
         if self._subscription_manager is not None:
             self._subscription_manager.stop()
 
@@ -105,27 +107,22 @@ class PubNubAsyncio(PubNubCore):
                                   options.path, options.query_string)
         logger.debug("%s %s %s" % (options.method_string, log_url, options.data))
 
-        if options.is_post():
-            request_func = self.session.post
-        else:
-            request_func = self.session.get
-
         try:
             response = await asyncio.wait_for(
-                request_func(url,
-                             params=options.query_string,
-                             headers=self.headers,
-                             data=options.data if options.data is not None else None),
-                options.connect_timeout)
+                self._session.request(options.method_string, url,
+                                      params=options.query_string,
+                                      headers=self.headers,
+                                      data=options.data if options.data is not None else None),
+                options.request_timeout)
         except asyncio.TimeoutError:
-            print('error')
+            raise
+        except asyncio.CancelledError:
+            raise
+        except Exception as e:
+            print('regular error', str(e))
             return
 
-        try:
-            body = await asyncio.wait_for(response.text(), options.request_timeout)
-        except asyncio.TimeoutError:
-            print('error2')
-            return
+        body = await response.text()
 
         if cancellation_event is not None and cancellation_event.is_set():
             return
@@ -223,7 +220,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             self._message_worker.cancel()
 
     def _message_queue_put(self, message):
-        self._message_queue.put(message)
+        self._message_queue.put_nowait(message)
 
     def _start_worker(self):
         consumer = AsyncioSubscribeMessageWorker(self._pubnub,
@@ -264,6 +261,9 @@ class AsyncioSubscriptionManager(SubscriptionManager):
 
             envelope = await self._subscribe_request_task
 
+            if self._subscribe_request_task.cancelled():
+                return
+
             self._handle_endpoint_call(envelope.result, envelope.status)
             self._subscribe_loop_task = asyncio.ensure_future(self._start_subscribe_loop())
         except PubNubAsyncioException as e:
@@ -274,7 +274,8 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         except asyncio.CancelledError as e:
             print('cancelled')
         except Exception as e:
-            print(str(e))
+            print('error in subscribe loop:', str(e))
+            raise e
         finally:
             self._subscription_lock.release()
 
@@ -359,6 +360,9 @@ class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):
                 if msg is not None:
                     self._process_incoming_payload(msg)
                 self._queue.task_done()
+            except asyncio.CancelledError:
+                logger.debug("Message Worker cancelled")
+                break
             except Exception as e:
                 # TODO: move to finally
                 logger.warn("take message interrupted: %s" % str(e))

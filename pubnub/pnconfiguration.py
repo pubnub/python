@@ -54,6 +54,10 @@ class PNConfiguration(object):
         self.set_presence_timeout_with_custom_interval(timeout, (timeout / 2) - 1)
 
     @property
+    def port(self):
+        return 443 if self.ssl == "https" else 80
+
+    @property
     def presence_timeout(self):
         return self._presence_timeout
 

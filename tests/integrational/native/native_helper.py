@@ -20,46 +20,42 @@ class SubscribeListener(SubscribeCallback):
             self.disconnected_event.set()
 
     def message(self, pubnub, message):
-        self.message_queue.put(message)
+        self.message_queue.put_nowait(message)
 
     def presence(self, pubnub, presence):
         self.presence_queue.put(presence)
 
-    @asyncio.coroutine
-    def wait_for_connect(self):
+    async def wait_for_connect(self):
         if not self.connected_event.is_set():
-            yield from self.connected_event.wait()
+            await self.connected_event.wait()
         else:
             raise Exception("instance is already connected")
 
-    @asyncio.coroutine
-    def wait_for_disconnect(self):
+    async def wait_for_disconnect(self):
         if not self.disconnected_event.is_set():
-            yield from self.disconnected_event.wait()
+            await self.disconnected_event.wait()
         else:
             raise Exception("instance is already disconnected")
 
-    @asyncio.coroutine
-    def wait_for_message_on(self, *channel_names):
+    async def wait_for_message_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
             try:
-                env = yield from self.message_queue.get()
+                env = await self.message_queue.get()
                 if env.actual_channel in channel_names:
-                    raise gen.Return(env)
+                    return env
                 else:
                     continue
             finally:
                 self.message_queue.task_done()
 
-    @asyncio.coroutine
-    def wait_for_presence_on(self, *channel_names):
+    async def wait_for_presence_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
             try:
-                env = yield from self.presence_queue.get()
+                env = await self.presence_queue.get()
                 if env.actual_channel[:-7] in channel_names:
-                    raise gen.Return(env)
+                    return env
                 else:
                     continue
             finally:

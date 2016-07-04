@@ -109,7 +109,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_unsubscribe(self):
         ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-unsubscirbe-group")
+        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
 
         envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200

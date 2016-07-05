@@ -16,8 +16,8 @@ from tornado.log import gen_log
 from tornado.queues import Queue
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
 
-from pubnub.callbacks import SubscribeCallback
 from . import utils
+from .callbacks import SubscribeCallback
 from .builders import SubscribeBuilder, UnsubscribeBuilder
 from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
 from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup

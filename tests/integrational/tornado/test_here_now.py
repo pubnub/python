@@ -36,12 +36,12 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
         self.pubnub.stop()
         self.stop()
 
-    @tornado.testing.gen_test
+    @tornado.testing.gen_test(timeout=10)
     def test_multiple_channels(self):
         ch1 = helper.gen_channel("here-now")
         ch2 = helper.gen_channel("here-now")
         yield connect_to_channel(self.pubnub, [ch1, ch2])
-        yield gen.sleep(2)
+        yield gen.sleep(4)
         env = yield self.pubnub.here_now() \
             .channels([ch1, ch2]) \
             .future()
@@ -71,7 +71,7 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
 
         env = yield self.pubnub.here_now().future()
 
-        assert env.result.total_channels > 2
+        assert env.result.total_channels >= 2
         assert env.result.total_occupancy >= 1
 
         yield disconnect_from_channel(self.pubnub, [ch1, ch2])

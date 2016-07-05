@@ -4,15 +4,11 @@ import pubnub as pn
 
 from tornado.testing import AsyncTestCase
 from tornado import gen
-from pubnub.pubnub_tornado import PubNubTornado
+from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
 from tests import helper
 from tests.helper import pnconf_copy
-from tests.integrational.tornado.tornado_helper import ExtendedSubscribeCallback
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
-
-ch1 = "ch1"
-ch2 = "ch2"
 
 
 class SubscriptionTest(object):
@@ -43,7 +39,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         ch = helper.gen_channel("heartbeat-test")
 
         # - connect to :ch-pnpres
-        callback_presence = ExtendedSubscribeCallback()
+        callback_presence = SubscribeListener()
         self.pubnub_listener.add_listener(callback_presence)
         self.pubnub_listener.subscribe().channels(ch).with_presence().execute()
         yield callback_presence.wait_for_connect()
@@ -54,7 +50,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         assert self.pubnub_listener.uuid == envelope.uuid
 
         # - connect to :ch
-        callback_messages = ExtendedSubscribeCallback()
+        callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
         self.pubnub.subscribe().channels(ch).execute()
 

@@ -4,15 +4,11 @@ import pubnub as pn
 
 from tornado.testing import AsyncTestCase
 from tornado import gen
-from pubnub.pubnub_tornado import PubNubTornado
+from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
 from tests import helper
 from tests.helper import pnconf_copy
-from tests.integrational.tornado.tornado_helper import ExtendedSubscribeCallback
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
-
-ch1 = "ch1"
-ch2 = "ch2"
 
 
 class SubscriptionTest(object):
@@ -30,7 +26,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
 
     @tornado.testing.gen_test()
     def test_subscribe_unsubscribe(self):
-        callback_messages = ExtendedSubscribeCallback()
+        callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
         self.pubnub.subscribe().channels("ch1").execute()
         yield callback_messages.wait_for_connect()
@@ -43,7 +39,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         ch = helper.gen_channel("subscribe-test")
         message = "hey"
 
-        callback_messages = ExtendedSubscribeCallback()
+        callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
         self.pubnub.subscribe().channels(ch).execute()
         yield callback_messages.wait_for_connect()
@@ -66,7 +62,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
     def test_join_leave(self):
         self.pubnub.config.uuid = helper.gen_channel("messenger")
         self.pubnub_listener.config.uuid = helper.gen_channel("listener")
-        callback_presence = ExtendedSubscribeCallback()
+        callback_presence = SubscribeListener()
         self.pubnub_listener.add_listener(callback_presence)
         self.pubnub_listener.subscribe().channels("ch1").with_presence().execute()
         yield callback_presence.wait_for_connect()
@@ -76,7 +72,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         assert envelope.event == 'join'
         assert envelope.uuid == self.pubnub_listener.uuid
 
-        callback_messages = ExtendedSubscribeCallback()
+        callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
         self.pubnub.subscribe().channels("ch1").execute()
         yield callback_messages.wait_for_connect()
@@ -116,7 +112,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
         yield gen.sleep(1)
 
-        callback_messages = ExtendedSubscribeCallback()
+        callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
         self.pubnub.subscribe().channel_groups(gr).execute()
         yield callback_messages.wait_for_connect()
@@ -138,7 +134,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
         yield gen.sleep(1)
 
-        callback_messages = ExtendedSubscribeCallback()
+        callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
         self.pubnub.subscribe().channel_groups(gr).execute()
         yield callback_messages.wait_for_connect()
@@ -173,8 +169,8 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
         yield gen.sleep(1)
 
-        callback_messages = ExtendedSubscribeCallback()
-        callback_presence = ExtendedSubscribeCallback()
+        callback_messages = SubscribeListener()
+        callback_presence = SubscribeListener()
 
         self.pubnub_listener.add_listener(callback_presence)
         self.pubnub_listener.subscribe().channel_groups(gr).with_presence().execute()

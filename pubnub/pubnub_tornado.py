@@ -16,6 +16,7 @@ from tornado.log import gen_log
 from tornado.queues import Queue
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
 
+from pubnub.callbacks import SubscribeCallback
 from . import utils
 from .builders import SubscribeBuilder, UnsubscribeBuilder
 from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
@@ -456,3 +457,64 @@ class PubNubTornadoException(Exception):
 
     def __str__(self):
         return str(self.status.error_data.exception)
+
+
+class SubscribeListener(SubscribeCallback):
+    def __init__(self):
+        self.connected = False
+        self.connected_event = Event()
+        self.disconnected_event = Event()
+        self.presence_queue = Queue()
+        self.message_queue = Queue()
+
+    def status(self, pubnub, status):
+        if utils.is_subscribed_event(status) and not self.connected_event.is_set():
+            self.connected_event.set()
+        elif utils.is_unsubscribed_event(status) and not self.disconnected_event.is_set():
+            self.disconnected_event.set()
+
+    def message(self, pubnub, message):
+        self.message_queue.put(message)
+
+    def presence(self, pubnub, presence):
+        self.presence_queue.put(presence)
+
+    @tornado.gen.coroutine
+    def wait_for_connect(self):
+        if not self.connected_event.is_set():
+            yield self.connected_event.wait()
+        else:
+            raise Exception("instance is already connected")
+
+    @tornado.gen.coroutine
+    def wait_for_disconnect(self):
+        if not self.disconnected_event.is_set():
+            yield self.disconnected_event.wait()
+        else:
+            raise Exception("instance is already disconnected")
+
+    @tornado.gen.coroutine
+    def wait_for_message_on(self, *channel_names):
+        channel_names = list(channel_names)
+        while True:
+            try:
+                env = yield self.message_queue.get()
+                if env.actual_channel in channel_names:
+                    raise tornado.gen.Return(env)
+                else:
+                    continue
+            finally:
+                self.message_queue.task_done()
+
+    @tornado.gen.coroutine
+    def wait_for_presence_on(self, *channel_names):
+        channel_names = list(channel_names)
+        while True:
+            try:
+                env = yield self.presence_queue.get()
+                if env.actual_channel[:-7] in channel_names:
+                    raise tornado.gen.Return(env)
+                else:
+                    continue
+            finally:
+                self.presence_queue.task_done()

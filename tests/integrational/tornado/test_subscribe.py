@@ -26,12 +26,14 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
 
     @tornado.testing.gen_test()
     def test_subscribe_unsubscribe(self):
+        ch = helper.gen_channel("subscribe-test")
+
         callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
-        self.pubnub.subscribe().channels("ch1").execute()
+        self.pubnub.subscribe().channels(ch).execute()
         yield callback_messages.wait_for_connect()
 
-        self.pubnub.unsubscribe().channels("ch1").execute()
+        self.pubnub.unsubscribe().channels(ch).execute()
         yield callback_messages.wait_for_disconnect()
 
     @tornado.testing.gen_test(timeout=30)
@@ -55,11 +57,14 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         assert sub_env.subscribed_channel == ch
         assert sub_env.message == message
 
-        self.pubnub.unsubscribe().channels("ch1").execute()
+        self.pubnub.unsubscribe().channels(ch).execute()
         yield callback_messages.wait_for_disconnect()
 
     @tornado.testing.gen_test()
     def test_join_leave(self):
+        ch = helper.gen_channel("subscribe-test")
+        ch_pnpres = ch + "-pnpres"
+
         self.pubnub.config.uuid = helper.gen_channel("messenger")
         self.pubnub_listener.config.uuid = helper.gen_channel("listener")
         callback_presence = SubscribeListener()
@@ -67,30 +72,30 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub_listener.subscribe().channels("ch1").with_presence().execute()
         yield callback_presence.wait_for_connect()
 
-        envelope = yield callback_presence.wait_for_presence_on("ch1")
-        assert envelope.actual_channel == "ch1-pnpres"
+        envelope = yield callback_presence.wait_for_presence_on(ch)
+        assert envelope.actual_channel == ch_pnpres
         assert envelope.event == 'join'
         assert envelope.uuid == self.pubnub_listener.uuid
 
         callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
-        self.pubnub.subscribe().channels("ch1").execute()
+        self.pubnub.subscribe().channels(ch).execute()
         yield callback_messages.wait_for_connect()
 
-        envelope = yield callback_presence.wait_for_presence_on("ch1")
-        assert envelope.actual_channel == "ch1-pnpres"
+        envelope = yield callback_presence.wait_for_presence_on(ch)
+        assert envelope.actual_channel == ch_pnpres
         assert envelope.event == 'join'
         assert envelope.uuid == self.pubnub.uuid
 
-        self.pubnub.unsubscribe().channels("ch1").execute()
+        self.pubnub.unsubscribe().channels(ch).execute()
         yield callback_messages.wait_for_disconnect()
 
-        envelope = yield callback_presence.wait_for_presence_on("ch1")
-        assert envelope.actual_channel == "ch1-pnpres"
+        envelope = yield callback_presence.wait_for_presence_on(ch)
+        assert envelope.actual_channel == ch_pnpres
         assert envelope.event == 'leave'
         assert envelope.uuid == self.pubnub.uuid
 
-        self.pubnub_listener.unsubscribe().channels("ch1").execute()
+        self.pubnub_listener.unsubscribe().channels(ch).execute()
         yield callback_presence.wait_for_disconnect()
         self.pubnub.stop()
         self.stop()

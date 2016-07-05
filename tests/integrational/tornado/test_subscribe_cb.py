@@ -10,9 +10,6 @@ from tests.helper import pnconf_copy
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
-ch1 = "ch1"
-ch2 = "ch2"
-
 
 class SubscriptionTest(object):
     def __init__(self):

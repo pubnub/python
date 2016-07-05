@@ -4,6 +4,8 @@ import threading
 
 import six
 
+from .enums import PNStatusCategory, PNOperationType
+from .models.consumer.common import PNStatus
 from .errors import PNERR_JSON_NOT_SERIALIZABLE
 from .exceptions import PubNubException
 
@@ -111,6 +113,18 @@ def synchronized(func):
             return func(*args, **kws)
 
     return synced_func
+
+
+def is_subscribed_event(status):
+    assert isinstance(status, PNStatus)
+    return status.category == PNStatusCategory.PNConnectedCategory
+
+
+def is_unsubscribed_event(status):
+    assert isinstance(status, PNStatus)
+    return status.category == PNStatusCategory.PNAcknowledgmentCategory \
+        and status.operation == PNOperationType.PNUnsubscribeOperation
+
 
 urlparse = pn_urlparse
 parse_qs = pn_parse_qs

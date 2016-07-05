@@ -6,8 +6,6 @@ import random
 from copy import copy
 
 from pubnub import utils
-from pubnub.enums import PNOperationType, PNStatusCategory
-from pubnub.models.consumer.common import PNStatus
 
 from pubnub.pnconfiguration import PNConfiguration
 
@@ -59,17 +57,6 @@ def gen_channel(prefix):
 
 def gen_string(l):
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(l))
-
-
-def is_subscribed_event(status):
-    assert isinstance(status, PNStatus)
-    return status.category == PNStatusCategory.PNConnectedCategory
-
-
-def is_unsubscribed_event(status):
-    assert isinstance(status, PNStatus)
-    return status.category == PNStatusCategory.PNAcknowledgmentCategory \
-        and status.operation == PNOperationType.PNUnsubscribeOperation
 
 
 class CountDownLatch(object):

@@ -1,10 +1,11 @@
 import logging
 import pubnub as pn
+import pubnub.utils as utils
 
 from tornado.testing import AsyncTestCase
 from pubnub.callbacks import SubscribeCallback
 from pubnub.pubnub_tornado import PubNubTornado
-from tests import helper
+
 from tests.helper import pnconf_copy
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
@@ -40,10 +41,10 @@ class TestMultipleChannelSubscriptions(AsyncTestCase, SubscriptionTest):
                 # connect event triggers only once, but probably should be triggered once for each channel
                 # TODO collect 3 subscribe
                 # TODO collect 3 unsubscribe
-                if helper.is_subscribed_event(status):
+                if utils.is_subscribed_event(status):
                     self.subscribe = True
                     _test.io_loop.add_callback(_test._publish)
-                elif helper.is_unsubscribed_event(status):
+                elif utils.is_unsubscribed_event(status):
                     self.unsubscribe = True
                     pubnub.stop()
                     _test.stop()

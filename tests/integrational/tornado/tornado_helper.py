@@ -1,9 +1,8 @@
 from tornado.locks import Event
 from tornado import gen
-from tornado.queues import Queue
 
+from pubnub import utils
 from pubnub.callbacks import SubscribeCallback
-from tests import helper
 
 
 class ConnectionEvent(SubscribeCallback):
@@ -25,7 +24,7 @@ class ConnectionEvent(SubscribeCallback):
 @gen.coroutine
 def connect_to_channel(pubnub, channel):
     event = Event()
-    callback = ConnectionEvent(event, helper.is_subscribed_event)
+    callback = ConnectionEvent(event, utils.is_subscribed_event)
     pubnub.add_listener(callback)
     pubnub.subscribe().channels(channel).execute()
     yield event.wait()
@@ -34,7 +33,7 @@ def connect_to_channel(pubnub, channel):
 @gen.coroutine
 def disconnect_from_channel(pubnub, channel):
     event = Event()
-    callback = ConnectionEvent(event, helper.is_unsubscribed_event)
+    callback = ConnectionEvent(event, utils.is_unsubscribed_event)
     pubnub.add_listener(callback)
     pubnub.unsubscribe().channels(channel).execute()
     yield event.wait()

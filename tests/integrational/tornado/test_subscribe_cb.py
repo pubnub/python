@@ -6,7 +6,7 @@ from tornado.testing import AsyncTestCase
 from pubnub.callbacks import SubscribeCallback
 from pubnub.pubnub_tornado import PubNubTornado
 
-from tests.helper import pnconf_copy
+from tests.helper import pnconf_sub_copy
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -21,7 +21,7 @@ class SubscriptionTest(object):
 class TestMultipleChannelSubscriptions(AsyncTestCase, SubscriptionTest):
     def setUp(self):
         super(TestMultipleChannelSubscriptions, self).setUp()
-        self.pubnub = PubNubTornado(pnconf_copy(), custom_ioloop=self.io_loop)
+        self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
     def test_do(self):
         _test = self

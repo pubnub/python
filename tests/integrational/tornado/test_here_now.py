@@ -4,14 +4,14 @@ from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
 
 from pubnub.pubnub_tornado import PubNubTornado
 from tests import helper
-from tests.helper import pnconf
+from tests.helper import pnconf_sub_copy
 from tests.integrational.tornado.tornado_helper import connect_to_channel, disconnect_from_channel
 
 
 class TestPubNubAsyncHereNow(AsyncTestCase):
     def setUp(self):
         super(TestPubNubAsyncHereNow, self).setUp()
-        self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
+        self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
     @tornado.testing.gen_test
     def test_single_channel(self):

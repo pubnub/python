@@ -6,7 +6,7 @@ from tornado.testing import AsyncTestCase
 from tornado import gen
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
 from tests import helper
-from tests.helper import pnconf_copy
+from tests.helper import pnconf_sub_copy
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -21,8 +21,8 @@ class SubscriptionTest(object):
 class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
     def setUp(self):
         super(TestChannelSubscription, self).setUp()
-        self.pubnub = PubNubTornado(pnconf_copy(), custom_ioloop=self.io_loop)
-        self.pubnub_listener = PubNubTornado(pnconf_copy(), custom_ioloop=self.io_loop)
+        self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
+        self.pubnub_listener = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
     @tornado.testing.gen_test()
     def test_subscribe_unsubscribe(self):
@@ -35,6 +35,9 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
 
         self.pubnub.unsubscribe().channels(ch).execute()
         yield callback_messages.wait_for_disconnect()
+
+        self.pubnub.stop()
+        self.stop()
 
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_publish_unsubscribe(self):
@@ -69,7 +72,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub_listener.config.uuid = helper.gen_channel("listener")
         callback_presence = SubscribeListener()
         self.pubnub_listener.add_listener(callback_presence)
-        self.pubnub_listener.subscribe().channels("ch1").with_presence().execute()
+        self.pubnub_listener.subscribe().channels(ch).with_presence().execute()
         yield callback_presence.wait_for_connect()
 
         envelope = yield callback_presence.wait_for_presence_on(ch)
@@ -104,8 +107,8 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
 class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
     def setUp(self):
         super(TestChannelGroupSubscription, self).setUp()
-        self.pubnub = PubNubTornado(pnconf_copy(), custom_ioloop=self.io_loop)
-        self.pubnub_listener = PubNubTornado(pnconf_copy(), custom_ioloop=self.io_loop)
+        self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
+        self.pubnub_listener = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_unsubscribe(self):

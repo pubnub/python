@@ -107,8 +107,10 @@ class PubNubTornado(PubNubCore):
     def __init__(self, config, custom_ioloop=None):
         super(PubNubTornado, self).__init__(config)
         self.ioloop = custom_ioloop or ioloop.IOLoop.instance()
+        self._subscription_manager = None
 
-        self._subscription_manager = TornadoSubscriptionManager(self)
+        if self.config.enable_subscribe:
+            self._subscription_manager = TornadoSubscriptionManager(self)
 
         # TODO: choose a correct client here http://www.tornadoweb.org/en/stable/httpclient.html
         # TODO: 1000?

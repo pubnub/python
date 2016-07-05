@@ -6,7 +6,7 @@ from tornado.testing import AsyncTestCase
 from tornado import gen
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
 from tests import helper
-from tests.helper import pnconf_copy
+from tests.helper import pnconf_sub_copy
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -22,11 +22,11 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
     def setUp(self):
         super(TestChannelSubscription, self).setUp()
 
-        messenger_config = pnconf_copy()
+        messenger_config = pnconf_sub_copy()
         messenger_config.set_presence_timeout(8)
         messenger_config.uuid = helper.gen_channel("messenger")
 
-        listener_config = pnconf_copy()
+        listener_config = pnconf_sub_copy()
         listener_config.uuid = helper.gen_channel("listener")
 
         self.pubnub = PubNubTornado(messenger_config, custom_ioloop=self.io_loop)

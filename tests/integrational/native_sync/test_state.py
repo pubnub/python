@@ -10,7 +10,7 @@ from tests.helper import pnconf_copy
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
-class TestPubNubHereNow(unittest.TestCase):
+class TestPubNubState(unittest.TestCase):
     def test_single_channel(self):
         ch = helper.gen_channel("herenow-unit")
         pubnub = PubNub(pnconf_copy())

@@ -13,7 +13,7 @@ from tests.helper import pnconf_copy
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
-class TestPubNubHereNow(unittest.TestCase):
+class TestPubNubChannelGroups(unittest.TestCase):
     def setUp(self):
         self.event = threading.Event()
 

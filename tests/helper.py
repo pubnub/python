@@ -1,12 +1,9 @@
 import threading
-
 import string
-
 import random
+
 from copy import copy
-
 from pubnub import utils
-
 from pubnub.pnconfiguration import PNConfiguration
 
 pub_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"

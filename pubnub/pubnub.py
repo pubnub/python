@@ -156,7 +156,10 @@ class PubNub(PubNubCore):
         self._subscription_manager.stop()
 
     def request_deferred(self, options_func):
-        raise PubNubException(pn_error=PNERR_DEFERRED_NOT_IMPLEMENTED)
+        raise NotImplementedError
+
+    def request_future(self, *args, **kwargs):
+        raise NotImplementedError
 
     def add_listener(self, listener):
         assert isinstance(listener, SubscribeCallback)

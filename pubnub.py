@@ -949,7 +949,7 @@ class PubnubBase(object):
 
         try:
             if (channel and self.subscriptions[channel] and
-                    self.subscriptions[channel].subscribed and
+                    self.subscriptions[channel]['subscribed'] and
                     state is not None):
                 self.STATE[channel] = state
         except KeyError:
@@ -958,7 +958,7 @@ class PubnubBase(object):
         if channel_group and state is not None:
             try:
                 if (self.subscription_groups[channel_group] and
-                        self.subscription_groups[channel_group].subscribed):
+                        self.subscription_groups[channel_group]['subscribed']):
                     self.STATE[channel_group] = state
             except KeyError:
                 pass

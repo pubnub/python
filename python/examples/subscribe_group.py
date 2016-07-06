@@ -29,7 +29,7 @@ channel = 'ab'
 
 def callback_abc(message, channel, real_channel):
     print(str(message) + ' , ' + channel + ', ' + real_channel)
-    pubnub.unsubscribe_group(channel_group='abc')
+    # pubnub.unsubscribe_group(channel_group='abc')
     # pubnub.stop()
 
 

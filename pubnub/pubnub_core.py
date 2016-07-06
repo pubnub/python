@@ -1,9 +1,15 @@
 import logging
 from abc import ABCMeta, abstractmethod
 
-import requests
-
-from .managers import PublishSequenceManager
+from .builders import SubscribeBuilder
+from .builders import UnsubscribeBuilder
+from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
+from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
+from .endpoints.channel_groups.remove_channel_from_channel_group import RemoveChannelFromChannelGroup
+from .endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
+from .endpoints.presence.get_state import GetState
+from .endpoints.presence.heartbeat import Heartbeat
+from .endpoints.presence.set_state import SetState
 from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.herenow import HereNow
 
@@ -28,18 +34,12 @@ class PubNubCore:
             'User-Agent': self.sdk_name
         }
 
-        # TODO: move to platform-specific initializer
-        self.publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
+        self._subscription_manager = None
+        self._publish_sequence_manager = None
 
     @abstractmethod
     def request_deferred(self, options_func):
         pass
-
-    def here_now(self):
-        return HereNow(self)
-
-    def publish(self):
-        return Publish(self, self.publish_sequence_manager)
 
     @property
     def sdk_name(self):
@@ -51,3 +51,36 @@ class PubNubCore:
     @property
     def uuid(self):
         return self.config.uuid
+
+    def add_channel_to_channel_group(self):
+        return AddChannelToChannelGroup(self)
+
+    def remove_channel_from_channel_group(self):
+        return RemoveChannelFromChannelGroup(self)
+
+    def list_channels_in_channel_group(self):
+        return ListChannelsInChannelGroup(self)
+
+    def remove_channel_group(self):
+        return RemoveChannelGroup(self)
+
+    def subscribe(self):
+        return SubscribeBuilder(self._subscription_manager)
+
+    def unsubscribe(self):
+        return UnsubscribeBuilder(self._subscription_manager)
+
+    def heartbeat(self):
+        return Heartbeat(self)
+
+    def set_state(self):
+        return SetState(self, self._subscription_manager)
+
+    def get_state(self):
+        return GetState(self)
+
+    def here_now(self):
+        return HereNow(self)
+
+    def publish(self):
+        return Publish(self, self._publish_sequence_manager)

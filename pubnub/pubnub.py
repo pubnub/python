@@ -5,8 +5,7 @@ import requests
 from .endpoints.pubsub.subscribe import Subscribe
 from .workers import SubscribeMessageWorker
 from .pnconfiguration import PNConfiguration
-from .builders import SubscribeBuilder
-from .managers import SubscriptionManager
+from .managers import SubscriptionManager, PublishSequenceManager
 from . import utils
 from .structures import RequestOptions, ResponseInfo
 from .enums import PNStatusCategory
@@ -31,8 +30,7 @@ class PubNub(PubNubCore):
         if self.config.enable_subscribe:
             self._subscription_manager = NativeSubscriptionManager(self)
 
-    def subscribe(self):
-        return SubscribeBuilder(self._subscription_manager)
+        self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
 
     def sdk_platform(self):
         return ""

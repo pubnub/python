@@ -18,20 +18,12 @@ from tornado.simple_httpclient import SimpleAsyncHTTPClient
 
 from . import utils
 from .callbacks import SubscribeCallback
-from .builders import SubscribeBuilder, UnsubscribeBuilder
-from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
-from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
-from .endpoints.channel_groups.remove_channel_from_channel_group import RemoveChannelFromChannelGroup
-from .endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
-from .endpoints.presence.heartbeat import Heartbeat
-from .endpoints.presence.set_state import SetState
-from .endpoints.presence.get_state import GetState
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
 from .enums import PNStatusCategory, PNHeartbeatNotificationOptions
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED
 from .exceptions import PubNubException
-from .managers import SubscriptionManager
+from .managers import SubscriptionManager, PublishSequenceManager
 from .pubnub_core import PubNubCore
 from .structures import ResponseInfo
 from .workers import SubscribeMessageWorker
@@ -107,11 +99,12 @@ class PubNubTornado(PubNubCore):
     def __init__(self, config, custom_ioloop=None):
         super(PubNubTornado, self).__init__(config)
         self.ioloop = custom_ioloop or ioloop.IOLoop.instance()
-        self._subscription_manager = None
 
         if self.config.enable_subscribe:
             self._subscription_manager = TornadoSubscriptionManager(self)
 
+        # TODO: replace with platform-specific manager
+        self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
         # TODO: choose a correct client here http://www.tornadoweb.org/en/stable/httpclient.html
         # TODO: 1000?
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
@@ -127,33 +120,6 @@ class PubNubTornado(PubNubCore):
             self._subscription_manager.add_listener(listener)
         else:
             raise Exception("Subscription manager is not enabled for this instance")
-
-    def heartbeat(self):
-        return Heartbeat(self)
-
-    def subscribe(self):
-        return SubscribeBuilder(self._subscription_manager)
-
-    def unsubscribe(self):
-        return UnsubscribeBuilder(self._subscription_manager)
-
-    def set_state(self):
-        return SetState(self, self._subscription_manager)
-
-    def get_state(self):
-        return GetState(self)
-
-    def add_channel_to_channel_group(self):
-        return AddChannelToChannelGroup(self)
-
-    def remove_channel_from_channel_group(self):
-        return RemoveChannelFromChannelGroup(self)
-
-    def list_channels_in_channel_group(self):
-        return ListChannelsInChannelGroup(self)
-
-    def remove_channel_group(self):
-        return RemoveChannelGroup(self)
 
     # TODO: extract this into a separate class
     def request_sync(self, *args):

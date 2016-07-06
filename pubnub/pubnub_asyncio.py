@@ -5,19 +5,12 @@ import aiohttp
 import math
 
 from asyncio import Event, Queue, Semaphore
-from .builders import SubscribeBuilder, UnsubscribeBuilder
-from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
-from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
-from .endpoints.channel_groups.remove_channel_from_channel_group import RemoveChannelFromChannelGroup
-from .endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
-from .endpoints.presence.get_state import GetState
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
-from .endpoints.presence.set_state import SetState
 from .endpoints.pubsub.subscribe import Subscribe
 from .pubnub_core import PubNubCore
 from .workers import SubscribeMessageWorker
-from .managers import SubscriptionManager
+from .managers import SubscriptionManager, PublishSequenceManager
 from . import utils
 from .structures import ResponseInfo
 from .enums import PNStatusCategory, PNHeartbeatNotificationOptions
@@ -39,10 +32,12 @@ class PubNubAsyncio(PubNubCore):
         # TODO: add proxies and option to reinitialize connector&session
         self._connector = aiohttp.BaseConnector(conn_timeout=config.connect_timeout)
         self._session = aiohttp.ClientSession(loop=self.event_loop)
-        self._subscription_manager = None
 
         if self.config.enable_subscribe:
             self._subscription_manager = AsyncioSubscriptionManager(self)
+
+        # TODO: replace with platform-specific manager
+        self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
 
     def stop(self):
         self._session.close()
@@ -58,33 +53,6 @@ class PubNubAsyncio(PubNubCore):
             self._subscription_manager.add_listener(listener)
         else:
             raise Exception("Subscription manager is not enabled for this instance")
-
-    def heartbeat(self):
-        return Heartbeat(self)
-
-    def subscribe(self):
-        return SubscribeBuilder(self._subscription_manager)
-
-    def unsubscribe(self):
-        return UnsubscribeBuilder(self._subscription_manager)
-
-    def set_state(self):
-        return SetState(self, self._subscription_manager)
-
-    def get_state(self):
-        return GetState(self)
-
-    def add_channel_to_channel_group(self):
-        return AddChannelToChannelGroup(self)
-
-    def remove_channel_from_channel_group(self):
-        return RemoveChannelFromChannelGroup(self)
-
-    def list_channels_in_channel_group(self):
-        return ListChannelsInChannelGroup(self)
-
-    def remove_channel_group(self):
-        return RemoveChannelGroup(self)
 
     def request_sync(self, *args):
         raise NotImplementedError

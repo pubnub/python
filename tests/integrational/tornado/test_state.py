@@ -1,9 +1,5 @@
 import tornado
-from tornado import gen
-from tornado.locks import Event
 from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
-
-from pubnub.callbacks import SubscribeCallback
 from pubnub.pubnub_tornado import PubNubTornado
 from tests import helper
 from tests.helper import pnconf

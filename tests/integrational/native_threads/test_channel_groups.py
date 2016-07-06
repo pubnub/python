@@ -1,21 +1,19 @@
 import threading
-
 import time
+import unittest
+import logging
+import pubnub
 
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub import PubNub
-
-import unittest
-import logging
-import pubnub
 from tests import helper
 from tests.helper import pnconf_copy
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
-class TestPubNubAsyncHereNow(unittest.TestCase):
+class TestPubNubHereNow(unittest.TestCase):
     def setUp(self):
         self.event = threading.Event()
 

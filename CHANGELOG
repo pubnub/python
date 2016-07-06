@@ -1,4 +1,7 @@
 
+3.8.1
+. Fixing bug with state setting and subscribe confirmation.
+
 3.8.0
 . Mobile Gateway Functions.
 . Here Now for channel groups
@@ -10,7 +13,7 @@
 3.7.6 - 02-10-2015 - 3012d7e
 . fixed issues in receiving gzipped response for twisted
 . fix for non reporting of dns lookup failure
-. fix in time method 
+. fix in time method
 
 3.7.5 - 12-08-2015 - 61f1adc
 . increased timeout to 15 sec

@@ -2,6 +2,9 @@ import logging
 import threading
 import requests
 
+# noinspection PyUnresolvedReferences
+from six.moves.queue import Queue
+from threading import Event
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
 from .workers import SubscribeMessageWorker
@@ -382,3 +385,70 @@ class NativeSubscribeMessageWorker(SubscribeMessageWorker):
                 self._queue.task_done()
                 self._event.set()
                 logger.warn("take message interrupted: %s" % str(e))
+
+
+class SubscribeListener(SubscribeCallback):
+    def __init__(self):
+        self.connected = False
+        self.connected_event = Event()
+        self.disconnected_event = Event()
+        self.presence_queue = Queue()
+        self.message_queue = Queue()
+
+    def status(self, pubnub, status):
+        if utils.is_subscribed_event(status) and not self.connected_event.is_set():
+            self.connected_event.set()
+        elif utils.is_unsubscribed_event(status) and not self.disconnected_event.is_set():
+            self.disconnected_event.set()
+
+    def message(self, pubnub, message):
+        self.message_queue.put(message)
+
+    def presence(self, pubnub, presence):
+        self.presence_queue.put(presence)
+
+    def wait_for_connect(self):
+        if not self.connected_event.is_set():
+            self.connected_event.wait()
+        else:
+            raise Exception("the instance is already connected")
+
+    def wait_for_disconnect(self):
+        if not self.disconnected_event.is_set():
+            self.disconnected_event.wait()
+        else:
+            raise Exception("the instance is already connected")
+
+    def wait_for_message_on(self, *channel_names):
+        channel_names = list(channel_names)
+        while True:
+            env = self.message_queue.get()
+            self.message_queue.task_done()
+            if env.actual_channel in channel_names:
+                return env
+            else:
+                continue
+
+    def wait_for_presence_on(self, *channel_names):
+        channel_names = list(channel_names)
+        while True:
+            env = self.presence_queue.get()
+            self.presence_queue.task_done()
+            if env.actual_channel[:-7] in channel_names:
+                return env
+            else:
+                continue
+
+
+class NonSubscribeListener(object):
+    def __init__(self):
+        self.result = None
+        self.done_event = Event()
+
+    def callback(self, result, status):
+        self.result = result
+        self.done_event.set()
+
+    def await(self, timeout=5):
+        """ Returns False if a timeout happened, otherwise True"""
+        return self.done_event.wait(timeout)

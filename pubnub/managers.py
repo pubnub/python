@@ -201,10 +201,9 @@ class SubscriptionManager(object):
             self._timetoken = 0
         self.reconnect()
 
+    @abstractmethod
     def reconnect(self):
-        self._should_stop = False
-        self._start_subscribe_loop()
-        self._register_heartbeat_timer()
+        pass
 
     def stop(self):
         self._should_stop = True

@@ -2,6 +2,7 @@ import logging
 import threading
 import requests
 
+from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
 from .workers import SubscribeMessageWorker
 from .pnconfiguration import PNConfiguration
@@ -10,7 +11,7 @@ from . import utils
 from .structures import RequestOptions, ResponseInfo
 from .enums import PNStatusCategory
 from .callbacks import SubscribeCallback
-from .errors import PNERR_DEFERRED_NOT_IMPLEMENTED, PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR, \
+from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR, \
     PNERR_TOO_MANY_REDIRECTS_ERROR, PNERR_CLIENT_TIMEOUT, PNERR_HTTP_ERROR, PNERR_CONNECTION_ERROR
 from .exceptions import PubNubException
 from .pubnub_core import PubNubCore
@@ -64,10 +65,10 @@ class PubNub(PubNubCore):
         return res
 
     def request_async(self, endpoint_name, options, callback, cancellation_event):
+        # TODO: Rename to AsyncRequest
         call = Call()
 
         def success_callback(res):
-            # http error
             status_category = PNStatusCategory.PNUnknownCategory
             response_info = None
 
@@ -116,7 +117,7 @@ class PubNub(PubNubCore):
                 ))
                 call.executed_cb()
             else:
-                callback(status_category, res.json(), response_info, None)
+                callback(PNStatusCategory.PNAcknowledgmentCategory, res.json(), response_info, None)
                 call.executed_cb()
 
         def error_callback(e):
@@ -142,7 +143,7 @@ class PubNub(PubNubCore):
 
         thread = threading.Thread(
             target=client.run,
-            name="%sEndpointThread-%d" % (endpoint_name, ++PubNub.ENTITY_THREAD_COUNTER)
+            name="EndpointThread-%s-%d" % (endpoint_name, ++PubNub.ENTITY_THREAD_COUNTER)
         )
         thread.setDaemon(True)
         thread.start()
@@ -290,8 +291,19 @@ class Call(object):
 
 
 class NativeSubscriptionManager(SubscriptionManager):
+    def __init__(self, pubnub_instance):
+        self._message_queue = utils.Queue()
+        self._consumer_event = threading.Event()
+        self._subscribe_call = None
+        super(NativeSubscriptionManager, self).__init__(pubnub_instance)
+
     def _send_leave(self, unsubscribe_operation):
-        pass
+        def leave_callback(result, status):
+            self._listener_manager.announce_status(status)
+
+        Leave(self._pubnub) \
+            .channels(unsubscribe_operation.channels) \
+            .channel_groups(unsubscribe_operation.channel_groups).async(leave_callback)
 
     def _perform_heartbeat_loop(self):
         pass
@@ -299,16 +311,16 @@ class NativeSubscriptionManager(SubscriptionManager):
     def _stop_heartbeat_timer(self):
         pass
 
-    def __init__(self, pubnub_instance):
-        self._message_queue = utils.Queue()
-        self._consumer_event = threading.Event()
-        super(NativeSubscriptionManager, self).__init__(pubnub_instance)
-
     def _set_consumer_event(self):
         self._consumer_event.set()
 
     def _message_queue_put(self, message):
         self._message_queue.put(message)
+
+    def reconnect(self):
+        self._should_stop = False
+        self._start_subscribe_loop()
+        self._register_heartbeat_timer()
 
     def _start_worker(self):
         consumer = NativeSubscribeMessageWorker(self._pubnub, self._listener_manager,
@@ -337,7 +349,7 @@ class NativeSubscriptionManager(SubscriptionManager):
                 return
 
             self._handle_endpoint_call(raw_result, status)
-
+            self._start_subscribe_loop()
         try:
             self._subscribe_call = Subscribe(self._pubnub) \
                 .channels(combined_channels).channel_groups(combined_groups) \

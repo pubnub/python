@@ -8,6 +8,7 @@ from pubnub.callbacks import SubscribeCallback
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult, PNMessageResult
 from pubnub.pubnub import PubNub
+from tests import helper
 from tests.helper import CountDownLatch, pnconf_sub, pnconf_sub_copy
 from six.moves.queue import Queue
 
@@ -49,28 +50,51 @@ class SubscribeListener(SubscribeCallback):
     def wait_for_message_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
-            try:
-                env = self.message_queue.get()
-                if env.actual_channel in channel_names:
-                    return env
-                else:
-                    continue
-            finally:
-                self.message_queue.task_done()
+            env = self.message_queue.get()
+            self.message_queue.task_done()
+            if env.actual_channel in channel_names:
+                return env
+            else:
+                continue
+
+    def wait_for_presence_on(self, *channel_names):
+        channel_names = list(channel_names)
+        while True:
+            env = self.presence_queue.get()
+            self.presence_queue.task_done()
+            if env.actual_channel[:-7] in channel_names:
+                return env
+            else:
+                continue
+
+
+class NonSubscribeListener(object):
+    def __init__(self):
+        self.result = None
+        self.done_event = Event()
+
+    def callback(self, result, status):
+        self.result = result
+        self.done_event.set()
+
+    def await(self, timeout=5):
+        """ Returns False if a timeout happened, otherwise True"""
+        return self.done_event.wait(timeout)
 
 
 class TestPubNubSubscribe(unittest.TestCase):
     def test_subscribe_unsubscribe(self):
         pubnub = PubNub(pnconf_sub_copy())
+        ch = helper.gen_channel("test-subscribe-sub-unsub")
 
         try:
             listener = SubscribeListener()
             pubnub.add_listener(listener)
 
-            pubnub.subscribe().channels(["ch1", "ch2"]).execute()
+            pubnub.subscribe().channels(ch).execute()
             listener.wait_for_connect()
 
-            pubnub.unsubscribe().channels("ch1,ch2").execute()
+            pubnub.unsubscribe().channels(ch).execute()
             listener.wait_for_disconnect()
         except PubNubException as e:
             self.fail(e)
@@ -78,23 +102,10 @@ class TestPubNubSubscribe(unittest.TestCase):
             pubnub.stop()
 
     def test_subscribe_pub_unsubscribe(self):
-        class NonSubscribeListener(object):
-            def __init__(self):
-                self.result = None
-                self.done_event = Event()
-
-            def callback(self, result, status):
-                self.result = result
-                self.done_event.set()
-
-            def await(self, timeout=5):
-                """ Returns False if a timeout happened, otherwise True"""
-                return self.done_event.wait(timeout)
-
+        ch = helper.gen_channel("test-subscribe-sub-pub-unsub")
         pubnub = PubNub(pnconf_sub_copy())
         subscribe_listener = SubscribeListener()
         publish_operation = NonSubscribeListener()
-        ch = "ch1"
         message = "hey"
 
         try:
@@ -118,9 +129,57 @@ class TestPubNubSubscribe(unittest.TestCase):
             assert result.timetoken > 0
             assert result.message == message
 
-            pubnub.unsubscribe().channels("ch1,ch2").execute()
+            pubnub.unsubscribe().channels(ch).execute()
             subscribe_listener.wait_for_disconnect()
         except PubNubException as e:
             self.fail(e)
         finally:
             pubnub.stop()
+
+    def test_join_leave(self):
+        ch = helper.gen_channel("test-subscribe-join-leave")
+        ch_pnpres = ch + "-pnpres"
+
+        pubnub = PubNub(pnconf_sub_copy())
+        pubnub_listener = PubNub(pnconf_sub_copy())
+        callback_messages = SubscribeListener()
+        callback_presence = SubscribeListener()
+
+        pubnub.config.uuid = helper.gen_channel("messenger")
+        pubnub_listener.config.uuid = helper.gen_channel("listener")
+
+        try:
+            pubnub.add_listener(callback_messages)
+            pubnub_listener.add_listener(callback_presence)
+
+            pubnub_listener.subscribe().channels(ch).with_presence().execute()
+            callback_presence.wait_for_connect()
+
+            envelope = callback_presence.wait_for_presence_on(ch)
+            assert envelope.actual_channel == ch_pnpres
+            assert envelope.event == 'join'
+            assert envelope.uuid == pubnub_listener.uuid
+
+            pubnub.subscribe().channels(ch).execute()
+            callback_messages.wait_for_connect()
+
+            envelope = callback_presence.wait_for_presence_on(ch)
+            assert envelope.actual_channel == ch_pnpres
+            assert envelope.event == 'join'
+            assert envelope.uuid == pubnub.uuid
+
+            pubnub.unsubscribe().channels(ch).execute()
+            callback_messages.wait_for_disconnect()
+
+            envelope = callback_presence.wait_for_presence_on(ch)
+            assert envelope.actual_channel == ch_pnpres
+            assert envelope.event == 'leave'
+            assert envelope.uuid == pubnub.uuid
+
+            pubnub_listener.unsubscribe().channels(ch).execute()
+            callback_presence.wait_for_disconnect()
+        except PubNubException as e:
+            self.fail(e)
+        finally:
+            pubnub.stop()
+            pubnub_listener.stop()

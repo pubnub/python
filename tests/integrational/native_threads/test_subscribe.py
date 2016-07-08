@@ -1,8 +1,10 @@
 import logging
 import unittest
+import time
 import pubnub as pn
 
 from pubnub.exceptions import PubNubException
+from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsRemoveChannelResult
 from pubnub.models.consumer.pubsub import PNPublishResult, PNMessageResult
 from pubnub.pubnub import PubNub, SubscribeListener, NonSubscribeListener
 from tests import helper
@@ -12,7 +14,7 @@ from tests.helper import pnconf_sub_copy
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
-class TestPubNubSubscribe(unittest.TestCase):
+class TestPubNubSubscription(unittest.TestCase):
     def test_subscribe_unsubscribe(self):
         pubnub = PubNub(pnconf_sub_copy())
         ch = helper.gen_channel("test-subscribe-sub-unsub")
@@ -113,3 +115,137 @@ class TestPubNubSubscribe(unittest.TestCase):
         finally:
             pubnub.stop()
             pubnub_listener.stop()
+
+    def test_cg_subscribe_unsubscribe(self):
+        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
+        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+
+        pubnub = PubNub(pnconf_sub_copy())
+        callback_messages = SubscribeListener()
+        cg_operation = NonSubscribeListener()
+
+        pubnub.add_channel_to_channel_group()\
+            .channel_group(gr)\
+            .channels(ch)\
+            .async(cg_operation.callback)
+        result = cg_operation.await_result()
+        assert isinstance(result, PNChannelGroupsAddChannelResult)
+        cg_operation.reset()
+
+        time.sleep(1)
+
+        pubnub.add_listener(callback_messages)
+        pubnub.subscribe().channel_groups(gr).execute()
+        callback_messages.wait_for_connect()
+
+        pubnub.unsubscribe().channel_groups(gr).execute()
+        callback_messages.wait_for_disconnect()
+
+        pubnub.remove_channel_from_channel_group()\
+            .channel_group(gr)\
+            .channels(ch)\
+            .async(cg_operation.callback)
+        result = cg_operation.await_result()
+        assert isinstance(result, PNChannelGroupsRemoveChannelResult)
+
+        pubnub.stop()
+
+    def test_subscribe_cg_publish_unsubscribe(self):
+        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
+        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+        message = "hey"
+
+        pubnub = PubNub(pnconf_sub_copy())
+        callback_messages = SubscribeListener()
+        non_subscribe_listener = NonSubscribeListener()
+
+        pubnub.add_channel_to_channel_group() \
+            .channel_group(gr) \
+            .channels(ch) \
+            .async(non_subscribe_listener.callback)
+        result = non_subscribe_listener.await_result_and_reset()
+        assert isinstance(result, PNChannelGroupsAddChannelResult)
+
+        time.sleep(1)
+
+        pubnub.add_listener(callback_messages)
+        pubnub.subscribe().channel_groups(gr).execute()
+        callback_messages.wait_for_connect()
+
+        pubnub.publish().message(message).channel(ch).async(non_subscribe_listener.callback)
+        result = non_subscribe_listener.await_result_and_reset()
+        assert isinstance(result, PNPublishResult)
+        assert result.timetoken > 0
+
+        pubnub.unsubscribe().channel_groups(gr).execute()
+        callback_messages.wait_for_disconnect()
+
+        pubnub.remove_channel_from_channel_group() \
+            .channel_group(gr) \
+            .channels(ch) \
+            .async(non_subscribe_listener.callback)
+        result = non_subscribe_listener.await_result_and_reset()
+        assert isinstance(result, PNChannelGroupsRemoveChannelResult)
+
+        pubnub.stop()
+
+    def test_subscribe_cg_join_leave(self):
+        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
+        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+
+        pubnub = PubNub(pnconf_sub_copy())
+        pubnub_listener = PubNub(pnconf_sub_copy())
+        non_subscribe_listener = NonSubscribeListener()
+
+        pubnub.add_channel_to_channel_group() \
+            .channel_group(gr) \
+            .channels(ch) \
+            .async(non_subscribe_listener.callback)
+        result = non_subscribe_listener.await_result_and_reset()
+        assert isinstance(result, PNChannelGroupsAddChannelResult)
+
+        time.sleep(1)
+
+        callback_messages = SubscribeListener()
+        callback_presence = SubscribeListener()
+
+        pubnub_listener.add_listener(callback_presence)
+        pubnub_listener.subscribe().channel_groups(gr).with_presence().execute()
+        callback_presence.wait_for_connect()
+
+        prs_envelope = callback_presence.wait_for_presence_on(ch)
+        assert prs_envelope.event == 'join'
+        assert prs_envelope.uuid == pubnub_listener.uuid
+        assert prs_envelope.actual_channel == ch + "-pnpres"
+        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+
+        pubnub.add_listener(callback_messages)
+        pubnub.subscribe().channel_groups(gr).execute()
+
+        prs_envelope = callback_presence.wait_for_presence_on(ch)
+
+        assert prs_envelope.event == 'join'
+        assert prs_envelope.uuid == pubnub.uuid
+        assert prs_envelope.actual_channel == ch + "-pnpres"
+        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+
+        pubnub.unsubscribe().channel_groups(gr).execute()
+        prs_envelope = callback_presence.wait_for_presence_on(ch)
+
+        assert prs_envelope.event == 'leave'
+        assert prs_envelope.uuid == pubnub.uuid
+        assert prs_envelope.actual_channel == ch + "-pnpres"
+        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+
+        pubnub_listener.unsubscribe().channel_groups(gr).execute()
+        callback_presence.wait_for_disconnect()
+
+        pubnub.remove_channel_from_channel_group() \
+            .channel_group(gr) \
+            .channels(ch) \
+            .async(non_subscribe_listener.callback)
+        result = non_subscribe_listener.await_result_and_reset()
+        assert isinstance(result, PNChannelGroupsRemoveChannelResult)
+
+        pubnub.stop()
+        pubnub_listener.stop()

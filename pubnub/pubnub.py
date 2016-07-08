@@ -1,3 +1,4 @@
+import copy
 import logging
 import threading
 import requests
@@ -452,3 +453,17 @@ class NonSubscribeListener(object):
     def await(self, timeout=5):
         """ Returns False if a timeout happened, otherwise True"""
         return self.done_event.wait(timeout)
+
+    def await_result(self, timeout=5):
+        self.await(timeout)
+        return self.result
+
+    def await_result_and_reset(self, timeout=5):
+        self.await(timeout)
+        cp = copy.copy(self.result)
+        self.reset()
+        return cp
+
+    def reset(self):
+        self.result = None
+        self.done_event.clear()

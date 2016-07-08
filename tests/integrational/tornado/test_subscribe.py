@@ -133,8 +133,8 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_publish_unsubscribe(self):
-        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-unsubscirbe-group")
+        ch = helper.gen_channel("test-subscribe-pub-unsubscribe-channel")
+        gr = helper.gen_channel("test-subscribe-pub-unsubscribe-group")
         message = "hey"
 
         envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
@@ -170,7 +170,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub_listener.config.uuid = helper.gen_channel("listener")
 
         ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-unsubscirbe-group")
+        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
 
         envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200

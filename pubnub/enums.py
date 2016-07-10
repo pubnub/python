@@ -64,3 +64,8 @@ class PNHeartbeatNotificationOptions(object):
 class PNReconnectionPolicy(object):
     NONE = 1
     LINEAR = 2
+
+class PNPushType(object):
+    APNS = 1
+    MPNS = 2
+    GCM = 3

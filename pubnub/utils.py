@@ -4,7 +4,7 @@ import threading
 
 import six
 
-from .enums import PNStatusCategory, PNOperationType
+from .enums import PNStatusCategory, PNOperationType, PNPushType
 from .models.consumer.common import PNStatus
 from .errors import PNERR_JSON_NOT_SERIALIZABLE
 from .exceptions import PubNubException
@@ -125,6 +125,16 @@ def is_unsubscribed_event(status):
     return status.category == PNStatusCategory.PNAcknowledgmentCategory \
         and status.operation == PNOperationType.PNUnsubscribeOperation
 
+
+def push_type_to_string(push_type):
+    if push_type == PNPushType.APNS:
+        return "apns"
+    elif push_type == PNPushType.GCM:
+        return "gcm"
+    elif push_type == PNPushType.MPNS:
+        return "mpns"
+    else:
+        return ""
 
 urlparse = pn_urlparse
 parse_qs = pn_parse_qs

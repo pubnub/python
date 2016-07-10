@@ -13,8 +13,10 @@ from .endpoints.presence.set_state import SetState
 from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.herenow import HereNow
 
+from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
-
+from .endpoints.push.remove_device import RemoveDeviceFromPush
+from .endpoints.push.list_push_provisions import ListPushProvisions
 
 logger = logging.getLogger("pubnub")
 
@@ -88,5 +90,15 @@ class PubNubCore:
         return Publish(self, self._publish_sequence_manager)
 
     # Push Related methods
+
+    def list_push_channels(self):
+        return ListPushProvisions(self)
+
+    def add_channels_to_push(self):
+        return AddChannelsToPush(self)
+
     def remove_channels_from_push(self):
-        return RemoveChannelsFromPush(self);
+        return RemoveChannelsFromPush(self)
+
+    def remove_device_from_push(self):
+        return RemoveDeviceFromPush(self)

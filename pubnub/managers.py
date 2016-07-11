@@ -208,8 +208,8 @@ class SubscriptionManager(object):
     def stop(self):
         self._should_stop = True
         self._stop_subscribe_loop()
-        self._set_consumer_event()
         self._stop_heartbeat_timer()
+        self._set_consumer_event()
 
     def _handle_endpoint_call(self, raw_result, status):
         assert isinstance(status, PNStatus)
@@ -239,6 +239,6 @@ class SubscriptionManager(object):
         self._timetoken = int(result.metadata.timetoken)
         self._region = int(result.metadata.region)
 
-    # TODO: implement
+    # TODO: make abstract
     def _register_heartbeat_timer(self):
         self._stop_heartbeat_timer()

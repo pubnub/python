@@ -6,6 +6,8 @@ import requests
 # noinspection PyUnresolvedReferences
 from six.moves.queue import Queue
 from threading import Event
+
+from pubnub.endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
 from .workers import SubscribeMessageWorker
@@ -13,7 +15,7 @@ from .pnconfiguration import PNConfiguration
 from .managers import SubscriptionManager, PublishSequenceManager
 from . import utils
 from .structures import RequestOptions, ResponseInfo
-from .enums import PNStatusCategory
+from .enums import PNStatusCategory, PNHeartbeatNotificationOptions
 from .callbacks import SubscribeCallback
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR, \
     PNERR_TOO_MANY_REDIRECTS_ERROR, PNERR_CLIENT_TIMEOUT, PNERR_HTTP_ERROR, PNERR_CONNECTION_ERROR
@@ -246,10 +248,10 @@ class AsyncHTTPClient:
     def run(self):
         try:
             res = self.pubnub.pn_request(
-                 self.pubnub.session, self.pubnub.config.scheme_and_host(),
-                 self.pubnub.headers, self.options,
-                 self.pubnub.config.connect_timeout,
-                 self.pubnub.config.non_subscribe_request_timeout)
+                self.pubnub.session, self.pubnub.config.scheme_and_host(),
+                self.pubnub.headers, self.options,
+                self.pubnub.config.connect_timeout,
+                self.pubnub.config.non_subscribe_request_timeout)
 
             if self.cancellation_event is not None and self.cancellation_event.isSet():
                 # Since there are no way to affect on ongoing request it's response will be just ignored on cancel call
@@ -270,6 +272,7 @@ class Call(object):
     """
     A platform dependent representation of async PubNub method call
     """
+
     def __init__(self):
         self.thread = None
         self.cancellation_event = None
@@ -299,6 +302,7 @@ class NativeSubscriptionManager(SubscriptionManager):
         self._message_queue = utils.Queue()
         self._consumer_event = threading.Event()
         self._subscribe_call = None
+        self._heartbeat_periodic_callback = None
         super(NativeSubscriptionManager, self).__init__(pubnub_instance)
 
     def _send_leave(self, unsubscribe_operation):
@@ -309,14 +313,56 @@ class NativeSubscriptionManager(SubscriptionManager):
             .channels(unsubscribe_operation.channels) \
             .channel_groups(unsubscribe_operation.channel_groups).async(leave_callback)
 
+    def _register_heartbeat_timer(self):
+        super(NativeSubscriptionManager, self)._register_heartbeat_timer()
+
+        self._perform_heartbeat_loop()
+
+        self._heartbeat_periodic_callback = NativePeriodicCallback(
+            self._perform_heartbeat_loop,
+            self._pubnub.config.heartbeat_interval * 1000)
+
+        if not self._should_stop:
+            self._heartbeat_periodic_callback.start()
+
     def _perform_heartbeat_loop(self):
-        pass
+        if self._heartbeat_call is not None:
+            # TODO: cancel call
+            pass
+
+        state_payload = self._subscription_state.state_payload()
+        presence_channels = self._subscription_state.prepare_channel_list(False)
+        presence_groups = self._subscription_state.prepare_channel_group_list(False)
+
+        if len(presence_channels) == 0 and len(presence_groups) == 0:
+            return
+
+        def heartbeat_callback(raw_result, status):
+            heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
+            if status.is_error:
+                if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
+                                heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                    self._listener_manager.announce_stateus(status)
+            else:
+                if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                    self._listener_manager.announce_stateus(status)
+
+        try:
+            (Heartbeat(self._pubnub)
+             .channels(presence_channels)
+             .channel_groups(presence_groups)
+             .state(state_payload)
+             .async(heartbeat_callback))
+        except Exception as e:
+            print("failed", e)
 
     def _stop_heartbeat_timer(self):
-        pass
+        if self._heartbeat_periodic_callback is not None:
+            self._heartbeat_periodic_callback.stop()
 
     def _set_consumer_event(self):
         self._consumer_event.set()
+        self._message_queue_put(None)
 
     def _message_queue_put(self, message):
         self._message_queue.put(message)
@@ -328,7 +374,7 @@ class NativeSubscriptionManager(SubscriptionManager):
 
     def _start_worker(self):
         consumer = NativeSubscribeMessageWorker(self._pubnub, self._listener_manager,
-                                          self._message_queue, self._consumer_event)
+                                                self._message_queue, self._consumer_event)
         self._consumer_thread = threading.Thread(target=consumer.run,
                                                  name="SubscribeMessageWorker")
         self._consumer_thread.start()
@@ -354,6 +400,7 @@ class NativeSubscriptionManager(SubscriptionManager):
 
             self._handle_endpoint_call(raw_result, status)
             self._start_subscribe_loop()
+
         try:
             self._subscribe_call = Subscribe(self._pubnub) \
                 .channels(combined_channels).channel_groups(combined_groups) \
@@ -368,6 +415,39 @@ class NativeSubscriptionManager(SubscriptionManager):
 
         if sc is not None and not sc.is_executed and not sc.is_canceled:
             sc.cancel()
+
+
+class NativePeriodicCallback(object):
+    def __init__(self, callback, callback_time):
+        self._callback = callback
+        self._callback_time = callback_time
+        self._running = False
+        self._timeout = None
+
+    def start(self):
+        self._running = True
+        self._schedule_next()
+
+    def stop(self):
+        self._running = False
+        if self._timeout is not None:
+            self._timeout.cancel()
+            self._timeout = None
+
+    def _run(self):
+        if not self._running:
+            return
+        try:
+            self._callback()
+        except Exception:
+            # TODO: handle the exception
+            pass
+        finally:
+            self._schedule_next()
+
+    def _schedule_next(self):
+        self._timeout = threading.Timer(10.0, self._run)
+        self._timeout.start()
 
 
 class NativeSubscribeMessageWorker(SubscribeMessageWorker):

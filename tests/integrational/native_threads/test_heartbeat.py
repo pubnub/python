@@ -10,6 +10,8 @@ from tests.helper import pnconf_sub_copy
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
+# TODO: add a success heartbeat test
+
 messenger_config = pnconf_sub_copy()
 messenger_config.set_presence_timeout(8)
 messenger_config.uuid = helper.gen_channel("messenger")
@@ -55,10 +57,10 @@ class TestPubNubHeartbeat(unittest.TestCase):
         assert pubnub.uuid == prs_envelope.uuid
 
         # wait for one heartbeat call
-        time.sleep(8)
+        time.sleep(6)
 
         # - break messenger heartbeat loop
-        # pubnub._subscription_manager._stop_heartbeat_timer()
+        pubnub._subscription_manager._stop_heartbeat_timer()
 
         # - assert for timeout
         presence_message = callback_presence.wait_for_presence_on(ch)

@@ -46,9 +46,7 @@ class PubNub(PubNubCore):
         res = self.pn_request(self.session,
                               self.config.scheme_and_host(),
                               self.headers,
-                              options,
-                              self.config.connect_timeout,
-                              self.config.non_subscribe_request_timeout)
+                              options)
 
         # http error
         if res.status_code != requests.codes.ok:
@@ -172,7 +170,7 @@ class PubNub(PubNubCore):
         assert isinstance(listener, SubscribeCallback)
         self._subscription_manager.add_listener(listener)
 
-    def pn_request(self, session, scheme_and_host, headers, options, connect_timeout, read_timeout):
+    def pn_request(self, session, scheme_and_host, headers, options):
         assert isinstance(options, RequestOptions)
         url = scheme_and_host + options.path
 
@@ -181,7 +179,7 @@ class PubNub(PubNubCore):
             'headers': headers,
             "url": url,
             'params': options.query_string,
-            'timeout': (connect_timeout, read_timeout)
+            'timeout': (options.connect_timeout, options.request_timeout)
         }
 
         if options.is_post():
@@ -249,9 +247,7 @@ class AsyncHTTPClient:
         try:
             res = self.pubnub.pn_request(
                 self.pubnub.session, self.pubnub.config.scheme_and_host(),
-                self.pubnub.headers, self.options,
-                self.pubnub.config.connect_timeout,
-                self.pubnub.config.non_subscribe_request_timeout)
+                self.pubnub.headers, self.options)
 
             if self.cancellation_event is not None and self.cancellation_event.isSet():
                 # Since there are no way to affect on ongoing request it's response will be just ignored on cancel call
@@ -320,7 +316,7 @@ class NativeSubscriptionManager(SubscriptionManager):
 
         self._heartbeat_periodic_callback = NativePeriodicCallback(
             self._perform_heartbeat_loop,
-            self._pubnub.config.heartbeat_interval * 1000)
+            self._pubnub.config.heartbeat_interval)
 
         if not self._should_stop:
             self._heartbeat_periodic_callback.start()
@@ -446,7 +442,7 @@ class NativePeriodicCallback(object):
             self._schedule_next()
 
     def _schedule_next(self):
-        self._timeout = threading.Timer(10.0, self._run)
+        self._timeout = threading.Timer(self._callback_time, self._run)
         self._timeout.start()
 
 

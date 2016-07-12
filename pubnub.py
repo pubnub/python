@@ -22,7 +22,7 @@ import random
 import sys
 import time
 import uuid as uuid_lib
-from Crypto.Cipher import AES
+from Cryptodome.Cipher import AES
 from base64 import encodestring, decodestring
 from base64 import urlsafe_b64encode
 
@@ -30,7 +30,7 @@ try:
     from hashlib import sha256
     digestmod = sha256
 except ImportError:
-    import Crypto.Hash.SHA256 as digestmod
+    import Cryptodome.Hash.SHA256 as digestmod
     sha256 = digestmod.new
 
 
@@ -2662,11 +2662,11 @@ class Pubnub(PubnubCore):
         self.daemon = daemon
 
         if azure is False:
-            s.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
-            s.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
+            s.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+            s.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
         else:
-            s.mount('http://', PubnubHTTPAdapter(max_retries=1))
-            s.mount('https://', PubnubHTTPAdapter(max_retries=1))
+            s.mount('http://', PubnubHTTPAdapter(max_retries=1, pool_maxsize=500))
+            s.mount('https://', PubnubHTTPAdapter(max_retries=1, pool_maxsize=500))
 
     def timeout(self, interval, func1, *argv):
         timer = Timer(interval, func1, False, *argv)

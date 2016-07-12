@@ -19,7 +19,7 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ),
     install_requires=[
-        'pycryptodome>=3.3',
+        'pycryptodomex>=3.3',
         'requests>=2.4'
     ],
     zip_safe=False,

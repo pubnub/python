@@ -1,4 +1,7 @@
 
+3.8.2
+. Increasing maximum pool of connections and adjusting cryptodome package dependency.
+
 3.8.1
 . Fixing bug with state setting and subscribe confirmation.
 

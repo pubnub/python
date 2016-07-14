@@ -1,7 +1,9 @@
 from abc import ABCMeta, abstractmethod
 
+from pubnub import utils
 from pubnub.enums import PNStatusCategory
-from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING
+from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING, \
+    PNERR_SECRET_KEY_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pn_error_data import PNErrorData
@@ -18,6 +20,7 @@ class Endpoint(object):
     def __init__(self, pubnub):
         self.pubnub = pubnub
         self._cancellation_event = None
+        self._sort_params = False
 
     def cancellation_event(self, event):
         self._cancellation_event = event
@@ -71,7 +74,7 @@ class Endpoint(object):
     def options(self):
         return RequestOptions(self.build_path(), self.build_params(),
                               self.http_method(), self.request_timeout(),
-                              self.connect_timeout(), self.build_data())
+                              self.connect_timeout(), self.build_data(), self._sort_params)
 
     def sync(self):
         self.validate_params()
@@ -119,13 +122,17 @@ class Endpoint(object):
 
     def default_params(self):
         return {
-            'pnsdk': self.pubnub.sdk_name,
+            'pnsdk': utils.url_encode(self.pubnub.sdk_name),
             'uuid': self.pubnub.uuid
         }
 
     def validate_subscribe_key(self):
         if self.pubnub.config.subscribe_key is None or len(self.pubnub.config.subscribe_key) == 0:
             raise PubNubException(pn_error=PNERR_SUBSCRIBE_KEY_MISSING)
+
+    def validate_secret_key(self):
+        if self.pubnub.config.secret_key is None or len(self.pubnub.config.secret_key) == 0:
+            raise PubNubException(pn_error=PNERR_SECRET_KEY_MISSING)
 
     def validate_channels_and_groups(self):
         if len(self._channels) == 0 and len(self._groups) == 0:
@@ -176,11 +183,11 @@ class Endpoint(object):
         return pn_status
 
     # TODO: move to utils?
-    @classmethod
-    def join_query(cls, params):
-        query_list = []
-
-        for k, v in params.items():
-            query_list.append(k + "=" + v)
-
-        return "&".join(query_list)
+    # @classmethod
+    # def join_query(cls, params):
+    #     query_list = []
+    #
+    #     for k, v in params.items():
+    #         query_list.append(k + "=" + v)
+    #
+    #     return "&".join(query_list)

@@ -1,6 +1,10 @@
 import logging
 from abc import ABCMeta, abstractmethod
 
+import time
+
+from pubnub.endpoints.access.audit import Audit
+from pubnub.endpoints.access.grant import Grant
 from .builders import SubscribeBuilder
 from .builders import UnsubscribeBuilder
 from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
@@ -89,8 +93,13 @@ class PubNubCore:
     def publish(self):
         return Publish(self, self._publish_sequence_manager)
 
-    # Push Related methods
+    def grant(self):
+        return Grant(self)
 
+    def audit(self):
+        return Audit(self)
+
+    # Push Related methods
     def list_push_channels(self):
         return ListPushProvisions(self)
 
@@ -102,3 +111,6 @@ class PubNubCore:
 
     def remove_device_from_push(self):
         return RemoveDeviceFromPush(self)
+
+    def timestamp(self):
+        return int(time.time())

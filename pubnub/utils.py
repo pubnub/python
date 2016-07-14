@@ -1,6 +1,13 @@
+import hmac
 import json
 import uuid as u
 import threading
+try:
+    from hashlib import sha256
+    digestmod = sha256
+except ImportError:
+    import Crypto.Hash.SHA256 as digestmod
+    sha256 = digestmod.new
 
 import six
 
@@ -29,16 +36,16 @@ try:
     from urllib.parse import parse_qs as pn_parse_qs
 except ImportError:
     from urlparse import parse_qs as pn_parse_qs
-
-try:
-    from queue import Queue as Queue
-except ImportError:
-    from Queue import Queue as Queue
-
-try:
-    from queue import Empty as QueueEmpty
-except ImportError:
-    from Queue import Empty as QueueEmpty
+#
+# try:
+#     from queue import Queue as Queue
+# except ImportError:
+#     from Queue import Queue as Queue
+#
+# try:
+#     from queue import Empty as QueueEmpty
+# except ImportError:
+#     from Queue import Empty as QueueEmpty
 
 
 def get_data_for_user(data):
@@ -64,12 +71,7 @@ def write_value_as_string(data):
 
 
 def url_encode(data):
-    try:
-        from urllib.parse import quote as q
-    except ImportError:
-        from urllib import quote as q
-
-    return q(data)
+    return six.moves.urllib.parse.quote(data, safe="")
 
 
 def uuid():
@@ -85,6 +87,10 @@ def split_items(items_string):
 
 def join_items(items_list):
     return ",".join(items_list)
+
+
+def join_items_and_encode(items_list):
+    return ",".join(url_encode(x) for x in items_list)
 
 
 def join_channels(items_list):
@@ -115,6 +121,7 @@ def synchronized(func):
     return synced_func
 
 
+# TODO: utils lib isn't a good place for this kid of helpers
 def is_subscribed_event(status):
     assert isinstance(status, PNStatus)
     return status.category == PNStatusCategory.PNConnectedCategory
@@ -123,8 +130,50 @@ def is_subscribed_event(status):
 def is_unsubscribed_event(status):
     assert isinstance(status, PNStatus)
     return status.category == PNStatusCategory.PNAcknowledgmentCategory \
-        and status.operation == PNOperationType.PNUnsubscribeOperation
+           and status.operation == PNOperationType.PNUnsubscribeOperation
 
+
+def prepare_pam_arguments(unsorted_params):
+    sorted_keys = sorted(unsorted_params)
+    stringified_arguments = ""
+    i = 0
+
+    for key in sorted_keys:
+        if i != 0:
+            stringified_arguments += "&"
+
+        stringified_arguments += (key + "=" + pam_encode(str(unsorted_params[key])))
+        i += 1
+
+    return stringified_arguments
+
+
+def pam_encode(s_url):
+    # !'()*~
+    encoded = url_encode(s_url)
+    if encoded is not None:
+        encoded = (encoded.replace("*", "%2A")
+                   .replace("!", "%21")
+                   .replace("'", "%27")
+                   .replace("(", "%28")
+                   .replace(")", "%29")
+                   .replace("[", "%5B")
+                   .replace("]", "%5D")
+                   .replace("~", "%7E"))
+
+    return encoded
+
+
+def sign_sha256(secret, sign_input):
+    from base64 import urlsafe_b64encode
+
+    sign = urlsafe_b64encode(hmac.new(
+        secret.encode("utf-8"),
+        sign_input.encode("utf-8"),
+        sha256
+    ).digest())
+
+    return sign.decode("utf-8")
 
 def push_type_to_string(push_type):
     if push_type == PNPushType.APNS:

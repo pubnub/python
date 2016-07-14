@@ -88,7 +88,7 @@ class PubNubAsyncio(PubNubCore):
             raise
         except Exception as e:
             print('regular error', str(e))
-            return
+            raise
 
         body = await response.text()
 

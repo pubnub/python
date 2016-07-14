@@ -16,6 +16,7 @@ class PNConfiguration(object):
         self.connect_timeout = 5
         self.subscribe_key = None
         self.publish_key = None
+        self.secret_key = None
         self.cipher_key = None
         self.auth_key = None
         self.filter_expression = None

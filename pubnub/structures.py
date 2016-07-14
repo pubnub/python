@@ -1,11 +1,11 @@
 import six
 
-from . import utils
 from .enums import HttpMethod
 
 
 class RequestOptions(object):
-    def __init__(self, path, params, method, request_timeout, connect_timeout, data=None):
+    def __init__(self, path, params, method, request_timeout, connect_timeout, data=None,
+                 sort_arguments=False):
         assert len(path) > 0
         assert len(params) > 0
         assert isinstance(method, six.integer_types)
@@ -20,6 +20,7 @@ class RequestOptions(object):
         self.connect_timeout = connect_timeout
         # TODO: rename to 'body'
         self.data = data
+        self.sort_params = sort_arguments
 
     @property
     def method_string(self):
@@ -28,20 +29,18 @@ class RequestOptions(object):
     def is_post(self):
         return self._method is HttpMethod.POST
 
-    def query_list(self, do_not_encode=None):
+    def query_list(self):
+        """ All query keys and values should be already encoded inside a build_params() method"""
         # TODO: add option to sort params alphabetically(for PAM requests)
-        if do_not_encode is None:
-            do_not_encode = []
-
         s = []
-        e = utils.url_encode
 
         for k, v in self.params.items():
-            if k in do_not_encode:
-                continue
-            s.append(e(str(k)) + "=" + e(str(v)))
+            s.append(str(k) + "=" + str(v))
 
-        return s
+        if self.sort_params:
+            return sorted(s)
+        else:
+            return s
 
     @property
     def query_string(self):

@@ -97,7 +97,7 @@ def join_channels(items_list):
     if len(items_list) == 0:
         return ","
     else:
-        return join_items(items_list)
+        return join_items_and_encode(items_list)
 
 
 def extend_list(existing_items, new_items):

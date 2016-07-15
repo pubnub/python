@@ -2,7 +2,6 @@ import unittest
 
 from pubnub import utils
 from pubnub.endpoints.access.grant import Grant
-from pubnub.endpoints.presence.leave import Leave
 
 try:
     from mock import MagicMock
@@ -38,13 +37,13 @@ class TestGrant(unittest.TestCase):
             'timestamp': '123',
             'channel': 'ch',
             'signature': utils.sign_sha256(pnconf_pam.secret_key,
-                                           pnconf_pam.secret_key + "\n" + pnconf_pam.publish_key + "\n" +
+                                           pnconf_pam.subscribe_key + "\n" + pnconf_pam.publish_key + "\n" +
                                            "grant\n" + utils.prepare_pam_arguments({
                                                'r': '1',
                                                'w': '1',
                                                'timestamp': 123,
                                                'channel': 'ch',
+                                               'pnsdk': sdk_name,
+                                               'uuid': self.pubnub.uuid
                                            }))
         })
-
-# TODO: test no any flag are specified

@@ -34,10 +34,10 @@ class SetState(Endpoint):
     def build_params(self):
         params = self.default_params()
 
-        params['state'] = utils.write_value_as_string(self._state)
+        params['state'] = utils.url_encode(utils.write_value_as_string(self._state))
 
         if len(self._groups) > 0:
-            params['channel-group'] = utils.join_items(self._groups)
+            params['channel-group'] = utils.join_items_and_encode(self._groups)
 
         return params
 

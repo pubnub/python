@@ -55,7 +55,7 @@ class Publish(Endpoint):
         params = self.default_params()
 
         if self._meta is not None:
-            params['meta'] = utils.write_value_as_string(self._meta)
+            params['meta'] = utils.url_encode(utils.write_value_as_string(self._meta))
 
         if self._should_store is not None:
             if self._should_store:
@@ -64,7 +64,7 @@ class Publish(Endpoint):
                 params["store"] = "0"
 
         if self.pubnub.config.auth_key is not None:
-            params["auth"] = self.pubnub.config.auth_key
+            params["auth"] = utils.url_encode(self.pubnub.config.auth_key)
 
         params['seqn'] = str(self.publish_sequence_manager.get_next_sequence())
 

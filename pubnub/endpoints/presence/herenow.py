@@ -35,7 +35,7 @@ class HereNow(Endpoint):
         params = self.default_params()
 
         if len(self._channel_groups) > 0:
-            params['channel-groups'] = utils.join_items(self._channel_groups)
+            params['channel-groups'] = utils.join_items_and_encode(self._channel_groups)
 
         if self._include_state:
             params['state'] = "1"

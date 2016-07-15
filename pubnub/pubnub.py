@@ -7,7 +7,7 @@ import requests
 from six.moves.queue import Queue
 from threading import Event
 
-from pubnub.endpoints.presence.heartbeat import Heartbeat
+from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
 from .workers import SubscribeMessageWorker

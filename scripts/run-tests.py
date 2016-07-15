@@ -21,9 +21,19 @@ print("Version is", version)
 def run(command):
     return check_call(command, shell=True)
 
-if version.startswith('2.7'):
-    run('py.test --cov=../pubnub')
-elif version.startswith('2.6'):
-    run('py.test --cov=../pubnub --ignore=integrational/tornado/  --ignore=integrational/twisted/')
+if version.startswith('2.6'):
+    run('py.test --cov=../pubnub --ignore=integrational/tornado/ --ignore=integrational/twisted/ --ignore=integrational/asyncio/')
+elif version.startswith('2.7'):
+    # TODO: remove twisted ignore option when the tests will be ready
+    run('py.test --cov=../pubnub --ignore=integrational/twisted/ --ignore=integrational/asyncio/')
+elif version.startswith('3.3'):
+    run('py.test --cov=../pubnub --ignore=integrational/twisted/ --ignore=integrational/asyncio/')
+elif version.startswith('3.4'):
+    # TODO: rewrite asyncio SDK to support Python 3.4
+    run('py.test --cov=../pubnub --ignore=integrational/twisted/ --ignore=integrational/asyncio/')
+elif version.startswith('3.5'):
+    run('py.test --cov=../pubnub --ignore=integrational/twisted/')
+elif version.startswith('3.6'):
+    run('py.test --cov=../pubnub --ignore=integrational/twisted/')
 else:
-    run('py.test --cov=../pubnub/ --ignore=integrational/twisted/')
+    raise Exception("Version %s is not supported by this script runner" % version)

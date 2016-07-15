@@ -1,7 +1,7 @@
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
-from pubnub.models.consumer.presence import PNHereNowResult, PNHereNowOccupantsData, PNHereNowChannelData
+from pubnub.models.consumer.presence import PNHereNowResult
 
 
 class HereNow(Endpoint):

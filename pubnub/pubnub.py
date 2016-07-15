@@ -4,7 +4,7 @@ import threading
 import requests
 
 # noinspection PyUnresolvedReferences
-from six.moves.queue import Queue
+from six.moves.queue import Queue, Empty
 from threading import Event
 
 from .endpoints.presence.heartbeat import Heartbeat
@@ -295,7 +295,7 @@ class Call(object):
 
 class NativeSubscriptionManager(SubscriptionManager):
     def __init__(self, pubnub_instance):
-        self._message_queue = utils.Queue()
+        self._message_queue = Queue()
         self._consumer_event = threading.Event()
         self._subscribe_call = None
         self._heartbeat_periodic_callback = None
@@ -455,7 +455,7 @@ class NativeSubscribeMessageWorker(SubscribeMessageWorker):
                 if msg is not None:
                     self._process_incoming_payload(msg)
                 self._queue.task_done()
-            except utils.QueueEmpty:
+            except Empty:
                 continue
             except Exception as e:
                 # TODO: move to finally

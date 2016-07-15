@@ -21,9 +21,6 @@ listener_config.uuid = helper.gen_channel("listener")
 
 
 class TestPubNubHeartbeat(unittest.TestCase):
-    def test_blah(self):
-        assert 'qwer' == 'sdfg'
-
     def test_timeout_event_on_broken_heartbeat(self):
         ch = helper.gen_channel("heartbeat-test")
 

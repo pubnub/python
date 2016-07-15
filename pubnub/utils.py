@@ -36,16 +36,6 @@ try:
     from urllib.parse import parse_qs as pn_parse_qs
 except ImportError:
     from urlparse import parse_qs as pn_parse_qs
-#
-# try:
-#     from queue import Queue as Queue
-# except ImportError:
-#     from Queue import Queue as Queue
-#
-# try:
-#     from queue import Empty as QueueEmpty
-# except ImportError:
-#     from Queue import Empty as QueueEmpty
 
 
 def get_data_for_user(data):

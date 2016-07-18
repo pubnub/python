@@ -35,5 +35,7 @@ elif version.startswith('3.5'):
     run('py.test --cov=../pubnub --ignore=integrational/twisted/')
 elif version.startswith('3.6'):
     run('py.test --cov=../pubnub --ignore=integrational/twisted/')
+elif version.startswith('pypy'):
+    run('py.test --cov=../pubnub --ignore=integrational/twisted/')
 else:
     raise Exception("Version %s is not supported by this script runner" % version)

@@ -3,6 +3,9 @@ import string
 import random
 
 from copy import copy
+
+import six
+
 from pubnub import utils
 from pubnub.pnconfiguration import PNConfiguration
 
@@ -60,6 +63,10 @@ sdk_name = "Python-UnitTest"
 
 def url_encode(data):
     return utils.url_encode(utils.write_value_as_string(data))
+
+
+def url_decode(data):
+    return six.moves.urllib.parse.unquote(data)
 
 
 def gen_channel(prefix):

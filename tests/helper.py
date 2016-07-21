@@ -1,3 +1,4 @@
+import json
 import os
 import threading
 import string
@@ -64,9 +65,6 @@ def pnconf_pam_copy():
     return copy(pnconf_pam)
 
 sdk_name = "Python-UnitTest"
-pn_vcr = vcr.VCR(
-    cassette_library_dir=os.path.dirname((os.path.dirname(os.path.abspath(__file__))))
-)
 
 
 def url_encode(data):
@@ -83,6 +81,44 @@ def gen_channel(prefix):
 
 def gen_string(l):
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(l))
+
+
+pn_vcr = vcr.VCR(
+    cassette_library_dir=os.path.dirname((os.path.dirname(os.path.abspath(__file__))))
+)
+
+
+def meta_object_in_query_matcher(r1, r2):
+    return assert_request_equal_with_object_in_query(r1, r2, 'meta')
+
+
+def assert_request_equal_with_object_in_query(r1, r2, query_field_name):
+    try:
+        assert r1.body == r2.body
+        assert r1.headers == r2.headers
+        assert r1.host == r2.host
+        assert r1.method == r2.method
+        assert r1.path == r2.path
+        assert r1.port == r2.port
+        assert r1.protocol == r2.protocol
+        assert r1.scheme == r2.scheme
+
+        for v in r1.query:
+            if v[0] == query_field_name:
+                for w in r2.query:
+                    if w[0] == query_field_name:
+                        assert json.loads(v[1]) == json.loads(w[1])
+            else:
+                for w in r2.query:
+                    if w[0] == v[0]:
+                        assert w[1] == v[1]
+
+    except AssertionError:
+        return False
+
+    return True
+
+pn_vcr.register_matcher('meta_object_in_query', meta_object_in_query_matcher)
 
 
 def use_cassette_and_stub_time_sleep(cassette_name, filter_query_parameters):

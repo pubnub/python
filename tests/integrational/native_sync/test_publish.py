@@ -270,9 +270,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             assert "not JSON serializable" in str(e)
 
-    # @vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_with_meta.yaml',
-    #                   filter_query_parameters=['uuid'])
-    # TODO: add matcher
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_with_meta.yaml',
+                         filter_query_parameters=['uuid'], match_on=['meta_object_in_query'])
     def test_publish_with_meta(self):
         meta = {'a': 2, 'b': 'qwer'}
 

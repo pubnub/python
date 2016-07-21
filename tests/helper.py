@@ -1,13 +1,18 @@
+import os
 import threading
 import string
 import random
+import six
+import vcr
 
 from copy import copy
-
-import six
-
 from pubnub import utils
 from pubnub.pnconfiguration import PNConfiguration
+
+try:
+    from mock import patch
+except ImportError:
+    from unittest.mock import patch
 
 pub_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"
 sub_key = "sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe"
@@ -59,6 +64,9 @@ def pnconf_pam_copy():
     return copy(pnconf_pam)
 
 sdk_name = "Python-UnitTest"
+pn_vcr = vcr.VCR(
+    cassette_library_dir=os.path.dirname((os.path.dirname(os.path.abspath(__file__))))
+)
 
 
 def url_encode(data):
@@ -75,6 +83,28 @@ def gen_channel(prefix):
 
 def gen_string(l):
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(l))
+
+
+def use_cassette_and_stub_time_sleep(cassette_name, filter_query_parameters):
+    context = pn_vcr.use_cassette(cassette_name, filter_query_parameters=filter_query_parameters)
+    cs = context.cls(path=cassette_name).load(path=cassette_name)
+
+    def _inner(f):
+        @patch('time.sleep', return_value=None)
+        @six.wraps(f)
+        def stubbed(*args):
+            with context as cassette:
+                largs = list(args)
+                largs.pop(1)
+                return f(*largs)
+
+        @six.wraps(f)
+        def original(*args):
+            with context as cassette:
+                return f(*args)
+
+        return stubbed if len(cs) > 0 else original
+    return _inner
 
 
 class CountDownLatch(object):

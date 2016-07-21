@@ -11,15 +11,12 @@ from tests.helper import pnconf_copy, use_cassette_and_stub_time_sleep
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
-# TODO: rename channels name
-
-
 class TestPubNubChannelGroups(unittest.TestCase):
     @use_cassette_and_stub_time_sleep('tests/integrational/fixtures/native_sync/channel_groups/single_channel.yaml',
                                       filter_query_parameters=['uuid'])
     def test_single_channel(self):
-        ch = "herenow-unit-ch"
-        gr = "herenow-unit-cg"
+        ch = "channel-groups-unit-ch"
+        gr = "channel-groups-unit-cg"
         pubnub = PubNub(pnconf_copy())
 
         # add
@@ -63,9 +60,9 @@ class TestPubNubChannelGroups(unittest.TestCase):
         'tests/integrational/fixtures/native_sync/channel_groups/add_remove_multiple_channels.yaml',
         filter_query_parameters=['uuid'])
     def test_add_remove_multiple_channels(self):
-        ch1 = "herenow-unit-ch1"
-        ch2 = "herenow-unit-ch2"
-        gr = "herenow-unit-cg"
+        ch1 = "channel-groups-unit-ch1"
+        ch2 = "channel-groups-unit-ch2"
+        gr = "channel-groups-unit-cg"
         pubnub = PubNub(pnconf_copy())
 
         # add
@@ -110,8 +107,8 @@ class TestPubNubChannelGroups(unittest.TestCase):
         'tests/integrational/fixtures/native_sync/channel_groups/add_channel_remove_group.yaml',
         filter_query_parameters=['uuid'])
     def test_add_channel_remove_group(self):
-        ch = "herenow-unit-ch"
-        gr = "herenow-unit-cg"
+        ch = "channel-groups-unit-ch"
+        gr = "channel-groups-unit-cg"
         pubnub = PubNub(pnconf_copy())
 
         # add

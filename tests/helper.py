@@ -92,6 +92,10 @@ def meta_object_in_query_matcher(r1, r2):
     return assert_request_equal_with_object_in_query(r1, r2, 'meta')
 
 
+def state_object_in_query_matcher(r1, r2):
+    return assert_request_equal_with_object_in_query(r1, r2, 'state')
+
+
 def assert_request_equal_with_object_in_query(r1, r2, query_field_name):
     try:
         assert r1.body == r2.body
@@ -146,6 +150,7 @@ def publish_object_matcher(r1, r2):
 
 
 pn_vcr.register_matcher('meta_object_in_query', meta_object_in_query_matcher)
+pn_vcr.register_matcher('state_object_in_query', state_object_in_query_matcher)
 pn_vcr.register_matcher('publish_object', publish_object_matcher)
 
 

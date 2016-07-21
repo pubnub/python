@@ -1,0 +1,51 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [PubNub-Python/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch-1,state-native-sync-ch-2/uuid/state-native-sync-uuid/data?pnsdk=PubNub-Python%2F4.0.0&state=%7B%22name%22%3A+%22Alex%22%2C+%22count%22%3A+5%7D
+  response:
+    body: {string: '{"status": 200, "message": "OK", "payload": {"count": 5, "name":
+        "Alex"}, "service": "Presence"}'}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Methods: ['OPTIONS, GET, POST']
+      Access-Control-Allow-Origin: ['*']
+      Age: ['0']
+      Connection: [keep-alive]
+      Content-Length: ['96']
+      Content-Type: [text/javascript; charset="UTF-8"]
+      Date: ['Thu, 21 Jul 2016 17:37:44 GMT']
+      Server: [Pubnub Presence]
+      cache-control: [no-cache]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [PubNub-Python/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch-1,state-native-sync-ch-2/uuid/state-native-sync-uuid?pnsdk=PubNub-Python%2F4.0.0
+  response:
+    body: {string: '{"status": 200, "message": "OK", "payload": {"channels": {"state-native-sync-ch-1":
+        {"count": 5, "name": "Alex"}, "state-native-sync-ch-2": {"count": 5, "name":
+        "Alex"}}}, "service": "Presence", "uuid": "state-native-sync-uuid"}'}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Methods: ['OPTIONS, GET, POST']
+      Access-Control-Allow-Origin: ['*']
+      Age: ['0']
+      Connection: [keep-alive]
+      Content-Length: ['228']
+      Content-Type: [text/javascript; charset="UTF-8"]
+      Date: ['Thu, 21 Jul 2016 17:37:45 GMT']
+      Server: [Pubnub Presence]
+      cache-control: [no-cache]
+    status: {code: 200, message: OK}
+version: 1

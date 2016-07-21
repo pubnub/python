@@ -11,6 +11,9 @@ from tests.helper import pnconf_copy, use_cassette_and_stub_time_sleep
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
+# TODO: rename channels name
+
+
 class TestPubNubChannelGroups(unittest.TestCase):
     @use_cassette_and_stub_time_sleep('tests/integrational/fixtures/native_sync/channel_groups/single_channel.yaml',
                                       filter_query_parameters=['uuid'])

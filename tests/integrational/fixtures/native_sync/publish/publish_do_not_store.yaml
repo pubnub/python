@@ -1,0 +1,22 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [PubNub-Python/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/ch1/0/%22D7oVjBCciNszAo%2FEROu5Jw%3D%3D%22?pnsdk=PubNub-Python%2F4.0.0&seqn=1&store=0
+  response:
+    body: {string: '[1,"Sent","14691119699221362"]'}
+    headers:
+      Access-Control-Allow-Methods: [GET]
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Length: ['30']
+      Content-Type: [text/javascript; charset="UTF-8"]
+      Date: ['Thu, 21 Jul 2016 14:39:29 GMT']
+    status: {code: 200, message: OK}
+version: 1

@@ -1,0 +1,22 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [PubNub-Python/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/publish/fake/demo/0/ch1/0/%22hey%22?pnsdk=PubNub-Python%2F4.0.0&seqn=1
+  response:
+    body: {string: '[0,"Invalid Key","14691119692918567"]'}
+    headers:
+      Access-Control-Allow-Methods: [GET]
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Length: ['37']
+      Content-Type: [text/javascript; charset="UTF-8"]
+      Date: ['Thu, 21 Jul 2016 14:39:29 GMT']
+    status: {code: 400, message: INVALID}
+version: 1

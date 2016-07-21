@@ -6,14 +6,14 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_enc
+from tests.helper import pnconf, pnconf_enc, pn_vcr
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
 class TestPubNubPublish(unittest.TestCase):
-    # @vcr.use_cassette('integrational/fixtures/publish/publish_string_get.yaml',
-    #                   filter_query_parameters=['uuid'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_string_get.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_string_get(self):
         try:
             res = PubNub(pnconf).publish() \
@@ -26,8 +26,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    # @vcr.use_cassette('integrational/fixtures/publish/publish_list_get.yaml',
-    #                   filter_query_parameters=['uuid'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_list_get.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_list_get(self):
         try:
             res = PubNub(pnconf).publish() \
@@ -40,6 +40,9 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    # @vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_object_get.yaml',
+    #                   filter_query_parameters=['uuid'])
+    # TODO: add matcher for serialized object
     def test_publish_object_get(self):
         try:
             res = PubNub(pnconf).publish() \
@@ -52,6 +55,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_bool_get.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_bool_get(self):
         try:
             res = PubNub(pnconf).publish() \
@@ -64,6 +69,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_int_get.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_int_get(self):
         try:
             res = PubNub(pnconf).publish() \
@@ -76,6 +83,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_encrypted_string_get.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_encrypted_string_get(self):
         try:
             res = PubNub(pnconf_enc).publish() \
@@ -88,6 +97,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_encrypted_list_get.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_encrypted_list_get(self):
         try:
             res = PubNub(pnconf_enc).publish() \
@@ -100,13 +111,14 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    # @vcr.use_cassette('integrational/fixtures/publish/publish_string_post.yaml',
-    #                   filter_query_parameters=['uuid'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_string_post.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_string_post(self):
         try:
             res = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message("hi") \
+                .use_post(True) \
                 .sync()
 
             assert isinstance(res, PNPublishResult)
@@ -114,13 +126,14 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    # @vcr.use_cassette('integrational/fixtures/publish/publish_list_post.yaml',
-    #                   filter_query_parameters=['uuid'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_list_post.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_list_post(self):
         try:
             res = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(["hi", "hi2", "hi3"]) \
+                .use_post(True) \
                 .sync()
 
             assert isinstance(res, PNPublishResult)
@@ -128,11 +141,14 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_object_post.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_object_post(self):
         try:
             res = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message({"name": "Alex", "online": True}) \
+                .use_post(True) \
                 .sync()
 
             assert isinstance(res, PNPublishResult)
@@ -140,11 +156,14 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_bool_post.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_bool_post(self):
         try:
             res = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(True) \
+                .use_post(True) \
                 .sync()
 
             assert isinstance(res, PNPublishResult)
@@ -152,11 +171,14 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_int_post.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_int_post(self):
         try:
             res = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(5) \
+                .use_post(True) \
                 .sync()
 
             assert isinstance(res, PNPublishResult)
@@ -164,6 +186,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_encrypted_string_post.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_encrypted_string_post(self):
         try:
             res = PubNub(pnconf_enc).publish() \
@@ -177,6 +201,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_encrypted_list_post.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_encrypted_list_post(self):
         try:
             res = PubNub(pnconf_enc).publish() \
@@ -190,6 +216,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/invalid_key.yaml',
+                         filter_query_parameters=['uuid'])
     def test_invalid_key(self):
         config = PNConfiguration()
         config.publish_key = "fake"
@@ -242,6 +270,9 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             assert "not JSON serializable" in str(e)
 
+    # @vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_with_meta.yaml',
+    #                   filter_query_parameters=['uuid'])
+    # TODO: add matcher
     def test_publish_with_meta(self):
         meta = {'a': 2, 'b': 'qwer'}
 
@@ -257,6 +288,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_do_not_store.yaml',
+                         filter_query_parameters=['uuid'])
     def test_publish_do_not_store(self):
         try:
             res = PubNub(pnconf_enc).publish() \

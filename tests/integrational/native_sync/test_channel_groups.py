@@ -12,7 +12,7 @@ pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 
 class TestPubNubChannelGroups(unittest.TestCase):
-    @use_cassette_and_stub_time_sleep('tests/integrational/fixtures/channel_groups/single_channel.yaml',
+    @use_cassette_and_stub_time_sleep('tests/integrational/fixtures/native_sync/channel_groups/single_channel.yaml',
                                       filter_query_parameters=['uuid'])
     def test_single_channel(self):
         ch = "herenow-unit-ch"
@@ -57,7 +57,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         assert len(result.channels) == 0
 
     @use_cassette_and_stub_time_sleep(
-        'tests/integrational/fixtures/channel_groups/add_remove_multiple_channels.yaml',
+        'tests/integrational/fixtures/native_sync/channel_groups/add_remove_multiple_channels.yaml',
         filter_query_parameters=['uuid'])
     def test_add_remove_multiple_channels(self):
         ch1 = "herenow-unit-ch1"
@@ -104,7 +104,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         assert len(result.channels) == 0
 
     @use_cassette_and_stub_time_sleep(
-        'tests/integrational/fixtures/channel_groups/add_channel_remove_group.yaml',
+        'tests/integrational/fixtures/native_sync/channel_groups/add_channel_remove_group.yaml',
         filter_query_parameters=['uuid'])
     def test_add_channel_remove_group(self):
         ch = "herenow-unit-ch"

@@ -40,9 +40,8 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    # @vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_object_get.yaml',
-    #                   filter_query_parameters=['uuid'])
-    # TODO: add matcher for serialized object
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_object_get.yaml',
+                         filter_query_parameters=['uuid'], match_on=['publish_object'])
     def test_publish_object_get(self):
         try:
             res = PubNub(pnconf).publish() \

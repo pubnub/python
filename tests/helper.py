@@ -118,7 +118,35 @@ def assert_request_equal_with_object_in_query(r1, r2, query_field_name):
 
     return True
 
+
+def publish_object_matcher(r1, r2):
+    try:
+        assert r1.body == r2.body
+        assert r1.headers == r2.headers
+        assert r1.host == r2.host
+        assert r1.method == r2.method
+        assert r1.query == r2.query
+        assert r1.port == r2.port
+        assert r1.protocol == r2.protocol
+        assert r1.scheme == r2.scheme
+
+        path1 = r1.path.split('/')
+        path2 = r2.path.split('/')
+
+        for k, v in enumerate(path1):
+            if k == (len(path1) - 1):
+                assert json.loads(url_decode(v)) == json.loads(url_decode(path2[k]))
+            else:
+                assert v == path2[k]
+
+    except AssertionError:
+        return False
+
+    return True
+
+
 pn_vcr.register_matcher('meta_object_in_query', meta_object_in_query_matcher)
+pn_vcr.register_matcher('publish_object', publish_object_matcher)
 
 
 def use_cassette_and_stub_time_sleep(cassette_name, filter_query_parameters):

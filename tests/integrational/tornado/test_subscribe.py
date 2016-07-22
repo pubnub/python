@@ -110,7 +110,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
         self.pubnub_listener = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
-    @tornado.testing.gen_test(timeout=30)
+    @tornado.testing.gen_test(timeout=60)
     def test_subscribe_unsubscribe(self):
         ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
         gr = helper.gen_channel("test-subscribe-unsubscribe-group")
@@ -131,7 +131,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
 
-    @tornado.testing.gen_test(timeout=30)
+    @tornado.testing.gen_test(timeout=60)
     def test_subscribe_publish_unsubscribe(self):
         ch = helper.gen_channel("test-subscribe-pub-unsubscribe-channel")
         gr = helper.gen_channel("test-subscribe-pub-unsubscribe-group")
@@ -164,7 +164,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
 
-    @tornado.testing.gen_test(timeout=30)
+    @tornado.testing.gen_test(timeout=60)
     def test_join_leave(self):
         self.pubnub.config.uuid = helper.gen_channel("messenger")
         self.pubnub_listener.config.uuid = helper.gen_channel("listener")

@@ -13,11 +13,11 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
         super(TestPubNubAsyncHereNow, self).setUp()
         self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
-    @tornado.testing.gen_test
+    @tornado.testing.gen_test(timeout=15)
     def test_single_channel(self):
         ch = helper.gen_channel("herenow-unit")
         yield connect_to_channel(self.pubnub, ch)
-        yield gen.sleep(2)
+        yield gen.sleep(4)
         env = yield self.pubnub.here_now() \
             .channels(ch) \
             .include_uuids(True) \
@@ -36,7 +36,7 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
         self.pubnub.stop()
         self.stop()
 
-    @tornado.testing.gen_test(timeout=10)
+    @tornado.testing.gen_test(timeout=15)
     def test_multiple_channels(self):
         ch1 = helper.gen_channel("here-now")
         ch2 = helper.gen_channel("here-now")
@@ -61,13 +61,13 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
         self.pubnub.stop()
         self.stop()
 
-    @tornado.testing.gen_test
+    @tornado.testing.gen_test(timeout=15)
     def test_global(self):
         ch1 = helper.gen_channel("here-now")
         ch2 = helper.gen_channel("here-now")
 
         yield connect_to_channel(self.pubnub, [ch1, ch2])
-        yield gen.sleep(2)
+        yield gen.sleep(4)
 
         env = yield self.pubnub.here_now().future()
 

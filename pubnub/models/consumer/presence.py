@@ -103,6 +103,16 @@ class PNHereNowOccupantsData(object):
         self.state = state
 
 
+class PNWhereNowResult(object):
+    def __init__(self, channels):
+        assert isinstance(channels, (list, tuple))
+        self.channels = channels
+
+    @classmethod
+    def from_json(cls, json_input):
+        return PNWhereNowResult(json_input['payload']['channels'])
+
+
 class PNSetStateResult(object):
     def __init__(self, state):
         assert isinstance(state, dict)

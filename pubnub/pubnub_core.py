@@ -1,7 +1,7 @@
 import logging
-from abc import ABCMeta, abstractmethod
-
 import time
+
+from abc import ABCMeta, abstractmethod
 
 from .endpoints.access.audit import Audit
 from .endpoints.access.grant import Grant
@@ -16,6 +16,7 @@ from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.set_state import SetState
 from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.herenow import HereNow
+from .endpoints.presence.where_now import WhereNow
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -89,6 +90,9 @@ class PubNubCore:
 
     def here_now(self):
         return HereNow(self)
+
+    def where_now(self):
+        return WhereNow(self)
 
     def publish(self):
         return Publish(self, self._publish_sequence_manager)

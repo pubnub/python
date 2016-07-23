@@ -4,6 +4,7 @@ from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.errors import PNERR_UUID_MISSING
 from pubnub.exceptions import PubNubException
+from pubnub.models.consumer.presence import PNWhereNowResult
 
 
 class WhereNow(Endpoint):
@@ -34,8 +35,7 @@ class WhereNow(Endpoint):
             raise PubNubException(pn_error=PNERR_UUID_MISSING)
 
     def create_response(self, envelope):
-        pass
-        # return PNHereNowResult.from_json(envelope, self._channels)
+        return PNWhereNowResult.from_json(envelope)
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

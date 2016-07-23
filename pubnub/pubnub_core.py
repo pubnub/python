@@ -15,7 +15,7 @@ from .endpoints.presence.get_state import GetState
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.set_state import SetState
 from .endpoints.pubsub.publish import Publish
-from .endpoints.presence.herenow import HereNow
+from .endpoints.presence.here_now import HereNow
 from .endpoints.presence.where_now import WhereNow
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush

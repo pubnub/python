@@ -1,6 +1,6 @@
 import unittest
 
-from pubnub.endpoints.presence.herenow import HereNow
+from pubnub.endpoints.presence.here_now import HereNow
 
 try:
     from mock import MagicMock

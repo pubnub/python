@@ -33,8 +33,33 @@ class _PAMResult(object):
                 ttl=ttl
             )
 
-        if 'channel_groups' in json_input:
-            pass #TODO: implement
+        if 'channel-group' in json_input:
+            if isinstance(json_input['channel-group'], six.string_types):
+                group_name = json_input['channel-group']
+                constructed_auth_keys = {}
+                for auth_key_name, value in six.iteritems(json_input['auths']):
+                    constructed_auth_keys[auth_key_name] = PNAccessManagerKeyData.from_json(value)
+                constructed_groups[group_name] = PNAccessManagerChannelGroupData(
+                    name=group_name,
+                    auth_keys=constructed_auth_keys,
+                    ttl=ttl
+                )
+
+        if 'channel-groups' in json_input:
+            if isinstance(json_input['channel-groups'], six.string_types):
+                group_name = json_input['channel-groups']
+                constructed_auth_keys = {}
+                for auth_key_name, value in six.iteritems(json_input['auths']):
+                    constructed_auth_keys[auth_key_name] = PNAccessManagerKeyData.from_json(value)
+                constructed_groups[group_name] = PNAccessManagerChannelGroupData(
+                    name=group_name,
+                    auth_keys=constructed_auth_keys,
+                    ttl=ttl
+                )
+            if isinstance(json_input['channel-groups'], dict):
+                for group_name, value in six.iteritems(json_input['channel-groups']):
+                    constructed_groups[group_name] = \
+                        PNAccessManagerChannelGroupData.from_json(group_name, value)
 
         if 'channels' in json_input:
             for channel_name, value in six.iteritems(json_input['channels']):
@@ -61,7 +86,7 @@ class PNAccessManagerGrantResult(_PAMResult):
     pass
 
 
-class PNAccessManagerChannelData(object):
+class _PAMEntityData(object):
     def __init__(self, name, auth_keys=None, r=None, w=None, m=None, ttl=None):
         self.name = name
         self.auth_keys = auth_keys
@@ -79,7 +104,15 @@ class PNAccessManagerChannelData(object):
             for auth_key, value in json_input['auths'].items():
                 constructed_auth_keys[auth_key] = PNAccessManagerKeyData.from_json(value)
 
-        return PNAccessManagerChannelData(name, constructed_auth_keys, r, w, m)
+        return cls(name, constructed_auth_keys, r, w, m)
+
+
+class PNAccessManagerChannelData(_PAMEntityData):
+    pass
+
+
+class PNAccessManagerChannelGroupData(_PAMEntityData):
+    pass
 
 
 class PNAccessManagerKeyData(object):

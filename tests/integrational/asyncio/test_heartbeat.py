@@ -19,7 +19,7 @@ listener_config.uuid = helper.gen_channel("listener")
 
 
 @pytest.mark.asyncio
-async def test_timeout_event_on_broken_heartbeat(event_loop):
+def test_timeout_event_on_broken_heartbeat(event_loop):
     ch = helper.gen_channel("heartbeat-test")
 
     pubnub = PubNubAsyncio(messenger_config, custom_event_loop=event_loop)
@@ -32,9 +32,9 @@ async def test_timeout_event_on_broken_heartbeat(event_loop):
     callback_presence = SubscribeListener()
     pubnub_listener.add_listener(callback_presence)
     pubnub_listener.subscribe().channels(ch).with_presence().execute()
-    await callback_presence.wait_for_connect()
+    yield from callback_presence.wait_for_connect()
 
-    envelope = await callback_presence.wait_for_presence_on(ch)
+    envelope = yield from callback_presence.wait_for_presence_on(ch)
     assert ch + "-pnpres" == envelope.actual_channel
     assert 'join' == envelope.event
     assert pubnub_listener.uuid == envelope.uuid
@@ -48,7 +48,7 @@ async def test_timeout_event_on_broken_heartbeat(event_loop):
     presence_future = asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
 
     # - assert join event
-    await asyncio.wait([useless_connect_future, presence_future])
+    yield from asyncio.wait([useless_connect_future, presence_future])
 
     prs_envelope = presence_future.result()
 
@@ -57,23 +57,23 @@ async def test_timeout_event_on_broken_heartbeat(event_loop):
     assert pubnub.uuid == prs_envelope.uuid
 
     # wait for one heartbeat call
-    await asyncio.sleep(8)
+    yield from asyncio.sleep(8)
 
     # - break messenger heartbeat loop
     pubnub._subscription_manager._stop_heartbeat_timer()
 
     # - assert for timeout
-    envelope = await callback_presence.wait_for_presence_on(ch)
+    envelope = yield from callback_presence.wait_for_presence_on(ch)
     assert ch + "-pnpres" == envelope.actual_channel
     assert 'timeout' == envelope.event
     assert pubnub.uuid == envelope.uuid
 
     pubnub.unsubscribe().channels(ch).execute()
-    await callback_messages.wait_for_disconnect()
+    yield from callback_messages.wait_for_disconnect()
 
     # - disconnect from :ch-pnpres
     pubnub_listener.unsubscribe().channels(ch).execute()
-    await callback_presence.wait_for_disconnect()
+    yield from callback_presence.wait_for_disconnect()
 
     pubnub.stop()
     pubnub_listener.stop()

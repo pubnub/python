@@ -63,7 +63,8 @@ class PubNubAsyncio(PubNubCore):
     def request_deferred(self, *args):
         raise NotImplementedError
 
-    async def request_future(self, intermediate_key_future, options_func, create_response,
+    @asyncio.coroutine
+    def request_future(self, intermediate_key_future, options_func, create_response,
                              create_status_response, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
@@ -76,7 +77,7 @@ class PubNubAsyncio(PubNubCore):
         logger.debug("%s %s %s" % (options.method_string, log_url, options.data))
 
         try:
-            response = await asyncio.wait_for(
+            response = yield from asyncio.wait_for(
                 self._session.request(options.method_string, url,
                                       params=options.query_string,
                                       headers=self.headers,
@@ -90,7 +91,7 @@ class PubNubAsyncio(PubNubCore):
             print('regular error', str(e))
             raise
 
-        body = await response.text()
+        body = yield from response.text()
 
         if cancellation_event is not None and cancellation_event.is_set():
             return
@@ -207,10 +208,11 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         if self._subscribe_loop_task is not None and not self._subscribe_loop_task.cancelled():
             self._subscribe_loop_task.cancel()
 
-    async def _start_subscribe_loop(self):
+    @asyncio.coroutine
+    def _start_subscribe_loop(self):
         self._stop_subscribe_loop()
 
-        await self._subscription_lock.acquire()
+        yield from self._subscription_lock.acquire()
 
         combined_channels = self._subscription_state.prepare_channel_list(True)
         combined_groups = self._subscription_state.prepare_channel_group_list(True)
@@ -227,7 +229,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                     .filter_expression(self._pubnub.config.filter_expression)
                     .future())
 
-            envelope = await self._subscribe_request_task
+            envelope = yield from self._subscribe_request_task
 
             if self._subscribe_request_task.cancelled():
                 return
@@ -265,7 +267,8 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         if not self._should_stop:
             self._heartbeat_periodic_callback.start()
 
-    async def _perform_heartbeat_loop(self):
+    @asyncio.coroutine
+    def _perform_heartbeat_loop(self):
         if self._heartbeat_call is not None:
             # TODO: cancel call
             pass
@@ -286,7 +289,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                               .cancellation_event(cancellation_event)
                               .future())
 
-            envelope = await heartbeat_call
+            envelope = yield from heartbeat_call
 
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if envelope.status.is_error:
@@ -309,8 +312,9 @@ class AsyncioSubscriptionManager(SubscriptionManager):
     def _send_leave(self, unsubscribe_operation):
         asyncio.ensure_future(self._send_leave_helper(unsubscribe_operation))
 
-    async def _send_leave_helper(self, unsubscribe_operation):
-        envelope = await Leave(self._pubnub) \
+    @asyncio.coroutine
+    def _send_leave_helper(self, unsubscribe_operation):
+        envelope = yield from Leave(self._pubnub) \
             .channels(unsubscribe_operation.channels) \
             .channel_groups(unsubscribe_operation.channel_groups).future()
 
@@ -318,13 +322,15 @@ class AsyncioSubscriptionManager(SubscriptionManager):
 
 
 class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):
-    async def run(self):
-        await self._take_message()
+    @asyncio.coroutine
+    def run(self):
+        yield from self._take_message()
 
-    async def _take_message(self):
+    @asyncio.coroutine
+    def _take_message(self):
         while True:
             try:
-                msg = await self._queue.get()
+                msg = yield from self._queue.get()
                 if msg is not None:
                     self._process_incoming_payload(msg)
                 self._queue.task_done()
@@ -415,23 +421,26 @@ class SubscribeListener(SubscribeCallback):
     def presence(self, pubnub, presence):
         self.presence_queue.put_nowait(presence)
 
-    async def wait_for_connect(self):
+    @asyncio.coroutine
+    def wait_for_connect(self):
         if not self.connected_event.is_set():
-            await self.connected_event.wait()
+            yield from self.connected_event.wait()
         else:
             raise Exception("instance is already connected")
 
-    async def wait_for_disconnect(self):
+    @asyncio.coroutine
+    def wait_for_disconnect(self):
         if not self.disconnected_event.is_set():
-            await self.disconnected_event.wait()
+            yield from self.disconnected_event.wait()
         else:
             raise Exception("instance is already disconnected")
 
-    async def wait_for_message_on(self, *channel_names):
+    @asyncio.coroutine
+    def wait_for_message_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
             try:
-                env = await self.message_queue.get()
+                env = yield from self.message_queue.get()
                 if env.actual_channel in channel_names:
                     return env
                 else:
@@ -439,11 +448,12 @@ class SubscribeListener(SubscribeCallback):
             finally:
                 self.message_queue.task_done()
 
-    async def wait_for_presence_on(self, *channel_names):
+    @asyncio.coroutine
+    def wait_for_presence_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
             try:
-                env = await self.presence_queue.get()
+                env = yield from self.presence_queue.get()
                 if env.actual_channel[:-7] in channel_names:
                     return env
                 else:

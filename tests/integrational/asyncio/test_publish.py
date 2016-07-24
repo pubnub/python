@@ -17,8 +17,8 @@ ch = "asyncio-int-publish"
 
 
 @pytest.mark.asyncio
-async def assert_success_await(pub):
-    envelope = await pub.future()
+def assert_success_await(pub):
+    envelope = yield from pub.future()
 
     assert isinstance(envelope, AsyncioEnvelope)
     assert isinstance(envelope.result, PNPublishResult)
@@ -28,27 +28,27 @@ async def assert_success_await(pub):
 
 
 @pytest.mark.asyncio
-async def assert_client_side_error(pub, expected_err_msg):
+def assert_client_side_error(pub, expected_err_msg):
     try:
-        await pub.future()
+        yield from pub.future()
     except PubNubException as e:
         assert expected_err_msg in str(e)
 
 
 @pytest.mark.asyncio
-async def assert_success_publish_get(pubnub, msg):
-    await assert_success_await(pubnub.publish().channel(ch).message(msg))
+def assert_success_publish_get(pubnub, msg):
+    yield from assert_success_await(pubnub.publish().channel(ch).message(msg))
 
 
 @pytest.mark.asyncio
-async def assert_success_publish_post(pubnub, msg):
-    await assert_success_await(pubnub.publish().channel(ch).message(msg).use_post(True))
+def assert_success_publish_post(pubnub, msg):
+    yield from assert_success_await(pubnub.publish().channel(ch).message(msg).use_post(True))
 
 
 @pytest.mark.asyncio
-async def test_publish_string_via_get(event_loop):
+def test_publish_string_via_get(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
-    await asyncio.gather(
+    yield from asyncio.gather(
         asyncio.ensure_future(assert_success_publish_get(pubnub, "hi")),
         asyncio.ensure_future(assert_success_publish_get(pubnub, 5)),
         asyncio.ensure_future(assert_success_publish_get(pubnub, True)),
@@ -57,9 +57,9 @@ async def test_publish_string_via_get(event_loop):
 
 
 @pytest.mark.asyncio
-async def test_publish_string_via_post(event_loop):
+def test_publish_string_via_post(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
-    await asyncio.gather(
+    yield from asyncio.gather(
         asyncio.ensure_future(assert_success_publish_post(pubnub, "hi")),
         asyncio.ensure_future(assert_success_publish_post(pubnub, 5)),
         asyncio.ensure_future(assert_success_publish_post(pubnub, True)),
@@ -68,9 +68,9 @@ async def test_publish_string_via_post(event_loop):
 
 
 @pytest.mark.asyncio
-async def test_publish_string_via_get_encrypted(event_loop):
+def test_publish_string_via_get_encrypted(event_loop):
     pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
-    await asyncio.gather(
+    yield from asyncio.gather(
         asyncio.ensure_future(assert_success_publish_get(pubnub, "hi")),
         asyncio.ensure_future(assert_success_publish_get(pubnub, 5)),
         asyncio.ensure_future(assert_success_publish_get(pubnub, True)),
@@ -79,9 +79,9 @@ async def test_publish_string_via_get_encrypted(event_loop):
 
 
 @pytest.mark.asyncio
-async def test_publish_string_via_post_encrypted(event_loop):
+def test_publish_string_via_post_encrypted(event_loop):
     pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
-    await asyncio.gather(
+    yield from asyncio.gather(
         asyncio.ensure_future(assert_success_publish_post(pubnub, "hi")),
         asyncio.ensure_future(assert_success_publish_post(pubnub, 5)),
         asyncio.ensure_future(assert_success_publish_post(pubnub, True)),
@@ -90,51 +90,51 @@ async def test_publish_string_via_post_encrypted(event_loop):
 
 
 @pytest.mark.asyncio
-async def test_error_missing_message(event_loop):
+def test_error_missing_message(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
-    await assert_client_side_error(pubnub.publish().channel(ch).message(None), "Message missing")
+    yield from assert_client_side_error(pubnub.publish().channel(ch).message(None), "Message missing")
 
 
 @pytest.mark.asyncio
-async def test_error_missing_channel(event_loop):
+def test_error_missing_channel(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
-    await assert_client_side_error(pubnub.publish().channel("").message("hey"), "Channel missing")
+    yield from assert_client_side_error(pubnub.publish().channel("").message("hey"), "Channel missing")
 
 
 @pytest.mark.asyncio
-async def test_error_non_serializable(event_loop):
+def test_error_non_serializable(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
 
     def method():
         pass
 
-    await assert_client_side_error(pubnub.publish().channel(ch).message(method), "not JSON serializable")
+    yield from assert_client_side_error(pubnub.publish().channel(ch).message(method), "not JSON serializable")
 
 
 @pytest.mark.asyncio
-async def test_publish_with_meta(event_loop):
+def test_publish_with_meta(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
 
-    await assert_success_await(pubnub.publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
+    yield from assert_success_await(pubnub.publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
 
 
 @pytest.mark.asyncio
-async def test_publish_do_not_store(event_loop):
+def test_publish_do_not_store(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
 
-    await assert_success_await(pubnub.publish().channel(ch).message("hey").should_store(False))
+    yield from assert_success_await(pubnub.publish().channel(ch).message("hey").should_store(False))
 
 
 @pytest.mark.asyncio
-async def assert_server_side_error_yield(pub, expected_err_msg):
+def assert_server_side_error_yield(pub, expected_err_msg):
     try:
-        await pub.future()
+        yield from pub.future()
     except PubNubAsyncioException as e:
         assert expected_err_msg in str(e)
 
 
 @pytest.mark.asyncio
-async def test_error_invalid_key(event_loop):
+def test_error_invalid_key(event_loop):
     conf = PNConfiguration()
     conf.publish_key = "fake"
     conf.subscribe_key = "demo"
@@ -142,5 +142,5 @@ async def test_error_invalid_key(event_loop):
 
     pubnub = PubNubAsyncio(conf, custom_event_loop=event_loop)
 
-    await assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "Invalid Key")
+    yield from assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "Invalid Key")
 

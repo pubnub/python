@@ -29,8 +29,7 @@ elif version.startswith('2.7'):
 elif version.startswith('3.3'):
     run('py.test --cov=../pubnub --ignore=integrational/twisted/ --ignore=integrational/asyncio/ --ignore=integrational/python_v35/')
 elif version.startswith('3.4'):
-    # TODO: rewrite asyncio SDK to support Python 3.4
-    run('py.test --cov=../pubnub --ignore=integrational/twisted/ --ignore=integrational/asyncio/ --ignore=integrational/python_v35/')
+    run('py.test --cov=../pubnub --ignore=integrational/twisted/ --ignore=integrational/python_v35/')
 elif version.startswith('3.5'):
     run('py.test --cov=../pubnub --ignore=integrational/twisted/')
 elif version.startswith('3.6'):

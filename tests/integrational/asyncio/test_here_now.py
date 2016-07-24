@@ -7,7 +7,7 @@ from tests.helper import pnconf_sub_copy
 
 
 @pytest.mark.asyncio
-async def test_single_channel(event_loop):
+def test_single_channel(event_loop):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
     ch = helper.gen_channel("herenow-unit")
 
@@ -15,11 +15,11 @@ async def test_single_channel(event_loop):
     pubnub.add_listener(callback)
     pubnub.subscribe().channels(ch).execute()
 
-    await callback.wait_for_connect()
+    yield from callback.wait_for_connect()
 
-    await asyncio.sleep(2)
+    yield from asyncio.sleep(5)
 
-    env = await pubnub.here_now() \
+    env = yield from pubnub.here_now() \
         .channels(ch) \
         .include_uuids(True) \
         .future()
@@ -34,13 +34,13 @@ async def test_single_channel(event_loop):
     assert channels[0].occupants[0].uuid == pubnub.uuid
 
     pubnub.unsubscribe().channels(ch).execute()
-    await callback.wait_for_disconnect()
+    yield from callback.wait_for_disconnect()
 
     pubnub.stop()
 
 
 @pytest.mark.asyncio
-async def test_multiple_channels(event_loop):
+def test_multiple_channels(event_loop):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
     ch1 = helper.gen_channel("here-now")
@@ -50,10 +50,10 @@ async def test_multiple_channels(event_loop):
     pubnub.add_listener(callback)
     pubnub.subscribe().channels([ch1, ch2]).execute()
 
-    await callback.wait_for_connect()
+    yield from callback.wait_for_connect()
 
-    await asyncio.sleep(4)
-    env = await pubnub.here_now() \
+    yield from asyncio.sleep(5)
+    env = yield from pubnub.here_now() \
         .channels([ch1, ch2]) \
         .future()
 
@@ -69,13 +69,13 @@ async def test_multiple_channels(event_loop):
     assert channels[1].occupants[0].uuid == pubnub.uuid
 
     pubnub.unsubscribe().channels([ch1, ch2]).execute()
-    await callback.wait_for_disconnect()
+    yield from callback.wait_for_disconnect()
 
     pubnub.stop()
 
 
 @pytest.mark.asyncio
-async def test_global(event_loop):
+def test_global(event_loop):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
     ch1 = helper.gen_channel("here-now")
@@ -85,16 +85,16 @@ async def test_global(event_loop):
     pubnub.add_listener(callback)
     pubnub.subscribe().channels([ch1, ch2]).execute()
 
-    await callback.wait_for_connect()
+    yield from callback.wait_for_connect()
 
-    await asyncio.sleep(2)
+    yield from asyncio.sleep(5)
 
-    env = await pubnub.here_now().future()
+    env = yield from pubnub.here_now().future()
 
     assert env.result.total_channels >= 2
     assert env.result.total_occupancy >= 1
 
     pubnub.unsubscribe().channels([ch1, ch2]).execute()
-    await callback.wait_for_disconnect()
+    yield from callback.wait_for_disconnect()
 
     pubnub.stop()

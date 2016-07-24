@@ -1,3 +1,5 @@
+import asyncio
+
 import pytest
 
 from pubnub.pubnub_asyncio import PubNubAsyncio
@@ -6,12 +8,12 @@ from tests.helper import pnconf
 
 
 @pytest.mark.asyncio
-async def test_single_channel(event_loop):
+def test_single_channel(event_loop):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
     ch = helper.gen_channel("herenow-unit")
     state = {"name": "Alex", "count": 5}
 
-    env = await pubnub.set_state() \
+    env = yield from pubnub.set_state() \
         .channels(ch) \
         .state(state) \
         .future()
@@ -19,7 +21,7 @@ async def test_single_channel(event_loop):
     assert env.result.state['name'] == "Alex"
     assert env.result.state['count'] == 5
 
-    env = await pubnub.get_state() \
+    env = yield from pubnub.get_state() \
         .channels(ch) \
         .future()
 
@@ -30,13 +32,13 @@ async def test_single_channel(event_loop):
 
 
 @pytest.mark.asyncio
-async def test_multiple_channels(event_loop):
+def test_multiple_channels(event_loop):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
     ch1 = helper.gen_channel("herenow-unit")
     ch2 = helper.gen_channel("herenow-unit")
     state = {"name": "Alex", "count": 5}
 
-    env = await pubnub.set_state() \
+    env = yield from pubnub.set_state() \
         .channels([ch1, ch2]) \
         .state(state) \
         .future()
@@ -44,7 +46,7 @@ async def test_multiple_channels(event_loop):
     assert env.result.state['name'] == "Alex"
     assert env.result.state['count'] == 5
 
-    env = await pubnub.get_state() \
+    env = yield from pubnub.get_state() \
         .channels([ch1, ch2]) \
         .future()
 

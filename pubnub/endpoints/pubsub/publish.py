@@ -95,8 +95,7 @@ class Publish(Endpoint):
             return HttpMethod.GET
 
     def validate_params(self):
-        if self._channel is None or len(self._channel) is 0:
-            raise PubNubException(pn_error=PNERR_CHANNEL_MISSING)
+        self.validate_channel()
 
         if self._message is None:
             raise PubNubException(pn_error=PNERR_MESSAGE_MISSING)

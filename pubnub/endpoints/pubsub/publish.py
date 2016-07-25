@@ -1,7 +1,7 @@
 from pubnub import utils
 from pubnub import crypto as pn_crypto
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.errors import PNERR_MESSAGE_MISSING, PNERR_CHANNEL_MISSING
+from pubnub.errors import PNERR_MESSAGE_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.enums import HttpMethod, PNOperationType

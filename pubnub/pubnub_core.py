@@ -3,6 +3,7 @@ import time
 
 from abc import ABCMeta, abstractmethod
 
+from pubnub.endpoints.history import History
 from .endpoints.access.audit import Audit
 from .endpoints.access.grant import Grant
 from .builders import SubscribeBuilder
@@ -116,5 +117,9 @@ class PubNubCore:
     def remove_device_from_push(self):
         return RemoveDeviceFromPush(self)
 
+    def history(self):
+        return History(self)
+
     def timestamp(self):
+        """ Make static """
         return int(time.time())

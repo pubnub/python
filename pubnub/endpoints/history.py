@@ -3,10 +3,11 @@ import six
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.models.consumer.history import PNHistoryResult
 
 
 class History(Endpoint):
-    HISTORY_PATH = "v2/history/sub-key/%s/channel/%s"
+    HISTORY_PATH = "/v2/history/sub-key/%s/channel/%s"
     MAX_COUNT = 100
 
     def __init__(self, pubnub):
@@ -83,7 +84,7 @@ class History(Endpoint):
         self.validate_channel()
 
     def create_response(self, envelope):
-        pass
+        return PNHistoryResult.from_json(envelope)
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

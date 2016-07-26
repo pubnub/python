@@ -7,7 +7,7 @@ class RequestOptions(object):
     def __init__(self, path, params, method, request_timeout, connect_timeout, data=None,
                  sort_arguments=False):
         assert len(path) > 0
-        assert len(params) > 0
+        assert isinstance(params, dict)
         assert isinstance(method, six.integer_types)
         assert isinstance(request_timeout, six.integer_types)
         assert isinstance(connect_timeout, six.integer_types)

@@ -4,6 +4,7 @@ import time
 from abc import ABCMeta, abstractmethod
 
 from pubnub.endpoints.history import History
+from pubnub.endpoints.time import Time
 from .endpoints.access.audit import Audit
 from .endpoints.access.grant import Grant
 from .builders import SubscribeBuilder
@@ -120,6 +121,9 @@ class PubNubCore:
     def history(self):
         return History(self)
 
-    def timestamp(self):
-        """ Make static """
+    def time(self):
+        return Time(self)
+
+    @staticmethod
+    def timestamp():
         return int(time.time())

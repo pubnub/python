@@ -84,7 +84,7 @@ class History(Endpoint):
         self.validate_channel()
 
     def create_response(self, envelope):
-        return PNHistoryResult.from_json(envelope)
+        return PNHistoryResult.from_json(envelope, self._include_timetoken, self.pubnub.config.cipher_key)
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

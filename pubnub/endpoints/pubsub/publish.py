@@ -103,8 +103,6 @@ class Publish(Endpoint):
         self.validate_subscribe_key()
         self.validate_publish_key()
 
-        pass
-
     def create_response(self, envelope):
         """
         :param envelope: an already serialized json response

@@ -1,5 +1,6 @@
 from pubnub import crypto as pn_crypto
 
+
 class PNHistoryResult(object):
     def __init__(self, messages, start_timetoken, end_timetoken):
         self.messages = messages
@@ -7,8 +8,7 @@ class PNHistoryResult(object):
         self.end_timetoken = end_timetoken
 
     @classmethod
-    def from_json(cls, json_input, include_tt_option=False, cypher=None):
-        assert isinstance(include_tt_option, bool)
+    def from_json(cls, json_input, include_tt_option=False, cipher=None):
         start_timetoken = json_input[1]
         end_timetoken = json_input[2]
 
@@ -21,8 +21,8 @@ class PNHistoryResult(object):
             else:
                 message = PNHistoryItemResult(item)
 
-            if cypher is not None:
-                message.decrypt(cypher)
+            if cipher is not None:
+                message.decrypt(cipher)
 
             messages.append(message)
 
@@ -38,6 +38,6 @@ class PNHistoryItemResult(object):
         self.timetoken = timetoken
         self.entry = entry
 
-    def decrypt(self, cypher_key):
-        self.entry = pn_crypto.decrypt(cypher_key, self.entry)
+    def decrypt(self, cipher_key):
+        self.entry = pn_crypto.decrypt(cipher_key, self.entry)
 

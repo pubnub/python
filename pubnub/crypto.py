@@ -1,8 +1,9 @@
 import hashlib
+import json
+from json import JSONDecodeError
 
 from Crypto.Cipher import AES
-from base64 import encodestring, decodestring
-from base64 import urlsafe_b64encode
+from base64 import decodebytes, encodebytes
 
 import sys
 
@@ -45,9 +46,9 @@ def encrypt(key, msg):
     secret = get_secret(key)
     cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
     if v == 3:
-        return encodestring(cipher.encrypt(pad(msg.encode('utf-8')))).decode('utf-8').replace("\n", "")
+        return encodebytes(cipher.encrypt(pad(msg.encode('utf-8')))).decode('utf-8').replace("\n", "")
     else:
-        return encodestring(cipher.encrypt(pad(msg))).replace("\n", "")
+        return encodebytes(cipher.encrypt(pad(msg))).replace("\n", "")
 
 
 def decrypt(key, msg):
@@ -55,6 +56,11 @@ def decrypt(key, msg):
     cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
 
     if v == 3:
-        return (cipher.decrypt(decodestring(msg.encode('utf-8')))).decode('utf-8')
+        plain = depad((cipher.decrypt(decodebytes(msg.encode('utf-8')))).decode('utf-8'))
     else:
-        return depad(cipher.decrypt(decodestring(msg)))
+        plain = depad(cipher.decrypt(decodebytes(msg)))
+
+    try:
+        return json.loads(plain)
+    except (JSONDecodeError, SyntaxError):
+        return plain

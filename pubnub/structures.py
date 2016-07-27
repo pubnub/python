@@ -31,7 +31,6 @@ class RequestOptions(object):
 
     def query_list(self):
         """ All query keys and values should be already encoded inside a build_params() method"""
-        # TODO: add option to sort params alphabetically(for PAM requests)
         s = []
 
         for k, v in self.params.items():
@@ -45,6 +44,12 @@ class RequestOptions(object):
     @property
     def query_string(self):
         return str('&'.join(self.query_list()))
+
+
+class PlatformOptions(object):
+    def __init__(self, headers, scheme_and_host):
+        self.headers = headers
+        self.scheme_and_host = scheme_and_host
 
 
 class ResponseInfo(object):

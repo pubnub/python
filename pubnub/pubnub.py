@@ -4,8 +4,10 @@ import threading
 
 from threading import Event
 from six.moves.queue import Queue, Empty
-from pubnub.request_handlers.native_requests import PubNubRequestHandler, RequestsHandler
+
 from . import utils
+from .request_handlers.base import BaseRequestHandler
+from .request_handlers.requests_handler import RequestsRequestHandler
 from .callbacks import SubscribeCallback
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
@@ -26,7 +28,7 @@ class PubNub(PubNubCore):
     def __init__(self, config):
         assert isinstance(config, PNConfiguration)
 
-        self._request_handler = RequestsHandler()
+        self._request_handler = RequestsRequestHandler()
         PubNubCore.__init__(self, config)
 
         if self.config.enable_subscribe:
@@ -38,7 +40,7 @@ class PubNub(PubNubCore):
         return ""
 
     def set_request_handler(self, handler):
-        assert isinstance(handler, PubNubRequestHandler)
+        assert isinstance(handler, BaseRequestHandler)
         self._request_handler = handler
 
     def request_sync(self, endpoint_call_options):

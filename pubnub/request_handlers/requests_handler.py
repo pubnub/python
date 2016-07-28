@@ -2,35 +2,28 @@ import logging
 import threading
 import requests
 
-from abc import abstractmethod, ABCMeta
+from requests import Session
 from pubnub import utils
 from pubnub.enums import PNStatusCategory
 from pubnub.errors import PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR, PNERR_TOO_MANY_REDIRECTS_ERROR, PNERR_CLIENT_TIMEOUT, \
     PNERR_HTTP_ERROR, PNERR_CONNECTION_ERROR
 from pubnub.errors import PNERR_SERVER_ERROR
 from pubnub.exceptions import PubNubException
+from pubnub.request_handlers.base import BaseRequestHandler
 from pubnub.structures import RequestOptions, PlatformOptions, ResponseInfo
 
 logger = logging.getLogger("pubnub")
 
 
-class PubNubRequestHandler(object):
-    __metaclass__ = ABCMeta
-
-    @abstractmethod
-    def sync_request(self, platform_options, endpoint_call_options):
-        pass
-
-
-class RequestsHandler(PubNubRequestHandler):
+class RequestsRequestHandler(BaseRequestHandler):
     """ PubNub Python SDK Native requests handler based on `requests` HTTP library. """
     ENDPOINT_THREAD_COUNTER = 0
 
     def __init__(self):
-        self.session = requests.Session()
+        self.session = Session()
 
     def sync_request(self, platform_options, endpoint_call_options):
-        res = self.request(platform_options, endpoint_call_options)
+        res = self._invoke_request(platform_options, endpoint_call_options)
 
         # http error
         if res.status_code != requests.codes.ok:
@@ -124,7 +117,7 @@ class RequestsHandler(PubNubRequestHandler):
 
         def callback_to_invoke_in_another_thread():
             try:
-                res = self.request(platform_options, endpoint_call_options)
+                res = self._invoke_request(platform_options, endpoint_call_options)
                 if cancellation_event is not None and cancellation_event.isSet():
                     # Since there are no way to affect on ongoing request it's response will be just ignored on cancel call
                     return
@@ -144,7 +137,7 @@ class RequestsHandler(PubNubRequestHandler):
 
         thread = threading.Thread(
             target=client.run,
-            name="EndpointThread-%s-%d" % (endpoint_name, ++RequestsHandler.ENDPOINT_THREAD_COUNTER)
+            name="EndpointThread-%s-%d" % (endpoint_name, ++RequestsRequestHandler.ENDPOINT_THREAD_COUNTER)
         )
         thread.setDaemon(True)
         thread.start()
@@ -154,7 +147,7 @@ class RequestsHandler(PubNubRequestHandler):
 
         return call
 
-    def request(self, p_options, e_options):
+    def _invoke_request(self, p_options, e_options):
         assert isinstance(p_options, PlatformOptions)
         assert isinstance(e_options, RequestOptions)
         url = p_options.scheme_and_host + e_options.path

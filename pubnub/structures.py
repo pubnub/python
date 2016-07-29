@@ -4,8 +4,8 @@ from .enums import HttpMethod
 
 
 class RequestOptions(object):
-    def __init__(self, path, params, method, request_timeout, connect_timeout, data=None,
-                 sort_arguments=False):
+    def __init__(self, path, params, method, request_timeout, connect_timeout, create_response,
+                 create_status, data=None, sort_arguments=False):
         assert len(path) > 0
         assert isinstance(params, dict)
         assert isinstance(method, six.integer_types)
@@ -21,6 +21,9 @@ class RequestOptions(object):
         # TODO: rename to 'body'
         self.data = data
         self.sort_params = sort_arguments
+
+        self.create_response = create_response
+        self.create_status = create_status
 
     @property
     def method_string(self):
@@ -60,3 +63,9 @@ class ResponseInfo(object):
         self.uuid = uuid
         self.auth_key = auth_key
         self.client_request = client_request
+
+
+class Envelope(object):
+    def __init__(self, result, status):
+        self.result = result
+        self.status = status

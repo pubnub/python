@@ -10,7 +10,7 @@ from pubnub.errors import PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR, PNERR_TOO_MAN
 from pubnub.errors import PNERR_SERVER_ERROR
 from pubnub.exceptions import PubNubException
 from pubnub.request_handlers.base import BaseRequestHandler
-from pubnub.structures import RequestOptions, PlatformOptions, ResponseInfo
+from pubnub.structures import RequestOptions, PlatformOptions, ResponseInfo, Envelope
 
 logger = logging.getLogger("pubnub")
 
@@ -23,115 +23,39 @@ class RequestsRequestHandler(BaseRequestHandler):
         self.session = Session()
 
     def sync_request(self, platform_options, endpoint_call_options):
-        res = self._invoke_request(platform_options, endpoint_call_options)
-
-        # http error
-        if res.status_code != requests.codes.ok:
-            if res.text is None:
-                text = "N/A"
-            else:
-                text = res.text
-
-            if res.status_code >= 500:
-                err = PNERR_SERVER_ERROR
-            else:
-                err = PNERR_CLIENT_ERROR
-
-            raise PubNubException(
-                pn_error=err,
-                errormsg=text,
-                status_code=res.status_code
-            )
-
-        return res
+        return self._build_envelope(platform_options, endpoint_call_options)
 
     def async_request(self, endpoint_name, platform_options, endpoint_call_options, callback, cancellation_event):
         call = Call()
 
-        def success_callback(res):
-            status_category = PNStatusCategory.PNUnknownCategory
-            response_info = None
-
-            if res is not None:
-                url = utils.urlparse(res.url)
-                query = utils.parse_qs(url.query)
-                uuid = None
-                auth_key = None
-
-                if 'uuid' in query and len(query['uuid']) > 0:
-                    uuid = query['uuid'][0]
-
-                if 'auth_key' in query and len(query['auth_key']) > 0:
-                    auth_key = query['auth_key'][0]
-
-                response_info = ResponseInfo(
-                    status_code=res.status_code,
-                    tls_enabled='https' == url.scheme,
-                    origin=url.hostname,
-                    uuid=uuid,
-                    auth_key=auth_key,
-                    client_request=res.request
-                )
-
-            if res.status_code != requests.codes.ok:
-                if res.status_code == 403:
-                    status_category = PNStatusCategory.PNAccessDeniedCategory
-
-                if res.status_code == 400:
-                    status_category = PNStatusCategory.PNBadRequestCategory
-
-                if res.text is None:
-                    text = "N/A"
-                else:
-                    text = res.text
-
-                if res.status_code >= 500:
-                    err = PNERR_SERVER_ERROR
-                else:
-                    err = PNERR_CLIENT_ERROR
-
-                callback(status_category, res.json(), response_info, PubNubException(
-                    pn_error=err,
-                    errormsg=text,
-                    status_code=res.status_code
-                ))
-                call.executed_cb()
-            else:
-                callback(PNStatusCategory.PNAcknowledgmentCategory, res.json(), response_info, None)
-                call.executed_cb()
-
-        def error_callback(e):
-            status_category = PNStatusCategory.PNBadRequestCategory
-            # TODO: allow non PN errors
-
-            if not type(e) is PubNubException:
-                raise e
-
-            if e._pn_error is PNERR_CONNECTION_ERROR:
-                status_category = PNStatusCategory.PNUnexpectedDisconnectCategory
-            elif e._pn_error is PNERR_CLIENT_TIMEOUT:
-                status_category = PNStatusCategory.PNTimeoutCategory
-
-            callback(status_category, None, None, e)
-            call.executed_cb()
-
         def callback_to_invoke_in_another_thread():
             try:
-                res = self._invoke_request(platform_options, endpoint_call_options)
+                envelope = self._build_envelope(platform_options, endpoint_call_options)
                 if cancellation_event is not None and cancellation_event.isSet():
-                    # Since there are no way to affect on ongoing request it's response will be just ignored on cancel call
+                    # Since there are no way to affect on ongoing request it's response will
+                    # be just ignored on cancel call
                     return
 
-                success_callback(res)
+                callback(envelope)
             except PubNubException as e:
-                error_callback(e)
+                callback(Envelope(
+                    result=None,
+                    status=endpoint_call_options.create_status(
+                        category=PNStatusCategory.PNBadRequestCategory,
+                        response=None,
+                        response_info=None,
+                        exception=e)))
             except Exception as e:
                 # TODO: log the exception
-                # TODO: Should non-pubnub exception to be reraised?
-                error_callback(PubNubException(
-                    pn_error=PNERR_UNKNOWN_ERROR,
-                    errormsg="Exception in request thread: %s" % str(e)
-                ))
+                callback(Envelope(
+                    result=None,
+                    status=endpoint_call_options.create_status(
+                        category=PNStatusCategory.PNInternalExceptionCategory,
+                        response=None,
+                        response_info=None,
+                        exception=e)))
+            finally:
+                call.executed_cb()
 
         client = AsyncHTTPClient(callback_to_invoke_in_another_thread)
 
@@ -147,9 +71,90 @@ class RequestsRequestHandler(BaseRequestHandler):
 
         return call
 
+    def _build_envelope(self, p_options, e_options):
+        """ A wrapper for _invoke_url to separate request logic """
+
+        status_category = PNStatusCategory.PNUnknownCategory
+        response_info = None
+
+        try:
+            res = self._invoke_request(p_options, e_options)
+        except PubNubException as e:
+            if e._pn_error is PNERR_CONNECTION_ERROR:
+                status_category = PNStatusCategory.PNUnexpectedDisconnectCategory
+            elif e._pn_error is PNERR_CLIENT_TIMEOUT:
+                status_category = PNStatusCategory.PNTimeoutCategory
+
+            return Envelope(
+                result=None,
+                status=e_options.create_status(
+                    category=status_category,
+                    response=None,
+                    response_info=response_info,
+                    exception=e))
+
+        if res is not None:
+            url = utils.urlparse(res.url)
+            query = utils.parse_qs(url.query)
+            uuid = None
+            auth_key = None
+
+            if 'uuid' in query and len(query['uuid']) > 0:
+                uuid = query['uuid'][0]
+
+            if 'auth_key' in query and len(query['auth_key']) > 0:
+                auth_key = query['auth_key'][0]
+
+            response_info = ResponseInfo(
+                status_code=res.status_code,
+                tls_enabled='https' == url.scheme,
+                origin=url.hostname,
+                uuid=uuid,
+                auth_key=auth_key,
+                client_request=res.request
+            )
+
+        if res.status_code != requests.codes.ok:
+            if res.status_code == 403:
+                status_category = PNStatusCategory.PNAccessDeniedCategory
+
+            if res.status_code == 400:
+                status_category = PNStatusCategory.PNBadRequestCategory
+
+            if res.text is None:
+                text = "N/A"
+            else:
+                text = res.text
+
+            if res.status_code >= 500:
+                err = PNERR_SERVER_ERROR
+            else:
+                err = PNERR_CLIENT_ERROR
+
+            return Envelope(
+                result=e_options.create_response(res.json()),
+                status=e_options.create_status(
+                    category=status_category,
+                    response=res.json(),
+                    response_info=response_info,
+                    exception=PubNubException(
+                        pn_error=err,
+                        errormsg=text,
+                        status_code=res.status_code
+                    )))
+        else:
+            return Envelope(
+                result=e_options.create_response(res.json()),
+                status=e_options.create_status(
+                    category=PNStatusCategory.PNAcknowledgmentCategory,
+                    response=res.json(),
+                    response_info=response_info,
+                    exception=None))
+
     def _invoke_request(self, p_options, e_options):
         assert isinstance(p_options, PlatformOptions)
         assert isinstance(e_options, RequestOptions)
+
         url = p_options.scheme_and_host + e_options.path
 
         args = {
@@ -176,7 +181,6 @@ class RequestsRequestHandler(BaseRequestHandler):
                     e_options.path,
                     e_options.query_string)))
 
-        # connection error
         try:
             res = self.session.request(**args)
             logger.debug("GOT %s" % res.text)

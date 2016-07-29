@@ -74,13 +74,14 @@ class Endpoint(object):
     def options(self):
         return RequestOptions(self.build_path(), self.build_params(),
                               self.http_method(), self.request_timeout(),
-                              self.connect_timeout(), self.build_data(), self._sort_params)
+                              self.connect_timeout(), self.create_response, self.create_status_response,
+                              self.build_data(), self._sort_params)
 
     def sync(self):
         self.validate_params()
 
-        raw_response = self.pubnub.request_sync(self.options())
-        return self.create_response(raw_response.json())
+        envelope = self.pubnub.request_sync(self.options())
+        return self.create_response(envelope.result)
 
     def async(self, callback):
         try:
@@ -90,11 +91,8 @@ class Endpoint(object):
             callback(None, self.create_status_response(PNStatusCategory.PNBadRequestCategory, None, None, e))
             return
 
-        def callback_wrapper(status_category, response, response_info, exception):
-            callback(
-                self.create_response(response),
-                self.create_status_response(status_category, response, response_info, exception)
-            )
+        def callback_wrapper(envelope):
+            callback(envelope.result, envelope.status)
 
         return self.pubnub.request_async(self.name(), options, callback_wrapper, self._cancellation_event)
 
@@ -147,16 +145,7 @@ class Endpoint(object):
             raise PubNubException(pn_error=PNERR_PUBLISH_KEY_MISSING)
 
     def create_status_response(self, category, response, response_info, exception):
-        """
-        Used only by async requests
-
-        :param category: of response
-        :param response_info: unified response info
-        :param response: already decoded json data
-        :param exception: if any
-        :return:
-        """
-
+        # TODO: rename to create_status
         if response_info is not None:
             assert isinstance(response_info, ResponseInfo)
 
@@ -186,12 +175,3 @@ class Endpoint(object):
 
         return pn_status
 
-    # TODO: move to utils?
-    # @classmethod
-    # def join_query(cls, params):
-    #     query_list = []
-    #
-    #     for k, v in params.items():
-    #         query_list.append(k + "=" + v)
-    #
-    #     return "&".join(query_list)

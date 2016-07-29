@@ -27,6 +27,7 @@ class PNStatusCategory(object):
     PNDecryptionErrorCategory = 14
     PNTLSConnectionFailedCategory = 15
     PNTLSUntrustedCertificateCategory = 16
+    PNInternalExceptionCategory = 17
 
 
 class PNOperationType(object):

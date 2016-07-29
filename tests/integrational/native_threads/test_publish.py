@@ -2,11 +2,12 @@ import logging
 import threading
 import unittest
 import pubnub
+from pubnub.enums import PNStatusCategory
 
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_enc
+from tests.helper import pnconf, pnconf_enc, pn_vcr
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -22,9 +23,13 @@ class TestPubNubSuccessPublish(unittest.TestCase):
 
     def assert_success(self):
         self.event.wait()
-        assert not self.status.is_error()
+        if self.status.is_error():
+            self.fail(str(self.status.error_data.exception))
         assert isinstance(self.response, PNPublishResult)
         assert self.response.timetoken > 1
+        self.event.clear()
+        self.response = None
+        self.status = None
 
     def assert_success_publish_get(self, msg):
         PubNub(pnconf).publish() \
@@ -138,6 +143,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         self.event.wait()
 
         assert self.status.is_error()
+        assert self.status.category is PNStatusCategory.PNBadRequestCategory
         assert self.status.original_response[0] is 0
         assert self.status.original_response[1] == 'Invalid Key'
         assert "HTTP Client Error (400):" in str(self.status.error_data.exception)

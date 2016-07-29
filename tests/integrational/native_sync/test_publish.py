@@ -16,13 +16,13 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_string_get(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message("hi") \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -30,13 +30,13 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_list_get(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(["hi", "hi2", "hi3"]) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -44,13 +44,13 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'], match_on=['publish_object'])
     def test_publish_object_get(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message({"name": "Alex", "online": True}) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -58,13 +58,13 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_bool_get(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(True) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -72,13 +72,13 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_int_get(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(5) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -86,13 +86,13 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_encrypted_string_get(self):
         try:
-            res = PubNub(pnconf_enc).publish() \
+            env = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
                 .message("encrypted string") \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -100,13 +100,13 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_encrypted_list_get(self):
         try:
-            res = PubNub(pnconf_enc).publish() \
+            env = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
                 .message(["encrypted", "list"]) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -114,14 +114,14 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_string_post(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message("hi") \
                 .use_post(True) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -129,14 +129,14 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_list_post(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(["hi", "hi2", "hi3"]) \
                 .use_post(True) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -144,14 +144,14 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_object_post(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message({"name": "Alex", "online": True}) \
                 .use_post(True) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -159,14 +159,14 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_bool_post(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(True) \
                 .use_post(True) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -174,14 +174,14 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_int_post(self):
         try:
-            res = PubNub(pnconf).publish() \
+            env = PubNub(pnconf).publish() \
                 .channel("ch1") \
                 .message(5) \
                 .use_post(True) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -189,14 +189,14 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_encrypted_string_post(self):
         try:
-            res = PubNub(pnconf_enc).publish() \
+            env = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
                 .message("encrypted string POST") \
                 .use_post(True) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -204,14 +204,14 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_encrypted_list_post(self):
         try:
-            res = PubNub(pnconf_enc).publish() \
+            env = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
                 .message(["encrypted", "list", "POST"]) \
                 .use_post(True) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -275,14 +275,14 @@ class TestPubNubPublish(unittest.TestCase):
         meta = {'a': 2, 'b': 'qwer'}
 
         try:
-            res = PubNub(pnconf_enc).publish() \
+            env = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
                 .message("hey") \
                 .meta(meta) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
 
@@ -290,13 +290,13 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid'])
     def test_publish_do_not_store(self):
         try:
-            res = PubNub(pnconf_enc).publish() \
+            env = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
                 .message("hey") \
                 .should_store(False) \
                 .sync()
 
-            assert isinstance(res, PNPublishResult)
-            assert res.timetoken > 1
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)

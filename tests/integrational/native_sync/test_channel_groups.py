@@ -20,41 +20,41 @@ class TestPubNubChannelGroups(unittest.TestCase):
         pubnub = PubNub(pnconf_copy())
 
         # add
-        result = pubnub.add_channel_to_channel_group() \
+        envelope = pubnub.add_channel_to_channel_group() \
             .channels(ch) \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsAddChannelResult)
+        assert isinstance(envelope.result, PNChannelGroupsAddChannelResult)
 
         time.sleep(2)
 
         # list
-        result = pubnub.list_channels_in_channel_group() \
+        envelope = pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsListResult)
-        assert len(result.channels) == 1
-        assert result.channels[0] == ch
+        assert isinstance(envelope.result, PNChannelGroupsListResult)
+        assert len(envelope.result.channels) == 1
+        assert envelope.result.channels[0] == ch
 
         # remove
-        result = pubnub.remove_channel_from_channel_group() \
+        envelope = pubnub.remove_channel_from_channel_group() \
             .channels(ch) \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsRemoveChannelResult)
+        assert isinstance(envelope.result, PNChannelGroupsRemoveChannelResult)
 
         time.sleep(2)
 
         # list
-        result = pubnub.list_channels_in_channel_group() \
+        envelope = pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsListResult)
-        assert len(result.channels) == 0
+        assert isinstance(envelope.result, PNChannelGroupsListResult)
+        assert len(envelope.result.channels) == 0
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/native_sync/channel_groups/add_remove_multiple_channels.yaml',
@@ -66,42 +66,42 @@ class TestPubNubChannelGroups(unittest.TestCase):
         pubnub = PubNub(pnconf_copy())
 
         # add
-        result = pubnub.add_channel_to_channel_group() \
+        envelope = pubnub.add_channel_to_channel_group() \
             .channels([ch1, ch2]) \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsAddChannelResult)
+        assert isinstance(envelope.result, PNChannelGroupsAddChannelResult)
 
         time.sleep(1)
 
         # list
-        result = pubnub.list_channels_in_channel_group() \
+        envelope = pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsListResult)
-        assert len(result.channels) == 2
-        assert ch1 in result.channels
-        assert ch2 in result.channels
+        assert isinstance(envelope.result, PNChannelGroupsListResult)
+        assert len(envelope.result.channels) == 2
+        assert ch1 in envelope.result.channels
+        assert ch2 in envelope.result.channels
 
         # remove
-        result = pubnub.remove_channel_from_channel_group() \
+        envelope = pubnub.remove_channel_from_channel_group() \
             .channels([ch1, ch2]) \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsRemoveChannelResult)
+        assert isinstance(envelope.result, PNChannelGroupsRemoveChannelResult)
 
         time.sleep(1)
 
         # list
-        result = pubnub.list_channels_in_channel_group() \
+        envelope = pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsListResult)
-        assert len(result.channels) == 0
+        assert isinstance(envelope.result, PNChannelGroupsListResult)
+        assert len(envelope.result.channels) == 0
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/native_sync/channel_groups/add_channel_remove_group.yaml',
@@ -112,37 +112,37 @@ class TestPubNubChannelGroups(unittest.TestCase):
         pubnub = PubNub(pnconf_copy())
 
         # add
-        result = pubnub.add_channel_to_channel_group() \
+        envelope = pubnub.add_channel_to_channel_group() \
             .channels(ch) \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsAddChannelResult)
+        assert isinstance(envelope.result, PNChannelGroupsAddChannelResult)
 
         time.sleep(1)
 
         # list
-        result = pubnub.list_channels_in_channel_group() \
+        envelope = pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsListResult)
-        assert len(result.channels) == 1
-        assert result.channels[0] == ch
+        assert isinstance(envelope.result, PNChannelGroupsListResult)
+        assert len(envelope.result.channels) == 1
+        assert envelope.result.channels[0] == ch
 
         # remove
-        result = pubnub.remove_channel_group() \
+        envelope = pubnub.remove_channel_group() \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsRemoveGroupResult)
+        assert isinstance(envelope.result, PNChannelGroupsRemoveGroupResult)
 
         time.sleep(1)
 
         # list
-        result = pubnub.list_channels_in_channel_group() \
+        envelope = pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
             .sync()
 
-        assert isinstance(result, PNChannelGroupsListResult)
-        assert len(result.channels) == 0
+        assert isinstance(envelope.result, PNChannelGroupsListResult)
+        assert len(envelope.result.channels) == 0

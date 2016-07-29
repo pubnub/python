@@ -81,7 +81,11 @@ class Endpoint(object):
         self.validate_params()
 
         envelope = self.pubnub.request_sync(self.options())
-        return self.create_response(envelope.result)
+
+        if envelope.status.is_error():
+            raise envelope.status.error_data.exception
+
+        return envelope
 
     def async(self, callback):
         try:

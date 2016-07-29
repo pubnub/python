@@ -22,24 +22,24 @@ class TestPubNubState(unittest.TestCase):
         pubnub.config.uuid = "history-native-sync-uuid"
 
         for i in range(COUNT):
-            result = pubnub.publish().channel(ch).message("hey-%s" % i).sync()
-            assert isinstance(result, PNPublishResult)
-            assert result.timetoken > 0
+            envelope = pubnub.publish().channel(ch).message("hey-%s" % i).sync()
+            assert isinstance(envelope.result, PNPublishResult)
+            assert envelope.result.timetoken > 0
 
         time.sleep(5)
 
-        result = pubnub.history().channel(ch).count(COUNT).sync()
+        envelope = pubnub.history().channel(ch).count(COUNT).sync()
 
-        assert isinstance(result, PNHistoryResult)
-        assert result.start_timetoken > 0
-        assert result.end_timetoken > 0
-        assert len(result.messages) == 5
+        assert isinstance(envelope.result, PNHistoryResult)
+        assert envelope.result.start_timetoken > 0
+        assert envelope.result.end_timetoken > 0
+        assert len(envelope.result.messages) == 5
 
-        assert result.messages[0].entry == 'hey-0'
-        assert result.messages[1].entry == 'hey-1'
-        assert result.messages[2].entry == 'hey-2'
-        assert result.messages[3].entry == 'hey-3'
-        assert result.messages[4].entry == 'hey-4'
+        assert envelope.result.messages[0].entry == 'hey-0'
+        assert envelope.result.messages[1].entry == 'hey-1'
+        assert envelope.result.messages[2].entry == 'hey-2'
+        assert envelope.result.messages[3].entry == 'hey-3'
+        assert envelope.result.messages[4].entry == 'hey-4'
 
     @use_cassette_and_stub_time_sleep('tests/integrational/fixtures/native_sync/history/encoded.yaml',
                                       filter_query_parameters=['uuid'])
@@ -49,21 +49,21 @@ class TestPubNubState(unittest.TestCase):
         pubnub.config.uuid = "history-native-sync-uuid"
 
         for i in range(COUNT):
-            result = pubnub.publish().channel(ch).message("hey-%s" % i).sync()
-            assert isinstance(result, PNPublishResult)
-            assert result.timetoken > 0
+            envelope = pubnub.publish().channel(ch).message("hey-%s" % i).sync()
+            assert isinstance(envelope.result, PNPublishResult)
+            assert envelope.result.timetoken > 0
 
         time.sleep(5)
 
-        result = pubnub.history().channel(ch).count(COUNT).sync()
+        envelope = pubnub.history().channel(ch).count(COUNT).sync()
 
-        assert isinstance(result, PNHistoryResult)
-        assert result.start_timetoken > 0
-        assert result.end_timetoken > 0
-        assert len(result.messages) == 5
+        assert isinstance(envelope.result, PNHistoryResult)
+        assert envelope.result.start_timetoken > 0
+        assert envelope.result.end_timetoken > 0
+        assert len(envelope.result.messages) == 5
 
-        assert result.messages[0].entry == 'hey-0'
-        assert result.messages[1].entry == 'hey-1'
-        assert result.messages[2].entry == 'hey-2'
-        assert result.messages[3].entry == 'hey-3'
-        assert result.messages[4].entry == 'hey-4'
+        assert envelope.result.messages[0].entry == 'hey-0'
+        assert envelope.result.messages[1].entry == 'hey-1'
+        assert envelope.result.messages[2].entry == 'hey-2'
+        assert envelope.result.messages[3].entry == 'hey-3'
+        assert envelope.result.messages[4].entry == 'hey-4'

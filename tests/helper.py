@@ -153,9 +153,29 @@ def publish_object_matcher(r1, r2):
     return True
 
 
+def check_the_difference_matcher(r1, r2):
+    """ A helper to check the difference between two requests """
+
+    try:
+        assert r1.body == r2.body
+        assert r1.headers == r2.headers
+        assert r1.host == r2.host
+        assert r1.method == r2.method
+        assert r1.query == r2.query
+        assert r1.port == r2.port
+        assert r1.protocol == r2.protocol
+        assert r1.scheme == r2.scheme
+        assert r1.path == r2.path
+    except AssertionError:
+        return False
+
+    return True
+
+
 pn_vcr.register_matcher('meta_object_in_query', meta_object_in_query_matcher)
 pn_vcr.register_matcher('state_object_in_query', state_object_in_query_matcher)
 pn_vcr.register_matcher('publish_object', publish_object_matcher)
+pn_vcr.register_matcher('check_the_difference', check_the_difference_matcher)
 
 
 def use_cassette_and_stub_time_sleep(cassette_name, filter_query_parameters):

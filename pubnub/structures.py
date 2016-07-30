@@ -50,9 +50,9 @@ class RequestOptions(object):
 
 
 class PlatformOptions(object):
-    def __init__(self, headers, scheme_and_host):
+    def __init__(self, headers, pn_config):
         self.headers = headers
-        self.scheme_and_host = scheme_and_host
+        self.pn_config = pn_config
 
 
 class ResponseInfo(object):

@@ -44,12 +44,12 @@ class PubNub(PubNubCore):
         self._request_handler = handler
 
     def request_sync(self, endpoint_call_options):
-        platform_options = PlatformOptions(self.headers, self.config.scheme_and_host())
+        platform_options = PlatformOptions(self.headers, self.config)
 
         return self._request_handler.sync_request(platform_options, endpoint_call_options)
 
     def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event):
-        platform_options = PlatformOptions(self.headers, self.config.scheme_and_host())
+        platform_options = PlatformOptions(self.headers, self.config)
 
         return self._request_handler.async_request(endpoint_name, platform_options, endpoint_call_options,
                                                    callback, cancellation_event)

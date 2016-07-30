@@ -155,7 +155,7 @@ class RequestsRequestHandler(BaseRequestHandler):
         assert isinstance(p_options, PlatformOptions)
         assert isinstance(e_options, RequestOptions)
 
-        url = p_options.scheme_and_host + e_options.path
+        url = p_options.pn_config.scheme_and_host() + e_options.path
 
         args = {
             "method": e_options.method_string,
@@ -170,14 +170,14 @@ class RequestsRequestHandler(BaseRequestHandler):
             logger.debug("%s %s %s" % (
                 e_options.method_string,
                 utils.build_url(
-                    p_options.scheme_and_host,
+                    p_options.pn_config.scheme_and_host(),
                     e_options.path,
                     e_options.query_string), e_options.data))
         else:
             logger.debug("%s %s" % (
                 e_options.method_string,
                 utils.build_url(
-                    p_options.scheme_and_host,
+                    p_options.pn_config.scheme_and_host(),
                     e_options.path,
                     e_options.query_string)))
 

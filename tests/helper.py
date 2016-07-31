@@ -48,6 +48,11 @@ pnconf_pam.subscribe_key = sub_key_pam
 pnconf_pam.secret_key = sec_key_pam
 pnconf_pam.enable_subscribe = False
 
+pnconf_ssl = PNConfiguration()
+pnconf_ssl.publish_key = pub_key
+pnconf_ssl.subscribe_key = sub_key
+pnconf_ssl.ssl = True
+
 
 def pnconf_copy():
     return copy(pnconf)
@@ -67,6 +72,11 @@ def pnconf_enc_copy():
 
 def pnconf_pam_copy():
     return copy(pnconf_pam)
+
+
+def pnconf_ssl_copy():
+    return copy(pnconf_ssl)
+
 
 sdk_name = "Python-UnitTest"
 

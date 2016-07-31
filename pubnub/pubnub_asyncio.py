@@ -29,15 +29,24 @@ class PubNubAsyncio(PubNubCore):
     def __init__(self, config, custom_event_loop=None):
         super(PubNubAsyncio, self).__init__(config)
         self.event_loop = custom_event_loop or asyncio.get_event_loop()
-        # TODO: add proxies and option to reinitialize connector&session
-        self._connector = aiohttp.BaseConnector(conn_timeout=config.connect_timeout)
-        self._session = aiohttp.ClientSession(loop=self.event_loop)
+
+        self._connector = None
+        self._session = None
+
+        self.set_connector(aiohttp.TCPConnector(conn_timeout=config.connect_timeout, verify_ssl=True))
 
         if self.config.enable_subscribe:
             self._subscription_manager = AsyncioSubscriptionManager(self)
 
         # TODO: replace with platform-specific manager
         self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
+
+    def set_connector(self, cn):
+        if self._session is not None and self._session.closed:
+            self._session.close()
+
+        self._connector = cn
+        self._session = aiohttp.ClientSession(loop=self.event_loop, connector=self._connector)
 
     def stop(self):
         self._session.close()

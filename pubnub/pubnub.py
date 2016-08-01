@@ -68,6 +68,21 @@ class PubNub(PubNubCore):
         self._subscription_manager.add_listener(listener)
 
 
+class NativePublishSequenceManager(PublishSequenceManager):
+    def __init__(self, provided_max_sequence):
+        super(NativePublishSequenceManager, self).__init__(provided_max_sequence)
+        self._lock = threading.Lock()
+
+    def get_next_sequence(self):
+        with self._lock:
+            if self.max_sequence == self.next_sequence:
+                self.next_sequence = 1
+            else:
+                self.next_sequence += 1
+
+            return self.next_sequence
+
+
 class NativeSubscriptionManager(SubscriptionManager):
     def __init__(self, pubnub_instance):
         self._message_queue = Queue()

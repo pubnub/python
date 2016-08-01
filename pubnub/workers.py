@@ -40,12 +40,6 @@ class SubscribeMessageWorker(object):
         subscription_match = message.subscription_match
         publish_meta_data = message.publish_metadata
 
-        # if channel == subscription_match:
-        #     subscription_match = None
-
-        # if message.only_channel_subscription:
-        #     channel = subscription_match
-
         if "-pnpres" in message.channel:
             presence_payload = PresenceEnvelope.from_json_payload(message.payload)
             pn_presence_event_result = PNPresenceEventResult(

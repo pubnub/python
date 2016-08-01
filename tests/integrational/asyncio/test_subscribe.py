@@ -1,8 +1,8 @@
 import logging
-
 import asyncio
 import pytest
 import pubnub as pn
+
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, SubscribeListener
 from tests import helper

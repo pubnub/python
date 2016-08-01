@@ -66,8 +66,8 @@ def pnconf_sub_copy():
     return copy(pnconf_sub)
 
 
-def pnconf_enc_copy():
-    return copy(pnconf_enc)
+def pnconf_enc_sub_copy():
+    return copy(pnconf_enc_sub)
 
 
 def pnconf_pam_copy():

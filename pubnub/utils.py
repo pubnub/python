@@ -165,6 +165,7 @@ def sign_sha256(secret, sign_input):
 
     return sign.decode("utf-8")
 
+
 def push_type_to_string(push_type):
     if push_type == PNPushType.APNS:
         return "apns"

@@ -1,6 +1,7 @@
 import logging
-from abc import abstractmethod
 
+from pubnub import crypto as pn_crypto
+from abc import abstractmethod
 from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult
 from .models.server.subscribe import SubscribeMessage, PresenceEnvelope
 
@@ -30,7 +31,7 @@ class SubscribeMessageWorker(object):
         if self._pubnub.config.cipher_key is None:
             return message_input
         else:
-            return "TODO: implement cipher decoding"
+            return pn_crypto.decrypt(self._pubnub.config.cipher_key, message_input)
 
     def _process_incoming_payload(self, message):
         assert isinstance(message, SubscribeMessage)

@@ -11,7 +11,7 @@ from tornado import ioloop
 from tornado import stack_context
 from tornado.concurrent import Future
 from tornado.ioloop import PeriodicCallback
-from tornado.locks import Event, Semaphore
+from tornado.locks import Event, Semaphore, Lock
 from tornado.log import gen_log
 from tornado.queues import Queue
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
@@ -103,8 +103,8 @@ class PubNubTornado(PubNubCore):
         if self.config.enable_subscribe:
             self._subscription_manager = TornadoSubscriptionManager(self)
 
-        # TODO: replace with platform-specific manager
-        self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
+        self._publish_sequence_manager = TornadoPublishSequenceManager(self.ioloop,
+                                                                       PubNubCore.MAX_SEQUENCE)
         # TODO: choose a correct client here http://www.tornadoweb.org/en/stable/httpclient.html
         # TODO: 1000?
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
@@ -121,7 +121,6 @@ class PubNubTornado(PubNubCore):
         else:
             raise Exception("Subscription manager is not enabled for this instance")
 
-    # TODO: extract this into a separate class
     def request_sync(self, *args):
         raise NotImplementedError
 
@@ -264,6 +263,26 @@ class PubNubTornado(PubNubCore):
         )
 
         return key_future
+
+
+class TornadoPublishSequenceManager(PublishSequenceManager):
+    def __init__(self, ioloop, provided_max_sequence):
+        super(TornadoPublishSequenceManager, self).__init__(provided_max_sequence)
+        self._lock = Lock()
+        self._ioloop = ioloop
+
+    def get_next_sequence(self):
+        @tornado.gen.coroutine
+        def wrapper():
+            with (yield self._lock.acquire()):
+                if self.max_sequence == self.next_sequence:
+                    self.next_sequence = 1
+                else:
+                    self.next_sequence += 1
+
+                raise tornado.gen.Return(self.next_sequence)
+
+        return self._ioloop.run_sync(wrapper)
 
 
 class TornadoSubscribeMessageWorker(SubscribeMessageWorker):

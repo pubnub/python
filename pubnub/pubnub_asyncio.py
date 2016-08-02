@@ -13,7 +13,7 @@ from .workers import SubscribeMessageWorker
 from .managers import SubscriptionManager, PublishSequenceManager
 from . import utils
 from .structures import ResponseInfo
-from .enums import PNStatusCategory, PNHeartbeatNotificationOptions
+from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType
 from .callbacks import SubscribeCallback
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED
 from .exceptions import PubNubException
@@ -38,8 +38,8 @@ class PubNubAsyncio(PubNubCore):
         if self.config.enable_subscribe:
             self._subscription_manager = AsyncioSubscriptionManager(self)
 
-        # TODO: replace with platform-specific manager
-        self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
+        self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop,
+                                                                       PubNubCore.MAX_SEQUENCE)
 
     def set_connector(self, cn):
         if self._session is not None and self._session.closed:
@@ -79,6 +79,9 @@ class PubNubAsyncio(PubNubCore):
             assert isinstance(cancellation_event, Event)
 
         options = options_func()
+
+        if options.operation_type is PNOperationType.PNPublishOperation:
+            options.params['seqn'] = yield from self._publish_sequence_manager.get_next_sequence()
 
         url = utils.build_url(self.config.scheme(), self.config.origin, options.path)
         log_url = utils.build_url(self.config.scheme(), self.config.origin,
@@ -183,6 +186,23 @@ class PubNubAsyncio(PubNubCore):
                     response_info,
                     None)
             )
+
+
+class AsyncioPublishSequenceManager(PublishSequenceManager):
+    def __init__(self, ioloop, provided_max_sequence):
+        super(AsyncioPublishSequenceManager, self).__init__(provided_max_sequence)
+        self._lock = asyncio.Lock()
+        self._event_loop = ioloop
+
+    @asyncio.coroutine
+    def get_next_sequence(self):
+        with (yield from self._lock):
+            if self.max_sequence == self.next_sequence:
+                self.next_sequence = 1
+            else:
+                self.next_sequence += 1
+
+            return self.next_sequence
 
 
 class AsyncioSubscriptionManager(SubscriptionManager):

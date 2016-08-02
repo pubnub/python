@@ -51,7 +51,7 @@ class Endpoint(object):
 
     @abstractmethod
     def operation_type(self):
-        pass
+        raise NotImplementedError
 
     @abstractmethod
     def name(self):
@@ -74,7 +74,9 @@ class Endpoint(object):
     def options(self):
         return RequestOptions(self.build_path(), self.build_params(),
                               self.http_method(), self.request_timeout(),
-                              self.connect_timeout(), self.create_response, self.create_status_response,
+                              self.connect_timeout(), self.create_response,
+                              self.create_status_response,
+                              self.operation_type(),
                               self.build_data(), self._sort_params)
 
     def sync(self):

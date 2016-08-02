@@ -12,9 +12,8 @@ class Publish(Endpoint):
     PUBLISH_GET_PATH = "/publish/%s/%s/0/%s/%s/%s"
     PUBLISH_POST_PATH = "/publish/%s/%s/0/%s/%s"
 
-    def __init__(self, pubnub, publish_sequence_manager):
+    def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
-        self.publish_sequence_manager = publish_sequence_manager
         self._channel = None
         self._message = None
         self._should_store = None
@@ -65,8 +64,6 @@ class Publish(Endpoint):
 
         if self.pubnub.config.auth_key is not None:
             params["auth"] = utils.url_encode(self.pubnub.config.auth_key)
-
-        params['seqn'] = str(self.publish_sequence_manager.get_next_sequence())
 
         return params
 

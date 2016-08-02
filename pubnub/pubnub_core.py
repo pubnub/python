@@ -98,7 +98,7 @@ class PubNubCore:
         return WhereNow(self)
 
     def publish(self):
-        return Publish(self, self._publish_sequence_manager)
+        return Publish(self)
 
     def grant(self):
         return Grant(self)

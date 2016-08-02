@@ -55,6 +55,8 @@ def test_publish_string_via_get(event_loop):
         asyncio.ensure_future(assert_success_publish_get(pubnub, ["hi", "hi2", "hi3"])),
         asyncio.ensure_future(assert_success_publish_get(pubnub, {"name": "Alex", "online": True})))
 
+    pubnub.stop()
+
 
 @pytest.mark.asyncio
 def test_publish_string_via_post(event_loop):
@@ -65,6 +67,8 @@ def test_publish_string_via_post(event_loop):
         asyncio.ensure_future(assert_success_publish_post(pubnub, True)),
         asyncio.ensure_future(assert_success_publish_post(pubnub, ["hi", "hi2", "hi3"])),
         asyncio.ensure_future(assert_success_publish_post(pubnub, {"name": "Alex", "online": True})))
+
+    pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -77,6 +81,8 @@ def test_publish_string_via_get_encrypted(event_loop):
         asyncio.ensure_future(assert_success_publish_get(pubnub, ["hi", "hi2", "hi3"])),
         asyncio.ensure_future(assert_success_publish_get(pubnub, {"name": "Alex", "online": True})))
 
+    pubnub.stop()
+
 
 @pytest.mark.asyncio
 def test_publish_string_via_post_encrypted(event_loop):
@@ -88,17 +94,23 @@ def test_publish_string_via_post_encrypted(event_loop):
         asyncio.ensure_future(assert_success_publish_post(pubnub, ["hi", "hi2", "hi3"])),
         asyncio.ensure_future(assert_success_publish_post(pubnub, {"name": "Alex", "online": True})))
 
+    pubnub.stop()
+
 
 @pytest.mark.asyncio
 def test_error_missing_message(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
     yield from assert_client_side_error(pubnub.publish().channel(ch).message(None), "Message missing")
 
+    pubnub.stop()
+
 
 @pytest.mark.asyncio
 def test_error_missing_channel(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
     yield from assert_client_side_error(pubnub.publish().channel("").message("hey"), "Channel missing")
+
+    pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -109,6 +121,7 @@ def test_error_non_serializable(event_loop):
         pass
 
     yield from assert_client_side_error(pubnub.publish().channel(ch).message(method), "not JSON serializable")
+    pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -116,6 +129,7 @@ def test_publish_with_meta(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
 
     yield from assert_success_await(pubnub.publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
+    pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -123,6 +137,7 @@ def test_publish_do_not_store(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
 
     yield from assert_success_await(pubnub.publish().channel(ch).message("hey").should_store(False))
+    pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -143,4 +158,5 @@ def test_error_invalid_key(event_loop):
     pubnub = PubNubAsyncio(conf, custom_event_loop=event_loop)
 
     yield from assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "Invalid Key")
+    pubnub.stop()
 

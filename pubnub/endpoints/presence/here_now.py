@@ -68,7 +68,7 @@ class HereNow(Endpoint):
         return self.pubnub.config.connect_timeout
 
     def operation_type(self):
-        return PNOperationType.PNPublishOperation
+        return PNOperationType.PNHereNowOperation
 
     def name(self):
         return "HereNow"

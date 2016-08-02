@@ -5,7 +5,7 @@ from .enums import HttpMethod
 
 class RequestOptions(object):
     def __init__(self, path, params, method, request_timeout, connect_timeout, create_response,
-                 create_status, data=None, sort_arguments=False):
+                 create_status, operation_type, data=None, sort_arguments=False):
         assert len(path) > 0
         assert isinstance(params, dict)
         assert isinstance(method, six.integer_types)
@@ -24,6 +24,7 @@ class RequestOptions(object):
 
         self.create_response = create_response
         self.create_status = create_status
+        self.operation_type = operation_type
 
     @property
     def method_string(self):

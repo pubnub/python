@@ -367,9 +367,8 @@ class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):
                 logger.debug("Message Worker cancelled")
                 break
             except Exception as e:
-                # TODO: move to finally
-                logger.warn("take message interrupted: %s" % str(e))
-                break
+                logger.error("take message interrupted: %s" % str(e))
+                raise
 
 
 class AsyncioPeriodicCallback(object):

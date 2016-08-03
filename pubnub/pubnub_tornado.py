@@ -89,10 +89,6 @@ class PubNubTornado(PubNubCore):
 
         return cancel
 
-    # TODO: deprecate
-    def set_ioloop(self, ioloop):
-        self.ioloop = ioloop
-
     def sdk_platform(self):
         return "-Tornado"
 

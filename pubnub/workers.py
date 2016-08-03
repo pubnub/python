@@ -1,6 +1,6 @@
 import logging
 
-import crypto as pn_crypto
+from . import crypto as pn_crypto
 from abc import abstractmethod
 from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult
 from .models.server.subscribe import SubscribeMessage, PresenceEnvelope

@@ -257,7 +257,8 @@ class NativeSubscribeMessageWorker(SubscribeMessageWorker):
                 # TODO: move to finally
                 self._queue.task_done()
                 self._event.set()
-                logger.warn("take message interrupted: %s" % str(e))
+                logger.error("take message interrupted: %s" % str(e))
+                raise
 
 
 class SubscribeListener(SubscribeCallback):

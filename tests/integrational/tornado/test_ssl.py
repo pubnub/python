@@ -16,8 +16,7 @@ ch = "tornado-int-publish"
 class TestPubNubAsyncPublish(AsyncTestCase):
     @tornado.testing.gen_test
     def test_publish_ssl(self):
-        pubnub = PubNubTornado(pnconf_ssl_copy())
-        pubnub.set_ioloop(self.io_loop)
+        pubnub = PubNubTornado(pnconf_ssl_copy(), custom_ioloop=self.io_loop)
         msg = "hey"
         pub = pubnub.publish().channel(ch).message(msg)
 

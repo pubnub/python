@@ -27,8 +27,6 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         self.stop()
 
     def assert_success(self, pub):
-        self.pubnub.set_ioloop(self.io_loop)
-
         pub.future().add_done_callback(self.callback)
 
         self.pubnub.start()
@@ -42,8 +40,6 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @tornado.testing.gen_test
     def assert_success_yield(self, pub):
-        self.pubnub.set_ioloop(self.io_loop)
-
         envelope = yield pub.future()
 
         assert isinstance(envelope, TornadoEnvelope)
@@ -53,22 +49,22 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         assert len(envelope.status.original_response) > 0
 
     def assert_success_publish_get(self, msg):
-        self.pubnub = PubNubTornado(pnconf)
+        self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
         self.assert_success(self.pubnub.publish().channel(ch).message(msg))
         self.assert_success_yield(self.pubnub.publish().channel(ch).message(msg))
 
     def assert_success_publish_post(self, msg):
-        self.pubnub = PubNubTornado(pnconf)
+        self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
         self.assert_success(self.pubnub.publish().channel(ch).message(msg).use_post(True))
         self.assert_success_yield(self.pubnub.publish().channel(ch).message(msg).use_post(True))
 
     def assert_success_publish_get_encrypted(self, msg):
-        self.pubnub = PubNubTornado(pnconf_enc)
+        self.pubnub = PubNubTornado(pnconf_enc, custom_ioloop=self.io_loop)
         self.assert_success(self.pubnub.publish().channel(ch).message(msg))
         self.assert_success_yield(self.pubnub.publish().channel(ch).message(msg))
 
     def assert_success_publish_post_encrypted(self, msg):
-        self.pubnub = PubNubTornado(pnconf_enc)
+        self.pubnub = PubNubTornado(pnconf_enc, custom_ioloop=self.io_loop)
         self.assert_success(self.pubnub.publish().channel(ch).message(msg).use_post(True))
         self.assert_success_yield(self.pubnub.publish().channel(ch).message(msg).use_post(True))
 
@@ -113,20 +109,17 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         self.assert_success_publish_post_encrypted({"name": "Alex", "online": True})
 
     def test_error_missing_message(self):
-        self.pubnub = PubNubTornado(pnconf)
-        self.pubnub.set_ioloop(self.io_loop)
+        self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
 
         self.assert_client_side_error(self.pubnub.publish().channel(ch).message(None), "Message missing")
 
     def test_error_missing_channel(self):
-        self.pubnub = PubNubTornado(pnconf)
-        self.pubnub.set_ioloop(self.io_loop)
+        self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
 
         self.assert_client_side_error(self.pubnub.publish().channel("").message("hey"), "Channel missing")
 
     def test_error_non_serializable(self):
-        self.pubnub = PubNubTornado(pnconf)
-        self.pubnub.set_ioloop(self.io_loop)
+        self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
 
         def method():
             pass
@@ -169,14 +162,13 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         conf.publish_key = "fake"
         conf.subscribe_key = "demo"
 
-        self.pubnub = PubNubTornado(conf)
-        self.pubnub.set_ioloop(self.io_loop)
+        self.pubnub = PubNubTornado(conf, custom_ioloop=self.io_loop)
 
         self.assert_server_side_error(self.pubnub.publish().channel(ch).message("hey"), "Invalid Key")
         self.assert_server_side_error_yield(self.pubnub.publish().channel(ch).message("hey"), "Invalid Key")
 
     def test_publish_with_meta(self):
-        self.pubnub = PubNubTornado(pnconf)
+        self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
 
         self.assert_success(
             self.pubnub.publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
@@ -184,7 +176,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
             self.pubnub.publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
 
     def test_publish_do_not_store(self):
-        self.pubnub = PubNubTornado(pnconf)
+        self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
 
         self.assert_success(
             self.pubnub.publish().channel(ch).message("hey").should_store(False))

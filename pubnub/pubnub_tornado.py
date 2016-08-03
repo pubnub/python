@@ -20,7 +20,7 @@ from . import utils
 from .callbacks import SubscribeCallback
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
-from .enums import PNStatusCategory, PNHeartbeatNotificationOptions
+from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED
 from .exceptions import PubNubException
 from .managers import SubscriptionManager, PublishSequenceManager
@@ -103,13 +103,11 @@ class PubNubTornado(PubNubCore):
         if self.config.enable_subscribe:
             self._subscription_manager = TornadoSubscriptionManager(self)
 
-        self._publish_sequence_manager = TornadoPublishSequenceManager(self.ioloop,
-                                                                       PubNubCore.MAX_SEQUENCE)
-        # TODO: choose a correct client here http://www.tornadoweb.org/en/stable/httpclient.html
+        self._publish_sequence_manager = TornadoPublishSequenceManager(PubNubCore.MAX_SEQUENCE)
         # TODO: 1000?
         self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
         self.id = None
-        # TODO: add accept encoding should be configurable
+
         self.headers = {
             'User-Agent': self.sdk_name,
             'Accept-Encoding': 'utf-8'
@@ -153,6 +151,10 @@ class PubNubTornado(PubNubCore):
             assert isinstance(cancellation_event, Event)
 
         options = options_func()
+
+        if options.operation_type is PNOperationType.PNPublishOperation:
+            options.params['seqn'] = self._publish_sequence_manager.get_next_sequence()
+
         key_future = Future()
 
         url = utils.build_url(self.config.scheme(), self.config.origin,
@@ -266,23 +268,18 @@ class PubNubTornado(PubNubCore):
 
 
 class TornadoPublishSequenceManager(PublishSequenceManager):
-    def __init__(self, ioloop, provided_max_sequence):
+    def __init__(self, provided_max_sequence):
         super(TornadoPublishSequenceManager, self).__init__(provided_max_sequence)
         self._lock = Lock()
         self._ioloop = ioloop
 
     def get_next_sequence(self):
-        @tornado.gen.coroutine
-        def wrapper():
-            with (yield self._lock.acquire()):
-                if self.max_sequence == self.next_sequence:
-                    self.next_sequence = 1
-                else:
-                    self.next_sequence += 1
+        if self.max_sequence == self.next_sequence:
+            self.next_sequence = 1
+        else:
+            self.next_sequence += 1
 
-                raise tornado.gen.Return(self.next_sequence)
-
-        return self._ioloop.run_sync(wrapper)
+        return self.next_sequence
 
 
 class TornadoSubscribeMessageWorker(SubscribeMessageWorker):

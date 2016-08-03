@@ -14,16 +14,19 @@ from tests.helper import pnconf, sdk_name, url_encode
 
 class TestPublish(unittest.TestCase):
     def setUp(self):
-        self.pubnub = MagicMock(
-            spec=PubNub,
-            config=pnconf,
-            sdk_name=sdk_name
-        )
         self.sm = MagicMock(
             get_next_sequence=MagicMock(return_value=2)
         )
+
+        self.pubnub = MagicMock(
+            spec=PubNub,
+            config=pnconf,
+            sdk_name=sdk_name,
+            _publish_sequence_manager=self.sm
+        )
+
         self.pubnub.uuid = "UUID_PublishUnitTest"
-        self.pub = Publish(self.pubnub, self.sm)
+        self.pub = Publish(self.pubnub)
 
     def test_pub_message(self):
         message = "hi"
@@ -37,7 +40,6 @@ class TestPublish(unittest.TestCase):
         self.assertEqual(self.pub.build_params(), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
-            'seqn': '2'
         })
 
     def test_pub_list_message(self):
@@ -54,7 +56,6 @@ class TestPublish(unittest.TestCase):
         self.assertEqual(self.pub.build_params(), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
-            'seqn': '2'
         })
 
     def test_pub_with_meta(self):
@@ -73,7 +74,6 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'meta': '%5B%22m1%22%2C%20%22m2%22%5D',
-            'seqn': '2'
         })
 
     def test_pub_store(self):
@@ -91,7 +91,6 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'store': '1',
-            'seqn': '2'
         })
 
     def test_pub_do_not_store(self):
@@ -109,7 +108,6 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'store': '0',
-            'seqn': '2'
         })
 
     def test_pub_with_auth(self):
@@ -120,9 +118,10 @@ class TestPublish(unittest.TestCase):
             spec=PubNub,
             config=conf,
             sdk_name=sdk_name,
-            uuid="UUID_PublishUnitTest"
+            uuid="UUID_PublishUnitTest",
+            _publish_sequence_manager=self.sm
         )
-        pub = Publish(pubnub, self.sm)
+        pub = Publish(pubnub)
         message = "hey"
         encoded_message = url_encode(message)
         pub.channel("ch1").message(message)
@@ -135,7 +134,6 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': pubnub.uuid,
             'auth': conf.auth_key,
-            'seqn': '2'
         })
 
     def test_pub_encrypted_list_message(self):
@@ -146,9 +144,10 @@ class TestPublish(unittest.TestCase):
             spec=PubNub,
             config=conf,
             sdk_name=sdk_name,
-            uuid="UUID_PublishUnitTest"
+            uuid="UUID_PublishUnitTest",
+            _publish_sequence_manager=self.sm
         )
-        pub = Publish(pubnub, self.sm)
+        pub = Publish(pubnub)
 
         message = ["hi", "hi2", "hi3"]
         encoded_message = "%22FQyKoIWWm7oN27zKyoU0bpjpgx49JxD04EI%2F0a8rg%2Fo%3D%22"
@@ -161,6 +160,5 @@ class TestPublish(unittest.TestCase):
         self.assertEqual(pub.build_params(), {
             'pnsdk': sdk_name,
             'uuid': pubnub.uuid,
-            'seqn': '2'
         })
 

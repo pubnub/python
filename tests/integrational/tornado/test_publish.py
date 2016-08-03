@@ -1,12 +1,9 @@
 import logging
-
 import tornado
-from tornado.concurrent import Future
-
 import pubnub as pn
 
+from tornado.concurrent import Future
 from tornado.testing import AsyncTestCase
-
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult

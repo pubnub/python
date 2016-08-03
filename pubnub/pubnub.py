@@ -12,7 +12,7 @@ from .callbacks import SubscribeCallback
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
-from .enums import PNStatusCategory, PNHeartbeatNotificationOptions
+from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType
 from .managers import SubscriptionManager, PublishSequenceManager
 from .pnconfiguration import PNConfiguration
 from .pubnub_core import PubNubCore
@@ -46,10 +46,16 @@ class PubNub(PubNubCore):
     def request_sync(self, endpoint_call_options):
         platform_options = PlatformOptions(self.headers, self.config)
 
+        if endpoint_call_options.operation_type is PNOperationType.PNPublishOperation:
+            endpoint_call_options.params['seqn'] = self._publish_sequence_manager.get_next_sequence()
+
         return self._request_handler.sync_request(platform_options, endpoint_call_options)
 
     def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event):
         platform_options = PlatformOptions(self.headers, self.config)
+
+        if endpoint_call_options.operation_type is PNOperationType.PNPublishOperation:
+            endpoint_call_options.params['seqn'] = self._publish_sequence_manager.get_next_sequence()
 
         return self._request_handler.async_request(endpoint_name, platform_options, endpoint_call_options,
                                                    callback, cancellation_event)

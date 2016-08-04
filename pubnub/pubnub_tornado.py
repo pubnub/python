@@ -4,6 +4,7 @@ import logging
 import time
 import datetime
 
+import six
 import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
@@ -180,8 +181,8 @@ class PubNubTornado(PubNubCore):
                 status_category = PNStatusCategory.PNUnknownCategory
 
                 if response is not None:
-                    request_url = utils.urlparse(response.effective_url)
-                    query = utils.parse_qs(request_url.query)
+                    request_url = six.moves.urllib.parse.urlparse(response.effective_url)
+                    query = six.moves.urllib.parse.parse_qs(request_url.query)
                     uuid = None
                     auth_key = None
 

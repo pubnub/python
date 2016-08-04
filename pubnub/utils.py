@@ -16,27 +16,6 @@ from .models.consumer.common import PNStatus
 from .errors import PNERR_JSON_NOT_SERIALIZABLE
 from .exceptions import PubNubException
 
-# TODO: migrate to :six: helpers instead of following
-try:
-    from urllib.parse import urlunsplit as pn_urlunsplit
-except ImportError:
-    from urlparse import urlunsplit as pn_urlunsplit
-
-try:
-    from urllib.parse import urlparse as pn_urlparse
-except ImportError:
-    from urlparse import urlparse as pn_urlparse
-
-try:
-    from urllib.parse import urlencode as pn_urlencode
-except ImportError:
-    from urllib import urlencode as pn_urlencode
-
-try:
-    from urllib.parse import parse_qs as pn_parse_qs
-except ImportError:
-    from urlparse import parse_qs as pn_parse_qs
-
 
 def get_data_for_user(data):
     try:
@@ -98,7 +77,7 @@ def extend_list(existing_items, new_items):
 
 
 def build_url(scheme, origin, path, params={}):
-    return pn_urlunsplit((scheme, origin, path, params, ''))
+    return six.moves.urllib.parse.urlunsplit((scheme, origin, path, params, ''))
 
 
 def synchronized(func):
@@ -111,7 +90,6 @@ def synchronized(func):
     return synced_func
 
 
-# TODO: utils lib isn't a good place for this kid of helpers
 def is_subscribed_event(status):
     assert isinstance(status, PNStatus)
     return status.category == PNStatusCategory.PNConnectedCategory
@@ -175,6 +153,3 @@ def push_type_to_string(push_type):
         return "mpns"
     else:
         return ""
-
-urlparse = pn_urlparse
-parse_qs = pn_parse_qs

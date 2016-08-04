@@ -51,7 +51,7 @@ def test_multiple_channels(event_loop):
 
     yield from callback.wait_for_connect()
 
-    yield from asyncio.sleep(5)
+    yield from asyncio.sleep(7)
 
     env = yield from pubnub.where_now() \
         .uuid(uuid) \

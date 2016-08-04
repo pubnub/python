@@ -20,7 +20,7 @@ class TestPubNubAsyncWhereNow(AsyncTestCase):
         self.pubnub.config.uuid = uuid
 
         yield connect_to_channel(self.pubnub, ch)
-        yield gen.sleep(5)
+        yield gen.sleep(7)
         env = yield self.pubnub.where_now() \
             .uuid(uuid) \
             .future()

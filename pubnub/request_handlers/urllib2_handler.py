@@ -3,6 +3,7 @@ import logging
 import socket
 import threading
 
+import six
 from six.moves import urllib
 
 from pubnub import utils
@@ -101,8 +102,8 @@ class Urllib2RequestHandler(BaseRequestHandler):
                     exception=e))
 
         if res is not None:
-            url = utils.urlparse(res.url)
-            query = utils.parse_qs(url.query)
+            url = six.moves.urllib.parse.urlparse(res.url)
+            query = six.moves.urllib.parse.parse_qs(url.query)
             uuid = None
             auth_key = None
 

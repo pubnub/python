@@ -1,6 +1,7 @@
 import logging
 import threading
 import requests
+import six
 
 from requests import Session
 from pubnub import utils
@@ -94,8 +95,8 @@ class RequestsRequestHandler(BaseRequestHandler):
                     exception=e))
 
         if res is not None:
-            url = utils.urlparse(res.url)
-            query = utils.parse_qs(url.query)
+            url = six.moves.urllib.parse.urlparse(res.url)
+            query = six.moves.urllib.parse.parse_qs(url.query)
             uuid = None
             auth_key = None
 

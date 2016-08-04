@@ -5,6 +5,9 @@ import aiohttp
 import math
 
 from asyncio import Event, Queue, Semaphore
+
+import six
+
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
@@ -110,8 +113,8 @@ class PubNubAsyncio(PubNubCore):
         status_category = PNStatusCategory.PNUnknownCategory
 
         if response is not None:
-            request_url = utils.urlparse(response.url)
-            query = utils.parse_qs(request_url.query)
+            request_url = six.moves.urllib.parse.urlparse(response.url)
+            query = six.moves.urllib.parse.parse_qs(request_url.query)
             uuid = None
             auth_key = None
 

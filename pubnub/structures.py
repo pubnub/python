@@ -18,8 +18,9 @@ class RequestOptions(object):
         self._method = method
         self.request_timeout = request_timeout
         self.connect_timeout = connect_timeout
-        # TODO: rename to 'body'
+        # TODO: rename 'data' => 'body'
         self.data = data
+        self.body = data
         self.sort_params = sort_arguments
 
         self.create_response = create_response

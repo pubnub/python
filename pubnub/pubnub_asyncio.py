@@ -74,7 +74,7 @@ class PubNubAsyncio(PubNubCore):
 
     @asyncio.coroutine
     def request_future(self, intermediate_key_future, options_func, create_response,
-                             create_status_response, cancellation_event):
+                       create_status_response, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
@@ -95,12 +95,10 @@ class PubNubAsyncio(PubNubCore):
                                       headers=self.headers,
                                       data=options.data if options.data is not None else None),
                 options.request_timeout)
-        except asyncio.TimeoutError:
-            raise
-        except asyncio.CancelledError:
+        except (asyncio.TimeoutError, asyncio.CancelledError):
             raise
         except Exception as e:
-            print('regular error', str(e))
+            logger.error("Request await error: %s" % str(e))
             raise
 
         body = yield from response.text()
@@ -270,11 +268,11 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                 self._pubnub.event_loop.call_soon(self._start_subscribe_loop)
             else:
                 self._listener_manager.announce_status(e.status)
-        except asyncio.CancelledError as e:
-            print('cancelled')
+        except asyncio.CancelledError:
+            pass
         except Exception as e:
-            print('error in subscribe loop:', str(e))
-            raise e
+            logger.error("Exception in subscribe loop: %s" % str(e))
+            raise
         finally:
             self._subscription_lock.release()
 
@@ -331,6 +329,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
 
         except PubNubAsyncioException as e:
             pass
+            # TODO: check correctness
             # if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
             #     self._start_subscribe_loop()
             # else:
@@ -397,8 +396,7 @@ class AsyncioPeriodicCallback(object):
         try:
             asyncio.ensure_future(self._callback())
         except Exception:
-            # TODO: handle the exception
-            pass
+            raise
         finally:
             self._schedule_next()
 
@@ -407,7 +405,6 @@ class AsyncioPeriodicCallback(object):
 
         if self._next_timeout <= current_time:
             callback_time_sec = self._callback_time / 1000.0
-            print("cb time", callback_time_sec)
             self._next_timeout += (math.floor(
                 (current_time - self._next_timeout) / callback_time_sec) + 1) * callback_time_sec
 

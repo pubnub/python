@@ -69,6 +69,8 @@ tornado.httpclient.AsyncHTTPClient.configure(PubNubTornadoSimpleAsyncHTTPClient)
 
 
 class PubNubTornado(PubNubCore):
+    MAX_CLIENTS = 1000
+
     def stop(self):
         self.ioloop.stop()
 
@@ -100,8 +102,8 @@ class PubNubTornado(PubNubCore):
             self._subscription_manager = TornadoSubscriptionManager(self)
 
         self._publish_sequence_manager = TornadoPublishSequenceManager(PubNubCore.MAX_SEQUENCE)
-        # TODO: 1000?
-        self.http = tornado.httpclient.AsyncHTTPClient(max_clients=1000)
+
+        self.http = tornado.httpclient.AsyncHTTPClient(max_clients=PubNubTornado.MAX_CLIENTS)
         self.id = None
 
         self.headers = {
@@ -409,6 +411,7 @@ class TornadoSubscriptionManager(SubscriptionManager):
 
         except PubNubTornadoException as e:
             pass
+            # TODO: check correctness
             # if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
             #     self._start_subscribe_loop()
             # else:

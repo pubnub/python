@@ -31,7 +31,7 @@ from .workers import SubscribeMessageWorker
 logger = logging.getLogger("pubnub")
 
 
-class TornadoCurlAsyncHTTPClient(SimpleAsyncHTTPClient):
+class PubNubTornadoSimpleAsyncHTTPClient(SimpleAsyncHTTPClient):
     def reset_request(self, key_object):
         if key_object in self.waiting:
             self.io_loop.add_callback(self._on_timeout, key_object)
@@ -65,7 +65,7 @@ class _TornadoKeyResponse(object):
         self.continue_callback = after_key_callback
 
 
-tornado.httpclient.AsyncHTTPClient.configure(TornadoCurlAsyncHTTPClient)
+tornado.httpclient.AsyncHTTPClient.configure(PubNubTornadoSimpleAsyncHTTPClient)
 
 
 class PubNubTornado(PubNubCore):

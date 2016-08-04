@@ -7,6 +7,10 @@ import six
 import vcr
 
 from copy import copy
+
+from vcr.cassette import Cassette
+
+import pubnub.pubnub_tornado
 from pubnub import utils
 from pubnub.pnconfiguration import PNConfiguration
 
@@ -97,8 +101,22 @@ def gen_string(l):
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(l))
 
 
+from vcr.stubs.tornado_stubs import vcr_fetch_impl
+
+
+_SimpleAsyncHTTPClient_fetch_impl = pubnub.pubnub_tornado.PubNubTornadoSimpleAsyncHTTPClient.fetch_impl
+
+cassette = Cassette("")
+new_fetch_impl = vcr_fetch_impl(
+    cassette, _SimpleAsyncHTTPClient_fetch_impl
+    # self._cassette, _SimpleAsyncHTTPClient_fetch_impl
+)
+
 pn_vcr = vcr.VCR(
-    cassette_library_dir=os.path.dirname((os.path.dirname(os.path.abspath(__file__))))
+    cassette_library_dir=os.path.dirname((os.path.dirname(os.path.abspath(__file__)))),
+    custom_patches=((pubnub.pubnub_tornado.PubNubTornadoSimpleAsyncHTTPClient,
+                     'fetch_impl', new_fetch_impl),)
+    # custom_patches=((pubnub.pubnub_tornado, 'PubNubTornadoSimpleAsyncHTTPClient', VCRHTTPConnection),)
 )
 
 

@@ -2313,11 +2313,7 @@ class PubnubCoreAsync(PubnubBase):
                                 except KeyError:
                                     chobj = self.subscriptions[ch[1]]
 
-                                if ('-pnpres' in channel_list_2[ch[0]]):
-                                    cb = chobj['presence']
-                                else:
-                                    cb = chobj['callback']
-                                _invoke(cb,
+                                _invoke(chobj['callback'],
                                         self.decrypt(response_list[ch[0]]),
                                         chobj['name'].split('-pnpres')[0],
                                         channel_list_2[ch[0]].split

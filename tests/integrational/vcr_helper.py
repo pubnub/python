@@ -63,15 +63,6 @@ def assert_request_equal_with_object_in_query(r1, r2, query_field_name):
 
 def object_in_path_matcher(r1, r2, decrypter=None):
     try:
-        assert r1.body == r2.body
-        assert r1.headers == r2.headers
-        assert r1.host == r2.host
-        assert r1.method == r2.method
-        assert r1.query == r2.query
-        assert r1.port == r2.port
-        assert r1.protocol == r2.protocol
-        assert r1.scheme == r2.scheme
-
         path1 = r1.path.split('/')
         path2 = r2.path.split('/')
 

@@ -9,11 +9,12 @@ from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope, PubNubTornadoException
-from tests.helper import pnconf, pnconf_enc, pn_vcr
+from tests.helper import pnconf, pnconf_enc, gen_decrypt_func
+from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
-ch = "tornado-int-publish"
+ch = "tornado-publish"
 
 
 class TestPubNubAsyncPublish(AsyncTestCase):
@@ -80,34 +81,74 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         self.pubnub.stop()
         self.stop()
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/tornado/publish/publish_get.yaml',
-                         filter_query_parameters=['uuid'])
-    def test_publish_string_via_getx(self):
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/tornado/publish/mixed_via_get.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
+    def test_publish_mixed_via_get(self):
         self.assert_success_publish_get("hi")
-        # self.assert_success_publish_get(5)
-        # self.assert_success_publish_get(True)
-        # self.assert_success_publish_get(["hi", "hi2", "hi3"])
-        # self.assert_success_publish_get({"name": "Alex", "online": True})
+        self.assert_success_publish_get(5)
+        self.assert_success_publish_get(True)
+        self.assert_success_publish_get(["hi", "hi2", "hi3"])
 
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/tornado/publish/object_via_get.yaml',
+        filter_query_parameters=['uuid', 'seqn'],
+        match_on=['object_in_path'])
+    def test_publish_object_via_get(self):
+        self.assert_success_publish_get({"name": "Alex", "online": True})
+
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/tornado/publish/mixed_via_post.yaml',
+        filter_query_parameters=['uuid', 'seqn'],
+        match_on=['method', 'path', 'query', 'body'])
     def test_publish_string_via_post(self):
         self.assert_success_publish_post("hi")
         self.assert_success_publish_post(5)
         self.assert_success_publish_post(True)
         self.assert_success_publish_post(["hi", "hi2", "hi3"])
+
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/tornado/publish/object_via_post.yaml',
+        filter_query_parameters=['uuid', 'seqn'],
+        match_on=['method', 'path', 'query', 'object_in_body'])
+    def test_publish_object_via_post(self):
         self.assert_success_publish_post({"name": "Alex", "online": True})
 
-    def test_publish_string_via_get_encrypted(self):
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/tornado/publish/mixed_via_get_encrypted.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
+    def test_publish_mixed_via_get_encrypted(self):
         self.assert_success_publish_get_encrypted("hi")
         self.assert_success_publish_get_encrypted(5)
         self.assert_success_publish_get_encrypted(True)
         self.assert_success_publish_get_encrypted(["hi", "hi2", "hi3"])
+
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/tornado/publish/object_via_get_encrypted.yaml',
+        filter_query_parameters=['uuid', 'seqn'],
+        match_on=['object_in_path'],
+        match_on_kwargs={'object_in_path': {
+            'decrypter': gen_decrypt_func('testKey')}})
+    def test_publish_object_via_get_encrypted(self):
         self.assert_success_publish_get_encrypted({"name": "Alex", "online": True})
 
-    def test_publish_string_via_post_encrypted(self):
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/tornado/publish/mixed_via_post_encrypted.yaml',
+        filter_query_parameters=['uuid', 'seqn'],
+        match_on=['method', 'path', 'query', 'body'])
+    def test_publish_mixed_via_post_encrypted(self):
         self.assert_success_publish_post_encrypted("hi")
         self.assert_success_publish_post_encrypted(5)
         self.assert_success_publish_post_encrypted(True)
         self.assert_success_publish_post_encrypted(["hi", "hi2", "hi3"])
+
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/tornado/publish/object_via_post_encrypted.yaml',
+        filter_query_parameters=['uuid', 'seqn'],
+        match_on=['method', 'path', 'query', 'object_in_body'],
+        match_on_kwargs={'object_in_body': {
+            'decrypter': gen_decrypt_func('testKey')}})
+    def test_publish_object_via_post_encrypted(self):
         self.assert_success_publish_post_encrypted({"name": "Alex", "online": True})
 
     def test_error_missing_message(self):

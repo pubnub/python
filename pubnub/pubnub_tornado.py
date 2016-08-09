@@ -56,7 +56,8 @@ class PubNubTornadoSimpleAsyncHTTPClient(SimpleAsyncHTTPClient):
                               "%d active, %d queued requests." % (
                                   len(self.active), len(self.queue)))
 
-        self.io_loop.add_callback(initial_callback, _TornadoKeyResponse(key, after_key_callback))
+        key_response = _TornadoKeyResponse(key, after_key_callback)
+        self.io_loop.add_callback(initial_callback, key_response)
 
 
 class _TornadoKeyResponse(object):
@@ -225,6 +226,7 @@ class PubNubTornado(PubNubCore):
                 if response.error is not None:
                     if response.code >= 500:
                         err = PNERR_SERVER_ERROR
+                        data = str(response.error)
                     else:
                         err = PNERR_CLIENT_ERROR
 

@@ -70,13 +70,16 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub.unsubscribe().channels(ch).execute()
         yield callback_messages.wait_for_disconnect()
 
-    @tornado.testing.gen_test()
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/join_leave.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
+    @tornado.testing.gen_test(timeout=15)
     def test_join_leave(self):
-        ch = helper.gen_channel("subscribe-test")
+        ch = "subscribe-tornado-ch"
         ch_pnpres = ch + "-pnpres"
 
-        self.pubnub.config.uuid = helper.gen_channel("messenger")
-        self.pubnub_listener.config.uuid = helper.gen_channel("listener")
+        self.pubnub.config.uuid = "subscribe-tornado-messenger"
+        self.pubnub_listener.config.uuid = "subscribe-tornado-listener"
         callback_presence = SubscribeListener()
         self.pubnub_listener.add_listener(callback_presence)
         self.pubnub_listener.subscribe().channels(ch).with_presence().execute()

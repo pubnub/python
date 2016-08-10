@@ -5,7 +5,6 @@ from tornado import gen
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub_tornado import PubNubTornado
-from tests import helper
 from tests.helper import pnconf
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
 

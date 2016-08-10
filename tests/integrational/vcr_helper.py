@@ -36,15 +36,6 @@ def state_object_in_query_matcher(r1, r2):
 
 def assert_request_equal_with_object_in_query(r1, r2, query_field_name):
     try:
-        assert r1.body == r2.body
-        assert r1.headers == r2.headers
-        assert r1.host == r2.host
-        assert r1.method == r2.method
-        assert r1.path == r2.path
-        assert r1.port == r2.port
-        assert r1.protocol == r2.protocol
-        assert r1.scheme == r2.scheme
-
         for v in r1.query:
             if v[0] == query_field_name:
                 for w in r2.query:
@@ -120,8 +111,8 @@ pn_vcr.register_matcher('object_in_body', object_in_body_matcher)
 pn_vcr.register_matcher('check_the_difference', check_the_difference_matcher)
 
 
-def use_cassette_and_stub_time_sleep(cassette_name, filter_query_parameters):
-    context = pn_vcr.use_cassette(cassette_name, filter_query_parameters=filter_query_parameters)
+def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
+    context = pn_vcr.use_cassette(cassette_name, **kwargs)
     cs = context.cls(path=cassette_name).load(path=cassette_name)
 
     import tornado.gen

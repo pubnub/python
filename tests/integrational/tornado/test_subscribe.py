@@ -120,10 +120,13 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
         self.pubnub_listener = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/group_sub_unsub.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=60)
-    def test_subscribe_unsubscribe(self):
-        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+    def test_group_subscribe_unsubscribe(self):
+        ch = "subscribe-unsubscribe-channel"
+        gr = "subscribe-unsubscribe-group"
 
         envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
@@ -141,10 +144,13 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/group_sub_pub_unsub.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=60)
-    def test_subscribe_publish_unsubscribe(self):
-        ch = helper.gen_channel("test-subscribe-pub-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-pub-unsubscribe-group")
+    def test_group_subscribe_publish_unsubscribe(self):
+        ch = "subscribe-unsubscribe-channel"
+        gr = "subscribe-unsubscribe-group"
         message = "hey"
 
         envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
@@ -174,13 +180,16 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/group_join_leave.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=60)
-    def test_join_leave(self):
-        self.pubnub.config.uuid = helper.gen_channel("messenger")
-        self.pubnub_listener.config.uuid = helper.gen_channel("listener")
+    def test_group_join_leave(self):
+        self.pubnub.config.uuid = "test-subscribe-messenger"
+        self.pubnub_listener.config.uuid = "test-subscribe-listener"
 
-        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+        ch = "subscribe-test-channel"
+        gr = "subscribe-test-group"
 
         envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200

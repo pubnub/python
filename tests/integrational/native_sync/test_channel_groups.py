@@ -15,8 +15,8 @@ class TestPubNubChannelGroups(unittest.TestCase):
     @use_cassette_and_stub_time_sleep('tests/integrational/fixtures/native_sync/channel_groups/single_channel.yaml',
                                       filter_query_parameters=['uuid'])
     def test_single_channel(self):
-        ch = "channel-groups-unit-ch"
-        gr = "channel-groups-unit-cg"
+        ch = "channel-groups-native-ch"
+        gr = "channel-groups-native-cg"
         pubnub = PubNub(pnconf_copy())
 
         # add

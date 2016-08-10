@@ -124,12 +124,22 @@ def use_cassette_and_stub_time_sleep(cassette_name, filter_query_parameters):
     context = pn_vcr.use_cassette(cassette_name, filter_query_parameters=filter_query_parameters)
     cs = context.cls(path=cassette_name).load(path=cassette_name)
 
+    import tornado.gen
+
+    @tornado.gen.coroutine
+    def returner():
+        return
+
     def _inner(f):
         @patch('time.sleep', return_value=None)
+        @patch('tornado.gen.sleep', return_value=returner())
+        @patch('asyncio.sleep', return_value=returner())
         @six.wraps(f)
         def stubbed(*args):
             with context as cassette:
                 largs = list(args)
+                largs.pop(1)
+                largs.pop(1)
                 largs.pop(1)
                 return f(*largs)
 

@@ -1,7 +1,6 @@
 import tornado
 from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
 from pubnub.pubnub_tornado import PubNubTornado
-from tests import helper
 from tests.helper import pnconf_copy
 
 # TODO: test for 'No valid channels specified'
@@ -19,7 +18,7 @@ class TestPubNubState(AsyncTestCase):
         filter_query_parameters=['uuid', 'seqn'],
         match_on=['method', 'host', 'path', 'state_object_in_query'])
     @tornado.testing.gen_test
-    def test_test_single_channel(self):
+    def test_state_single_channel(self):
         ch = "state-tornado-ch"
         self.pubnub.config.uuid = 'state-tornado-uuid'
         state = {"name": "Alex", "count": 5}

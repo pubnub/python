@@ -7,6 +7,7 @@ from tornado import gen
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
 from tests import helper
 from tests.helper import pnconf_sub_copy
+from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -24,9 +25,12 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
         self.pubnub_listener = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
-    @tornado.testing.gen_test()
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/sub_unsub.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
+    @tornado.testing.gen_test(timeout=300)
     def test_subscribe_unsubscribe(self):
-        ch = helper.gen_channel("subscribe-test")
+        ch = "where-now-tornado-ch"
 
         callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
@@ -39,6 +43,9 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub.stop()
         self.stop()
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/sub_pub_unsub.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_publish_unsubscribe(self):
         ch = helper.gen_channel("subscribe-test")

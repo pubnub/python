@@ -30,7 +30,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=300)
     def test_subscribe_unsubscribe(self):
-        ch = "where-now-tornado-ch"
+        ch = "subscribe-tornado-ch"
 
         callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
@@ -48,7 +48,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_publish_unsubscribe(self):
-        ch = helper.gen_channel("subscribe-test")
+        ch = "subscribe-tornado-ch"
         message = "hey"
 
         callback_messages = SubscribeListener()

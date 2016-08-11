@@ -1,0 +1,15 @@
+interactions:
+- request:
+    body: null
+    headers:
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/time/0
+  response:
+    body: {string: '[14709447239268595]'}
+    headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
+      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '19', CONTENT-TYPE: text/javascript;
+        charset="UTF-8", DATE: 'Thu, 11 Aug 2016 19:45:23 GMT'}
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/time/0
+version: 1

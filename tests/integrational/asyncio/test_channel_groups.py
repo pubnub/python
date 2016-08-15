@@ -5,8 +5,7 @@ from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.helper import pnconf, pnconf_copy
-from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep, \
-    get_sleeper, pn_vcr
+from tests.integrational.vcr_helper import get_sleeper, pn_vcr
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/groups/add_remove_single_channel.yaml')

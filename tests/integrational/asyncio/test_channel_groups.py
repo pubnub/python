@@ -4,24 +4,29 @@ import pytest
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub_asyncio import PubNubAsyncio
-from tests import helper
-from tests.helper import pnconf
+from tests.helper import pnconf, pnconf_copy
+from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep, \
+    get_sleeper, pn_vcr
 
 
+@get_sleeper('tests/integrational/fixtures/asyncio/groups/add_remove_single_channel.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/groups/add_remove_single_channel.yaml')
 @pytest.mark.asyncio
-def test_add_remove_single_channel(event_loop):
-    pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
+def test_add_remove_single_channel(event_loop, sleeper=asyncio.sleep):
+    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub.config.uuid = 'test-channel-group-asyncio-uuid1'
 
-    ch = helper.gen_channel("herenow-unit")
-    gr = helper.gen_channel("herenow-unit")
+    ch = "test-channel-groups-asyncio-ch"
+    gr = "test-channel-groups-asyncio-cg"
 
+    yield from pubnub.publish().channel(ch).message("hey").future()
     # add
     env = yield from pubnub.add_channel_to_channel_group() \
         .channels(ch).channel_group(gr).future()
 
     assert isinstance(env.result, PNChannelGroupsAddChannelResult)
 
-    yield from asyncio.sleep(1)
+    yield from sleeper(1)
 
     # list
     env = yield from pubnub.list_channels_in_channel_group().channel_group(gr).future()
@@ -35,7 +40,10 @@ def test_add_remove_single_channel(event_loop):
 
     assert isinstance(env.result, PNChannelGroupsRemoveChannelResult)
 
-    yield from asyncio.sleep(1)
+    yield from sleeper(1)
+
+    # change uuid to let vcr to distinguish list requests
+    pubnub.config.uuid = 'test-channel-group-asyncio-uuid2'
 
     # list
     env = yield from pubnub.list_channels_in_channel_group().channel_group(gr).future()
@@ -45,13 +53,15 @@ def test_add_remove_single_channel(event_loop):
     pubnub.stop()
 
 
+@get_sleeper('tests/integrational/fixtures/asyncio/groups/add_remove_multiple_channels.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/groups/add_remove_multiple_channels.yaml')
 @pytest.mark.asyncio
-def test_add_remove_multiple_channels(event_loop):
+def test_add_remove_multiple_channels(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
-    ch1 = helper.gen_channel("herenow-unit")
-    ch2 = helper.gen_channel("herenow-unit")
-    gr = helper.gen_channel("herenow-unit")
+    ch1 = "channel-groups-tornado-ch1"
+    ch2 = "channel-groups-tornado-ch2"
+    gr = "channel-groups-tornado-cg"
 
     # add
     env = yield from pubnub.add_channel_to_channel_group() \
@@ -59,7 +69,7 @@ def test_add_remove_multiple_channels(event_loop):
 
     assert isinstance(env.result, PNChannelGroupsAddChannelResult)
 
-    yield from asyncio.sleep(1)
+    yield from sleeper(1)
 
     # list
     env = yield from pubnub.list_channels_in_channel_group().channel_group(gr).future()
@@ -74,7 +84,7 @@ def test_add_remove_multiple_channels(event_loop):
 
     assert isinstance(env.result, PNChannelGroupsRemoveChannelResult)
 
-    yield from asyncio.sleep(1)
+    yield from sleeper(1)
 
     # list
     env = yield from pubnub.list_channels_in_channel_group().channel_group(gr).future()
@@ -84,12 +94,14 @@ def test_add_remove_multiple_channels(event_loop):
     pubnub.stop()
 
 
+@get_sleeper('tests/integrational/fixtures/asyncio/groups/add_channel_remove_group.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/groups/add_channel_remove_group.yaml')
 @pytest.mark.asyncio
-def test_add_channel_remove_group(event_loop):
+def test_add_channel_remove_group(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
-    ch = helper.gen_channel("herenow-unit")
-    gr = helper.gen_channel("herenow-unit")
+    ch = "channel-groups-tornado-ch"
+    gr = "channel-groups-tornado-cg"
 
     # add
     env = yield from pubnub.add_channel_to_channel_group() \
@@ -97,7 +109,7 @@ def test_add_channel_remove_group(event_loop):
 
     assert isinstance(env.result, PNChannelGroupsAddChannelResult)
 
-    yield from asyncio.sleep(1)
+    yield from sleeper(1)
 
     # list
     env = yield from pubnub.list_channels_in_channel_group().channel_group(gr).future()
@@ -110,7 +122,7 @@ def test_add_channel_remove_group(event_loop):
 
     assert isinstance(env.result, PNChannelGroupsRemoveGroupResult)
 
-    yield from asyncio.sleep(1)
+    yield from sleeper(1)
 
     # list
     env = yield from pubnub.list_channels_in_channel_group().channel_group(gr).future()

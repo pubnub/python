@@ -118,26 +118,48 @@ def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
     import tornado.gen
 
     @tornado.gen.coroutine
-    def returner():
+    def tornado_returner():
         return
 
     def _inner(f):
         @patch('time.sleep', return_value=None)
-        @patch('tornado.gen.sleep', return_value=returner())
-        @patch('asyncio.sleep', return_value=returner())
+        @patch('tornado.gen.sleep', return_value=tornado_returner())
         @six.wraps(f)
-        def stubbed(*args):
+        def stubbed(*args, **kwargs):
             with context as cassette:
                 largs = list(args)
-                largs.pop(1)
-                largs.pop(1)
-                largs.pop(1)
-                return f(*largs)
+                # 0 - index
+                largs.pop(0)
+                largs.pop(0)
+                return f(*largs, **kwargs)
 
         @six.wraps(f)
         def original(*args):
             with context as cassette:
-                return f(*args)
+                yield from f(*args)
 
         return stubbed if len(cs) > 0 else original
+
     return _inner
+
+
+def get_sleeper(cassette_name):
+    """
+    Loads cassette just to check if it is in record or playback mode
+    """
+    context = pn_vcr.use_cassette(cassette_name)
+    cs = context.cls(path=cassette_name).load(path=cassette_name)
+
+    import asyncio
+
+    @asyncio.coroutine
+    def fake_sleeper(v):
+        yield from asyncio.sleep(0)
+
+    def decorate(f):
+        @six.wraps(f)
+        def call(*args, event_loop=None):
+            yield from f(*args, sleeper=(fake_sleeper if (len(cs) > 0) else asyncio.sleep), event_loop=event_loop)
+
+        return call
+    return decorate

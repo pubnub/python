@@ -4,8 +4,10 @@ from pubnub.models.consumer.access_manager import PNAccessManagerGrantResult, PN
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests import helper
 from tests.helper import pnconf_pam_copy
+from tests.integrational.vcr_helper import pn_vcr
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/global_level.yaml')
 @pytest.mark.asyncio
 def test_global_level(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
@@ -36,11 +38,12 @@ def test_global_level(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel.yaml')
 @pytest.mark.asyncio
-def test_single_channel(event_loop):
+def test_single_channelx(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
     pubnub.config.uuid = "my_uuid"
-    ch = helper.gen_channel("pam-channel")
+    ch = "test-pam-asyncio-ch"
 
     env = (yield from pubnub.grant()
            .channels(ch)
@@ -65,12 +68,13 @@ def test_single_channel(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel_with_auth.yaml')
 @pytest.mark.asyncio
-def test_single_channel_with_auth(event_loop):
+def test_single_channel_with_authxx(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
-    pubnub.config.uuid = "my_uuid"
-    ch = helper.gen_channel("pam-channel")
-    auth = helper.gen_channel("pam-auth-key")
+    pubnub.config.uuid = "test-pam-asyncio-uuid"
+    ch = "test-pam-asyncio-ch"
+    auth = "test-pam-asyncio-auth"
 
     env = (yield from pubnub.grant()
            .channels(ch)
@@ -97,12 +101,13 @@ def test_single_channel_with_auth(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channels.yaml')
 @pytest.mark.asyncio
 def test_multiple_channels(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
-    pubnub.config.uuid = "my_uuid"
-    ch1 = helper.gen_channel("pam-channel")
-    ch2 = helper.gen_channel("pam-channel")
+    pubnub.config.uuid = "test-pam-asyncio-uuid"
+    ch1 = "test-pam-asyncio-ch1"
+    ch2 = "test-pam-asyncio-ch2"
 
     env = (yield from pubnub.grant()
            .channels([ch1, ch2])
@@ -133,13 +138,14 @@ def test_multiple_channels(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channels_with_auth.yaml')
 @pytest.mark.asyncio
 def test_multiple_channels_with_auth(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
     pubnub.config.uuid = "my_uuid"
-    ch1 = helper.gen_channel("pam-channel")
-    ch2 = helper.gen_channel("pam-channel")
-    auth = helper.gen_channel("pam-auth-key")
+    ch1 = "test-pam-asyncio-ch1"
+    ch2 = "test-pam-asyncio-ch2"
+    auth = "test-pam-asyncio-auth"
 
     env = (yield from pubnub.grant()
            .channels([ch1, ch2])
@@ -171,11 +177,12 @@ def test_multiple_channels_with_auth(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel_group.yaml')
 @pytest.mark.asyncio
 def test_single_channel_group(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
-    pubnub.config.uuid = "my_uuid"
-    cg = helper.gen_channel("pam-cg")
+    pubnub.config.uuid = "test-pam-asyncio-uuid"
+    cg = "test-pam-asyncio-cg"
 
     env = (yield from pubnub.grant()
            .channel_groups(cg)
@@ -202,12 +209,13 @@ def test_single_channel_group(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel_group_with_auth.yaml')
 @pytest.mark.asyncio
 def test_single_channel_group_with_auth(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
-    pubnub.config.uuid = "my_uuid"
-    gr = helper.gen_channel("pam-cg")
-    auth = helper.gen_channel("pam-auth-key")
+    pubnub.config.uuid = "test-pam-asyncio-uuid"
+    gr = "test-pam-asyncio-cg"
+    auth = "test-pam-asyncio-auth"
 
     env = (yield from pubnub.grant()
            .channel_groups(gr)
@@ -235,12 +243,13 @@ def test_single_channel_group_with_auth(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channel_groups.yaml')
 @pytest.mark.asyncio
 def test_multiple_channel_groups(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
     pubnub.config.uuid = "my_uuid"
-    gr1 = helper.gen_channel("pam-group1")
-    gr2 = helper.gen_channel("pam-group2")
+    gr1 = "test-pam-asyncio-cg1"
+    gr2 = "test-pam-asyncio-cg2"
 
     env = (yield from pubnub.grant()
            .channel_groups([gr1, gr2])
@@ -271,13 +280,14 @@ def test_multiple_channel_groups(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channel_groups_with_auth.yaml')
 @pytest.mark.asyncio
 def test_multiple_channel_groups_with_auth(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
     pubnub.config.uuid = "my_uuid"
-    gr1 = helper.gen_channel("pam-group1")
-    gr2 = helper.gen_channel("pam-group2")
-    auth = helper.gen_channel("pam-auth-key")
+    gr1 = "test-pam-asyncio-cg1"
+    gr2 = "test-pam-asyncio-cg2"
+    auth = "test-pam-asyncio-auth"
 
     env = (yield from pubnub.grant()
            .channel_groups([gr1, gr2])

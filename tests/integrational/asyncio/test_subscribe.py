@@ -7,13 +7,15 @@ from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, SubscribeListener
 from tests import helper
 from tests.helper import pnconf_sub_copy, pnconf_enc_sub_copy
+from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_unsub.yaml')
 @pytest.mark.asyncio
 def test_subscribe_unsubscribe(event_loop):
-    channel = helper.gen_channel("test-sub-unsub")
+    channel = "test-subscribe-asyncio-ch"
 
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
@@ -29,12 +31,14 @@ def test_subscribe_unsubscribe(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub.yaml')
 @pytest.mark.asyncio
 def test_subscribe_publish_unsubscribe(event_loop):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub.config.uuid = 'test-subscribe-asyncio-uuid'
 
     callback = SubscribeListener()
-    channel = helper.gen_channel("test-sub-pub-unsub")
+    channel = "test-subscribe-asyncio-ch"
     message = "hey"
     pubnub.add_listener(callback)
     pubnub.subscribe().channels(channel).execute()

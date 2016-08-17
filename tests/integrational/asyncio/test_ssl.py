@@ -12,7 +12,8 @@ pn.set_stream_logger('pubnub', logging.DEBUG)
 ch = "asyncio-int-publish"
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/secure/ssl.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/secure/ssl.yaml',
+                     filter_query_parameters=['uuid'])
 @pytest.mark.asyncio
 def test_publish_string_via_get_encrypted(event_loop):
     pubnub = PubNubAsyncio(pnconf_ssl_copy(), custom_event_loop=event_loop)

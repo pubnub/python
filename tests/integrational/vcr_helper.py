@@ -85,6 +85,42 @@ def object_in_body_matcher(r1, r2, decrypter=None):
     return True
 
 
+def string_list_in_path_matcher(r1, r2, positions=None):
+    """
+    For here_now requests:
+    /v2/presence/sub-key/my_sub_key/channel/ch1,ch2?key=val
+    /v2/presence/sub-key/my_sub_key/channel/ch2,ch1?key=val
+    """
+
+    if positions is None:
+        positions = []
+    elif isinstance(positions, six.integer_types):
+        positions = [positions]
+
+    try:
+        path1 = r1.path.split('/')
+        path2 = r2.path.split('/')
+
+        for k, v in enumerate(path1):
+            if k in positions:
+                ary1 = v.split(',')
+                ary1.sort()
+                ary2 = path2[k].split(',')
+                ary2.sort()
+
+                assert ary1 == ary2
+            else:
+                assert v == path2[k]
+
+    except (AssertionError, IndexError) as e:
+        return False
+    except Exception as e:
+        print("Non-Assertion Exception: %s" % e)
+        raise
+
+    return True
+
+
 def check_the_difference_matcher(r1, r2):
     """ A helper to check the difference between two requests """
 
@@ -109,6 +145,7 @@ pn_vcr.register_matcher('state_object_in_query', state_object_in_query_matcher)
 pn_vcr.register_matcher('object_in_path', object_in_path_matcher)
 pn_vcr.register_matcher('object_in_body', object_in_body_matcher)
 pn_vcr.register_matcher('check_the_difference', check_the_difference_matcher)
+pn_vcr.register_matcher('string_list_in_path', string_list_in_path_matcher)
 
 
 def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):

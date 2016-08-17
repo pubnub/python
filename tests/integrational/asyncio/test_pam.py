@@ -2,12 +2,12 @@ import pytest
 
 from pubnub.models.consumer.access_manager import PNAccessManagerGrantResult, PNAccessManagerAuditResult
 from pubnub.pubnub_asyncio import PubNubAsyncio
-from tests import helper
 from tests.helper import pnconf_pam_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/global_level.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/global_level.yaml',
+                     filter_query_parameters=['signature', 'timestamp'])
 @pytest.mark.asyncio
 def test_global_level(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
@@ -38,9 +38,10 @@ def test_global_level(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel.yaml',
+                     filter_query_parameters=['signature', 'timestamp'])
 @pytest.mark.asyncio
-def test_single_channelx(event_loop):
+def test_single_channel(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
     pubnub.config.uuid = "my_uuid"
     ch = "test-pam-asyncio-ch"
@@ -68,9 +69,10 @@ def test_single_channelx(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel_with_auth.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel_with_auth.yaml',
+                     filter_query_parameters=['signature', 'timestamp'])
 @pytest.mark.asyncio
-def test_single_channel_with_authxx(event_loop):
+def test_single_channel_with_auth(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
     pubnub.config.uuid = "test-pam-asyncio-uuid"
     ch = "test-pam-asyncio-ch"
@@ -101,7 +103,13 @@ def test_single_channel_with_authxx(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channels.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channels.yaml',
+                     filter_query_parameters=['signature', 'timestamp'],
+                     match_on=['method', 'scheme', 'host', 'port', 'path', 'string_list_in_query'],
+                     match_on_kwargs={
+                         'list_keys': ['channel'],
+                         'filter_keys': ['signature', 'timestamp']
+                     })
 @pytest.mark.asyncio
 def test_multiple_channels(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
@@ -138,7 +146,13 @@ def test_multiple_channels(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channels_with_auth.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channels_with_auth.yaml',
+                     filter_query_parameters=['signature', 'timestamp'],
+                     match_on=['method', 'scheme', 'host', 'port', 'path', 'string_list_in_query'],
+                     match_on_kwargs={
+                         'list_keys': ['channel'],
+                         'filter_keys': ['signature', 'timestamp']
+                     })
 @pytest.mark.asyncio
 def test_multiple_channels_with_auth(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
@@ -177,7 +191,8 @@ def test_multiple_channels_with_auth(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel_group.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel_group.yaml',
+                     filter_query_parameters=['signature', 'timestamp'])
 @pytest.mark.asyncio
 def test_single_channel_group(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
@@ -209,7 +224,8 @@ def test_single_channel_group(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel_group_with_auth.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/single_channel_group_with_auth.yaml',
+                     filter_query_parameters=['signature', 'timestamp'])
 @pytest.mark.asyncio
 def test_single_channel_group_with_auth(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
@@ -243,7 +259,13 @@ def test_single_channel_group_with_auth(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channel_groups.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channel_groups.yaml',
+                     filter_query_parameters=['signature', 'timestamp'],
+                     match_on=['method', 'scheme', 'host', 'port', 'path', 'string_list_in_query'],
+                     match_on_kwargs={
+                         'list_keys': ['channel-group'],
+                         'filter_keys': ['signature', 'timestamp']
+                     })
 @pytest.mark.asyncio
 def test_multiple_channel_groups(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
@@ -280,7 +302,13 @@ def test_multiple_channel_groups(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channel_groups_with_auth.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/pam/multiple_channel_groups_with_auth.yaml',
+                     filter_query_parameters=['signature', 'timestamp'],
+                     match_on=['method', 'scheme', 'host', 'port', 'path', 'string_list_in_query'],
+                     match_on_kwargs={
+                         'list_keys': ['channel-group'],
+                         'filter_keys': ['signature', 'timestamp']
+                     })
 @pytest.mark.asyncio
 def test_multiple_channel_groups_with_auth(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)

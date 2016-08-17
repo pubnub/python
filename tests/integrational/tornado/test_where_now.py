@@ -6,6 +6,7 @@ from pubnub.pubnub_tornado import PubNubTornado
 from tests import helper
 from tests.helper import pnconf_sub_copy
 from tests.integrational.tornado.tornado_helper import connect_to_channel, disconnect_from_channel
+from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
 
 
 class TestPubNubAsyncWhereNow(AsyncTestCase):
@@ -13,14 +14,17 @@ class TestPubNubAsyncWhereNow(AsyncTestCase):
         super(TestPubNubAsyncWhereNow, self).setUp()
         self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
+    # @use_cassette_and_stub_time_sleep(
+    #     'tests/integrational/fixtures/tornado/where_now/single_channel.yaml',
+    #     filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=15)
-    def test_single_channel(self):
-        ch = helper.gen_channel("wherenow-asyncio-channel")
+    def test_where_now_single_channel(self):
+        ch = "where-now-tornado-ch"
         uuid = helper.gen_channel("wherenow-asyncio-uuid")
         self.pubnub.config.uuid = uuid
 
         yield connect_to_channel(self.pubnub, ch)
-        yield gen.sleep(7)
+        yield gen.sleep(10)
         env = yield self.pubnub.where_now() \
             .uuid(uuid) \
             .future()

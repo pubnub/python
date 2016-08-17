@@ -2,7 +2,6 @@ import asyncio
 import pytest
 
 from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
-from tests import helper
 from tests.helper import pnconf_sub_copy
 from tests.integrational.vcr_helper import get_sleeper, pn_vcr
 
@@ -44,7 +43,13 @@ def test_single_channel(event_loop, sleeper=asyncio.sleep):
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml')
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml',
+                     match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
+                     match_on_kwargs={
+                         'string_list_in_path': {
+                             'positions': [4, 6]
+                         }
+                     })
 @pytest.mark.asyncio
 def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
@@ -82,7 +87,13 @@ def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/here_now/global.yaml')
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/global.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/global.yaml',
+                     match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
+                     match_on_kwargs={
+                         'string_list_in_path': {
+                             'positions': [4]
+                         }
+                     })
 @pytest.mark.asyncio
 def test_global(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)

@@ -1,7 +1,6 @@
 import pytest
 
 from pubnub.pubnub_asyncio import PubNubAsyncio
-from tests import helper
 from tests.helper import pnconf, pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 

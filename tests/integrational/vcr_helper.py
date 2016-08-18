@@ -121,6 +121,54 @@ def string_list_in_path_matcher(r1, r2, positions=None):
     return True
 
 
+def string_list_in_query_matcher(r1, r2, list_keys=None, filter_keys=None):
+    """
+    For here_now requests:
+
+    /v1/auth/grant/sub-key/my_sub_key?channel=ch1,ch2&timestamp=123
+    /v1/auth/grant/sub-key/my_sub_key?channel=ch2,ch1&timestamp=124
+
+    NOTICE: The :filter_query_parameters: cassette param should be specified alongside with :filter_keys:
+    """
+
+    if list_keys is None:
+        list_keys = []
+    elif isinstance(list_keys, six.string_types):
+        list_keys = [list_keys]
+
+    if filter_keys is None:
+        filter_keys = []
+    elif isinstance(filter_keys, six.string_types):
+        filter_keys = [filter_keys]
+
+    try:
+        list1 = r1.query
+        list2 = r2.query
+
+        for ik, tp in enumerate(list1):
+            k, v = tp
+            if k in filter_keys:
+                continue
+
+            if k in list_keys:
+                ary1 = v.split(',')
+                ary1.sort()
+                ary2 = list2[ik][1].split(',')
+                ary2.sort()
+
+                assert ary1 == ary2
+            else:
+                assert v == list2[ik][1]
+
+    except (AssertionError, IndexError) as e:
+        return False
+    except Exception as e:
+        print("Non-Assertion Exception: %s" % e)
+        raise
+
+    return True
+
+
 def check_the_difference_matcher(r1, r2):
     """ A helper to check the difference between two requests """
 
@@ -146,6 +194,7 @@ pn_vcr.register_matcher('object_in_path', object_in_path_matcher)
 pn_vcr.register_matcher('object_in_body', object_in_body_matcher)
 pn_vcr.register_matcher('check_the_difference', check_the_difference_matcher)
 pn_vcr.register_matcher('string_list_in_path', string_list_in_path_matcher)
+pn_vcr.register_matcher('string_list_in_query', string_list_in_query_matcher)
 
 
 def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
@@ -155,25 +204,25 @@ def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
     import tornado.gen
 
     @tornado.gen.coroutine
-    def tornado_returner():
+    def returner():
         return
 
     def _inner(f):
         @patch('time.sleep', return_value=None)
-        @patch('tornado.gen.sleep', return_value=tornado_returner())
+        @patch('tornado.gen.sleep', return_value=returner())
         @six.wraps(f)
         def stubbed(*args, **kwargs):
             with context as cassette:
                 largs = list(args)
-                # 0 - index
-                largs.pop(0)
-                largs.pop(0)
+                # 1 - index
+                largs.pop(1)
+                largs.pop(1)
                 return f(*largs, **kwargs)
 
         @six.wraps(f)
         def original(*args):
             with context as cassette:
-                yield from f(*args)
+                return f(*args)
 
         return stubbed if len(cs) > 0 else original
 

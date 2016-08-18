@@ -93,15 +93,15 @@ class TestPubNubAsyncPublish(AsyncTestCase):
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/object_via_get.yaml',
         filter_query_parameters=['uuid', 'seqn'],
-        match_on=['host', 'method', 'query', 'object_in_path'])
+        match_on=['method', 'scheme', 'host', 'port', 'object_in_path', 'query'])
     def test_publish_object_via_get(self):
         self.assert_success_publish_get({"name": "Alex", "online": True})
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/mixed_via_post.yaml',
         filter_query_parameters=['uuid', 'seqn'],
-        match_on=['host', 'method', 'path', 'query', 'body'])
-    def test_publish_string_via_post(self):
+        match_on=['method', 'scheme', 'host', 'port', 'path', 'query'])
+    def test_publish_mixed_via_post(self):
         self.assert_success_publish_post("hi")
         self.assert_success_publish_post(5)
         self.assert_success_publish_post(True)

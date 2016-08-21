@@ -4,25 +4,11 @@ from unittest.mock import patch
 
 import six
 import vcr
-from vcr.stubs.pubnub_tornado_stubs import vcr_fetch_impl
 
-import pubnub.pubnub_tornado
 from tests.helper import url_decode
 
-_SimpleAsyncHTTPClient_fetch_impl = pubnub.pubnub_tornado.PubNubTornadoSimpleAsyncHTTPClient.fetch_impl
-
-
-class PatchWrapper(object):
-    def wrap_cassette(self, cassette):
-        return vcr_fetch_impl(
-            cassette, _SimpleAsyncHTTPClient_fetch_impl
-        )
-
-
 pn_vcr = vcr.VCR(
-    cassette_library_dir=os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__))))),
-    custom_patches=((pubnub.pubnub_tornado.PubNubTornadoSimpleAsyncHTTPClient,
-                     'fetch_impl', PatchWrapper()),)
+    cassette_library_dir=os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__)))))
 )
 
 

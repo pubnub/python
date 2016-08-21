@@ -78,7 +78,7 @@ class PubNubAsyncio(PubNubCore):
         raise NotImplementedError
 
     @asyncio.coroutine
-    def request_future(self, intermediate_key_future, options_func, create_response,
+    def request_future(self, options_func, create_response,
                        create_status_response, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)

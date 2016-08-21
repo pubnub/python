@@ -31,43 +31,7 @@ from .workers import SubscribeMessageWorker
 
 logger = logging.getLogger("pubnub")
 
-
-class PubNubTornadoSimpleAsyncHTTPClient(SimpleAsyncHTTPClient):
-    def reset_request(self, key_object):
-        if key_object in self.waiting:
-            self.io_loop.add_callback(self._on_timeout, key_object)
-
-    def fetch_impl(self, request, initial_callback):
-        key = object()
-
-        def after_key_callback(callback):
-            self.queue.append((key, request, callback))
-            if not len(self.active) < self.max_clients:
-                timeout_handle = self.io_loop.add_timeout(
-                    self.io_loop.time() + min(request.connect_timeout,
-                                              request.request_timeout),
-                    functools.partial(self._on_timeout, key))
-            else:
-                timeout_handle = None
-            self.waiting[key] = (request, callback, timeout_handle)
-            self._process_queue()
-            if self.queue:
-                gen_log.debug("max_clients limit reached, request queued. "
-                              "%d active, %d queued requests." % (
-                                  len(self.active), len(self.queue)))
-
-        key_response = _TornadoKeyResponse(key, after_key_callback)
-        self.io_loop.add_callback(initial_callback, key_response)
-
-
-class _TornadoKeyResponse(object):
-    def __init__(self, key, after_key_callback):
-        self.error = None
-        self.key = key
-        self.continue_callback = after_key_callback
-
-
-tornado.httpclient.AsyncHTTPClient.configure(PubNubTornadoSimpleAsyncHTTPClient)
+tornado.httpclient.AsyncHTTPClient.configure(SimpleAsyncHTTPClient)
 
 
 class PubNubTornado(PubNubCore):
@@ -128,24 +92,7 @@ class PubNubTornado(PubNubCore):
     def request_deferred(self, *args):
         raise NotImplementedError
 
-    def request_future(self, intermediate_key_future, options_func,
-                       create_response, create_status_response, cancellation_event):
-        key_future = self.request_future_key(options_func,
-                                             create_response,
-                                             create_status_response,
-                                             cancellation_event)
-        if intermediate_key_future:
-            return key_future
-        else:
-            @tornado.gen.coroutine
-            def cb():
-                key, call = yield key_future
-                blah = yield call
-                raise tornado.gen.Return(blah)
-
-            return cb()
-
-    def request_future_key(self, options_func, create_response,
+    def request_future(self, options_func, create_response,
                            create_status_response, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
@@ -155,7 +102,7 @@ class PubNubTornado(PubNubCore):
         if options.operation_type is PNOperationType.PNPublishOperation:
             options.params['seqn'] = self._publish_sequence_manager.get_next_sequence()
 
-        key_future = Future()
+        future = Future()
 
         url = utils.build_url(self.config.scheme(), self.config.origin,
                               options.path, options.query_string)
@@ -169,103 +116,97 @@ class PubNubTornado(PubNubCore):
             connect_timeout=options.connect_timeout,
             request_timeout=options.request_timeout)
 
-        def key_callback(key_response):
-            future = Future()
-            key_future.set_result((key_response.key, future))
+        def response_callback(response):
+            if cancellation_event is not None and cancellation_event.is_set():
+                return
 
-            def response_callback(response):
-                if cancellation_event is not None and cancellation_event.is_set():
-                    return
+            body = response.body
+            response_info = None
+            status_category = PNStatusCategory.PNUnknownCategory
 
-                body = response.body
-                response_info = None
-                status_category = PNStatusCategory.PNUnknownCategory
+            if response is not None:
+                request_url = six.moves.urllib.parse.urlparse(response.effective_url)
+                query = six.moves.urllib.parse.parse_qs(request_url.query)
+                uuid = None
+                auth_key = None
 
-                if response is not None:
-                    request_url = six.moves.urllib.parse.urlparse(response.effective_url)
-                    query = six.moves.urllib.parse.parse_qs(request_url.query)
-                    uuid = None
-                    auth_key = None
+                if 'uuid' in query and len(query['uuid']) > 0:
+                    uuid = query['uuid'][0]
 
-                    if 'uuid' in query and len(query['uuid']) > 0:
-                        uuid = query['uuid'][0]
+                if 'auth_key' in query and len(query['auth_key']) > 0:
+                    auth_key = query['auth_key'][0]
 
-                    if 'auth_key' in query and len(query['auth_key']) > 0:
-                        auth_key = query['auth_key'][0]
+                response_info = ResponseInfo(
+                    status_code=response.code,
+                    tls_enabled='https' == request_url.scheme,
+                    origin=request_url.hostname,
+                    uuid=uuid,
+                    auth_key=auth_key,
+                    client_request=response.request
+                )
 
-                    response_info = ResponseInfo(
-                        status_code=response.code,
-                        tls_enabled='https' == request_url.scheme,
-                        origin=request_url.hostname,
-                        uuid=uuid,
-                        auth_key=auth_key,
-                        client_request=response.request
-                    )
-
-                if body is not None and len(body) > 0:
+            if body is not None and len(body) > 0:
+                try:
+                    data = json.loads(body)
+                except TypeError:
                     try:
-                        data = json.loads(body)
-                    except TypeError:
-                        try:
-                            data = json.loads(body.decode("utf-8"))
-                        except ValueError:
-                            tornado_result = TornadoEnvelope(
-                                create_response(None),
-                                create_status_response(status_category, response, response_info, PubNubException(
-                                    pn_error=PNERR_JSON_DECODING_FAILED,
-                                    errormsg='json decode error')
-                                                       )
-                            )
-                            future.set_exception(tornado_result)
-                            return
+                        data = json.loads(body.decode("utf-8"))
+                    except ValueError:
+                        tornado_result = TornadoEnvelope(
+                            create_response(None),
+                            create_status_response(status_category, response, response_info, PubNubException(
+                                pn_error=PNERR_JSON_DECODING_FAILED,
+                                errormsg='json decode error')
+                                                   )
+                        )
+                        future.set_exception(tornado_result)
+                        return
+            else:
+                data = "N/A"
+
+            logger.debug(data)
+
+            if response.error is not None:
+                if response.code >= 500:
+                    err = PNERR_SERVER_ERROR
+                    data = str(response.error)
                 else:
-                    data = "N/A"
+                    err = PNERR_CLIENT_ERROR
 
-                logger.debug(data)
+                if response.code == 403:
+                    status_category = PNStatusCategory.PNAccessDeniedCategory
 
-                if response.error is not None:
-                    if response.code >= 500:
-                        err = PNERR_SERVER_ERROR
-                        data = str(response.error)
-                    else:
-                        err = PNERR_CLIENT_ERROR
+                if response.code == 400:
+                    status_category = PNStatusCategory.PNBadRequestCategory
 
-                    if response.code == 403:
-                        status_category = PNStatusCategory.PNAccessDeniedCategory
+                if response.code == 599:
+                    status_category = PNStatusCategory.PNTimeoutCategory
 
-                    if response.code == 400:
-                        status_category = PNStatusCategory.PNBadRequestCategory
-
-                    if response.code == 599:
-                        status_category = PNStatusCategory.PNTimeoutCategory
-
-                    future.set_exception(PubNubTornadoException(
-                        result=data,
-                        status=create_status_response(status_category, data, response_info,
-                                                      PubNubException(
-                                                          errormsg=data,
-                                                          pn_error=err,
-                                                          status_code=response.code,
-                                                      ))
-                    ))
-                else:
-                    future.set_result(TornadoEnvelope(
-                        result=create_response(data),
-                        status=create_status_response(
-                            PNStatusCategory.PNAcknowledgmentCategory,
-                            data,
-                            response_info,
-                            None)
-                    ))
-
-            key_response.continue_callback(response_callback)
+                future.set_exception(PubNubTornadoException(
+                    result=data,
+                    status=create_status_response(status_category, data, response_info,
+                                                  PubNubException(
+                                                      errormsg=data,
+                                                      pn_error=err,
+                                                      status_code=response.code,
+                                                  ))
+                ))
+            else:
+                future.set_result(TornadoEnvelope(
+                    result=create_response(data),
+                    status=create_status_response(
+                        PNStatusCategory.PNAcknowledgmentCategory,
+                        data,
+                        response_info,
+                        None)
+                ))
 
         self.http.fetch(
             request=request,
-            callback=key_callback
+            callback=response_callback
         )
 
-        return key_future
+        return future
 
 
 class TornadoPublishSequenceManager(PublishSequenceManager):
@@ -307,8 +248,9 @@ class TornadoSubscriptionManager(SubscriptionManager):
         self._message_queue = Queue()
         self._consumer_event = Event()
         self._subscription_lock = Semaphore(1)
-        self._current_request_key_object = None
+        # self._current_request_key_object = None
         self._heartbeat_periodic_callback = None
+        self._cancellation_event = None
         super(TornadoSubscriptionManager, self).__init__(pubnub_instance)
 
     def _set_consumer_event(self):
@@ -332,40 +274,78 @@ class TornadoSubscriptionManager(SubscriptionManager):
 
     @tornado.gen.coroutine
     def _start_subscribe_loop(self):
-        self._stop_subscribe_loop()
-        yield self._subscription_lock.acquire()
-        cancellation_event = Event()
-
-        combined_channels = self._subscription_state.prepare_channel_list(True)
-        combined_groups = self._subscription_state.prepare_channel_group_list(True)
-
-        if len(combined_channels) == 0 and len(combined_groups) == 0:
-            return
-
+        # - gotResultEvent
+        # - resubscribeEvent
+        # - cancelEvent
         try:
-            key_object, subscribe = yield Subscribe(self._pubnub) \
+            combined_channels = self._subscription_state.prepare_channel_list(True)
+            print(">>> Subscribing with %s" % combined_channels)
+            self._stop_subscribe_loop()
+            print(">>> locking...")
+            yield self._subscription_lock.acquire()
+            print(">>> LOCKED")
+            self._cancellation_event = Event()
+
+            combined_channels = self._subscription_state.prepare_channel_list(True)
+            combined_groups = self._subscription_state.prepare_channel_group_list(True)
+
+            if len(combined_channels) == 0 and len(combined_groups) == 0:
+                return
+
+            envelope_future = Subscribe(self._pubnub) \
                 .channels(combined_channels).channel_groups(combined_groups) \
                 .timetoken(self._timetoken).region(self._region) \
                 .filter_expression(self._pubnub.config.filter_expression) \
-                .cancellation_event(cancellation_event) \
-                .future(intermediate_key_future=True)
+                .cancellation_event(self._cancellation_event) \
+                .future()
 
-            self._current_request_key_object = key_object
-            envelope = yield subscribe
+            wi = tornado.gen.WaitIterator(
+                envelope_future,
+                self._cancellation_event.wait())
 
-            self._handle_endpoint_call(envelope.result, envelope.status)
-            self._start_subscribe_loop()
+            while not wi.done():
+                try:
+                    result = yield wi.next()
+                    print("result is %s" % result)
+                except GeneratorExit as e:
+                    print("generator exit inner")
+                #     raise StopIteration
+                except Exception as e:
+                    print("Exception!!! {}".format(e))
+                else:
+                    if wi.current_future == envelope_future:
+                        envelope = result
+                    elif wi.current_future == self._cancellation_event.wait():
+                        print("Call Cancelled {}".format(result))
+                        break
+
+                    self._handle_endpoint_call(envelope.result, envelope.status)
+                    self._start_subscribe_loop()
         except PubNubTornadoException as e:
             if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
                 self._pubnub.ioloop.add_callback(self._start_subscribe_loop)
             else:
                 self._listener_manager.announce_status(e.status)
+        # except GeneratorExit as e:
+        #     print("generator exit outer")
+            # return
+        except Exception as e:
+            logger.error(e)
+            raise
         finally:
-            cancellation_event.set()
+            print("Finally clean up here")
+            print("Finally set")
+            self._cancellation_event.set()
+            yield tornado.gen.moment
+            print("Finally reset")
+            self._cancellation_event = None
             self._subscription_lock.release()
+            print(">>> RELEASED")
 
     def _stop_subscribe_loop(self):
-        self._pubnub.http.reset_request(self._current_request_key_object)
+        if self._cancellation_event is not None:
+            print("Cancelling %s" % self._cancellation_event)
+            self._cancellation_event.set()
 
     def _stop_heartbeat_timer(self):
         if self._heartbeat_periodic_callback is not None:

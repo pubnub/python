@@ -6,7 +6,7 @@ import pubnub as pn
 from tornado import gen
 from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
 
-from pubnub.pubnub_tornado import PubNubTornado
+from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
 from tests.helper import pnconf_sub_copy
 from tests.integrational.tornado.tornado_helper import connect_to_channel, disconnect_from_channel
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
@@ -46,22 +46,22 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
         self.pubnub.stop()
         self.stop()
 
-    # @use_cassette_and_stub_time_sleep(
-    #     'tests/integrational/fixtures/tornado/here_now/multiple.yaml',
-    #     filter_query_parameters=['uuid', 'tt', 'tr'])
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/here_now/multiple.yaml',
+        filter_query_parameters=['uuid', 'tt', 'tr'])
     @tornado.testing.gen_test(timeout=120)
     def test_here_now_multiple_channels(self):
         ch1 = 'test-here-now-channel1'
         ch2 = 'test-here-now-channel2'
         self.pubnub.config.uuid = 'test-here-now-uuid'
-        print("connecting to the first...")
+        # print("connecting to the first...")
         yield connect_to_channel(self.pubnub, ch1)
-        print("...connected to the first")
+        # print("...connected to the first")
         yield gen.sleep(1)
-        print("connecting to the second...")
+        # print("connecting to the second...")
         self.pubnub.subscribe().channels(ch2).execute()
-        print("...connected to the second")
-        yield gen.sleep(15)
+        # print("...connected to the second")
+        yield gen.sleep(5)
         env = yield self.pubnub.here_now() \
             .channels([ch1, ch2]) \
             .future()
@@ -90,7 +90,12 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
         ch2 = 'test-here-now-channel2'
         self.pubnub.config.uuid = 'test-here-now-uuid'
 
-        yield connect_to_channel(self.pubnub, [ch1, ch2])
+        callback_messages = SubscribeListener()
+        self.pubnub.add_listener(callback_messages)
+        self.pubnub.subscribe().channels(ch1).execute()
+        yield callback_messages.wait_for_connect()
+
+        self.pubnub.subscribe().channels(ch2).execute()
         yield gen.sleep(6)
 
         env = yield self.pubnub.here_now().future()

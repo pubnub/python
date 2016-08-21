@@ -5,7 +5,6 @@ import pubnub as pn
 from tornado.testing import AsyncTestCase
 from tornado import gen
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
-from tests import helper
 from tests.helper import pnconf_sub_copy
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
 
@@ -25,9 +24,9 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
         self.pubnub_listener = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
-    @use_cassette_and_stub_time_sleep(
-        'tests/integrational/fixtures/tornado/subscribe/sub_unsub.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+    # @use_cassette_and_stub_time_sleep(
+    #     'tests/integrational/fixtures/tornado/subscribe/sub_unsub.yaml',
+    #     filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=300)
     def test_subscribe_unsubscribe(self):
         ch = "subscribe-tornado-ch"
@@ -239,3 +238,56 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
+
+    @tornado.testing.gen_test(timeout=30)
+    def test_subscribe_step_by_step(self):
+        """
+        Test logic:
+        subscribe ch1
+        sleep 1
+        subscribe ch2
+        subscribe ch3
+        sleep 4
+        unsubscribe ch1
+        subscribe cg1
+        """
+        ch1 = 'test-here-now-channel1'
+        ch2 = 'test-here-now-channel2'
+        ch3 = 'test-here-now-channel3'
+        self.pubnub.config.uuid = 'test-here-now-uuid'
+        callback_messages = SubscribeListener()
+        self.pubnub.add_listener(callback_messages)
+        print("connecting to the first...")
+        self.pubnub.subscribe().channels(ch1).execute()
+        yield callback_messages.wait_for_connect()
+        print("...connected to the first")
+        yield gen.sleep(1)
+        print("connecting to the second...")
+        self.pubnub.subscribe().channels(ch2).execute()
+        self.pubnub.subscribe().channels(ch3).execute()
+        self.pubnub.subscribe().channels(ch3).execute()
+        self.pubnub.subscribe().channels(ch2).execute()
+        print("...connected to the second")
+        yield gen.sleep(5)
+        env = yield self.pubnub.here_now() \
+            .channels([ch1, ch2]) \
+            .future()
+
+        assert env.result.total_channels == 2
+        assert env.result.total_occupancy >= 1
+
+        channels = env.result.channels
+
+        assert len(channels) == 2
+        assert channels[0].occupancy >= 1
+        assert channels[0].occupants[0].uuid == self.pubnub.uuid
+        assert channels[1].occupancy >= 1
+        assert channels[1].occupants[0].uuid == self.pubnub.uuid
+
+        self.pubnub.unsubscribe().channels([ch1, ch2]).execute()
+        yield callback_messages.wait_for_disconnect()
+
+        self.pubnub.unsubscribe().channels(ch3).execute()
+
+        self.pubnub.stop()
+        self.stop()

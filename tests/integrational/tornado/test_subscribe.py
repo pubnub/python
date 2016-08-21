@@ -239,18 +239,11 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/subscribe_tep_by_step.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_step_by_step(self):
-        """
-        Test logic:
-        subscribe ch1
-        sleep 1
-        subscribe ch2
-        subscribe ch3
-        sleep 4
-        unsubscribe ch1
-        subscribe cg1
-        """
         ch1 = 'test-here-now-channel1'
         ch2 = 'test-here-now-channel2'
         ch3 = 'test-here-now-channel3'

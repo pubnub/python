@@ -1,6 +1,8 @@
 import logging
 import json
 import asyncio
+from json import JSONDecodeError
+
 import aiohttp
 import math
 
@@ -136,6 +138,11 @@ class PubNubAsyncio(PubNubCore):
         if body is not None and len(body) > 0:
             try:
                 data = json.loads(body)
+            except JSONDecodeError:
+                if response.status == 599 and len(body) > 0:
+                    data = body
+                else:
+                    raise
             except TypeError:
                 try:
                     data = json.loads(body.decode("utf-8"))
@@ -165,9 +172,6 @@ class PubNubAsyncio(PubNubCore):
 
             if response.status == 400:
                 status_category = PNStatusCategory.PNBadRequestCategory
-
-            if response.status == 599:
-                status_category = PNStatusCategory.PNTimeoutCategory
 
             raise PubNubAsyncioException(
                 result=data,

@@ -6,7 +6,8 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_enc, pn_vcr
+from tests.helper import pnconf, pnconf_enc
+from tests.integrational.vcr_helper import pn_vcr
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -40,8 +41,10 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_object_get.yaml',
-                         filter_query_parameters=['uuid'], match_on=['publish_object'])
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/native_sync/publish/publish_object_get.yaml',
+        filter_query_parameters=['uuid', 'seqn'],
+        match_on=['method', 'scheme', 'host', 'port', 'object_in_path', 'query'])
     def test_publish_object_get(self):
         try:
             env = PubNub(pnconf).publish() \
@@ -141,7 +144,8 @@ class TestPubNubPublish(unittest.TestCase):
             self.fail(e)
 
     @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_object_post.yaml',
-                         filter_query_parameters=['uuid'])
+                         filter_query_parameters=['uuid', 'seqn'],
+                         match_on=['method', 'scheme', 'host', 'port', 'path', 'query', 'object_in_body'])
     def test_publish_object_post(self):
         try:
             env = PubNub(pnconf).publish() \

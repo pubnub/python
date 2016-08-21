@@ -6,7 +6,8 @@ import time
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_copy, use_cassette_and_stub_time_sleep
+from tests.helper import pnconf_copy
+from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 

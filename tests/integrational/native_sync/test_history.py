@@ -6,7 +6,8 @@ import pubnub
 from pubnub.models.consumer.history import PNHistoryResult
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_copy, use_cassette_and_stub_time_sleep, pnconf_enc_copy
+from tests.helper import pnconf_copy, pnconf_enc_copy
+from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 

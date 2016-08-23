@@ -11,7 +11,8 @@ def get_sleeper(cassette_name):
     Loads cassette just to check if it is in record or playback mode
     """
     context = pn_vcr.use_cassette(cassette_name)
-    cs = context.cls(path=cassette_name).load(path=cassette_name)
+    full_path = "{}/{}".format(pn_vcr.cassette_library_dir, cassette_name)
+    cs = context.cls(path=full_path).load(path=full_path)
 
     import asyncio
 

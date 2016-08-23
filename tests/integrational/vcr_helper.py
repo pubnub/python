@@ -10,7 +10,7 @@ except ImportError:
 from tests.helper import url_decode
 
 vcr_dir = os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__)))))
-print(vcr_dir)
+
 pn_vcr = vcr.VCR(
     cassette_library_dir=vcr_dir
 )
@@ -189,7 +189,8 @@ pn_vcr.register_matcher('string_list_in_query', string_list_in_query_matcher)
 
 def use_cassette_and_stub_time_sleep_native(cassette_name, **kwargs):
     context = pn_vcr.use_cassette(cassette_name, **kwargs)
-    cs = context.cls(path=cassette_name).load(path=cassette_name)
+    full_path = "{}/{}".format(pn_vcr.cassette_library_dir, cassette_name)
+    cs = context.cls(path=full_path).load(path=full_path)
 
     def _inner(f):
         @patch('time.sleep', return_value=None)

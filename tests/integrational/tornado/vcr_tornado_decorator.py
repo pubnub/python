@@ -10,7 +10,8 @@ except ImportError:
 
 def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
     context = pn_vcr.use_cassette(cassette_name, **kwargs)
-    cs = context.cls(path=cassette_name).load(path=cassette_name)
+    full_path = "{}/{}".format(pn_vcr.cassette_library_dir, cassette_name)
+    cs = context.cls(path=full_path).load(path=full_path)
 
     import tornado.gen
 

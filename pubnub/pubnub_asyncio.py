@@ -1,7 +1,6 @@
 import logging
 import json
 import asyncio
-from json import JSONDecodeError
 
 import aiohttp
 import math
@@ -138,7 +137,7 @@ class PubNubAsyncio(PubNubCore):
         if body is not None and len(body) > 0:
             try:
                 data = json.loads(body)
-            except JSONDecodeError:
+            except ValueError:
                 if response.status == 599 and len(body) > 0:
                     data = body
                 else:

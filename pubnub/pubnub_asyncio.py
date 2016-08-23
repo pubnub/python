@@ -1,14 +1,11 @@
 import logging
 import json
 import asyncio
-
 import aiohttp
 import math
-
-from asyncio import Event, Queue, Semaphore
-
 import six
 
+from asyncio import Event, Queue, Semaphore
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe

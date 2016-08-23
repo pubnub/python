@@ -1,13 +1,12 @@
-import functools
 import json
 import logging
 import time
 import datetime
-
 import six
 import tornado.gen
 import tornado.httpclient
 import tornado.ioloop
+
 from tornado import ioloop
 from tornado import stack_context
 from tornado.concurrent import Future

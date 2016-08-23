@@ -6,7 +6,8 @@ import pubnub as pn
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, SubscribeListener
 from tests.helper import pnconf_sub_copy, pnconf_enc_sub_copy
-from tests.integrational.vcr_helper import pn_vcr, get_sleeper
+from tests.integrational.vcr_asyncio_sleeper import get_sleeper
+from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 

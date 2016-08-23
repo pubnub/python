@@ -1,14 +1,18 @@
 import json
 import os
-from unittest.mock import patch
-
 import six
 import vcr
+try:
+    from mock import patch
+except ImportError:
+    from unittest.mock import patch
 
 from tests.helper import url_decode
 
+vcr_dir = os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__)))))
+print(vcr_dir)
 pn_vcr = vcr.VCR(
-    cassette_library_dir=os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__)))))
+    cassette_library_dir=vcr_dir
 )
 
 
@@ -183,25 +187,17 @@ pn_vcr.register_matcher('string_list_in_path', string_list_in_path_matcher)
 pn_vcr.register_matcher('string_list_in_query', string_list_in_query_matcher)
 
 
-def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
+def use_cassette_and_stub_time_sleep_native(cassette_name, **kwargs):
     context = pn_vcr.use_cassette(cassette_name, **kwargs)
     cs = context.cls(path=cassette_name).load(path=cassette_name)
 
-    import tornado.gen
-
-    @tornado.gen.coroutine
-    def returner():
-        return
-
     def _inner(f):
         @patch('time.sleep', return_value=None)
-        @patch('tornado.gen.sleep', return_value=returner())
         @six.wraps(f)
         def stubbed(*args, **kwargs):
             with context as cassette:
                 largs = list(args)
                 # 1 - index
-                largs.pop(1)
                 largs.pop(1)
                 return f(*largs, **kwargs)
 
@@ -213,25 +209,3 @@ def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
         return stubbed if len(cs) > 0 else original
 
     return _inner
-
-
-def get_sleeper(cassette_name):
-    """
-    Loads cassette just to check if it is in record or playback mode
-    """
-    context = pn_vcr.use_cassette(cassette_name)
-    cs = context.cls(path=cassette_name).load(path=cassette_name)
-
-    import asyncio
-
-    @asyncio.coroutine
-    def fake_sleeper(v):
-        yield from asyncio.sleep(0)
-
-    def decorate(f):
-        @six.wraps(f)
-        def call(*args, event_loop=None):
-            yield from f(*args, sleeper=(fake_sleeper if (len(cs) > 0) else asyncio.sleep), event_loop=event_loop)
-
-        return call
-    return decorate

@@ -1,14 +1,14 @@
+import logging
 import threading
 import time
 import unittest
-import logging
-import pubnub
 
+import pubnub
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf_copy
-from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
+from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep_native
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -22,7 +22,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         self.status = status
         self.event.set()
 
-    @use_cassette_and_stub_time_sleep('tests/integrational/fixtures/native_threads/channel_groups/single_channel.yaml',
+    @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_threads/channel_groups/single_channel.yaml',
                                       filter_query_parameters=['uuid'])
     def test_single_channel(self):
         ch = "channel-groups-unit-ch"
@@ -75,7 +75,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         assert len(self.response.channels) == 0
         self.event.clear()
 
-    @use_cassette_and_stub_time_sleep(
+    @use_cassette_and_stub_time_sleep_native(
         'tests/integrational/fixtures/native_threads/channel_groups/add_remove_multiple_channels.yaml',
         filter_query_parameters=['uuid'])
     def test_add_remove_multiple_channels(self):
@@ -131,7 +131,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         assert len(self.response.channels) == 0
         self.event.clear()
 
-    @use_cassette_and_stub_time_sleep(
+    @use_cassette_and_stub_time_sleep_native(
         'tests/integrational/fixtures/native_threads/channel_groups/add_channel_remove_group.yaml',
         filter_query_parameters=['uuid'])
     def test_add_channel_remove_group(self):

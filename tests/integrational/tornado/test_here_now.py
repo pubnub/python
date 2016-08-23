@@ -1,15 +1,15 @@
 import logging
+
 import tornado
 import tornado.gen
-import pubnub as pn
-
 from tornado import gen
 from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
 
+import pubnub as pn
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
 from tests.helper import pnconf_sub_copy
 from tests.integrational.tornado.tornado_helper import connect_to_channel, disconnect_from_channel
-from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
+from tests.integrational.tornado.vcr_tornado_decorator import use_cassette_and_stub_time_sleep
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 

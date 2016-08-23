@@ -1,12 +1,12 @@
 import tornado
-from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
 from tornado import gen
+from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
 
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub_tornado import PubNubTornado
 from tests.helper import pnconf
-from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep
+from tests.integrational.tornado.vcr_tornado_decorator import use_cassette_and_stub_time_sleep
 
 
 class TestChannelGroups(AsyncTestCase):

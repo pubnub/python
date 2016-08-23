@@ -13,7 +13,6 @@ from tornado import stack_context
 from tornado.concurrent import Future
 from tornado.ioloop import PeriodicCallback
 from tornado.locks import Event, Semaphore, Lock
-from tornado.log import gen_log
 from tornado.queues import Queue
 from tornado.simple_httpclient import SimpleAsyncHTTPClient
 

@@ -1,7 +1,7 @@
 import logging
 import unittest
-import pubnub
 
+import pubnub
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub

@@ -1,8 +1,8 @@
-import unittest
 import logging
-import pubnub
 import threading
+import unittest
 
+import pubnub
 from pubnub.models.consumer.presence import PNSetStateResult, PNGetStateResult
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf_copy

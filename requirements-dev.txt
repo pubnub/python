@@ -1,6 +1,5 @@
 pytest
 pytest-cov
 codecov
-vcrpy
 pycrypto
 pytest-benchmark

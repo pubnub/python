@@ -1,1 +1,2 @@
 mock==2.0.0
+-e git://github.com/anovikov1984/vcrpy.git@pubnub-hacks#egg=vcrpy-1.10.0-py2.6.egg

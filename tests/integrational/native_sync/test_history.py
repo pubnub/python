@@ -1,12 +1,13 @@
-import unittest
 import logging
 import time
-import pubnub
+import unittest
 
+import pubnub
 from pubnub.models.consumer.history import PNHistoryResult
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_copy, use_cassette_and_stub_time_sleep, pnconf_enc_copy
+from tests.helper import pnconf_copy, pnconf_enc_copy
+from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep_native
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -14,8 +15,8 @@ COUNT = 5
 
 
 class TestPubNubState(unittest.TestCase):
-    @use_cassette_and_stub_time_sleep('tests/integrational/fixtures/native_sync/history/basic.yaml',
-                                      filter_query_parameters=['uuid'])
+    @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/basic.yaml',
+                                             filter_query_parameters=['uuid'])
     def test_basic(self):
         ch = "history-native-sync-ch"
         pubnub = PubNub(pnconf_copy())
@@ -41,8 +42,8 @@ class TestPubNubState(unittest.TestCase):
         assert envelope.result.messages[3].entry == 'hey-3'
         assert envelope.result.messages[4].entry == 'hey-4'
 
-    @use_cassette_and_stub_time_sleep('tests/integrational/fixtures/native_sync/history/encoded.yaml',
-                                      filter_query_parameters=['uuid'])
+    @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/encoded.yaml',
+                                             filter_query_parameters=['uuid'])
     def test_encrypted(self):
         ch = "history-native-sync-ch"
         pubnub = PubNub(pnconf_enc_copy())

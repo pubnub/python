@@ -2,10 +2,10 @@ import tornado
 from tornado import gen
 from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
 
-from pubnub.pubnub_tornado import PubNubTornado
-from tests import helper
+from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
 from tests.helper import pnconf_sub_copy
 from tests.integrational.tornado.tornado_helper import connect_to_channel, disconnect_from_channel
+from tests.integrational.tornado.vcr_tornado_decorator import use_cassette_and_stub_time_sleep
 
 
 class TestPubNubAsyncWhereNow(AsyncTestCase):
@@ -13,14 +13,17 @@ class TestPubNubAsyncWhereNow(AsyncTestCase):
         super(TestPubNubAsyncWhereNow, self).setUp()
         self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/where_now/single_channel.yaml',
+        filter_query_parameters=['uuid'])
     @tornado.testing.gen_test(timeout=15)
-    def test_single_channel(self):
-        ch = helper.gen_channel("wherenow-asyncio-channel")
-        uuid = helper.gen_channel("wherenow-asyncio-uuid")
+    def test_where_now_single_channel(self):
+        ch = "where-now-tornado-ch"
+        uuid = "where-now-tornado-uuid"
         self.pubnub.config.uuid = uuid
 
         yield connect_to_channel(self.pubnub, ch)
-        yield gen.sleep(7)
+        yield gen.sleep(10)
         env = yield self.pubnub.where_now() \
             .uuid(uuid) \
             .future()
@@ -34,15 +37,24 @@ class TestPubNubAsyncWhereNow(AsyncTestCase):
         self.pubnub.stop()
         self.stop()
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/where_now/multiple_channels.yaml',
+        filter_query_parameters=['uuid'])
     @tornado.testing.gen_test(timeout=15)
     def test_multiple_channels(self):
-        ch1 = helper.gen_channel("here-now")
-        ch2 = helper.gen_channel("here-now")
-        uuid = helper.gen_channel("wherenow-asyncio-uuid")
+        ch1 = "where-now-tornado-ch1"
+        ch2 = "where-now-tornado-ch2"
+        uuid = "where-now-tornado-uuid"
         self.pubnub.config.uuid = uuid
 
-        yield connect_to_channel(self.pubnub, [ch1, ch2])
+        callback_messages = SubscribeListener()
+        self.pubnub.add_listener(callback_messages)
+        self.pubnub.subscribe().channels(ch1).execute()
+        yield callback_messages.wait_for_connect()
+
+        self.pubnub.subscribe().channels(ch2).execute()
         yield gen.sleep(5)
+
         env = yield self.pubnub.where_now() \
             .uuid(uuid) \
             .future()

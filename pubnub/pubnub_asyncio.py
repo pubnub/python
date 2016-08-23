@@ -1,6 +1,8 @@
 import logging
 import json
 import asyncio
+from json import JSONDecodeError
+
 import aiohttp
 import math
 
@@ -76,7 +78,7 @@ class PubNubAsyncio(PubNubCore):
         raise NotImplementedError
 
     @asyncio.coroutine
-    def request_future(self, intermediate_key_future, options_func, create_response,
+    def request_future(self, options_func, create_response,
                        create_status_response, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
@@ -136,6 +138,11 @@ class PubNubAsyncio(PubNubCore):
         if body is not None and len(body) > 0:
             try:
                 data = json.loads(body)
+            except JSONDecodeError:
+                if response.status == 599 and len(body) > 0:
+                    data = body
+                else:
+                    raise
             except TypeError:
                 try:
                     data = json.loads(body.decode("utf-8"))
@@ -165,9 +172,6 @@ class PubNubAsyncio(PubNubCore):
 
             if response.status == 400:
                 status_category = PNStatusCategory.PNBadRequestCategory
-
-            if response.status == 599:
-                status_category = PNStatusCategory.PNTimeoutCategory
 
             raise PubNubAsyncioException(
                 result=data,

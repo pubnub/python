@@ -1,0 +1,121 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel/0?pnsdk=PubNub-Python-Tornado%2F4.0.0&tt=0
+  response:
+    body: {string: '{"t":{"t":"14708495143208374","r":12},"m":[]}'}
+    headers:
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Content-Length
+      - ['45']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Date
+      - ['Wed, 10 Aug 2016 17:18:34 GMT']
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel/0?tt=0&uuid=test-here-now-uuid&pnsdk=PubNub-Python-Tornado%2F4.0.0
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-channel?pnsdk=PubNub-Python-Tornado%2F4.0.0
+  response:
+    body: {string: '{"status": 200, "message": "OK", "service": "Presence", "uuids":
+        ["test-here-now-uuid"], "occupancy": 1}'}
+    headers:
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - ['OPTIONS, GET, POST']
+    - !!python/tuple
+      - Accept-Ranges
+      - [bytes]
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Server
+      - [Pubnub Presence]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Age
+      - ['0']
+    - !!python/tuple
+      - Content-Length
+      - ['104']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Date
+      - ['Wed, 10 Aug 2016 17:18:38 GMT']
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-channel?uuid=test-here-now-uuid&pnsdk=PubNub-Python-Tornado%2F4.0.0
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-channel/leave?pnsdk=PubNub-Python-Tornado%2F4.0.0
+  response:
+    body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
+        "Presence"}'}
+    headers:
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - ['OPTIONS, GET, POST']
+    - !!python/tuple
+      - Accept-Ranges
+      - [bytes]
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Server
+      - [Pubnub Presence]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Age
+      - ['0']
+    - !!python/tuple
+      - Content-Length
+      - ['74']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Date
+      - ['Wed, 10 Aug 2016 17:18:39 GMT']
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-channel/leave?uuid=test-here-now-uuid&pnsdk=PubNub-Python-Tornado%2F4.0.0
+version: 1

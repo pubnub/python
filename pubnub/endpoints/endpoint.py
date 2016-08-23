@@ -102,13 +102,12 @@ class Endpoint(object):
 
         return self.pubnub.request_async(self.name(), options, callback_wrapper, self._cancellation_event)
 
-    def future(self, intermediate_key_future=False):
+    def future(self):
         def handler():
             self.validate_params()
             return self.options()
 
-        return self.pubnub.request_future(intermediate_key_future=intermediate_key_future,
-                                          options_func=handler,
+        return self.pubnub.request_future(options_func=handler,
                                           create_response=self.create_response,
                                           create_status_response=self.create_status_response,
                                           cancellation_event=self._cancellation_event

@@ -1,12 +1,13 @@
 import logging
-import tornado
-import pubnub as pn
 
-from tornado.testing import AsyncTestCase
+import tornado
 from tornado import gen
+from tornado.testing import AsyncTestCase
+
+import pubnub as pn
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
-from tests import helper
 from tests.helper import pnconf_sub_copy
+from tests.integrational.tornado.vcr_tornado_decorator import use_cassette_and_stub_time_sleep
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -24,9 +25,12 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
         self.pubnub_listener = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
-    @tornado.testing.gen_test()
+    # @use_cassette_and_stub_time_sleep(
+    #     'tests/integrational/fixtures/tornado/subscribe/sub_unsub.yaml',
+    #     filter_query_parameters=['uuid', 'seqn'])
+    @tornado.testing.gen_test(timeout=300)
     def test_subscribe_unsubscribe(self):
-        ch = helper.gen_channel("subscribe-test")
+        ch = "subscribe-tornado-ch"
 
         callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
@@ -39,9 +43,12 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub.stop()
         self.stop()
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/sub_pub_unsub.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_publish_unsubscribe(self):
-        ch = helper.gen_channel("subscribe-test")
+        ch = "subscribe-tornado-ch"
         message = "hey"
 
         callback_messages = SubscribeListener()
@@ -63,13 +70,16 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub.unsubscribe().channels(ch).execute()
         yield callback_messages.wait_for_disconnect()
 
-    @tornado.testing.gen_test()
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/join_leave.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
+    @tornado.testing.gen_test(timeout=15)
     def test_join_leave(self):
-        ch = helper.gen_channel("subscribe-test")
+        ch = "subscribe-tornado-ch"
         ch_pnpres = ch + "-pnpres"
 
-        self.pubnub.config.uuid = helper.gen_channel("messenger")
-        self.pubnub_listener.config.uuid = helper.gen_channel("listener")
+        self.pubnub.config.uuid = "subscribe-tornado-messenger"
+        self.pubnub_listener.config.uuid = "subscribe-tornado-listener"
         callback_presence = SubscribeListener()
         self.pubnub_listener.add_listener(callback_presence)
         self.pubnub_listener.subscribe().channels(ch).with_presence().execute()
@@ -110,10 +120,13 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         self.pubnub = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
         self.pubnub_listener = PubNubTornado(pnconf_sub_copy(), custom_ioloop=self.io_loop)
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/group_sub_unsub.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=60)
-    def test_subscribe_unsubscribe(self):
-        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+    def test_group_subscribe_unsubscribe(self):
+        ch = "subscribe-unsubscribe-channel"
+        gr = "subscribe-unsubscribe-group"
 
         envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
@@ -131,10 +144,13 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/group_sub_pub_unsub.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=60)
-    def test_subscribe_publish_unsubscribe(self):
-        ch = helper.gen_channel("test-subscribe-pub-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-pub-unsubscribe-group")
+    def test_group_subscribe_publish_unsubscribe(self):
+        ch = "subscribe-unsubscribe-channel"
+        gr = "subscribe-unsubscribe-group"
         message = "hey"
 
         envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
@@ -164,13 +180,16 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/group_join_leave.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
     @tornado.testing.gen_test(timeout=60)
-    def test_join_leave(self):
-        self.pubnub.config.uuid = helper.gen_channel("messenger")
-        self.pubnub_listener.config.uuid = helper.gen_channel("listener")
+    def test_group_join_leave(self):
+        self.pubnub.config.uuid = "test-subscribe-messenger"
+        self.pubnub_listener.config.uuid = "test-subscribe-listener"
 
-        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+        ch = "subscribe-test-channel"
+        gr = "subscribe-test-group"
 
         envelope = yield self.pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
@@ -220,3 +239,49 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
         envelope = yield self.pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
         assert envelope.status.original_response['status'] == 200
+
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/subscribe/subscribe_tep_by_step.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
+    @tornado.testing.gen_test(timeout=30)
+    def test_subscribe_step_by_step(self):
+        ch1 = 'test-here-now-channel1'
+        ch2 = 'test-here-now-channel2'
+        ch3 = 'test-here-now-channel3'
+        self.pubnub.config.uuid = 'test-here-now-uuid'
+        callback_messages = SubscribeListener()
+        self.pubnub.add_listener(callback_messages)
+        print("connecting to the first...")
+        self.pubnub.subscribe().channels(ch1).execute()
+        yield callback_messages.wait_for_connect()
+        print("...connected to the first")
+        yield gen.sleep(1)
+        print("connecting to the second...")
+        self.pubnub.subscribe().channels(ch2).execute()
+        self.pubnub.subscribe().channels(ch3).execute()
+        self.pubnub.subscribe().channels(ch3).execute()
+        self.pubnub.subscribe().channels(ch2).execute()
+        print("...connected to the second")
+        yield gen.sleep(5)
+        env = yield self.pubnub.here_now() \
+            .channels([ch1, ch2]) \
+            .future()
+
+        assert env.result.total_channels == 2
+        assert env.result.total_occupancy >= 1
+
+        channels = env.result.channels
+
+        assert len(channels) == 2
+        assert channels[0].occupancy >= 1
+        assert channels[0].occupants[0].uuid == self.pubnub.uuid
+        assert channels[1].occupancy >= 1
+        assert channels[1].occupants[0].uuid == self.pubnub.uuid
+
+        self.pubnub.unsubscribe().channels([ch1, ch2]).execute()
+        yield callback_messages.wait_for_disconnect()
+
+        self.pubnub.unsubscribe().channels(ch3).execute()
+
+        self.pubnub.stop()
+        self.stop()

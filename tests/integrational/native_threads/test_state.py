@@ -1,11 +1,12 @@
-import unittest
 import logging
-import pubnub
 import threading
+import unittest
 
+import pubnub
 from pubnub.models.consumer.presence import PNSetStateResult, PNGetStateResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_copy, pn_vcr
+from tests.helper import pnconf_copy
+from tests.integrational.vcr_helper import pn_vcr
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 

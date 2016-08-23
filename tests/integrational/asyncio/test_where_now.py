@@ -2,15 +2,20 @@ import asyncio
 import pytest
 
 from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
-from tests import helper
 from tests.helper import pnconf_sub_copy
+from tests.integrational.vcr_asyncio_sleeper import get_sleeper
+from tests.integrational.vcr_helper import pn_vcr
 
 
+@get_sleeper('tests/integrational/fixtures/asyncio/where_now/single_channel.yaml')
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/where_now/single_channel.yaml',
+    filter_query_parameters=['uuid'])
 @pytest.mark.asyncio
-def test_single_channel(event_loop):
+def test_single_channel(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
-    ch = helper.gen_channel("wherenow-asyncio-channel")
-    uuid = helper.gen_channel("wherenow-asyncio-uuid")
+    ch = 'test-where-now-asyncio-ch'
+    uuid = 'test-where-now-asyncio-uuid'
     pubnub.config.uuid = uuid
 
     callback = SubscribeListener()
@@ -19,7 +24,7 @@ def test_single_channel(event_loop):
 
     yield from callback.wait_for_connect()
 
-    yield from asyncio.sleep(2)
+    yield from sleeper(2)
 
     env = yield from pubnub.where_now() \
         .uuid(uuid) \
@@ -36,13 +41,22 @@ def test_single_channel(event_loop):
     pubnub.stop()
 
 
+@get_sleeper('tests/integrational/fixtures/asyncio/where_now/multiple_channels.yaml')
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/where_now/multiple_channels.yaml',
+    match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
+    match_on_kwargs={
+        'string_list_in_path': {
+            'positions': [4]
+        }
+    })
 @pytest.mark.asyncio
-def test_multiple_channels(event_loop):
+def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
-    ch1 = helper.gen_channel("here-now")
-    ch2 = helper.gen_channel("here-now")
-    uuid = helper.gen_channel("wherenow-asyncio-uuid")
+    ch1 = 'test-where-now-asyncio-ch1'
+    ch2 = 'test-where-now-asyncio-ch2'
+    uuid = 'test-where-now-asyncio-uuid'
     pubnub.config.uuid = uuid
 
     callback = SubscribeListener()
@@ -51,7 +65,7 @@ def test_multiple_channels(event_loop):
 
     yield from callback.wait_for_connect()
 
-    yield from asyncio.sleep(7)
+    yield from sleeper(7)
 
     env = yield from pubnub.where_now() \
         .uuid(uuid) \

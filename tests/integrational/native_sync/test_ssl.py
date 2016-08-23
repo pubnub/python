@@ -1,11 +1,12 @@
 import logging
 import unittest
-import pubnub
 
+import pubnub
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pn_vcr, pnconf_copy
+from tests.helper import pnconf_copy
+from tests.integrational.vcr_helper import pn_vcr
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 

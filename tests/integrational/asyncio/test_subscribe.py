@@ -5,15 +5,18 @@ import pubnub as pn
 
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, SubscribeListener
-from tests import helper
 from tests.helper import pnconf_sub_copy, pnconf_enc_sub_copy
+from tests.integrational.vcr_asyncio_sleeper import get_sleeper
+from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_unsub.yaml',
+                     filter_query_parameters=['uuid'])
 @pytest.mark.asyncio
 def test_subscribe_unsubscribe(event_loop):
-    channel = helper.gen_channel("test-sub-unsub")
+    channel = "test-subscribe-asyncio-ch"
 
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
@@ -29,12 +32,14 @@ def test_subscribe_unsubscribe(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub.yaml')
 @pytest.mark.asyncio
 def test_subscribe_publish_unsubscribe(event_loop):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub.config.uuid = 'test-subscribe-asyncio-uuid'
 
     callback = SubscribeListener()
-    channel = helper.gen_channel("test-sub-pub-unsub")
+    channel = "test-subscribe-asyncio-ch"
     message = "hey"
     pubnub.add_listener(callback)
     pubnub.subscribe().channels(channel).execute()
@@ -68,12 +73,14 @@ def test_subscribe_publish_unsubscribe(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub_enc.yaml')
 @pytest.mark.asyncio
 def test_encrypted_subscribe_publish_unsubscribe(event_loop):
     pubnub = PubNubAsyncio(pnconf_enc_sub_copy(), custom_event_loop=event_loop)
+    pubnub.config.uuid = 'test-subscribe-asyncio-uuid'
 
     callback = SubscribeListener()
-    channel = helper.gen_channel("test-sub-pub-unsub")
+    channel = "test-subscribe-asyncio-ch"
     message = "hey"
     pubnub.add_listener(callback)
     pubnub.subscribe().channels(channel).execute()
@@ -107,16 +114,17 @@ def test_encrypted_subscribe_publish_unsubscribe(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml')
 @pytest.mark.asyncio
-def test_join_leave(event_loop):
-    channel = helper.gen_channel("test-subscribe-join-leave")
+def test_join_leave_blah(event_loop):
+    channel = "test-subscribe-asyncio-join-leave-ch"
     presence_channel = "%s-pnpres" % channel
 
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
     pubnub_listener = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
-    pubnub.config.uuid = helper.gen_channel("messenger")
-    pubnub_listener.config.uuid = helper.gen_channel("listener")
+    pubnub.config.uuid = "test-subscribe-asyncio-messenger"
+    pubnub_listener.config.uuid = "test-subscribe-asyncio-listener"
 
     callback_presence = SubscribeListener()
     callback_messages = SubscribeListener()
@@ -155,17 +163,20 @@ def test_join_leave(event_loop):
     pubnub_listener.stop()
 
 
+@get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml',
+                     filter_query_parameters=['uuid'])
 @pytest.mark.asyncio
-def test_cg_subscribe_unsubscribe(event_loop):
-    ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-    gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+def test_cg_subscribe_unsubscribe(event_loop, sleeper=asyncio.sleep):
+    ch = "test-subscribe-asyncio-channel"
+    gr = "test-subscribe-asyncio-group"
 
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
     envelope = yield from pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    yield from asyncio.sleep(1)
+    yield from sleeper(3)
 
     callback_messages = SubscribeListener()
     pubnub.add_listener(callback_messages)
@@ -181,10 +192,13 @@ def test_cg_subscribe_unsubscribe(event_loop):
     pubnub.stop()
 
 
+@get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml',
+                     filter_query_parameters=['uuid'])
 @pytest.mark.asyncio
-def test_cg_subscribe_publish_unsubscribe(event_loop):
-    ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-    gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+def test_cg_subscribe_publish_unsubscribe(event_loop, sleeper=asyncio.sleep):
+    ch = "test-subscribe-asyncio-channel"
+    gr = "test-subscribe-asyncio-group"
     message = "hey"
 
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
@@ -192,7 +206,7 @@ def test_cg_subscribe_publish_unsubscribe(event_loop):
     envelope = yield from pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    yield from asyncio.sleep(1)
+    yield from sleeper(1)
 
     callback_messages = SubscribeListener()
     pubnub.add_listener(callback_messages)
@@ -222,21 +236,23 @@ def test_cg_subscribe_publish_unsubscribe(event_loop):
     pubnub.stop()
 
 
+@get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.yaml')
 @pytest.mark.asyncio
-def test_cg_join_leave(event_loop):
+def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
     pubnub_listener = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
-    pubnub.config.uuid = helper.gen_channel("messenger")
-    pubnub_listener.config.uuid = helper.gen_channel("listener")
+    pubnub.config.uuid = "test-subscribe-asyncio-messenger"
+    pubnub_listener.config.uuid = "test-subscribe-asyncio-listener"
 
-    ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-    gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+    ch = "test-subscribe-asyncio-join-leave-cg-channel"
+    gr = "test-subscribe-asyncio-join-leave-cg-group"
 
     envelope = yield from pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    yield from asyncio.sleep(1)
+    yield from sleeper(1)
 
     callback_messages = SubscribeListener()
     callback_presence = SubscribeListener()
@@ -244,8 +260,10 @@ def test_cg_join_leave(event_loop):
     pubnub_listener.add_listener(callback_presence)
     pubnub_listener.subscribe().channel_groups(gr).with_presence().execute()
     yield from callback_presence.wait_for_connect()
+    print("connected #1")
 
     prs_envelope = yield from callback_presence.wait_for_presence_on(ch)
+    print("presence #2")
     assert prs_envelope.event == 'join'
     assert prs_envelope.uuid == pubnub_listener.uuid
     assert prs_envelope.actual_channel == ch + "-pnpres"
@@ -253,10 +271,12 @@ def test_cg_join_leave(event_loop):
 
     pubnub.add_listener(callback_messages)
     pubnub.subscribe().channel_groups(gr).execute()
+    print("subscribed to cg #3")
 
     callback_messages_future = asyncio.ensure_future(callback_messages.wait_for_connect())
     presence_messages_future= asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
     yield from asyncio.wait([callback_messages_future, presence_messages_future])
+    print("connect/presence #4")
     prs_envelope = presence_messages_future.result()
 
     assert prs_envelope.event == 'join'
@@ -269,6 +289,7 @@ def test_cg_join_leave(event_loop):
     callback_messages_future = asyncio.ensure_future(callback_messages.wait_for_disconnect())
     presence_messages_future = asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
     yield from asyncio.wait([callback_messages_future, presence_messages_future])
+    print("disconnect/presence #5")
     prs_envelope = presence_messages_future.result()
 
     assert prs_envelope.event == 'leave'
@@ -278,9 +299,11 @@ def test_cg_join_leave(event_loop):
 
     pubnub_listener.unsubscribe().channel_groups(gr).execute()
     yield from callback_presence.wait_for_disconnect()
+    print("presence disconnect #6")
 
     envelope = yield from pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
+    print("channel removed #7")
 
     pubnub.stop()
     pubnub_listener.stop()

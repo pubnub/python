@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=test-pam-asyncio-auth&channel=test-pam-asyncio-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.0&r=1&signature=J_ytJScmc0_XzeEtkYBbCZXCPzti8f9e7tSylKNzDY0=&timestamp=1471423673&uuid=test-pam-asyncio-uuid&w=1
+  response:
+    body: {string: '{"message":"Success","payload":{"level":"user","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1440,"channel":"test-pam-asyncio-ch","auths":{"test-pam-asyncio-auth":{"r":1,"w":1,"m":0}}},"service":"Access
+        Manager","status":200}'}
+    headers: {ACCESS-CONTROL-ALLOW-HEADERS: 'Origin, X-Requested-With, Content-Type,
+        Accept', ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
+      CACHE-CONTROL: 'no-cache, no-store, must-revalidate', CONNECTION: keep-alive,
+      CONTENT-LENGTH: '246', CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Wed,
+        17 Aug 2016 08:47:53 GMT'}
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=test-pam-asyncio-auth&channel=test-pam-asyncio-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.0&r=1&signature=J_ytJScmc0_XzeEtkYBbCZXCPzti8f9e7tSylKNzDY0=&timestamp=1471423673&uuid=test-pam-asyncio-uuid&w=1
+- request:
+    body: null
+    headers:
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v1/auth/audit/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=test-pam-asyncio-auth&channel=test-pam-asyncio-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.0&signature=lD4iemg38ddnPsa5KOCNd8jO-BxNgN9KVicRS6es6Z8=&timestamp=1471423673&uuid=test-pam-asyncio-uuid
+  response:
+    body: {string: '{"message":"Success","payload":{"level":"user","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","channel":"test-pam-asyncio-ch","auths":{"test-pam-asyncio-auth":{"r":1,"m":0,"w":1,"ttl":1440}}},"service":"Access
+        Manager","status":200}'}
+    headers: {ACCESS-CONTROL-ALLOW-HEADERS: 'Origin, X-Requested-With, Content-Type,
+        Accept', ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
+      CACHE-CONTROL: 'no-cache, no-store, must-revalidate', CONNECTION: keep-alive,
+      CONTENT-LENGTH: '246', CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Wed,
+        17 Aug 2016 08:47:53 GMT'}
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v1/auth/audit/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=test-pam-asyncio-auth&channel=test-pam-asyncio-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.0&signature=lD4iemg38ddnPsa5KOCNd8jO-BxNgN9KVicRS6es6Z8=&timestamp=1471423673&uuid=test-pam-asyncio-uuid
+version: 1

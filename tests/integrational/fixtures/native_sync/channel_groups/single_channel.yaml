@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.0]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?add=channel-groups-unit-ch&pnsdk=PubNub-Python%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?add=channel-groups-native-ch&pnsdk=PubNub-Python%2F4.0.0
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -20,7 +20,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['79']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 17:40:14 GMT']
+      Date: ['Sun, 21 Aug 2016 15:58:18 GMT']
       Server: [Pubnub]
     status: {code: 200, message: OK}
 - request:
@@ -31,10 +31,10 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.0]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?pnsdk=PubNub-Python%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?pnsdk=PubNub-Python%2F4.0.0
   response:
-    body: {string: '{"status": 200, "payload": {"channels": ["channel-groups-unit-ch"],
-        "group": "channel-groups-unit-cg"}, "service": "channel-registry", "error":
+    body: {string: '{"status": 200, "payload": {"channels": ["channel-groups-native-ch"],
+        "group": "channel-groups-native-cg"}, "service": "channel-registry", "error":
         false}'}
     headers:
       Accept-Ranges: [bytes]
@@ -43,9 +43,9 @@ interactions:
       Age: ['0']
       Cache-Control: [no-cache]
       Connection: [keep-alive]
-      Content-Length: ['150']
+      Content-Length: ['154']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 17:40:17 GMT']
+      Date: ['Sun, 21 Aug 2016 15:58:20 GMT']
       Server: [Pubnub]
     status: {code: 200, message: OK}
 - request:
@@ -56,7 +56,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.0]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?pnsdk=PubNub-Python%2F4.0.0&remove=channel-groups-unit-ch
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?pnsdk=PubNub-Python%2F4.0.0&remove=channel-groups-native-ch
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -69,7 +69,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['79']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 17:40:17 GMT']
+      Date: ['Sun, 21 Aug 2016 15:58:20 GMT']
       Server: [Pubnub]
     status: {code: 200, message: OK}
 - request:
@@ -80,9 +80,9 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.0]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?pnsdk=PubNub-Python%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?pnsdk=PubNub-Python%2F4.0.0
   response:
-    body: {string: '{"status": 200, "payload": {"channels": [], "group": "channel-groups-unit-cg"},
+    body: {string: '{"status": 200, "payload": {"channels": [], "group": "channel-groups-native-cg"},
         "service": "channel-registry", "error": false}'}
     headers:
       Accept-Ranges: [bytes]
@@ -91,9 +91,9 @@ interactions:
       Age: ['0']
       Cache-Control: [no-cache]
       Connection: [keep-alive]
-      Content-Length: ['126']
+      Content-Length: ['128']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 17:40:19 GMT']
+      Date: ['Sun, 21 Aug 2016 15:58:22 GMT']
       Server: [Pubnub]
     status: {code: 200, message: OK}
 version: 1

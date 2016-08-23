@@ -7,7 +7,7 @@ from pubnub.enums import PNStatusCategory
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_enc, pn_vcr
+from tests.helper import pnconf, pnconf_enc
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 

@@ -1,1 +1,2 @@
 tornado
+-e git://github.com/anovikov1984/vcrpy.git@pubnub-hacks#egg=vcrpy-1.10.0-pypy.egg

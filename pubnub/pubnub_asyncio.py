@@ -1,15 +1,11 @@
 import logging
 import json
 import asyncio
-from json import JSONDecodeError
-
 import aiohttp
 import math
-
-from asyncio import Event, Queue, Semaphore
-
 import six
 
+from asyncio import Event, Queue, Semaphore
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
@@ -138,7 +134,7 @@ class PubNubAsyncio(PubNubCore):
         if body is not None and len(body) > 0:
             try:
                 data = json.loads(body)
-            except JSONDecodeError:
+            except ValueError:
                 if response.status == 599 and len(body) > 0:
                     data = body
                 else:

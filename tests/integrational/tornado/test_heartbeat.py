@@ -5,8 +5,8 @@ import pubnub as pn
 from tornado.testing import AsyncTestCase
 from tornado import gen
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
-from tests import helper
 from tests.helper import pnconf_sub_copy
+from tests.integrational.tornado.vcr_tornado_decorator import use_cassette_and_stub_time_sleep
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -24,19 +24,26 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
 
         messenger_config = pnconf_sub_copy()
         messenger_config.set_presence_timeout(8)
-        messenger_config.uuid = helper.gen_channel("messenger")
+        messenger_config.uuid = "heartbeat-tornado-messenger"
 
         listener_config = pnconf_sub_copy()
-        listener_config.uuid = helper.gen_channel("listener")
+        listener_config.uuid = "heartbeat-tornado-listener"
 
         self.pubnub = PubNubTornado(messenger_config, custom_ioloop=self.io_loop)
         self.pubnub_listener = PubNubTornado(listener_config, custom_ioloop=self.io_loop)
-        self.pubnub.config.uuid = helper.gen_channel("messenger")
-        self.pubnub_listener.config.uuid = helper.gen_channel("listener")
 
+    @use_cassette_and_stub_time_sleep(
+        'tests/integrational/fixtures/tornado/heartbeat/timeout.yaml',
+        filter_query_parameters=['uuid'],
+        match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
+        match_on_kwargs={
+            'string_list_in_path': {
+                'positions': [4]
+            }
+        })
     @tornado.testing.gen_test(timeout=20)
     def test_timeout_event_on_broken_heartbeat(self):
-        ch = helper.gen_channel("heartbeat-test")
+        ch = "heartbeat-tornado-ch"
 
         # - connect to :ch-pnpres
         callback_presence = SubscribeListener()

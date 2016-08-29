@@ -91,7 +91,7 @@ class PubNubTornado(PubNubCore):
         raise NotImplementedError
 
     def request_future(self, options_func, create_response,
-                           create_status_response, cancellation_event):
+                       create_status_response, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
@@ -272,16 +272,11 @@ class TornadoSubscriptionManager(SubscriptionManager):
 
     @tornado.gen.coroutine
     def _start_subscribe_loop(self):
-        # - gotResultEvent
-        # - resubscribeEvent
-        # - cancelEvent
         try:
-            combined_channels = self._subscription_state.prepare_channel_list(True)
-            print(">>> Subscribing with %s" % combined_channels)
             self._stop_subscribe_loop()
-            print(">>> locking...")
+
             yield self._subscription_lock.acquire()
-            print(">>> LOCKED")
+
             self._cancellation_event = Event()
 
             combined_channels = self._subscription_state.prepare_channel_list(True)
@@ -304,17 +299,13 @@ class TornadoSubscriptionManager(SubscriptionManager):
             while not wi.done():
                 try:
                     result = yield wi.next()
-                    print("result is %s" % result)
-                except GeneratorExit as e:
-                    print("generator exit inner")
-                #     raise StopIteration
                 except Exception as e:
-                    print("Exception!!! {}".format(e))
+                    logger.error(e)
+                    raise
                 else:
                     if wi.current_future == envelope_future:
                         envelope = result
                     elif wi.current_future == self._cancellation_event.wait():
-                        print("Call Cancelled {}".format(result))
                         break
 
                     self._handle_endpoint_call(envelope.result, envelope.status)
@@ -324,25 +315,17 @@ class TornadoSubscriptionManager(SubscriptionManager):
                 self._pubnub.ioloop.add_callback(self._start_subscribe_loop)
             else:
                 self._listener_manager.announce_status(e.status)
-        # except GeneratorExit as e:
-        #     print("generator exit outer")
-            # return
         except Exception as e:
             logger.error(e)
             raise
         finally:
-            print("Finally clean up here")
-            print("Finally set")
             self._cancellation_event.set()
             yield tornado.gen.moment
-            print("Finally reset")
             self._cancellation_event = None
             self._subscription_lock.release()
-            print(">>> RELEASED")
 
     def _stop_subscribe_loop(self):
         if self._cancellation_event is not None:
-            print("Cancelling %s" % self._cancellation_event)
             self._cancellation_event.set()
 
     def _stop_heartbeat_timer(self):

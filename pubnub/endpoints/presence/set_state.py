@@ -1,4 +1,5 @@
 from pubnub import utils
+from pubnub.dtos import StateOperation
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_STATE_MISSING, PNERR_STATE_SETTER_FOR_GROUPS_NOT_SUPPORTED_YET
 from pubnub.exceptions import PubNubException
@@ -32,6 +33,13 @@ class SetState(Endpoint):
         return self
 
     def build_params(self):
+        if self._subscription_manager is not None:
+            self._subscription_manager.adapt_state_builder(StateOperation(
+                channels=self._channels,
+                channel_groups=self._groups,
+                state=self._state
+            ))
+
         params = self.default_params()
 
         params['state'] = utils.url_encode(utils.write_value_as_string(self._state))

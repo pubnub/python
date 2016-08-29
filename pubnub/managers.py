@@ -70,6 +70,19 @@ class StateManager(object):
             if group in self._presence_groups:
                 self._presence_groups.pop(group)
 
+    def adapt_state_builder(self, state_operation):
+        for channel in state_operation.channels:
+            subscribed_channel = self._channels.get(channel)
+
+            if subscribed_channel is not None:
+                subscribed_channel.state = state_operation.state
+
+        for group in state_operation.channel_groups:
+            subscribed_group = self._channels.get(group)
+
+            if subscribed_group is not None:
+                subscribed_group.state = state_operation.state
+
     def state_payload(self):
         state = {}
 
@@ -199,6 +212,10 @@ class SubscriptionManager(object):
         if self._subscription_state.is_empty():
             self._region = None
             self._timetoken = 0
+        self.reconnect()
+
+    def adapt_state_builder(self, state_operation):
+        self._subscription_state.adapt_state_builder(state_operation)
         self.reconnect()
 
     @abstractmethod

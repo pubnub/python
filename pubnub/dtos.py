@@ -21,3 +21,10 @@ class UnsubscribeOperation(object):
 
         self.channels = channels
         self.channel_groups = channel_groups
+
+
+class StateOperation(object):
+    def __init__(self, channels=None, channel_groups=None, state=None):
+        self.channels = channels
+        self.channel_groups = channel_groups
+        self.state = state

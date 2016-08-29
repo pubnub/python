@@ -1,7 +1,9 @@
+import asyncio
 import pytest
 
-from pubnub.pubnub_asyncio import PubNubAsyncio
-from tests.helper import pnconf, pnconf_copy
+from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
+from tests.helper import pnconf, pnconf_copy, pnconf_sub_copy
+from tests.integrational.vcr_asyncio_sleeper import get_sleeper
 from tests.integrational.vcr_helper import pn_vcr
 
 
@@ -30,6 +32,48 @@ def test_single_channel(event_loop):
 
     assert env.result.channels[ch]['name'] == "Alex"
     assert env.result.channels[ch]['count'] == 5
+
+    pubnub.stop()
+
+
+@get_sleeper('tests/integrational/fixtures/asyncio/state/single_channel_with_subscription.yaml')
+@pn_vcr.use_cassette(
+        'tests/integrational/fixtures/asyncio/state/single_channel_with_subscription.yaml',
+        filter_query_parameters=['uuid'],
+        match_on=['method', 'host', 'path', 'state_object_in_query'])
+@pytest.mark.asyncio
+def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
+    pnconf = pnconf_sub_copy()
+    pnconf.set_presence_timeout(12)
+    pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
+    ch = 'test-state-asyncio-ch'
+    pubnub.config.uuid = 'test-state-asyncio-uuid'
+    state = {"name": "Alex", "count": 5}
+
+    callback = SubscribeListener()
+    pubnub.add_listener(callback)
+    pubnub.subscribe().channels(ch).execute()
+
+    yield from callback.wait_for_connect()
+    yield from sleeper(20)
+
+    env = yield from pubnub.set_state() \
+        .channels(ch) \
+        .state(state) \
+        .future()
+
+    assert env.result.state['name'] == "Alex"
+    assert env.result.state['count'] == 5
+
+    env = yield from pubnub.get_state() \
+        .channels(ch) \
+        .future()
+
+    assert env.result.channels[ch]['name'] == "Alex"
+    assert env.result.channels[ch]['count'] == 5
+
+    pubnub.unsubscribe().channels(ch).execute()
+    yield from callback.wait_for_disconnect()
 
     pubnub.stop()
 

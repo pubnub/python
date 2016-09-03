@@ -14,7 +14,7 @@ os.chdir(os.path.join(REPO_ROOT, 'tests'))
 pyenv_version = os.getenv('PYENV_VERSION', 0)
 travis_version = os.getenv('TRAVIS_PYTHON_VERSION', 0)
 version = str(travis_version or pyenv_version)
-cmn = 'py.test --cov-config=.coveragerc --cov=../pubnub --ignore=integrational/twisted/ '
+cmn = 'py.test --cov-config=../coveragerc --cov=../pubnub --ignore=integrational/twisted/ '
 
 print("Version is", version)
 

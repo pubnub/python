@@ -1,4 +1,5 @@
 pytest-asyncio
 tornado
 aiohttp
+flake8
 -e git://github.com/anovikov1984/vcrpy.git@pubnub-hacks#egg=vcrpy-1.10.0-py3.5.egg

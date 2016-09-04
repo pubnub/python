@@ -40,4 +40,3 @@ class PNHistoryItemResult(object):
 
     def decrypt(self, cipher_key):
         self.entry = pn_crypto.decrypt(cipher_key, self.entry)
-

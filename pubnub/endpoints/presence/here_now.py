@@ -28,7 +28,7 @@ class HereNow(Endpoint):
         return self
 
     def include_uuids(self, include_uuids):
-        self._include_uuids= include_uuids
+        self._include_uuids = include_uuids
         return self
 
     def build_params(self):

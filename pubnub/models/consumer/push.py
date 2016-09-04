@@ -10,6 +10,7 @@ class PNPushRemoveChannelResult(object):
 class PNPushRemoveAllChannelsResult(object):
     pass
 
+
 class PNPushListProvisionsResult(object):
     def __init__(self, channels):
         self.channels = channels

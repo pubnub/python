@@ -61,7 +61,10 @@ class PubNub(PubNubCore):
                                                    callback, cancellation_event)
 
     def stop(self):
-        self._subscription_manager.stop()
+        if self._subscription_manager is not None:
+            self._subscription_manager.stop()
+        else:
+            raise Exception("Subscription manager is not enabled for this instance")
 
     def request_deferred(self, options_func):
         raise NotImplementedError
@@ -317,10 +320,12 @@ class SubscribeListener(SubscribeCallback):
 class NonSubscribeListener(object):
     def __init__(self):
         self.result = None
+        self.status = None
         self.done_event = Event()
 
     def callback(self, result, status):
         self.result = result
+        self.status = status
         self.done_event.set()
 
     def await(self, timeout=5):
@@ -339,4 +344,5 @@ class NonSubscribeListener(object):
 
     def reset(self):
         self.result = None
+        self.status = None
         self.done_event.clear()

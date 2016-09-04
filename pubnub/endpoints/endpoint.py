@@ -179,4 +179,3 @@ class Endpoint(object):
         pn_status.affected_channels_groups = self.affected_channels_groups()
 
         return pn_status
-

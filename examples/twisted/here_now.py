@@ -6,6 +6,7 @@ sys.path.append("../../")
 from pubnub.pubnub_twisted import PubNubTwisted
 from pubnub.pnconfiguration import PNConfiguration
 
+
 pnconf = PNConfiguration()
 pubnub = PubNubTwisted(pnconf)
 

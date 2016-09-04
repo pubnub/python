@@ -6,22 +6,21 @@ sys.path.append("../")
 
 import pubnub
 from examples import pnconf
-from pubnub.pubnub import PubNub
+from pubnub.pubnub import PubNub, NonSubscribeListener
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG, stream=sys.stdout)
 
-pnconf.publish_key="blah"
 pubnub = PubNub(pnconf)
 
-def success(msg):
-    print("success", msg)
 
-def error(err):
-    print("error", err)
+listener = NonSubscribeListener()
 
-thread = pubnub.publish() \
+pubnub.publish() \
     .channel("blah") \
     .message("hey") \
-    .async(success, error)
+    .async(listener.callback)
 
-thread.join()
+result = listener.await_result_and_reset(5)
+print(result)
+
+pubnub.stop()

@@ -53,6 +53,8 @@ class PubNubAsyncio(PubNubCore):
         self._session.close()
         if self._subscription_manager is not None:
             self._subscription_manager.stop()
+        else:
+            raise Exception("Subscription manager is not enabled for this instance")
 
     def sdk_platform(self):
         return "-Asyncio"
@@ -253,11 +255,11 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         try:
             self._subscribe_request_task = asyncio.ensure_future(
                 Subscribe(self._pubnub)
-                    .channels(combined_channels)
-                    .channel_groups(combined_groups)
-                    .timetoken(self._timetoken).region(self._region)
-                    .filter_expression(self._pubnub.config.filter_expression)
-                    .future())
+                .channels(combined_channels)
+                .channel_groups(combined_groups)
+                .timetoken(self._timetoken).region(self._region)
+                .filter_expression(self._pubnub.config.filter_expression)
+                .future())
 
             envelope = yield from self._subscribe_request_task
 

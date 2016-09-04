@@ -9,12 +9,12 @@ from subprocess import check_call
 _dname = os.path.dirname
 
 REPO_ROOT = _dname(_dname(os.path.abspath(__file__)))
-os.chdir(os.path.join(REPO_ROOT, 'tests'))
+os.chdir(os.path.join(REPO_ROOT))
 
 pyenv_version = os.getenv('PYENV_VERSION', 0)
 travis_version = os.getenv('TRAVIS_PYTHON_VERSION', 0)
 version = str(travis_version or pyenv_version)
-cmn = 'py.test --cov-config=../.coveragerc --cov=../pubnub --ignore=integrational/twisted/ '
+cmn = 'py.test tests --cov-report=xml --cov=./pubnub --ignore=tests/integrational/twisted '
 
 print("Version is", version)
 

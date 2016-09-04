@@ -23,19 +23,19 @@ def run(command):
     return check_call(command, shell=True)
 
 if version.startswith('2.6'):
-    run('%s--ignore=integrational/tornado/ --ignore=integrational/asyncio/ --ignore=integrational/python_v35/' % cmn)
+    run('%s--ignore=tests/integrational/tornado/ --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)
 elif version.startswith('2.7'):
     # TODO: remove twisted ignore option when the tests will be ready
-    run('%s--ignore=integrational/asyncio/ --ignore=integrational/python_v35/' % cmn)
+    run('%s --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)
 elif version.startswith('3.3'):
-    run('%s--ignore=integrational/asyncio/ --ignore=integrational/python_v35/' % cmn)
+    run('%s--ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)
 elif version.startswith('3.4'):
-    run('%s--ignore=integrational/python_v35/' % cmn)
+    run('%s--ignore=tests/integrational/python_v35/ ' % cmn)
 elif version.startswith('3.5'):
     run(cmn)
 elif version.startswith('3.6'):
     run(cmn)
 elif version.startswith('pypy'):
-    run('%s--ignore=integrational/asyncio/ --ignore=integrational/python_v35/' % cmn)
+    run('%s--ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)
 else:
     raise Exception("Version %s is not supported by this script runner" % version)

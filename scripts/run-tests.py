@@ -22,6 +22,8 @@ print("Version is", version)
 def run(command):
     return check_call(command, shell=True)
 
+if not version.startswith('2.6'):
+    run('flake8')
 
 if version.startswith('2.6'):
     run(

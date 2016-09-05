@@ -41,7 +41,7 @@ elif version.startswith('3.4'):
 elif version.startswith('3.5'):
     run(fcmn)
     run(tcmn)
-elif version.startswith('3.6') or version is 'nightly':
+elif version.startswith('3.6') or version == 'nightly':
     run(fcmn)
     run(tcmn)
 elif version.startswith('pypy'):

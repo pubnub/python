@@ -8,9 +8,9 @@ from tests.integrational.vcr_helper import pn_vcr
 
 
 @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/asyncio/state/single_channel.yaml',
-        filter_query_parameters=['uuid'],
-        match_on=['method', 'host', 'path', 'state_object_in_query'])
+    'tests/integrational/fixtures/asyncio/state/single_channel.yaml',
+    filter_query_parameters=['uuid'],
+    match_on=['method', 'host', 'path', 'state_object_in_query'])
 @pytest.mark.asyncio
 def test_single_channel(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
@@ -38,9 +38,9 @@ def test_single_channel(event_loop):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/state/single_channel_with_subscription.yaml')
 @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/asyncio/state/single_channel_with_subscription.yaml',
-        filter_query_parameters=['uuid'],
-        match_on=['method', 'host', 'path', 'state_object_in_query'])
+    'tests/integrational/fixtures/asyncio/state/single_channel_with_subscription.yaml',
+    filter_query_parameters=['uuid'],
+    match_on=['method', 'host', 'path', 'state_object_in_query'])
 @pytest.mark.asyncio
 def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
     pnconf = pnconf_sub_copy()
@@ -79,9 +79,9 @@ def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
 
 
 @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/asyncio/state/multiple_channel.yaml',
-        filter_query_parameters=['uuid'],
-        match_on=['method', 'host', 'path', 'state_object_in_query'])
+    'tests/integrational/fixtures/asyncio/state/multiple_channel.yaml',
+    filter_query_parameters=['uuid'],
+    match_on=['method', 'host', 'path', 'state_object_in_query'])
 @pytest.mark.asyncio
 def test_multiple_channels(event_loop):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)

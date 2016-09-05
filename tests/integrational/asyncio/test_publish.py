@@ -114,11 +114,11 @@ def test_publish_mixed_via_get_encrypted(event_loop):
 
 
 @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/asyncio/publish/object_via_get_encrypted.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
-        match_on=['host', 'method', 'query', 'object_in_path'],
-        match_on_kwargs={'object_in_path': {
-            'decrypter': gen_decrypt_func('testKey')}})
+    'tests/integrational/fixtures/asyncio/publish/object_via_get_encrypted.yaml',
+    filter_query_parameters=['uuid', 'seqn'],
+    match_on=['host', 'method', 'query', 'object_in_path'],
+    match_on_kwargs={'object_in_path': {
+        'decrypter': gen_decrypt_func('testKey')}})
 @pytest.mark.asyncio
 def test_publish_object_via_get_encrypted(event_loop):
     pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
@@ -128,9 +128,9 @@ def test_publish_object_via_get_encrypted(event_loop):
 
 
 @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/asyncio/publish/mixed_via_post_encrypted.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
-        match_on=['method', 'path', 'query', 'body'])
+    'tests/integrational/fixtures/asyncio/publish/mixed_via_post_encrypted.yaml',
+    filter_query_parameters=['uuid', 'seqn'],
+    match_on=['method', 'path', 'query', 'body'])
 @pytest.mark.asyncio
 def test_publish_mixed_via_post_encrypted(event_loop):
     pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
@@ -144,17 +144,18 @@ def test_publish_mixed_via_post_encrypted(event_loop):
 
 
 @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/asyncio/publish/object_via_post_encrypted.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
-        match_on=['method', 'path', 'query', 'object_in_body'],
-        match_on_kwargs={'object_in_body': {
-            'decrypter': gen_decrypt_func('testKey')}})
+    'tests/integrational/fixtures/asyncio/publish/object_via_post_encrypted.yaml',
+    filter_query_parameters=['uuid', 'seqn'],
+    match_on=['method', 'path', 'query', 'object_in_body'],
+    match_on_kwargs={'object_in_body': {
+        'decrypter': gen_decrypt_func('testKey')}})
 @pytest.mark.asyncio
 def test_publish_object_via_post_encrypted(event_loop):
     pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
     yield from asyncio.ensure_future(assert_success_publish_post(pubnub, {"name": "Alex", "online": True}))
 
     pubnub.stop()
+
 
 @pytest.mark.asyncio
 def test_error_missing_message(event_loop):
@@ -184,9 +185,9 @@ def test_error_non_serializable(event_loop):
 
 
 @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/asyncio/publish/meta_object.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
-        match_on=['host', 'method', 'path', 'meta_object_in_query'])
+    'tests/integrational/fixtures/asyncio/publish/meta_object.yaml',
+    filter_query_parameters=['uuid', 'seqn'],
+    match_on=['host', 'method', 'path', 'meta_object_in_query'])
 @pytest.mark.asyncio
 def test_publish_with_meta(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
@@ -196,8 +197,8 @@ def test_publish_with_meta(event_loop):
 
 
 @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/asyncio/publish/do_not_store.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+    'tests/integrational/fixtures/asyncio/publish/do_not_store.yaml',
+    filter_query_parameters=['uuid', 'seqn'])
 @pytest.mark.asyncio
 def test_publish_do_not_store(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
@@ -215,8 +216,8 @@ def assert_server_side_error_yield(pub, expected_err_msg):
 
 
 @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/asyncio/publish/invalid_key.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+    'tests/integrational/fixtures/asyncio/publish/invalid_key.yaml',
+    filter_query_parameters=['uuid', 'seqn'])
 @pytest.mark.asyncio
 def test_error_invalid_key(event_loop):
     conf = PNConfiguration()
@@ -228,4 +229,3 @@ def test_error_invalid_key(event_loop):
 
     yield from assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "Invalid Key")
     pubnub.stop()
-

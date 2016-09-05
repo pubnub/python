@@ -36,7 +36,6 @@ class TestListPushProvisions(unittest.TestCase):
             'type': 'apns'
         })
 
-
     def test_list_channel_group_gcm(self):
         self.list_push.push_type(PNPushType.GCM).device_id('coolDevice')
 

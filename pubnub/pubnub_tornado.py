@@ -155,8 +155,7 @@ class PubNubTornado(PubNubCore):
                             create_status_response(status_category, response, response_info, PubNubException(
                                 pn_error=PNERR_JSON_DECODING_FAILED,
                                 errormsg='json decode error')
-                                                   )
-                        )
+                            ))
                         future.set_exception(tornado_result)
                         return
             else:
@@ -367,7 +366,7 @@ class TornadoSubscriptionManager(SubscriptionManager):
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if envelope.status.is_error:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
-                                heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                        heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
                     self._listener_manager.announce_stateus(envelope.status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:

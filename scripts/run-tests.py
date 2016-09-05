@@ -22,8 +22,10 @@ print("Version is", version)
 def run(command):
     return check_call(command, shell=True)
 
+
 if version.startswith('2.6'):
-    run('%s--ignore=tests/integrational/tornado/ --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)
+    run(
+        '%s--ignore=tests/integrational/tornado/ --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)  # noqa: E501
 elif version.startswith('2.7'):
     # TODO: remove twisted ignore option when the tests will be ready
     run('%s --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)

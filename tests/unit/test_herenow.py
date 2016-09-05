@@ -16,7 +16,7 @@ single_with_state = {'status': 200, 'message': 'OK', 'occupancy': 1, 'service': 
 multiple = {'status': 200, 'message': 'OK', 'payload': {'total_channels': 2, 'channels': {
     'here-now-GIY92DGX': {'occupancy': 1, 'uuids': ['c71b2961-9624-4801-90bc-6c89a725a422']},
     'here-now-B1WZA4LO': {'occupancy': 1, 'uuids': ['c71b2961-9624-4801-90bc-6c89a725a422']}}, 'total_occupancy': 2},
-            'service': 'Presence'}
+    'service': 'Presence'}
 multiple_disable_uuids = {
     'payload': {'channels': {'here-now-IUX5HV7O': {'occupancy': 1}, 'here-now-FGE5Q9UY': {'occupancy': 1}},
                 'total_occupancy': 2, 'total_channels': 2}, 'message': 'OK', 'service': 'Presence', 'status': 200}

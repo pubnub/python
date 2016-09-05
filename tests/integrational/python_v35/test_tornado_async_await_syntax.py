@@ -1,6 +1,4 @@
 import logging
-import pytest
-import sys
 import tornado
 import pubnub as pn
 

@@ -52,7 +52,7 @@ class TestPubNubPublishSuccess(TwistedTest):
     def assert_success_publish_post(self, msg):
         return self.assert_success(
             PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
-                .publish().channel(ch).message(msg).use_post(True))
+            .publish().channel(ch).message(msg).use_post(True))
 
     def test_success_publish_string_get(self):
         return self.assert_success_publish_get("hey")
@@ -87,12 +87,12 @@ class TestPubNubPublishSuccess(TwistedTest):
     def test_success_publish_do_not_store(self):
         return self.assert_success(
             PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
-                .publish().channel(ch).message("hey").should_store(False))
+            .publish().channel(ch).message("hey").should_store(False))
 
     def test_success_publish_with_meta(self):
         return self.assert_success(
             PubNubTwisted(pnconf, reactor=reactor, pool=self.pool)
-                .publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
+            .publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
 
 
 class TestPubNubPublishError(TwistedTest):
@@ -118,7 +118,7 @@ class TestPubNubPublishError(TwistedTest):
 
     def assert_error(self, pub, errback):
         d = defer.Deferred()
-        pub.deferred()\
+        pub.deferred() \
             .addCallbacks(self.callback, errback) \
             .addCallbacks(d.callback, d.errback)
 

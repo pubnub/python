@@ -27,4 +27,3 @@ class TestPubNubPublish(unittest.TestCase):
             assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
-

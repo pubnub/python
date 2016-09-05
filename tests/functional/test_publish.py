@@ -1,5 +1,4 @@
 import copy
-import json
 import unittest
 
 try:
@@ -161,4 +160,3 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': pubnub.uuid,
         })
-

@@ -32,11 +32,11 @@ class StateManager(object):
 
     def is_empty(self):
         return len(self._channels) == 0 and len(self._groups) == 0 and\
-               len(self._presence_channels) == 0 and len(self._presence_groups) == 0
+            len(self._presence_channels) == 0 and len(self._presence_groups) == 0
 
     def subscribed_to_the_only_channel(self):
         return len(self._channels) == 1 and len(self._groups) == 0 and\
-               len(self._presence_channels) == 0 and len(self._presence_groups) == 0
+            len(self._presence_channels) == 0 and len(self._presence_groups) == 0
 
     def prepare_channel_list(self, include_presence):
         return StateManager._prepare_membership_list(

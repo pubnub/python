@@ -50,8 +50,7 @@ class Grant(Endpoint):
     def build_params(self):
         params = self.default_params()
 
-        signed_input = (self.pubnub.config.subscribe_key + "\n"
-                        + self.pubnub.config.publish_key + "\ngrant\n")
+        signed_input = (self.pubnub.config.subscribe_key + "\n" + self.pubnub.config.publish_key + "\ngrant\n")
 
         if self._read is not None:
             params['r'] = '1' if self._read is True else '0'

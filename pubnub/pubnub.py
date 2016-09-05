@@ -136,7 +136,7 @@ class NativeSubscriptionManager(SubscriptionManager):
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if status.is_error:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
-                                heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                        heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
                     self._listener_manager.announce_stateus(status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:

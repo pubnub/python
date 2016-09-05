@@ -56,7 +56,8 @@ class TestRemoveChannelsFromPush(unittest.TestCase):
         self.assertEqual(self.remove_channels._channels, ['ch1', 'ch2'])
 
     def test_push_remove_google(self):
-        self.remove_channels.channels(['ch1', 'ch2', 'ch3']).push_type(pubnub.enums.PNPushType.GCM).device_id("coolDevice")
+        self.remove_channels.channels(['ch1', 'ch2', 'ch3']).push_type(pubnub.enums.PNPushType.GCM)\
+            .device_id("coolDevice")
 
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEquals(self.remove_channels.build_path(), RemoveChannelsFromPush.REMOVE_PATH % params)

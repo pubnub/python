@@ -1,6 +1,6 @@
 import tornado
 from tornado import gen
-from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
+from tornado.testing import AsyncTestCase
 
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
 from tests.helper import pnconf_sub_copy

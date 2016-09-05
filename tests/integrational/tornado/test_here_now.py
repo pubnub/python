@@ -3,7 +3,7 @@ import logging
 import tornado
 import tornado.gen
 from tornado import gen
-from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
+from tornado.testing import AsyncTestCase
 
 import pubnub as pn
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener

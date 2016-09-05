@@ -80,4 +80,3 @@ class TestPubNubAsyncAsyncHereNow(unittest.TestCase):
             .async(success_wrapper, error_wrapper)
 
         return d
-

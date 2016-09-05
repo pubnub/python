@@ -37,4 +37,3 @@ def disconnect_from_channel(pubnub, channel):
     pubnub.add_listener(callback)
     pubnub.unsubscribe().channels(channel).execute()
     yield event.wait()
-

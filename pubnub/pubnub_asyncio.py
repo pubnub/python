@@ -53,8 +53,6 @@ class PubNubAsyncio(PubNubCore):
         self._session.close()
         if self._subscription_manager is not None:
             self._subscription_manager.stop()
-        else:
-            raise Exception("Subscription manager is not enabled for this instance")
 
     def sdk_platform(self):
         return "-Asyncio"
@@ -326,7 +324,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if envelope.status.is_error:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
-                                heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                        heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
                     self._listener_manager.announce_stateus(envelope.status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:

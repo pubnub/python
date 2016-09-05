@@ -36,8 +36,7 @@ class Audit(Endpoint):
     def build_params(self):
         params = self.default_params()
 
-        signed_input = (self.pubnub.config.subscribe_key + "\n"
-                        + self.pubnub.config.publish_key + "\naudit\n")
+        signed_input = (self.pubnub.config.subscribe_key + "\n" + self.pubnub.config.publish_key + "\naudit\n")
 
         if len(self._auth_keys) > 0:
             params['auth'] = utils.join_items_and_encode(self._auth_keys)

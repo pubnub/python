@@ -1,4 +1,3 @@
-import json
 import unittest
 
 from pubnub import crypto
@@ -25,4 +24,4 @@ class TestDecode(unittest.TestCase):
         input = b'"9P/7+NNs54o7Go41yh+3rIn8BW0H0ad+mKlKTKGw2i1eoQP1ddHrnIzkRUPEC3ko"'
         # print(json.loads(input.decode('utf-8')))
         assert {"name": "Alex", "online": True} == \
-               gen_decrypt_func('testKey')(input.decode('utf-8'))
+            gen_decrypt_func('testKey')(input.decode('utf-8'))

@@ -274,7 +274,7 @@ def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     print("subscribed to cg #3")
 
     callback_messages_future = asyncio.ensure_future(callback_messages.wait_for_connect())
-    presence_messages_future= asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
+    presence_messages_future = asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
     yield from asyncio.wait([callback_messages_future, presence_messages_future])
     print("connect/presence #4")
     prs_envelope = presence_messages_future.result()

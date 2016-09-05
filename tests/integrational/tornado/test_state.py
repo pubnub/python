@@ -1,5 +1,5 @@
 import tornado
-from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
+from tornado.testing import AsyncTestCase
 
 from pubnub.pubnub_tornado import PubNubTornado
 from tests.helper import pnconf_copy

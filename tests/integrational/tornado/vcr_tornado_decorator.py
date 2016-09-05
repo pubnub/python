@@ -23,7 +23,7 @@ def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
         @patch('tornado.gen.sleep', return_value=returner())
         @six.wraps(f)
         def stubbed(*args, **kwargs):
-            with context as cassette:
+            with context:
                 largs = list(args)
                 # 1 - index
                 largs.pop(1)
@@ -31,7 +31,7 @@ def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
 
         @six.wraps(f)
         def original(*args):
-            with context as cassette:
+            with context:
                 return f(*args)
 
         return stubbed if len(cs) > 0 else original

@@ -1,6 +1,6 @@
 import asyncio
 import logging
-import pytest
+import pytest  # noqa: F401
 import pubnub as pn
 
 from pubnub.models.consumer.pubsub import PNMessageResult

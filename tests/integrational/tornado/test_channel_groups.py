@@ -1,6 +1,6 @@
 import tornado
 from tornado import gen
-from tornado.testing import AsyncHTTPTestCase, AsyncTestCase
+from tornado.testing import AsyncTestCase
 
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult

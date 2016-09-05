@@ -58,7 +58,8 @@ class PubNubCore:
         return "%s%s/%s" % (PubNubCore.SDK_NAME, self.sdk_platform(), PubNubCore.SDK_VERSION)
 
     @abstractmethod
-    def sdk_platform(self): pass
+    def sdk_platform(self):
+        pass
 
     @property
     def uuid(self):

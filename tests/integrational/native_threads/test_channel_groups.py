@@ -22,8 +22,9 @@ class TestPubNubChannelGroups(unittest.TestCase):
         self.status = status
         self.event.set()
 
-    @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_threads/channel_groups/single_channel.yaml',
-                                      filter_query_parameters=['uuid'])
+    @use_cassette_and_stub_time_sleep_native(
+        'tests/integrational/fixtures/native_threads/channel_groups/single_channel.yaml',
+        filter_query_parameters=['uuid'])
     def test_single_channel(self):
         ch = "channel-groups-unit-ch"
         gr = "channel-groups-unit-cg"
@@ -31,8 +32,8 @@ class TestPubNubChannelGroups(unittest.TestCase):
 
         # add
         pubnub.add_channel_to_channel_group() \
-            .channels(ch)\
-            .channel_group(gr)\
+            .channels(ch) \
+            .channel_group(gr) \
             .async(self.callback)
 
         self.event.wait()
@@ -43,8 +44,8 @@ class TestPubNubChannelGroups(unittest.TestCase):
         time.sleep(1)
 
         # list
-        pubnub.list_channels_in_channel_group()\
-            .channel_group(gr)\
+        pubnub.list_channels_in_channel_group() \
+            .channel_group(gr) \
             .async(self.callback)
 
         self.event.wait()
@@ -55,8 +56,8 @@ class TestPubNubChannelGroups(unittest.TestCase):
 
         # remove
         pubnub.remove_channel_from_channel_group() \
-            .channels(ch)\
-            .channel_group(gr)\
+            .channels(ch) \
+            .channel_group(gr) \
             .async(self.callback)
 
         self.event.wait()
@@ -66,8 +67,8 @@ class TestPubNubChannelGroups(unittest.TestCase):
         time.sleep(1)
 
         # list
-        pubnub.list_channels_in_channel_group()\
-            .channel_group(gr)\
+        pubnub.list_channels_in_channel_group() \
+            .channel_group(gr) \
             .async(self.callback)
 
         self.event.wait()

@@ -56,7 +56,7 @@ def object_in_path_matcher(r1, r2, decrypter=None):
             else:
                 assert v == path2[k]
 
-    except AssertionError as e:
+    except AssertionError:
         return False
 
     return True
@@ -69,7 +69,7 @@ def object_in_body_matcher(r1, r2, decrypter=None):
         else:
             assert json.loads(url_decode(r1.body.decode('utf-8'))) == json.loads(url_decode(r2.body.decode('utf-8')))
 
-    except AssertionError as e:
+    except AssertionError:
         return False
 
     return True

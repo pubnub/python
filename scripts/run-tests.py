@@ -14,7 +14,9 @@ os.chdir(os.path.join(REPO_ROOT))
 pyenv_version = os.getenv('PYENV_VERSION', 0)
 travis_version = os.getenv('TRAVIS_PYTHON_VERSION', 0)
 version = str(travis_version or pyenv_version)
-cmn = 'py.test tests --cov-report=xml --cov=./pubnub --ignore=tests/integrational/twisted '
+tcmn = 'py.test tests --cov-report=xml --cov=./pubnub --ignore=tests/integrational/twisted '
+fcmn = 'flake8 --exclude=src/,.cache,.git,.idea,.tox,._trial_temp/'
+
 
 print("Version is", version)
 
@@ -22,24 +24,28 @@ print("Version is", version)
 def run(command):
     return check_call(command, shell=True)
 
-if not version.startswith('2.6'):
-    run('flake8')
 
 if version.startswith('2.6'):
     run(
-        '%s--ignore=tests/integrational/tornado/ --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)  # noqa: E501
+        '%s--ignore=tests/integrational/tornado/ --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)  # noqa: E501
 elif version.startswith('2.7'):
     # TODO: remove twisted ignore option when the tests will be ready
-    run('%s --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)
+    run("%s,*asyncio*,*python_v35*" % fcmn)
+    run('%s --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)
 elif version.startswith('3.3'):
-    run('%s--ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)
+    run("%s,*asyncio*,*python_v35*" % fcmn)
+    run('%s--ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)
 elif version.startswith('3.4'):
-    run('%s--ignore=tests/integrational/python_v35/ ' % cmn)
+    run("%s,*python_v35*" % fcmn)
+    run('%s--ignore=tests/integrational/python_v35/ ' % tcmn)
 elif version.startswith('3.5'):
-    run(cmn)
+    run(fcmn)
+    run(tcmn)
 elif version.startswith('3.6'):
-    run(cmn)
+    run(fcmn)
+    run(tcmn)
 elif version.startswith('pypy'):
-    run('%s--ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % cmn)
+    run("%s,*asyncio*,*python_v35*" % fcmn)
+    run('%s--ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)
 else:
     raise Exception("Version %s is not supported by this script runner" % version)

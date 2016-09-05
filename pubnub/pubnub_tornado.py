@@ -372,7 +372,7 @@ class TornadoSubscriptionManager(SubscriptionManager):
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
                     self._listener_manager.announce_stateus(envelope.status)
 
-        except PubNubTornadoException as e:
+        except PubNubTornadoException:
             pass
             # TODO: check correctness
             # if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:

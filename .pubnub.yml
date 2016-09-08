@@ -126,7 +126,6 @@ features:
     - PUBLISH-RAW-JSON
     - PUBLISH-WITH-METADATA
     - PUBLISH-GET
-    - PUBLISH-POST
     - PUBLISH-ASYNC
   storage:
     - STORAGE-REVERSE

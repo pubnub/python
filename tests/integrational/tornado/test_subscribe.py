@@ -34,11 +34,22 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
 
         callback_messages = SubscribeListener()
         self.pubnub.add_listener(callback_messages)
+
         self.pubnub.subscribe().channels(ch).execute()
+        assert ch in self.pubnub.get_subscribed_channels()
+        assert len(self.pubnub.get_subscribed_channels()) == 1
+
         yield callback_messages.wait_for_connect()
+        assert ch in self.pubnub.get_subscribed_channels()
+        assert len(self.pubnub.get_subscribed_channels()) == 1
 
         self.pubnub.unsubscribe().channels(ch).execute()
+        assert ch not in self.pubnub.get_subscribed_channels()
+        assert len(self.pubnub.get_subscribed_channels()) == 0
+
         yield callback_messages.wait_for_disconnect()
+        assert ch not in self.pubnub.get_subscribed_channels()
+        assert len(self.pubnub.get_subscribed_channels()) == 0
 
         self.pubnub.stop()
         self.stop()

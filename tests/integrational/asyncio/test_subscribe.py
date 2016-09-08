@@ -22,12 +22,22 @@ def test_subscribe_unsubscribe(event_loop):
 
     callback = SubscribeListener()
     pubnub.add_listener(callback)
+
     pubnub.subscribe().channels(channel).execute()
+    assert channel in pubnub.get_subscribed_channels()
+    assert len(pubnub.get_subscribed_channels()) == 1
 
     yield from callback.wait_for_connect()
+    assert channel in pubnub.get_subscribed_channels()
+    assert len(pubnub.get_subscribed_channels()) == 1
 
     pubnub.unsubscribe().channels(channel).execute()
+    assert channel not in pubnub.get_subscribed_channels()
+    assert len(pubnub.get_subscribed_channels()) == 0
+
     yield from callback.wait_for_disconnect()
+    assert channel not in pubnub.get_subscribed_channels()
+    assert len(pubnub.get_subscribed_channels()) == 0
 
     pubnub.stop()
 

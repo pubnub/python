@@ -66,16 +66,24 @@ class PubNubCore:
         return self.config.uuid
 
     def add_listener(self, listener):
-        if self._subscription_manager is not None:
-            self._subscription_manager.add_listener(listener)
-        else:
-            raise Exception("Subscription manager is not enabled for this instance")
+        self._validate_subscribe_manager_enabled()
+
+        return self._subscription_manager.add_listener(listener)
 
     def remove_listener(self, listener):
-        if self._subscription_manager is not None:
-            self._subscription_manager.remove_listener(listener)
-        else:
-            raise Exception("Subscription manager is not enabled for this instance")
+        self._validate_subscribe_manager_enabled()
+
+        return self._subscription_manager.remove_listener(listener)
+
+    def get_subscribed_channels(self):
+        self._validate_subscribe_manager_enabled()
+
+        return self._subscription_manager.get_subscribed_channels()
+
+    def get_subscribed_channel_groups(self):
+        self._validate_subscribe_manager_enabled()
+
+        return self._subscription_manager.get_subscribed_channel_groups()
 
     def add_channel_to_channel_group(self):
         return AddChannelToChannelGroup(self)
@@ -141,3 +149,7 @@ class PubNubCore:
     @staticmethod
     def timestamp():
         return int(time.time())
+
+    def _validate_subscribe_manager_enabled(self):
+        if self._subscription_manager is None:
+            raise Exception("Subscription manager is not enabled for this instance")

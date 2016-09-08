@@ -195,6 +195,12 @@ class SubscriptionManager(object):
     def remove_listener(self, listener):
         self._listener_manager.remove_listener(listener)
 
+    def get_subscribed_channels(self):
+        return self._subscription_state.prepare_channel_list(False)
+
+    def get_subscribed_channel_groups(self):
+        return self._subscription_state.prepare_channel_group_list(False)
+
     def adapt_subscribe_builder(self, subscribe_operation):
         assert isinstance(subscribe_operation, SubscribeOperation)
         self._subscription_state.adapt_subscribe_builder(subscribe_operation)

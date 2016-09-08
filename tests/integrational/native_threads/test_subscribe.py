@@ -24,10 +24,21 @@ class TestPubNubSubscription(unittest.TestCase):
             pubnub.add_listener(listener)
 
             pubnub.subscribe().channels(ch).execute()
+            assert ch in pubnub.get_subscribed_channels()
+            assert len(pubnub.get_subscribed_channels()) == 1
+
             listener.wait_for_connect()
+            assert ch in pubnub.get_subscribed_channels()
+            assert len(pubnub.get_subscribed_channels()) == 1
 
             pubnub.unsubscribe().channels(ch).execute()
+            assert ch not in pubnub.get_subscribed_channels()
+            assert len(pubnub.get_subscribed_channels()) == 0
+
             listener.wait_for_disconnect()
+            assert ch not in pubnub.get_subscribed_channels()
+            assert len(pubnub.get_subscribed_channels()) == 0
+
         except PubNubException as e:
             self.fail(e)
         finally:

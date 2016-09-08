@@ -65,6 +65,18 @@ class PubNubCore:
     def uuid(self):
         return self.config.uuid
 
+    def add_listener(self, listener):
+        if self._subscription_manager is not None:
+            self._subscription_manager.add_listener(listener)
+        else:
+            raise Exception("Subscription manager is not enabled for this instance")
+
+    def remove_listener(self, listener):
+        if self._subscription_manager is not None:
+            self._subscription_manager.remove_listener(listener)
+        else:
+            raise Exception("Subscription manager is not enabled for this instance")
+
     def add_channel_to_channel_group(self):
         return AddChannelToChannelGroup(self)
 

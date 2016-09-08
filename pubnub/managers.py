@@ -192,6 +192,9 @@ class SubscriptionManager(object):
     def add_listener(self, listener):
         self._listener_manager.add_listener(listener)
 
+    def remove_listener(self, listener):
+        self._listener_manager.remove_listener(listener)
+
     def adapt_subscribe_builder(self, subscribe_operation):
         assert isinstance(subscribe_operation, SubscribeOperation)
         self._subscription_state.adapt_subscribe_builder(subscribe_operation)

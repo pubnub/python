@@ -73,8 +73,18 @@ class PubNub(PubNubCore):
         raise NotImplementedError
 
     def add_listener(self, listener):
-        assert isinstance(listener, SubscribeCallback)
-        self._subscription_manager.add_listener(listener)
+        if self._subscription_manager is not None:
+            assert isinstance(listener, SubscribeCallback)
+            self._subscription_manager.add_listener(listener)
+        else:
+            raise Exception("Subscription manager is not enabled for this instance")
+
+    def remove_listener(self, listener):
+        if self._subscription_manager is not None:
+            assert isinstance(listener, SubscribeCallback)
+            self._subscription_manager.remove_listener(listener)
+        else:
+            raise Exception("Subscription manager is not enabled for this instance")
 
 
 class NativePublishSequenceManager(PublishSequenceManager):

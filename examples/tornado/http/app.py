@@ -5,6 +5,7 @@ import tornado.gen
 import sys
 import os
 
+from pubnub import utils
 from pubnub.enums import PNStatusCategory, PNOperationType
 
 d = os.path.dirname
@@ -26,6 +27,7 @@ pnconf.publish_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"
 pnconf.uuid = "pubnub-demo-api-python-backend"
 DEFAULT_CHANNEL = "pubnub_demo_api_python_channel"
 EVENTS_CHANNEL = "pubnub_demo_api_python_events"
+APP_KEY = utils.uuid()
 
 pubnub = PubNubTornado(pnconf)
 
@@ -82,6 +84,19 @@ class AsyncPublishHandler2(tornado.web.RequestHandler):
             }))
 
         self.finish()
+
+
+class AppKeyHandler(tornado.web.RequestHandler):
+    def data_received(self, chunk):
+        pass
+
+    @tornado.gen.coroutine
+    def get(self):
+        self.set_header('Content-Type', 'application/json')
+
+        self.write(json.dumps({
+            "app_key": APP_KEY
+        }))
 
 
 class ListenHandler(tornado.web.RequestHandler):
@@ -204,7 +219,7 @@ def init_events_transmitter():
                 event = "unsubscribed"
 
             tornado.ioloop.IOLoop.current().add_future(
-                pubnub.publish().channel(EVENTS_CHANNEL).message({
+                pubnub.publish().channel('status-' + APP_KEY).message({
                     "event": event
                 }).future(),
                 callback
@@ -224,6 +239,7 @@ def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
         (r"/listen", ListenHandler),
+        (r"/app_key", AppKeyHandler),
         (r"/publish/sync", SyncPublishHandler),
         (r"/publish/async", AsyncPublishHandler),
         (r"/publish/async2", AsyncPublishHandler2),

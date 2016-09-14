@@ -2584,26 +2584,6 @@ class PubnubHTTPAdapter(HTTPAdapter):
 
         super(PubnubHTTPAdapter, self).init_poolmanager(*args, **kwargs)
 
-s = requests.Session()
-#s.mount('http://', PubnubHTTPAdapter(max_retries=1))
-#s.mount('https://', PubnubHTTPAdapter(max_retries=1))
-#s.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
-#s.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1))
-
-
-def _requests_request(url, timeout=15):
-    try:
-        resp = s.get(url, timeout=timeout)
-    except requests.exceptions.HTTPError as http_error:
-        resp = http_error
-    except requests.exceptions.ConnectionError as error:
-        msg = str(error)
-        return (json.dumps(msg), 0)
-    except requests.exceptions.Timeout as error:
-        msg = str(error)
-        return (json.dumps(msg), 0)
-    return (resp.text, resp.status_code)
-
 
 def _urllib_request_3(url, timeout=15):
     try:
@@ -2612,8 +2592,6 @@ def _urllib_request_3(url, timeout=15):
         resp = http_error
     r = resp.read().decode("utf-8")
     return (r, resp.code)
-
-_urllib_request = None
 
 
 #  Pubnub
@@ -2647,40 +2625,52 @@ class Pubnub(PubnubCore):
             _channel_list_lock=threading.RLock(),
             _channel_group_list_lock=threading.RLock()
         )
-        global _urllib_request
+
         if self.python_version == 2:
-            _urllib_request = _urllib_request_2
+            self._urllib_request = _urllib_request_2
         else:
-            _urllib_request = _urllib_request_3
+            self._urllib_request = _urllib_request_3
 
         if pooling is True:
-            _urllib_request = _requests_request
+            self._urllib_request = self._requests_request
 
         self.latest_sub_callback_lock = threading.RLock()
         self.latest_sub_callback = {'id': None, 'callback': None}
         self.pnsdk = 'PubNub-Python' + '/' + self.version
         self.daemon = daemon
 
+        self.session = requests.Session()
+
         if azure is False:
-            s.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
-            s.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+            self.session.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+            self.session.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
         else:
-            s.mount('http://', PubnubHTTPAdapter(max_retries=1, pool_maxsize=500))
-            s.mount('https://', PubnubHTTPAdapter(max_retries=1, pool_maxsize=500))
+            self.session.mount('http://', PubnubHTTPAdapter(max_retries=1, pool_maxsize=500))
+            self.session.mount('https://', PubnubHTTPAdapter(max_retries=1, pool_maxsize=500))
 
     def timeout(self, interval, func1, *argv):
         timer = Timer(interval, func1, False, *argv)
         timer.start()
-
         return timer.cancel
+
+    def _requests_request(self, url, timeout=15):
+        try:
+            resp = self.session.get(url, timeout=timeout)
+        except requests.exceptions.HTTPError as http_error:
+            resp = http_error
+        except requests.exceptions.ConnectionError as error:
+            msg = str(error)
+            return (json.dumps(msg), 0)
+        except requests.exceptions.Timeout as error:
+            msg = str(error)
+            return (json.dumps(msg), 0)
+        return (resp.text, resp.status_code)
 
     def _request_async(self, url, callback=None, error=None, single=False,
                        timeout=15):
-        global _urllib_request
-
         if single is True:
             id = time.time()
-            client = HTTPClient(self, url=url, urllib_func=_urllib_request,
+            client = HTTPClient(self, url=url, urllib_func=self._urllib_request,
                                 callback=None, error=None, id=id,
                                 timeout=timeout)
             with self.latest_sub_callback_lock:
@@ -2688,7 +2678,7 @@ class Pubnub(PubnubCore):
                 self.latest_sub_callback['callback'] = callback
                 self.latest_sub_callback['error'] = error
         else:
-            client = HTTPClient(self, url=url, urllib_func=_urllib_request,
+            client = HTTPClient(self, url=url, urllib_func=self._urllib_request,
                                 callback=callback, error=error,
                                 timeout=timeout)
 
@@ -2701,10 +2691,8 @@ class Pubnub(PubnubCore):
         return abort
 
     def _request_sync(self, url, timeout=15):
-        global _urllib_request
-
         ## Send Request Expecting JSONP Response
-        response = _urllib_request(url, timeout=timeout)
+        response = self._urllib_request(url, timeout=timeout)
         try:
             resp_json = json.loads(response[0])
         except ValueError:

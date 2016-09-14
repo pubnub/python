@@ -32,15 +32,6 @@ APP_KEY = utils.uuid()
 pubnub = PubNubTornado(pnconf)
 
 
-class MainHandler(tornado.web.RequestHandler):
-    def data_received(self, chunk):
-        pass
-
-    @tornado.web.asynchronous
-    def get(self):
-        self.render("index.html")
-
-
 class SyncPublishHandler(tornado.web.RequestHandler):
     @tornado.gen.coroutine
     def get(self):
@@ -52,8 +43,14 @@ class SyncPublishHandler(tornado.web.RequestHandler):
 class AsyncPublishHandler(tornado.web.RequestHandler):
     @tornado.gen.coroutine
     def get(self):
+        channel = self.get_argument('channel')
+        if channel is None:
+            return self.send_error(500, message={
+                "error": "Channel missing"
+            })
+
         try:
-            envelope = yield pubnub.publish().channel(DEFAULT_CHANNEL).message("hello from yield-based publish").future()
+            envelope = yield pubnub.publish().channel(channel).message("hello from yield-based publish").future()
             self.write(json.dumps({
                 "original_response": str(envelope.status.original_response)
             }))
@@ -69,7 +66,13 @@ class AsyncPublishHandler2(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def get(self):
-        pubnub.publish().channel(DEFAULT_CHANNEL).message("hello from callback-based publish")\
+        channel = self.get_argument('channel')
+        if channel is None:
+            return self.send_error(500, message={
+                "error": "Channel missing"
+            })
+
+        pubnub.publish().channel(channel).message("hello from callback-based publish")\
             .future().add_done_callback(self.callback)
 
     def callback(self, future):
@@ -213,10 +216,10 @@ def init_events_transmitter():
 
             if status.operation == PNOperationType.PNSubscribeOperation \
                     and status.category == PNStatusCategory.PNConnectedCategory:
-                event = "subscribed"
+                event = "Connect"
             elif status.operation == PNOperationType.PNUnsubscribeOperation \
                     and status.category == PNStatusCategory.PNAcknowledgmentCategory:
-                event = "unsubscribed"
+                event = "Unsubscribe"
 
             tornado.ioloop.IOLoop.current().add_future(
                 pubnub.publish().channel('status-' + APP_KEY).message({
@@ -237,7 +240,6 @@ def init_events_transmitter():
 
 def make_app():
     return tornado.web.Application([
-        (r"/", MainHandler),
         (r"/listen", ListenHandler),
         (r"/app_key", AppKeyHandler),
         (r"/publish/sync", SyncPublishHandler),

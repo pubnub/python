@@ -1,6 +1,5 @@
 # PubNub Python SDK
 
-[![Build Status](https://travis-ci.org/pubnub/python.svg?branch=master)](https://travis-ci.org/pubnub/python)
 [![PyPI](https://img.shields.io/pypi/v/pubnub.svg)](http://github.com/pubnub/python)
 
 #### [PubNub](http://www.pubnub.com) Real-time Data Network

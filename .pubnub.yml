@@ -1,8 +1,13 @@
 name: python
-version: 3.8.2
+version: 3.8.3
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v3.8.3
+    date:
+    changes:
+      - type: improvement
+        text: Removing PubNub connection handling from using the global directive to allow multiple instances to run.
   - version: v3.8.2
     date: 
     changes:

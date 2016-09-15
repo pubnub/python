@@ -90,17 +90,18 @@ class Endpoint(object):
         return envelope
 
     def async(self, callback):
-        try:
+        def handler():
             self.validate_params()
-            options = self.options()
-        except PubNubException as e:
-            callback(None, self.create_status_response(PNStatusCategory.PNBadRequestCategory, None, None, e))
-            return
+            return self.options()
 
         def callback_wrapper(envelope):
             callback(envelope.result, envelope.status)
 
-        return self.pubnub.request_async(self.name(), options, callback_wrapper, self._cancellation_event)
+        return self.pubnub.request_async(options_func=handler,
+                                         create_response=self.create_response,
+                                         create_status_response=self.create_status_response,
+                                         cancellation_event=self._cancellation_event,
+                                         callback=callback_wrapper)
 
     def future(self):
         def handler():
@@ -118,10 +119,10 @@ class Endpoint(object):
             self.validate_params()
             return self.options()
 
-        # TODO: move .addCallback(self.create_response) logic to request_deferred()
-        return self.pubnub \
-            .request_deferred(handler) \
-            .addCallback(self.create_response)
+        return self.pubnub.request_deferred(options_func=handler,
+                                            create_response=self.create_response,
+                                            create_status_response=self.create_status_response,
+                                            cancellation_event=self._cancellation_event)
 
     def default_params(self):
         return {

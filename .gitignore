@@ -70,3 +70,6 @@ target/
 
 # Twisted
 _trial_temp
+
+# jupyter dev notebook
+PubNubTwisted.ipynb

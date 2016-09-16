@@ -177,7 +177,7 @@ class PubNubTwisted(PubNubCore):
     """PubNub Python API for Twisted framework"""
 
     def sdk_platform(self):
-        return "Twisted"
+        return "-Twisted"
 
     def __init__(self, config, pool=None, reactor=None):
         super(PubNubTwisted, self).__init__(config)

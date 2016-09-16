@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from pubnub import utils
-from pubnub.enums import PNStatusCategory
+# from pubnub.enums import PNStatusCategory
 from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING, \
     PNERR_SECRET_KEY_MISSING, PNERR_CHANNEL_MISSING
 from pubnub.exceptions import PubNubException

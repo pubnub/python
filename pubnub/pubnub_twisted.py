@@ -9,8 +9,8 @@ from twisted.internet import reactor as _reactor
 from twisted.internet.task import LoopingCall
 from twisted.internet.defer import Deferred, DeferredQueue
 from twisted.internet.protocol import Protocol
-from twisted.internet.error import ConnectingCancelledError, DNSLookupError
-from twisted.web.client import Agent, ContentDecoderAgent
+from twisted.internet.error import ConnectingCancelledError
+from twisted.web.client import Agent
 from twisted.web.client import HTTPConnectionPool
 from twisted.web.http_headers import Headers
 from twisted.web.client import FileBodyProducer
@@ -21,10 +21,10 @@ from .pubnub_core import PubNubCore
 from .managers import SubscriptionManager, PublishSequenceManager
 
 from .enums import PNStatusCategory, PNHeartbeatNotificationOptions
-from .errors import PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR, PNERR_CONNECTION_ERROR, PNERR_HTTP_ERROR, \
+from .errors import PNERR_CLIENT_ERROR, PNERR_CONNECTION_ERROR, \
     PNERR_SERVER_ERROR, PNERR_JSON_DECODING_FAILED
 from .exceptions import PubNubException
-from .structures import RequestOptions, PlatformOptions, ResponseInfo
+from .structures import ResponseInfo
 
 from .endpoints.pubsub.subscribe import Subscribe
 from .endpoints.presence.leave import Leave
@@ -139,7 +139,7 @@ class TwistedSubscriptionManager(SubscriptionManager):
         def heartbeat_callback(_, status):
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or (
-                            status.is_error() is True and heartbeat_verbosity == PNHeartbeatNotificationOptions.FAILURES):
+               status.is_error() is True and heartbeat_verbosity == PNHeartbeatNotificationOptions.FAILURES):
                 self._listener_manager.announce_status(status)
 
         if self._heartbeat_call is not None:

@@ -290,7 +290,7 @@ class SubscribeListener(SubscribeCallback):
         if not self.disconnected_event.is_set():
             self.disconnected_event.wait()
         else:
-            raise Exception("the instance is already connected")
+            raise Exception("the instance is already disconnected")
 
     def wait_for_message_on(self, *channel_names):
         channel_names = list(channel_names)

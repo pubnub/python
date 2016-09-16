@@ -28,9 +28,9 @@ def run(command):
 if version.startswith('2.6'):
     run(
         '%s--ignore=tests/integrational/tornado/ --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)  # noqa: E501
-elif version.startswith('2.7'):
+elif version.startswith('2.7') or version.startswith('anaconda2'):
     # TODO: remove twisted ignore option when the tests will be ready
-    run("%s,*asyncio*,*python_v35*" % fcmn)
+    run("%s,*asyncio*,*python_v35*,examples/" % fcmn)
     run('%s --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)
 elif version.startswith('3.3'):
     run("%s,*asyncio*,*python_v35*" % fcmn)

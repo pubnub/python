@@ -201,6 +201,12 @@ class SubscriptionManager(object):
     def get_subscribed_channel_groups(self):
         return self._subscription_state.prepare_channel_group_list(False)
 
+    def unsubscribe_all(self):
+        self.adapt_unsubscribe_builder(UnsubscribeOperation(
+            channels=self._subscription_state.prepare_channel_list(False),
+            channel_groups=self._subscription_state.prepare_channel_group_list(False)
+        ))
+
     def adapt_subscribe_builder(self, subscribe_operation):
         assert isinstance(subscribe_operation, SubscribeOperation)
         self._subscription_state.adapt_subscribe_builder(subscribe_operation)

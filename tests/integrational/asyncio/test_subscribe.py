@@ -270,10 +270,8 @@ def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     pubnub_listener.add_listener(callback_presence)
     pubnub_listener.subscribe().channel_groups(gr).with_presence().execute()
     yield from callback_presence.wait_for_connect()
-    print("connected #1")
 
     prs_envelope = yield from callback_presence.wait_for_presence_on(ch)
-    print("presence #2")
     assert prs_envelope.event == 'join'
     assert prs_envelope.uuid == pubnub_listener.uuid
     assert prs_envelope.actual_channel == ch + "-pnpres"
@@ -281,12 +279,10 @@ def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
 
     pubnub.add_listener(callback_messages)
     pubnub.subscribe().channel_groups(gr).execute()
-    print("subscribed to cg #3")
 
     callback_messages_future = asyncio.ensure_future(callback_messages.wait_for_connect())
     presence_messages_future = asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
     yield from asyncio.wait([callback_messages_future, presence_messages_future])
-    print("connect/presence #4")
     prs_envelope = presence_messages_future.result()
 
     assert prs_envelope.event == 'join'
@@ -299,7 +295,6 @@ def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     callback_messages_future = asyncio.ensure_future(callback_messages.wait_for_disconnect())
     presence_messages_future = asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
     yield from asyncio.wait([callback_messages_future, presence_messages_future])
-    print("disconnect/presence #5")
     prs_envelope = presence_messages_future.result()
 
     assert prs_envelope.event == 'leave'
@@ -309,11 +304,65 @@ def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
 
     pubnub_listener.unsubscribe().channel_groups(gr).execute()
     yield from callback_presence.wait_for_disconnect()
-    print("presence disconnect #6")
 
     envelope = yield from pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
-    print("channel removed #7")
 
     pubnub.stop()
     pubnub_listener.stop()
+
+
+@get_sleeper('tests/integrational/fixtures/asyncio/subscription/unsubscribe_all.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/unsubscribe_all.yaml',
+                     match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
+                     match_on_kwargs={
+                         'string_list_in_path': {
+                             'positions': [4, 6]
+                         },
+                         'string_list_in_query': {
+                             'list_keys': ['channel-group']
+                         }
+                     }
+                     )
+@pytest.mark.asyncio
+def test_unsubscribe_all(event_loop, sleeper=asyncio.sleep):
+    pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+
+    pubnub.config.uuid = "test-subscribe-asyncio-messenger"
+
+    ch = "test-subscribe-asyncio-unsubscribe-all-ch"
+    ch1 = "test-subscribe-asyncio-unsubscribe-all-ch1"
+    ch2 = "test-subscribe-asyncio-unsubscribe-all-ch2"
+    ch3 = "test-subscribe-asyncio-unsubscribe-all-ch3"
+    gr1 = "test-subscribe-asyncio-unsubscribe-all-gr1"
+    gr2 = "test-subscribe-asyncio-unsubscribe-all-gr2"
+
+    envelope = yield from pubnub.add_channel_to_channel_group().channel_group(gr1).channels(ch).future()
+    assert envelope.status.original_response['status'] == 200
+    envelope = yield from pubnub.add_channel_to_channel_group().channel_group(gr2).channels(ch).future()
+    assert envelope.status.original_response['status'] == 200
+
+    yield from sleeper(1)
+
+    callback_messages = SubscribeListener()
+    pubnub.add_listener(callback_messages)
+
+    pubnub.subscribe().channels([ch1, ch2, ch3]).channel_groups([gr1, gr2]).execute()
+    yield from callback_messages.wait_for_connect()
+
+    assert len(pubnub.get_subscribed_channels()) == 3
+    assert len(pubnub.get_subscribed_channel_groups()) == 2
+
+    pubnub.unsubscribe_all()
+
+    yield from callback_messages.wait_for_disconnect()
+
+    assert len(pubnub.get_subscribed_channels()) == 0
+    assert len(pubnub.get_subscribed_channel_groups()) == 0
+
+    envelope = yield from pubnub.remove_channel_from_channel_group().channel_group(gr1).channels(ch).future()
+    assert envelope.status.original_response['status'] == 200
+    envelope = yield from pubnub.remove_channel_from_channel_group().channel_group(gr2).channels(ch).future()
+    assert envelope.status.original_response['status'] == 200
+
+    pubnub.stop()

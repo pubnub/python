@@ -103,6 +103,9 @@ class PubNubCore:
     def unsubscribe(self):
         return UnsubscribeBuilder(self._subscription_manager)
 
+    def unsubscribe_all(self):
+        return self._subscription_manager.unsubscribe_all()
+
     def heartbeat(self):
         return Heartbeat(self)
 

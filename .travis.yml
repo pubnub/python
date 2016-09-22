@@ -5,12 +5,11 @@ python:
   - "3.3"
   - "3.4.4"
   - "3.5"
-  - "nightly"
   - "pypy"
 sudo: false
 install:
   - bash scripts/install.sh
-script: 
+script:
   - python scripts/run-tests.py
 after_success:
   - codecov

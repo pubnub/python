@@ -216,16 +216,8 @@ class PubNubTwisted(PubNubCore):
         else:
             raise Exception("Subscription manager is not enabled for this instance")
 
-    def request_async(self, options_func, create_response, create_status_response, callback, cancellation_event):
-        """
-        :param options_func:
-        :param create_response:
-        :param create_status_response:
-        :param callback:
-        :param cancellation_event:
-        """
-
-        def async_request(options_func, create_response, create_status_response, cancellation_event, callback):
+    def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event):
+        def async_request(endpoint_call_options, cancellation_event, callback):
             def manage_failures(failure):
                 # Cancelled
                 if failure.type == ConnectingCancelledError:
@@ -235,23 +227,25 @@ class PubNubTwisted(PubNubCore):
                 else:
                     return failure
 
-            request = self.request_deferred(options_func, create_response, create_status_response, cancellation_event)
+            def options_func():
+                return endpoint_call_options
+
+            request = self.request_deferred(options_func, cancellation_event)
             request.addCallbacks(callback, manage_failures)
 
-        self.reactor.callInThread(async_request,
-                                  options_func,
-                                  create_response,
-                                  create_status_response,
-                                  cancellation_event,
-                                  callback)
+        self.reactor.callInThread(async_request, endpoint_call_options, cancellation_event, callback)
 
         return
 
-    def request_deferred(self, options_func, create_response, create_status_response, cancellation_event):
+    # REVIEW: cancellation_event doesn't used inside function
+    def request_deferred(self, options_func, cancellation_event):
         options = options_func()
         reactor = self.reactor
         pnconn_pool = self.pnconn_pool
         headers = self.headers
+
+        create_response = options.create_response
+        create_status_response = options.create_status
 
         url = utils.build_url(self.config.scheme(), self.config.origin,
                               options.path, options.query_string)
@@ -365,7 +359,7 @@ class PubNubTwisted(PubNubCore):
                                                   None,
                                                   None,
                                                   PubNubException(
-                                                      errormsg='Connection error',
+                                                      errormsg=str(failure),
                                                       pn_error=PNERR_CONNECTION_ERROR,
                                                       status_code=0
                                                   )))

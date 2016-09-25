@@ -49,10 +49,6 @@ class PubNubCore:
         self._subscription_manager = None
         self._publish_sequence_manager = None
 
-    @abstractmethod
-    def request_deferred(self, options, create_response, create_status_response, cancellation_event):
-        pass
-
     @property
     def sdk_name(self):
         return "%s%s/%s" % (PubNubCore.SDK_NAME, self.sdk_platform(), PubNubCore.SDK_VERSION)
@@ -105,6 +101,9 @@ class PubNubCore:
 
     def unsubscribe_all(self):
         return self._subscription_manager.unsubscribe_all()
+
+    def reconnect(self):
+        return self._subscription_manager.reconnect()
 
     def heartbeat(self):
         return Heartbeat(self)

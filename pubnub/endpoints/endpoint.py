@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from pubnub import utils
-# from pubnub.enums import PNStatusCategory
+from pubnub.enums import PNStatusCategory
 from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING, \
     PNERR_SECRET_KEY_MISSING, PNERR_CHANNEL_MISSING
 from pubnub.exceptions import PubNubException
@@ -90,18 +90,21 @@ class Endpoint(object):
         return envelope
 
     def async(self, callback):
-        def handler():
+        try:
             self.validate_params()
-            return self.options()
+            options = self.options()
+        except PubNubException as e:
+            callback(None, self.create_status_response(PNStatusCategory.PNBadRequestCategory, None, None, e))
+            return
 
         def callback_wrapper(envelope):
             callback(envelope.result, envelope.status)
 
-        return self.pubnub.request_async(options_func=handler,
-                                         create_response=self.create_response,
-                                         create_status_response=self.create_status_response,
-                                         cancellation_event=self._cancellation_event,
-                                         callback=callback_wrapper)
+        return self.pubnub.request_async(endpoint_name=self.name(),
+                                         endpoint_call_options=options,
+                                         callback=callback_wrapper,
+                                         # REVIEW: include self._cancellation_event into options?
+                                         cancellation_event=self._cancellation_event)
 
     def future(self):
         def handler():
@@ -109,6 +112,7 @@ class Endpoint(object):
             return self.options()
 
         return self.pubnub.request_future(options_func=handler,
+                                          # REVIEW: self.create_* persists inside self.options, remove?
                                           create_response=self.create_response,
                                           create_status_response=self.create_status_response,
                                           cancellation_event=self._cancellation_event
@@ -120,8 +124,6 @@ class Endpoint(object):
             return self.options()
 
         return self.pubnub.request_deferred(options_func=handler,
-                                            create_response=self.create_response,
-                                            create_status_response=self.create_status_response,
                                             cancellation_event=self._cancellation_event)
 
     def default_params(self):

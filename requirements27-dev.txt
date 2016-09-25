@@ -1,4 +1,3 @@
-twisted
 tornado
 pyopenssl
 flake8

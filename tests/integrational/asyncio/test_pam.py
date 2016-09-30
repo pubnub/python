@@ -35,6 +35,15 @@ def test_global_level(event_loop):
     assert env.result.write_enabled is True
     assert env.result.manage_enabled is False
 
+    env = yield from pubnub.revoke().future()
+
+    assert isinstance(env.result, PNAccessManagerGrantResult)
+    assert len(env.result.channels) == 0
+    assert len(env.result.groups) == 0
+    assert env.result.read_enabled is False
+    assert env.result.write_enabled is False
+    assert env.result.manage_enabled is False
+
     pubnub.stop()
 
 

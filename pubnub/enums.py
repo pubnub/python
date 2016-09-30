@@ -54,6 +54,7 @@ class PNOperationType(object):
     PNGetState = 19
     PNAccessManagerAudit = 20
     PNAccessManagerGrant = 21
+    PNAccessManagerRevoke = 22
 
 
 class PNHeartbeatNotificationOptions(object):

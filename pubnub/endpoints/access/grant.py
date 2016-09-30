@@ -47,6 +47,9 @@ class Grant(Endpoint):
         self._manage = flag
         return self
 
+    def ttl(self, ttl):
+        self._ttl = ttl
+
     def build_params(self):
         params = self.default_params()
 

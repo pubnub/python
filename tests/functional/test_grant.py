@@ -25,7 +25,7 @@ class TestGrant(unittest.TestCase):
         self.grant = Grant(self.pubnub)
 
     def test_grant_read_and_write_to_channel(self):
-        self.grant.channels('ch').read(True).write(True)
+        self.grant.channels('ch').read(True).write(True).ttl(7)
 
         self.assertEquals(self.grant.build_path(), Grant.GRANT_PATH % pnconf_pam.subscribe_key)
 
@@ -34,6 +34,7 @@ class TestGrant(unittest.TestCase):
             'uuid': self.pubnub.uuid,
             'r': '1',
             'w': '1',
+            'ttl': '7',
             'timestamp': '123',
             'channel': 'ch',
             'signature': utils.sign_sha256(pnconf_pam.secret_key,
@@ -41,6 +42,7 @@ class TestGrant(unittest.TestCase):
                                            "grant\n" + utils.prepare_pam_arguments({
                                                'r': '1',
                                                'w': '1',
+                                               'ttl': '7',
                                                'timestamp': 123,
                                                'channel': 'ch',
                                                'pnsdk': sdk_name,

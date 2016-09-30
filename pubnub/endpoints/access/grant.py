@@ -49,6 +49,7 @@ class Grant(Endpoint):
 
     def ttl(self, ttl):
         self._ttl = ttl
+        return self
 
     def build_params(self):
         params = self.default_params()
@@ -72,7 +73,7 @@ class Grant(Endpoint):
             params['channel-group'] = utils.join_items_and_encode(self._groups)
 
         if self._ttl is not None:
-            params['ttl'] = int(self._ttl)
+            params['ttl'] = str(int(self._ttl))
 
         params['timestamp'] = str(self.pubnub.timestamp())
 

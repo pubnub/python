@@ -59,6 +59,9 @@ class Heartbeat(Endpoint):
     def create_response(self, envelope):
         return True
 
+    def is_auth_required(self):
+        return True
+
     def affected_channels(self):
         return None
 

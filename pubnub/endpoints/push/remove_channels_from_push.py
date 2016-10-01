@@ -60,6 +60,9 @@ class RemoveChannelsFromPush(Endpoint):
     def create_response(self, envelope):
         return PNPushRemoveChannelResult()
 
+    def is_auth_required(self):
+        return True
+
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout
 

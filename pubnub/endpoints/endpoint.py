@@ -65,6 +65,9 @@ class Endpoint(object):
     def connect_timeout(self):
         pass
 
+    def is_auth_required(self):
+        raise NotImplementedError
+
     def affected_channels(self):
         return None
 
@@ -127,10 +130,15 @@ class Endpoint(object):
                                             cancellation_event=self._cancellation_event)
 
     def default_params(self):
-        return {
+        default = {
             'pnsdk': utils.url_encode(self.pubnub.sdk_name),
             'uuid': self.pubnub.uuid
         }
+
+        if self.is_auth_required() and self.pubnub.config.auth_key is not None:
+            default['auth'] = self.pubnub.config.auth_key
+
+        return default
 
     def validate_subscribe_key(self):
         if self.pubnub.config.subscribe_key is None or len(self.pubnub.config.subscribe_key) == 0:

@@ -53,6 +53,9 @@ class Leave(Endpoint):
     def create_response(self, envelope):
         return envelope
 
+    def is_auth_required(self):
+        return True
+
     def affected_channels(self):
         return self._channels
 

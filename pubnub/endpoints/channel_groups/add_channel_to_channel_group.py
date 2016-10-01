@@ -54,6 +54,9 @@ class AddChannelToChannelGroup(Endpoint):
                 or len(self._channel_group) == 0:
             raise PubNubException(pn_error=PNERR_GROUP_MISSING)
 
+    def is_auth_required(self):
+        return True
+
     def create_response(self, envelope):
         return PNChannelGroupsAddChannelResult()
 

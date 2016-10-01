@@ -73,6 +73,9 @@ class Audit(Endpoint):
     def create_response(self, envelope):
         return PNAccessManagerAuditResult.from_json(envelope['payload'])
 
+    def is_auth_required(self):
+        return False
+
     def affected_channels(self):
         return self._channels
 

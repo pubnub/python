@@ -58,6 +58,9 @@ class HereNow(Endpoint):
     def validate_params(self):
         self.validate_subscribe_key()
 
+    def is_auth_required(self):
+        return True
+
     def create_response(self, envelope):
         return PNHereNowResult.from_json(envelope, self._channels)
 

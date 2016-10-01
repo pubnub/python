@@ -18,6 +18,9 @@ class Time(Endpoint):
     def validate_params(self):
         pass
 
+    def is_auth_required(self):
+        return False
+
     def create_response(self, envelope):
         return PNTimeResponse(envelope)
 

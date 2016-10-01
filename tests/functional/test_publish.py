@@ -125,7 +125,6 @@ class TestPublish(unittest.TestCase):
         encoded_message = url_encode(message)
         pub.channel("ch1").message(message)
 
-        print(pub.build_path())
         self.assertEquals(pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 

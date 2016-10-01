@@ -52,6 +52,9 @@ class GetState(Endpoint):
 
         return PNGetStateResult(channels)
 
+    def is_auth_required(self):
+        return True
+
     def affected_channels(self):
         return self._channels
 

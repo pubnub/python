@@ -75,6 +75,9 @@ class SetState(Endpoint):
         else:
             return envelope
 
+    def is_auth_required(self):
+        return True
+
     def affected_channels(self):
         return self._channels
 

@@ -34,6 +34,9 @@ class WhereNow(Endpoint):
         if self._uuid is None or not isinstance(self._uuid, six.string_types):
             raise PubNubException(pn_error=PNERR_UUID_MISSING)
 
+    def is_auth_required(self):
+        return True
+
     def create_response(self, envelope):
         return PNWhereNowResult.from_json(envelope)
 

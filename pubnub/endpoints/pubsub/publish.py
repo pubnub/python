@@ -114,6 +114,9 @@ class Publish(Endpoint):
 
         return res
 
+    def is_auth_required(self):
+        return True
+
     def affected_channels(self):
         return None
 

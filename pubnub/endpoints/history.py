@@ -79,6 +79,9 @@ class History(Endpoint):
     def http_method(self):
         return HttpMethod.GET
 
+    def is_auth_required(self):
+        return True
+
     def validate_params(self):
         self.validate_subscribe_key()
         self.validate_channel()

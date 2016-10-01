@@ -19,4 +19,4 @@ class PNStatus:
         self.affected_groups = None
 
     def is_error(self):
-        return self.error
+        return self.error is not None

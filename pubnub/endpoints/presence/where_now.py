@@ -13,7 +13,7 @@ class WhereNow(Endpoint):
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
-        self._uuid = None
+        self._uuid = pubnub.config.uuid
 
     def uuid(self, uuid):
         self._uuid = uuid

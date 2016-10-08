@@ -60,8 +60,20 @@ class PubNubAsyncio(PubNubCore):
     def request_sync(self, *args):
         raise NotImplementedError
 
-    def request_async(self, *args):
-        raise NotImplementedError
+    def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event, custom_loop=None):
+        loop = self.event_loop
+
+        if custom_loop is not None:
+            loop = custom_loop
+
+        future = self.request_future(options_func=endpoint_call_options,
+                                     create_response=endpoint_call_options.create_response,
+                                     create_status_response=endpoint_call_options.create_status,
+                                     cancellation_event=cancellation_event
+                                     )
+
+        task = asyncio.ensure_future(future, loop=loop)
+        return task.add_done_callback(callback)
 
     def request_deferred(self, *args):
         raise NotImplementedError

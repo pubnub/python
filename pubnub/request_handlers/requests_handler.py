@@ -133,7 +133,7 @@ class RequestsRequestHandler(BaseRequestHandler):
                 err = PNERR_CLIENT_ERROR
 
             return Envelope(
-                result=e_options.create_response(res.json()),
+                result=None,
                 status=e_options.create_status(
                     category=status_category,
                     response=res.json(),

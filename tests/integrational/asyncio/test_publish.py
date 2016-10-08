@@ -9,7 +9,7 @@ from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, PubNubAsyncioException
-from tests.helper import pnconf_copy, pnconf_enc_copy, gen_decrypt_func
+from tests.helper import pnconf_copy, pnconf_enc_copy, gen_decrypt_func, pnconf_pam_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
@@ -228,4 +228,15 @@ def test_error_invalid_key(event_loop):
     pubnub = PubNubAsyncio(conf, custom_event_loop=event_loop)
 
     yield from assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "Invalid Key")
+    pubnub.stop()
+
+
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/publish/not_permitted.yaml',
+    filter_query_parameters=['uuid', 'seqn'])
+@pytest.mark.asyncio
+def test_not_permitted(event_loop):
+    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+
+    yield from assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "HTTP Client Error (403")
     pubnub.stop()

@@ -7,7 +7,7 @@ from pubnub.enums import PNStatusCategory
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_enc
+from tests.helper import pnconf, pnconf_enc, pnconf_pam_copy
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -185,3 +185,17 @@ class TestPubNubErrorPublish(unittest.TestCase):
         assert self.status.is_error()
         assert self.response is None
         assert "not JSON serializable" in str(self.status.error_data.exception)
+
+    def test_not_permitted(self):
+        PubNub(pnconf_pam_copy()).publish() \
+            .channel("not_permitted_channel") \
+            .message("correct message") \
+            .async(self.callback)
+
+        self.event.wait()
+
+        assert self.status.is_error()
+        assert self.response is None
+        assert "HTTP Client Error (403)" in str(self.status.error_data.exception)
+        assert "Forbidden" in str(self.status.error_data.exception)
+        assert "Access Manager" in str(self.status.error_data.exception)

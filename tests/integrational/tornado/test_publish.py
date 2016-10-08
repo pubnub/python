@@ -10,7 +10,7 @@ from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope, PubNubTornadoException
-from tests.helper import pnconf, pnconf_enc, gen_decrypt_func
+from tests.helper import pnconf, pnconf_enc, gen_decrypt_func, pnconf_pam_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
@@ -213,6 +213,17 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
         self.assert_server_side_error(self.pubnub.publish().channel(ch).message("hey"), "Invalid Key")
         self.assert_server_side_error_yield(self.pubnub.publish().channel(ch).message("hey"), "Invalid Key")
+
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/tornado/publish/not_permitted.yaml',
+        filter_query_parameters=['uuid', 'seqn'])
+    def test_error_not_permitted_403(self):
+        self.pubnub = PubNubTornado(pnconf_pam_copy(), custom_ioloop=self.io_loop)
+
+        self.assert_server_side_error(
+            self.pubnub.publish().channel("not_permitted_channel").message("hey"), "HTTP Client Error (403)")
+        self.assert_server_side_error_yield(
+            self.pubnub.publish().channel("not_permitted_channel").message("hey"), "HTTP Client Error (403)")
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/meta_object.yaml',

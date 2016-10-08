@@ -2,11 +2,14 @@ import logging
 import time
 import unittest
 
+import pytest
+from pubnub.exceptions import PubNubException
+
 import pubnub
 from pubnub.models.consumer.history import PNHistoryResult
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_copy, pnconf_enc_copy
+from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_pam_copy
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep_native
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
@@ -14,7 +17,7 @@ pubnub.set_stream_logger('pubnub', logging.DEBUG)
 COUNT = 5
 
 
-class TestPubNubState(unittest.TestCase):
+class TestPubNubHistory(unittest.TestCase):
     @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/basic.yaml',
                                              filter_query_parameters=['uuid'])
     def test_basic(self):
@@ -68,3 +71,14 @@ class TestPubNubState(unittest.TestCase):
         assert envelope.result.messages[2].entry == 'hey-2'
         assert envelope.result.messages[3].entry == 'hey-3'
         assert envelope.result.messages[4].entry == 'hey-4'
+
+    @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/not_permitted.yaml',
+                                             filter_query_parameters=['uuid'])
+    def test_not_permitted(self):
+        ch = "history-native-sync-ch"
+        pubnub = PubNub(pnconf_pam_copy())
+        pubnub.config.uuid = "history-native-sync-uuid"
+
+        with pytest.raises(PubNubException):
+            pubnub.history().channel(ch).count(5).sync()
+

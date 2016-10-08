@@ -81,4 +81,3 @@ class TestPubNubHistory(unittest.TestCase):
 
         with pytest.raises(PubNubException):
             pubnub.history().channel(ch).count(5).sync()
-

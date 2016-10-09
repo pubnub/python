@@ -78,7 +78,7 @@ class Endpoint(object):
         return RequestOptions(self.build_path(), self.build_params(),
                               self.http_method(), self.request_timeout(),
                               self.connect_timeout(), self.create_response,
-                              self.create_status_response,
+                              self.create_status,
                               self.operation_type(),
                               self.build_data(), self._sort_params)
 
@@ -97,7 +97,7 @@ class Endpoint(object):
             self.validate_params()
             options = self.options()
         except PubNubException as e:
-            callback(None, self.create_status_response(PNStatusCategory.PNBadRequestCategory, None, None, e))
+            callback(None, self.create_status(PNStatusCategory.PNBadRequestCategory, None, None, e))
             return
 
         def callback_wrapper(envelope):
@@ -117,7 +117,7 @@ class Endpoint(object):
         return self.pubnub.request_future(options_func=handler,
                                           # REVIEW: self.create_* persists inside self.options, remove?
                                           create_response=self.create_response,
-                                          create_status_response=self.create_status_response,
+                                          create_status_response=self.create_status,
                                           cancellation_event=self._cancellation_event
                                           )
 
@@ -160,8 +160,7 @@ class Endpoint(object):
         if self.pubnub.config.publish_key is None or len(self.pubnub.config.publish_key) == 0:
             raise PubNubException(pn_error=PNERR_PUBLISH_KEY_MISSING)
 
-    def create_status_response(self, category, response, response_info, exception):
-        # TODO: rename to create_status
+    def create_status(self, category, response, response_info, exception):
         if response_info is not None:
             assert isinstance(response_info, ResponseInfo)
 

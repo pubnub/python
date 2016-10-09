@@ -63,7 +63,8 @@ class SubscribeMessageWorker(object):
                 timetoken=publish_meta_data.publish_timetoken,
                 occupancy=presence_payload.occupancy,
                 uuid=presence_payload.uuid,
-                timestamp=presence_payload.timestamp
+                timestamp=presence_payload.timestamp,
+                state=presence_payload.data
             )
             self._listener_manager.announce_presence(pn_presence_event_result)
         else:

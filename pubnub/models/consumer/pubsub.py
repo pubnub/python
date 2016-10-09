@@ -27,9 +27,8 @@ class PNMessageResult(object):
 
 class PNPresenceEventResult(object):
     def __init__(self, event, uuid, timestamp, occupancy, subscription, channel,
-                 timetoken, user_metadata=None):
+                 timetoken, state, user_metadata=None):
 
-        # TODO: add state field
         assert isinstance(event, six.string_types)
         assert isinstance(uuid, six.string_types)
         assert isinstance(timestamp, six.integer_types)
@@ -40,10 +39,14 @@ class PNPresenceEventResult(object):
         if user_metadata is not None:
             assert isinstance(user_metadata, object)
 
+        if state is not None:
+            assert isinstance(user_metadata, dict)
+
         self.event = event
         self.uuid = uuid
         self.timestamp = timestamp
         self.occupancy = occupancy
+        self.state = state
 
         # DEPRECATED: subscribed_channel and actual_channel properties are deprecated
         # self.subscribed_channel = subscribed_channel <= now known as subscription

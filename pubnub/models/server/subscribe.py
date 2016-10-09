@@ -12,9 +12,7 @@ class SubscribeEnvelope:
     @classmethod
     def from_json(cls, json_input):
         messages = []
-        if json_input is None:
-            # TODO: handle
-            print("blah")
+
         for raw_message in json_input['m']:
             messages.append(SubscribeMessage.from_json(raw_message))
 

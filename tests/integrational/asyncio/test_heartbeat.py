@@ -35,7 +35,7 @@ def test_timeout_event_on_broken_heartbeat(event_loop):
     yield from callback_presence.wait_for_connect()
 
     envelope = yield from callback_presence.wait_for_presence_on(ch)
-    assert ch + "-pnpres" == envelope.actual_channel
+    assert ch == envelope.channel
     assert 'join' == envelope.event
     assert pubnub_listener.uuid == envelope.uuid
 
@@ -52,7 +52,7 @@ def test_timeout_event_on_broken_heartbeat(event_loop):
 
     prs_envelope = presence_future.result()
 
-    assert ch + "-pnpres" == prs_envelope.actual_channel
+    assert ch == prs_envelope.channel
     assert 'join' == prs_envelope.event
     assert pubnub.uuid == prs_envelope.uuid
 
@@ -64,7 +64,7 @@ def test_timeout_event_on_broken_heartbeat(event_loop):
 
     # - assert for timeout
     envelope = yield from callback_presence.wait_for_presence_on(ch)
-    assert ch + "-pnpres" == envelope.actual_channel
+    assert ch == envelope.channel
     assert 'timeout' == envelope.event
     assert pubnub.uuid == envelope.uuid
 

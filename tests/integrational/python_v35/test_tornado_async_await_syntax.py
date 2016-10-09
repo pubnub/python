@@ -40,8 +40,8 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         assert pub_env.status.original_response[0] == 1
         assert pub_env.status.original_response[1] == 'Sent'
 
-        assert sub_env.actual_channel == ch
-        assert sub_env.subscribed_channel == ch
+        assert sub_env.channel == ch
+        assert sub_env.subscription is None
         assert sub_env.message == message
 
         self.pubnub.unsubscribe().channels(ch).execute()

@@ -68,8 +68,8 @@ class TestPubNubSubscription(unittest.TestCase):
 
             result = subscribe_listener.wait_for_message_on(ch)
             assert isinstance(result, PNMessageResult)
-            assert result.actual_channel == ch
-            assert result.subscribed_channel == ch
+            assert result.channel == ch
+            assert result.subscription is None
             assert result.timetoken > 0
             assert result.message == message
 
@@ -82,7 +82,6 @@ class TestPubNubSubscription(unittest.TestCase):
 
     def test_join_leave(self):
         ch = helper.gen_channel("test-subscribe-join-leave")
-        ch_pnpres = ch + "-pnpres"
 
         pubnub = PubNub(pnconf_sub_copy())
         pubnub_listener = PubNub(pnconf_sub_copy())
@@ -100,7 +99,7 @@ class TestPubNubSubscription(unittest.TestCase):
             callback_presence.wait_for_connect()
 
             envelope = callback_presence.wait_for_presence_on(ch)
-            assert envelope.actual_channel == ch_pnpres
+            assert envelope.channel == ch
             assert envelope.event == 'join'
             assert envelope.uuid == pubnub_listener.uuid
 
@@ -108,7 +107,7 @@ class TestPubNubSubscription(unittest.TestCase):
             callback_messages.wait_for_connect()
 
             envelope = callback_presence.wait_for_presence_on(ch)
-            assert envelope.actual_channel == ch_pnpres
+            assert envelope.channel == ch
             assert envelope.event == 'join'
             assert envelope.uuid == pubnub.uuid
 
@@ -116,7 +115,7 @@ class TestPubNubSubscription(unittest.TestCase):
             callback_messages.wait_for_disconnect()
 
             envelope = callback_presence.wait_for_presence_on(ch)
-            assert envelope.actual_channel == ch_pnpres
+            assert envelope.channel == ch
             assert envelope.event == 'leave'
             assert envelope.uuid == pubnub.uuid
 
@@ -228,8 +227,8 @@ class TestPubNubSubscription(unittest.TestCase):
         prs_envelope = callback_presence.wait_for_presence_on(ch)
         assert prs_envelope.event == 'join'
         assert prs_envelope.uuid == pubnub_listener.uuid
-        assert prs_envelope.actual_channel == ch + "-pnpres"
-        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+        assert prs_envelope.channel == ch
+        assert prs_envelope.subscription == gr
 
         pubnub.add_listener(callback_messages)
         pubnub.subscribe().channel_groups(gr).execute()
@@ -238,16 +237,16 @@ class TestPubNubSubscription(unittest.TestCase):
 
         assert prs_envelope.event == 'join'
         assert prs_envelope.uuid == pubnub.uuid
-        assert prs_envelope.actual_channel == ch + "-pnpres"
-        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+        assert prs_envelope.channel == ch
+        assert prs_envelope.subscription == gr
 
         pubnub.unsubscribe().channel_groups(gr).execute()
         prs_envelope = callback_presence.wait_for_presence_on(ch)
 
         assert prs_envelope.event == 'leave'
         assert prs_envelope.uuid == pubnub.uuid
-        assert prs_envelope.actual_channel == ch + "-pnpres"
-        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+        assert prs_envelope.channel == ch
+        assert prs_envelope.subscription == gr
 
         pubnub_listener.unsubscribe().channel_groups(gr).execute()
         callback_presence.wait_for_disconnect()

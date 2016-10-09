@@ -2,6 +2,7 @@ import logging
 
 from . import crypto as pn_crypto
 from abc import abstractmethod
+from .utils import strip_right
 from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult
 from .models.server.subscribe import SubscribeMessage, PresenceEnvelope
 
@@ -40,12 +41,25 @@ class SubscribeMessageWorker(object):
         subscription_match = message.subscription_match
         publish_meta_data = message.publish_metadata
 
+        if channel is not None and channel == subscription_match:
+            subscription_match = None
+
         if "-pnpres" in message.channel:
             presence_payload = PresenceEnvelope.from_json_payload(message.payload)
+
+            stripped_presence_channel = None
+            stripped_presence_subscription = None
+
+            if channel is not None:
+                stripped_presence_channel = strip_right(channel, "-pnpres")
+
+            if subscription_match is not None:
+                stripped_presence_subscription = strip_right(subscription_match, "-pnpres")
+
             pn_presence_event_result = PNPresenceEventResult(
                 event=presence_payload.action,
-                actual_channel=(channel if subscription_match is not None else None),
-                subscribed_channel=(subscription_match if subscription_match is not None else channel),
+                channel=stripped_presence_channel,
+                subscription=stripped_presence_subscription,
                 timetoken=publish_meta_data.publish_timetoken,
                 occupancy=presence_payload.occupancy,
                 uuid=presence_payload.uuid,
@@ -60,12 +74,9 @@ class SubscribeMessageWorker(object):
 
             pn_message_result = PNMessageResult(
                 message=extracted_message,
-                actual_channel=(channel if subscription_match is not None else None),
-                subscribed_channel=(subscription_match if subscription_match is not None else channel),
+                channel=channel,
+                subscription=subscription_match,
                 timetoken=publish_meta_data.publish_timetoken
             )
-
-            if message.only_channel_subscription:
-                pn_message_result.actual_channel = pn_message_result.subscribed_channel
 
             self._listener_manager.announce_message(pn_message_result)

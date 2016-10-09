@@ -52,7 +52,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         yield callback_presence.wait_for_connect()
 
         envelope = yield callback_presence.wait_for_presence_on(ch)
-        assert ch + "-pnpres" == envelope.actual_channel
+        assert ch == envelope.channel
         assert 'join' == envelope.event
         assert self.pubnub_listener.uuid == envelope.uuid
 
@@ -65,7 +65,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         useless, prs_envelope = yield [
             callback_messages.wait_for_connect(),
             callback_presence.wait_for_presence_on(ch)]
-        assert ch + "-pnpres" == prs_envelope.actual_channel
+        assert ch == prs_envelope.channel
         assert 'join' == prs_envelope.event
         assert self.pubnub.uuid == prs_envelope.uuid
 
@@ -77,7 +77,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
 
         # - assert for timeout
         envelope = yield callback_presence.wait_for_presence_on(ch)
-        assert ch + "-pnpres" == envelope.actual_channel
+        assert ch == envelope.channel
         assert 'timeout' == envelope.event
         assert self.pubnub.uuid == envelope.uuid
 

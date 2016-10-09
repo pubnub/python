@@ -35,8 +35,8 @@ async def test_subscribe_publish_unsubscribe(event_loop):
     subscribe_envelope = subscribe_message_future.result()
 
     assert isinstance(subscribe_envelope, PNMessageResult)
-    assert subscribe_envelope.actual_channel == channel
-    assert subscribe_envelope.subscribed_channel == channel
+    assert subscribe_envelope.channel == channel
+    assert subscribe_envelope.subscription is None
     assert subscribe_envelope.message == message
     assert subscribe_envelope.timetoken > 0
 

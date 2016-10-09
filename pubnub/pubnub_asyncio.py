@@ -474,7 +474,7 @@ class SubscribeListener(SubscribeCallback):
         while True:
             try:
                 env = yield from self.message_queue.get()
-                if env.actual_channel in channel_names:
+                if env.channel in channel_names:
                     return env
                 else:
                     continue
@@ -487,7 +487,7 @@ class SubscribeListener(SubscribeCallback):
         while True:
             try:
                 env = yield from self.presence_queue.get()
-                if env.actual_channel[:-7] in channel_names:
+                if env.channel in channel_names:
                     return env
                 else:
                     continue

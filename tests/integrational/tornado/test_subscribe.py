@@ -74,8 +74,8 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         assert pub_env.status.original_response[0] == 1
         assert pub_env.status.original_response[1] == 'Sent'
 
-        assert sub_env.actual_channel == ch
-        assert sub_env.subscribed_channel == ch
+        assert sub_env.channel == ch
+        assert sub_env.subscription is None
         assert sub_env.message == message
 
         self.pubnub.unsubscribe().channels(ch).execute()
@@ -87,7 +87,6 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
     @tornado.testing.gen_test(timeout=15)
     def test_join_leave(self):
         ch = "subscribe-tornado-ch"
-        ch_pnpres = ch + "-pnpres"
 
         self.pubnub.config.uuid = "subscribe-tornado-messenger"
         self.pubnub_listener.config.uuid = "subscribe-tornado-listener"
@@ -97,7 +96,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         yield callback_presence.wait_for_connect()
 
         envelope = yield callback_presence.wait_for_presence_on(ch)
-        assert envelope.actual_channel == ch_pnpres
+        assert envelope.channel == ch
         assert envelope.event == 'join'
         assert envelope.uuid == self.pubnub_listener.uuid
 
@@ -107,7 +106,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         yield callback_messages.wait_for_connect()
 
         envelope = yield callback_presence.wait_for_presence_on(ch)
-        assert envelope.actual_channel == ch_pnpres
+        assert envelope.channel == ch
         assert envelope.event == 'join'
         assert envelope.uuid == self.pubnub.uuid
 
@@ -115,7 +114,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
         yield callback_messages.wait_for_disconnect()
 
         envelope = yield callback_presence.wait_for_presence_on(ch)
-        assert envelope.actual_channel == ch_pnpres
+        assert envelope.channel == ch
         assert envelope.event == 'leave'
         assert envelope.uuid == self.pubnub.uuid
 
@@ -181,8 +180,8 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         assert pub_envelope.status.original_response[0] == 1
         assert pub_envelope.status.original_response[1] == 'Sent'
 
-        assert sub_envelope.actual_channel == ch
-        assert sub_envelope.subscribed_channel == gr
+        assert sub_envelope.channel == ch
+        assert sub_envelope.subscription == gr
         assert sub_envelope.message == message
 
         self.pubnub.unsubscribe().channel_groups(gr).execute()
@@ -217,8 +216,8 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
         prs_envelope = yield callback_presence.wait_for_presence_on(ch)
         assert prs_envelope.event == 'join'
         assert prs_envelope.uuid == self.pubnub_listener.uuid
-        assert prs_envelope.actual_channel == ch + "-pnpres"
-        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+        assert prs_envelope.channel == ch
+        assert prs_envelope.subscription == gr
 
         self.pubnub.add_listener(callback_messages)
         self.pubnub.subscribe().channel_groups(gr).execute()
@@ -230,8 +229,8 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
         assert prs_envelope.event == 'join'
         assert prs_envelope.uuid == self.pubnub.uuid
-        assert prs_envelope.actual_channel == ch + "-pnpres"
-        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+        assert prs_envelope.channel == ch
+        assert prs_envelope.subscription == gr
 
         self.pubnub.unsubscribe().channel_groups(gr).execute()
 
@@ -242,8 +241,8 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
         assert prs_envelope.event == 'leave'
         assert prs_envelope.uuid == self.pubnub.uuid
-        assert prs_envelope.actual_channel == ch + "-pnpres"
-        assert prs_envelope.subscribed_channel == gr + "-pnpres"
+        assert prs_envelope.channel == ch
+        assert prs_envelope.subscription == gr
 
         self.pubnub_listener.unsubscribe().channel_groups(gr).execute()
         yield callback_presence.wait_for_disconnect()

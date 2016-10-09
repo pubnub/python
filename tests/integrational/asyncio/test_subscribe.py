@@ -68,8 +68,8 @@ def test_subscribe_publish_unsubscribe(event_loop):
     subscribe_envelope = subscribe_message_future.result()
 
     assert isinstance(subscribe_envelope, PNMessageResult)
-    assert subscribe_envelope.actual_channel == channel
-    assert subscribe_envelope.subscribed_channel == channel
+    assert subscribe_envelope.channel == channel
+    assert subscribe_envelope.subscription is None
     assert subscribe_envelope.message == message
     assert subscribe_envelope.timetoken > 0
 
@@ -109,8 +109,8 @@ def test_encrypted_subscribe_publish_unsubscribe(event_loop):
     subscribe_envelope = subscribe_message_future.result()
 
     assert isinstance(subscribe_envelope, PNMessageResult)
-    assert subscribe_envelope.actual_channel == channel
-    assert subscribe_envelope.subscribed_channel == channel
+    assert subscribe_envelope.channel == channel
+    assert subscribe_envelope.subscription is None
     assert subscribe_envelope.message == message
     assert subscribe_envelope.timetoken > 0
 
@@ -126,9 +126,8 @@ def test_encrypted_subscribe_publish_unsubscribe(event_loop):
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml')
 @pytest.mark.asyncio
-def test_join_leave_blah(event_loop):
+def test_join_leave(event_loop):
     channel = "test-subscribe-asyncio-join-leave-ch"
-    presence_channel = "%s-pnpres" % channel
 
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
     pubnub_listener = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
@@ -145,7 +144,7 @@ def test_join_leave_blah(event_loop):
     yield from callback_presence.wait_for_connect()
 
     envelope = yield from callback_presence.wait_for_presence_on(channel)
-    assert envelope.actual_channel == presence_channel
+    assert envelope.channel == channel
     assert envelope.event == 'join'
     assert envelope.uuid == pubnub_listener.uuid
 
@@ -154,7 +153,7 @@ def test_join_leave_blah(event_loop):
     yield from callback_messages.wait_for_connect()
 
     envelope = yield from callback_presence.wait_for_presence_on(channel)
-    assert envelope.actual_channel == presence_channel
+    assert envelope.channel == channel
     assert envelope.event == 'join'
     assert envelope.uuid == pubnub.uuid
 
@@ -162,7 +161,7 @@ def test_join_leave_blah(event_loop):
     yield from callback_messages.wait_for_disconnect()
 
     envelope = yield from callback_presence.wait_for_presence_on(channel)
-    assert envelope.actual_channel == presence_channel
+    assert envelope.channel == channel
     assert envelope.event == 'leave'
     assert envelope.uuid == pubnub.uuid
 
@@ -233,8 +232,8 @@ def test_cg_subscribe_publish_unsubscribe(event_loop, sleeper=asyncio.sleep):
     assert pub_envelope.status.original_response[0] == 1
     assert pub_envelope.status.original_response[1] == 'Sent'
 
-    assert sub_envelope.actual_channel == ch
-    assert sub_envelope.subscribed_channel == gr
+    assert sub_envelope.channel == ch
+    assert sub_envelope.subscription == gr
     assert sub_envelope.message == message
 
     pubnub.unsubscribe().channel_groups(gr).execute()
@@ -274,8 +273,8 @@ def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     prs_envelope = yield from callback_presence.wait_for_presence_on(ch)
     assert prs_envelope.event == 'join'
     assert prs_envelope.uuid == pubnub_listener.uuid
-    assert prs_envelope.actual_channel == ch + "-pnpres"
-    assert prs_envelope.subscribed_channel == gr + "-pnpres"
+    assert prs_envelope.channel == ch
+    assert prs_envelope.subscription == gr
 
     pubnub.add_listener(callback_messages)
     pubnub.subscribe().channel_groups(gr).execute()
@@ -287,8 +286,8 @@ def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
 
     assert prs_envelope.event == 'join'
     assert prs_envelope.uuid == pubnub.uuid
-    assert prs_envelope.actual_channel == ch + "-pnpres"
-    assert prs_envelope.subscribed_channel == gr + "-pnpres"
+    assert prs_envelope.channel == ch
+    assert prs_envelope.subscription == gr
 
     pubnub.unsubscribe().channel_groups(gr).execute()
 
@@ -299,8 +298,8 @@ def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
 
     assert prs_envelope.event == 'leave'
     assert prs_envelope.uuid == pubnub.uuid
-    assert prs_envelope.actual_channel == ch + "-pnpres"
-    assert prs_envelope.subscribed_channel == gr + "-pnpres"
+    assert prs_envelope.channel == ch
+    assert prs_envelope.subscription == gr
 
     pubnub_listener.unsubscribe().channel_groups(gr).execute()
     yield from callback_presence.wait_for_disconnect()

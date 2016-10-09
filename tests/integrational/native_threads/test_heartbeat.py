@@ -39,7 +39,7 @@ class TestPubNubHeartbeat(unittest.TestCase):
         callback_presence.wait_for_connect()
 
         presence_message = callback_presence.wait_for_presence_on(ch)
-        assert ch + "-pnpres" == presence_message.actual_channel
+        assert ch == presence_message.channel
         assert 'join' == presence_message.event
         assert pubnub_listener.uuid == presence_message.uuid
 
@@ -49,7 +49,7 @@ class TestPubNubHeartbeat(unittest.TestCase):
         callback_messages.wait_for_connect()
 
         prs_envelope = callback_presence.wait_for_presence_on(ch)
-        assert ch + "-pnpres" == prs_envelope.actual_channel
+        assert ch == prs_envelope.channel
         assert 'join' == prs_envelope.event
         assert pubnub.uuid == prs_envelope.uuid
 
@@ -61,7 +61,7 @@ class TestPubNubHeartbeat(unittest.TestCase):
 
         # - assert for timeout
         presence_message = callback_presence.wait_for_presence_on(ch)
-        assert ch + "-pnpres" == presence_message.actual_channel
+        assert ch == presence_message.channel
         assert 'timeout' == presence_message.event
         assert pubnub.uuid == presence_message.uuid
 

@@ -439,7 +439,7 @@ class SubscribeListener(SubscribeCallback):
         while True:
             try:
                 env = yield self.message_queue.get()
-                if env.actual_channel in channel_names:
+                if env.channel in channel_names:
                     raise tornado.gen.Return(env)
                 else:
                     continue
@@ -452,7 +452,7 @@ class SubscribeListener(SubscribeCallback):
         while True:
             try:
                 env = yield self.presence_queue.get()
-                if env.actual_channel[:-7] in channel_names:
+                if env.channel in channel_names:
                     raise tornado.gen.Return(env)
                 else:
                     continue

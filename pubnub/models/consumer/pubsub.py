@@ -2,33 +2,39 @@ import six
 
 
 class PNMessageResult(object):
-    def __init__(self, message, subscribed_channel, actual_channel, timetoken, user_metadata=None):
+    def __init__(self, message, subscription, channel, timetoken, user_metadata=None):
         assert message is not None
-        assert isinstance(subscribed_channel, six.string_types)
-        if actual_channel is not None:
-            assert isinstance(actual_channel, six.string_types)
+        if subscription is not None:
+            assert isinstance(subscription, six.string_types)
+        if channel is not None:
+            assert isinstance(channel, six.string_types)
         assert isinstance(timetoken, six.integer_types)
 
         if user_metadata is not None:
             assert isinstance(user_metadata, object)
 
         self.message = message
-        # RENAME: Confusing name (can be channel, wildcard channel or group)
-        self.subscribed_channel = subscribed_channel
-        self.actual_channel = actual_channel
+        # DEPRECATED: subscribed_channel and actual_channel properties are deprecated
+        # self.subscribed_channel = subscribed_channel <= now known as subscription
+        # self.actual_channel = actual_channel <= now known as channel
+
+        self.channel = channel
+        self.subscription = subscription
+
         self.timetoken = timetoken
         self.user_metadata = user_metadata
 
 
 class PNPresenceEventResult(object):
-    def __init__(self, event, uuid, timestamp, occupancy, subscribed_channel, actual_channel,
+    def __init__(self, event, uuid, timestamp, occupancy, subscription, channel,
                  timetoken, user_metadata=None):
 
+        # TODO: add state field
         assert isinstance(event, six.string_types)
         assert isinstance(uuid, six.string_types)
         assert isinstance(timestamp, six.integer_types)
         assert isinstance(occupancy, six.integer_types)
-        assert isinstance(actual_channel, six.string_types)
+        assert isinstance(channel, six.string_types)
         assert isinstance(timetoken, six.integer_types)
 
         if user_metadata is not None:
@@ -38,8 +44,13 @@ class PNPresenceEventResult(object):
         self.uuid = uuid
         self.timestamp = timestamp
         self.occupancy = occupancy
-        self.subscribed_channel = subscribed_channel
-        self.actual_channel = actual_channel
+
+        # DEPRECATED: subscribed_channel and actual_channel properties are deprecated
+        # self.subscribed_channel = subscribed_channel <= now known as subscription
+        # self.actual_channel = actual_channel <= now known as channel
+        self.subscription = subscription
+        self.channel = channel
+
         self.timetoken = timetoken
         self.user_metadata = user_metadata
 

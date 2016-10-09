@@ -2,11 +2,14 @@ import hmac
 import json
 import uuid as u
 import threading
+
 try:
     from hashlib import sha256
+
     digestmod = sha256
 except ImportError:
     import Crypto.Hash.SHA256 as digestmod
+
     sha256 = digestmod.new
 
 import six
@@ -153,3 +156,10 @@ def push_type_to_string(push_type):
         return "mpns"
     else:
         return ""
+
+
+def strip_right(text, suffix):
+    if not text.endswith(suffix):
+        return text
+
+    return text[:len(text) - len(suffix)]

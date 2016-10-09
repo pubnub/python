@@ -7,8 +7,6 @@ from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.presence import PNSetStateResult
 
 
-# TODO: save state inside internal key/val storage
-
 class SetState(Endpoint):
     # /v2/presence/sub-key/<subscribe_key>/channel/<channel>/uuid/<uuid>/data?state=<state>
     SET_STATE_PATH = "/v2/presence/sub-key/%s/channel/%s/uuid/%s/data"

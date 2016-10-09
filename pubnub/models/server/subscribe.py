@@ -92,7 +92,6 @@ class PresenceEnvelope:
         )
 
 
-# TODO: refactor this file to server.py
 class PublishMetadata:
     def __init__(self, publish_timetoken=None, region=None):
         self.publish_timetoken = publish_timetoken

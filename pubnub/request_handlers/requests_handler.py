@@ -20,8 +20,9 @@ class RequestsRequestHandler(BaseRequestHandler):
     """ PubNub Python SDK Native requests handler based on `requests` HTTP library. """
     ENDPOINT_THREAD_COUNTER = 0
 
-    def __init__(self):
+    def __init__(self, pubnub):
         self.session = Session()
+        self.pubnub = pubnub
 
     def sync_request(self, platform_options, endpoint_call_options):
         return self._build_envelope(platform_options, endpoint_call_options)
@@ -80,7 +81,7 @@ class RequestsRequestHandler(BaseRequestHandler):
         response_info = None
 
         try:
-            res = self._invoke_request(p_options, e_options)
+            res = self._invoke_request(p_options, e_options, self.pubnub.base_origin)
         except PubNubException as e:
             if e._pn_error is PNERR_CONNECTION_ERROR:
                 status_category = PNStatusCategory.PNUnexpectedDisconnectCategory
@@ -153,11 +154,11 @@ class RequestsRequestHandler(BaseRequestHandler):
                     response_info=response_info,
                     exception=None))
 
-    def _invoke_request(self, p_options, e_options):
+    def _invoke_request(self, p_options, e_options, base_origin):
         assert isinstance(p_options, PlatformOptions)
         assert isinstance(e_options, RequestOptions)
 
-        url = p_options.pn_config.scheme_and_host() + e_options.path
+        url = p_options.pn_config.scheme() + "://" + base_origin + e_options.path
 
         args = {
             "method": e_options.method_string,
@@ -172,14 +173,16 @@ class RequestsRequestHandler(BaseRequestHandler):
             logger.debug("%s %s %s" % (
                 e_options.method_string,
                 utils.build_url(
-                    p_options.pn_config.scheme_and_host(),
+                    p_options.pn_config.scheme(),
+                    base_origin,
                     e_options.path,
                     e_options.query_string), e_options.data))
         else:
             logger.debug("%s %s" % (
                 e_options.method_string,
                 utils.build_url(
-                    p_options.pn_config.scheme_and_host(),
+                    p_options.pn_config.scheme(),
+                    base_origin,
                     e_options.path,
                     e_options.query_string)))
 

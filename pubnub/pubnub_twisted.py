@@ -247,7 +247,7 @@ class PubNubTwisted(PubNubCore):
         create_response = options.create_response
         create_status_response = options.create_status
 
-        url = utils.build_url(self.config.scheme(), self.config.origin,
+        url = utils.build_url(self.config.scheme(), self.base_origin,
                               options.path, options.query_string)
 
         logger.debug("%s %s %s" % (options.method_string, url, options.data))

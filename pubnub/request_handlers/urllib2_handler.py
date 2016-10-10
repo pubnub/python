@@ -27,8 +27,8 @@ class Urllib2RequestHandler(BaseRequestHandler):
      """
     ENDPOINT_THREAD_COUNTER = 0
 
-    def __init__(self):
-        pass
+    def __init__(self, pubnub):
+        self.pubnub = pubnub
 
     def sync_request(self, platform_options, endpoint_call_options):
         return self._build_envelope(platform_options, endpoint_call_options)
@@ -87,7 +87,7 @@ class Urllib2RequestHandler(BaseRequestHandler):
         response_info = None
 
         try:
-            res = self._invoke_request(p_options, e_options)
+            res = self._invoke_request(p_options, e_options, self.pubnub.base_origin)
         except PubNubException as e:
             if e._pn_error is PNERR_CONNECTION_ERROR:
                 status_category = PNStatusCategory.PNUnexpectedDisconnectCategory
@@ -166,11 +166,11 @@ class Urllib2RequestHandler(BaseRequestHandler):
                     exception=None))
 
     @staticmethod
-    def _invoke_request(p_options, e_options):
+    def _invoke_request(p_options, e_options, base_origin):
         assert isinstance(p_options, PlatformOptions)
         assert isinstance(e_options, RequestOptions)
 
-        url = utils.build_url(p_options.pn_config.scheme(), p_options.pn_config.origin,
+        url = utils.build_url(p_options.pn_config.scheme(), base_origin,
                               e_options.path, e_options.query_string)
 
         args = {

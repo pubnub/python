@@ -23,6 +23,32 @@ class PublishSequenceManager(object):
         return self.next_sequence
 
 
+class BasePathManager(object):
+    MAX_SUBDOMAIN = 20
+    DEFAULT_SUBDOMAIN = "pubsub"
+    DEFAULT_BASE_PATH = "pubnub.com"
+
+    def __init__(self, initial_config):
+        self.config = initial_config
+        self._current_subdomain = 1
+
+    def get_base_path(self):
+        if self.config.origin is not None:
+            return self.config.origin
+        # TODO: should CacheBusting be used?
+        elif False:
+            constructed_url = ("ps%s.%s" % (self._current_subdomain, BasePathManager.DEFAULT_BASE_PATH))
+
+            if self._current_subdomain == BasePathManager.MAX_SUBDOMAIN:
+                self._current_subdomain = 1
+            else:
+                self._current_subdomain += 1
+
+            return constructed_url
+        else:
+            return "%s.%s" % (BasePathManager.DEFAULT_SUBDOMAIN, BasePathManager.DEFAULT_BASE_PATH)
+
+
 class StateManager(object):
     def __init__(self):
         self._channels = {}

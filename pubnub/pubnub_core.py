@@ -3,7 +3,7 @@ import time
 
 from abc import ABCMeta, abstractmethod
 
-
+from .managers import BasePathManager
 from .builders import SubscribeBuilder
 from .builders import UnsubscribeBuilder
 from .endpoints.time import Time
@@ -49,6 +49,11 @@ class PubNubCore:
 
         self._subscription_manager = None
         self._publish_sequence_manager = None
+        self._base_path_manager = BasePathManager(config)
+
+    @property
+    def base_origin(self):
+        return self._base_path_manager.get_base_path()
 
     @property
     def sdk_name(self):

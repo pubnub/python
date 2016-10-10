@@ -89,8 +89,8 @@ class PubNubAsyncio(PubNubCore):
         if options.operation_type is PNOperationType.PNPublishOperation:
             options.params['seqn'] = yield from self._publish_sequence_manager.get_next_sequence()
 
-        url = utils.build_url(self.config.scheme(), self.config.origin, options.path)
-        log_url = utils.build_url(self.config.scheme(), self.config.origin,
+        url = utils.build_url(self.config.scheme(), self.base_origin, options.path)
+        log_url = utils.build_url(self.config.scheme(), self.base_origin,
                                   options.path, options.query_string)
         logger.debug("%s %s %s" % (options.method_string, log_url, options.data))
 

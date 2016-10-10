@@ -96,7 +96,7 @@ class PubNubTornado(PubNubCore):
 
         future = Future()
 
-        url = utils.build_url(self.config.scheme(), self.config.origin,
+        url = utils.build_url(self.config.scheme(), self.base_origin,
                               options.path, options.query_string)
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 

@@ -274,6 +274,9 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         except PubNubAsyncioException as e:
             if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
                 self._pubnub.event_loop.call_soon(self._start_subscribe_loop)
+            elif e.status is not None and e.status.category == PNStatusCategory.PNAccessDeniedCategory:
+                e.status.operation = PNOperationType.PNUnsubscribeOperation
+                self._listener_manager.announce_status(e.status)
             else:
                 self._listener_manager.announce_status(e.status)
         except asyncio.CancelledError:

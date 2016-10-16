@@ -27,7 +27,7 @@ class TestLeave(unittest.TestCase):
 
         self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch"))
 
-        self.assertEqual(self.leave.build_params(), {
+        self.assertEqual(self.leave.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
@@ -39,7 +39,7 @@ class TestLeave(unittest.TestCase):
 
         self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
-        self.assertEqual(self.leave.build_params(), {
+        self.assertEqual(self.leave.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
@@ -51,7 +51,7 @@ class TestLeave(unittest.TestCase):
 
         self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
-        self.assertEqual(self.leave.build_params(), {
+        self.assertEqual(self.leave.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
@@ -63,7 +63,7 @@ class TestLeave(unittest.TestCase):
 
         self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
-        self.assertEqual(self.leave.build_params(), {
+        self.assertEqual(self.leave.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
@@ -76,7 +76,7 @@ class TestLeave(unittest.TestCase):
         self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH
                           % (pnconf.subscribe_key, ","))
 
-        self.assertEqual(self.leave.build_params(), {
+        self.assertEqual(self.leave.build_params_callback()({}), {
             'channel-group': 'gr',
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
@@ -90,7 +90,7 @@ class TestLeave(unittest.TestCase):
         self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH
                           % (pnconf.subscribe_key, ","))
 
-        self.assertEqual(self.leave.build_params(), {
+        self.assertEqual(self.leave.build_params_callback()({}), {
             'channel-group': 'gr1,gr2,gr3',
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
@@ -104,7 +104,7 @@ class TestLeave(unittest.TestCase):
         self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH
                           % (pnconf.subscribe_key, ","))
 
-        self.assertEqual(self.leave.build_params(), {
+        self.assertEqual(self.leave.build_params_callback()({}), {
             'channel-group': 'gr1,gr2,gr3',
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
@@ -118,7 +118,7 @@ class TestLeave(unittest.TestCase):
         self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH
                           % (pnconf.subscribe_key, "ch1,ch2"))
 
-        self.assertEqual(self.leave.build_params(), {
+        self.assertEqual(self.leave.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'channel-group': 'gr1,gr2',

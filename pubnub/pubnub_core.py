@@ -60,6 +60,10 @@ class PubNubCore:
         return "%s%s/%s" % (PubNubCore.SDK_NAME, self.sdk_platform(), PubNubCore.SDK_VERSION)
 
     @abstractmethod
+    def publish_sequence_next(self):
+        pass
+
+    @abstractmethod
     def sdk_platform(self):
         pass
 

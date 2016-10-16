@@ -29,7 +29,7 @@ class TestAddChannelToChannelGroup(unittest.TestCase):
                           AddChannelToChannelGroup.ADD_PATH % (
                               pnconf.subscribe_key, "gr"))
 
-        self.assertEqual(self.add.build_params(), {
+        self.assertEqual(self.add.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'add': "ch"
@@ -44,7 +44,7 @@ class TestAddChannelToChannelGroup(unittest.TestCase):
                           AddChannelToChannelGroup.ADD_PATH % (
                               pnconf.subscribe_key, "gr"))
 
-        self.assertEqual(self.add.build_params(), {
+        self.assertEqual(self.add.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'add': "ch1,ch2"

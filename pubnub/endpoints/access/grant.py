@@ -51,10 +51,8 @@ class Grant(Endpoint):
         self._ttl = ttl
         return self
 
-    def build_params(self):
-        params = self.default_params()
-
-        signed_input = (self.pubnub.config.subscribe_key + "\n" + self.pubnub.config.publish_key + "\ngrant\n")
+    def custom_params(self):
+        params = {}
 
         if self._read is not None:
             params['r'] = '1' if self._read is True else '0'
@@ -74,17 +72,6 @@ class Grant(Endpoint):
 
         if self._ttl is not None:
             params['ttl'] = str(int(self._ttl))
-
-        params['timestamp'] = str(self.pubnub.timestamp())
-
-        # The SDK version string should be signed unencoded
-        params_to_sign = copy.copy(params)
-        params_to_sign['pnsdk'] = self.pubnub.sdk_name
-
-        signed_input += utils.prepare_pam_arguments(params_to_sign)
-        signature = utils.sign_sha256(self.pubnub.config.secret_key, signed_input)
-
-        params['signature'] = signature
 
         return params
 

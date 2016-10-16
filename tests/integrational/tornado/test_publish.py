@@ -218,7 +218,9 @@ class TestPubNubAsyncPublish(AsyncTestCase):
         'tests/integrational/fixtures/tornado/publish/not_permitted.yaml',
         filter_query_parameters=['uuid', 'seqn'])
     def test_error_not_permitted_403(self):
-        self.pubnub = PubNubTornado(pnconf_pam_copy(), custom_ioloop=self.io_loop)
+        my_pnconf = pnconf_pam_copy()
+        my_pnconf.secret_key = None
+        self.pubnub = PubNubTornado(my_pnconf, custom_ioloop=self.io_loop)
 
         self.assert_server_side_error(
             self.pubnub.publish().channel("not_permitted_channel").message("hey"), "HTTP Client Error (403)")

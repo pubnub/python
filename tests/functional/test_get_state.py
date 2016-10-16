@@ -29,7 +29,7 @@ class TestGetState(unittest.TestCase):
                                                                                   "ch",
                                                                                   self.pubnub.uuid))
 
-        self.assertEqual(self.get_state.build_params(), {
+        self.assertEqual(self.get_state.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
         })
@@ -43,7 +43,7 @@ class TestGetState(unittest.TestCase):
                                                                                   ",",
                                                                                   self.pubnub.uuid))
 
-        self.assertEqual(self.get_state.build_params(), {
+        self.assertEqual(self.get_state.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'channel-group': 'gr'

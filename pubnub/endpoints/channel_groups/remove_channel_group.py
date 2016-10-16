@@ -20,8 +20,8 @@ class RemoveChannelGroup(Endpoint):
 
         return self
 
-    def build_params(self):
-        return self.default_params()
+    def custom_params(self):
+        return {}
 
     def build_path(self):
             return RemoveChannelGroup.REMOVE_PATH % (

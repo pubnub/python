@@ -43,10 +43,8 @@ class Heartbeat(Endpoint):
         channels = utils.join_channels(self._channels)
         return Heartbeat.HEARTBEAT_PATH % (self.pubnub.config.subscribe_key, channels)
 
-    def build_params(self):
-        params = self.default_params()
-
-        params['heartbeat'] = str(self.pubnub.config.presence_timeout)
+    def custom_params(self):
+        params = {'heartbeat': str(self.pubnub.config.presence_timeout)}
 
         if len(self._groups) > 0:
             params['channel-group'] = utils.join_items(self._groups)

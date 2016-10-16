@@ -29,7 +29,7 @@ class TestAudit(unittest.TestCase):
 
         self.assertEquals(self.audit.build_path(), Audit.AUDIT_PATH % pnconf_pam.subscribe_key)
 
-        self.assertEqual(self.audit.build_params(), {
+        self.assertEqual(self.audit.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'timestamp': '123',
@@ -49,7 +49,7 @@ class TestAudit(unittest.TestCase):
 
         self.assertEquals(self.audit.build_path(), Audit.AUDIT_PATH % pnconf_pam.subscribe_key)
 
-        self.assertEqual(self.audit.build_params(), {
+        self.assertEqual(self.audit.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'timestamp': '123',

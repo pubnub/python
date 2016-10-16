@@ -6,7 +6,7 @@ from pubnub.models.consumer.time import PNTimeResponse
 class Time(Endpoint):
     TIME_PATH = "/time/0"
 
-    def build_params(self):
+    def custom_params(self):
         return {}
 
     def build_path(self):

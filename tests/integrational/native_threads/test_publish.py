@@ -187,7 +187,10 @@ class TestPubNubErrorPublish(unittest.TestCase):
         assert "not JSON serializable" in str(self.status.error_data.exception)
 
     def test_not_permitted(self):
-        PubNub(pnconf_pam_copy()).publish() \
+        pnconf = pnconf_pam_copy()
+        pnconf.secret_key = None
+
+        PubNub(pnconf).publish() \
             .channel("not_permitted_channel") \
             .message("correct message") \
             .async(self.callback)

@@ -30,7 +30,7 @@ class SetState(Endpoint):
         self._state = state
         return self
 
-    def build_params(self):
+    def custom_params(self):
         if self._subscription_manager is not None:
             self._subscription_manager.adapt_state_builder(StateOperation(
                 channels=self._channels,
@@ -38,9 +38,7 @@ class SetState(Endpoint):
                 state=self._state
             ))
 
-        params = self.default_params()
-
-        params['state'] = utils.url_encode(utils.write_value_as_string(self._state))
+        params = {'state': utils.url_encode(utils.write_value_as_string(self._state))}
 
         if len(self._groups) > 0:
             params['channel-group'] = utils.join_items_and_encode(self._groups)

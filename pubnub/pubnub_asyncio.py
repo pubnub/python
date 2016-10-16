@@ -13,7 +13,7 @@ from .pubnub_core import PubNubCore
 from .workers import SubscribeMessageWorker
 from .managers import SubscriptionManager, PublishSequenceManager
 from . import utils
-from .structures import ResponseInfo
+from .structures import ResponseInfo, RequestOptions
 from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType
 from .callbacks import SubscribeCallback
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED
@@ -79,15 +79,22 @@ class PubNubAsyncio(PubNubCore):
         raise NotImplementedError
 
     @asyncio.coroutine
-    def request_future(self, options_func, create_response,
-                       create_status_response, cancellation_event):
+    def request_future(self, options_func, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
         options = options_func()
+        assert isinstance(options, RequestOptions)
 
-        if options.operation_type is PNOperationType.PNPublishOperation:
-            options.params['seqn'] = yield from self._publish_sequence_manager.get_next_sequence()
+        create_response = options.create_response
+        create_status_response = options.create_status
+
+        params_to_merge_in = {}
+
+        if options.operation_type == PNOperationType.PNPublishOperation:
+            params_to_merge_in['seqn'] = yield from self._publish_sequence_manager.get_next_sequence()
+
+        options.merge_params_in(params_to_merge_in)
 
         url = utils.build_url(self.config.scheme(), self.base_origin, options.path)
         log_url = utils.build_url(self.config.scheme(), self.base_origin,

@@ -30,11 +30,8 @@ class RemoveChannelsFromPush(Endpoint):
         self._push_type = push_type
         return self
 
-    def build_params(self):
-        params = self.default_params()
-
-        params['remove'] = utils.join_items(self._channels)
-        params['type'] = utils.push_type_to_string(self._push_type)
+    def custom_params(self):
+        params = {'remove': utils.join_items(self._channels), 'type': utils.push_type_to_string(self._push_type)}
 
         return params
 

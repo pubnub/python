@@ -25,8 +25,8 @@ class RemoveDeviceFromPush(Endpoint):
         self._push_type = push_type
         return self
 
-    def build_params(self):
-        params = self.default_params()
+    def custom_params(self):
+        params = {}
 
         params['type'] = utils.push_type_to_string(self._push_type)
 

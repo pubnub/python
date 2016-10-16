@@ -233,7 +233,7 @@ def test_error_invalid_key(event_loop):
 
 @pn_vcr.use_cassette(
     'tests/integrational/fixtures/asyncio/publish/not_permitted.yaml',
-    filter_query_parameters=['uuid', 'seqn'])
+    filter_query_parameters=['uuid', 'seqn', 'signature', 'timestamp'])
 @pytest.mark.asyncio
 def test_not_permitted(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)

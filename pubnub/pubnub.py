@@ -46,19 +46,26 @@ class PubNub(PubNubCore):
     def request_sync(self, endpoint_call_options):
         platform_options = PlatformOptions(self.headers, self.config)
 
-        if endpoint_call_options.operation_type is PNOperationType.PNPublishOperation:
-            endpoint_call_options.params['seqn'] = self._publish_sequence_manager.get_next_sequence()
+        self.merge_in_params(endpoint_call_options)
 
         return self._request_handler.sync_request(platform_options, endpoint_call_options)
 
     def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event):
         platform_options = PlatformOptions(self.headers, self.config)
 
-        if endpoint_call_options.operation_type is PNOperationType.PNPublishOperation:
-            endpoint_call_options.params['seqn'] = self._publish_sequence_manager.get_next_sequence()
+        self.merge_in_params(endpoint_call_options)
 
         return self._request_handler.async_request(endpoint_name, platform_options, endpoint_call_options,
                                                    callback, cancellation_event)
+
+    def merge_in_params(self, options):
+
+        params_to_merge_in = {}
+
+        if options.operation_type == PNOperationType.PNPublishOperation:
+            params_to_merge_in['seqn'] = self._publish_sequence_manager.get_next_sequence()
+
+        options.merge_params_in(params_to_merge_in)
 
     def stop(self):
         if self._subscription_manager is not None:

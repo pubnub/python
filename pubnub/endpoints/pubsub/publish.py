@@ -50,8 +50,8 @@ class Publish(Endpoint):
         else:
             return None
 
-    def build_params(self):
-        params = self.default_params()
+    def custom_params(self):
+        params = {}
 
         if self._meta is not None:
             params['meta'] = utils.url_encode(utils.write_value_as_string(self._meta))

@@ -31,8 +31,8 @@ class HereNow(Endpoint):
         self._include_uuids = include_uuids
         return self
 
-    def build_params(self):
-        params = self.default_params()
+    def custom_params(self):
+        params = {}
 
         if len(self._channel_groups) > 0:
             params['channel-groups'] = utils.join_items_and_encode(self._channel_groups)

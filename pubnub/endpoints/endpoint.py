@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 from pubnub import utils
-from pubnub.enums import PNStatusCategory
+from pubnub.enums import PNStatusCategory, PNOperationType
 from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING, \
     PNERR_SECRET_KEY_MISSING, PNERR_CHANNEL_MISSING
 from pubnub.exceptions import PubNubException
@@ -31,8 +31,8 @@ class Endpoint(object):
         pass
 
     @abstractmethod
-    def build_params(self):
-        pass
+    def custom_params(self):
+        raise NotImplementedError
 
     def build_data(self):
         return None
@@ -75,12 +75,17 @@ class Endpoint(object):
         return None
 
     def options(self):
-        return RequestOptions(self.build_path(), self.build_params(),
-                              self.http_method(), self.request_timeout(),
-                              self.connect_timeout(), self.create_response,
-                              self.create_status,
-                              self.operation_type(),
-                              self.build_data(), self._sort_params)
+        return RequestOptions(
+            path=self.build_path(),
+            params_callback=self.build_params_callback(),
+            method=self.http_method(),
+            request_timeout=self.request_timeout(),
+            connect_timeout=self.connect_timeout(),
+            create_response=self.create_response,
+            create_status=self.create_status,
+            operation_type=self.operation_type(),
+            data=self.build_data(),
+            sort_arguments=self._sort_params)
 
     def sync(self):
         self.validate_params()
@@ -115,9 +120,6 @@ class Endpoint(object):
             return self.options()
 
         return self.pubnub.request_future(options_func=handler,
-                                          # REVIEW: self.create_* persists inside self.options, remove?
-                                          create_response=self.create_response,
-                                          create_status_response=self.create_status,
                                           cancellation_event=self._cancellation_event
                                           )
 
@@ -129,16 +131,40 @@ class Endpoint(object):
         return self.pubnub.request_deferred(options_func=handler,
                                             cancellation_event=self._cancellation_event)
 
-    def default_params(self):
-        default = {
-            'pnsdk': utils.url_encode(self.pubnub.sdk_name),
-            'uuid': self.pubnub.uuid
-        }
+    def build_params_callback(self):
+        def callback(params_to_merge):
+            custom_params = self.custom_params()
+            custom_params.update(params_to_merge)
 
-        if self.is_auth_required() and self.pubnub.config.auth_key is not None:
-            default['auth'] = self.pubnub.config.auth_key
+            custom_params['pnsdk'] = self.pubnub.sdk_name
+            custom_params['uuid'] = self.pubnub.uuid
 
-        return default
+            if self.is_auth_required() and self.pubnub.config.auth_key is not None:
+                custom_params['auth'] = self.pubnub.config.auth_key
+
+            if self.pubnub.config.secret_key is not None:
+                custom_params['timestamp'] = str(self.pubnub.timestamp())
+                signed_input = (self.pubnub.config.subscribe_key + "\n" + self.pubnub.config.publish_key + "\n")
+
+                operation_type = self.operation_type()
+                if operation_type == PNOperationType.PNAccessManagerAudit:
+                    signed_input += 'audit\n'
+                elif operation_type == PNOperationType.PNAccessManagerGrant or\
+                        operation_type == PNOperationType.PNAccessManagerRevoke:
+                    signed_input += 'grant\n'
+                else:
+                    signed_input += self.build_path() + "\n"
+
+                signed_input += utils.prepare_pam_arguments(custom_params)
+                signature = utils.sign_sha256(self.pubnub.config.secret_key, signed_input)
+
+                custom_params['signature'] = signature
+
+            # reassign since pnsdk should be signed unencoded
+            custom_params['pnsdk'] = utils.url_encode(self.pubnub.sdk_name)
+
+            return custom_params
+        return callback
 
     def validate_subscribe_key(self):
         if self.pubnub.config.subscribe_key is None or len(self.pubnub.config.subscribe_key) == 0:

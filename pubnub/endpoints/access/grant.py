@@ -1,5 +1,3 @@
-import copy
-
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_PAM_NO_FLAGS

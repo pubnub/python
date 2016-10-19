@@ -5,7 +5,7 @@ from .enums import HttpMethod
 
 class RequestOptions(object):
     def __init__(self, path, params_callback, method, request_timeout, connect_timeout, create_response,
-                 create_status, operation_type, data=None, sort_arguments=False):
+                 create_status, create_exception, operation_type, data=None, sort_arguments=False):
         assert len(path) > 0
         assert callable(params_callback)
         assert isinstance(method, six.integer_types)
@@ -26,6 +26,7 @@ class RequestOptions(object):
 
         self.create_response = create_response
         self.create_status = create_status
+        self.create_exception = create_exception
         self.operation_type = operation_type
 
     def merge_params_in(self, params_to_merge_in):

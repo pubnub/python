@@ -1,3 +1,4 @@
+import datetime
 import hmac
 import json
 import uuid as u
@@ -163,3 +164,7 @@ def strip_right(text, suffix):
         return text
 
     return text[:len(text) - len(suffix)]
+
+
+def datetime_now():
+    return datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")

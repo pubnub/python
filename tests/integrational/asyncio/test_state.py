@@ -2,9 +2,9 @@ import asyncio
 import pytest
 
 from pubnub.models.consumer.presence import PNSetStateResult, PNGetStateResult
-from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
+from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.helper import pnconf, pnconf_copy, pnconf_sub_copy, pnconf_pam_copy
-from tests.integrational.vcr_asyncio_sleeper import get_sleeper
+from tests.integrational.vcr_asyncio_sleeper import get_sleeper, VCR599Listener
 from tests.integrational.vcr_helper import pn_vcr
 
 
@@ -51,7 +51,7 @@ def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
     pubnub.config.uuid = 'test-state-asyncio-uuid'
     state = {"name": "Alex", "count": 5}
 
-    callback = SubscribeListener()
+    callback = VCR599Listener(1)
     pubnub.add_listener(callback)
     pubnub.subscribe().channels(ch).execute()
 

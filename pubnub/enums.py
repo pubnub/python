@@ -66,6 +66,7 @@ class PNHeartbeatNotificationOptions(object):
 class PNReconnectionPolicy(object):
     NONE = 1
     LINEAR = 2
+    EXPONENTIAL = 3
 
 
 class PNPushType(object):

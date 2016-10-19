@@ -13,9 +13,9 @@ from tests.integrational.vcr_helper import pn_vcr
 def test_time(event_loop):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
-    env = yield from pubnub.time().future()
+    res = yield from pubnub.time().result()
 
-    assert int(env.result) > 0
-    assert isinstance(env.result.date_time(), date)
+    assert int(res) > 0
+    assert isinstance(res.date_time(), date)
 
     pubnub.stop()

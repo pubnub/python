@@ -3,3 +3,4 @@ pytest-cov
 codecov
 pycrypto
 pytest-benchmark
+-e git://github.com/blazeroot/vcrpy@twisted#egg=vcrpy

@@ -19,8 +19,7 @@ from . import utils
 from .workers import SubscribeMessageWorker
 from .pubnub_core import PubNubCore
 from .managers import SubscriptionManager, PublishSequenceManager
-
-from .enums import PNStatusCategory, PNHeartbeatNotificationOptions
+from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType
 from .errors import PNERR_CLIENT_ERROR, PNERR_CONNECTION_ERROR, \
     PNERR_SERVER_ERROR, PNERR_JSON_DECODING_FAILED
 from .exceptions import PubNubException
@@ -205,6 +204,7 @@ class PubNubTwisted(PubNubCore):
         }
 
     def start(self):
+        self._subscription_manager._start_worker()
         self.reactor.run()
 
     def stop(self):
@@ -233,7 +233,7 @@ class PubNubTwisted(PubNubCore):
             request = self.request_deferred(options_func, cancellation_event)
             request.addCallbacks(callback, manage_failures)
 
-        self.reactor.callInThread(async_request, endpoint_call_options, cancellation_event, callback)
+        self.reactor.callLater(0, async_request, endpoint_call_options, cancellation_event, callback)
 
         return
 
@@ -244,6 +244,9 @@ class PubNubTwisted(PubNubCore):
         pnconn_pool = self.pnconn_pool
         headers = self.headers
 
+        if options.operation_type is PNOperationType.PNPublishOperation:
+            options.params['seqn'] = self._publish_sequence_manager.get_next_sequence()
+
         create_response = options.create_response
         create_status_response = options.create_status
 
@@ -251,6 +254,7 @@ class PubNubTwisted(PubNubCore):
                               options.path, options.query_string)
 
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
+        print("%s %s %s" % (options.method_string, url, options.data))
 
         def handler():
             agent = Agent(reactor, pool=pnconn_pool)
@@ -264,7 +268,7 @@ class PubNubTwisted(PubNubCore):
                 options.method_string,
                 url,
                 Headers(headers),
-                FileBodyProducer(StringIO(body)))
+                body)
 
             def received(response):
                 finished = Deferred()
@@ -363,10 +367,10 @@ class PubNubTwisted(PubNubCore):
                                                       pn_error=PNERR_CONNECTION_ERROR,
                                                       status_code=0
                                                   )))
-
             request.addErrback(failed)
             request.addCallback(received)
             request.addCallback(success, url, request)
+
             return request
 
         return handler()

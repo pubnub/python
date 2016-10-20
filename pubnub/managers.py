@@ -181,8 +181,6 @@ class SubscriptionManager(object):
         self._subscribe_request_task = None
         self._heartbeat_call = None
 
-        self._start_worker()
-
     @abstractmethod
     def _start_worker(self):
         pass

@@ -346,15 +346,12 @@ class PubnubBase(object):
             msg.encode("utf-8"),
             sha256
         ).digest())
-        return quote(sign, safe="")
+        return quote(sign, safe="=")
 
     def set_u(self, u=False):
         self.u = u
 
     def _pam_auth(self, query, apicode=0, callback=None, error=None):
-
-        if 'timestamp' not in query:
-            query['timestamp'] = int(time.time())
 
         ## Global Grant?
         if 'auth' in query and not query['auth']:
@@ -365,19 +362,6 @@ class PubnubBase(object):
 
         if 'channel-group' in query and not query['channel-group']:
             del query['channel-group']
-
-        params = "&".join([
-            x + "=" + quote(
-                str(query[x]), safe=""
-            ) for x in sorted(query)
-        ])
-        sign_input = "{subkey}\n{pubkey}\n{apitype}\n{params}".format(
-            subkey=self.subscribe_key,
-            pubkey=self.publish_key,
-            apitype="audit" if (apicode) else "grant",
-            params=params
-        )
-        query['signature'] = self._pam_sign(sign_input)
 
         return self._request({"urlcomponents": [
             'v1', 'auth', "audit" if (apicode) else "grant",
@@ -1293,12 +1277,49 @@ class PubnubBase(object):
 
         if self.u is True and "urlparams" in request:
             request['urlparams']['u'] = str(random.randint(1, 100000000000))
-        ## Build URL
-        url = self.origin + '/' + "/".join([
-                                           "".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
-                                                    hex(ord(ch)).replace('0x', '%').upper() or
-                                                    ch for ch in list(bit)
-                                                    ]) for bit in request["urlcomponents"]])
+
+        path = '/' + "/".join([
+                   "".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
+                            hex(ord(ch)).replace('0x', '%').upper() or
+                            ch for ch in list(bit)
+                            ]) for bit in request["urlcomponents"]])
+
+        url = self.origin + path
+        url_params = request['urlparams'] if 'urlparams' in request else None
+
+        if url_params and 'auth' in url_params and not url_params['auth']:
+            del request['urlparams']['auth']
+
+        if self.secret_key is not None and url_params:
+            if url_params and 'timestamp' not in url_params:
+                url_params['timestamp'] = int(time.time())
+                request['urlparams']['timestamp'] = url_params['timestamp']
+
+            second = request['urlcomponents'][2] if len(request['urlcomponents']) >= 3 else None
+            is_grant = second == "grant"
+            is_audit = second == "audit"
+
+            if is_grant:
+                third = "grant"
+            elif is_audit:
+                third = "audit"
+            else:
+                third = path
+
+            params = "&".join([
+                  x + "=" + quote(
+                      str(url_params[x]), safe=""
+                  ) for x in sorted(url_params)
+                  ])
+
+            sign_input = "{subkey}\n{pubkey}\n{third}\n{params}".format(
+                subkey=self.subscribe_key,
+                pubkey=self.publish_key,
+                third=third,
+                params=params
+            )
+
+            request['urlparams']['signature'] = self._pam_sign(sign_input)
 
         if ("urlparams" in request):
             url = url + '?' + "&".join([x + "=" +
@@ -2351,7 +2372,10 @@ class PubnubCoreAsync(PubnubBase):
                 channel_list = ','
 
             data = {"uuid": self.uuid, "auth": self.auth_key,
-                    'pnsdk': self.pnsdk, 'channel-group': channel_group_list}
+                    'pnsdk': self.pnsdk}
+
+            if channel_group_list is not None and len(channel_group_list) > 0:
+                data['channel-group'] = channel_group_list
 
             st = json.dumps(self.STATE)
 

@@ -1,5 +1,3 @@
-import copy
-
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
@@ -33,10 +31,8 @@ class Audit(Endpoint):
         utils.extend_list(self._groups, channel_groups)
         return self
 
-    def build_params(self):
-        params = self.default_params()
-
-        signed_input = (self.pubnub.config.subscribe_key + "\n" + self.pubnub.config.publish_key + "\naudit\n")
+    def custom_params(self):
+        params = {}
 
         if len(self._auth_keys) > 0:
             params['auth'] = utils.join_items_and_encode(self._auth_keys)
@@ -46,17 +42,6 @@ class Audit(Endpoint):
 
         if len(self._groups) > 0:
             params['channel-group'] = utils.join_items_and_encode(self._groups)
-
-        params['timestamp'] = str(self.pubnub.timestamp())
-
-        # The SDK version string should be signed unencoded
-        params_to_sign = copy.copy(params)
-        params_to_sign['pnsdk'] = self.pubnub.sdk_name
-
-        signed_input += utils.prepare_pam_arguments(params_to_sign)
-        signature = utils.sign_sha256(self.pubnub.config.secret_key, signed_input)
-
-        params['signature'] = signature
 
         return params
 
@@ -89,7 +74,7 @@ class Audit(Endpoint):
         return self.pubnub.config.connect_timeout
 
     def operation_type(self):
-        return PNOperationType.PNAccessManagerGrant
+        return PNOperationType.PNAccessManagerAudit
 
     def name(self):
         return "Grant"

@@ -32,7 +32,7 @@ class TestSetState(unittest.TestCase):
                                                                                   "ch",
                                                                                   self.pubnub.uuid))
 
-        params = self.set_state.build_params()
+        params = self.set_state.build_params_callback()({})
         self.assertEqual(params['pnsdk'], sdk_name)
         self.assertEqual(params['uuid'], self.pubnub.uuid)
         self.assertEqual(json.loads(helper.url_decode(params['state'])),
@@ -47,7 +47,7 @@ class TestSetState(unittest.TestCase):
                                                                                   ",",
                                                                                   self.pubnub.uuid))
 
-        params = self.set_state.build_params()
+        params = self.set_state.build_params_callback()({})
         self.assertEqual(params['pnsdk'], sdk_name)
         self.assertEqual(params['uuid'], self.pubnub.uuid)
         self.assertEqual(params['channel-group'], 'gr')

@@ -30,12 +30,8 @@ class RemoveChannelFromChannelGroup(Endpoint):
 
         return self
 
-    def build_params(self):
-        params = self.default_params()
-
-        params['remove'] = utils.join_items(self._channels)
-
-        return params
+    def custom_params(self):
+        return {'remove': utils.join_items(self._channels)}
 
     def build_path(self):
             return RemoveChannelFromChannelGroup.REMOVE_PATH % (

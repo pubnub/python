@@ -30,7 +30,7 @@ class TestListPushProvisions(unittest.TestCase):
                           ListPushProvisions.LIST_PATH % (
                               pnconf.subscribe_key, "coolDevice"))
 
-        self.assertEqual(self.list_push.build_params(), {
+        self.assertEqual(self.list_push.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'type': 'apns'
@@ -43,7 +43,7 @@ class TestListPushProvisions(unittest.TestCase):
                           ListPushProvisions.LIST_PATH % (
                               pnconf.subscribe_key, "coolDevice"))
 
-        self.assertEqual(self.list_push.build_params(), {
+        self.assertEqual(self.list_push.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'type': 'gcm'
@@ -56,7 +56,7 @@ class TestListPushProvisions(unittest.TestCase):
                           ListPushProvisions.LIST_PATH % (
                               pnconf.subscribe_key, "coolDevice"))
 
-        self.assertEqual(self.list_push.build_params(), {
+        self.assertEqual(self.list_push.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'type': 'mpns'

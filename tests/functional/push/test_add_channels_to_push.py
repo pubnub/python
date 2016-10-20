@@ -31,7 +31,7 @@ class TestAddChannelsFromPush(unittest.TestCase):
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEquals(self.add_channels.build_path(), AddChannelsToPush.ADD_PATH % params)
 
-        self.assertEqual(self.add_channels.build_params(), {
+        self.assertEqual(self.add_channels.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'type': 'apns',
@@ -46,7 +46,7 @@ class TestAddChannelsFromPush(unittest.TestCase):
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEquals(self.add_channels.build_path(), AddChannelsToPush.ADD_PATH % params)
 
-        self.assertEqual(self.add_channels.build_params(), {
+        self.assertEqual(self.add_channels.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'type': 'mpns',
@@ -61,7 +61,7 @@ class TestAddChannelsFromPush(unittest.TestCase):
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEquals(self.add_channels.build_path(), AddChannelsToPush.ADD_PATH % params)
 
-        self.assertEqual(self.add_channels.build_params(), {
+        self.assertEqual(self.add_channels.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'type': 'gcm',

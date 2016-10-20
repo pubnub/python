@@ -29,7 +29,7 @@ class TestRemoveChannelToChannelGroup(unittest.TestCase):
                           RemoveChannelFromChannelGroup.REMOVE_PATH % (
                               pnconf.subscribe_key, "gr"))
 
-        self.assertEqual(self.remove.build_params(), {
+        self.assertEqual(self.remove.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'remove': "ch"
@@ -44,7 +44,7 @@ class TestRemoveChannelToChannelGroup(unittest.TestCase):
                           RemoveChannelFromChannelGroup.REMOVE_PATH % (
                               pnconf.subscribe_key, "gr"))
 
-        self.assertEqual(self.remove.build_params(), {
+        self.assertEqual(self.remove.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'remove': "ch1,ch2"

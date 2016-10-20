@@ -57,8 +57,8 @@ class Subscribe(Endpoint):
         channels = utils.join_channels(self._channels)
         return Subscribe.SUBSCRIBE_PATH % (self.pubnub.config.subscribe_key, channels)
 
-    def build_params(self):
-        params = self.default_params()
+    def custom_params(self):
+        params = {}
 
         if len(self._groups) > 0:
             params['channel-group'] = utils.join_items_and_encode(self._groups)

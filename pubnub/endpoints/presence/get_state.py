@@ -21,8 +21,8 @@ class GetState(Endpoint):
         utils.extend_list(self._groups, channel_groups)
         return self
 
-    def build_params(self):
-        params = self.default_params()
+    def custom_params(self):
+        params = {}
 
         if len(self._groups) > 0:
             params['channel-group'] = utils.join_items(self._groups)

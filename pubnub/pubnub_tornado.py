@@ -84,15 +84,21 @@ class PubNubTornado(PubNubCore):
     def request_deferred(self, *args):
         raise NotImplementedError
 
-    def request_future(self, options_func, create_response,
-                       create_status_response, cancellation_event):
+    def request_future(self, options_func, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
         options = options_func()
 
-        if options.operation_type is PNOperationType.PNPublishOperation:
-            options.params['seqn'] = self._publish_sequence_manager.get_next_sequence()
+        create_response = options.create_response
+        create_status_response = options.create_status
+
+        params_to_merge_in = {}
+
+        if options.operation_type == PNOperationType.PNPublishOperation:
+            params_to_merge_in['seqn'] = self._publish_sequence_manager.get_next_sequence()
+
+        options.merge_params_in(params_to_merge_in)
 
         future = Future()
 

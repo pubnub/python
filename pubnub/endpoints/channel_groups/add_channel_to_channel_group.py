@@ -30,12 +30,8 @@ class AddChannelToChannelGroup(Endpoint):
 
         return self
 
-    def build_params(self):
-        params = self.default_params()
-
-        params['add'] = utils.join_items(self._channels)
-
-        return params
+    def custom_params(self):
+        return {'add': utils.join_items(self._channels)}
 
     def build_path(self):
             return AddChannelToChannelGroup.ADD_PATH % (

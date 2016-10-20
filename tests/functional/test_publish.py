@@ -36,7 +36,7 @@ class TestPublish(unittest.TestCase):
         self.assertEquals(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
-        self.assertEqual(self.pub.build_params(), {
+        self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
         })
@@ -52,7 +52,7 @@ class TestPublish(unittest.TestCase):
         self.assertEquals(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
-        self.assertEqual(self.pub.build_params(), {
+        self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
         })
@@ -69,7 +69,7 @@ class TestPublish(unittest.TestCase):
         self.assertEquals(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
-        self.assertEqual(self.pub.build_params(), {
+        self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'meta': '%5B%22m1%22%2C%20%22m2%22%5D',
@@ -86,7 +86,7 @@ class TestPublish(unittest.TestCase):
         self.assertEquals(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
-        self.assertEqual(self.pub.build_params(), {
+        self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'store': '1',
@@ -103,7 +103,7 @@ class TestPublish(unittest.TestCase):
         self.assertEquals(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
-        self.assertEqual(self.pub.build_params(), {
+        self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'store': '0',
@@ -128,7 +128,7 @@ class TestPublish(unittest.TestCase):
         self.assertEquals(pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
-        self.assertEqual(pub.build_params(), {
+        self.assertEqual(pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': pubnub.uuid,
             'auth': conf.auth_key,
@@ -155,7 +155,7 @@ class TestPublish(unittest.TestCase):
         self.assertEquals(pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
                           % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
-        self.assertEqual(pub.build_params(), {
+        self.assertEqual(pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': pubnub.uuid,
         })

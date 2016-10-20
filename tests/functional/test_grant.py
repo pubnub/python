@@ -29,7 +29,7 @@ class TestGrant(unittest.TestCase):
 
         self.assertEquals(self.grant.build_path(), Grant.GRANT_PATH % pnconf_pam.subscribe_key)
 
-        self.assertEqual(self.grant.build_params(), {
+        self.assertEqual(self.grant.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'r': '1',
@@ -55,7 +55,7 @@ class TestGrant(unittest.TestCase):
 
         self.assertEquals(self.grant.build_path(), Grant.GRANT_PATH % pnconf_pam.subscribe_key)
 
-        self.assertEqual(self.grant.build_params(), {
+        self.assertEqual(self.grant.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'r': '1',

@@ -48,8 +48,8 @@ class History(Endpoint):
         self._include_timetoken = include_timetoken
         return self
 
-    def build_params(self):
-        params = self.default_params()
+    def custom_params(self):
+        params = {}
 
         if self._start is not None:
             params['start'] = str(self._start)

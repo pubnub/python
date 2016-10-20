@@ -31,7 +31,7 @@ class TestRemoveDeviceFromPush(unittest.TestCase):
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEquals(self.remove_device.build_path(), RemoveDeviceFromPush.REMOVE_PATH % params)
 
-        self.assertEqual(self.remove_device.build_params(), {
+        self.assertEqual(self.remove_device.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'type': 'apns',
@@ -43,7 +43,7 @@ class TestRemoveDeviceFromPush(unittest.TestCase):
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEquals(self.remove_device.build_path(), RemoveDeviceFromPush.REMOVE_PATH % params)
 
-        self.assertEqual(self.remove_device.build_params(), {
+        self.assertEqual(self.remove_device.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'type': 'gcm',
@@ -55,7 +55,7 @@ class TestRemoveDeviceFromPush(unittest.TestCase):
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEquals(self.remove_device.build_path(), RemoveDeviceFromPush.REMOVE_PATH % params)
 
-        self.assertEqual(self.remove_device.build_params(), {
+        self.assertEqual(self.remove_device.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'type': 'mpns',

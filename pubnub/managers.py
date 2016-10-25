@@ -19,7 +19,6 @@ class PublishSequenceManager(object):
             self.next_sequence = 1
         else:
             self.next_sequence += 1
-
         return self.next_sequence
 
 

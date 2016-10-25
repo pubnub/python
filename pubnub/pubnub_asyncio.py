@@ -49,6 +49,10 @@ class PubNubAsyncio(PubNubCore):
         self._connector = cn
         self._session = aiohttp.ClientSession(loop=self.event_loop, connector=self._connector)
 
+    def start(self):
+        if self._subscription_manager is not None:
+            self._subscription_manager._start_worker()
+
     def stop(self):
         self._session.close()
         if self._subscription_manager is not None:

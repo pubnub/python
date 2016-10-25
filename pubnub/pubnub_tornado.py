@@ -39,6 +39,8 @@ class PubNubTornado(PubNubCore):
         self.ioloop.stop()
 
     def start(self):
+        if self._subscription_manager is not None:
+            self._subscription_manager._start_worker()
         self.ioloop.start()
 
     def timeout(self, delay, callback, *args):

@@ -154,7 +154,7 @@ class PublishTestCase(unittest.TestCase):
     @inlineCallbacks
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/twisted/publish/forbidden.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+        filter_query_parameters=['uuid', 'seqn', 'timestamp', 'signature'])
     def test_error_forbidden(self):
         pubnub = PubNubTwisted(pnconf_pam_copy())
         with pytest.raises(PubNubTwistedException) as exception:

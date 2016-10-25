@@ -59,6 +59,7 @@ class TwistedSubscriptionManager(SubscriptionManager):
         self.worker_loop = None
         self._heartbeat_loop = None
         self._heartbeat_call = None
+        self.clock = pubnub_instance.clock
         super(TwistedSubscriptionManager, self).__init__(pubnub_instance)
 
     def _announce_status(self, status):
@@ -66,7 +67,12 @@ class TwistedSubscriptionManager(SubscriptionManager):
 
     def _start_worker(self):
         consumer = TwistedSubscribeMessageWorker(self._pubnub, self._listener_manager, self._message_queue, None)
-        self.worker_loop = LoopingCall(consumer.run).start(0.1, False)
+        looping_call = LoopingCall(consumer.run)
+
+        if self.clock is not None:
+            looping_call.clock = self.clock
+
+        self.worker_loop = looping_call.start(0.1, False)
 
     def _set_consumer_event(self):
         raise NotImplementedError
@@ -101,7 +107,6 @@ class TwistedSubscriptionManager(SubscriptionManager):
                     time.sleep(30)  # TODO: SET VALUE ACCORDING TO DOCS
                     self._start_subscribe_loop()
             else:
-                print(failure)
                 return failure
 
         try:
@@ -178,11 +183,14 @@ class PubNubTwisted(PubNubCore):
     def sdk_platform(self):
         return "-Twisted"
 
-    def __init__(self, config, pool=None, reactor=None):
+    def __init__(self, config, pool=None, reactor=None, clock=None):
         super(PubNubTwisted, self).__init__(config)
 
+        self.clock = clock
         self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
-        self._subscription_manager = TwistedSubscriptionManager(self)
+
+        if self.config.enable_subscribe:
+            self._subscription_manager = TwistedSubscriptionManager(self)
 
         self.disconnected_times = 0
 
@@ -203,9 +211,11 @@ class PubNubTwisted(PubNubCore):
             'User-Agent': [self.sdk_name],
         }
 
-    def start(self):
-        self._subscription_manager._start_worker()
-        self.reactor.run()
+    def start(self, skip_reactor=False):
+        if self._subscription_manager is not None:
+            self._subscription_manager._start_worker()
+        if not skip_reactor:
+            self.reactor.run()
 
     def stop(self):
         self.reactor.stop()
@@ -243,9 +253,12 @@ class PubNubTwisted(PubNubCore):
         reactor = self.reactor
         pnconn_pool = self.pnconn_pool
         headers = self.headers
+        params_to_merge_in = {}
 
-        if options.operation_type is PNOperationType.PNPublishOperation:
-            options.params['seqn'] = self._publish_sequence_manager.get_next_sequence()
+        if options.operation_type == PNOperationType.PNPublishOperation:
+            params_to_merge_in['seqn'] = self._publish_sequence_manager.get_next_sequence()
+
+        options.merge_params_in(params_to_merge_in)
 
         create_response = options.create_response
         create_status_response = options.create_status
@@ -254,7 +267,6 @@ class PubNubTwisted(PubNubCore):
                               options.path, options.query_string)
 
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
-        print("%s %s %s" % (options.method_string, url, options.data))
 
         def handler():
             agent = Agent(reactor, pool=pnconn_pool)
@@ -263,7 +275,6 @@ class PubNubTwisted(PubNubCore):
                 body = FileBodyProducer(StringIO(options.data))
             else:
                 body = None
-
             request = agent.request(
                 options.method_string,
                 url,

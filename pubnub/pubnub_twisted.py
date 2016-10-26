@@ -169,13 +169,9 @@ class TwistedSubscriptionManager(SubscriptionManager):
             .async(announce_leave_status)
 
     def reconnect(self):
-        if self.worker_loop is not None:
-            self._start_subscribe_loop()
-            self._register_heartbeat_timer()
-        else:
-            # TODO: actual error
-            pass
-
+        # TODO: REVIEW
+        self._start_subscribe_loop()
+        self._register_heartbeat_timer()
 
 class PubNubTwisted(PubNubCore):
     """PubNub Python API for Twisted framework"""

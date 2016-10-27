@@ -1299,10 +1299,10 @@ class PubnubBase(object):
             request['urlparams']['u'] = str(random.randint(1, 100000000000))
 
         path = '/' + "/".join([
-                   "".join([' ~`!@#$%^&()+=[]\\{}|;\':",/<>?'.find(ch) > -1 and
-                            hex(ord(ch)).replace('0x', '%').upper() or
-                            ch for ch in list(bit)
-                            ]) for bit in request["urlcomponents"]])
+            "".join([' ~`!@#$%^&()+=[]\\{}|;\':",/<>?'.find(ch) > -1 and
+                    hex(ord(ch)).replace('0x', '%').upper() or
+                    ch for ch in list(bit)
+                ]) for bit in request["urlcomponents"]])  # NOQA: E124
 
         url = self.origin + path
         url_params = request['urlparams'] if 'urlparams' in request else None
@@ -1328,10 +1328,10 @@ class PubnubBase(object):
                 third = path
 
             params = "&".join([
-                  x + "=" + quote(
-                      str(url_params[x]), safe=""
-                  ) for x in sorted(url_params)
-                  ])
+                x + "=" + quote(
+                    str(url_params[x]), safe=""
+                ) for x in sorted(url_params)
+            ])
 
             sign_input = "{subkey}\n{pubkey}\n{third}\n{params}".format(
                 subkey=self.subscribe_key,

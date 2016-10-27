@@ -777,10 +777,18 @@ class PubnubBase(object):
 
         """
 
-        norep = 'false' if replicate else 'true'
-        store = '1' if store else '0'
+        params = {
+            'pnsdk': self.pnsdk
+        }
 
-        message = self.encrypt(message)
+        if self.auth_key:
+            params['auth'] = self.auth_key
+
+        if not store:
+            params['store'] = '0'
+
+        if not replicate:
+            params['norep'] = 'true'
 
         # Send Message
         return self._request({"urlcomponents": [
@@ -790,8 +798,8 @@ class PubnubBase(object):
             '0',
             channel,
             '0',
-            message
-        ], 'urlparams': {'auth': self.auth_key, 'pnsdk': self.pnsdk, 'store': store, 'norep': norep}},
+            self.encrypt(message)
+        ], 'urlparams': params},
             callback=self._return_wrapped_callback(callback),
             error=self._return_wrapped_callback(error))
 
@@ -1213,13 +1221,26 @@ class PubnubBase(object):
 
         params = dict()
 
-        params['count'] = count
-        params['reverse'] = reverse
-        params['start'] = start
-        params['end'] = end
-        params['auth'] = self.auth_key
+        params['reverse'] = 'true' if reverse else 'false'
         params['pnsdk'] = self.pnsdk
-        params['include_token'] = 'true' if include_token else 'false'
+        params['stringtoken'] = 'true'
+        params['auth'] = self.auth_key
+
+        if include_token is not None:
+            params['include_token'] = 'true' if include_token else 'false'
+
+        if count is not None and (int(count) > 100 or int(count) < 1):
+            raise AttributeError("Message count should be '0 < count <= 100'")
+        elif count is not None:
+            params['count'] = count
+        else:
+            params['count'] = 100
+
+        if start is not None and int(start) > 0:
+            params['start'] = start
+
+        if end is not None and int(end) > 0:
+            params['end'] = end
 
         # Get History
         return _get_decrypted_history(self._request({'urlcomponents': [
@@ -1274,18 +1295,18 @@ class PubnubBase(object):
         return val
 
     def getUrl(self, request, encoder_map=None):
-
         if self.u is True and "urlparams" in request:
             request['urlparams']['u'] = str(random.randint(1, 100000000000))
 
         path = '/' + "/".join([
-                   "".join([' ~`!@#$%^&*()+=[]\\{}|;\':",./<>?'.find(ch) > -1 and
+                   "".join([' ~`!@#$%^&()+=[]\\{}|;\':",/<>?'.find(ch) > -1 and
                             hex(ord(ch)).replace('0x', '%').upper() or
                             ch for ch in list(bit)
                             ]) for bit in request["urlcomponents"]])
 
         url = self.origin + path
         url_params = request['urlparams'] if 'urlparams' in request else None
+        signature = None
 
         if url_params and 'auth' in url_params and not url_params['auth']:
             del request['urlparams']['auth']
@@ -1319,12 +1340,15 @@ class PubnubBase(object):
                 params=params
             )
 
-            request['urlparams']['signature'] = self._pam_sign(sign_input)
+            signature = self._pam_sign(sign_input)
 
         if ("urlparams" in request):
             url = url + '?' + "&".join([x + "=" +
                                         (self._encode_param(str(y)) if encoder_map is None or x not in encoder_map else encoder_map[x](str(y)))
                                         for x, y in request["urlparams"].items() if y is not None and len(str(y)) > 0])
+            if signature is not None:
+                url = url + "&signature=" + signature
+
         if self.http_debug is not None:
             self.http_debug(url)
         return url

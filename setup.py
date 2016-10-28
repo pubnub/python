@@ -7,7 +7,7 @@ setup(
     author='PubNub',
     author_email='support@pubnub.com',
     url='http://pubnub.com',
-    py_modules=['pubnub'],
+    modules=['pubnub'],
     license='MIT',
     classifiers=(
         'Development Status :: 5 - Production/Stable',
@@ -18,6 +18,10 @@ setup(
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ),
-    install_requires=[],
+    install_requires=[
+        'pycryptodomex>=3.3',
+        'requests>=2.4',
+        'six>=1.10'
+    ],
     zip_safe=False,
 )

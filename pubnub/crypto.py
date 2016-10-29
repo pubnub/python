@@ -47,20 +47,23 @@ def get_secret(key):
 
 def encrypt(key, msg):
     secret = get_secret(key)
-    cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
+
     if v == 3:
+        cipher = AES.new(bytes(secret[0:32], 'utf-8'), AES.MODE_CBC, bytes(Initial16bytes, 'utf-8'))
         return encodebytes(cipher.encrypt(pad(msg.encode('utf-8')))).decode('utf-8').replace("\n", "")
     else:
+        cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
         return encodestring(cipher.encrypt(pad(msg))).replace("\n", "")
 
 
 def decrypt(key, msg):
     secret = get_secret(key)
-    cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
 
     if v == 3:
+        cipher = AES.new(bytes(secret[0:32], 'utf-8'), AES.MODE_CBC, bytes(Initial16bytes, 'utf-8'))
         plain = depad((cipher.decrypt(decodebytes(msg.encode('utf-8')))).decode('utf-8'))
     else:
+        cipher = AES.new(secret[0:32], AES.MODE_CBC, Initial16bytes)
         plain = depad(cipher.decrypt(decodestring(msg)))
 
     try:

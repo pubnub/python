@@ -49,10 +49,6 @@ class PubNubAsyncio(PubNubCore):
         self._connector = cn
         self._session = aiohttp.ClientSession(loop=self.event_loop, connector=self._connector)
 
-    def start(self):
-        if self._subscription_manager is not None:
-            self._subscription_manager._start_worker()
-
     def stop(self):
         self._session.close()
         if self._subscription_manager is not None:
@@ -224,11 +220,13 @@ class AsyncioPublishSequenceManager(PublishSequenceManager):
 
 class AsyncioSubscriptionManager(SubscriptionManager):
     def __init__(self, pubnub_instance):
+        self._message_worker = None
         self._message_queue = Queue()
         self._subscription_lock = Semaphore(1)
         self._subscribe_loop_task = None
         self._heartbeat_periodic_callback = None
         super(AsyncioSubscriptionManager, self).__init__(pubnub_instance)
+        self._start_worker()
 
     def _set_consumer_event(self):
         if not self._message_worker.cancelled():

@@ -102,6 +102,7 @@ class NativeSubscriptionManager(SubscriptionManager):
         self._subscribe_call = None
         self._heartbeat_periodic_callback = None
         super(NativeSubscriptionManager, self).__init__(pubnub_instance)
+        self._start_worker()
 
     def _send_leave(self, unsubscribe_operation):
         def leave_callback(result, status):

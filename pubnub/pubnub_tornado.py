@@ -39,8 +39,6 @@ class PubNubTornado(PubNubCore):
         self.ioloop.stop()
 
     def start(self):
-        if self._subscription_manager is not None:
-            self._subscription_manager._start_worker()
         self.ioloop.start()
 
     def timeout(self, delay, callback, *args):
@@ -251,6 +249,7 @@ class TornadoSubscriptionManager(SubscriptionManager):
         self._heartbeat_periodic_callback = None
         self._cancellation_event = None
         super(TornadoSubscriptionManager, self).__init__(pubnub_instance)
+        self._start_worker()
 
     def _set_consumer_event(self):
         self._consumer_event.set()

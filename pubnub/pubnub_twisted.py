@@ -173,6 +173,7 @@ class TwistedSubscriptionManager(SubscriptionManager):
         self._start_subscribe_loop()
         self._register_heartbeat_timer()
 
+
 class PubNubTwisted(PubNubCore):
     """PubNub Python API for Twisted framework"""
 

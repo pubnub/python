@@ -1,6 +1,6 @@
 pytest
 pytest-cov
 codecov
-pycrypto
+pycryptodomex
 pytest-benchmark
 -e git://github.com/blazeroot/vcrpy@twisted#egg=vcrpy

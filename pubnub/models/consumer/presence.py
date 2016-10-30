@@ -24,11 +24,17 @@ class PNHereNowResult(object):
                     total_channels=int(json_input['total_channels']),
                     total_occupancy=int(json_input['total_occupancy']),
                     channels=channels)
-            else:
+            elif len(channel_names) == 1:
                 return PNHereNowResult(
                     total_channels=int(1),
                     total_occupancy=int(json_input['total_occupancy']),
                     channels=[PNHereNowChannelData(channel_names[0], 0, [])]
+                )
+            else:
+                return PNHereNowResult(
+                    total_channels=int(json_input['total_channels']),
+                    total_occupancy=int(json_input['total_occupancy']),
+                    channels={}
                 )
         # empty
         elif 'occupancy' in envelope and int(envelope['occupancy']) == 0:

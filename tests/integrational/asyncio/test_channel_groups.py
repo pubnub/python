@@ -4,7 +4,7 @@ import pytest
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub_asyncio import PubNubAsyncio
-from tests.helper import pnconf, pnconf_copy
+from tests.helper import pnconf, pnconf_copy, pnconf_pam_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper
 from tests.integrational.vcr_helper import pn_vcr
 
@@ -131,5 +131,37 @@ def test_add_channel_remove_group(event_loop, sleeper=asyncio.sleep):
     env = yield from pubnub.list_channels_in_channel_group().channel_group(gr).future()
     assert isinstance(env.result, PNChannelGroupsListResult)
     assert len(env.result.channels) == 0
+
+    pubnub.stop()
+
+
+@pytest.mark.asyncio
+def test_super_call(event_loop):
+    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+
+    ch = "channel-groups-tornado-ch"
+    gr = "channel-groups-tornado-cg"
+
+    # add
+    env = yield from pubnub.add_channel_to_channel_group() \
+        .channels(ch).channel_group(gr).future()
+
+    assert isinstance(env.result, PNChannelGroupsAddChannelResult)
+
+    # list
+    env = yield from pubnub.list_channels_in_channel_group().channel_group(gr).future()
+    assert isinstance(env.result, PNChannelGroupsListResult)
+
+    # remove channel
+    env = yield from pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
+    assert isinstance(env.result, PNChannelGroupsRemoveChannelResult)
+
+    # remove group
+    env = yield from pubnub.remove_channel_group().channel_group(gr).future()
+    assert isinstance(env.result, PNChannelGroupsRemoveGroupResult)
+
+    # list
+    env = yield from pubnub.list_channels_in_channel_group().channel_group(gr).future()
+    assert isinstance(env.result, PNChannelGroupsListResult)
 
     pubnub.stop()

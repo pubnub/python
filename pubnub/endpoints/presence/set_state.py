@@ -38,7 +38,7 @@ class SetState(Endpoint):
                 state=self._state
             ))
 
-        params = {'state': utils.url_encode(utils.write_value_as_string(self._state))}
+        params = {'state': utils.write_value_as_string(self._state)}
 
         if len(self._groups) > 0:
             params['channel-group'] = utils.join_items_and_encode(self._groups)

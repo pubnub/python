@@ -1,8 +1,9 @@
 import asyncio
 import pytest
 
+from pubnub.models.consumer.presence import PNWhereNowResult
 from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
-from tests.helper import pnconf_sub_copy
+from tests.helper import pnconf_sub_copy, pnconf_pam_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper
 from tests.integrational.vcr_helper import pn_vcr
 
@@ -79,5 +80,20 @@ def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
 
     pubnub.unsubscribe().channels([ch1, ch2]).execute()
     yield from callback.wait_for_disconnect()
+
+    pubnub.stop()
+
+
+@pytest.mark.asyncio
+def test_where_now_super_admin_call(event_loop):
+    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+
+    uuid = 'test-where-now-asyncio-uuid'
+    pubnub.config.uuid = uuid
+
+    env = yield from pubnub.where_now() \
+        .uuid(uuid) \
+        .future()
+    assert isinstance(env.result, PNWhereNowResult)
 
     pubnub.stop()

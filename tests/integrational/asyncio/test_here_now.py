@@ -1,8 +1,9 @@
 import asyncio
 import pytest
 
+from pubnub.models.consumer.presence import PNHereNowResult
 from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
-from tests.helper import pnconf_sub_copy
+from tests.helper import pnconf_sub_copy, pnconf_pam_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper
 from tests.integrational.vcr_helper import pn_vcr
 
@@ -118,5 +119,25 @@ def test_global(event_loop, sleeper=asyncio.sleep):
 
     pubnub.unsubscribe().channels([ch1, ch2]).execute()
     yield from callback.wait_for_disconnect()
+
+    pubnub.stop()
+
+
+@pytest.mark.asyncio
+def test_here_now_super_call(event_loop):
+    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+    pubnub.config.uuid = 'test-here-now-asyncio-uuid1'
+
+    env = yield from pubnub.here_now().future()
+    assert isinstance(env.result, PNHereNowResult)
+
+    env = yield from pubnub.here_now().channel_groups("gr").include_uuids(True).include_state(True).future()
+    assert isinstance(env.result, PNHereNowResult)
+
+    env = yield from pubnub.here_now().channels('ch.bar*').channel_groups("gr.k").future()
+    assert isinstance(env.result, PNHereNowResult)
+
+    env = yield from pubnub.here_now().channels(['ch.bar*', 'ch2']).channel_groups("gr.k").future()
+    assert isinstance(env.result, PNHereNowResult)
 
     pubnub.stop()

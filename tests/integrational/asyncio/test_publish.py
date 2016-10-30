@@ -236,7 +236,21 @@ def test_error_invalid_key(event_loop):
     filter_query_parameters=['uuid', 'seqn', 'signature', 'timestamp'])
 @pytest.mark.asyncio
 def test_not_permitted(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+    pnconf = pnconf_pam_copy()
+    pnconf.secret_key = None
+    pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
     yield from assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "HTTP Client Error (403")
+    pubnub.stop()
+
+
+@pytest.mark.asyncio
+def test_publish_super_admin_call(event_loop):
+    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+
+    yield from pubnub.publish().channel(ch).message("hey").future()
+    yield from pubnub.publish().channel("foo.bar").message("hey^&#$").should_store(True).meta({
+        'name': 'alex'
+    }).future()
+
     pubnub.stop()

@@ -54,7 +54,7 @@ class Publish(Endpoint):
         params = {}
 
         if self._meta is not None:
-            params['meta'] = utils.url_encode(utils.write_value_as_string(self._meta))
+            params['meta'] = utils.write_value_as_string(self._meta)
 
         if self._should_store is not None:
             if self._should_store:
@@ -62,6 +62,7 @@ class Publish(Endpoint):
             else:
                 params["store"] = "0"
 
+        # REVIEW: should auth key be assigned here?
         if self.pubnub.config.auth_key is not None:
             params["auth"] = utils.url_encode(self.pubnub.config.auth_key)
 

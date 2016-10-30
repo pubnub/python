@@ -1,8 +1,9 @@
 import asyncio
 import pytest
 
+from pubnub.models.consumer.presence import PNSetStateResult, PNGetStateResult
 from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
-from tests.helper import pnconf, pnconf_copy, pnconf_sub_copy
+from tests.helper import pnconf, pnconf_copy, pnconf_sub_copy, pnconf_pam_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper
 from tests.integrational.vcr_helper import pn_vcr
 
@@ -106,5 +107,28 @@ def test_multiple_channels(event_loop):
     assert env.result.channels[ch2]['name'] == "Alex"
     assert env.result.channels[ch1]['count'] == 5
     assert env.result.channels[ch2]['count'] == 5
+
+    pubnub.stop()
+
+
+@pytest.mark.asyncio
+def test_state_super_admin_call(event_loop):
+    pnconf = pnconf_pam_copy()
+    pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
+    ch1 = 'test-state-asyncio-ch1'
+    ch2 = 'test-state-asyncio-ch2'
+    pubnub.config.uuid = 'test-state-asyncio-uuid'
+    state = {"name": "Alex", "count": 5}
+
+    env = yield from pubnub.set_state() \
+        .channels([ch1, ch2]) \
+        .state(state) \
+        .future()
+    assert isinstance(env.result, PNSetStateResult)
+
+    env = yield from pubnub.get_state() \
+        .channels([ch1, ch2]) \
+        .future()
+    assert isinstance(env.result, PNGetStateResult)
 
     pubnub.stop()

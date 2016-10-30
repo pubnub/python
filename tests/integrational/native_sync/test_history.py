@@ -1,16 +1,16 @@
 import logging
 import time
 import unittest
-
-import pytest
-from pubnub.exceptions import PubNubException
-
 import pubnub
+import pytest
+
+from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.history import PNHistoryResult
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_pam_copy
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep_native
+from unittest.mock import patch
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -81,3 +81,23 @@ class TestPubNubHistory(unittest.TestCase):
 
         with pytest.raises(PubNubException):
             pubnub.history().channel(ch).count(5).sync()
+
+    def test_super_call_with_channel_only(self):
+        ch = "history-native-sync-ch"
+        pubnub = PubNub(pnconf_pam_copy())
+        pubnub.config.uuid = "history-native-sync-uuid"
+
+        envelope = pubnub.history().channel(ch).sync()
+        assert isinstance(envelope.result, PNHistoryResult)
+
+        assert not envelope.status.is_error()
+
+    def test_super_call_with_all_params(self):
+        ch = "history-native-sync-ch"
+        pubnub = PubNub(pnconf_pam_copy())
+        pubnub.config.uuid = "history-native-sync-uuid"
+
+        envelope = pubnub.history().channel(ch).count(2).include_timetoken(True).reverse(True).start(1).end(2).sync()
+        assert isinstance(envelope.result, PNHistoryResult)
+
+        assert not envelope.status.is_error()

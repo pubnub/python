@@ -10,7 +10,6 @@ from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_pam_copy
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep_native
-from unittest.mock import patch
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 

@@ -39,7 +39,7 @@ class TestHereNow(unittest.TestCase):
                           % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.here_now.build_params_callback()({}), {
-            'channel-groups': 'gr1',
+            'channel-group': 'gr1',
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
@@ -51,7 +51,7 @@ class TestHereNow(unittest.TestCase):
                           % (pnconf.subscribe_key, "ch1"))
 
         self.assertEqual(self.here_now.build_params_callback()({}), {
-            'channel-groups': 'gr1',
+            'channel-group': 'gr1',
             'state': '1',
             'disable_uuids': '1',
             'pnsdk': sdk_name,

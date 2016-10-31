@@ -1,4 +1,18 @@
 
+## [v3.9.0](https://github.com/pubnub/python/tree/v3.9.0)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v3.8.3...v3.9.0)
+
+
+- ⭐Dropping support for python 3.2, cascading from requests.
+
+
+
+- ⭐Adding super-admin mode, allowing the server to perform auth restricted operations without self-grant
+
+
+
 ## [v3.8.3](https://github.com/pubnub/python/tree/v3.8.3)
 
 

@@ -1,15 +1,22 @@
 name: python
-version: 3.8.3
+version: 3.9.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v3.9.0
+    date:
+    changes:
+      - type: improvement
+        text: Dropping support for python 3.2, cascading from requests.
+      - type: improvement
+        text: Adding super-admin mode, allowing the server to perform auth restricted operations without self-grant
   - version: v3.8.3
     date:
     changes:
       - type: improvement
         text: Removing PubNub connection handling from using the global directive to allow multiple instances to run.
   - version: v3.8.2
-    date: 
+    date:
     changes:
       - type: improvement
         text: Increasing maximum pool of connections and adjusting cryptodome package dependency.

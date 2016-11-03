@@ -426,14 +426,14 @@ class PubnubBase(object):
                         eg. "null,null,abc"), a new auth_key will be generated
                         and returned for each "null" value.
 
-            read:       (boolean) (default: True)
+            read:       (boolean) (default: False)
                         Read permissions are granted by setting to True.
                         Read permissions are removed by setting to False.
 
-            write:      (boolean) (default: True)
+            write:      (boolean) (default: False)
                         Write permissions are granted by setting to true.
                         Write permissions are removed by setting to false.
-            manage:      (boolean) (default: True)
+            manage:      (boolean) (default: False)
                         Manage permissions are granted by setting to true.
                         Manage permissions are removed by setting to false.
 
@@ -463,7 +463,11 @@ class PubnubBase(object):
                 "payload":{
                     "ttl":5,
                     "auths":{
-                        "my_ro_authkey":{"r":1,"w":0}
+                        "my_ro_authkey":{
+                            "m":0,
+                            "r":1,
+                            "w":0
+                        }
                     },
                     "subscribe_key":"my_subkey",
                     "level":"user",
@@ -544,7 +548,11 @@ class PubnubBase(object):
                 "payload":{
                     "ttl":5,
                     "auths":{
-                        "my_authkey":{"r":0,"w":0}
+                        "my_authkey":{
+                            "m":0,
+                            "r":0,
+                            "w":0
+                        }
                     },
                     "subscribe_key":"my_subkey",
                     "level":"user",
@@ -619,9 +627,23 @@ class PubnubBase(object):
                 "payload":{
                     "channels":{
                         "my_channel":{
-                            "auths":{"my_ro_authkey":{"r":1,"w":0},
-                            "my_rw_authkey":{"r":0,"w":1},
-                            "my_admin_authkey":{"r":1,"w":1}
+                            "auths":{
+                                "my_ro_authkey":{
+                                    "m":0,
+                                    "r":1,
+                                    "w":0
+                                },
+                                "my_rw_authkey":{
+                                    "m":0,
+                                    "r":0,
+                                    "w":1
+                                },
+                                "my_admin_authkey":{
+                                    "m":1,
+                                    "r":1,
+                                    "w":1
+                                }
+                            }
                         }
                     }
                 },

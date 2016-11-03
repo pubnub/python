@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0/%7B%22online%22%3A%20true%2C%20%22name%22%3A%20%22Alex%22%7D?pnsdk=PubNub-Python-Tornado%2F4.0.0
+  response:
+    body: {string: '[1,"Sent","14706653397219269"]'}
+    headers:
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Date
+      - ['Mon, 08 Aug 2016 14:08:59 GMT']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Content-Length
+      - ['30']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0/%7B%22online%22%3A%20true%2C%20%22name%22%3A%20%22Alex%22%7D?seqn=1&uuid=a21d5862-c1e8-4baf-9fb2-b7e1ea9a05f6&pnsdk=PubNub-Python-Tornado%2F4.0.0
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0/%7B%22online%22%3A%20true%2C%20%22name%22%3A%20%22Alex%22%7D?pnsdk=PubNub-Python-Tornado%2F4.0.0
+  response:
+    body: {string: '[1,"Sent","14706653398506519"]'}
+    headers:
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Date
+      - ['Mon, 08 Aug 2016 14:08:59 GMT']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Content-Length
+      - ['30']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0/%7B%22online%22%3A%20true%2C%20%22name%22%3A%20%22Alex%22%7D?seqn=2&uuid=a21d5862-c1e8-4baf-9fb2-b7e1ea9a05f6&pnsdk=PubNub-Python-Tornado%2F4.0.0
+version: 1

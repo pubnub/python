@@ -9,6 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+src/
 build/
 develop-eggs/
 dist/
@@ -66,3 +67,9 @@ target/
 .python-version
 
 .idea
+
+# Twisted
+_trial_temp
+
+# jupyter dev notebook
+PubNubTwisted.ipynb

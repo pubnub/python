@@ -1,0 +1,121 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/where-now-tornado-ch/0?pnsdk=PubNub-Python-Tornado%2F4.0.0&tt=0
+  response:
+    body: {string: '{"t":{"t":"14717827927747241","r":3},"m":[]}'}
+    headers:
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Content-Length
+      - ['44']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Date
+      - ['Sun, 21 Aug 2016 12:33:12 GMT']
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/where-now-tornado-ch/0?pnsdk=PubNub-Python-Tornado%2F4.0.0&uuid=where-now-tornado-uuid&tt=0
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/uuid/where-now-tornado-uuid?pnsdk=PubNub-Python-Tornado%2F4.0.0
+  response:
+    body: {string: '{"status": 200, "message": "OK", "payload": {"channels": ["where-now-tornado-ch"]},
+        "service": "Presence"}'}
+    headers:
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - ['OPTIONS, GET, POST']
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Accept-Ranges
+      - [bytes]
+    - !!python/tuple
+      - Age
+      - ['0']
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Server
+      - [Pubnub Presence]
+    - !!python/tuple
+      - Content-Length
+      - ['106']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Date
+      - ['Sun, 21 Aug 2016 12:33:23 GMT']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/uuid/where-now-tornado-uuid?pnsdk=PubNub-Python-Tornado%2F4.0.0&uuid=where-now-tornado-uuid
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/where-now-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.0
+  response:
+    body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
+        "Presence"}'}
+    headers:
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - ['OPTIONS, GET, POST']
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Accept-Ranges
+      - [bytes]
+    - !!python/tuple
+      - Age
+      - ['0']
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Server
+      - [Pubnub Presence]
+    - !!python/tuple
+      - Content-Length
+      - ['74']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Date
+      - ['Sun, 21 Aug 2016 12:33:23 GMT']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/where-now-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.0&uuid=where-now-tornado-uuid
+version: 1

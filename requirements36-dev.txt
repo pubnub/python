@@ -1,0 +1,5 @@
+pytest-asyncio
+tornado
+aiohttp
+flake8
+-e git://github.com/blazeroot/vcrpy@twisted#egg=vcrpy

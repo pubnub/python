@@ -1,13 +1,13 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='pubnub',
-    version='3.9.0',
+    version='4.0.0.beta2',
     description='PubNub Real-time push service in the cloud',
     author='PubNub',
     author_email='support@pubnub.com',
     url='http://pubnub.com',
-    py_modules=['pubnub'],
+    modules=['pubnub'],
     license='MIT',
     classifiers=(
         'Development Status :: 5 - Production/Stable',
@@ -20,7 +20,8 @@ setup(
     ),
     install_requires=[
         'pycryptodomex>=3.3',
-        'requests>=2.4'
+        'requests>=2.4',
+        'six>=1.10'
     ],
     zip_safe=False,
 )

@@ -1,0 +1,6 @@
+pytest
+pytest-cov
+codecov
+pycryptodomex
+pytest-benchmark
+-e git://github.com/blazeroot/vcrpy@twisted#egg=vcrpy

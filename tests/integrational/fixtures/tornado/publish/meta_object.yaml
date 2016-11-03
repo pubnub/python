@@ -1,0 +1,68 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0/%22hey%22?meta=%7B%22a%22%3A+2%2C+%22b%22%3A+%22qwer%22%7D&pnsdk=PubNub-Python-Tornado%2F4.0.0
+  response:
+    body: {string: '[1,"Sent","14707233493629583"]'}
+    headers:
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Date
+      - ['Tue, 09 Aug 2016 06:15:49 GMT']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    - !!python/tuple
+      - Content-Length
+      - ['30']
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0/%22hey%22?meta=%7B%22a%22%3A%202%2C%20%22b%22%3A%20%22qwer%22%7D&uuid=02c13b1a-5ab8-4e31-841f-5d926189f571&seqn=1&pnsdk=PubNub-Python-Tornado%2F4.0.0
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.0]
+    method: GET
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0/%22hey%22?meta=%7B%22a%22%3A+2%2C+%22b%22%3A+%22qwer%22%7D&pnsdk=PubNub-Python-Tornado%2F4.0.0
+  response:
+    body: {string: '[1,"Sent","14707233494525529"]'}
+    headers:
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Date
+      - ['Tue, 09 Aug 2016 06:15:49 GMT']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    - !!python/tuple
+      - Content-Length
+      - ['30']
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0/%22hey%22?meta=%7B%22a%22%3A%202%2C%20%22b%22%3A%20%22qwer%22%7D&uuid=02c13b1a-5ab8-4e31-841f-5d926189f571&seqn=2&pnsdk=PubNub-Python-Tornado%2F4.0.0
+version: 1

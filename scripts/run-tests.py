@@ -27,7 +27,7 @@ def run(command):
 
 if version.startswith('2.6'):
     run(
-        '%s--ignore=tests/integrational/tornado/ --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)  # noqa: E501
+        '%s--ignore=tests/integrational/tornado/ --ignore=tests/integrational/twisted/ --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)  # noqa: E501
 elif version.startswith('2.7') or version.startswith('anaconda2'):
     run("%s,*asyncio*,*python_v35*,examples/" % fcmn)
     run('%s --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)

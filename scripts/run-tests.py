@@ -15,7 +15,7 @@ pyenv_version = os.getenv('PYENV_VERSION', 0)
 travis_version = os.getenv('TRAVIS_PYTHON_VERSION', 0)
 version = str(travis_version or pyenv_version)
 tcmn = 'py.test tests --cov-report=xml --cov=./pubnub '
-fcmn = 'flake8 --exclude=src/,.cache,.git,.idea,.tox,._trial_temp/'
+fcmn = 'flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/'
 
 
 print("Version is", version)

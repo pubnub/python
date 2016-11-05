@@ -1,2 +1,1 @@
 mock==2.0.0
--e git://github.com/pubnub/vcrpy@twisted#egg=vcrpy

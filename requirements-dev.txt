@@ -4,5 +4,4 @@ codecov
 pycryptodomex
 pytest-benchmark
 twisted
-urlparse
 -e git://github.com/blazeroot/vcrpy@twisted#egg=vcrpy

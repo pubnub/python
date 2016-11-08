@@ -1,13 +1,13 @@
-from setuptools import setup
+from setuptools import setup,find_packages
 
 setup(
     name='pubnub',
-    version='4.0.0',
+    version='4.0.1',
     description='PubNub Real-time push service in the cloud',
     author='PubNub',
     author_email='support@pubnub.com',
     url='http://pubnub.com',
-    modules=['pubnub'],
+    packages=find_packages(),
     license='MIT',
     classifiers=(
         'Development Status :: 5 - Production/Stable',

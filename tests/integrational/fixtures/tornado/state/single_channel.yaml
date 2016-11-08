@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.0]
+      User-Agent: [PubNub-Python-Tornado/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-tornado-ch/uuid/state-tornado-uuid/data?pnsdk=PubNub-Python-Tornado%2F4.0.0&state=%7B%22name%22%3A+%22Alex%22%2C+%22count%22%3A+5%7D
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-tornado-ch/uuid/state-tornado-uuid/data?pnsdk=PubNub-Python-Tornado%2F4.0.1&state=%7B%22name%22%3A+%22Alex%22%2C+%22count%22%3A+5%7D
   response:
     body: {string: '{"status": 200, "message": "OK", "payload": {"count": 5, "name":
         "Alex"}, "service": "Presence"}'}
@@ -41,14 +41,14 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-tornado-ch/uuid/state-tornado-uuid/data?pnsdk=PubNub-Python-Tornado%2F4.0.0&state=%7B%22name%22%3A%20%22Alex%22%2C%20%22count%22%3A%205%7D&uuid=state-tornado-uuid
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-tornado-ch/uuid/state-tornado-uuid/data?pnsdk=PubNub-Python-Tornado%2F4.0.1&state=%7B%22name%22%3A%20%22Alex%22%2C%20%22count%22%3A%205%7D&uuid=state-tornado-uuid
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.0]
+      User-Agent: [PubNub-Python-Tornado/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-tornado-ch/uuid/state-tornado-uuid?pnsdk=PubNub-Python-Tornado%2F4.0.0
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-tornado-ch/uuid/state-tornado-uuid?pnsdk=PubNub-Python-Tornado%2F4.0.1
   response:
     body: {string: '{"status": 200, "uuid": "state-tornado-uuid", "service": "Presence",
         "message": "OK", "payload": {"count": 5, "name": "Alex"}, "channel": "state-tornado-ch"}'}
@@ -84,5 +84,5 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-tornado-ch/uuid/state-tornado-uuid?pnsdk=PubNub-Python-Tornado%2F4.0.0&uuid=state-tornado-uuid
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-tornado-ch/uuid/state-tornado-uuid?pnsdk=PubNub-Python-Tornado%2F4.0.1&uuid=state-tornado-uuid
 version: 1

@@ -5,9 +5,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?add=channel-groups-unit-ch&pnsdk=PubNub-Python%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?add=channel-groups-unit-ch&pnsdk=PubNub-Python%2F4.0.1
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -29,9 +29,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?pnsdk=PubNub-Python%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?pnsdk=PubNub-Python%2F4.0.1
   response:
     body: {string: '{"status": 200, "payload": {"channels": ["channel-groups-unit-ch"],
         "group": "channel-groups-unit-cg"}, "service": "channel-registry", "error":
@@ -54,9 +54,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg/remove?pnsdk=PubNub-Python%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg/remove?pnsdk=PubNub-Python%2F4.0.1
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -78,9 +78,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?pnsdk=PubNub-Python%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?pnsdk=PubNub-Python%2F4.0.1
   response:
     body: {string: '{"status": 200, "payload": {"channels": [], "group": "channel-groups-unit-cg"},
         "service": "channel-registry", "error": false}'}

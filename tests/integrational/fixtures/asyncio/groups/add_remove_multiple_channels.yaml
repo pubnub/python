@@ -2,9 +2,9 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?add=channel-groups-tornado-ch1%2Cchannel-groups-tornado-ch2&pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?add=channel-groups-tornado-ch1%2Cchannel-groups-tornado-ch2&pnsdk=PubNub-Python-Asyncio%2F4.0.1
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -13,13 +13,13 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Tue, 16 Aug 2016 13:58:00
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?uuid=a874e69e-273c-4e16-8924-14b2a1c5de72&add=channel-groups-tornado-ch1,channel-groups-tornado-ch2&pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?uuid=a874e69e-273c-4e16-8924-14b2a1c5de72&add=channel-groups-tornado-ch1,channel-groups-tornado-ch2&pnsdk=PubNub-Python-Asyncio%2F4.0.1
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.1
   response:
     body: {string: '{"status": 200, "payload": {"channels": ["channel-groups-tornado-ch1",
         "channel-groups-tornado-ch2"], "group": "channel-groups-tornado-cg"}, "service":
@@ -29,13 +29,13 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Tue, 16 Aug 2016 13:58:01
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?uuid=a874e69e-273c-4e16-8924-14b2a1c5de72&pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?uuid=a874e69e-273c-4e16-8924-14b2a1c5de72&pnsdk=PubNub-Python-Asyncio%2F4.0.1
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.0&remove=channel-groups-tornado-ch1%2Cchannel-groups-tornado-ch2
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.1&remove=channel-groups-tornado-ch1%2Cchannel-groups-tornado-ch2
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -44,13 +44,13 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Tue, 16 Aug 2016 13:58:01
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?uuid=a874e69e-273c-4e16-8924-14b2a1c5de72&pnsdk=PubNub-Python-Asyncio%2F4.0.0&remove=channel-groups-tornado-ch1,channel-groups-tornado-ch2
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?uuid=a874e69e-273c-4e16-8924-14b2a1c5de72&pnsdk=PubNub-Python-Asyncio%2F4.0.1&remove=channel-groups-tornado-ch1,channel-groups-tornado-ch2
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.1
   response:
     body: {string: '{"status": 200, "payload": {"channels": [], "group": "channel-groups-tornado-cg"},
         "service": "channel-registry", "error": false}'}
@@ -59,5 +59,5 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Tue, 16 Aug 2016 13:58:02
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?uuid=a874e69e-273c-4e16-8924-14b2a1c5de72&pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?uuid=a874e69e-273c-4e16-8924-14b2a1c5de72&pnsdk=PubNub-Python-Asyncio%2F4.0.1
 version: 1

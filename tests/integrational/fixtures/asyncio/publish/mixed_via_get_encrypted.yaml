@@ -2,53 +2,53 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22Dt7qBesIhJT2DweUJc2HRQ%3D%3D%22?pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22Dt7qBesIhJT2DweUJc2HRQ%3D%3D%22?pnsdk=PubNub-Python-Asyncio%2F4.0.1
   response:
     body: {string: '[1,"Sent","14715101539265931"]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Thu, 18 Aug 2016 08:49:13 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22Dt7qBesIhJT2DweUJc2HRQ%3D%3D%22?uuid=e6b22aee-ab43-4b86-99cc-f9aba1de9ff0&pnsdk=PubNub-Python-Asyncio%2F4.0.0&seqn=1
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22Dt7qBesIhJT2DweUJc2HRQ%3D%3D%22?uuid=e6b22aee-ab43-4b86-99cc-f9aba1de9ff0&pnsdk=PubNub-Python-Asyncio%2F4.0.1&seqn=1
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22jw%2FKAwQAoKtQfHyYrROqSQ%3D%3D%22?pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22jw%2FKAwQAoKtQfHyYrROqSQ%3D%3D%22?pnsdk=PubNub-Python-Asyncio%2F4.0.1
   response:
     body: {string: '[1,"Sent","14715101539286406"]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Thu, 18 Aug 2016 08:49:13 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22jw%2FKAwQAoKtQfHyYrROqSQ%3D%3D%22?uuid=e6b22aee-ab43-4b86-99cc-f9aba1de9ff0&pnsdk=PubNub-Python-Asyncio%2F4.0.0&seqn=3
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22jw%2FKAwQAoKtQfHyYrROqSQ%3D%3D%22?uuid=e6b22aee-ab43-4b86-99cc-f9aba1de9ff0&pnsdk=PubNub-Python-Asyncio%2F4.0.1&seqn=3
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22Vx8Hk6iVjiV%2BQae1bfMq2w%3D%3D%22?pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22Vx8Hk6iVjiV%2BQae1bfMq2w%3D%3D%22?pnsdk=PubNub-Python-Asyncio%2F4.0.1
   response:
     body: {string: '[1,"Sent","14715101539293096"]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Thu, 18 Aug 2016 08:49:13 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22Vx8Hk6iVjiV%2BQae1bfMq2w%3D%3D%22?uuid=e6b22aee-ab43-4b86-99cc-f9aba1de9ff0&pnsdk=PubNub-Python-Asyncio%2F4.0.0&seqn=2
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22Vx8Hk6iVjiV%2BQae1bfMq2w%3D%3D%22?uuid=e6b22aee-ab43-4b86-99cc-f9aba1de9ff0&pnsdk=PubNub-Python-Asyncio%2F4.0.1&seqn=2
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%226uNMePrQmuhzydmUEs6KAl8teZTZfCbG27ApFSKyfr8%3D%22?pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%226uNMePrQmuhzydmUEs6KAl8teZTZfCbG27ApFSKyfr8%3D%22?pnsdk=PubNub-Python-Asyncio%2F4.0.1
   response:
     body: {string: '[1,"Sent","14715101539315353"]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Thu, 18 Aug 2016 08:49:13 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%226uNMePrQmuhzydmUEs6KAl8teZTZfCbG27ApFSKyfr8%3D%22?uuid=e6b22aee-ab43-4b86-99cc-f9aba1de9ff0&pnsdk=PubNub-Python-Asyncio%2F4.0.0&seqn=4
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%226uNMePrQmuhzydmUEs6KAl8teZTZfCbG27ApFSKyfr8%3D%22?uuid=e6b22aee-ab43-4b86-99cc-f9aba1de9ff0&pnsdk=PubNub-Python-Asyncio%2F4.0.1&seqn=4
 version: 1

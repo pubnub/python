@@ -26,10 +26,10 @@ class TestVCRMatchers(unittest.TestCase):
 
     def test_string_list_in_path_query_matcher(self):
         r1 = Request(
-            query=[('channel', 'test-pam-asyncio-ch1,test-pam-asyncio-ch2'), ('pnsdk', 'PubNub-Python-Asyncio/4.0.0'),
+            query=[('channel', 'test-pam-asyncio-ch1,test-pam-asyncio-ch2'), ('pnsdk', 'PubNub-Python-Asyncio/4.0.1'),
                    ('r', '1'), ('uuid', 'test-pam-asyncio-uuid'), ('w', '1')])
         r2 = Request(
-            query=[('channel', 'test-pam-asyncio-ch2,test-pam-asyncio-ch1'), ('pnsdk', 'PubNub-Python-Asyncio/4.0.0'),
+            query=[('channel', 'test-pam-asyncio-ch2,test-pam-asyncio-ch1'), ('pnsdk', 'PubNub-Python-Asyncio/4.0.1'),
                    ('r', '1'), ('uuid', 'test-pam-asyncio-uuid'), ('w', '1')])
 
         assert string_list_in_query_matcher(r1, r2, ['channel'])

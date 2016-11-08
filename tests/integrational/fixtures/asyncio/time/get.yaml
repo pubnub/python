@@ -2,14 +2,14 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.0]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/time/0?pnsdk=PubNub-Python-Asyncio%2F4.0.0
+    uri: http://pubsub.pubnub.com/time/0?pnsdk=PubNub-Python-Asyncio%2F4.0.1
   response:
     body: {string: '[14766398773102530]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '19', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 16 Oct 2016 17:44:37 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/time/0?pnsdk=PubNub-Python-Asyncio%2F4.0.0&uuid=1517d268-4797-4fcb-941c-0f862e61399f
+    url: http://pubsub.pubnub.com/time/0?pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=1517d268-4797-4fcb-941c-0f862e61399f
 version: 1

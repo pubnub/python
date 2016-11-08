@@ -75,4 +75,4 @@ grant
 channel=asyncio-pam-FI2FCS0A&pnsdk=PubNub-Python-Asyncio%252F4.0.1&r=1&timestamp=1468409553&uuid=a4dbf92e-e5cb-428f-b6e6-35cce03500a2&w=1"""  # noqa: E501
         result = utils.sign_sha256("my_key", input)
 
-        assert "Dq92jnwRTCikdeP2nUs1__gyJthF8NChwbs5aYy2r_I=" == result
+        assert "3P7WMijA_gF3mVRq4hUxmzmAl3sm4d_Hgpz2gQW9NrY=" == result

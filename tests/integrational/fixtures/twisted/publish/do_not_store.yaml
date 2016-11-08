@@ -2,14 +2,14 @@ interactions:
 - request:
     body: !!python/unicode 
     headers:
-      user-agent: [PubNub-Python-Twisted/4.0.0]
+      user-agent: [PubNub-Python-Twisted/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/twisted-test/0/%22whatever%22?pnsdk=PubNub-Python-Twisted%2F4.0.0&store=0
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/twisted-test/0/%22whatever%22?pnsdk=PubNub-Python-Twisted%2F4.0.1&store=0
   response:
     body: {string: !!python/unicode '[1,"Sent","14768809388217046"]'}
     headers: !!python/object:twisted.web.http_headers.Headers
       _rawHeaders:
-        user-agent: [PubNub-Python-Twisted/4.0.0]
+        user-agent: [PubNub-Python-Twisted/4.0.1]
     status: {code: 200, message: ''}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/twisted-test/0/%22whatever%22?pnsdk=PubNub-Python-Twisted%2F4.0.0&uuid=359b199b-9f4f-4368-bbc8-33e09b28a280&store=0&seqn=1
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/twisted-test/0/%22whatever%22?pnsdk=PubNub-Python-Twisted%2F4.0.1&uuid=359b199b-9f4f-4368-bbc8-33e09b28a280&store=0&seqn=1
 version: 1

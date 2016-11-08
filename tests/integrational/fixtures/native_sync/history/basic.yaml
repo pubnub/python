@@ -5,9 +5,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-0%22?pnsdk=PubNub-Python%2F4.0.0&seqn=1
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-0%22?pnsdk=PubNub-Python%2F4.0.1&seqn=1
   response:
     body: {string: '[1,"Sent","14694610268707663"]'}
     headers:
@@ -25,9 +25,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-1%22?pnsdk=PubNub-Python%2F4.0.0&seqn=2
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-1%22?pnsdk=PubNub-Python%2F4.0.1&seqn=2
   response:
     body: {string: '[1,"Sent","14694610269494321"]'}
     headers:
@@ -45,9 +45,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-2%22?pnsdk=PubNub-Python%2F4.0.0&seqn=3
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-2%22?pnsdk=PubNub-Python%2F4.0.1&seqn=3
   response:
     body: {string: '[1,"Sent","14694610270571781"]'}
     headers:
@@ -65,9 +65,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-3%22?pnsdk=PubNub-Python%2F4.0.0&seqn=4
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-3%22?pnsdk=PubNub-Python%2F4.0.1&seqn=4
   response:
     body: {string: '[1,"Sent","14694610271664959"]'}
     headers:
@@ -85,9 +85,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-4%22?pnsdk=PubNub-Python%2F4.0.0&seqn=5
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-4%22?pnsdk=PubNub-Python%2F4.0.1&seqn=5
   response:
     body: {string: '[1,"Sent","14694610272640835"]'}
     headers:
@@ -105,9 +105,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.0]
+      User-Agent: [PubNub-Python/4.0.1]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/history/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/history-native-sync-ch?count=5&pnsdk=PubNub-Python%2F4.0.0
+    uri: http://pubsub.pubnub.com/v2/history/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/history-native-sync-ch?count=5&pnsdk=PubNub-Python%2F4.0.1
   response:
     body: {string: '[["hey-0","hey-1","hey-2","hey-3","hey-4"],14694610268707663,14694610272640835]'}
     headers:

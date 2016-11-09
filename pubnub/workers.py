@@ -69,6 +69,7 @@ class SubscribeMessageWorker(object):
             self._listener_manager.announce_presence(pn_presence_event_result)
         else:
             extracted_message = self._process_message(message.payload)
+            issuing_client_id = message.issuing_client_id
 
             if extracted_message is None:
                 logger.debug("unable to parse payload on #processIncomingMessages")
@@ -77,7 +78,8 @@ class SubscribeMessageWorker(object):
                 message=extracted_message,
                 channel=channel,
                 subscription=subscription_match,
-                timetoken=publish_meta_data.publish_timetoken
+                timetoken=publish_meta_data.publish_timetoken,
+                issuing_client_id=issuing_client_id
             )
 
             self._listener_manager.announce_message(pn_message_result)

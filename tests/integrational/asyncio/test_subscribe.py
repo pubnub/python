@@ -45,18 +45,20 @@ def test_subscribe_unsubscribe(event_loop):
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub.yaml')
 @pytest.mark.asyncio
 def test_subscribe_publish_unsubscribe(event_loop):
-    pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
-    pubnub.config.uuid = 'test-subscribe-asyncio-uuid'
+    pubnub_sub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub_pub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub_sub.config.uuid = 'test-subscribe-asyncio-uuid-sub'
+    pubnub_pub.config.uuid = 'test-subscribe-asyncio-uuid-pub'
 
     callback = SubscribeListener()
     channel = "test-subscribe-asyncio-ch"
     message = "hey"
-    pubnub.add_listener(callback)
-    pubnub.subscribe().channels(channel).execute()
+    pubnub_sub.add_listener(callback)
+    pubnub_sub.subscribe().channels(channel).execute()
 
     yield from callback.wait_for_connect()
 
-    publish_future = asyncio.ensure_future(pubnub.publish().channel(channel).message(message).future())
+    publish_future = asyncio.ensure_future(pubnub_pub.publish().channel(channel).message(message).future())
     subscribe_message_future = asyncio.ensure_future(callback.wait_for_message_on(channel))
 
     yield from asyncio.wait([
@@ -77,10 +79,11 @@ def test_subscribe_publish_unsubscribe(event_loop):
     assert publish_envelope.result.timetoken > 0
     assert publish_envelope.status.original_response[0] == 1
 
-    pubnub.unsubscribe().channels(channel).execute()
+    pubnub_sub.unsubscribe().channels(channel).execute()
     yield from callback.wait_for_disconnect()
 
-    pubnub.stop()
+    pubnub_pub.stop()
+    pubnub_sub.stop()
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub_enc.yaml')

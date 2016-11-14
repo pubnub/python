@@ -8,6 +8,8 @@ changelog:
     changes:
       - type: improvement
         text: Adjusting maximum pool size for requests installations
+      - type: improvement
+        text: Adding Publsher UUID
   - version: v4.0.1
     date:
     changes:
@@ -57,3 +59,4 @@ features:
     - SUBSCRIBE-PRESENCE-CHANNELS-GROUPS
     - SUBSCRIBE-WITH-TIMETOKEN
     - SUBSCRIBE-WILDCARD
+    - SUBSCRIBE-SENDER-UUID

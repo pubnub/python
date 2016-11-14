@@ -2,14 +2,14 @@ interactions:
 - request:
     body: !!python/unicode 
     headers:
-      user-agent: [PubNub-Python-Twisted/4.0.1]
+      user-agent: [PubNub-Python-Twisted/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/fake/demo/0/twisted-test/0/%22hey%22?pnsdk=PubNub-Python-Twisted%2F4.0.1
+    uri: http://pubsub.pubnub.com/publish/fake/demo/0/twisted-test/0/%22hey%22?pnsdk=PubNub-Python-Twisted%2F4.0.2
   response:
     body: {string: !!python/unicode '[0,"Invalid Key","14767989321048626"]'}
     headers: !!python/object:twisted.web.http_headers.Headers
       _rawHeaders:
-        user-agent: [PubNub-Python-Twisted/4.0.1]
+        user-agent: [PubNub-Python-Twisted/4.0.2]
     status: {code: 400, message: ''}
-    url: http://pubsub.pubnub.com/publish/fake/demo/0/twisted-test/0/%22hey%22?pnsdk=PubNub-Python-Twisted%2F4.0.1&uuid=7b9b30d1-27b5-4764-bbee-60c7c584b04d&seqn=1
+    url: http://pubsub.pubnub.com/publish/fake/demo/0/twisted-test/0/%22hey%22?pnsdk=PubNub-Python-Twisted%2F4.0.2&uuid=7b9b30d1-27b5-4764-bbee-60c7c584b04d&seqn=1
 version: 1

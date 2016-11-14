@@ -2,14 +2,14 @@ interactions:
 - request:
     body: '{"online": true, "name": "Alex"}'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
     method: POST
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?pnsdk=PubNub-Python-Asyncio%2F4.0.1
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?pnsdk=PubNub-Python-Asyncio%2F4.0.2
   response:
     body: {string: '[1,"Sent","14714530475966145"]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Wed, 17 Aug 2016 16:57:27 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=f70c150a-77b0-47b9-98ed-91f99db5cdb1&seqn=1
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=f70c150a-77b0-47b9-98ed-91f99db5cdb1&seqn=1
 version: 1

@@ -2,14 +2,14 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.1&timestamp=1476628727
+    uri: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.2&timestamp=1476628727
   response:
     body: {string: '[1,"Sent","14766287276539619"]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 16 Oct 2016 14:38:47 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.1&timestamp=1476628727&seqn=1&signature=w0RglB1ksSdd8OHe7g-oIqbSfb7HpmE-nfM3SAbWT9A=&uuid=daf290a7-84c5-4cfe-8586-d8b71ca4990e
+    url: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.2&timestamp=1476628727&seqn=1&signature=w0RglB1ksSdd8OHe7g-oIqbSfb7HpmE-nfM3SAbWT9A=&uuid=daf290a7-84c5-4cfe-8586-d8b71ca4990e
 version: 1

@@ -72,7 +72,7 @@ class TestPreparePAMArguments(unittest.TestCase):
         input = """sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f
 pub-c-98863562-19a6-4760-bf0b-d537d1f5c582
 grant
-channel=asyncio-pam-FI2FCS0A&pnsdk=PubNub-Python-Asyncio%252F4.0.1&r=1&timestamp=1468409553&uuid=a4dbf92e-e5cb-428f-b6e6-35cce03500a2&w=1"""  # noqa: E501
+channel=asyncio-pam-FI2FCS0A&pnsdk=PubNub-Python-Asyncio%252F4.0.2&r=1&timestamp=1468409553&uuid=a4dbf92e-e5cb-428f-b6e6-35cce03500a2&w=1"""  # noqa: E501
         result = utils.sign_sha256("my_key", input)
 
         assert "3P7WMijA_gF3mVRq4hUxmzmAl3sm4d_Hgpz2gQW9NrY=" == result

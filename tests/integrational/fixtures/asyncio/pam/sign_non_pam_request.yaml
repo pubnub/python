@@ -2,9 +2,9 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/blah/0/%22hi%22?pnsdk=PubNub-Python-Asyncio%2F4.0.1&seqn=1&uuid=my_uuid
+    uri: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/blah/0/%22hi%22?pnsdk=PubNub-Python-Asyncio%2F4.0.2&seqn=1&uuid=my_uuid
   response:
     body: {string: '{"message":"Forbidden","payload":{"channels":["blah"]},"error":true,"service":"Access
         Manager","status":403}
@@ -16,5 +16,5 @@ interactions:
       CONTENT-ENCODING: gzip, CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Fri,
         14 Oct 2016 12:51:06 GMT', SERVER: nginx, TRANSFER-ENCODING: chunked, X-BLOCKS-ENABLED: '0'}
     status: {code: 403, message: Forbidden}
-    url: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/blah/0/%22hi%22?seqn=1&uuid=my_uuid&timestamp=1476449465&pnsdk=PubNub-Python-Asyncio%2F4.0.1
+    url: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/blah/0/%22hi%22?seqn=1&uuid=my_uuid&timestamp=1476449465&pnsdk=PubNub-Python-Asyncio%2F4.0.2
 version: 1

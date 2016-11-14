@@ -2,9 +2,9 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -13,13 +13,13 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun, 18 Sep 2016 19:17:14
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -28,26 +28,26 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun, 18 Sep 2016 19:17:14
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/0?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.0.1&tt=0&uuid=test-subscribe-asyncio-messenger
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/0?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.0.2&tt=0&uuid=test-subscribe-asyncio-messenger
   response:
     body: {string: '{"t":{"t":"14742262356649203","r":12},"m":[]}'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Sep 2016 19:17:15 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/0?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.0.1&tt=0&uuid=test-subscribe-asyncio-messenger
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/0?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.0.2&tt=0&uuid=test-subscribe-asyncio-messenger
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/leave?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/leave?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
   response:
     body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
         "Presence"}'}
@@ -56,13 +56,13 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
         18 Sep 2016 19:17:16 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/leave?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/leave?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -71,13 +71,13 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun, 18 Sep 2016 19:17:16
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.1]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -86,5 +86,5 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun, 18 Sep 2016 19:17:16
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.1&uuid=test-subscribe-asyncio-messenger
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=test-subscribe-asyncio-messenger
 version: 1

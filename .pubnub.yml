@@ -1,8 +1,13 @@
 name: python
-version: 4.0.1
+version: 4.0.2
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.2
+    date:
+    changes:
+      - type: improvement
+        text: Adjusting maximum pool size for requests installations
   - version: v4.0.1
     date:
     changes:

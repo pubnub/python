@@ -4,6 +4,8 @@ import requests
 import six
 
 from requests import Session
+from requests.adapters import HTTPAdapter
+
 from pubnub import utils
 from pubnub.enums import PNStatusCategory
 from pubnub.errors import PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR, PNERR_TOO_MANY_REDIRECTS_ERROR,\
@@ -22,6 +24,10 @@ class RequestsRequestHandler(BaseRequestHandler):
 
     def __init__(self, pubnub):
         self.session = Session()
+
+        self.session.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+
         self.pubnub = pubnub
 
     def sync_request(self, platform_options, endpoint_call_options):

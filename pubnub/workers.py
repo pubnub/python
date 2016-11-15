@@ -79,7 +79,7 @@ class SubscribeMessageWorker(object):
                 channel=channel,
                 subscription=subscription_match,
                 timetoken=publish_meta_data.publish_timetoken,
-                issuing_client_id=publisher
+                publisher=publisher
             )
 
             self._listener_manager.announce_message(pn_message_result)

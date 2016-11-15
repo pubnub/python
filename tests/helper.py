@@ -11,7 +11,6 @@ from pubnub.pnconfiguration import PNConfiguration
 try:
     from mock import patch
 except ImportError:
-
     from unittest.mock import patch  # noqa: F401
 
 pub_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"

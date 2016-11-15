@@ -7,7 +7,7 @@ setup(
     author='PubNub',
     author_email='support@pubnub.com',
     url='http://pubnub.com',
-    packages=find_packages(),
+    packages=find_packages(exclude=("examples*", 'tests*')),
     license='MIT',
     classifiers=(
         'Development Status :: 5 - Production/Stable',

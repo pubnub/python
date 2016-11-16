@@ -17,6 +17,7 @@ class Publish(Endpoint):
         self._channel = None
         self._message = None
         self._should_store = None
+        self._should_replicate = None
         self._use_post = None
         self._meta = None
 
@@ -30,6 +31,10 @@ class Publish(Endpoint):
 
     def use_post(self, use_post):
         self._use_post = bool(use_post)
+        return self
+
+    def should_replicate(self, should_replicate):
+        self._should_replicate = bool(should_replicate)
         return self
 
     def should_store(self, should_store):
@@ -62,6 +67,11 @@ class Publish(Endpoint):
             else:
                 params["store"] = "0"
 
+        if self._should_replicate is not None:
+            if self._should_replicate:
+                params["replicate"] = "1"
+            else:
+                params["replicate"] = "0"
         # REVIEW: should auth key be assigned here?
         if self.pubnub.config.auth_key is not None:
             params["auth"] = utils.url_encode(self.pubnub.config.auth_key)

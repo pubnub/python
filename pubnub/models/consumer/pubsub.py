@@ -73,3 +73,6 @@ class PNPublishResult(object):
         :param timetoken: of publish operation
         """
         self.timetoken = timetoken
+
+    def __str__(self):
+        return "Publish success with timetoken %s" % self.timetoken

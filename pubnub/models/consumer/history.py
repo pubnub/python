@@ -7,6 +7,9 @@ class PNHistoryResult(object):
         self.start_timetoken = start_timetoken
         self.end_timetoken = end_timetoken
 
+    def __str__(self):
+        return "History result for range %d..%d" % (self.start_timetoken, self.end_timetoken)
+
     @classmethod
     def from_json(cls, json_input, include_tt_option=False, cipher=None):
         start_timetoken = json_input[1]
@@ -37,6 +40,9 @@ class PNHistoryItemResult(object):
     def __init__(self, entry, timetoken=None):
         self.timetoken = timetoken
         self.entry = entry
+
+    def __str__(self):
+        return "History item with tt: %s and content: %s" % (self.timetoken, self.entry)
 
     def decrypt(self, cipher_key):
         self.entry = pn_crypto.decrypt(cipher_key, self.entry)

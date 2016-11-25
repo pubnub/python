@@ -10,6 +10,9 @@ class PNHereNowResult(object):
         self.total_occupancy = total_occupancy
         self.channels = channels
 
+    def __str__(self):
+        return "HereNow Result total occupancy: %d, total channels: %d" % (self.total_occupancy, self.total_channels)
+
     @classmethod
     def from_json(cls, envelope, channel_names):
         # multiple
@@ -81,6 +84,10 @@ class PNHereNowChannelData(object):
         self.occupancy = occupancy
         self.occupants = occupants
 
+    def __str__(self):
+        return "HereNow Channel Data for channel '%s': occupancy: %d, occupants: %d" \
+               % (self.channel_name, self.occupancy, self.occupants)
+
     @classmethod
     def from_json(cls, name, json_input):
         if 'uuids' in json_input:
@@ -108,11 +115,17 @@ class PNHereNowOccupantsData(object):
         self.uuid = uuid
         self.state = state
 
+    def __str__(self):
+        return "HereNow Occupants Data for '%s': %s" % (self.uuid, self.state)
+
 
 class PNWhereNowResult(object):
     def __init__(self, channels):
         assert isinstance(channels, (list, tuple))
         self.channels = channels
+
+    def __str__(self):
+        return "User is currently subscribed to %s" % ", ".join(self.channels)
 
     @classmethod
     def from_json(cls, json_input):
@@ -124,8 +137,14 @@ class PNSetStateResult(object):
         assert isinstance(state, dict)
         self.state = state
 
+    def __str__(self):
+        return "New state %s successfully set" % self.state
+
 
 class PNGetStateResult(object):
     def __init__(self, channels):
         assert isinstance(channels, dict)
         self.channels = channels
+
+    def __str__(self):
+        return "Current state is %s" % self.channels

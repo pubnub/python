@@ -3,7 +3,7 @@ class PubNubException(Exception):
         self._errormsg = errormsg
         self._status_code = status_code
         self._pn_error = pn_error
-        self._status = status
+        self.status = status
 
         if len(str(errormsg)) > 0 and int(status_code) > 0:
             msg = str(pn_error) + " (" + str(status_code) + "): " + str(errormsg)
@@ -13,3 +13,8 @@ class PubNubException(Exception):
             msg = str(pn_error)
 
         super(PubNubException, self).__init__(msg)
+
+    @property
+    def _status(self):
+        raise DeprecationWarning
+        return self.status

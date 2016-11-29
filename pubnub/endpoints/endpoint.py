@@ -83,6 +83,7 @@ class Endpoint(object):
             connect_timeout=self.connect_timeout(),
             create_response=self.create_response,
             create_status=self.create_status,
+            create_exception=self.create_exception,
             operation_type=self.operation_type(),
             data=self.build_data(),
             sort_arguments=self._sort_params)
@@ -114,14 +115,21 @@ class Endpoint(object):
                                          # REVIEW: include self._cancellation_event into options?
                                          cancellation_event=self._cancellation_event)
 
+    def result(self):
+        def handler():
+            self.validate_params()
+            return self.options()
+
+        return self.pubnub.request_result(options_func=handler,
+                                          cancellation_event=self._cancellation_event)
+
     def future(self):
         def handler():
             self.validate_params()
             return self.options()
 
         return self.pubnub.request_future(options_func=handler,
-                                          cancellation_event=self._cancellation_event
-                                          )
+                                          cancellation_event=self._cancellation_event)
 
     def deferred(self):
         def handler():
@@ -149,8 +157,8 @@ class Endpoint(object):
                 operation_type = self.operation_type()
                 if operation_type == PNOperationType.PNAccessManagerAudit:
                     signed_input += 'audit\n'
-                elif operation_type == PNOperationType.PNAccessManagerGrant or\
-                        operation_type == PNOperationType.PNAccessManagerRevoke:
+                elif operation_type == PNOperationType.PNAccessManagerGrant or \
+                                operation_type == PNOperationType.PNAccessManagerRevoke:
                     signed_input += 'grant\n'
                 else:
                     signed_input += self.build_path() + "\n"
@@ -170,6 +178,7 @@ class Endpoint(object):
             custom_params['pnsdk'] = utils.url_encode(self.pubnub.sdk_name)
 
             return custom_params
+
         return callback
 
     def validate_subscribe_key(self):
@@ -221,3 +230,17 @@ class Endpoint(object):
         pn_status.affected_channels_groups = self.affected_channels_groups()
 
         return pn_status
+
+    """ Used by asyncio and tornado clients to build exceptions
+
+    The only difference with create_status() method is that a status
+    is wrapped with an exception and also contains this exception inside
+    as 'status.error_data.exception'
+    """
+
+    def create_exception(self, category, response, response_info, exception):
+        status = self.create_status(category, response, response_info, exception)
+
+        exception.status = status
+
+        return exception

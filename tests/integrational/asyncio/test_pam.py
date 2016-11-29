@@ -354,26 +354,3 @@ def test_multiple_channel_groups_with_auth(event_loop):
     assert env.result.groups[gr2].auth_keys[auth].manage_enabled is False
 
     pubnub.stop()
-
-
-# @pytest.mark.asyncio
-# def test_sign_non_pam_request(event_loop):
-#     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
-#     pubnub.config.uuid = "my_uuid"
-#     gr1 = "test-pam-asyncio-cg1"
-#     gr2 = "test-pam-asyncio-cg2"
-#
-#     env = (yield from pubnub.grant()\
-#            .channels('blah')\
-#            .read(True)\
-#            .write(True)\
-#            .future())
-#
-#     env = (yield from pubnub.publish()
-#            .message('hi')
-#            .channel('blah')
-#            .future())
-#
-#     print(env.result)
-#
-#     pubnub.stop()

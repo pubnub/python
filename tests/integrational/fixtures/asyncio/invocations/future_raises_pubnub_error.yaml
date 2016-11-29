@@ -1,0 +1,20 @@
+interactions:
+- request:
+    body: null
+    headers:
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+    method: GET
+    uri: http://pubsub.pubnub.com/publish/blah/blah/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.2
+  response:
+    body: {string: '{"message":"Invalid Subscribe Key","error":true,"service":"Access
+        Manager","status":400}
+
+'}
+    headers: {ACCESS-CONTROL-ALLOW-HEADERS: 'Origin, X-Requested-With, Content-Type,
+        Accept', ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
+      CACHE-CONTROL: 'no-cache, no-store, must-revalidate', CONNECTION: keep-alive,
+      CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Tue, 29 Nov 2016 16:47:40
+        GMT', SERVER: nginx, TRANSFER-ENCODING: chunked}
+    status: {code: 400, message: Bad Request}
+    url: http://pubsub.pubnub.com/publish/blah/blah/0/blah/0/%22hey%22?seqn=1&pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=9cddca6b-9529-453e-b1ee-b1b9eedb21ce
+version: 1

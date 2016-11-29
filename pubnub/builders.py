@@ -11,6 +11,7 @@ class PubSubBuilder(object):
         self._channel_subscriptions = []
         self._channel_group_subscriptions = []
 
+    # TODO: make the 'channel' alias
     def channels(self, channels_list):
         utils.extend_list(self._channel_subscriptions, channels_list)
 

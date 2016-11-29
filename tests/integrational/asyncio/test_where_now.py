@@ -2,9 +2,9 @@ import asyncio
 import pytest
 
 from pubnub.models.consumer.presence import PNWhereNowResult
-from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
+from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.helper import pnconf_sub_copy, pnconf_pam_copy
-from tests.integrational.vcr_asyncio_sleeper import get_sleeper
+from tests.integrational.vcr_asyncio_sleeper import get_sleeper, VCR599Listener
 from tests.integrational.vcr_helper import pn_vcr
 
 
@@ -19,7 +19,7 @@ def test_single_channel(event_loop, sleeper=asyncio.sleep):
     uuid = 'test-where-now-asyncio-uuid'
     pubnub.config.uuid = uuid
 
-    callback = SubscribeListener()
+    callback = VCR599Listener(1)
     pubnub.add_listener(callback)
     pubnub.subscribe().channels(ch).execute()
 
@@ -60,7 +60,7 @@ def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     uuid = 'test-where-now-asyncio-uuid'
     pubnub.config.uuid = uuid
 
-    callback = SubscribeListener()
+    callback = VCR599Listener(1)
     pubnub.add_listener(callback)
     pubnub.subscribe().channels([ch1, ch2]).execute()
 
@@ -91,9 +91,9 @@ def test_where_now_super_admin_call(event_loop):
     uuid = 'test-where-now-asyncio-uuid'
     pubnub.config.uuid = uuid
 
-    env = yield from pubnub.where_now() \
+    res = yield from pubnub.where_now() \
         .uuid(uuid) \
-        .future()
-    assert isinstance(env.result, PNWhereNowResult)
+        .result()
+    assert isinstance(res, PNWhereNowResult)
 
     pubnub.stop()

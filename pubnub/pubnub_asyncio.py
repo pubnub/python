@@ -6,17 +6,20 @@ import math
 import six
 
 from asyncio import Event, Queue, Semaphore
+
+from pubnub.models.consumer.common import PNStatus
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
 from .pubnub_core import PubNubCore
 from .workers import SubscribeMessageWorker
-from .managers import SubscriptionManager, PublishSequenceManager
+from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager
 from . import utils
 from .structures import ResponseInfo, RequestOptions
-from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType
-from .callbacks import SubscribeCallback
-from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED
+from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
+from .callbacks import SubscribeCallback, ReconnectionCallback
+from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED, PNERR_REQUEST_CANCELLED, \
+    PNERR_CLIENT_TIMEOUT
 from .exceptions import PubNubException
 
 logger = logging.getLogger("pubnub")
@@ -60,26 +63,55 @@ class PubNubAsyncio(PubNubCore):
     def request_sync(self, *args):
         raise NotImplementedError
 
-    def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event, custom_loop=None):
-        loop = self.event_loop
-
-        if custom_loop is not None:
-            loop = custom_loop
-
-        future = self.request_future(options_func=endpoint_call_options,
-                                     create_response=endpoint_call_options.create_response,
-                                     create_status_response=endpoint_call_options.create_status,
-                                     cancellation_event=cancellation_event
-                                     )
-
-        task = asyncio.ensure_future(future, loop=loop)
-        return task.add_done_callback(callback)
-
     def request_deferred(self, *args):
         raise NotImplementedError
 
     @asyncio.coroutine
+    def request_result(self, options_func, cancellation_event):
+        envelope = yield from self._request_helper(options_func, cancellation_event)
+        return envelope.result
+
+    @asyncio.coroutine
     def request_future(self, options_func, cancellation_event):
+        try:
+            res = yield from self._request_helper(options_func, cancellation_event)
+            return res
+        except PubNubException as e:
+            return PubNubAsyncioException(
+                result=None,
+                status=e.status
+            )
+        except asyncio.TimeoutError:
+            return PubNubAsyncioException(
+                result=None,
+                status=options_func().create_status(PNStatusCategory.PNTimeoutCategory,
+                                                    None,
+                                                    None,
+                                                    exception=PubNubException(
+                                                        pn_error=PNERR_CLIENT_TIMEOUT
+                                                    ))
+            )
+        except asyncio.CancelledError:
+            return PubNubAsyncioException(
+                result=None,
+                status=options_func().create_status(PNStatusCategory.PNCancelledCategory,
+                                                    None,
+                                                    None,
+                                                    exception=PubNubException(
+                                                        pn_error=PNERR_REQUEST_CANCELLED
+                                                    ))
+            )
+        except Exception as e:
+            return PubNubAsyncioException(
+                result=None,
+                status=options_func().create_status(PNStatusCategory.PNUnknownCategory,
+                                                    None,
+                                                    None,
+                                                    e)
+            )
+
+    @asyncio.coroutine
+    def _request_helper(self, options_func, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
@@ -87,7 +119,8 @@ class PubNubAsyncio(PubNubCore):
         assert isinstance(options, RequestOptions)
 
         create_response = options.create_response
-        create_status_response = options.create_status
+        create_status = options.create_status
+        create_exception = options.create_exception
 
         params_to_merge_in = {}
 
@@ -111,7 +144,7 @@ class PubNubAsyncio(PubNubCore):
         except (asyncio.TimeoutError, asyncio.CancelledError):
             raise
         except Exception as e:
-            logger.error("Request await error: %s" % str(e))
+            logger.error("session.request exception: %s" % str(e))
             raise
 
         body = yield from response.text()
@@ -155,15 +188,14 @@ class PubNubAsyncio(PubNubCore):
                 try:
                     data = json.loads(body.decode("utf-8"))
                 except ValueError:
-                    raise PubNubAsyncioException(
-                        result=create_response(None),
-                        status=create_status_response(status_category,
-                                                      response,
-                                                      response_info,
-                                                      PubNubException(
-                                                          pn_error=PNERR_JSON_DECODING_FAILED,
-                                                          errormsg='json decode error')
-                                                      ))
+                    raise create_exception(category=status_category,
+                                           response=response,
+                                           response_info=response_info,
+                                           exception=PubNubException(
+                                               pn_error=PNERR_JSON_DECODING_FAILED,
+                                               errormsg='json decode error',
+                                           )
+                                           )
         else:
             data = "N/A"
 
@@ -181,24 +213,66 @@ class PubNubAsyncio(PubNubCore):
             if response.status == 400:
                 status_category = PNStatusCategory.PNBadRequestCategory
 
-            raise PubNubAsyncioException(
-                result=data,
-                status=create_status_response(status_category, data, response_info,
-                                              PubNubException(
-                                                  errormsg=data,
-                                                  pn_error=err,
-                                                  status_code=response.status
-                                              ))
-            )
+            raise create_exception(category=status_category,
+                                   response=data,
+                                   response_info=response_info,
+                                   exception=PubNubException(
+                                       errormsg=data,
+                                       pn_error=err,
+                                       status_code=response.status
+                                   )
+                                   )
         else:
             return AsyncioEnvelope(
                 result=create_response(data),
-                status=create_status_response(
+                status=create_status(
                     PNStatusCategory.PNAcknowledgmentCategory,
                     data,
                     response_info,
                     None)
             )
+
+
+class AsyncioReconnectionManager(ReconnectionManager):
+    def __init__(self, pubnub):
+        self._task = None
+        super(AsyncioReconnectionManager, self).__init__(pubnub)
+
+    @asyncio.coroutine
+    def _register_heartbeat_timer(self):
+        while True:
+            if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.EXPONENTIAL:
+                self._timer_interval = int(math.pow(2, self._connection_errors) - 1)
+                if self._timer_interval > self.MAXEXPONENTIALBACKOFF:
+                    self._timer_interval = self.MINEXPONENTIALBACKOFF
+                    self._connection_errors = 1
+                    logger.debug("timerInterval > MAXEXPONENTIALBACKOFF at: %s" % utils.datetime_now())
+                elif self._timer_interval < 1:
+                    self._timer_interval = self.MINEXPONENTIALBACKOFF
+                logger.debug("timerInterval = %d at: %s" % (self._timer_interval, utils.datetime_now()))
+            else:
+                self._timer_interval = self.INTERVAL
+
+            yield from asyncio.sleep(self._timer_interval)
+
+            logger.debug("reconnect loop at: %s" % utils.datetime_now())
+
+            try:
+                yield from self._pubnub.time().future()
+                self._connection_errors = 1
+                self._callback.on_reconnect()
+                break
+            except Exception:
+                if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.EXPONENTIAL:
+                    logger.debug("reconnect interval increment at: %s" % utils.datetime_now())
+                    self._connection_errors += 1
+
+    def start_polling(self):
+        self._task = asyncio.ensure_future(self._register_heartbeat_timer())
+
+    def stop_polling(self):
+        if self._task is not None and not self._task.cancelled():
+            self._task.cancel()
 
 
 class AsyncioPublishSequenceManager(PublishSequenceManager):
@@ -220,13 +294,31 @@ class AsyncioPublishSequenceManager(PublishSequenceManager):
 
 class AsyncioSubscriptionManager(SubscriptionManager):
     def __init__(self, pubnub_instance):
+        subscription_manager = self
+
         self._message_worker = None
         self._message_queue = Queue()
         self._subscription_lock = Semaphore(1)
         self._subscribe_loop_task = None
         self._heartbeat_periodic_callback = None
+        self._reconnection_manager = AsyncioReconnectionManager(pubnub_instance)
+
         super(AsyncioSubscriptionManager, self).__init__(pubnub_instance)
         self._start_worker()
+
+        class AsyncioReconnectionCallback(ReconnectionCallback):
+            def on_reconnect(self):
+                subscription_manager.reconnect()
+
+                pn_status = PNStatus()
+                pn_status.category = PNStatusCategory.PNReconnectedCategory
+                pn_status.error = False
+
+                subscription_manager._subscription_status_announced = True
+                subscription_manager._listener_manager.announce_status(pn_status)
+
+        self._reconnection_listener = AsyncioReconnectionCallback()
+        self._reconnection_manager.set_reconnection_listener(self._reconnection_listener)
 
     def _set_consumer_event(self):
         if not self._message_worker.cancelled():
@@ -243,12 +335,20 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                                                      loop=self._pubnub.event_loop)
 
     def reconnect(self):
+        # TODO: method is synchronized in Java
         self._should_stop = False
         self._subscribe_loop_task = asyncio.ensure_future(self._start_subscribe_loop())
         self._register_heartbeat_timer()
 
+    def disconnect(self):
+        # TODO: method is synchronized in Java
+        self._should_stop = True
+        self._stop_heartbeat_timer()
+        self._stop_subscribe_loop()
+
     def stop(self):
         super(AsyncioSubscriptionManager, self).stop()
+        self._reconnection_manager.stop_polling()
         if self._subscribe_loop_task is not None and not self._subscribe_loop_task.cancelled():
             self._subscribe_loop_task.cancel()
 
@@ -262,39 +362,51 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         combined_groups = self._subscription_state.prepare_channel_group_list(True)
 
         if len(combined_channels) == 0 and len(combined_groups) == 0:
+            self._subscription_lock.release()
             return
 
-        try:
-            self._subscribe_request_task = asyncio.ensure_future(
-                Subscribe(self._pubnub)
+        self._subscribe_request_task = asyncio.ensure_future(
+            Subscribe(self._pubnub)
                 .channels(combined_channels)
                 .channel_groups(combined_groups)
                 .timetoken(self._timetoken).region(self._region)
                 .filter_expression(self._pubnub.config.filter_expression)
                 .future())
 
-            envelope = yield from self._subscribe_request_task
+        e = yield from self._subscribe_request_task
 
-            if self._subscribe_request_task.cancelled():
+        if self._subscribe_request_task.cancelled():
+            self._subscription_lock.release()
+            return
+
+        if e.is_error():
+            if e.status is not None and e.status.category == PNStatusCategory.PNCancelledCategory:
+                self._subscription_lock.release()
                 return
 
-            self._handle_endpoint_call(envelope.result, envelope.status)
-            self._subscribe_loop_task = asyncio.ensure_future(self._start_subscribe_loop())
-        except PubNubAsyncioException as e:
             if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
                 self._pubnub.event_loop.call_soon(self._start_subscribe_loop)
-            elif e.status is not None and e.status.category == PNStatusCategory.PNAccessDeniedCategory:
-                e.status.operation = PNOperationType.PNUnsubscribeOperation
-                self._listener_manager.announce_status(e.status)
-            else:
-                self._listener_manager.announce_status(e.status)
-        except asyncio.CancelledError:
-            pass
-        except Exception as e:
+                self._subscription_lock.release()
+                return
+
             logger.error("Exception in subscribe loop: %s" % str(e))
-            raise
-        finally:
+
+            if e.status is not None and e.status.category == PNStatusCategory.PNAccessDeniedCategory:
+                e.status.operation = PNOperationType.PNUnsubscribeOperation
+
+            # TODO: raise error
+            self._listener_manager.announce_status(e.status)
+
+            self._reconnection_manager.start_polling()
             self._subscription_lock.release()
+            self.disconnect()
+            return
+        else:
+            self._handle_endpoint_call(e.result, e.status)
+            self._subscription_lock.release()
+            self._subscribe_loop_task = asyncio.ensure_future(self._start_subscribe_loop())
+
+        self._subscription_lock.release()
 
     def _stop_subscribe_loop(self):
         if self._subscribe_request_task is not None and not self._subscribe_request_task.cancelled():
@@ -334,14 +446,14 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                               .channel_groups(presence_groups)
                               .state(state_payload)
                               .cancellation_event(cancellation_event)
-                              .future())
+                              .result())
 
             envelope = yield from heartbeat_call
 
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if envelope.status.is_error:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
-                        heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                                heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
                     self._listener_manager.announce_stateus(envelope.status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
@@ -436,6 +548,10 @@ class AsyncioEnvelope(object):
         self.result = result
         self.status = status
 
+    @staticmethod
+    def is_error():
+        return False
+
 
 class PubNubAsyncioException(Exception):
     def __init__(self, result, status):
@@ -445,6 +561,13 @@ class PubNubAsyncioException(Exception):
     def __str__(self):
         return str(self.status.error_data.exception)
 
+    @staticmethod
+    def is_error():
+        return True
+
+    def value(self):
+        return self.status.error_data.exception
+
 
 class SubscribeListener(SubscribeCallback):
     def __init__(self):
@@ -453,12 +576,15 @@ class SubscribeListener(SubscribeCallback):
         self.disconnected_event = Event()
         self.presence_queue = Queue()
         self.message_queue = Queue()
+        self.error_queue = Queue()
 
     def status(self, pubnub, status):
         if utils.is_subscribed_event(status) and not self.connected_event.is_set():
             self.connected_event.set()
         elif utils.is_unsubscribed_event(status) and not self.disconnected_event.is_set():
             self.disconnected_event.set()
+        elif status.is_error():
+            self.error_queue.put_nowait(status.error_data.exception)
 
     def message(self, pubnub, message):
         self.message_queue.put_nowait(message)
@@ -467,16 +593,35 @@ class SubscribeListener(SubscribeCallback):
         self.presence_queue.put_nowait(presence)
 
     @asyncio.coroutine
+    def _wait_for(self, coro):
+        scc_task = asyncio.ensure_future(coro)
+        err_task = asyncio.ensure_future(self.error_queue.get())
+
+        yield from asyncio.wait([
+            scc_task,
+            err_task
+        ], return_when=asyncio.FIRST_COMPLETED)
+
+        if err_task.done() and not scc_task.done():
+            if not scc_task.cancelled():
+                scc_task.cancel()
+            raise err_task.result()
+        else:
+            if not err_task.cancelled():
+                err_task.cancel()
+            return scc_task.result()
+
+    @asyncio.coroutine
     def wait_for_connect(self):
         if not self.connected_event.is_set():
-            yield from self.connected_event.wait()
+            yield from self._wait_for(self.connected_event.wait())
         else:
             raise Exception("instance is already connected")
 
     @asyncio.coroutine
     def wait_for_disconnect(self):
         if not self.disconnected_event.is_set():
-            yield from self.disconnected_event.wait()
+            yield from self._wait_for(self.disconnected_event.wait())
         else:
             raise Exception("instance is already disconnected")
 
@@ -485,7 +630,7 @@ class SubscribeListener(SubscribeCallback):
         channel_names = list(channel_names)
         while True:
             try:
-                env = yield from self.message_queue.get()
+                env = yield from self._wait_for(self.message_queue.get())
                 if env.channel in channel_names:
                     return env
                 else:
@@ -498,7 +643,7 @@ class SubscribeListener(SubscribeCallback):
         channel_names = list(channel_names)
         while True:
             try:
-                env = yield from self.presence_queue.get()
+                env = yield from self._wait_for(self.presence_queue.get())
                 if env.channel in channel_names:
                     return env
                 else:

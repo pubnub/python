@@ -1,5 +1,6 @@
 PNERR_CLIENT_TIMEOUT = "Client Timeout"
 PNERR__TIMEOUT = "Timeout Occurred"
+PNERR_REQUEST_CANCELLED = "HTTP Client Error"
 # TODO: clarify to not confuse with 4xx and 5xx http erros
 PNERR_HTTP_ERROR = "HTTP Error"
 PNERR_CONNECTION_ERROR = "Connection Error"

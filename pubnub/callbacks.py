@@ -21,3 +21,9 @@ class SubscribeCallback(object):
     @abstractmethod
     def presence(self, pubnub, presence):
         pass
+
+
+class ReconnectionCallback(object):
+    @abstractmethod
+    def on_reconnect(self):
+        pass

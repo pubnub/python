@@ -4,7 +4,7 @@ from .enums import PNStatusCategory
 from .models.consumer.common import PNStatus
 from .models.server.subscribe import SubscribeEnvelope
 from .dtos import SubscribeOperation, UnsubscribeOperation
-from .callbacks import SubscribeCallback
+from .callbacks import SubscribeCallback, ReconnectionCallback
 from .models.subscription_item import SubscriptionItem
 
 
@@ -46,6 +46,32 @@ class BasePathManager(object):
             return constructed_url
         else:
             return "%s.%s" % (BasePathManager.DEFAULT_SUBDOMAIN, BasePathManager.DEFAULT_BASE_PATH)
+
+
+class ReconnectionManager(object):
+    INTERVAL = 3
+    MINEXPONENTIALBACKOFF = 1
+    MAXEXPONENTIALBACKOFF = 32
+
+    def __init__(self, pubnub):
+        self._pubnub = pubnub
+        self._callback = None
+        self._timer = None
+        self._timer_interval = None
+        self._connection_errors = 1
+
+    def set_reconnection_listener(self, reconnection_callback):
+        assert isinstance(reconnection_callback, ReconnectionCallback)
+        self._callback = reconnection_callback
+
+    @abstractmethod
+    def start_polling(self):
+        pass
+
+    def _stop_heartbeat_timer(self):
+        if self._timer is not None:
+            self._timer.stop()
+            self._timer = None
 
 
 class StateManager(object):

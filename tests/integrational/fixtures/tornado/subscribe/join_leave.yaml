@@ -7,20 +7,20 @@ interactions:
     method: GET
     uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=0
   response:
-    body: {string: '{"t":{"t":"14708438179383195","r":12},"m":[]}'}
+    body: {string: !!python/unicode '{"t":{"t":"14818137719895494","r":12},"m":[]}'}
     headers:
-    - !!python/tuple
-      - Cache-Control
-      - [no-cache]
     - !!python/tuple
       - Content-Length
       - ['45']
     - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
       - Connection
       - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Date
+      - ['Thu, 15 Dec 2016 15:01:40 GMT']
     - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
@@ -28,34 +28,34 @@ interactions:
       - Access-Control-Allow-Methods
       - [GET]
     - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 15:51:48 GMT']
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=0&uuid=subscribe-tornado-listener
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.2&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&tt=14708438179383195
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&tt=14818137719895494
   response:
-    body: {string: '{"t":{"t":"14708443090824007","r":12},"m":[{"a":"2","f":0,"p":{"t":"14708443089669538","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-tornado-ch-pnpres","d":{"action":
-        "join", "timestamp": 1470844308, "uuid": "subscribe-tornado-listener", "occupancy":
+    body: {string: !!python/unicode '{"t":{"t":"14818141038141353","r":12},"m":[{"a":"2","f":0,"p":{"t":"14818141037368243","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-tornado-ch-pnpres","d":{"action":
+        "join", "timestamp": 1481814103, "uuid": "subscribe-tornado-listener-3", "occupancy":
         1},"b":"subscribe-tornado-ch-pnpres"}]}'}
     headers:
+    - !!python/tuple
+      - Content-Length
+      - ['317']
+    - !!python/tuple
+      - Connection
+      - [close]
     - !!python/tuple
       - Cache-Control
       - [no-cache]
     - !!python/tuple
-      - Content-Length
-      - ['315']
-    - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Connection
-      - [close]
+      - Date
+      - ['Thu, 15 Dec 2016 15:01:43 GMT']
     - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
@@ -63,10 +63,10 @@ interactions:
       - Access-Control-Allow-Methods
       - [GET]
     - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 15:51:49 GMT']
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=14708438179383195&uuid=subscribe-tornado-listener&tr=12
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818137719895494&pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
@@ -75,20 +75,20 @@ interactions:
     method: GET
     uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=0
   response:
-    body: {string: '{"t":{"t":"14708443090868294","r":12},"m":[]}'}
+    body: {string: !!python/unicode '{"t":{"t":"14818141039599808","r":12},"m":[]}'}
     headers:
-    - !!python/tuple
-      - Cache-Control
-      - [no-cache]
     - !!python/tuple
       - Content-Length
       - ['45']
     - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
       - Connection
       - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Date
+      - ['Thu, 15 Dec 2016 15:01:44 GMT']
     - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
@@ -96,34 +96,34 @@ interactions:
       - Access-Control-Allow-Methods
       - [GET]
     - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 15:51:49 GMT']
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=0&uuid=subscribe-tornado-messenger
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch/0?tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.2&uuid=subscribe-tornado-messenger-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&tt=14708443090824007
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&tt=14818141038141353
   response:
-    body: {string: '{"t":{"t":"14708443098649253","r":12},"m":[{"a":"2","f":0,"p":{"t":"14708443097146633","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-tornado-ch-pnpres","d":{"action":
-        "join", "timestamp": 1470844309, "uuid": "subscribe-tornado-messenger", "occupancy":
-        2},"b":"subscribe-tornado-ch-pnpres"}]}'}
+    body: {string: !!python/unicode '{"t":{"t":"14818141046316706","r":12},"m":[{"a":"2","f":0,"p":{"t":"14818141045847189","r":2},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-tornado-ch-pnpres","d":{"action":
+        "join", "timestamp": 1481814104, "uuid": "subscribe-tornado-messenger-3",
+        "occupancy": 2},"b":"subscribe-tornado-ch-pnpres"}]}'}
     headers:
+    - !!python/tuple
+      - Content-Length
+      - ['318']
+    - !!python/tuple
+      - Connection
+      - [close]
     - !!python/tuple
       - Cache-Control
       - [no-cache]
     - !!python/tuple
-      - Content-Length
-      - ['316']
-    - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Connection
-      - [close]
+      - Date
+      - ['Thu, 15 Dec 2016 15:01:44 GMT']
     - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
@@ -131,34 +131,34 @@ interactions:
       - Access-Control-Allow-Methods
       - [GET]
     - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 15:51:49 GMT']
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=14708443090824007&uuid=subscribe-tornado-listener&tr=12
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818141038141353&pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&tt=14708443098649253
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&tt=14818141046316706
   response:
-    body: {string: '{"t":{"t":"14708443101375638","r":12},"m":[{"a":"2","f":0,"p":{"t":"14708443100579978","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-tornado-ch-pnpres","d":{"action":
-        "leave", "timestamp": 1470844310, "uuid": "subscribe-tornado-messenger", "occupancy":
-        1},"b":"subscribe-tornado-ch-pnpres"}]}'}
+    body: {string: !!python/unicode '{"t":{"t":"14818141050377882","r":12},"m":[{"a":"2","f":0,"p":{"t":"14818141049901227","r":2},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-tornado-ch-pnpres","d":{"action":
+        "leave", "timestamp": 1481814104, "uuid": "subscribe-tornado-messenger-3",
+        "occupancy": 1},"b":"subscribe-tornado-ch-pnpres"}]}'}
     headers:
+    - !!python/tuple
+      - Content-Length
+      - ['319']
+    - !!python/tuple
+      - Connection
+      - [close]
     - !!python/tuple
       - Cache-Control
       - [no-cache]
     - !!python/tuple
-      - Content-Length
-      - ['317']
-    - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Connection
-      - [close]
+      - Date
+      - ['Thu, 15 Dec 2016 15:01:45 GMT']
     - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
@@ -166,10 +166,10 @@ interactions:
       - Access-Control-Allow-Methods
       - [GET]
     - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 15:51:50 GMT']
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=14708443098649253&uuid=subscribe-tornado-listener&tr=12
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818141046316706&pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
@@ -178,27 +178,15 @@ interactions:
     method: GET
     uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.2
   response:
-    body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
-        "Presence"}'}
+    body: {string: !!python/unicode '{"status": 200, "action": "leave", "message":
+        "OK", "service": "Presence"}'}
     headers:
-    - !!python/tuple
-      - Cache-Control
-      - [no-cache]
-    - !!python/tuple
-      - Accept-Ranges
-      - [bytes]
-    - !!python/tuple
-      - Age
-      - ['0']
     - !!python/tuple
       - Content-Length
       - ['74']
     - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Access-Control-Allow-Origin
-      - ['*']
+      - Accept-Ranges
+      - [bytes]
     - !!python/tuple
       - Server
       - [Pubnub Presence]
@@ -206,37 +194,49 @@ interactions:
       - Connection
       - [close]
     - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Date
+      - ['Thu, 15 Dec 2016 15:01:45 GMT']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
       - Access-Control-Allow-Methods
       - ['OPTIONS, GET, POST']
     - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 15:51:50 GMT']
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Age
+      - ['0']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.2&uuid=subscribe-tornado-messenger
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.2&uuid=subscribe-tornado-messenger-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.2]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&tt=14708443101375638
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&tt=14818141050377882
   response:
-    body: {string: '{"t":{"t":"14708443105516188","r":12},"m":[{"a":"2","f":0,"p":{"t":"14708443104721390","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-tornado-ch-pnpres","d":{"action":
-        "leave", "timestamp": 1470844310, "uuid": "subscribe-tornado-listener", "occupancy":
-        0},"b":"subscribe-tornado-ch-pnpres"}]}'}
+    body: {string: !!python/unicode '{"t":{"t":"14818141055223535","r":12},"m":[{"a":"2","f":0,"p":{"t":"14818141054743525","r":2},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-tornado-ch-pnpres","d":{"action":
+        "leave", "timestamp": 1481814105, "uuid": "subscribe-tornado-listener-3",
+        "occupancy": 0},"b":"subscribe-tornado-ch-pnpres"}]}'}
     headers:
+    - !!python/tuple
+      - Content-Length
+      - ['318']
+    - !!python/tuple
+      - Connection
+      - [close]
     - !!python/tuple
       - Cache-Control
       - [no-cache]
     - !!python/tuple
-      - Content-Length
-      - ['316']
-    - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Connection
-      - [close]
+      - Date
+      - ['Thu, 15 Dec 2016 15:01:45 GMT']
     - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
@@ -244,10 +244,10 @@ interactions:
       - Access-Control-Allow-Methods
       - [GET]
     - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 15:51:50 GMT']
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=14708443101375638&uuid=subscribe-tornado-listener&tr=12
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818141050377882&pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=12&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
@@ -256,27 +256,15 @@ interactions:
     method: GET
     uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.2
   response:
-    body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
-        "Presence"}'}
+    body: {string: !!python/unicode '{"status": 200, "action": "leave", "message":
+        "OK", "service": "Presence"}'}
     headers:
-    - !!python/tuple
-      - Cache-Control
-      - [no-cache]
-    - !!python/tuple
-      - Accept-Ranges
-      - [bytes]
-    - !!python/tuple
-      - Age
-      - ['0']
     - !!python/tuple
       - Content-Length
       - ['74']
     - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Access-Control-Allow-Origin
-      - ['*']
+      - Accept-Ranges
+      - [bytes]
     - !!python/tuple
       - Server
       - [Pubnub Presence]
@@ -284,11 +272,23 @@ interactions:
       - Connection
       - [close]
     - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Date
+      - ['Thu, 15 Dec 2016 15:01:45 GMT']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
       - Access-Control-Allow-Methods
       - ['OPTIONS, GET, POST']
     - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 15:51:50 GMT']
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Age
+      - ['0']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.2&uuid=subscribe-tornado-listener
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.2&uuid=subscribe-tornado-listener-3
 version: 1

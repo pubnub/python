@@ -182,7 +182,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     def assert_server_side_error(self, pub, expected_err_msg):
         self.expected_err_msg = expected_err_msg
-        pub.future().add_done_callback(self.sserr_cb)
+        pub.result().add_done_callback(self.sserr_cb)
 
         self.pubnub.start()
         self.wait()
@@ -191,11 +191,11 @@ class TestPubNubAsyncPublish(AsyncTestCase):
     def assert_server_side_error_yield(self, pub, expected_err_msg):
 
         try:
-            yield pub.future()
+            yield pub.result()
 
             self.pubnub.start()
             self.wait()
-        except PubNubTornadoException as e:
+        except PubNubException as e:
             assert expected_err_msg in str(e)
 
         self.pubnub.stop()

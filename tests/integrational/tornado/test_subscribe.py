@@ -6,7 +6,7 @@ from tornado.testing import AsyncTestCase
 
 import pubnub as pn
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
-from tests.helper import pnconf_sub_copy
+from tests.helper import pnconf_sub_copy, gen_string
 from tests.integrational.tornado.vcr_tornado_decorator import use_cassette_and_stub_time_sleep
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
@@ -84,12 +84,18 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/subscribe/join_leave.yaml',
         filter_query_parameters=['uuid', 'seqn'])
-    @tornado.testing.gen_test(timeout=15)
+    @tornado.testing.gen_test(timeout=30)
     def test_join_leave(self):
         ch = "subscribe-tornado-ch"
 
-        self.pubnub.config.uuid = "subscribe-tornado-messenger"
-        self.pubnub_listener.config.uuid = "subscribe-tornado-listener"
+        # HINT: use random generated uuids to test without VCR
+        # rnd = gen_string(4)
+        # self.pubnub.config.uuid = "subscribe-tornado-messenger-%s" % rnd
+        # self.pubnub_listener.config.uuid = "subscribe-tornado-listener-%s" % rnd
+
+        self.pubnub.config.uuid = "subscribe-tornado-messenger-3"
+        self.pubnub_listener.config.uuid = "subscribe-tornado-listener-3"
+
         callback_presence = SubscribeListener()
         self.pubnub_listener.add_listener(callback_presence)
         self.pubnub_listener.subscribe().channels(ch).with_presence().execute()

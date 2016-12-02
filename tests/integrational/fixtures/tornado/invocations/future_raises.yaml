@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.2]
+    method: GET
+    uri: http://pubsub.pubnub.com/publish/blah/blah/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2
+  response:
+    body: {string: !!python/unicode '{"message":"Invalid Subscribe Key","error":true,"service":"Access
+        Manager","status":400}
+
+'}
+    headers:
+    - !!python/tuple
+      - Access-Control-Allow-Headers
+      - ['Origin, X-Requested-With, Content-Type, Accept']
+    - !!python/tuple
+      - Transfer-Encoding
+      - [chunked]
+    - !!python/tuple
+      - Server
+      - [nginx]
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Cache-Control
+      - ['no-cache, no-store, must-revalidate']
+    - !!python/tuple
+      - Date
+      - ['Thu, 15 Dec 2016 15:22:40 GMT']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset=UTF-8]
+    status: {code: 400, message: Bad Request}
+    url: http://pubsub.pubnub.com/publish/blah/blah/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2&seqn=1&uuid=3293317b-a598-4a4e-b54a-3fac8ae3f8d5
+version: 1

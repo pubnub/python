@@ -33,9 +33,9 @@ def get_data_for_user(data):
 def write_value_as_string(data):
     try:
         if isinstance(data, six.string_types):
-            return ("\"%s\"" % data).replace("+", "%20")
+            return "\"%s\"" % data
         else:
-            return json.dumps(data).replace("+", "%20")
+            return json.dumps(data)
     except TypeError:
         raise PubNubException(
             pn_error=PNERR_JSON_NOT_SERIALIZABLE
@@ -43,7 +43,7 @@ def write_value_as_string(data):
 
 
 def url_encode(data):
-    return six.moves.urllib.parse.quote(data, safe="")
+    return six.moves.urllib.parse.quote(data, safe="").replace("+", "%2B")
 
 
 def uuid():

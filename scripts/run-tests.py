@@ -14,7 +14,7 @@ os.chdir(os.path.join(REPO_ROOT))
 pyenv_version = os.getenv('PYENV_VERSION', 0)
 travis_version = os.getenv('TRAVIS_PYTHON_VERSION', 0)
 version = str(travis_version or pyenv_version)
-tcmn = 'py.test tests --cov-report=xml --cov=./pubnub '
+tcmn = 'py.test tests --cov-report=xml --cov=./pubnub --ignore=tests/manual/ '
 fcmn = 'flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/'
 
 

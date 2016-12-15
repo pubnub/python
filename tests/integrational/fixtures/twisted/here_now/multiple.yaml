@@ -2,16 +2,16 @@ interactions:
 - request:
     body: !!python/unicode 
     headers:
-      user-agent: [PubNub-Python-Twisted/4.0.2]
+      user-agent: [PubNub-Python-Twisted/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/twisted-test-1,twisted-test-1?pnsdk=PubNub-Python-Twisted%2F4.0.2
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/twisted-test-1,twisted-test-1?pnsdk=PubNub-Python-Twisted%2F4.0.3
   response:
     body: {string: !!python/unicode '{"status": 200, "message": "OK", "payload": {"channels":
         {"twisted-test-1": {"uuids": ["00de2586-7ad8-4955-b5f6-87cae3215d02"], "occupancy":
         1}}, "total_channels": 1, "total_occupancy": 1}, "service": "Presence"}'}
     headers: !!python/object:twisted.web.http_headers.Headers
       _rawHeaders:
-        user-agent: [PubNub-Python-Twisted/4.0.2]
+        user-agent: [PubNub-Python-Twisted/4.0.3]
     status: {code: 200, message: ''}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/twisted-test-1,twisted-test-1?pnsdk=PubNub-Python-Twisted%2F4.0.2&uuid=9c7b940a-e5c7-42d5-af9b-c6ddcf58bdc9
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/twisted-test-1,twisted-test-1?pnsdk=PubNub-Python-Twisted%2F4.0.3&uuid=9c7b940a-e5c7-42d5-af9b-c6ddcf58bdc9
 version: 1

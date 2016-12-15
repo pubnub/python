@@ -2,9 +2,9 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?add=test-subscribe-asyncio-channel&uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?add=test-subscribe-asyncio-channel&uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&pnsdk=PubNub-Python-Asyncio%2F4.0.3
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -13,26 +13,26 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Tue, 16 Aug 2016 12:39:02
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?add=test-subscribe-asyncio-channel&uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?add=test-subscribe-asyncio-channel&uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&pnsdk=PubNub-Python-Asyncio%2F4.0.3
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&channel-group=test-subscribe-asyncio-group&pnsdk=PubNub-Python-Asyncio%2F4.0.2&tt=0
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&channel-group=test-subscribe-asyncio-group&pnsdk=PubNub-Python-Asyncio%2F4.0.3&tt=0
   response:
     body: {string: '{"t":{"t":"14713511453005433","r":12},"m":[]}'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Tue, 16 Aug 2016 12:39:05 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&channel-group=test-subscribe-asyncio-group&pnsdk=PubNub-Python-Asyncio%2F4.0.2&tt=0
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&channel-group=test-subscribe-asyncio-group&pnsdk=PubNub-Python-Asyncio%2F4.0.3&tt=0
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&channel-group=test-subscribe-asyncio-group&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&channel-group=test-subscribe-asyncio-group&pnsdk=PubNub-Python-Asyncio%2F4.0.3
   response:
     body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
         "Presence"}'}
@@ -41,13 +41,13 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Tue,
         16 Aug 2016 12:39:05 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&channel-group=test-subscribe-asyncio-group&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&channel-group=test-subscribe-asyncio-group&pnsdk=PubNub-Python-Asyncio%2F4.0.3
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&remove=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&remove=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F4.0.3
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -56,5 +56,5 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Tue, 16 Aug 2016 12:39:05
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&remove=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?uuid=f33740e3-1b23-44c0-928b-6a5b8bc4dbe0&remove=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F4.0.3
 version: 1

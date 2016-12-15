@@ -2,22 +2,22 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?uuid=0698f98a-798d-4ec3-a32a-e1560e50a6b9&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?uuid=0698f98a-798d-4ec3-a32a-e1560e50a6b9&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.0.3
   response:
     body: {string: '{"t":{"t":"14713511396585426","r":3},"m":[]}'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '44', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Tue, 16 Aug 2016 12:38:59 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?uuid=0698f98a-798d-4ec3-a32a-e1560e50a6b9&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?uuid=0698f98a-798d-4ec3-a32a-e1560e50a6b9&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.0.3
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-ch/leave?uuid=0698f98a-798d-4ec3-a32a-e1560e50a6b9&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-ch/leave?uuid=0698f98a-798d-4ec3-a32a-e1560e50a6b9&pnsdk=PubNub-Python-Asyncio%2F4.0.3
   response:
     body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
         "Presence"}'}
@@ -26,5 +26,5 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Tue,
         16 Aug 2016 12:38:59 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-ch/leave?uuid=0698f98a-798d-4ec3-a32a-e1560e50a6b9&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-ch/leave?uuid=0698f98a-798d-4ec3-a32a-e1560e50a6b9&pnsdk=PubNub-Python-Asyncio%2F4.0.3
 version: 1

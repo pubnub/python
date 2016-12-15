@@ -2,9 +2,9 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?pnsdk=PubNub-Python-Asyncio%2F4.0.2&r=1&uuid=my_uuid&w=1
+    uri: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?pnsdk=PubNub-Python-Asyncio%2F4.0.3&r=1&uuid=my_uuid&w=1
   response:
     body: {string: '{"message":"Success","payload":{"level":"subkey","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1440,"r":1,"w":1,"m":0},"service":"Access
         Manager","status":200}'}
@@ -14,13 +14,13 @@ interactions:
       CONTENT-LENGTH: '180', CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Fri,
         30 Sep 2016 07:28:49 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?pnsdk=PubNub-Python-Asyncio%2F4.0.2&r=1&signature=UZG_bGO8g6qNAvny8KUhhnXkh_TpUnduhjKsD0Dl0RU=&timestamp=1475220529&uuid=my_uuid&w=1
+    url: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?pnsdk=PubNub-Python-Asyncio%2F4.0.3&r=1&signature=UZG_bGO8g6qNAvny8KUhhnXkh_TpUnduhjKsD0Dl0RU=&timestamp=1475220529&uuid=my_uuid&w=1
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/auth/audit/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?pnsdk=PubNub-Python-Asyncio%2F4.0.2&uuid=my_uuid
+    uri: http://pubsub.pubnub.com/v1/auth/audit/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=my_uuid
   response:
     body: {string: '{"message":"Success","payload":{"level":"subkey","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","r":1,"m":0,"w":1,"ttl":1440,"channels":{},"objects":{},"channel-groups":{}},"service":"Access
         Manager","status":200}'}
@@ -30,13 +30,13 @@ interactions:
       CONTENT-LENGTH: '227', CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Fri,
         30 Sep 2016 07:28:49 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/auth/audit/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?pnsdk=PubNub-Python-Asyncio%2F4.0.2&signature=l1mOlkRbo_TzZNPGRllJs4SInacxQG2Zs1qlASrdfzU=&timestamp=1475220529&uuid=my_uuid
+    url: http://pubsub.pubnub.com/v1/auth/audit/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?pnsdk=PubNub-Python-Asyncio%2F4.0.3&signature=l1mOlkRbo_TzZNPGRllJs4SInacxQG2Zs1qlASrdfzU=&timestamp=1475220529&uuid=my_uuid
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?m=0&pnsdk=PubNub-Python-Asyncio%2F4.0.2&r=0&uuid=my_uuid&w=0
+    uri: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?m=0&pnsdk=PubNub-Python-Asyncio%2F4.0.3&r=0&uuid=my_uuid&w=0
   response:
     body: {string: '{"message":"Success","payload":{"level":"subkey","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1,"r":0,"w":0,"m":0},"service":"Access
         Manager","status":200}'}
@@ -46,5 +46,5 @@ interactions:
       CONTENT-LENGTH: '177', CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Fri,
         30 Sep 2016 07:28:50 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?m=0&pnsdk=PubNub-Python-Asyncio%2F4.0.2&r=0&signature=R6a1h2SW-KDRObT_Vn68yj4UfTeUimXSZIU5yoygKQI=&timestamp=1475220529&uuid=my_uuid&w=0
+    url: http://pubsub.pubnub.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?m=0&pnsdk=PubNub-Python-Asyncio%2F4.0.3&r=0&signature=R6a1h2SW-KDRObT_Vn68yj4UfTeUimXSZIU5yoygKQI=&timestamp=1475220529&uuid=my_uuid&w=0
 version: 1

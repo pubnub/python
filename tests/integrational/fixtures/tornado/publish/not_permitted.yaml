@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/not_permitted_channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2
+    uri: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/not_permitted_channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.3
   response:
     body: {string: '{"message":"Forbidden","payload":{"channels":["not_permitted_channel"]},"error":true,"service":"Access
         Manager","status":403}
@@ -46,14 +46,14 @@ interactions:
       - Transfer-Encoding
       - [chunked]
     status: {code: 403, message: Forbidden}
-    url: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/not_permitted_channel/0/%22hey%22?seqn=1&uuid=2bf14161-016e-4d0c-823a-d29acd1b2505&pnsdk=PubNub-Python-Tornado%2F4.0.2
+    url: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/not_permitted_channel/0/%22hey%22?seqn=1&uuid=2bf14161-016e-4d0c-823a-d29acd1b2505&pnsdk=PubNub-Python-Tornado%2F4.0.3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/not_permitted_channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2
+    uri: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/not_permitted_channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.3
   response:
     body: {string: '{"message":"Forbidden","payload":{"channels":["not_permitted_channel"]},"error":true,"service":"Access
         Manager","status":403}
@@ -94,5 +94,5 @@ interactions:
       - Transfer-Encoding
       - [chunked]
     status: {code: 403, message: Forbidden}
-    url: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/not_permitted_channel/0/%22hey%22?seqn=2&uuid=2bf14161-016e-4d0c-823a-d29acd1b2505&pnsdk=PubNub-Python-Tornado%2F4.0.2
+    url: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/not_permitted_channel/0/%22hey%22?seqn=2&uuid=2bf14161-016e-4d0c-823a-d29acd1b2505&pnsdk=PubNub-Python-Tornado%2F4.0.3
 version: 1

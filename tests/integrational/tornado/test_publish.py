@@ -9,7 +9,7 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
-from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope, PubNubTornadoException
+from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope
 from tests.helper import pnconf, pnconf_enc, gen_decrypt_func, pnconf_pam_copy
 from tests.integrational.vcr_helper import pn_vcr
 

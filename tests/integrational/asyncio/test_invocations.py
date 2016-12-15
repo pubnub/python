@@ -1,15 +1,12 @@
 import logging
 
-import asyncio
 import pytest
 import pubnub as pn
 
 from pubnub.exceptions import PubNubException
-from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, PubNubAsyncioException
-from tests.helper import pnconf_copy, pnconf_enc_copy, gen_decrypt_func, pnconf_pam_copy
+from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
@@ -90,7 +87,7 @@ def test_publish_envelope_raises(event_loop):
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/invocations/envelope_raises_ll_error.yaml',
                      filter_query_parameters=['uuid', 'seqn'])
 @pytest.mark.asyncio
-def test_publish_envelope_raises(event_loop):
+def test_publish_envelope_raises_lower_level_error(event_loop):
     pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
 
     pubnub._connector.close()

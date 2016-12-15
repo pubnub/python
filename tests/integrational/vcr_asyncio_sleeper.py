@@ -68,7 +68,7 @@ class VCR599Listener(SubscribeListener):
                     """ HACK: case assumes that this is a long-polling request that wasn't fulfilled
                     at the time when it was recorded. To simulate this a sleep method was used.
                     """
-                    import asyncio
+                    pass
                     # yield from asyncio.sleep(1000)
             else:
                 raise

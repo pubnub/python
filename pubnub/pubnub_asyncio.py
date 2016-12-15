@@ -365,13 +365,12 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             self._subscription_lock.release()
             return
 
-        self._subscribe_request_task = asyncio.ensure_future(
-            Subscribe(self._pubnub)
-                .channels(combined_channels)
-                .channel_groups(combined_groups)
-                .timetoken(self._timetoken).region(self._region)
-                .filter_expression(self._pubnub.config.filter_expression)
-                .future())
+        self._subscribe_request_task = asyncio.ensure_future(Subscribe(self._pubnub)
+                                                             .channels(combined_channels)
+                                                             .channel_groups(combined_groups)
+                                                             .timetoken(self._timetoken).region(self._region)
+                                                             .filter_expression(self._pubnub.config.filter_expression)
+                                                             .future())
 
         e = yield from self._subscribe_request_task
 
@@ -453,7 +452,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if envelope.status.is_error:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
-                                heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                        heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
                     self._listener_manager.announce_stateus(envelope.status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:

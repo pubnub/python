@@ -44,10 +44,10 @@ def main():
         [
             (r"/v2/subscribe/demo/demo/0", SubscribeHandler),
             (r"/time/0", TimeHandler),
-            ],
+        ],
         cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",
         xsrf_cookies=True,
-        )
+    )
     app.listen(8089)
     ioloop.start()
 

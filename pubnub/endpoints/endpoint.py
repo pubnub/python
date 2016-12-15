@@ -158,7 +158,7 @@ class Endpoint(object):
                 if operation_type == PNOperationType.PNAccessManagerAudit:
                     signed_input += 'audit\n'
                 elif operation_type == PNOperationType.PNAccessManagerGrant or \
-                                operation_type == PNOperationType.PNAccessManagerRevoke:
+                        operation_type == PNOperationType.PNAccessManagerRevoke:
                     signed_input += 'grant\n'
                 else:
                     signed_input += self.build_path() + "\n"

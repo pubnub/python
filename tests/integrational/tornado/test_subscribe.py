@@ -6,7 +6,7 @@ from tornado.testing import AsyncTestCase
 
 import pubnub as pn
 from pubnub.pubnub_tornado import PubNubTornado, SubscribeListener
-from tests.helper import pnconf_sub_copy, gen_string
+from tests.helper import pnconf_sub_copy
 from tests.integrational.tornado.vcr_tornado_decorator import use_cassette_and_stub_time_sleep
 
 pn.set_stream_logger('pubnub', logging.DEBUG)

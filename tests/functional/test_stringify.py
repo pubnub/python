@@ -49,25 +49,25 @@ class TestStringify(unittest.TestCase):
 
     def test_history_item(self):
         assert str(PNHistoryItemResult({'blah': 2}, 123)) == \
-               "History item with tt: 123 and content: {'blah': 2}"
+            "History item with tt: 123 and content: {'blah': 2}"
 
         assert str(PNHistoryItemResult({'blah': 2})) == \
-               "History item with tt: None and content: {'blah': 2}"
+            "History item with tt: None and content: {'blah': 2}"
 
     def test_here_now(self):
         assert str(PNHereNowResult(7, 4, None)) == "HereNow Result total occupancy: 4, total channels: 7"
 
     def test_here_now_channel_data(self):
         assert str(PNHereNowChannelData('blah', 5, 9)) == \
-               "HereNow Channel Data for channel 'blah': occupancy: 5, occupants: 9"
+            "HereNow Channel Data for channel 'blah': occupancy: 5, occupants: 9"
 
     def test_here_now_occupants_data(self):
         assert str(PNHereNowOccupantsData('myuuid', {'blah': 3})) == \
-                "HereNow Occupants Data for 'myuuid': {'blah': 3}"
+            "HereNow Occupants Data for 'myuuid': {'blah': 3}"
 
     def test_where_now(self):
         assert str(PNWhereNowResult(['qwer', 'asdf'])) == \
-               "User is currently subscribed to qwer, asdf"
+            "User is currently subscribed to qwer, asdf"
 
     def test_set_state(self):
         assert str(PNSetStateResult({})) == "New state {} successfully set"
@@ -77,16 +77,16 @@ class TestStringify(unittest.TestCase):
 
     def test_push_list(self):
         assert str(PNPushListProvisionsResult(['qwer', 'asdf'])) == \
-               "Push notification enabled on following channels: qwer, asdf"
+            "Push notification enabled on following channels: qwer, asdf"
 
     def test_push_add(self):
         assert str(PNPushAddChannelResult()) == \
-               "Channel successfully added"
+            "Channel successfully added"
 
     def test_push_remove(self):
         assert str(PNPushRemoveChannelResult()) == \
-               "Channel successfully removed"
+            "Channel successfully removed"
 
     def test_push_remove_all(self):
         assert str(PNPushRemoveAllChannelsResult()) == \
-               "All channels successfully removed"
+            "All channels successfully removed"

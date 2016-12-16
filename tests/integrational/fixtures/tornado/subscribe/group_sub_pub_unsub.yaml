@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?add=subscribe-unsubscribe-channel&pnsdk=PubNub-Python-Tornado%2F4.0.2
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?add=subscribe-unsubscribe-channel&pnsdk=PubNub-Python-Tornado%2F4.0.3
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -41,14 +41,14 @@ interactions:
       - Access-Control-Allow-Origin
       - ['*']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.2&add=subscribe-unsubscribe-channel&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.3&add=subscribe-unsubscribe-channel&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=0
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3&tt=0
   response:
     body: {string: '{"t":{"t":"14708450055747125","r":3},"m":[]}'}
     headers:
@@ -74,14 +74,14 @@ interactions:
       - Access-Control-Allow-Origin
       - ['*']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=0&channel-group=subscribe-unsubscribe-group&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Tornado%2F4.0.3&tt=0&channel-group=subscribe-unsubscribe-group&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.3
   response:
     body: {string: '[1,"Sent","14708450057626682"]'}
     headers:
@@ -107,14 +107,14 @@ interactions:
       - Access-Control-Allow-Origin
       - ['*']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22?seqn=1&pnsdk=PubNub-Python-Tornado%2F4.0.2&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22?seqn=1&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=3&tt=14708450055747125
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=3&tt=14708450055747125
   response:
     body: {string: '{"t":{"t":"14708450057612306","r":3},"m":[{"a":"2","f":0,"i":"881d453a-4ef5-4dc3-a5a5-be11147ae030","s":1,"p":{"t":"14708450057626682","r":3},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-unsubscribe-channel","d":"hey","b":"subscribe-unsubscribe-group"}]}'}
     headers:
@@ -140,14 +140,14 @@ interactions:
       - Access-Control-Allow-Origin
       - ['*']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Tornado%2F4.0.2&tr=3&tt=14708450055747125&channel-group=subscribe-unsubscribe-group&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=3&tt=14708450055747125&channel-group=subscribe-unsubscribe-group&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.2
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3
   response:
     body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
         "Presence"}'}
@@ -183,14 +183,14 @@ interactions:
       - Access-Control-Allow-Origin
       - ['*']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?pnsdk=PubNub-Python-Tornado%2F4.0.2&channel-group=subscribe-unsubscribe-group&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?pnsdk=PubNub-Python-Tornado%2F4.0.3&channel-group=subscribe-unsubscribe-group&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.2&remove=subscribe-unsubscribe-channel
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.3&remove=subscribe-unsubscribe-channel
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -226,5 +226,5 @@ interactions:
       - Access-Control-Allow-Origin
       - ['*']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.2&remove=subscribe-unsubscribe-channel&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.3&remove=subscribe-unsubscribe-channel&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
 version: 1

@@ -2,7 +2,7 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
     uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid/data
   response:
@@ -13,11 +13,11 @@ interactions:
       CONTENT-LENGTH: '96', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
         11 Aug 2016 20:08:21 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid/data?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.2&state=%7B%22count%22%3A%205%2C%20%22name%22%3A%20%22Alex%22%7D
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid/data?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3&state=%7B%22count%22%3A%205%2C%20%22name%22%3A%20%22Alex%22%7D
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.2]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
     uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid
   response:
@@ -29,5 +29,5 @@ interactions:
       CONTENT-LENGTH: '229', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
         11 Aug 2016 20:08:21 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.2
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3
 version: 1

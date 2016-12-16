@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?add=subscribe-unsubscribe-channel&pnsdk=PubNub-Python-Tornado%2F4.0.2
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?add=subscribe-unsubscribe-channel&pnsdk=PubNub-Python-Tornado%2F4.0.3
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -41,14 +41,14 @@ interactions:
       - Cache-Control
       - [no-cache]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?uuid=2f731928-4a3a-476a-9da6-b45543673620&add=subscribe-unsubscribe-channel&pnsdk=PubNub-Python-Tornado%2F4.0.2
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?uuid=2f731928-4a3a-476a-9da6-b45543673620&add=subscribe-unsubscribe-channel&pnsdk=PubNub-Python-Tornado%2F4.0.3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=0
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3&tt=0
   response:
     body: {string: '{"t":{"t":"14708447464037454","r":12},"m":[]}'}
     headers:
@@ -74,14 +74,14 @@ interactions:
       - Cache-Control
       - [no-cache]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?uuid=2f731928-4a3a-476a-9da6-b45543673620&channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.2&tt=0
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?uuid=2f731928-4a3a-476a-9da6-b45543673620&channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3&tt=0
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.2
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3
   response:
     body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
         "Presence"}'}
@@ -117,14 +117,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?uuid=2f731928-4a3a-476a-9da6-b45543673620&channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.2
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?uuid=2f731928-4a3a-476a-9da6-b45543673620&channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.2]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.2&remove=subscribe-unsubscribe-channel
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.3&remove=subscribe-unsubscribe-channel
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -160,5 +160,5 @@ interactions:
       - Cache-Control
       - [no-cache]
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?remove=subscribe-unsubscribe-channel&uuid=2f731928-4a3a-476a-9da6-b45543673620&pnsdk=PubNub-Python-Tornado%2F4.0.2
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?remove=subscribe-unsubscribe-channel&uuid=2f731928-4a3a-476a-9da6-b45543673620&pnsdk=PubNub-Python-Tornado%2F4.0.3
 version: 1

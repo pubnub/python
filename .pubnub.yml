@@ -1,8 +1,13 @@
 name: python
-version: 4.0.2
+version: 4.0.3
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.3
+    date:
+    changes:
+      - type: improvement
+        text: do not strip plus sign when encoding message.
   - version: v4.0.2
     date:
     changes:
@@ -59,4 +64,4 @@ features:
     - SUBSCRIBE-PRESENCE-CHANNELS-GROUPS
     - SUBSCRIBE-WITH-TIMETOKEN
     - SUBSCRIBE-WILDCARD
-    - SUBSCRIBE-SENDER-UUID
+    - SUBSCRIBE-PUBLISHER-UUID

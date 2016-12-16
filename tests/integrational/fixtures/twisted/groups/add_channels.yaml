@@ -2,15 +2,15 @@ interactions:
 - request:
     body: !!python/unicode 
     headers:
-      user-agent: [PubNub-Python-Twisted/4.0.2]
+      user-agent: [PubNub-Python-Twisted/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/cgttg?add=cgttc0%2Ccgttc1&pnsdk=PubNub-Python-Twisted%2F4.0.2
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/cgttg?add=cgttc0%2Ccgttc1&pnsdk=PubNub-Python-Twisted%2F4.0.3
   response:
     body: {string: !!python/unicode '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
     headers: !!python/object:twisted.web.http_headers.Headers
       _rawHeaders:
-        user-agent: [PubNub-Python-Twisted/4.0.2]
+        user-agent: [PubNub-Python-Twisted/4.0.3]
     status: {code: 200, message: ''}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/cgttg?add=cgttc0,cgttc1&pnsdk=PubNub-Python-Twisted%2F4.0.2&uuid=a88dfb31-755d-4db4-844e-0b56b0699f92
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/cgttg?add=cgttc0,cgttc1&pnsdk=PubNub-Python-Twisted%2F4.0.3&uuid=a88dfb31-755d-4db4-844e-0b56b0699f92
 version: 1

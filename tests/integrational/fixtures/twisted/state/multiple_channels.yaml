@@ -2,15 +2,15 @@ interactions:
 - request:
     body: !!python/unicode 
     headers:
-      user-agent: [PubNub-Python-Twisted/4.0.2]
+      user-agent: [PubNub-Python-Twisted/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/twisted-test-0,twisted-test-1/uuid/someuuid/data?pnsdk=PubNub-Python-Twisted%2F4.0.2&state=%7B%22whatever%22%3A+%22something%22%7D
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/twisted-test-0,twisted-test-1/uuid/someuuid/data?pnsdk=PubNub-Python-Twisted%2F4.0.3&state=%7B%22whatever%22%3A+%22something%22%7D
   response:
     body: {string: !!python/unicode '{"status": 200, "message": "OK", "payload": {"whatever":
         "something"}, "service": "Presence"}'}
     headers: !!python/object:twisted.web.http_headers.Headers
       _rawHeaders:
-        user-agent: [PubNub-Python-Twisted/4.0.2]
+        user-agent: [PubNub-Python-Twisted/4.0.3]
     status: {code: 200, message: ''}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/twisted-test-0,twisted-test-1/uuid/someuuid/data?state=%7B%22whatever%22%3A%20%22something%22%7D&pnsdk=PubNub-Python-Twisted%2F4.0.2&uuid=someuuid
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/twisted-test-0,twisted-test-1/uuid/someuuid/data?state=%7B%22whatever%22%3A%20%22something%22%7D&pnsdk=PubNub-Python-Twisted%2F4.0.3&uuid=someuuid
 version: 1

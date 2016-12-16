@@ -5,9 +5,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.2]
+      User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch-1,state-native-sync-ch-2/uuid/state-native-sync-uuid/data?pnsdk=PubNub-Python%2F4.0.2&state=%7B%22name%22%3A+%22Alex%22%2C+%22count%22%3A+5%7D
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch-1,state-native-sync-ch-2/uuid/state-native-sync-uuid/data?pnsdk=PubNub-Python%2F4.0.3&state=%7B%22name%22%3A+%22Alex%22%2C+%22count%22%3A+5%7D
   response:
     body: {string: '{"status": 200, "message": "OK", "payload": {"count": 5, "name":
         "Alex"}, "service": "Presence"}'}
@@ -29,9 +29,9 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.2]
+      User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch-1,state-native-sync-ch-2/uuid/state-native-sync-uuid?pnsdk=PubNub-Python%2F4.0.2
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch-1,state-native-sync-ch-2/uuid/state-native-sync-uuid?pnsdk=PubNub-Python%2F4.0.3
   response:
     body: {string: '{"status": 200, "message": "OK", "payload": {"channels": {"state-native-sync-ch-1":
         {"count": 5, "name": "Alex"}, "state-native-sync-ch-2": {"count": 5, "name":

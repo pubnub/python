@@ -83,17 +83,22 @@ class TestHeartbeat(unittest.TestCase):
         self.assertEqual(self.hb._groups, ['gr1', 'gr2', 'gr3'])
 
     def test_hb_with_state(self):
+        import six
+
         state = {"name": "Alex", "count": 7}
         self.hb.channels('ch1,ch2').state(state)
 
         self.assertEquals(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
                           % (pnconf.subscribe_key, "ch1,ch2"))
 
-        self.assertEqual(self.hb.build_params_callback()({}), {
+        params = self.hb.build_params_callback()({})
+        params['state'] = json.loads(six.moves.urllib.parse.unquote(params['state']))
+
+        self.assertEqual(params, {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'heartbeat': '20',
-            'state': json.dumps(state)
+            'state': state
         })
 
         self.assertEqual(self.hb._groups, [])

@@ -1,9 +1,14 @@
 import tornado
-from tornado.testing import AsyncTestCase
+import logging
+import pubnub as pn
 
+from tornado.testing import AsyncTestCase
 from pubnub.pubnub_tornado import PubNubTornado
 from tests.helper import pnconf_copy
 from tests.integrational.tornado.vcr_tornado_decorator import use_cassette_and_stub_time_sleep
+
+
+pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
 class TestPubNubState(AsyncTestCase):

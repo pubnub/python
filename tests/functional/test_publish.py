@@ -72,7 +72,7 @@ class TestPublish(unittest.TestCase):
         self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
-            'meta': '["m1", "m2"]',
+            'meta': '%5B%22m1%22%2C%20%22m2%22%5D',
         })
 
     def test_pub_store(self):

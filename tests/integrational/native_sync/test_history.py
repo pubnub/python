@@ -18,7 +18,7 @@ COUNT = 5
 
 class TestPubNubHistory(unittest.TestCase):
     @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/basic.yaml',
-                                             filter_query_parameters=['uuid'])
+                                             filter_query_parameters=['uuid', 'pnsdk'])
     def test_basic(self):
         ch = "history-native-sync-ch"
         pubnub = PubNub(pnconf_copy())
@@ -45,7 +45,7 @@ class TestPubNubHistory(unittest.TestCase):
         assert envelope.result.messages[4].entry == 'hey-4'
 
     @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/encoded.yaml',
-                                             filter_query_parameters=['uuid'])
+                                             filter_query_parameters=['uuid', 'pnsdk'])
     def test_encrypted(self):
         ch = "history-native-sync-ch"
         pubnub = PubNub(pnconf_enc_copy())
@@ -72,7 +72,7 @@ class TestPubNubHistory(unittest.TestCase):
         assert envelope.result.messages[4].entry == 'hey-4'
 
     @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/not_permitted.yaml',
-                                             filter_query_parameters=['uuid'])
+                                             filter_query_parameters=['uuid', 'pnsdk'])
     def test_not_permitted(self):
         ch = "history-native-sync-ch"
         pubnub = PubNub(pnconf_pam_copy())

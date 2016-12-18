@@ -12,7 +12,7 @@ pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 class TestPubNubState(unittest.TestCase):
     @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/state/state_of_single_channel.yaml',
-                         filter_query_parameters=['uuid'], match_on=['state_object_in_query'])
+                         filter_query_parameters=['uuid', 'pnsdk'], match_on=['state_object_in_query'])
     def test_single_channel(self):
         ch = "state-native-sync-ch"
         pubnub = PubNub(pnconf_copy())
@@ -32,7 +32,7 @@ class TestPubNubState(unittest.TestCase):
         assert envelope.result.channels[ch]['count'] == 5
 
     @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/state/state_of_multiple_channels.yaml',
-                         filter_query_parameters=['uuid'], match_on=['state_object_in_query'])
+                         filter_query_parameters=['uuid', 'pnsdk'], match_on=['state_object_in_query'])
     def test_multiple_channels(self):
         ch1 = "state-native-sync-ch-1"
         ch2 = "state-native-sync-ch-2"

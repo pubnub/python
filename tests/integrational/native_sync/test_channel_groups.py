@@ -15,11 +15,18 @@ pubnub.set_stream_logger('pubnub', logging.DEBUG)
 class TestPubNubChannelGroups(unittest.TestCase):
     @use_cassette_and_stub_time_sleep_native(
         'tests/integrational/fixtures/native_sync/channel_groups/single_channel.yaml',
-        filter_query_parameters=['uuid'])
+        filter_query_parameters=['uuid', 'pnsdk'])
     def test_single_channel(self):
         ch = "channel-groups-native-ch"
         gr = "channel-groups-native-cg"
         pubnub = PubNub(pnconf_copy())
+
+        # cleanup
+        envelope = pubnub.remove_channel_group() \
+            .channel_group(gr) \
+            .sync()
+
+        assert isinstance(envelope.result, PNChannelGroupsRemoveGroupResult)
 
         # add
         envelope = pubnub.add_channel_to_channel_group() \
@@ -60,12 +67,19 @@ class TestPubNubChannelGroups(unittest.TestCase):
 
     @use_cassette_and_stub_time_sleep_native(
         'tests/integrational/fixtures/native_sync/channel_groups/add_remove_multiple_channels.yaml',
-        filter_query_parameters=['uuid'])
+        filter_query_parameters=['uuid', 'pnsdk'])
     def test_add_remove_multiple_channels(self):
         ch1 = "channel-groups-unit-ch1"
         ch2 = "channel-groups-unit-ch2"
         gr = "channel-groups-unit-cg"
         pubnub = PubNub(pnconf_copy())
+
+        # cleanup
+        envelope = pubnub.remove_channel_group() \
+            .channel_group(gr) \
+            .sync()
+
+        assert isinstance(envelope.result, PNChannelGroupsRemoveGroupResult)
 
         # add
         envelope = pubnub.add_channel_to_channel_group() \
@@ -107,11 +121,18 @@ class TestPubNubChannelGroups(unittest.TestCase):
 
     @use_cassette_and_stub_time_sleep_native(
         'tests/integrational/fixtures/native_sync/channel_groups/add_channel_remove_group.yaml',
-        filter_query_parameters=['uuid'])
+        filter_query_parameters=['uuid', 'pnsdk'])
     def test_add_channel_remove_group(self):
         ch = "channel-groups-unit-ch"
         gr = "channel-groups-unit-cg"
         pubnub = PubNub(pnconf_copy())
+
+        # cleanup
+        envelope = pubnub.remove_channel_group() \
+            .channel_group(gr) \
+            .sync()
+
+        assert isinstance(envelope.result, PNChannelGroupsRemoveGroupResult)
 
         # add
         envelope = pubnub.add_channel_to_channel_group() \

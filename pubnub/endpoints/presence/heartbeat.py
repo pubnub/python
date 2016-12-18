@@ -50,7 +50,7 @@ class Heartbeat(Endpoint):
             params['channel-group'] = utils.join_items(self._groups)
 
         if self._state is not None and len(self._state) > 0:
-            params['state'] = utils.write_value_as_string(self._state)
+            params['state'] = utils.url_write(self._state)
 
         return params
 

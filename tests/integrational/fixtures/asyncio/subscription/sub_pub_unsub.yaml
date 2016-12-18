@@ -4,38 +4,53 @@ interactions:
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&tt=0&uuid=test-subscribe-asyncio-uuid-sub
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?tt=0&uuid=test-subscribe-asyncio-uuid-sub
   response:
-    body: {string: '{"t":{"t":"14804365171764948","r":3},"m":[]}'}
+    body: {string: '{"t":{"t":"14818963571353315","r":12},"m":[]}'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
-      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '44', CONTENT-TYPE: text/javascript;
-        charset="UTF-8", DATE: 'Tue, 29 Nov 2016 16:26:09 GMT'}
+      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
+        charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:37 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&tt=0&uuid=test-subscribe-asyncio-uuid-sub
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-uuid-sub&tt=0
 - request:
     body: null
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.3&seqn=1&uuid=test-subscribe-asyncio-uuid-pub
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22hey%22?seqn=1&uuid=test-subscribe-asyncio-uuid-pub
   response:
-    body: {string: '[1,"Sent","14804367695440930"]'}
+    body: {string: '[1,"Sent","14818963573025400"]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
-        charset="UTF-8", DATE: 'Tue, 29 Nov 2016 16:26:09 GMT'}
+        charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:37 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.3&seqn=1&uuid=test-subscribe-asyncio-uuid-pub
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-uuid-pub&seqn=1
 - request:
     body: null
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&tr=12&tt=14786823981211583&uuid=test-subscribe-asyncio-uuid-sub
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?tr=12&tt=14818963571353315&uuid=test-subscribe-asyncio-uuid-sub
   response:
-    body: {string: '{"t":{"t":"14804367695447711","r":3},"m":[{"a":"2","f":0,"i":"test-subscribe-asyncio-uuid-pub","s":1,"p":{"t":"14804367695440930","r":3},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"test-subscribe-asyncio-ch","d":"hey"}]}'}
+    body: {string: '{"t":{"t":"14818963573055360","r":12},"m":[{"a":"2","f":0,"i":"test-subscribe-asyncio-uuid-pub","s":1,"p":{"t":"14818963573025400","r":12},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"test-subscribe-asyncio-ch","d":"hey"}]}'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
-      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '230', CONTENT-TYPE: text/javascript;
-        charset="UTF-8", DATE: 'Tue, 29 Nov 2016 16:26:09 GMT'}
+      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '232', CONTENT-TYPE: text/javascript;
+        charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:37 GMT'}
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&tr=12&tt=14786823981211583&uuid=test-subscribe-asyncio-uuid-sub
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-uuid-sub&tr=12&tt=14818963571353315
+- request:
+    body: null
+    headers:
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-ch/leave?uuid=test-subscribe-asyncio-uuid-sub
+  response:
+    body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
+        "Presence"}'}
+    headers: {ACCEPT-RANGES: bytes, ACCESS-CONTROL-ALLOW-METHODS: 'OPTIONS, GET, POST',
+      ACCESS-CONTROL-ALLOW-ORIGIN: '*', AGE: '0', CACHE-CONTROL: no-cache, CONNECTION: keep-alive,
+      CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri,
+        16 Dec 2016 13:52:37 GMT', SERVER: Pubnub Presence}
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-ch/leave?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-uuid-sub
 version: 1

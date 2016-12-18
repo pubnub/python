@@ -141,6 +141,7 @@ class Endpoint(object):
 
     def build_params_callback(self):
         def callback(params_to_merge):
+            operation_type = self.operation_type()
             custom_params = self.custom_params()
             custom_params.update(params_to_merge)
 
@@ -154,7 +155,6 @@ class Endpoint(object):
                 custom_params['timestamp'] = str(self.pubnub.timestamp())
                 signed_input = (self.pubnub.config.subscribe_key + "\n" + self.pubnub.config.publish_key + "\n")
 
-                operation_type = self.operation_type()
                 if operation_type == PNOperationType.PNAccessManagerAudit:
                     signed_input += 'audit\n'
                 elif operation_type == PNOperationType.PNAccessManagerGrant or \
@@ -166,13 +166,13 @@ class Endpoint(object):
                 signed_input += utils.prepare_pam_arguments(custom_params)
                 signature = utils.sign_sha256(self.pubnub.config.secret_key, signed_input)
 
-                # REVIEW: add encoder map to not hardcode encoding here
-                if operation_type == PNOperationType.PNPublishOperation and 'meta' in custom_params:
-                    custom_params['meta'] = utils.url_encode(custom_params['meta'])
-                if operation_type == PNOperationType.PNSetStateOperation and 'state' in custom_params:
-                    custom_params['state'] = utils.url_encode(custom_params['state'])
-
                 custom_params['signature'] = signature
+
+            # REVIEW: add encoder map to not hardcode encoding here
+            if operation_type == PNOperationType.PNPublishOperation and 'meta' in custom_params:
+                custom_params['meta'] = utils.url_encode(custom_params['meta'])
+            if operation_type == PNOperationType.PNSetStateOperation and 'state' in custom_params:
+                custom_params['state'] = utils.url_encode(custom_params['state'])
 
             # reassign since pnsdk should be signed unencoded
             custom_params['pnsdk'] = utils.url_encode(self.pubnub.sdk_name)

@@ -112,6 +112,13 @@ class PubNubAsyncio(PubNubCore):
 
     @asyncio.coroutine
     def _request_helper(self, options_func, cancellation_event):
+        """
+        Query string should be provided as a manually serialized and encoded string.
+
+        :param options_func:
+        :param cancellation_event:
+        :return:
+        """
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
@@ -445,7 +452,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                               .channel_groups(presence_groups)
                               .state(state_payload)
                               .cancellation_event(cancellation_event)
-                              .result())
+                              .future())
 
             envelope = yield from heartbeat_call
 

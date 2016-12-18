@@ -5,23 +5,17 @@ interactions:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?add=subscribe-unsubscribe-channel&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?add=subscribe-unsubscribe-channel
   response:
-    body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
+    body: {string: !!python/unicode '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
     headers:
     - !!python/tuple
-      - Access-Control-Allow-Methods
-      - [GET]
-    - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
+      - Content-Length
+      - ['79']
     - !!python/tuple
       - Accept-Ranges
       - [bytes]
-    - !!python/tuple
-      - Cache-Control
-      - [no-cache]
     - !!python/tuple
       - Server
       - [Pubnub]
@@ -29,141 +23,141 @@ interactions:
       - Connection
       - [close]
     - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 16:03:24 GMT']
+      - Cache-Control
+      - [no-cache]
     - !!python/tuple
-      - Content-Length
-      - ['79']
+      - Date
+      - ['Fri, 16 Dec 2016 11:16:07 GMT']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
     - !!python/tuple
       - Age
       - ['0']
-    - !!python/tuple
-      - Access-Control-Allow-Origin
-      - ['*']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.3&add=subscribe-unsubscribe-channel&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?add=subscribe-unsubscribe-channel&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=eb63e8cb-b81c-4ccc-b411-bb53264e3c09
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3&tt=0
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&tt=0
   response:
-    body: {string: '{"t":{"t":"14708450055747125","r":3},"m":[]}'}
+    body: {string: !!python/unicode '{"t":{"t":"14818869687160475","r":12},"m":[]}'}
     headers:
-    - !!python/tuple
-      - Access-Control-Allow-Methods
-      - [GET]
-    - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Cache-Control
-      - [no-cache]
-    - !!python/tuple
-      - Connection
-      - [close]
-    - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 16:03:25 GMT']
     - !!python/tuple
       - Content-Length
-      - ['44']
+      - ['45']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Date
+      - ['Fri, 16 Dec 2016 11:16:08 GMT']
     - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
-    status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Tornado%2F4.0.3&tt=0&channel-group=subscribe-unsubscribe-group&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
-- request:
-    body: null
-    headers:
-      Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
-    method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.3
-  response:
-    body: {string: '[1,"Sent","14708450057626682"]'}
-    headers:
     - !!python/tuple
       - Access-Control-Allow-Methods
       - [GET]
     - !!python/tuple
       - Content-Type
       - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Cache-Control
-      - [no-cache]
-    - !!python/tuple
-      - Connection
-      - [close]
-    - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 16:03:25 GMT']
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3&tt=0&uuid=eb63e8cb-b81c-4ccc-b411-bb53264e3c09
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
+    method: GET
+    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22
+  response:
+    body: {string: !!python/unicode '[1,"Sent","14818869688799557"]'}
+    headers:
     - !!python/tuple
       - Content-Length
       - ['30']
     - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Date
+      - ['Fri, 16 Dec 2016 11:16:08 GMT']
+    - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
-    status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22?seqn=1&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
-- request:
-    body: null
-    headers:
-      Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
-    method: GET
-    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=3&tt=14708450055747125
-  response:
-    body: {string: '{"t":{"t":"14708450057612306","r":3},"m":[{"a":"2","f":0,"i":"881d453a-4ef5-4dc3-a5a5-be11147ae030","s":1,"p":{"t":"14708450057626682","r":3},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-unsubscribe-channel","d":"hey","b":"subscribe-unsubscribe-group"}]}'}
-    headers:
     - !!python/tuple
       - Access-Control-Allow-Methods
       - [GET]
     - !!python/tuple
       - Content-Type
       - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Cache-Control
-      - [no-cache]
-    - !!python/tuple
-      - Connection
-      - [close]
-    - !!python/tuple
-      - Date
-      - ['Wed, 10 Aug 2016 16:03:25 GMT']
-    - !!python/tuple
-      - Content-Length
-      - ['273']
-    - !!python/tuple
-      - Access-Control-Allow-Origin
-      - ['*']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=3&tt=14708450055747125&channel-group=subscribe-unsubscribe-group&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.3&seqn=1&uuid=eb63e8cb-b81c-4ccc-b411-bb53264e3c09
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&tr=12&tt=14818869687160475
   response:
-    body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
-        "Presence"}'}
+    body: {string: !!python/unicode '{"t":{"t":"14818869688928592","r":12},"m":[{"a":"2","f":0,"i":"eb63e8cb-b81c-4ccc-b411-bb53264e3c09","s":1,"p":{"t":"14818869688799557","r":12},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-unsubscribe-channel","d":"hey","b":"subscribe-unsubscribe-group"}]}'}
     headers:
     - !!python/tuple
-      - Access-Control-Allow-Methods
-      - ['OPTIONS, GET, POST']
+      - Content-Length
+      - ['275']
     - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
-    - !!python/tuple
-      - Accept-Ranges
-      - [bytes]
+      - Connection
+      - [close]
     - !!python/tuple
       - Cache-Control
       - [no-cache]
+    - !!python/tuple
+      - Date
+      - ['Fri, 16 Dec 2016 11:16:08 GMT']
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    status: {code: 200, message: OK}
+    url: http://pubsub.pubnub.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&tt=14818869687160475&uuid=eb63e8cb-b81c-4ccc-b411-bb53264e3c09
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.0.3]
+    method: GET
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-unsubscribe-group
+  response:
+    body: {string: !!python/unicode '{"status": 200, "action": "leave", "message":
+        "OK", "service": "Presence"}'}
+    headers:
+    - !!python/tuple
+      - Content-Length
+      - ['74']
+    - !!python/tuple
+      - Accept-Ranges
+      - [bytes]
     - !!python/tuple
       - Server
       - [Pubnub Presence]
@@ -171,42 +165,42 @@ interactions:
       - Connection
       - [close]
     - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
       - Date
-      - ['Wed, 10 Aug 2016 16:03:26 GMT']
-    - !!python/tuple
-      - Content-Length
-      - ['74']
-    - !!python/tuple
-      - Age
-      - ['0']
+      - ['Fri, 16 Dec 2016 11:16:09 GMT']
     - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - ['OPTIONS, GET, POST']
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Age
+      - ['0']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?pnsdk=PubNub-Python-Tornado%2F4.0.3&channel-group=subscribe-unsubscribe-group&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-unsubscribe-group&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=eb63e8cb-b81c-4ccc-b411-bb53264e3c09
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.3&remove=subscribe-unsubscribe-channel
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?remove=subscribe-unsubscribe-channel
   response:
-    body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
+    body: {string: !!python/unicode '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
     headers:
     - !!python/tuple
-      - Access-Control-Allow-Methods
-      - [GET]
-    - !!python/tuple
-      - Content-Type
-      - [text/javascript; charset="UTF-8"]
+      - Content-Length
+      - ['79']
     - !!python/tuple
       - Accept-Ranges
       - [bytes]
-    - !!python/tuple
-      - Cache-Control
-      - [no-cache]
     - !!python/tuple
       - Server
       - [Pubnub]
@@ -214,17 +208,23 @@ interactions:
       - Connection
       - [close]
     - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
       - Date
-      - ['Wed, 10 Aug 2016 16:03:26 GMT']
-    - !!python/tuple
-      - Content-Length
-      - ['79']
-    - !!python/tuple
-      - Age
-      - ['0']
+      - ['Fri, 16 Dec 2016 11:16:09 GMT']
     - !!python/tuple
       - Access-Control-Allow-Origin
       - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Age
+      - ['0']
     status: {code: 200, message: OK}
-    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.3&remove=subscribe-unsubscribe-channel&uuid=881d453a-4ef5-4dc3-a5a5-be11147ae030
+    url: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-unsubscribe-group?pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=eb63e8cb-b81c-4ccc-b411-bb53264e3c09&remove=subscribe-unsubscribe-channel
 version: 1

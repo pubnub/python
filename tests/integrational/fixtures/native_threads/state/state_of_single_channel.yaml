@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch/uuid/state-native-sync-uuid/data?pnsdk=PubNub-Python%2F4.0.3&state=%7B%22name%22%3A+%22Alex%22%2C+%22count%22%3A+5%7D
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch/uuid/state-native-sync-uuid/data?state=%7B%22name%22%3A+%22Alex%22%2C+%22count%22%3A+5%7D
   response:
     body: {string: '{"status": 200, "message": "OK", "payload": {"count": 5, "name":
         "Alex"}, "service": "Presence"}'}
@@ -19,7 +19,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['96']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 18:00:23 GMT']
+      Date: ['Mon, 19 Dec 2016 14:49:19 GMT']
       Server: [Pubnub Presence]
       cache-control: [no-cache]
     status: {code: 200, message: OK}
@@ -31,7 +31,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch/uuid/state-native-sync-uuid?pnsdk=PubNub-Python%2F4.0.3
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch/uuid/state-native-sync-uuid
   response:
     body: {string: '{"status": 200, "uuid": "state-native-sync-uuid", "service": "Presence",
         "message": "OK", "payload": {"count": 5, "name": "Alex"}, "channel": "state-native-sync-ch"}'}
@@ -43,7 +43,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['165']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 18:00:23 GMT']
+      Date: ['Mon, 19 Dec 2016 14:49:19 GMT']
       Server: [Pubnub Presence]
       cache-control: [no-cache]
     status: {code: 200, message: OK}

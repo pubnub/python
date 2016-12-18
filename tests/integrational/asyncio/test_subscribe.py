@@ -17,7 +17,7 @@ def patch_pubnub(pubnub):
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_unsub.yaml',
-                     filter_query_parameters=['uuid'])
+                     filter_query_parameters=['uuid', 'pnsdk'])
 @pytest.mark.asyncio
 def test_subscribe_unsubscribe(event_loop):
     channel = "test-subscribe-asyncio-ch"
@@ -46,7 +46,8 @@ def test_subscribe_unsubscribe(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub.yaml',
+                     filter_query_parameters=['pnsdk'])
 @pytest.mark.asyncio
 def test_subscribe_publish_unsubscribe(event_loop):
     pubnub_sub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
@@ -94,7 +95,8 @@ def test_subscribe_publish_unsubscribe(event_loop):
     pubnub_sub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub_enc.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub_enc.yaml',
+                     filter_query_parameters=['pnsdk'])
 @pytest.mark.asyncio
 def test_encrypted_subscribe_publish_unsubscribe(event_loop):
     pubnub = PubNubAsyncio(pnconf_enc_sub_copy(), custom_event_loop=event_loop)
@@ -135,7 +137,8 @@ def test_encrypted_subscribe_publish_unsubscribe(event_loop):
     pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml',
+                     filter_query_parameters=['pnsdk'])
 @pytest.mark.asyncio
 def test_join_leave(event_loop):
     channel = "test-subscribe-asyncio-join-leave-ch"
@@ -189,7 +192,7 @@ def test_join_leave(event_loop):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml',
-                     filter_query_parameters=['uuid'])
+                     filter_query_parameters=['uuid', 'pnsdk'])
 @pytest.mark.asyncio
 def test_cg_subscribe_unsubscribe(event_loop, sleeper=asyncio.sleep):
     ch = "test-subscribe-asyncio-channel"
@@ -218,7 +221,7 @@ def test_cg_subscribe_unsubscribe(event_loop, sleeper=asyncio.sleep):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml',
-                     filter_query_parameters=['uuid'])
+                     filter_query_parameters=['uuid', 'pnsdk'])
 @pytest.mark.asyncio
 def test_cg_subscribe_publish_unsubscribe(event_loop, sleeper=asyncio.sleep):
     ch = "test-subscribe-asyncio-channel"
@@ -261,7 +264,8 @@ def test_cg_subscribe_publish_unsubscribe(event_loop, sleeper=asyncio.sleep):
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.yaml')
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.yaml')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.yaml',
+                     filter_query_parameters=['pnsdk'])
 @pytest.mark.asyncio
 def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
@@ -328,6 +332,7 @@ def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/unsubscribe_all.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/unsubscribe_all.yaml',
+                     filter_query_parameters=['pnsdk'],
                      match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
                      match_on_kwargs={
                          'string_list_in_path': {

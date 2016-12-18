@@ -11,7 +11,7 @@ from tests.integrational.vcr_helper import pn_vcr
 
 @get_sleeper('tests/integrational/fixtures/asyncio/groups/add_remove_single_channel.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/groups/add_remove_single_channel.yaml',
-                     filter_query_parameters=['uuid'])
+                     filter_query_parameters=['uuid', 'pnsdk'])
 @pytest.mark.asyncio
 def test_add_remove_single_channel(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
@@ -56,7 +56,7 @@ def test_add_remove_single_channel(event_loop, sleeper=asyncio.sleep):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/groups/add_remove_multiple_channels.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/groups/add_remove_multiple_channels.yaml',
-                     filter_query_parameters=['uuid'])
+                     filter_query_parameters=['uuid', 'pnsdk'])
 @pytest.mark.asyncio
 def test_add_remove_multiple_channels(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
@@ -98,7 +98,7 @@ def test_add_remove_multiple_channels(event_loop, sleeper=asyncio.sleep):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/groups/add_channel_remove_group.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/groups/add_channel_remove_group.yaml',
-                     filter_query_parameters=['uuid'])
+                     filter_query_parameters=['uuid', 'pnsdk'])
 @pytest.mark.asyncio
 def test_add_channel_remove_group(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)

@@ -47,6 +47,11 @@ def url_encode(data):
     return six.moves.urllib.parse.quote(data, safe="").replace("+", "%2B")
 
 
+def url_write(data):
+    """ Just wraps url_encode(write_value_as_string()) """
+    return url_encode(write_value_as_string(data))
+
+
 def uuid():
     return str(u.uuid4())
 

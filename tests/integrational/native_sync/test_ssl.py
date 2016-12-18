@@ -13,7 +13,7 @@ pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
 class TestPubNubPublish(unittest.TestCase):
     @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/ssl/ssl.yaml',
-                         filter_query_parameters=['uuid'])
+                         filter_query_parameters=['uuid', 'pnsdk'])
     def test_publish_string_get(self):
         pnconf = pnconf_copy()
         pnconf.ssl = True

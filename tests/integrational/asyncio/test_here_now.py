@@ -47,6 +47,7 @@ def test_single_channel(event_loop, sleeper=asyncio.sleep):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml',
+                     filter_query_parameters=['pnsdk'],
                      match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
                      match_on_kwargs={
                          'string_list_in_path': {
@@ -91,6 +92,7 @@ def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/here_now/global.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/global.yaml',
+                     filter_query_parameters=['pnsdk'],
                      match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
                      match_on_kwargs={
                          'string_list_in_path': {

@@ -13,6 +13,9 @@ def use_cassette_and_stub_time_sleep(cassette_name, **kwargs):
     full_path = "{}/{}".format(pn_vcr.cassette_library_dir, cassette_name)
     cs = context.cls(path=full_path).load(path=full_path)
 
+    if 'filter_query_parameters' in kwargs:
+        kwargs['filter_query_parameters'].append('pnsdk')
+
     import tornado.gen
 
     @tornado.gen.coroutine

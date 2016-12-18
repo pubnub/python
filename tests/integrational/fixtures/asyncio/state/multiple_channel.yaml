@@ -4,14 +4,14 @@ interactions:
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid/data
+    uri: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid/data?state=%7B%22count%22%3A+5%2C+%22name%22%3A+%22Alex%22%7D
   response:
     body: {string: '{"status": 200, "message": "OK", "payload": {"count": 5, "name":
         "Alex"}, "service": "Presence"}'}
     headers: {ACCEPT-RANGES: bytes, ACCESS-CONTROL-ALLOW-METHODS: 'OPTIONS, GET, POST',
       ACCESS-CONTROL-ALLOW-ORIGIN: '*', AGE: '0', CACHE-CONTROL: no-cache, CONNECTION: keep-alive,
-      CONTENT-LENGTH: '96', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
-        11 Aug 2016 20:08:21 GMT', SERVER: Pubnub Presence}
+      CONTENT-LENGTH: '96', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
+        18 Dec 2016 21:28:29 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
     url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid/data?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3&state=%7B%22count%22%3A%205%2C%20%22name%22%3A%20%22Alex%22%7D
 - request:
@@ -26,8 +26,8 @@ interactions:
         "Alex"}}}, "service": "Presence", "uuid": "test-state-asyncio-uuid"}'}
     headers: {ACCEPT-RANGES: bytes, ACCESS-CONTROL-ALLOW-METHODS: 'OPTIONS, GET, POST',
       ACCESS-CONTROL-ALLOW-ORIGIN: '*', AGE: '0', CACHE-CONTROL: no-cache, CONNECTION: keep-alive,
-      CONTENT-LENGTH: '229', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
-        11 Aug 2016 20:08:21 GMT', SERVER: Pubnub Presence}
+      CONTENT-LENGTH: '229', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
+        18 Dec 2016 21:28:29 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
     url: http://pubsub.pubnub.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch1,test-state-asyncio-ch2/uuid/test-state-asyncio-uuid?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3
 version: 1

@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?add=channel-groups-unit-ch&pnsdk=PubNub-Python%2F4.0.3
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg/remove
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -20,7 +20,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['79']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 17:40:09 GMT']
+      Date: ['Sun, 18 Dec 2016 22:25:16 GMT']
       Server: [Pubnub]
     status: {code: 200, message: OK}
 - request:
@@ -31,7 +31,31 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?pnsdk=PubNub-Python%2F4.0.3
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?add=channel-groups-unit-ch
+  response:
+    body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
+        "error": false}'}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Methods: [GET]
+      Access-Control-Allow-Origin: ['*']
+      Age: ['0']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Length: ['79']
+      Content-Type: [text/javascript; charset="UTF-8"]
+      Date: ['Sun, 18 Dec 2016 22:25:16 GMT']
+      Server: [Pubnub]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [PubNub-Python/4.0.3]
+    method: GET
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg
   response:
     body: {string: '{"status": 200, "payload": {"channels": ["channel-groups-unit-ch"],
         "group": "channel-groups-unit-cg"}, "service": "channel-registry", "error":
@@ -45,7 +69,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['150']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 17:40:10 GMT']
+      Date: ['Sun, 18 Dec 2016 22:25:17 GMT']
       Server: [Pubnub]
     status: {code: 200, message: OK}
 - request:
@@ -56,7 +80,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg/remove?pnsdk=PubNub-Python%2F4.0.3
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg/remove
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -69,7 +93,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['79']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 17:40:10 GMT']
+      Date: ['Sun, 18 Dec 2016 22:25:17 GMT']
       Server: [Pubnub]
     status: {code: 200, message: OK}
 - request:
@@ -80,7 +104,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg?pnsdk=PubNub-Python%2F4.0.3
+    uri: http://pubsub.pubnub.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-unit-cg
   response:
     body: {string: '{"status": 200, "payload": {"channels": [], "group": "channel-groups-unit-cg"},
         "service": "channel-registry", "error": false}'}
@@ -93,7 +117,7 @@ interactions:
       Connection: [keep-alive]
       Content-Length: ['126']
       Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Thu, 21 Jul 2016 17:40:11 GMT']
+      Date: ['Sun, 18 Dec 2016 22:25:19 GMT']
       Server: [Pubnub]
     status: {code: 200, message: OK}
 version: 1

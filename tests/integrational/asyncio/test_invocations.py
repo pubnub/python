@@ -18,7 +18,7 @@ corrupted_keys.subscribe_key = "blah"
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/invocations/future.yaml',
-                     filter_query_parameters=['uuid', 'seqn'])
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 def test_publish_future(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
@@ -29,7 +29,7 @@ def test_publish_future(event_loop):
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/invocations/future_raises_pubnub_error.yaml',
-                     filter_query_parameters=['uuid', 'seqn'])
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 def test_publish_future_raises_pubnub_error(event_loop):
     pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
@@ -44,7 +44,7 @@ def test_publish_future_raises_pubnub_error(event_loop):
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/invocations/future_raises_ll_error.yaml',
-                     filter_query_parameters=['uuid', 'seqn'])
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 def test_publish_future_raises_lower_level_error(event_loop):
     pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
@@ -60,7 +60,7 @@ def test_publish_future_raises_lower_level_error(event_loop):
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/invocations/envelope.yaml',
-                     filter_query_parameters=['uuid', 'seqn'])
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 def test_publish_envelope(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
@@ -72,7 +72,7 @@ def test_publish_envelope(event_loop):
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/invocations/envelope_raises.yaml',
-                     filter_query_parameters=['uuid', 'seqn'])
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 def test_publish_envelope_raises(event_loop):
     pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
@@ -85,7 +85,7 @@ def test_publish_envelope_raises(event_loop):
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/invocations/envelope_raises_ll_error.yaml',
-                     filter_query_parameters=['uuid', 'seqn'])
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 def test_publish_envelope_raises_lower_level_error(event_loop):
     pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)

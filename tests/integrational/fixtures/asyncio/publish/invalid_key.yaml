@@ -4,12 +4,12 @@ interactions:
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/fake/demo/0/asyncio-int-publish/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    uri: http://pubsub.pubnub.com/publish/fake/demo/0/asyncio-int-publish/0/%22hey%22
   response:
-    body: {string: '[0,"Invalid Key","14715121286597316"]'}
+    body: {string: '[0,"Invalid Key","14820978550352022"]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '37', CONTENT-TYPE: text/javascript;
-        charset="UTF-8", DATE: 'Thu, 18 Aug 2016 09:22:08 GMT'}
+        charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:55 GMT'}
     status: {code: 400, message: INVALID}
-    url: http://pubsub.pubnub.com/publish/fake/demo/0/asyncio-int-publish/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.3&seqn=1&uuid=93bf8503-9330-438a-9bd7-8826b8aa00ad
+    url: http://pubsub.pubnub.com/publish/fake/demo/0/asyncio-int-publish/0/%22hey%22?seqn=1&uuid=67af3c55-453e-45f7-bdbd-294d5499cd88&pnsdk=PubNub-Python-Asyncio%2F4.0.3
 version: 1

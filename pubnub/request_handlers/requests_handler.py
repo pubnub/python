@@ -25,8 +25,8 @@ class RequestsRequestHandler(BaseRequestHandler):
     def __init__(self, pubnub):
         self.session = Session()
 
-        self.session.mount('http://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
-        self.session.mount('https://pubsub.pubnub.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('http://ps.pndsn.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('https://ps.pndsn.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
 
         self.pubnub = pubnub
 

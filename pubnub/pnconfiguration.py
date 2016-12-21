@@ -9,7 +9,7 @@ class PNConfiguration(object):
     def __init__(self):
         # TODO: add validation
         self.uuid = None
-        self.origin = "pubsub.pubnub.com"
+        self.origin = "ps.pndsn.com"
         self.ssl = False
         self.non_subscribe_request_timeout = 10
         self.subscribe_request_timeout = 310

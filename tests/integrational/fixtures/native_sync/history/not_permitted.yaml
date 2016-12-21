@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/history/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/channel/history-native-sync-ch?count=5&signature=DFG6A6mYSj-s8dj3w_cQNBJdMCPCYeHLpiAgeIbCb-g%3D&timestamp=1482099937
+    uri: http://ps.pndsn.com/v2/history/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/channel/history-native-sync-ch?count=5&signature=DFG6A6mYSj-s8dj3w_cQNBJdMCPCYeHLpiAgeIbCb-g%3D&timestamp=1482099937
   response:
     body: {string: '[[],0,0]'}
     headers:

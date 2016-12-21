@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/fake/demo/0/ch1/0/%22hey%22?seqn=1
+    uri: http://ps.pndsn.com/publish/fake/demo/0/ch1/0/%22hey%22?seqn=1
   response:
     body: {string: '[0,"Invalid Key","14820999375199241"]'}
     headers:

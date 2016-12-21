@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22QfD1NCBJCmt1aPPGU2cshw%3D%3D%22?seqn=1
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22QfD1NCBJCmt1aPPGU2cshw%3D%3D%22?seqn=1
   response:
     body: {string: '[1,"Sent","14820999316486003"]'}
     headers:
@@ -27,7 +27,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22cIioHNL2bZY8a%2FMa5fBsAA%3D%3D%22?seqn=2
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22cIioHNL2bZY8a%2FMa5fBsAA%3D%3D%22?seqn=2
   response:
     body: {string: '[1,"Sent","14820999317435640"]'}
     headers:
@@ -47,7 +47,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%228YmOnXcBGHtlYIdpGkOvUA%3D%3D%22?seqn=3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%228YmOnXcBGHtlYIdpGkOvUA%3D%3D%22?seqn=3
   response:
     body: {string: '[1,"Sent","14820999318312588"]'}
     headers:
@@ -67,7 +67,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22arJa5qQszd4hc65Y4Y2CxA%3D%3D%22?seqn=4
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22arJa5qQszd4hc65Y4Y2CxA%3D%3D%22?seqn=4
   response:
     body: {string: '[1,"Sent","14820999319032490"]'}
     headers:
@@ -87,7 +87,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22OJvWYC%2FbWXFvcw%2FTNic9hQ%3D%3D%22?seqn=5
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22OJvWYC%2FbWXFvcw%2FTNic9hQ%3D%3D%22?seqn=5
   response:
     body: {string: '[1,"Sent","14820999319748646"]'}
     headers:
@@ -107,7 +107,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/v2/history/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/history-native-sync-ch?count=5
+    uri: http://ps.pndsn.com/v2/history/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/history-native-sync-ch?count=5
   response:
     body: {string: '[["QfD1NCBJCmt1aPPGU2cshw==","cIioHNL2bZY8a/Ma5fBsAA==","8YmOnXcBGHtlYIdpGkOvUA==","arJa5qQszd4hc65Y4Y2CxA==","OJvWYC/bWXFvcw/TNic9hQ=="],14820999316486003,14820999319748646]'}
     headers:

@@ -4,7 +4,7 @@ interactions:
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22
+    uri: http://ps.pndsn.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22
   response:
     body: {string: '{"message":"Forbidden","payload":{"channels":["asyncio-int-publish"]},"error":true,"service":"Access
         Manager","status":403}
@@ -16,5 +16,5 @@ interactions:
       CONTENT-ENCODING: gzip, CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Sun,
         18 Dec 2016 21:50:55 GMT', SERVER: nginx, TRANSFER-ENCODING: chunked, X-BLOCKS-ENABLED: '0'}
     status: {code: 403, message: Forbidden}
-    url: http://pubsub.pubnub.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22?seqn=1&uuid=48600fc7-b3ea-487e-abdc-622c3feec615&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22?seqn=1&uuid=48600fc7-b3ea-487e-abdc-622c3feec615&pnsdk=PubNub-Python-Asyncio%2F4.0.3
 version: 1

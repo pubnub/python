@@ -4,12 +4,12 @@ interactions:
     headers:
       user-agent: [PubNub-Python-Twisted/4.0.3]
     method: GET
-    uri: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/twisted-test/0/%22hi%22?meta=%7B%22a%22%3A+2%2C+%22b%22%3A+true%7D&pnsdk=PubNub-Python-Twisted%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/twisted-test/0/%22hi%22?meta=%7B%22a%22%3A+2%2C+%22b%22%3A+true%7D&pnsdk=PubNub-Python-Twisted%2F4.0.3
   response:
     body: {string: !!python/unicode '[1,"Sent","14768802793338041"]'}
     headers: !!python/object:twisted.web.http_headers.Headers
       _rawHeaders:
         user-agent: [PubNub-Python-Twisted/4.0.3]
     status: {code: 200, message: ''}
-    url: http://pubsub.pubnub.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/twisted-test/0/%22hi%22?pnsdk=PubNub-Python-Twisted%2F4.0.3&meta=%7B%22a%22%3A%202%2C%20%22b%22%3A%20true%7D&uuid=b299acc9-2b04-46ff-aab2-945c0c7f0678&seqn=1
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/twisted-test/0/%22hi%22?pnsdk=PubNub-Python-Twisted%2F4.0.3&meta=%7B%22a%22%3A%202%2C%20%22b%22%3A%20true%7D&uuid=b299acc9-2b04-46ff-aab2-945c0c7f0678&seqn=1
 version: 1

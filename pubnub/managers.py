@@ -1,11 +1,17 @@
+import logging
 from abc import abstractmethod, ABCMeta
 
-from .enums import PNStatusCategory
+import math
+
+from . import utils
+from .enums import PNStatusCategory, PNReconnectionPolicy
 from .models.consumer.common import PNStatus
 from .models.server.subscribe import SubscribeEnvelope
 from .dtos import SubscribeOperation, UnsubscribeOperation
 from .callbacks import SubscribeCallback, ReconnectionCallback
 from .models.subscription_item import SubscriptionItem
+
+logger = logging.getLogger("pubnub")
 
 
 class PublishSequenceManager(object):
@@ -63,6 +69,19 @@ class ReconnectionManager(object):
     def set_reconnection_listener(self, reconnection_callback):
         assert isinstance(reconnection_callback, ReconnectionCallback)
         self._callback = reconnection_callback
+
+    def _recalculate_interval(self):
+        if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.EXPONENTIAL:
+            self._timer_interval = int(math.pow(2, self._connection_errors) - 1)
+            if self._timer_interval > self.MAXEXPONENTIALBACKOFF:
+                self._timer_interval = self.MINEXPONENTIALBACKOFF
+                self._connection_errors = 1
+                logger.debug("timerInterval > MAXEXPONENTIALBACKOFF at: %s" % utils.datetime_now())
+            elif self._timer_interval < 1:
+                self._timer_interval = self.MINEXPONENTIALBACKOFF
+            logger.debug("timerInterval = %d at: %s" % (self._timer_interval, utils.datetime_now()))
+        else:
+            self._timer_interval = self.INTERVAL
 
     @abstractmethod
     def start_polling(self):

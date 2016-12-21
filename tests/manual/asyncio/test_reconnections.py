@@ -57,7 +57,7 @@ async def test_blah():
 
     my_listener = MySubscribeCallback()
     pubnub.add_listener(my_listener)
-    pubnub.subscribe().channels('blah').execute()
+    pubnub.subscribe().channels('my_channel').execute()
 
     asyncio.ensure_future(close_soon())
     asyncio.ensure_future(open_again())

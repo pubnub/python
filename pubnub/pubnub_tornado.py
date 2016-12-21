@@ -312,7 +312,6 @@ class TornadoReconnectionManager(ReconnectionManager):
                     self._connection_errors += 1
 
     def start_polling(self):
-        # TODO: add the same to asyncio
         if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.NONE:
             logger.warn("reconnection policy is disabled, please handle reconnection manually.")
             return

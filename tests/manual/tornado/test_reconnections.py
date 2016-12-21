@@ -68,6 +68,6 @@ class TestPubNubReconnection(AsyncTestCase):
 
         my_listener = MySubscribeCallback()
         pubnub.add_listener(my_listener)
-        pubnub.subscribe().channels('demo').execute()
+        pubnub.subscribe().channels('my_channel').execute()
 
         yield gen.sleep(1000)

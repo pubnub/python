@@ -248,17 +248,7 @@ class AsyncioReconnectionManager(ReconnectionManager):
     @asyncio.coroutine
     def _register_heartbeat_timer(self):
         while True:
-            if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.EXPONENTIAL:
-                self._timer_interval = int(math.pow(2, self._connection_errors) - 1)
-                if self._timer_interval > self.MAXEXPONENTIALBACKOFF:
-                    self._timer_interval = self.MINEXPONENTIALBACKOFF
-                    self._connection_errors = 1
-                    logger.debug("timerInterval > MAXEXPONENTIALBACKOFF at: %s" % utils.datetime_now())
-                elif self._timer_interval < 1:
-                    self._timer_interval = self.MINEXPONENTIALBACKOFF
-                logger.debug("timerInterval = %d at: %s" % (self._timer_interval, utils.datetime_now()))
-            else:
-                self._timer_interval = self.INTERVAL
+            self._recalculate_interval()
 
             yield from asyncio.sleep(self._timer_interval)
 
@@ -275,6 +265,10 @@ class AsyncioReconnectionManager(ReconnectionManager):
                     self._connection_errors += 1
 
     def start_polling(self):
+        if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.NONE:
+            logger.warn("reconnection policy is disabled, please handle reconnection manually.")
+            return
+
         self._task = asyncio.ensure_future(self._register_heartbeat_timer())
 
     def stop_polling(self):

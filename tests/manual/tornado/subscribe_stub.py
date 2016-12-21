@@ -30,6 +30,15 @@ class SubscribeHandler(web.RequestHandler):
         self.write('{"t":{"t":"%d","r":12},"m":[]}' % self.timestamp())
 
 
+class HeartbeatHandler(web.RequestHandler):
+    def timestamp(self):
+        return int(time.time() * 10000000)
+
+    @gen.coroutine
+    def get(self):
+        self.write('{"status": 200, "message": "OK", "service": "Presence"}')
+
+
 class TimeHandler(web.RequestHandler):
     def timestamp(self):
         return int(time.time() * 10000000)
@@ -42,7 +51,8 @@ class TimeHandler(web.RequestHandler):
 def main():
     app = web.Application(
         [
-            (r"/v2/subscribe/demo/demo/0", SubscribeHandler),
+            (r"/v2/subscribe/demo/my_channel/0", SubscribeHandler),
+            (r"/v2/presence/sub-key/demo/channel/my_channel/heartbeat", HeartbeatHandler),
             (r"/time/0", TimeHandler),
         ],
         cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__",

@@ -8,12 +8,13 @@ from six.moves.queue import Queue, Empty
 from . import utils
 from .request_handlers.base import BaseRequestHandler
 from .request_handlers.requests_handler import RequestsRequestHandler
-from .callbacks import SubscribeCallback
+from .callbacks import SubscribeCallback, ReconnectionCallback
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
-from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType
-from .managers import SubscriptionManager, PublishSequenceManager
+from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
+from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager
+from .models.consumer.common import PNStatus
 from .pnconfiguration import PNConfiguration
 from .pubnub_core import PubNubCore
 from .structures import PlatformOptions
@@ -80,6 +81,53 @@ class PubNub(PubNubCore):
         raise NotImplementedError
 
 
+class NativeReconnectionManager(ReconnectionManager):
+    def __init__(self, pubnub):
+        super(NativeReconnectionManager, self).__init__(pubnub)
+
+    def _register_heartbeat_timer(self):
+        self.stop_heartbeat_timer()
+
+        self._recalculate_interval()
+
+        self._timer = threading.Timer(self._timer_interval, self._call_time)
+        self._timer.start()
+
+    def _call_time(self):
+        self._pubnub.time().async(self._call_time_callback)
+
+    def _call_time_callback(self, resp, status):
+        print(resp)
+
+        if not status.is_error():
+            self._connection_errors = 1
+            self.stop_heartbeat_timer()
+            self._callback.on_reconnect()
+            logger.debug("reconnection manager stop due success time endpoint call: %s" % utils.datetime_now())
+        elif self._pubnub.config.reconnect_policy == PNReconnectionPolicy.EXPONENTIAL:
+            logger.debug("reconnect interval increment at: %s" % utils.datetime_now())
+            self.stop_heartbeat_timer()
+            self._connection_errors += 1
+            self._register_heartbeat_timer()
+        elif self._pubnub.config.reconnect_policy == PNReconnectionPolicy.LINEAR:
+            self.stop_heartbeat_timer()
+            self._connection_errors += 1
+            self._register_heartbeat_timer()
+
+    def start_polling(self):
+        if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.NONE:
+            logger.warn("reconnection policy is disabled, please handle reconnection manually.")
+            return
+
+        logger.debug("reconnection manager start at: %s" % utils.datetime_now())
+
+        self._register_heartbeat_timer()
+
+    def stop_heartbeat_timer(self):
+        if self._timer is not None:
+            self._timer.cancel()
+
+
 class NativePublishSequenceManager(PublishSequenceManager):
     def __init__(self, provided_max_sequence):
         super(NativePublishSequenceManager, self).__init__(provided_max_sequence)
@@ -97,12 +145,30 @@ class NativePublishSequenceManager(PublishSequenceManager):
 
 class NativeSubscriptionManager(SubscriptionManager):
     def __init__(self, pubnub_instance):
+        subscription_manager = self
+
         self._message_queue = Queue()
         self._consumer_event = threading.Event()
         self._subscribe_call = None
         self._heartbeat_periodic_callback = None
+        self._reconnection_manager = NativeReconnectionManager(pubnub_instance)
+
         super(NativeSubscriptionManager, self).__init__(pubnub_instance)
         self._start_worker()
+
+        class NativeReconnectionCallback(ReconnectionCallback):
+            def on_reconnect(self):
+                subscription_manager.reconnect()
+
+                pn_status = PNStatus()
+                pn_status.category = PNStatusCategory.PNReconnectedCategory
+                pn_status.error = False
+
+                subscription_manager._subscription_status_announced = True
+                subscription_manager._listener_manager.announce_status(pn_status)
+
+        self._reconnection_listener = NativeReconnectionCallback()
+        self._reconnection_manager.set_reconnection_listener(self._reconnection_listener)
 
     def _send_leave(self, unsubscribe_operation):
         def leave_callback(result, status):
@@ -153,7 +219,7 @@ class NativeSubscriptionManager(SubscriptionManager):
              .state(state_payload)
              .async(heartbeat_callback))
         except Exception as e:
-            print("failed", e)
+            logger.error("Heartbeat request failed: %s" % e)
 
     def _stop_heartbeat_timer(self):
         if self._heartbeat_periodic_callback is not None:
@@ -170,6 +236,11 @@ class NativeSubscriptionManager(SubscriptionManager):
         self._should_stop = False
         self._start_subscribe_loop()
         self._register_heartbeat_timer()
+
+    def disconnect(self):
+        self._should_stop = True
+        self._stop_heartbeat_timer()
+        self._stop_subscribe_loop()
 
     def _start_worker(self):
         consumer = NativeSubscribeMessageWorker(self._pubnub, self._listener_manager,
@@ -190,15 +261,25 @@ class NativeSubscriptionManager(SubscriptionManager):
         def callback(raw_result, status):
             """ SubscribeEndpoint callback"""
             if status.is_error():
+                if status is not None and status.category == PNStatusCategory.PNCancelledCategory:
+                    return
+
                 if status.category is PNStatusCategory.PNTimeoutCategory and not self._should_stop:
                     self._start_subscribe_loop()
-                else:
-                    self._listener_manager.announce_status(status)
+                    return
 
-                return
+                logger.error("Exception in subscribe loop: %s" % str(status.error_data.exception))
 
-            self._handle_endpoint_call(raw_result, status)
-            self._start_subscribe_loop()
+                if status is not None and status.category == PNStatusCategory.PNAccessDeniedCategory:
+                    status.operation = PNOperationType.PNUnsubscribeOperation
+
+                self._listener_manager.announce_status(status)
+
+                self._reconnection_manager.start_polling()
+                self.disconnect()
+            else:
+                self._handle_endpoint_call(raw_result, status)
+                self._start_subscribe_loop()
 
         try:
             self._subscribe_call = Subscribe(self._pubnub) \
@@ -207,7 +288,7 @@ class NativeSubscriptionManager(SubscriptionManager):
                 .filter_expression(self._pubnub.config.filter_expression) \
                 .async(callback)
         except Exception as e:
-            print("failed", e)
+            logger.error("Subscribe request failed: %s" % e)
 
     def _stop_subscribe_loop(self):
         sc = self._subscribe_call

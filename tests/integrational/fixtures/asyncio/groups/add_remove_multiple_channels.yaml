@@ -2,7 +2,7 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?add=channel-groups-tornado-ch1%2Cchannel-groups-tornado-ch2
   response:
@@ -13,11 +13,11 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:51:28
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?add=channel-groups-tornado-ch1,channel-groups-tornado-ch2&pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb
+    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?add=channel-groups-tornado-ch1,channel-groups-tornado-ch2&pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg
   response:
@@ -29,11 +29,11 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:51:29
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb
+    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?remove=channel-groups-tornado-ch1%2Cchannel-groups-tornado-ch2
   response:
@@ -44,11 +44,11 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:51:30
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?remove=channel-groups-tornado-ch1,channel-groups-tornado-ch2&pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb
+    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?remove=channel-groups-tornado-ch1,channel-groups-tornado-ch2&pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg
   response:
@@ -59,5 +59,5 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:51:31
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb
+    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-tornado-cg?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb
 version: 1

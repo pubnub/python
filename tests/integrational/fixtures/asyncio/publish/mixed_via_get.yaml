@@ -2,7 +2,7 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%5B%22hi%22%2C%20%22hi2%22%2C%20%22hi3%22%5D
   response:
@@ -11,11 +11,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:53 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%5B%22hi%22%2C%20%22hi2%22%2C%20%22hi3%22%5D?seqn=4&uuid=ec1fa148-ba88-4d0a-93fb-748bf50599a9&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%5B%22hi%22%2C%20%22hi2%22%2C%20%22hi3%22%5D?seqn=4&uuid=ec1fa148-ba88-4d0a-93fb-748bf50599a9&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22hi%22
   response:
@@ -24,11 +24,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:53 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22hi%22?seqn=1&uuid=ec1fa148-ba88-4d0a-93fb-748bf50599a9&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22hi%22?seqn=1&uuid=ec1fa148-ba88-4d0a-93fb-748bf50599a9&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/true
   response:
@@ -37,11 +37,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:53 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/true?seqn=3&uuid=ec1fa148-ba88-4d0a-93fb-748bf50599a9&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/true?seqn=3&uuid=ec1fa148-ba88-4d0a-93fb-748bf50599a9&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/5
   response:
@@ -50,5 +50,5 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/5?seqn=2&uuid=ec1fa148-ba88-4d0a-93fb-748bf50599a9&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/5?seqn=2&uuid=ec1fa148-ba88-4d0a-93fb-748bf50599a9&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 version: 1

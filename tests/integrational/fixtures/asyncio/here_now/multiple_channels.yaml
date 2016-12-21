@@ -2,7 +2,7 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/0?tt=0&uuid=test-here-now-asyncio-uuid1
   response:
@@ -11,11 +11,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:56:49 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/0?uuid=test-here-now-asyncio-uuid1&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/0?uuid=test-here-now-asyncio-uuid1&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?uuid=test-here-now-asyncio-uuid1
   response:
@@ -28,11 +28,11 @@ interactions:
       CONTENT-LENGTH: '303', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri,
         16 Dec 2016 13:56:54 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/leave?uuid=test-here-now-asyncio-uuid1
   response:
@@ -43,5 +43,5 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri,
         16 Dec 2016 13:56:54 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/leave?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/leave?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 version: 1

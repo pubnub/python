@@ -5,7 +5,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-0%22?seqn=1
   response:
@@ -25,7 +25,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-1%22?seqn=2
   response:
@@ -45,7 +45,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-2%22?seqn=3
   response:
@@ -65,7 +65,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-3%22?seqn=4
   response:
@@ -85,7 +85,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-4%22?seqn=5
   response:
@@ -105,7 +105,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/history/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/history-native-sync-ch?count=5
   response:

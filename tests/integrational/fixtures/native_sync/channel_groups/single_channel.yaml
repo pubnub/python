@@ -5,7 +5,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg/remove
   response:
@@ -29,7 +29,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?add=channel-groups-native-ch
   response:
@@ -53,7 +53,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg
   response:
@@ -78,7 +78,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?remove=channel-groups-native-ch
   response:
@@ -102,7 +102,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg
   response:

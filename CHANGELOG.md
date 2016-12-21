@@ -1,4 +1,14 @@
 
+## [v4.0.4](https://github.com/pubnub/python/tree/v4.0.4)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.3...v4.0.4)
+
+
+- ⭐Add reconnection managers
+
+
+
 ## [v4.0.3](https://github.com/pubnub/python/tree/v4.0.3)
 
 

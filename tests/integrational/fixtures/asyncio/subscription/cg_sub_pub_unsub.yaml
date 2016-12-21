@@ -2,7 +2,7 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?add=test-subscribe-asyncio-channel
   response:
@@ -13,11 +13,11 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:43
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?add=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64
+    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?add=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-asyncio-group&tt=0
   response:
@@ -26,11 +26,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:45 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&tt=0&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64&channel-group=test-subscribe-asyncio-group
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&tt=0&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64&channel-group=test-subscribe-asyncio-group
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-channel/0/%22hey%22?seqn=1
   response:
@@ -39,11 +39,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:45 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-channel/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64&seqn=1
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-channel/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64&seqn=1
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-asyncio-group&tr=12&tt=14818963649240210
   response:
@@ -52,11 +52,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '277', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:45 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&tt=14818963649240210&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64&tr=12&channel-group=test-subscribe-asyncio-group
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&tt=14818963649240210&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64&tr=12&channel-group=test-subscribe-asyncio-group
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=test-subscribe-asyncio-group
   response:
@@ -67,11 +67,11 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri,
         16 Dec 2016 13:52:45 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64&channel-group=test-subscribe-asyncio-group
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64&channel-group=test-subscribe-asyncio-group
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?remove=test-subscribe-asyncio-channel
   response:
@@ -82,5 +82,5 @@ interactions:
       CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:45
         GMT', SERVER: Pubnub}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?remove=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64
+    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-group?remove=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=816d9356-41d0-4b1d-ba5c-b3488822ab64
 version: 1

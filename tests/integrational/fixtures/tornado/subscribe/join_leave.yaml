@@ -3,7 +3,7 @@ interactions:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=0
   response:
@@ -31,12 +31,12 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=subscribe-tornado-listener-3
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tr=12&tt=14818869603870494
   response:
@@ -66,12 +66,12 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818869603870494&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&uuid=subscribe-tornado-listener-3
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818869603870494&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch/0?tt=0
   response:
@@ -99,12 +99,12 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch/0?tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=subscribe-tornado-messenger-3
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch/0?tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=subscribe-tornado-messenger-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tr=12&tt=14818869613057835
   response:
@@ -134,12 +134,12 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818869613057835&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&uuid=subscribe-tornado-listener-3
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818869613057835&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tr=12&tt=14818869622225817
   response:
@@ -169,12 +169,12 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818869622225817&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&uuid=subscribe-tornado-listener-3
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818869622225817&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave
   response:
@@ -212,12 +212,12 @@ interactions:
       - Age
       - ['0']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=subscribe-tornado-messenger-3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=subscribe-tornado-messenger-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tr=12&tt=14818869626041325
   response:
@@ -247,12 +247,12 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818869626041325&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&uuid=subscribe-tornado-listener-3
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/subscribe-tornado-ch,subscribe-tornado-ch-pnpres/0?tt=14818869626041325&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&uuid=subscribe-tornado-listener-3
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave
   response:
@@ -290,5 +290,5 @@ interactions:
       - Age
       - ['0']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=subscribe-tornado-listener-3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/subscribe-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=subscribe-tornado-listener-3
 version: 1

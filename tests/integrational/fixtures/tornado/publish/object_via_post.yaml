@@ -3,9 +3,9 @@ interactions:
     body: '{"online": true, "name": "Alex"}'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706787329216107"]'}
     headers:
@@ -31,14 +31,14 @@ interactions:
       - Access-Control-Allow-Origin
       - ['*']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=ae3a3afd-d92b-4cb2-a1a8-e93f88d2f6ff
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=ae3a3afd-d92b-4cb2-a1a8-e93f88d2f6ff
 - request:
     body: '{"online": true, "name": "Alex"}'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706787330184998"]'}
     headers:
@@ -64,5 +64,5 @@ interactions:
       - Access-Control-Allow-Origin
       - ['*']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=ae3a3afd-d92b-4cb2-a1a8-e93f88d2f6ff
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=ae3a3afd-d92b-4cb2-a1a8-e93f88d2f6ff
 version: 1

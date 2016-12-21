@@ -2,7 +2,7 @@ interactions:
 - request:
     body: 'true'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: POST
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0
   response:
@@ -11,11 +11,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=3&uuid=36c260f4-12f7-4060-85c1-d34096146bda&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=3&uuid=36c260f4-12f7-4060-85c1-d34096146bda&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: '"hi"'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: POST
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0
   response:
@@ -24,11 +24,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=1&uuid=36c260f4-12f7-4060-85c1-d34096146bda&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=1&uuid=36c260f4-12f7-4060-85c1-d34096146bda&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: '["hi", "hi2", "hi3"]'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: POST
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0
   response:
@@ -37,11 +37,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=4&uuid=36c260f4-12f7-4060-85c1-d34096146bda&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=4&uuid=36c260f4-12f7-4060-85c1-d34096146bda&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: '5'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: POST
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0
   response:
@@ -50,5 +50,5 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=2&uuid=36c260f4-12f7-4060-85c1-d34096146bda&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=2&uuid=36c260f4-12f7-4060-85c1-d34096146bda&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 version: 1

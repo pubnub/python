@@ -2,7 +2,7 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?tt=0&uuid=test-subscribe-asyncio-uuid-sub
   response:
@@ -11,11 +11,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:37 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-uuid-sub&tt=0
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-uuid-sub&tt=0
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22hey%22?seqn=1&uuid=test-subscribe-asyncio-uuid-pub
   response:
@@ -24,11 +24,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:37 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-uuid-pub&seqn=1
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-uuid-pub&seqn=1
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?tr=12&tt=14818963571353315&uuid=test-subscribe-asyncio-uuid-sub
   response:
@@ -37,11 +37,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '232', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:37 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-uuid-sub&tr=12&tt=14818963571353315
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-uuid-sub&tr=12&tt=14818963571353315
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-ch/leave?uuid=test-subscribe-asyncio-uuid-sub
   response:
@@ -52,5 +52,5 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri,
         16 Dec 2016 13:52:37 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-ch/leave?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-uuid-sub
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-ch/leave?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-uuid-sub
 version: 1

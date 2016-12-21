@@ -1,8 +1,13 @@
 name: python
-version: 4.0.3
+version: 4.0.4
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.4
+    date:
+    changes:
+      - type: improvement
+        text: Add reconnection managers
   - version: v4.0.3
     date:
     changes:

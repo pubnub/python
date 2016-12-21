@@ -2,7 +2,7 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?tt=0&uuid=test-subscribe-asyncio-listener
   response:
@@ -11,11 +11,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:38 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-listener&tt=0
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-listener&tt=0
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?tr=12&tt=14818963579052943&uuid=test-subscribe-asyncio-listener
   response:
@@ -26,11 +26,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '352', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:38 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-listener&tr=12&tt=14818963579052943
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-listener&tr=12&tt=14818963579052943
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch/0?tt=0&uuid=test-subscribe-asyncio-messenger
   response:
@@ -39,11 +39,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:38 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-messenger&tt=0
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-messenger&tt=0
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?tr=12&tt=14818963588185526&uuid=test-subscribe-asyncio-listener
   response:
@@ -54,11 +54,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '353', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:39 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-listener&tr=12&tt=14818963588185526
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-listener&tr=12&tt=14818963588185526
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?tr=12&tt=14818963592503447&uuid=test-subscribe-asyncio-listener
   response:
@@ -69,11 +69,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '354', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:39 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-listener&tr=12&tt=14818963592503447
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-join-leave-ch,test-subscribe-asyncio-join-leave-ch-pnpres/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-listener&tr=12&tt=14818963592503447
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-join-leave-ch/leave?uuid=test-subscribe-asyncio-messenger
   response:
@@ -84,11 +84,11 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri,
         16 Dec 2016 13:52:39 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-join-leave-ch/leave?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-messenger
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-join-leave-ch/leave?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-messenger
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-join-leave-ch/leave?uuid=test-subscribe-asyncio-listener
   response:
@@ -99,5 +99,5 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Fri,
         16 Dec 2016 13:52:40 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-join-leave-ch/leave?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=test-subscribe-asyncio-listener
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-join-leave-ch/leave?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-subscribe-asyncio-listener
 version: 1

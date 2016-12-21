@@ -2,7 +2,7 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/blah/0/%22hey%22
   response:
@@ -11,5 +11,5 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:07 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.3&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb&seqn=1
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=b33abd30-f0e6-47af-9922-bd5e2a5485eb&seqn=1
 version: 1

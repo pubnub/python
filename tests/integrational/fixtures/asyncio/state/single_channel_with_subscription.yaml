@@ -2,7 +2,7 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-state-asyncio-ch/0?heartbeat=12&tt=0
   response:
@@ -11,11 +11,11 @@ interactions:
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:28:06 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-state-asyncio-ch/0?heartbeat=12&tt=0&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-state-asyncio-ch/0?heartbeat=12&tt=0&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12
   response:
@@ -25,11 +25,11 @@ interactions:
       CONTENT-LENGTH: '55', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
         18 Dec 2016 21:28:11 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12
   response:
@@ -39,11 +39,11 @@ interactions:
       CONTENT-LENGTH: '55', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
         18 Dec 2016 21:28:16 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12
   response:
@@ -53,11 +53,11 @@ interactions:
       CONTENT-LENGTH: '55', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
         18 Dec 2016 21:28:21 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12
   response:
@@ -67,11 +67,11 @@ interactions:
       CONTENT-LENGTH: '55', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
         18 Dec 2016 21:28:26 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/heartbeat?heartbeat=12&uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/uuid/test-state-asyncio-uuid/data?state=%7B%22count%22%3A+5%2C+%22name%22%3A+%22Alex%22%7D
   response:
@@ -82,11 +82,11 @@ interactions:
       CONTENT-LENGTH: '96', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
         18 Dec 2016 21:28:27 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/uuid/test-state-asyncio-uuid/data?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3&state=%7B%22count%22%3A%205%2C%20%22name%22%3A%20%22Alex%22%7D
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/uuid/test-state-asyncio-uuid/data?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.4&state=%7B%22count%22%3A%205%2C%20%22name%22%3A%20%22Alex%22%7D
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/uuid/test-state-asyncio-uuid
   response:
@@ -98,11 +98,11 @@ interactions:
       CONTENT-LENGTH: '167', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
         18 Dec 2016 21:28:27 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/uuid/test-state-asyncio-uuid?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/uuid/test-state-asyncio-uuid?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.3]
+      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/leave
   response:
@@ -113,5 +113,5 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Sun,
         18 Dec 2016 21:28:28 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/leave?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.3
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-state-asyncio-ch/leave?uuid=test-state-asyncio-uuid&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 version: 1

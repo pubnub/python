@@ -5,7 +5,7 @@ interactions:
       Accept: ['*/*']
       Accept-Encoding: ['gzip, deflate']
       Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.3]
+      User-Agent: [PubNub-Python/4.0.4]
     method: GET
     uri: http://ps.pndsn.com/publish/fake/demo/0/ch1/0/%22hey%22?seqn=1
   response:

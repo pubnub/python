@@ -3,9 +3,9 @@ interactions:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.3&tt=0
+    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tt=0
   response:
     body: {string: !!python/unicode '{"t":{"t":"14720341188112072","r":12},"m":[]}'}
     headers:
@@ -31,14 +31,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=heartbeat-tornado-listener
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=heartbeat-tornado-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&tt=14720341188112072
+    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14720341188112072
   response:
     body: {string: !!python/unicode '{"t":{"t":"14720341195231188","r":12},"m":[{"a":"2","f":0,"p":{"t":"14720341194420285","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"heartbeat-tornado-ch-pnpres","d":{"action":
         "join", "timestamp": 1472034119, "uuid": "heartbeat-tornado-listener", "occupancy":
@@ -66,14 +66,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=14720341188112072&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&uuid=heartbeat-tornado-listener
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=14720341188112072&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&uuid=heartbeat-tornado-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch/0?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.3&tt=0
+    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch/0?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.4&tt=0
   response:
     body: {string: !!python/unicode '{"t":{"t":"14720341194868942","r":12},"m":[]}'}
     headers:
@@ -99,14 +99,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch/0?heartbeat=8&tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=heartbeat-tornado-messenger
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch/0?heartbeat=8&tt=0&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=heartbeat-tornado-messenger
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&tt=14720341195231188
+    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14720341195231188
   response:
     body: {string: !!python/unicode '{"t":{"t":"14720341206425665","r":12},"m":[{"a":"2","f":0,"p":{"t":"14720341205063074","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"heartbeat-tornado-ch-pnpres","d":{"action":
         "join", "timestamp": 1472034120, "uuid": "heartbeat-tornado-messenger", "occupancy":
@@ -134,14 +134,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=14720341195231188&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&uuid=heartbeat-tornado-listener
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=14720341195231188&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&uuid=heartbeat-tornado-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: !!python/unicode '{"status": 200, "message": "OK", "service": "Presence"}'}
     headers:
@@ -176,14 +176,14 @@ interactions:
       - Age
       - ['0']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=heartbeat-tornado-messenger
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=heartbeat-tornado-messenger
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: !!python/unicode '{"status": 200, "message": "OK", "service": "Presence"}'}
     headers:
@@ -218,14 +218,14 @@ interactions:
       - Age
       - ['3']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=heartbeat-tornado-messenger
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=heartbeat-tornado-messenger
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: !!python/unicode '{"status": 200, "message": "OK", "service": "Presence"}'}
     headers:
@@ -260,14 +260,14 @@ interactions:
       - Age
       - ['0']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=heartbeat-tornado-messenger
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/heartbeat?heartbeat=8&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=heartbeat-tornado-messenger
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&tt=14720341206425665
+    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14720341206425665
   response:
     body: {string: !!python/unicode '{"t":{"t":"14720341368999461","r":12},"m":[{"a":"2","f":0,"p":{"t":"14720341367516371","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"heartbeat-tornado-ch-pnpres","d":{"action":
         "timeout", "timestamp": 1472034136, "uuid": "heartbeat-tornado-messenger",
@@ -295,14 +295,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=14720341206425665&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&uuid=heartbeat-tornado-listener
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=14720341206425665&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&uuid=heartbeat-tornado-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&tt=14720341368999461
+    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14720341368999461
   response:
     body: {string: !!python/unicode '{"t":{"t":"14720341368363471","r":3},"m":[{"a":"2","f":0,"p":{"t":"14720341367516371","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"heartbeat-tornado-ch-pnpres","d":{"action":
         "timeout", "timestamp": 1472034136, "uuid": "heartbeat-tornado-messenger",
@@ -330,14 +330,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=14720341368999461&pnsdk=PubNub-Python-Tornado%2F4.0.3&tr=12&uuid=heartbeat-tornado-listener
+    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/heartbeat-tornado-ch,heartbeat-tornado-ch-pnpres/0?tt=14720341368999461&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&uuid=heartbeat-tornado-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: !!python/unicode '{"status": 200, "action": "leave", "message":
         "OK", "service": "Presence"}'}
@@ -373,5 +373,5 @@ interactions:
       - Age
       - ['0']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.3&uuid=heartbeat-tornado-listener
+    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/heartbeat-tornado-ch/leave?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=heartbeat-tornado-listener
 version: 1

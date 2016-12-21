@@ -3,9 +3,9 @@ interactions:
     body: '"hi"'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706789261217101"]'}
     headers:
@@ -31,14 +31,14 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '"hi"'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706789261901583"]'}
     headers:
@@ -64,14 +64,14 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '5'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706789262581697"]'}
     headers:
@@ -97,14 +97,14 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '5'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706789263258448"]'}
     headers:
@@ -130,14 +130,14 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: 'true'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706789263937508"]'}
     headers:
@@ -163,14 +163,14 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: 'true'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706789264623948"]'}
     headers:
@@ -196,14 +196,14 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '["hi", "hi2", "hi3"]'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706789265622885"]'}
     headers:
@@ -229,14 +229,14 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '["hi", "hi2", "hi3"]'
     headers:
       Accept-Encoding: [utf-8]
-      User-Agent: [PubNub-Python-Tornado/4.0.3]
+      User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: POST
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.3
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '[1,"Sent","14706789266306131"]'}
     headers:
@@ -262,5 +262,5 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.3
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 version: 1

@@ -4,7 +4,6 @@ import logging
 import os
 import sys
 import atexit
-import signal
 
 d = os.path.dirname
 PUBNUB_ROOT = d(d(d(os.path.dirname(os.path.abspath(__file__)))))

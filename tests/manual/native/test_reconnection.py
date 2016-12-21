@@ -32,6 +32,7 @@ class MySubscribeCallback(SubscribeCallback):
     def presence(self, pubnub, presence):
         pass
 
+
 pnconf = PNConfiguration()
 pnconf.publish_key = "demo"
 pnconf.subscribe_key = "demo"

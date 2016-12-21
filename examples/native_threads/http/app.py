@@ -45,8 +45,10 @@ def subscribe():
     pubnub.subscribe().channels("demo").execute()
     # TODO: exception doesn't raised, but should inside status() callback
 
+
 if __name__ == '__main__':
     subscribe()
+
 
 atexit.register(pubnub.unsubscribe().channels('demo').execute)
 atexit.register(pubnub.stop)

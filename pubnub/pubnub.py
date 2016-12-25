@@ -98,9 +98,6 @@ class NativeReconnectionManager(ReconnectionManager):
         self._pubnub.time().async(self._call_time_callback)
 
     def _call_time_callback(self, resp, status):
-        # REMOVE
-        print(resp)
-
         if not status.is_error():
             self._connection_errors = 1
             self.stop_heartbeat_timer()

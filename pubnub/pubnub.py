@@ -91,12 +91,14 @@ class NativeReconnectionManager(ReconnectionManager):
         self._recalculate_interval()
 
         self._timer = threading.Timer(self._timer_interval, self._call_time)
+        self._timer.setDaemon(True)
         self._timer.start()
 
     def _call_time(self):
         self._pubnub.time().async(self._call_time_callback)
 
     def _call_time_callback(self, resp, status):
+        # REMOVE
         print(resp)
 
         if not status.is_error():
@@ -247,6 +249,7 @@ class NativeSubscriptionManager(SubscriptionManager):
                                                 self._message_queue, self._consumer_event)
         self._consumer_thread = threading.Thread(target=consumer.run,
                                                  name="SubscribeMessageWorker")
+        self._consumer_thread.setDaemon(True)
         self._consumer_thread.start()
 
     def _start_subscribe_loop(self):
@@ -327,6 +330,7 @@ class NativePeriodicCallback(object):
 
     def _schedule_next(self):
         self._timeout = threading.Timer(self._callback_time, self._run)
+        self._timeout.setDaemon(True)
         self._timeout.start()
 
 

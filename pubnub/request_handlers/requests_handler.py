@@ -36,6 +36,9 @@ class RequestsRequestHandler(BaseRequestHandler):
     def async_request(self, endpoint_name, platform_options, endpoint_call_options, callback, cancellation_event):
         call = Call()
 
+        if cancellation_event is None:
+            cancellation_event = threading.Event()
+
         def callback_to_invoke_in_another_thread():
             try:
                 envelope = self._build_envelope(platform_options, endpoint_call_options)

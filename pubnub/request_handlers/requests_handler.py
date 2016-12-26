@@ -4,7 +4,7 @@ import requests
 import six
 
 from requests import Session
-# from requests.adapters import HTTPAdapter
+from requests.adapters import HTTPAdapter
 
 from pubnub import utils
 from pubnub.enums import PNStatusCategory
@@ -25,9 +25,10 @@ class RequestsRequestHandler(BaseRequestHandler):
     def __init__(self, pubnub):
         self.session = Session()
 
-        # TODO: fix timeout caching
-        # self.session.mount('http://ps.pndsn.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
-        # self.session.mount('https://ps.pndsn.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('http://ps.pndsn.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('https://ps.pndsn.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('http://ps.pndsn.com/v2/subscribe', HTTPAdapter(pool_maxsize=500))
+        self.session.mount('https://ps.pndsn.com/v2/subscribe', HTTPAdapter(pool_maxsize=500))
 
         self.pubnub = pubnub
 

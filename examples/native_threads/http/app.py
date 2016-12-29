@@ -1,58 +1,123 @@
-# subscribe to pubnub channel, push messages into the queue,
-# queue worker send send them to cli
 import logging
 import os
 import sys
-import atexit
+import time
+
+from flask import Flask, jsonify
+from flask import request
 
 d = os.path.dirname
 PUBNUB_ROOT = d(d(d(os.path.dirname(os.path.abspath(__file__)))))
 sys.path.append(PUBNUB_ROOT)
 
 import pubnub as pn
-
-from pubnub.callbacks import SubscribeCallback
+from pubnub import utils
+from pubnub.exceptions import PubNubException
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
+
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 logger = logging.getLogger("myapp")
 
+app = Flask(__name__)
+
 pnconfig = PNConfiguration()
-pnconfig.publish_key = "demo"
-pnconfig.subscribe_key = "demo"
+pnconfig.subscribe_request_timeout = 10
+pnconfig.subscribe_key = "sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe"
+pnconfig.publish_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"
+pnconfig.uuid = "pubnub-demo-api-python-backend"
+DEFAULT_CHANNEL = "pubnub_demo_api_python_channel"
+EVENTS_CHANNEL = "pubnub_demo_api_python_events"
+APP_KEY = utils.uuid()
 
 pubnub = PubNub(pnconfig)
 logger.info("SDK Version: %s", pubnub.SDK_VERSION)
 
-original_sigint = None
+
+@app.route("/app_key")
+def app_key():
+    return {
+        'app_key': APP_KEY
+    }
 
 
-class MyListener(SubscribeCallback):
-    def presence(self, pubnub, presence):
-        pass
+@app.route("/subscription/add")
+def subscription_add():
+    channel = request.args.get('channel')
 
-    def status(self, pubnub, status):
-        print("Status changed, new status: %s" % status)
+    if channel is None:
+        return jsonify({
+            "error": "Channel missing"
+        }), 500
 
-    def message(self, pubnub, message):
-        print("Message %s" % message)
+    pubnub.subscribe().channels(channel).execute()
+    return jsonify({
+        'subscribed_channels': pubnub.get_subscribed_channels()
+    })
 
 
-def subscribe():
-    listener = MyListener()
-    pubnub.add_listener(listener)
-    pubnub.subscribe().channels("demo").execute()
-    # TODO: exception doesn't raised, but should inside status() callback
+@app.route("/subscription/remove")
+def subscription_remove():
+    channel = request.args.get('channel')
 
+    if channel is None:
+        return jsonify({
+            "error": "Channel missing"
+        }), 500
+
+    pubnub.unsubscribe().channels(channel).execute()
+
+    return jsonify({
+        'subscribed_channels': pubnub.get_subscribed_channels()
+    })
+
+
+@app.route("/subscription/list")
+def subscription_list():
+    return jsonify({
+        'subscribed_channels': pubnub.get_subscribed_channels()
+    })
+
+
+@app.route('/publish/sync')
+def publish_sync():
+    channel = request.args.get('channel')
+
+    if channel is None:
+        return jsonify({
+            "error": "Channel missing"
+        }), 500
+
+    try:
+        envelope = pubnub.publish().channel(channel).message("hello from yield-based publish").sync()
+        return jsonify({
+            "original_response": str(envelope.status.original_response)
+        })
+    except PubNubException as e:
+        return jsonify({
+            "message": str(e)
+        }), 500
+
+
+@app.route('/publish/async')
+def publish_async():
+    channel = request.args.get('channel')
+
+    if channel is None:
+        return jsonify({
+            "error": "Channel missing"
+        }), 500
+
+    def stub(res, state): pass
+
+    pubnub.publish().channel(channel).message("hello from yield-based publish")\
+        .async(stub)
+
+    return jsonify({
+        "message": "Publish task scheduled"
+    })
 
 if __name__ == '__main__':
-    subscribe()
-
-
-atexit.register(pubnub.unsubscribe().channels('demo').execute)
-atexit.register(pubnub.stop)
-
-# TODO: await
-
-# pubnub.stop()
+    app.run(host='0.0.0.0')
+    time.sleep(100)

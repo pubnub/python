@@ -4,6 +4,7 @@
 # binary package not from the CWD.
 
 import os
+import sys
 from subprocess import check_call
 
 _dname = os.path.dirname
@@ -11,9 +12,7 @@ _dname = os.path.dirname
 REPO_ROOT = _dname(_dname(os.path.abspath(__file__)))
 os.chdir(os.path.join(REPO_ROOT))
 
-pyenv_version = os.getenv('PYENV_VERSION', 0)
-travis_version = os.getenv('TRAVIS_PYTHON_VERSION', 0)
-version = str(travis_version or pyenv_version)
+version = str(sys.version_info.major) + "." + str(  sys.version_info.minor)
 tcmn = 'py.test tests --cov-report=xml --cov=./pubnub --ignore=tests/manual/ '
 fcmn = 'flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/'
 
@@ -23,7 +22,6 @@ print("Version is", version)
 
 def run(command):
     return check_call(command, shell=True)
-
 
 if version.startswith('2.6'):
     run(

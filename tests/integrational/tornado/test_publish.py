@@ -84,7 +84,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/mixed_via_get.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     def test_publish_mixed_via_get(self):
         self.assert_success_publish_get("hi")
         self.assert_success_publish_get(5)
@@ -93,14 +93,14 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/object_via_get.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
         match_on=['method', 'scheme', 'host', 'port', 'object_in_path', 'query'])
     def test_publish_object_via_get(self):
         self.assert_success_publish_get({"name": "Alex", "online": True})
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/mixed_via_post.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
         match_on=['method', 'scheme', 'host', 'port', 'path', 'query'])
     def test_publish_mixed_via_post(self):
         self.assert_success_publish_post("hi")
@@ -110,14 +110,14 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/object_via_post.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
         match_on=['host', 'method', 'path', 'query', 'object_in_body'])
     def test_publish_object_via_post(self):
         self.assert_success_publish_post({"name": "Alex", "online": True})
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/mixed_via_get_encrypted.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     def test_publish_mixed_via_get_encrypted(self):
         self.assert_success_publish_get_encrypted("hi")
         self.assert_success_publish_get_encrypted(5)
@@ -126,7 +126,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/object_via_get_encrypted.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
         match_on=['host', 'method', 'query', 'object_in_path'],
         match_on_kwargs={'object_in_path': {
             'decrypter': gen_decrypt_func('testKey')}})
@@ -135,7 +135,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/mixed_via_post_encrypted.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
         match_on=['method', 'path', 'query', 'body'])
     def test_publish_mixed_via_post_encrypted(self):
         self.assert_success_publish_post_encrypted("hi")
@@ -145,7 +145,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/object_via_post_encrypted.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
         match_on=['method', 'path', 'query', 'object_in_body'],
         match_on_kwargs={'object_in_body': {
             'decrypter': gen_decrypt_func('testKey')}})
@@ -203,7 +203,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/invalid_key.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     def test_error_invalid_key(self):
         conf = PNConfiguration()
         conf.publish_key = "fake"
@@ -216,7 +216,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/not_permitted.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     def test_error_not_permitted_403(self):
         my_pnconf = pnconf_pam_copy()
         my_pnconf.secret_key = None
@@ -229,7 +229,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/meta_object.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
         match_on=['host', 'method', 'path', 'meta_object_in_query'])
     def test_publish_with_meta(self):
         self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
@@ -241,7 +241,7 @@ class TestPubNubAsyncPublish(AsyncTestCase):
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/tornado/publish/do_not_store.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     def test_publish_do_not_store(self):
         self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
 

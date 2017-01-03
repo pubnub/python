@@ -37,7 +37,7 @@ class TestPubNubTornadoInvocations(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/invocations/result_raises.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     @tornado.testing.gen_test
     def test_publish_result_raises_pubnub_error(self):
         pubnub = PubNubTornado(corrupted_keys, custom_ioloop=self.io_loop)
@@ -74,7 +74,7 @@ class TestPubNubTornadoInvocations(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/invocations/future_raises.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     @tornado.testing.gen_test
     def test_publish_future_raises(self):
         pubnub = PubNubTornado(corrupted_keys, custom_ioloop=self.io_loop)

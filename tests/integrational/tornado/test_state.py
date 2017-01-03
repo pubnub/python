@@ -18,7 +18,7 @@ class TestPubNubState(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/state/single_channel.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
         match_on=['method', 'host', 'path', 'state_object_in_query'])
     @tornado.testing.gen_test
     def test_state_single_channel(self):
@@ -46,7 +46,7 @@ class TestPubNubState(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/state/multiple_channel.yaml',
-        filter_query_parameters=['uuid', 'seqn'],
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
         match_on=['method', 'host', 'path', 'state_object_in_query'])
     @tornado.testing.gen_test
     def test_multiple_channels(self):

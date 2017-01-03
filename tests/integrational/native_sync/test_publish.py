@@ -58,7 +58,7 @@ class TestPubNubPublish(unittest.TestCase):
             self.fail(e)
 
     @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_bool_get.yaml',
-                         filter_query_parameters=['uuid'])
+                         filter_query_parameters=['uuid', 'pnsdk'])
     def test_publish_bool_get(self):
         try:
             env = PubNub(pnconf).publish() \

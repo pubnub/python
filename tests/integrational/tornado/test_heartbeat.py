@@ -34,7 +34,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/heartbeat/timeout.yaml',
-        filter_query_parameters=['uuid'],
+        filter_query_parameters=['uuid', 'pnsdk'],
         match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
         match_on_kwargs={
             'string_list_in_path': {

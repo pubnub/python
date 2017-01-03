@@ -16,7 +16,7 @@ class TestChannelGroups(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/groups/add_remove_single_channel.yaml',
-        filter_query_parameters=['uuid'])
+        filter_query_parameters=['uuid', 'pnsdk'])
     @tornado.testing.gen_test
     def test_add_remove_single_channel(self):
         ch = "channel-groups-tornado-ch"
@@ -54,7 +54,7 @@ class TestChannelGroups(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/groups/add_remove_multiple_channel.yaml',
-        filter_query_parameters=['uuid'])
+        filter_query_parameters=['uuid', 'pnsdk'])
     @tornado.testing.gen_test
     def test_add_remove_multiple_channels(self):
         ch1 = "channel-groups-tornado-ch1"
@@ -94,7 +94,7 @@ class TestChannelGroups(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/groups/add_channel_remove_group.yaml',
-        filter_query_parameters=['uuid', 'seqn'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     @tornado.testing.gen_test
     def test_add_channel_remove_group(self):
         ch = "channel-groups-tornado-ch"

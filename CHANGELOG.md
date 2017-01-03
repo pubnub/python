@@ -1,4 +1,30 @@
 
+## [v4.0.5](https://github.com/pubnub/python/tree/v4.0.5)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.4...v4.0.5)
+
+
+- ⭐new pubnub domain
+
+
+
+- ⭐native demo app
+
+
+
+- ⭐fixed HTTPAdapter config
+
+
+
+- ⭐add a new Python 3.6.0 config to travis builds
+
+
+
+- ⭐fix blocking Ctrl+C bug
+
+
+
 ## [v4.0.4](https://github.com/pubnub/python/tree/v4.0.4)
 
 

@@ -1,8 +1,21 @@
 name: python
-version: 4.0.4
+version: 4.0.5
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.5
+    date:
+    changes:
+      - type: improvement
+        text: new pubnub domain
+      - type: improvement
+        text: native demo app
+      - type: improvement
+        text: fixed HTTPAdapter config
+      - type: improvement
+        text: add a new Python 3.6.0 config to travis builds
+      - type: improvement
+        text: fix blocking Ctrl+C bug
   - version: v4.0.4
     date:
     changes:

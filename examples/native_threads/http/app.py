@@ -109,7 +109,8 @@ def publish_async():
             "error": "Channel missing"
         }), 500
 
-    def stub(res, state): pass
+    def stub(res, state):
+        pass
 
     pubnub.publish().channel(channel).message("hello from yield-based publish")\
         .async(stub)
@@ -117,6 +118,7 @@ def publish_async():
     return jsonify({
         "message": "Publish task scheduled"
     })
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

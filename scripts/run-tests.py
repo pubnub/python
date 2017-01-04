@@ -12,7 +12,11 @@ _dname = os.path.dirname
 REPO_ROOT = _dname(_dname(os.path.abspath(__file__)))
 os.chdir(os.path.join(REPO_ROOT))
 
-version = str(sys.version_info.major) + "." + str(  sys.version_info.minor)
+try:
+    version = str(sys.version_info.major) + "." + str(sys.version_info.minor)
+except:
+    version = str(sys.version_info[0]) + "." + str(sys.version_info[1])
+
 tcmn = 'py.test tests --cov-report=xml --cov=./pubnub --ignore=tests/manual/ '
 fcmn = 'flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/'
 

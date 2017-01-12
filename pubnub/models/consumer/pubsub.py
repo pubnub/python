@@ -47,7 +47,7 @@ class PNPresenceEventResult(object):
             assert isinstance(user_metadata, object)
 
         if state is not None:
-            assert isinstance(user_metadata, dict)
+            assert isinstance(state, dict)
 
         self.event = event
         self.uuid = uuid

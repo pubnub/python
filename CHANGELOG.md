@@ -1,4 +1,14 @@
 
+## [v4.0.6](https://github.com/pubnub/python/tree/v4.0.6)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.5...v4.0.6)
+
+
+
+- 🐛Fix on state object type definition.
+
+
 ## [v4.0.5](https://github.com/pubnub/python/tree/v4.0.5)
 
 

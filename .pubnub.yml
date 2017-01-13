@@ -1,8 +1,13 @@
 name: python
-version: 4.0.5
+version: 4.0.6
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.6
+    date:
+    changes:
+      - type: bug
+        text: Fix on state object type definition.
   - version: v4.0.5
     date:
     changes:

@@ -39,6 +39,14 @@ def test_single_channel(event_loop, sleeper=asyncio.sleep):
     assert channels[0].occupancy == 1
     assert channels[0].occupants[0].uuid == pubnub.uuid
 
+    result = yield from pubnub.here_now() \
+        .channels(ch) \
+        .include_state(True) \
+        .result()
+
+    assert result.total_channels == 1
+    assert result.total_occupancy == 1
+
     pubnub.unsubscribe().channels(ch).execute()
     yield from callback.wait_for_disconnect()
 
@@ -83,6 +91,13 @@ def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     assert channels[0].occupants[0].uuid == pubnub.uuid
     assert channels[1].occupancy == 1
     assert channels[1].occupants[0].uuid == pubnub.uuid
+
+    result = yield from pubnub.here_now() \
+        .channels([ch1, ch2]) \
+        .include_state(True) \
+        .result()
+
+    assert result.total_channels == 2
 
     pubnub.unsubscribe().channels([ch1, ch2]).execute()
     yield from callback.wait_for_disconnect()

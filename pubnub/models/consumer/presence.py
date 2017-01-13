@@ -53,7 +53,8 @@ class PNHereNowResult(object):
                 if isinstance(user, six.string_types):
                     occupants.append(PNHereNowOccupantsData(user, None))
                 else:
-                    occupants.append(PNHereNowOccupantsData(user['uuid'], user['state']))
+                    state = user['state'] if 'state' in user else None
+                    occupants.append(PNHereNowOccupantsData(user['uuid'], state))
 
             return PNHereNowResult(
                 total_channels=1,

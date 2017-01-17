@@ -32,7 +32,7 @@ class PubNub(PubNubCore):
         if request_handler is None:
             self._request_handler = RequestsRequestHandler(self)
         else:
-            self._request_handler = request_handler
+            self._request_handler = request_handler(self)
 
         PubNubCore.__init__(self, config)
 

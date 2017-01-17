@@ -4,7 +4,7 @@ import requests
 import six
 
 from requests import Session
-from requests.adapters import HTTPAdapter
+from requests_toolbelt.adapters.appengine import AppEngineAdapter
 
 from pubnub import utils
 from pubnub.enums import PNStatusCategory
@@ -18,17 +18,17 @@ from pubnub.structures import RequestOptions, PlatformOptions, ResponseInfo, Env
 logger = logging.getLogger("pubnub")
 
 
-class RequestsRequestHandler(BaseRequestHandler):
+class URLFetchRequestHandler(BaseRequestHandler):
     """ PubNub Python SDK Native requests handler based on `requests` HTTP library. """
     ENDPOINT_THREAD_COUNTER = 0
 
     def __init__(self, pubnub):
         self.session = Session()
 
-        self.session.mount('http://ps.pndsn.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
-        self.session.mount('https://ps.pndsn.com', HTTPAdapter(max_retries=1, pool_maxsize=500))
-        self.session.mount('http://ps.pndsn.com/v2/subscribe', HTTPAdapter(pool_maxsize=500))
-        self.session.mount('https://ps.pndsn.com/v2/subscribe', HTTPAdapter(pool_maxsize=500))
+        self.session.mount('http://ps.pndsn.com', AppEngineAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('https://ps.pndsn.com', AppEngineAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('http://ps.pndsn.com/v2/subscribe', AppEngineAdapter(pool_maxsize=500))
+        self.session.mount('https://ps.pndsn.com/v2/subscribe', AppEngineAdapter(pool_maxsize=500))
 
         self.pubnub = pubnub
 
@@ -75,7 +75,7 @@ class RequestsRequestHandler(BaseRequestHandler):
 
         thread = threading.Thread(
             target=client.run,
-            name="EndpointThread-%s-%d" % (endpoint_name, ++RequestsRequestHandler.ENDPOINT_THREAD_COUNTER)
+            name="EndpointThread-%s-%d" % (endpoint_name, ++URLFetchRequestHandler.ENDPOINT_THREAD_COUNTER)
         )
         thread.setDaemon(True)
         thread.start()
@@ -227,8 +227,6 @@ class RequestsRequestHandler(BaseRequestHandler):
             )
 
         return res
-
-
 
 
 class AsyncHTTPClient:

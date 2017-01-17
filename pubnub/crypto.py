@@ -1,7 +1,7 @@
 import hashlib
 import json
 
-from Cryptodome.Cipher import AES
+from Crypto.Cipher import AES
 
 try:
     from base64 import decodebytes, encodebytes
@@ -14,8 +14,9 @@ try:
     from hashlib import sha256
     digestmod = sha256
 except ImportError:
-    import Cryptodome.Hash.SHA256 as digestmod
+    import Crypto.Hash.SHA256 as digestmod
     sha256 = digestmod.new
+
 
 if sys.version_info > (3, 0):
     v = 3

@@ -36,8 +36,9 @@ class PubNub(PubNubCore):
 
         PubNubCore.__init__(self, config)
 
-        if self.config.enable_subscribe:
-            self._subscription_manager = NativeSubscriptionManager(self)
+        # TODO can't subscribe at present on GAE
+        #if self.config.enable_subscribe:
+        #    self._subscription_manager = NativeSubscriptionManager(self)
 
         self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
 

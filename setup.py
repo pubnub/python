@@ -19,8 +19,9 @@ setup(
         'Topic :: Software Development :: Libraries :: Python Modules',
     ),
     install_requires=[
-        'pycryptodomex>=3.3',
+        'pycrypto',
         'requests>=2.4',
+        'requests-toolbelt',
         'six>=1.10'
     ],
     zip_safe=False,

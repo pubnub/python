@@ -23,6 +23,7 @@ class PNConfiguration(object):
         self.enable_subscribe = True
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.NONE
+        self.request_handler = None
 
         self.heartbeat_default_values = True
         self._presence_timeout = PNConfiguration.DEFAULT_PRESENCE_TIMEOUT

@@ -26,15 +26,15 @@ logger = logging.getLogger("pubnub")
 class PubNub(PubNubCore):
     """PubNub Python API"""
 
-    def __init__(self, config, request_handler=None, init_subscribe_handler=False):
+    def __init__(self, config):
         assert isinstance(config, PNConfiguration)
 
-        if request_handler is None:
-            self._request_handler = RequestsRequestHandler(self)
-        else:
-            self._request_handler = request_handler(self)
-
         PubNubCore.__init__(self, config)
+
+        if self.config.request_handler:
+            self._request_handler = self.config.request_handler(self)
+        else:
+            self._request_handler = RequestsRequestHandler(self)
 
         if self.config.enable_subscribe:
             self._subscription_manager = NativeSubscriptionManager(self)

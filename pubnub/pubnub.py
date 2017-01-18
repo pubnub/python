@@ -26,7 +26,7 @@ logger = logging.getLogger("pubnub")
 class PubNub(PubNubCore):
     """PubNub Python API"""
 
-    def __init__(self, config, request_handler=None):
+    def __init__(self, config, request_handler=None, init_subscribe_handler=False):
         assert isinstance(config, PNConfiguration)
 
         if request_handler is None:
@@ -36,9 +36,8 @@ class PubNub(PubNubCore):
 
         PubNubCore.__init__(self, config)
 
-        # TODO can't subscribe at present on GAE
-        #if self.config.enable_subscribe:
-        #    self._subscription_manager = NativeSubscriptionManager(self)
+        if self.config.enable_subscribe:
+            self._subscription_manager = NativeSubscriptionManager(self)
 
         self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
 

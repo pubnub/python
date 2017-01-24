@@ -63,7 +63,7 @@ class PNConfiguration(object):
         return self.crypto_instance
 
     def _init_cryptodome(self):
-        from pubnub.crypto import PubNubCryptodome
+        from .crypto import PubNubCryptodome
         self.crypto_instance = PubNubCryptodome()
 
     @property

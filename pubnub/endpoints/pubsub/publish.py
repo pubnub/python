@@ -1,5 +1,4 @@
 from pubnub import utils
-from pubnub import crypto as pn_crypto
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_MESSAGE_MISSING
 from pubnub.exceptions import PubNubException
@@ -49,7 +48,7 @@ class Publish(Endpoint):
         if self._use_post is True:
             cipher = self.pubnub.config.cipher_key
             if cipher is not None:
-                return '"' + pn_crypto.encrypt(cipher, utils.write_value_as_string(self._message)) + '"'
+                return '"' + self.pubnub.config.crypto.encrypt(cipher, utils.write_value_as_string(self._message)) + '"'
             else:
                 return utils.write_value_as_string(self._message)
         else:
@@ -88,7 +87,7 @@ class Publish(Endpoint):
             stringified_message = utils.write_value_as_string(self._message)
 
             if cipher is not None:
-                stringified_message = '"' + pn_crypto.encrypt(cipher, stringified_message) + '"'
+                stringified_message = '"' + self.pubnub.config.crypto.encrypt(cipher, stringified_message) + '"'
 
             stringified_message = utils.url_encode(stringified_message)
 

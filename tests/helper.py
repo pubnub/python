@@ -2,16 +2,19 @@ import threading
 import string
 import random
 import six
-import pubnub.crypto as pn_crypto
 
 from copy import copy
 from pubnub import utils
+from pubnub.crypto import PubNubCryptodome
 from pubnub.pnconfiguration import PNConfiguration
 
 try:
     from mock import patch
 except ImportError:
     from unittest.mock import patch  # noqa: F401
+
+crypto = PubNubCryptodome()
+
 
 pub_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"
 sub_key = "sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe"
@@ -97,7 +100,7 @@ def gen_string(l):
 
 def gen_decrypt_func(cipher_key):
     def decrypter(entry):
-        mr = pn_crypto.decrypt(cipher_key, entry)
+        mr = crypto.decrypt(cipher_key, entry)
         return mr
 
     return decrypter

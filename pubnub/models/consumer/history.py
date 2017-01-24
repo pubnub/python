@@ -1,5 +1,3 @@
-from pubnub import crypto as pn_crypto
-
 
 class PNHistoryResult(object):
     def __init__(self, messages, start_timetoken, end_timetoken):
@@ -11,7 +9,7 @@ class PNHistoryResult(object):
         return "History result for range %d..%d" % (self.start_timetoken, self.end_timetoken)
 
     @classmethod
-    def from_json(cls, json_input, include_tt_option=False, cipher=None):
+    def from_json(cls, json_input, crypto, include_tt_option=False, cipher=None):
         start_timetoken = json_input[1]
         end_timetoken = json_input[2]
 
@@ -20,9 +18,9 @@ class PNHistoryResult(object):
 
         for item in raw_items:
             if isinstance(item, dict) and 'timetoken' in item and 'message' in item and include_tt_option:
-                message = PNHistoryItemResult(item['message'], item['timetoken'])
+                message = PNHistoryItemResult(item['message'], crypto, item['timetoken'])
             else:
-                message = PNHistoryItemResult(item)
+                message = PNHistoryItemResult(item, crypto)
 
             if cipher is not None:
                 message.decrypt(cipher)
@@ -37,12 +35,13 @@ class PNHistoryResult(object):
 
 
 class PNHistoryItemResult(object):
-    def __init__(self, entry, timetoken=None):
+    def __init__(self, entry, crypto, timetoken=None):
         self.timetoken = timetoken
         self.entry = entry
+        self.crypto = crypto
 
     def __str__(self):
         return "History item with tt: %s and content: %s" % (self.timetoken, self.entry)
 
     def decrypt(self, cipher_key):
-        self.entry = pn_crypto.decrypt(cipher_key, self.entry)
+        self.entry = self.crypto.decrypt(cipher_key, self.entry)

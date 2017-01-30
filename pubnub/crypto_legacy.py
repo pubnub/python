@@ -3,7 +3,7 @@ import json
 import sys
 
 from .crypto_core import PubNubCrypto
-from Cryptodome.Cipher import AES
+from Crypto.Cipher import AES
 
 Initial16bytes = '0123456789012345'
 
@@ -21,11 +21,24 @@ try:
     from hashlib import sha256
     digestmod = sha256
 except ImportError:
-    import Cryptodome.Hash.SHA256 as digestmod
+    import Crypto.Hash.SHA256 as digestmod
     sha256 = digestmod.new
 
 
-class PubNubCryptodome(PubNubCrypto):
+class PubNubCryptoLegacy(PubNubCrypto):
+    """
+     Provides a crypto utils using a legacy pycrypto library.
+     Useful for GAE standard environment, which doesn't support Cryptodome yet.
+
+     To use it you should explicitly assign it while configuring PNConfiguration() object:
+
+        from pubnub.crypto_legacy import PubNubCryptoLegacy
+
+        config = PNConfiguration()
+        config.crypto_instance = PubNubCryptoLegacy()
+        pubnub = PubNub(config)
+    """
+
     def encrypt(self, key, msg):
         secret = self.get_secret(key)
 

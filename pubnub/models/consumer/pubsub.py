@@ -37,7 +37,6 @@ class PNPresenceEventResult(object):
                  timetoken, state, user_metadata=None):
 
         assert isinstance(event, six.string_types)
-        assert isinstance(uuid, six.string_types)
         assert isinstance(timestamp, six.integer_types)
         assert isinstance(occupancy, six.integer_types)
         assert isinstance(channel, six.string_types)

@@ -21,6 +21,7 @@ class PNConfiguration(object):
         self.auth_key = None
         self.filter_expression = None
         self.enable_subscribe = True
+        self.crypto_instance = None
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.NONE
 
@@ -53,6 +54,17 @@ class PNConfiguration(object):
 
     def set_presence_timeout(self, timeout):
         self.set_presence_timeout_with_custom_interval(timeout, (timeout / 2) - 1)
+
+    @property
+    def crypto(self):
+        if self.crypto_instance is None:
+            self._init_cryptodome()
+
+        return self.crypto_instance
+
+    def _init_cryptodome(self):
+        from .crypto import PubNubCryptodome
+        self.crypto_instance = PubNubCryptodome()
 
     @property
     def port(self):

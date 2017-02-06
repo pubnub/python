@@ -1,8 +1,9 @@
 import unittest
 
-from pubnub import crypto
+from pubnub.crypto import PubNubCryptodome
 from tests.helper import gen_decrypt_func
 
+crypto = PubNubCryptodome()
 todecode = 'QfD1NCBJCmt1aPPGU2cshw=='
 key = 'testKey'
 

@@ -77,7 +77,7 @@ class RequestsRequestHandler(BaseRequestHandler):
             target=client.run,
             name="EndpointThread-%s-%d" % (endpoint_name, ++RequestsRequestHandler.ENDPOINT_THREAD_COUNTER)
         )
-        thread.setDaemon(True)
+        thread.setDaemon(False)
         thread.start()
 
         call.thread = thread

@@ -1,5 +1,6 @@
 import unittest
 
+from pubnub.crypto import PubNubCryptodome
 from pubnub.models.consumer.access_manager import PNAccessManagerAuditResult, PNAccessManagerGrantResult
 from pubnub.models.consumer.channel_group import PNChannelGroupsListResult, PNChannelGroupsAddChannelResult, \
     PNChannelGroupsRemoveGroupResult, PNChannelGroupsRemoveChannelResult
@@ -48,10 +49,10 @@ class TestStringify(unittest.TestCase):
         assert str(PNHistoryResult(None, 123, 789)) == "History result for range 123..789"
 
     def test_history_item(self):
-        assert str(PNHistoryItemResult({'blah': 2}, 123)) == \
+        assert str(PNHistoryItemResult({'blah': 2}, PubNubCryptodome(), 123)) == \
             "History item with tt: 123 and content: {'blah': 2}"
 
-        assert str(PNHistoryItemResult({'blah': 2})) == \
+        assert str(PNHistoryItemResult({'blah': 2}, PubNubCryptodome())) == \
             "History item with tt: None and content: {'blah': 2}"
 
     def test_here_now(self):

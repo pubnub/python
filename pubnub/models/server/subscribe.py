@@ -69,7 +69,6 @@ class SubscribeMetadata:
 class PresenceEnvelope:
     def __init__(self, action, uuid, occupancy, timestamp, data=None):
         assert isinstance(action, six.string_types)
-        assert isinstance(uuid, six.string_types)
         assert isinstance(occupancy, six.integer_types)
         assert isinstance(timestamp, six.integer_types)
         if data is not None:
@@ -82,13 +81,21 @@ class PresenceEnvelope:
         self.data = data
 
     @classmethod
+    def extract_value(cls, json, key):
+        if key in json:
+            return json[key]
+        else:
+            return None
+
+    @classmethod
     def from_json_payload(cls, json):
+
         return PresenceEnvelope(
-            action=json['action'],
-            uuid=json['uuid'],
-            occupancy=json['occupancy'],
-            timestamp=json['timestamp'],
-            data=json['data'] if 'data' in json else None
+            action=cls.extract_value(json, 'action'),
+            uuid=cls.extract_value(json, 'uuid'),
+            occupancy=cls.extract_value(json, 'occupancy'),
+            timestamp=cls.extract_value(json, 'timestamp'),
+            data=cls.extract_value(json, 'data')
         )
 
 

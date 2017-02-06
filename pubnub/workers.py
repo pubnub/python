@@ -1,6 +1,5 @@
 import logging
 
-from . import crypto as pn_crypto
 from abc import abstractmethod
 from .utils import strip_right
 from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult
@@ -10,12 +9,12 @@ logger = logging.getLogger("pubnub")
 
 
 class SubscribeMessageWorker(object):
-    def __init__(self, pubnub_instnace, listener_manager_instance, queue_instance, event):
+    def __init__(self, pubnub_instance, listener_manager_instance, queue_instance, event):
         # assert isinstance(pubnub_instnace, PubNubCore)
         # assert isinstance(listener_manager_instance, ListenerManager)
         # assert isinstance(queue_instance, utils.Queue)
 
-        self._pubnub = pubnub_instnace
+        self._pubnub = pubnub_instance
         self._listener_manager = listener_manager_instance
         self._queue = queue_instance
         self._is_running = None
@@ -32,7 +31,7 @@ class SubscribeMessageWorker(object):
         if self._pubnub.config.cipher_key is None:
             return message_input
         else:
-            return pn_crypto.decrypt(self._pubnub.config.cipher_key, message_input)
+            return self._pubnub.config.crypto.decrypt(self._pubnub.config.cipher_key, message_input)
 
     def _process_incoming_payload(self, message):
         assert isinstance(message, SubscribeMessage)

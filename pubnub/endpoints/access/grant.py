@@ -63,10 +63,10 @@ class Grant(Endpoint):
             params['auth'] = utils.join_items_and_encode(self._auth_keys)
 
         if len(self._channels) > 0:
-            params['channel'] = utils.join_items_and_encode(self._channels)
+            params['channel'] = utils.join_items(self._channels)
 
         if len(self._groups) > 0:
-            params['channel-group'] = utils.join_items_and_encode(self._groups)
+            params['channel-group'] = utils.join_items(self._groups)
 
         if self._ttl is not None:
             params['ttl'] = str(int(self._ttl))

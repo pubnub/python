@@ -1,4 +1,22 @@
 
+## [v4.0.7](https://github.com/pubnub/python/tree/v4.0.7)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.6...v4.0.7)
+
+
+
+- 🐛Handle interval presence messages gracefully if they do not contain a UUID.
+
+- 🌟Support custom cryptography module when using GAE
+
+
+
+
+- ⭐designate the request thread as non-daemon to keep the SDK running.
+
+
+
 ## [v4.0.6](https://github.com/pubnub/python/tree/v4.0.6)
 
 

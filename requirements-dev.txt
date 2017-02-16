@@ -1,6 +1,6 @@
 pytest
 pytest-cov
-codecov
+codacy-coverage
 pycryptodomex
 pytest-benchmark
 twisted

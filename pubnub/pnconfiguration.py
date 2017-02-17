@@ -22,6 +22,7 @@ class PNConfiguration(object):
         self.filter_expression = None
         self.enable_subscribe = True
         self.crypto_instance = None
+        self.log_verbosity = False
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.NONE
 

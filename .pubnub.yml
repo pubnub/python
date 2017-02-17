@@ -1,8 +1,13 @@
 name: python
-version: 4.0.7
+version: 4.0.8
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.8
+    date:
+    changes:
+      - type: feature
+        text: Support log_verbosity in pnconfiguration to enable HTTP logging.
   - version: v4.0.7
     date:
     changes:

@@ -55,6 +55,9 @@ class RequestOptions(object):
     def query_string(self):
         return str('&'.join(self.query_list()))
 
+    def __str__(self):
+        return "path: {0}, qs: {1}".format(self.path, self.query_string)
+
 
 class PlatformOptions(object):
     def __init__(self, headers, pn_config):

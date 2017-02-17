@@ -49,12 +49,18 @@ class PubNub(PubNubCore):
 
         self.merge_in_params(endpoint_call_options)
 
+        if self.config.log_verbosity:
+            print(endpoint_call_options)
+
         return self._request_handler.sync_request(platform_options, endpoint_call_options)
 
     def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event):
         platform_options = PlatformOptions(self.headers, self.config)
 
         self.merge_in_params(endpoint_call_options)
+
+        if self.config.log_verbosity:
+            print(endpoint_call_options)
 
         return self._request_handler.async_request(endpoint_name, platform_options, endpoint_call_options,
                                                    callback, cancellation_event)

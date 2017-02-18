@@ -1,4 +1,14 @@
 
+## [v4.0.8](https://github.com/pubnub/python/tree/v4.0.8)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.7...v4.0.8)
+
+- 🌟Support log_verbosity in pnconfiguration to enable HTTP logging.
+
+
+
+
 ## [v4.0.7](https://github.com/pubnub/python/tree/v4.0.7)
 
 

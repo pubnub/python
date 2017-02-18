@@ -13,4 +13,4 @@ install:
 script:
   - python scripts/run-tests.py
 after_success:
-  - codecov
+  - python-codacy-coverage -r coverage.xml

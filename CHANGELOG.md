@@ -1,4 +1,17 @@
 
+## [v4.0.9](https://github.com/pubnub/python/tree/v4.0.9)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.8...v4.0.9)
+
+
+
+- 🐛Fix missing encoder for path elements
+- 🌟
+
+
+
+
 ## [v4.0.8](https://github.com/pubnub/python/tree/v4.0.8)
 
 
@@ -17,9 +30,7 @@
 
 
 - 🐛Handle interval presence messages gracefully if they do not contain a UUID.
-
 - 🌟Support custom cryptography module when using GAE
-
 
 
 
@@ -46,17 +57,13 @@
 - ⭐new pubnub domain
 
 
-
 - ⭐native demo app
-
 
 
 - ⭐fixed HTTPAdapter config
 
 
-
 - ⭐add a new Python 3.6.0 config to travis builds
-
 
 
 - ⭐fix blocking Ctrl+C bug
@@ -90,7 +97,6 @@
 
 
 - ⭐Adjusting maximum pool size for requests installations
-
 
 
 - ⭐Adding Publsher UUID

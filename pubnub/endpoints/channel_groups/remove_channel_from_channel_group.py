@@ -35,7 +35,7 @@ class RemoveChannelFromChannelGroup(Endpoint):
 
     def build_path(self):
             return RemoveChannelFromChannelGroup.REMOVE_PATH % (
-                self.pubnub.config.subscribe_key, self._channel_group)
+                self.pubnub.config.subscribe_key, utils.url_encode(self._channel_group))
 
     def http_method(self):
         return HttpMethod.GET

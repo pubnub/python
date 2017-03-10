@@ -139,8 +139,9 @@ def test_add_channel_remove_group(event_loop, sleeper=asyncio.sleep):
 def test_super_call(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
 
-    ch = "channel-groups-tornado-ch"
-    gr = "channel-groups-tornado-cg"
+    ch = "channel-groups-torna|do-ch"
+    gr = "channel-groups-torna|do-cg"
+    pubnub.config.auth = "h.e|l%l,0"
 
     # add
     env = yield from pubnub.add_channel_to_channel_group() \

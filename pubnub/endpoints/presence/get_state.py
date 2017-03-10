@@ -33,7 +33,7 @@ class GetState(Endpoint):
             return GetState.GET_STATE_PATH % (
                 self.pubnub.config.subscribe_key,
                 utils.join_channels(self._channels),
-                self.pubnub.uuid
+                utils.url_encode(self.pubnub.uuid)
             )
 
     def http_method(self):

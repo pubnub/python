@@ -81,7 +81,7 @@ class Publish(Endpoint):
         if self._use_post:
             return Publish.PUBLISH_POST_PATH % (self.pubnub.config.publish_key,
                                                 self.pubnub.config.subscribe_key,
-                                                self._channel, 0)
+                                                utils.url_encode(self._channel), 0)
         else:
             cipher = self.pubnub.config.cipher_key
             stringified_message = utils.write_value_as_string(self._message)
@@ -93,7 +93,7 @@ class Publish(Endpoint):
 
             return Publish.PUBLISH_GET_PATH % (self.pubnub.config.publish_key,
                                                self.pubnub.config.subscribe_key,
-                                               self._channel, 0, stringified_message)
+                                               utils.url_encode(self._channel), 0, stringified_message)
 
     def http_method(self):
         if self._use_post is True:

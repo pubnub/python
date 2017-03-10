@@ -89,7 +89,7 @@ def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
 def test_where_now_super_admin_call(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
 
-    uuid = 'test-where-now-asyncio-uuid'
+    uuid = 'test-where-now-asyncio-uuid-.*|@#'
     pubnub.config.uuid = uuid
 
     res = yield from pubnub.where_now() \

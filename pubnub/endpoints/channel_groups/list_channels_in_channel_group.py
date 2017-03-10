@@ -1,5 +1,6 @@
 import six
 
+from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_GROUP_MISSING
 from pubnub.exceptions import PubNubException
@@ -25,7 +26,7 @@ class ListChannelsInChannelGroup(Endpoint):
 
     def build_path(self):
             return ListChannelsInChannelGroup.LIST_PATH % (
-                self.pubnub.config.subscribe_key, self._channel_group)
+                self.pubnub.config.subscribe_key, utils.url_encode(self._channel_group))
 
     def http_method(self):
         return HttpMethod.GET

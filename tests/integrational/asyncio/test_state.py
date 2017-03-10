@@ -122,7 +122,7 @@ def test_state_super_admin_call(event_loop):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
     ch1 = 'test-state-asyncio-ch1'
     ch2 = 'test-state-asyncio-ch2'
-    pubnub.config.uuid = 'test-state-asyncio-uuid'
+    pubnub.config.uuid = 'test-state-asyncio-uuid-|.*$'
     state = {"name": "Alex", "count": 5}
 
     env = yield from pubnub.set_state() \

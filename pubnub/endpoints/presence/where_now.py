@@ -1,5 +1,6 @@
 import six
 
+from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.errors import PNERR_UUID_MISSING
@@ -23,7 +24,7 @@ class WhereNow(Endpoint):
         return {}
 
     def build_path(self):
-        return WhereNow.WHERE_NOW_PATH % (self.pubnub.config.subscribe_key, self._uuid)
+        return WhereNow.WHERE_NOW_PATH % (self.pubnub.config.subscribe_key, utils.url_encode(self._uuid))
 
     def http_method(self):
         return HttpMethod.GET

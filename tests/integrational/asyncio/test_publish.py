@@ -249,7 +249,7 @@ def test_publish_super_admin_call(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
 
     yield from pubnub.publish().channel(ch).message("hey").future()
-    yield from pubnub.publish().channel("foo.bar").message("hey^&#$").should_store(True).meta({
+    yield from pubnub.publish().channel("f#!|oo.bar").message("hey^&#$").should_store(True).meta({
         'name': 'alex'
     }).future()
 

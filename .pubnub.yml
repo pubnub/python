@@ -1,8 +1,14 @@
 name: python
-version: 4.0.8
+version: 4.0.9
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.9
+    date:
+    changes:
+      - type: bug
+        text: Fix missing encoder for path elements
+      - type: feature
   - version: v4.0.8
     date:
     changes:

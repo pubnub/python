@@ -66,13 +66,14 @@ class PlatformOptions(object):
 
 
 class ResponseInfo(object):
-    def __init__(self, status_code, tls_enabled, origin, uuid, auth_key, client_request):
+    def __init__(self, status_code, tls_enabled, origin, uuid, auth_key, client_request, client_response=None):
         self.status_code = status_code
         self.tls_enabled = tls_enabled
         self.origin = origin
         self.uuid = uuid
         self.auth_key = auth_key
         self.client_request = client_request
+        self.client_response = client_response
 
 
 class Envelope(object):

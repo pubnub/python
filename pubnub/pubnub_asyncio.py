@@ -180,7 +180,8 @@ class PubNubAsyncio(PubNubCore):
                 origin=request_url.hostname,
                 uuid=uuid,
                 auth_key=auth_key,
-                client_request=None
+                client_request=None,
+                client_response=response
             )
 
         if body is not None and len(body) > 0:

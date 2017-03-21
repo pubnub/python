@@ -108,3 +108,51 @@ features:
     - SUBSCRIBE-WITH-TIMETOKEN
     - SUBSCRIBE-WILDCARD
     - SUBSCRIBE-PUBLISHER-UUID
+
+supported-platforms:
+  -
+    framework: PubNub Python SDK
+    platforms:
+      - FreeBSD 8-STABLE or later, amd64, 386
+      - Linux 2.6 or later, amd64, 386.
+      - Mac OS X 10.8 or later, amd64
+      - Windows 7 or later, amd64, 386
+    versions:
+      - python 2.6.9
+      - python 2.7.13
+      - python 3.3.6
+      - python 3.4.5
+      - python 3.5.2
+      - python 3.6.0
+      - pypy
+  -
+    framework: PubNub Python Tornado SDK
+    platforms:
+      - FreeBSD 8-STABLE or later, amd64, 386
+      - Linux 2.6 or later, amd64, 386.
+      - Mac OS X 10.8 or later, amd64
+      - Windows 7 or later, amd64, 386
+    versions:
+      - python 2.7.13
+      - python 3.3.6
+      - python 3.4.5
+      - python 3.5.2
+      - python 3.6.0
+      - pypy
+  -
+    framework: PubNub Python Asyncio SDK
+    platforms:
+      - FreeBSD 8-STABLE or later, amd64, 386
+      - Linux 2.6 or later, amd64, 386.
+      - Mac OS X 10.8 or later, amd64
+      - Windows 7 or later, amd64, 386
+    versions:
+      - python 3.4.5
+      - python 3.5.2
+      - python 3.6.0
+  -
+    framework: PubNub Python Twisted SDK
+    platforms:
+      - Linux 2.6 or later, amd64, 386.
+    versions:
+      - python 2.7.13

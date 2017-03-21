@@ -117,7 +117,7 @@ supported-platforms:
       - Linux 2.6 or later, amd64, 386.
       - Mac OS X 10.8 or later, amd64
       - Windows 7 or later, amd64, 386
-    versions:
+    editors:
       - python 2.6.9
       - python 2.7.13
       - python 3.3.6
@@ -132,7 +132,7 @@ supported-platforms:
       - Linux 2.6 or later, amd64, 386.
       - Mac OS X 10.8 or later, amd64
       - Windows 7 or later, amd64, 386
-    versions:
+    editors:
       - python 2.7.13
       - python 3.3.6
       - python 3.4.5
@@ -146,7 +146,7 @@ supported-platforms:
       - Linux 2.6 or later, amd64, 386.
       - Mac OS X 10.8 or later, amd64
       - Windows 7 or later, amd64, 386
-    versions:
+    editors:
       - python 3.4.5
       - python 3.5.2
       - python 3.6.0
@@ -154,5 +154,5 @@ supported-platforms:
     framework: PubNub Python Twisted SDK
     platforms:
       - Linux 2.6 or later, amd64, 386.
-    versions:
+    editors:
       - python 2.7.13

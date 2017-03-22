@@ -24,6 +24,9 @@ from .exceptions import PubNubException
 
 logger = logging.getLogger("pubnub")
 
+# Major version of aiohttp library
+AIOHTTP_V = int(aiohttp.__version__[0])
+
 
 class PubNubAsyncio(PubNubCore):
     """
@@ -37,7 +40,10 @@ class PubNubAsyncio(PubNubCore):
         self._connector = None
         self._session = None
 
-        self.set_connector(aiohttp.TCPConnector(conn_timeout=config.connect_timeout, verify_ssl=True))
+        if AIOHTTP_V in (0, 1):
+            self.set_connector(aiohttp.TCPConnector(conn_timeout=config.connect_timeout, verify_ssl=True))
+        else:
+            self.set_connector(aiohttp.TCPConnector(verify_ssl=True))
 
         if self.config.enable_subscribe:
             self._subscription_manager = AsyncioSubscriptionManager(self)
@@ -50,7 +56,12 @@ class PubNubAsyncio(PubNubCore):
             self._session.close()
 
         self._connector = cn
-        self._session = aiohttp.ClientSession(loop=self.event_loop, connector=self._connector)
+
+        if AIOHTTP_V in (0, 1):
+            self._session = aiohttp.ClientSession(loop=self.event_loop, connector=self._connector)
+        else:
+            self._session = aiohttp.ClientSession(loop=self.event_loop, conn_timeout=self.config.connect_timeout,
+                                                  connector=self._connector)
 
     def stop(self):
         self._session.close()
@@ -136,15 +147,18 @@ class PubNubAsyncio(PubNubCore):
 
         options.merge_params_in(params_to_merge_in)
 
-        url = utils.build_url(self.config.scheme(), self.base_origin, options.path)
+        url = utils.build_url(self.config.scheme(), self.base_origin, options.path, options.query_string)
         log_url = utils.build_url(self.config.scheme(), self.base_origin,
                                   options.path, options.query_string)
         logger.debug("%s %s %s" % (options.method_string, log_url, options.data))
 
+        if AIOHTTP_V in (1, 2):
+            from yarl import URL
+            url = URL(url, encoded=True)
+
         try:
             response = yield from asyncio.wait_for(
                 self._session.request(options.method_string, url,
-                                      params=options.query_string,
                                       headers=self.headers,
                                       data=options.data if options.data is not None else None),
                 options.request_timeout)
@@ -163,7 +177,7 @@ class PubNubAsyncio(PubNubCore):
         status_category = PNStatusCategory.PNUnknownCategory
 
         if response is not None:
-            request_url = six.moves.urllib.parse.urlparse(response.url)
+            request_url = six.moves.urllib.parse.urlparse(str(response.url))
             query = six.moves.urllib.parse.parse_qs(request_url.query)
             uuid = None
             auth_key = None

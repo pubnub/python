@@ -4,7 +4,7 @@ import pubnub as pn
 
 from tornado.testing import AsyncTestCase
 from pubnub.pubnub_tornado import PubNubTornado
-from tests.helper import pnconf_copy
+from tests.helper import pnconf_copy, pnconf_pam_copy
 from tests.integrational.tornado.vcr_tornado_decorator import use_cassette_and_stub_time_sleep
 
 
@@ -73,4 +73,33 @@ class TestPubNubState(AsyncTestCase):
         assert env.result.channels[ch2]['count'] == 5
 
         self.pubnub.stop()
+        self.stop()
+
+    @tornado.testing.gen_test
+    def test_super_call(self):
+        ch1 = "state-tornado-ch1"
+        ch2 = "state-tornado-ch2"
+        pnconf = pnconf_pam_copy()
+        pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)
+        pubnub.config.uuid = 'test-state-tornado-uuid-|.*$'
+        state = {"name": "Alex", "count": 5}
+
+        env = yield pubnub.set_state() \
+            .channels([ch1, ch2]) \
+            .state(state) \
+            .future()
+
+        assert env.result.state['name'] == "Alex"
+        assert env.result.state['count'] == 5
+
+        env = yield pubnub.get_state() \
+            .channels([ch1, ch2]) \
+            .future()
+
+        assert env.result.channels[ch1]['name'] == "Alex"
+        assert env.result.channels[ch2]['name'] == "Alex"
+        assert env.result.channels[ch1]['count'] == 5
+        assert env.result.channels[ch2]['count'] == 5
+
+        pubnub.stop()
         self.stop()

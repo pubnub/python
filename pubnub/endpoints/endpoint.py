@@ -223,6 +223,7 @@ class Endpoint(object):
             pn_status.uuid = response_info.uuid
             pn_status.auth_key = response_info.auth_key
             pn_status.client_request = response_info.client_request
+            pn_status.client_response = response_info.client_response
 
         pn_status.operation = self.operation_type()
         pn_status.category = category

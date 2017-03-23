@@ -4,7 +4,7 @@ import unittest
 import pubnub
 from pubnub.models.consumer.presence import PNSetStateResult, PNGetStateResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_copy
+from tests.helper import pnconf_copy, pnconf_pam_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
@@ -53,3 +53,28 @@ class TestPubNubState(unittest.TestCase):
         assert envelope.result.channels[ch1]['count'] == 5
         assert envelope.result.channels[ch2]['name'] == "Alex"
         assert envelope.result.channels[ch2]['count'] == 5
+
+    def test_super_call(self):
+        ch1 = "state-tornado-ch1"
+        ch2 = "state-tornado-ch2"
+        pnconf = pnconf_pam_copy()
+        pubnub = PubNub(pnconf)
+        pubnub.config.uuid = 'test-state-native-uuid-|.*$'
+        state = {"name": "Alex", "count": 5}
+
+        env = pubnub.set_state() \
+            .channels([ch1, ch2]) \
+            .state(state) \
+            .sync()
+
+        assert env.result.state['name'] == "Alex"
+        assert env.result.state['count'] == 5
+
+        env = pubnub.get_state() \
+            .channels([ch1, ch2]) \
+            .sync()
+
+        assert env.result.channels[ch1]['name'] == "Alex"
+        assert env.result.channels[ch2]['name'] == "Alex"
+        assert env.result.channels[ch1]['count'] == 5
+        assert env.result.channels[ch2]['count'] == 5

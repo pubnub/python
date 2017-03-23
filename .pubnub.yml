@@ -1,8 +1,13 @@
 name: python
-version: 4.0.9
+version: 4.0.10
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.10
+    date:
+    changes:
+      - type: bug
+        text: Fix aiohttp v1.x.x and v2.x.x compatibility
   - version: v4.0.9
     date:
     changes:

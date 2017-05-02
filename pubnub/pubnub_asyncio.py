@@ -469,10 +469,10 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             if envelope.status.is_error:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
                         heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
-                    self._listener_manager.announce_stateus(envelope.status)
+                    self._listener_manager.announce_status(envelope.status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
-                    self._listener_manager.announce_stateus(envelope.status)
+                    self._listener_manager.announce_status(envelope.status)
 
         except PubNubAsyncioException as e:
             pass

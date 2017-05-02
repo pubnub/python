@@ -117,7 +117,7 @@ features:
 
 supported-platforms:
   -
-    framework: PubNub Python SDK
+    version: PubNub Python SDK
     platforms:
       - FreeBSD 8-STABLE or later, amd64, 386
       - Linux 2.6 or later, amd64, 386.
@@ -132,7 +132,7 @@ supported-platforms:
       - python 3.6.0
       - pypy
   -
-    framework: PubNub Python Tornado SDK
+    version: PubNub Python Tornado SDK
     platforms:
       - FreeBSD 8-STABLE or later, amd64, 386
       - Linux 2.6 or later, amd64, 386.
@@ -146,7 +146,7 @@ supported-platforms:
       - python 3.6.0
       - pypy
   -
-    framework: PubNub Python Asyncio SDK
+    version: PubNub Python Asyncio SDK
     platforms:
       - FreeBSD 8-STABLE or later, amd64, 386
       - Linux 2.6 or later, amd64, 386.
@@ -157,7 +157,7 @@ supported-platforms:
       - python 3.5.2
       - python 3.6.0
   -
-    framework: PubNub Python Twisted SDK
+    version: PubNub Python Twisted SDK
     platforms:
       - Linux 2.6 or later, amd64, 386.
     editors:

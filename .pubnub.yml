@@ -1,8 +1,13 @@
 name: python
-version: 4.0.10
+version: 4.0.11
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.11
+    date: 2017-05-05
+    changes:
+      - type: improvement
+        text: Added deamon option for PNConfig
   - version: v4.0.10
     date:
     changes:

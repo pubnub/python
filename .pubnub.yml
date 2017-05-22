@@ -1,8 +1,13 @@
 name: python
-version: 4.0.10
+version: 4.0.11
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.11
+    date:
+    changes:
+      - type: bug
+        text: Fix typo on announce_status.
   - version: v4.0.10
     date:
     changes:

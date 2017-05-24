@@ -93,14 +93,32 @@ class PubNubTornado(PubNubCore):
     def request_result(self, options_func, cancellation_event):
         try:
             envelope = yield self._request_helper(options_func, cancellation_event)
-            raise tornado.gen.Return(envelope.result)
-        except PubNubTornadoException as e:
-            raise e.status.error_data.exception
+            e = envelope.result
+        except PubNubException as ex:
+            e = PubNubTornadoException(
+                result=None,
+                status=ex.status
+            )
+        except Exception as ex:
+            e = PubNubTornadoException(
+                result=None,
+                status=options_func().create_status(PNStatusCategory.PNUnknownCategory,
+                                                    None,
+                                                    None,
+                                                    ex)
+            )
+
+        raise tornado.gen.Return(e)
 
     @tornado.gen.coroutine
     def request_future(self, options_func, cancellation_event):
         try:
             e = yield self._request_helper(options_func, cancellation_event)
+        except PubNubException as ex:
+            e = PubNubTornadoException(
+                result=None,
+                status=ex.status
+            )
         except PubNubTornadoException as ex:
             e = ex
         except Exception as ex:

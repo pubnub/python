@@ -78,20 +78,20 @@ class PubNubAsyncio(PubNubCore):
         raise NotImplementedError
 
     @asyncio.coroutine
-    def request_result(self, options_func, cancellation_event):
-        envelope = yield from self._request_helper(options_func, cancellation_event)
-        return envelope.result
+    def request_result(self, options_func, validate_params, cancellation_event):
+        try:
+            envelope = yield from self._request_helper(options_func, validate_params, cancellation_event)
+            return envelope.result
+        except PubNubAsyncioException as ex:
+            e = ex.status.error_data.exception
+            e.status = ex.status
+            raise e
 
     @asyncio.coroutine
-    def request_future(self, options_func, cancellation_event):
+    def request_future(self, options_func, validate_params, cancellation_event):
         try:
-            res = yield from self._request_helper(options_func, cancellation_event)
+            res = yield from self._request_helper(options_func, validate_params, cancellation_event)
             return res
-        except PubNubException as e:
-            return PubNubAsyncioException(
-                result=None,
-                status=e.status
-            )
         except asyncio.TimeoutError:
             return PubNubAsyncioException(
                 result=None,
@@ -112,17 +112,20 @@ class PubNubAsyncio(PubNubCore):
                                                         pn_error=PNERR_REQUEST_CANCELLED
                                                     ))
             )
+        except PubNubAsyncioException as e:
+            return e
         except Exception as e:
-            return PubNubAsyncioException(
-                result=None,
-                status=options_func().create_status(PNStatusCategory.PNUnknownCategory,
+            status = options_func().create_status(PNStatusCategory.PNUnknownCategory,
                                                     None,
                                                     None,
                                                     e)
+            return PubNubAsyncioException(
+                result=None,
+                status=status
             )
 
     @asyncio.coroutine
-    def _request_helper(self, options_func, cancellation_event):
+    def _request_helper(self, options_func, validate_params, cancellation_event):
         """
         Query string should be provided as a manually serialized and encoded string.
 
@@ -133,12 +136,12 @@ class PubNubAsyncio(PubNubCore):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
+        validate_params()
         options = options_func()
         assert isinstance(options, RequestOptions)
 
         create_response = options.create_response
         create_status = options.create_status
-        create_exception = options.create_exception
 
         params_to_merge_in = {}
 
@@ -210,14 +213,17 @@ class PubNubAsyncio(PubNubCore):
                 try:
                     data = json.loads(body.decode("utf-8"))
                 except ValueError:
-                    raise create_exception(category=status_category,
-                                           response=response,
-                                           response_info=response_info,
-                                           exception=PubNubException(
-                                               pn_error=PNERR_JSON_DECODING_FAILED,
-                                               errormsg='json decode error',
-                                           )
-                                           )
+                    raise PubNubAsyncioException(
+                        result=None,
+                        status=create_status(category=status_category,
+                                             response=response,
+                                             response_info=response_info,
+                                             exception=PubNubException(
+                                                 pn_error=PNERR_JSON_DECODING_FAILED,
+                                                 errormsg='json decode error',
+                                             )
+                                             )
+                    )
         else:
             data = "N/A"
 
@@ -235,15 +241,18 @@ class PubNubAsyncio(PubNubCore):
             if response.status == 400:
                 status_category = PNStatusCategory.PNBadRequestCategory
 
-            raise create_exception(category=status_category,
-                                   response=data,
-                                   response_info=response_info,
-                                   exception=PubNubException(
-                                       errormsg=data,
-                                       pn_error=err,
-                                       status_code=response.status
-                                   )
-                                   )
+            raise PubNubAsyncioException(
+                result=None,
+                status=create_status(category=status_category,
+                                     response=data,
+                                     response_info=response_info,
+                                     exception=PubNubException(
+                                         errormsg=data,
+                                         pn_error=err,
+                                         status_code=response.status
+                                     )
+                                     )
+            )
         else:
             return AsyncioEnvelope(
                 result=create_response(data),
@@ -469,10 +478,10 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             if envelope.status.is_error:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
                         heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
-                    self._listener_manager.announce_status(envelope.status)
+                    self._listener_manager.announce_stateus(envelope.status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
-                    self._listener_manager.announce_status(envelope.status)
+                    self._listener_manager.announce_stateus(envelope.status)
 
         except PubNubAsyncioException as e:
             pass

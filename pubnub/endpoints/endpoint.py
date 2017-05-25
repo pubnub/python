@@ -116,19 +116,11 @@ class Endpoint(object):
                                          cancellation_event=self._cancellation_event)
 
     def result(self):
-        def handler():
-            self.validate_params()
-            return self.options()
-
-        return self.pubnub.request_result(options_func=handler,
+        return self.pubnub.request_result(options_func=self.options, validate_params=self.validate_params,
                                           cancellation_event=self._cancellation_event)
 
     def future(self):
-        def handler():
-            self.validate_params()
-            return self.options()
-
-        return self.pubnub.request_future(options_func=handler,
+        return self.pubnub.request_future(options_func=self.options, validate_params=self.validate_params,
                                           cancellation_event=self._cancellation_event)
 
     def deferred(self):

@@ -90,35 +90,26 @@ class PubNubTornado(PubNubCore):
         raise NotImplementedError
 
     @tornado.gen.coroutine
-    def request_result(self, options_func, cancellation_event):
-        try:
-            envelope = yield self._request_helper(options_func, cancellation_event)
-            e = envelope.result
-        except PubNubException as ex:
-            e = PubNubTornadoException(
-                result=None,
-                status=ex.status
-            )
-        except Exception as ex:
-            e = PubNubTornadoException(
-                result=None,
-                status=options_func().create_status(PNStatusCategory.PNUnknownCategory,
-                                                    None,
-                                                    None,
-                                                    ex)
-            )
+    def request_result(self, options_func, validate_params, cancellation_event):
+        """ Returns only result of an operation
 
-        raise tornado.gen.Return(e)
+        """
+        try:
+            envelope = yield self._request_helper(options_func, validate_params, cancellation_event)
+            raise tornado.gen.Return(envelope.result)
+        except PubNubTornadoException as ex:
+            e = ex.status.error_data.exception
+            e.status = ex.status
+            raise e
 
     @tornado.gen.coroutine
-    def request_future(self, options_func, cancellation_event):
+    def request_future(self, options_func, validate_params, cancellation_event):
+        """ Returns envelope which wraps both result and status
+
+
+        """
         try:
-            e = yield self._request_helper(options_func, cancellation_event)
-        except PubNubException as ex:
-            e = PubNubTornadoException(
-                result=None,
-                status=ex.status
-            )
+            e = yield self._request_helper(options_func, validate_params, cancellation_event)
         except PubNubTornadoException as ex:
             e = ex
         except Exception as ex:
@@ -133,10 +124,11 @@ class PubNubTornado(PubNubCore):
         raise tornado.gen.Return(e)
 
     # REFACTOR: quickly adjusted to fit the new result() and future() endpoints
-    def _request_helper(self, options_func, cancellation_event):
+    def _request_helper(self, options_func, validate_params, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
+        validate_params()
         options = options_func()
 
         create_response = options.create_response

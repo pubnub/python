@@ -10,7 +10,7 @@ from pubnub import utils
 
 class ListPushProvisions(Endpoint):
     # v1/push/sub-key/{subKey}/devices/{pushToken}
-    LIST_PATH = "v1/push/sub-key/%s/devices/%s"
+    LIST_PATH = "/v1/push/sub-key/%s/devices/%s"
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
@@ -45,12 +45,12 @@ class ListPushProvisions(Endpoint):
         if not isinstance(self._device_id, six.string_types) or len(self._device_id) == 0:
             raise PubNubException(pn_error=PNERR_PUSH_DEVICE_MISSING)
 
-        if self._push_type is None or len(self._push_type) == 0:
+        if self._push_type is None:
             raise PubNubException(pn_error=PNERROR_PUSH_TYPE_MISSING)
 
-    def create_response(self, envelope):
-        if envelope is not None and isinstance(envelope, list):
-            return PNPushListProvisionsResult(envelope['payload']['channels'])
+    def create_response(self, channels):
+        if channels is not None and len(channels) > 0 and isinstance(channels, list):
+            return PNPushListProvisionsResult(channels)
         else:
             return PNPushListProvisionsResult([])
 

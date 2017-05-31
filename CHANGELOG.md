@@ -1,4 +1,13 @@
 
+## [v4.0.12](https://github.com/pubnub/python/tree/v4.0.12)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.11...v4.0.12)
+
+
+
+- 🐛Fixed issues with managing push notifications
+
 ## [v4.0.11](https://github.com/pubnub/python/tree/v4.0.11)
 
 

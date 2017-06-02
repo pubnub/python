@@ -1,8 +1,13 @@
 name: python
-version: 4.0.11
+version: 4.0.12
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.0.12
+    date:
+    changes:
+      - type: bug
+        text: Fixed issues with managing push notifications
   - version: v4.0.11
     date:
     changes:

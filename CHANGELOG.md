@@ -1,4 +1,23 @@
 
+## [v4.0.12](https://github.com/pubnub/python/tree/v4.0.12)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.11...v4.0.12)
+
+
+
+- 🐛Fixed issues with managing push notifications
+
+## [v4.0.11](https://github.com/pubnub/python/tree/v4.0.11)
+
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.10...v4.0.11)
+
+
+
+- 🐛Fix typo on announce_status.
+
+
 ## [v4.0.10](https://github.com/pubnub/python/tree/v4.0.10)
 
 
@@ -7,8 +26,6 @@
 
 
 - 🐛Fix aiohttp v1.x.x and v2.x.x compatibility
-
-
 
 
 ## [v4.0.9](https://github.com/pubnub/python/tree/v4.0.9)

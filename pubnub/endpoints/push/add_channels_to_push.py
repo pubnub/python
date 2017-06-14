@@ -10,7 +10,7 @@ from pubnub import utils
 
 class AddChannelsToPush(Endpoint):
     # v1/push/sub-key/{subKey}/devices/{pushToken}
-    ADD_PATH = "v1/push/sub-key/%s/devices/%s"
+    ADD_PATH = "/v1/push/sub-key/%s/devices/%s"
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
@@ -54,7 +54,7 @@ class AddChannelsToPush(Endpoint):
         if not isinstance(self._device_id, six.string_types) or len(self._device_id) == 0:
             raise PubNubException(pn_error=PNERR_PUSH_DEVICE_MISSING)
 
-        if self._push_type is None or len(self._push_type) == 0:
+        if self._push_type is None:
             raise PubNubException(pn_error=PNERROR_PUSH_TYPE_MISSING)
 
     def create_response(self, envelope):

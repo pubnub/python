@@ -212,10 +212,10 @@ class NativeSubscriptionManager(SubscriptionManager):
             if status.is_error:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
                         heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
-                    self._listener_manager.announce_stateus(status)
+                    self._listener_manager.announce_status(status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
-                    self._listener_manager.announce_stateus(status)
+                    self._listener_manager.announce_status(status)
 
         try:
             (Heartbeat(self._pubnub)

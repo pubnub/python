@@ -5,6 +5,7 @@ import threading
 from threading import Event
 from six.moves.queue import Queue, Empty
 
+from pubnub.exceptions import PubNubException
 from . import utils
 from .request_handlers.base import BaseRequestHandler
 from .request_handlers.requests_handler import RequestsRequestHandler
@@ -17,7 +18,7 @@ from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionM
 from .models.consumer.common import PNStatus
 from .pnconfiguration import PNConfiguration
 from .pubnub_core import PubNubCore
-from .structures import PlatformOptions
+from .structures import PlatformOptions, Envelope
 from .workers import SubscribeMessageWorker
 
 logger = logging.getLogger("pubnub")
@@ -44,8 +45,38 @@ class PubNub(PubNubCore):
         assert isinstance(handler, BaseRequestHandler)
         self._request_handler = handler
 
-    def request_sync(self, endpoint_call_options):
+    def request_result(self, options_func, validate_params, cancellation_event):
+        validate_params()
+
         platform_options = PlatformOptions(self.headers, self.config)
+        endpoint_call_options = options_func()
+        self.merge_in_params(endpoint_call_options)
+
+        if self.config.log_verbosity:
+            print(endpoint_call_options)
+
+        envelope = self._request_handler.sync_request(platform_options, endpoint_call_options)
+
+        if envelope.status.is_error():
+            e = envelope.status.error_data.exception
+            e.status = envelope.status
+            raise e
+
+        return envelope
+
+    def request_sync(self, endpoint_call_options, validate_params):
+        platform_options = PlatformOptions(self.headers, self.config)
+
+        try:
+            validate_params()
+        except PubNubException as e:
+            return Envelope(
+                result=None,
+                status=endpoint_call_options.create_status(
+                    category=None,
+                    response=None,
+                    response_info=None,
+                    exception=e))
 
         self.merge_in_params(endpoint_call_options)
 

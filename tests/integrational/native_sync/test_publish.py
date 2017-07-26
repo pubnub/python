@@ -294,13 +294,13 @@ class TestPubNubPublish(unittest.TestCase):
                          filter_query_parameters=['uuid', 'pnsdk'])
     def test_publish_do_not_store(self):
         try:
-            env = PubNub(pnconf_enc).publish() \
+            result = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
                 .message("hey") \
                 .should_store(False) \
-                .sync()
+                .result()
 
-            assert isinstance(env.result, PNPublishResult)
-            assert env.result.timetoken > 1
+            assert isinstance(result, PNPublishResult)
+            assert result.timetoken > 1
         except PubNubException as e:
             self.fail(e)

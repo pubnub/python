@@ -89,12 +89,7 @@ class Endpoint(object):
             sort_arguments=self._sort_params)
 
     def sync(self):
-        self.validate_params()
-
-        envelope = self.pubnub.request_sync(self.options())
-
-        if envelope.status.is_error():
-            raise envelope.status.error_data.exception
+        envelope = self.pubnub.request_sync(self.options(), self.validate_params)
 
         return envelope
 

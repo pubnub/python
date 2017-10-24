@@ -21,6 +21,7 @@ from .endpoints.presence.set_state import SetState
 from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.here_now import HereNow
 from .endpoints.presence.where_now import WhereNow
+from .endpoints.history_delete import HistoryDelete
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -156,6 +157,9 @@ class PubNubCore:
 
     def time(self):
         return Time(self)
+
+    def delete_messages(self):
+        return HistoryDelete(self)
 
     @staticmethod
     def timestamp():

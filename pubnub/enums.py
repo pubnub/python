@@ -1,6 +1,7 @@
 class HttpMethod(object):
     GET = 1
     POST = 2
+    DELETE = 3
 
     @classmethod
     def string(cls, method):
@@ -8,6 +9,8 @@ class HttpMethod(object):
             return "GET"
         elif method == cls.POST:
             return "POST"
+        elif method == cls.DELETE:
+            return "DELETE"
 
 
 class PNStatusCategory(object):
@@ -55,6 +58,7 @@ class PNOperationType(object):
     PNAccessManagerAudit = 20
     PNAccessManagerGrant = 21
     PNAccessManagerRevoke = 22
+    PNHistoryDeleteOperation = 23
 
 
 class PNHeartbeatNotificationOptions(object):

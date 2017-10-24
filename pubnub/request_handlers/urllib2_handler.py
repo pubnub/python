@@ -72,7 +72,7 @@ class Urllib2RequestHandler(BaseRequestHandler):
             target=client.run,
             name="EndpointThread-%s-%d" % (endpoint_name, ++Urllib2RequestHandler.ENDPOINT_THREAD_COUNTER)
         )
-        thread.setDaemon(True)
+        thread.setDaemon(self.pubnub.config.daemon)
         thread.start()
 
         call.thread = thread

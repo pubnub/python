@@ -650,7 +650,7 @@ class SubscribeListener(SubscribeCallback):
             try:
                 try:
                     env = yield self._wait_for(self.presence_queue.get())
-                except:
+                except: # NOQA E722
                     break
                 if env.channel in channel_names:
                     raise tornado.gen.Return(env)

@@ -91,16 +91,30 @@ class PubNubTornado(PubNubCore):
 
     @tornado.gen.coroutine
     def request_result(self, options_func, cancellation_event):
+    # def request_result(self, options_func, validate_params, cancellation_event):
+    #     """ Returns only result of an operation
+    #
+    #     """
         try:
             envelope = yield self._request_helper(options_func, cancellation_event)
+            # envelope = yield self._request_helper(options_func, validate_params, cancellation_event)
             raise tornado.gen.Return(envelope.result)
-        except PubNubTornadoException as e:
-            raise e.status.error_data.exception
+        except PubNubTornadoException as ex:
+            raise ex.status.error_data.exception
+            # e = ex.status.error_data.exception
+            # e.status = ex.status
+            # raise e
 
     @tornado.gen.coroutine
     def request_future(self, options_func, cancellation_event):
+    # def request_future(self, options_func, validate_params, cancellation_event):
+    #     """ Returns envelope which wraps both result and status
+    #
+    #
+    #     """
         try:
             e = yield self._request_helper(options_func, cancellation_event)
+            # e = yield self._request_helper(options_func, validate_params, cancellation_event)
         except PubNubTornadoException as ex:
             e = ex
         except Exception as ex:
@@ -116,9 +130,11 @@ class PubNubTornado(PubNubCore):
 
     # REFACTOR: quickly adjusted to fit the new result() and future() endpoints
     def _request_helper(self, options_func, cancellation_event):
+    # def _request_helper(self, options_func, validate_params, cancellation_event):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
+        # validate_params()
         options = options_func()
 
         create_response = options.create_response
@@ -633,14 +649,14 @@ class SubscribeListener(SubscribeCallback):
     def wait_for_message_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
-            try:
-                env = yield self._wait_for(self.message_queue.get())
-                if env.channel in channel_names:
-                    raise tornado.gen.Return(env)
-                else:
-                    continue
-            finally:
-                self.message_queue.task_done()
+            try: # NOQA
+                env = yield self._wait_for(self.message_queue.get()) # NOQA
+                if env.channel in channel_names: # NOQA
+                    raise tornado.gen.Return(env) # NOQA
+                else: # NOQA
+                    continue # NOQA
+            finally: # NOQA
+                self.message_queue.task_done() # NOQA
 
     @tornado.gen.coroutine
     def wait_for_presence_on(self, *channel_names):

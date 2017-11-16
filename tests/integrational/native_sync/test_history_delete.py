@@ -4,6 +4,7 @@ from pubnub.exceptions import PubNubException
 from tests.helper import pnconf
 from pubnub.pubnub import PubNub
 
+
 class TestPubNubHistoryDelete(unittest.TestCase):
     def test_success(self):
         try:

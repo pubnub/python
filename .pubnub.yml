@@ -4,7 +4,7 @@ schema: 1
 scm: github.com/pubnub/python
 changelog:
   - version: v4.0.13
-    date: 2017-06-14
+    date: Jun 14, 2017
     changes:
       - type: improvement
         text: Added deamon option for PNConfig
@@ -14,28 +14,28 @@ changelog:
       - type: bug
         text: Fixed issues with managing push notifications
   - version: v4.0.11
-    date:
+    date: May 22, 2017
     changes:
       - type: bug
         text: Fix typo on announce_status.
   - version: v4.0.10
-    date:
+    date: Mar 23, 2017
     changes:
       - type: bug
         text: Fix aiohttp v1.x.x and v2.x.x compatibility
   - version: v4.0.9
-    date:
+    date: Mar 10, 2017
     changes:
       - type: bug
         text: Fix missing encoder for path elements
       - type: feature
   - version: v4.0.8
-    date:
+    date: Feb 17, 2017
     changes:
       - type: feature
         text: Support log_verbosity in pnconfiguration to enable HTTP logging.
   - version: v4.0.7
-    date:
+    date: Feb 5, 2017
     changes:
       - type: bug
         text: Handle interval presence messages gracefully if they do not contain a UUID.
@@ -44,12 +44,12 @@ changelog:
       - type: improvement
         text: designate the request thread as non-daemon to keep the SDK running.
   - version: v4.0.6
-    date:
+    date: Jan 21, 2017
     changes:
       - type: bug
         text: Fix on state object type definition.
   - version: v4.0.5
-    date:
+    date: Jan 4, 2017
     changes:
       - type: improvement
         text: new pubnub domain
@@ -62,7 +62,7 @@ changelog:
       - type: improvement
         text: fix blocking Ctrl+C bug
   - version: v4.0.4
-    date:
+    date: Dec 21, 2016
     changes:
       - type: improvement
         text: Add reconnection managers
@@ -72,19 +72,19 @@ changelog:
       - type: improvement
         text: do not strip plus sign when encoding message.
   - version: v4.0.2
-    date:
+    date: Nov 14, 2016
     changes:
       - type: improvement
         text: Adjusting maximum pool size for requests installations
       - type: improvement
         text: Adding Publsher UUID
   - version: v4.0.1
-    date:
+    date: Nov 8, 2016
     changes:
       - type: improvement
         text: Fixing up packaging configuration for py3
   - version: v4.0.0
-    date:
+    date: Nov 2, 2016
     changes:
       - type: improvement
         text: Initial Release

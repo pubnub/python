@@ -10,7 +10,7 @@ from tests.integrational.vcr_helper import pn_vcr
 
 @get_sleeper('tests/integrational/fixtures/asyncio/here_now/single_channel.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/single_channel.yaml',
-                     filter_query_parameters=['tr', 'uuid', 'pnsdk'])
+                     filter_query_parameters=['tr', 'uuid', 'pnsdk', 'l_pres'])
 @pytest.mark.asyncio
 def test_single_channel(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
@@ -55,7 +55,7 @@ def test_single_channel(event_loop, sleeper=asyncio.sleep):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml',
-                     filter_query_parameters=['pnsdk'],
+                     filter_query_parameters=['pnsdk', 'l_pres'],
                      match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
                      match_on_kwargs={
                          'string_list_in_path': {
@@ -107,7 +107,7 @@ def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
 
 @get_sleeper('tests/integrational/fixtures/asyncio/here_now/global.yaml')
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/global.yaml',
-                     filter_query_parameters=['pnsdk'],
+                     filter_query_parameters=['pnsdk', 'l_pres'],
                      match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
                      match_on_kwargs={
                          'string_list_in_path': {

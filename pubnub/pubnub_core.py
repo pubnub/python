@@ -27,6 +27,7 @@ from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
 from .endpoints.push.remove_device import RemoveDeviceFromPush
 from .endpoints.push.list_push_provisions import ListPushProvisions
+from .managers import TelemetryManager
 
 logger = logging.getLogger("pubnub")
 
@@ -50,6 +51,7 @@ class PubNubCore:
 
         self._subscription_manager = None
         self._publish_sequence_manager = None
+        self._telemetry_manager = TelemetryManager()
         self._base_path_manager = BasePathManager(config)
 
     @property

@@ -11,6 +11,7 @@ import pubnub.enums
 
 from pubnub.endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
 from tests.helper import pnconf, sdk_name
+from pubnub.managers import TelemetryManager
 
 
 class TestRemoveChannelsFromPush(unittest.TestCase):
@@ -23,6 +24,7 @@ class TestRemoveChannelsFromPush(unittest.TestCase):
         )
 
         self.pubnub.uuid = "UUID_RemoveChannelsTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.remove_channels = RemoveChannelsFromPush(self.pubnub)
 
     def test_push_remove_single_channel(self):

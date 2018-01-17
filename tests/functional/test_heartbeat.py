@@ -3,6 +3,8 @@ import unittest
 import json
 
 from pubnub.endpoints.presence.heartbeat import Heartbeat
+from pubnub.managers import TelemetryManager
+
 
 try:
     from mock import MagicMock
@@ -22,6 +24,7 @@ class TestHeartbeat(unittest.TestCase):
         )
         self.pubnub.uuid = "UUID_HeartbeatUnitTest"
         self.hb = Heartbeat(self.pubnub)
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.pubnub.config.set_presence_timeout(20)
 
     def test_sub_single_channel(self):

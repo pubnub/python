@@ -10,6 +10,7 @@ except ImportError:
 
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf_pam_copy, sdk_name
+from pubnub.managers import TelemetryManager
 
 pnconf = pnconf_pam_copy()
 # pnconf.secret_key = None
@@ -26,6 +27,7 @@ class TestRevoke(unittest.TestCase):
             uuid=None
         )
         self.pubnub.uuid = "UUID_RevokeUnitTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.revoke = Revoke(self.pubnub)
 
     def test_revoke_to_channel(self):

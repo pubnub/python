@@ -56,7 +56,7 @@ class TestChannelSubscription(AsyncTestCase, SubscriptionTest):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/subscribe/sub_pub_unsub.yaml',
-        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_pub'])
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_publish_unsubscribe(self):
         ch = "subscribe-tornado-ch"
@@ -138,7 +138,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/subscribe/group_sub_unsub.yaml',
-        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_cg', 'l_pres'])
     @tornado.testing.gen_test(timeout=60)
     def test_group_subscribe_unsubscribe(self):
         ch = "subscribe-unsubscribe-channel"
@@ -162,7 +162,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/subscribe/group_sub_pub_unsub.yaml',
-        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_cg', 'l_pub', 'l_pres'])
     @tornado.testing.gen_test(timeout=60)
     def test_group_subscribe_publish_unsubscribe(self):
         ch = "subscribe-unsubscribe-channel"
@@ -198,7 +198,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/subscribe/group_join_leave.yaml',
-        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_cg', 'l_pres'])
     @tornado.testing.gen_test(timeout=60)
     def test_group_join_leave(self):
         self.pubnub.config.uuid = "test-subscribe-messenger"
@@ -258,7 +258,7 @@ class TestChannelGroupSubscription(AsyncTestCase, SubscriptionTest):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/subscribe/subscribe_tep_by_step.yaml',
-        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_pres'])
     @tornado.testing.gen_test(timeout=30)
     def test_subscribe_step_by_step(self):
         ch1 = 'test-here-now-channel1'

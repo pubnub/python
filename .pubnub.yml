@@ -3,6 +3,17 @@ version: 4.0.13
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.1.0
+    date: Jan 18, 2018
+    changes:
+      - type: improvement
+        text: Add history delete
+      - type: improvement
+        text: Add telemetry manager
+      - type: bug
+        text: Fix linter warnings
+      - type: bug
+        text: Fix plugins versions and remove unused plugins
   - version: v4.0.13
     date: Jun 14, 2017
     changes:

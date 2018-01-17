@@ -1,3 +1,12 @@
+## [4.1.0](https://github.com/pubnub/python/tree/v4.1.0)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.0.12...v4.1.0)
+
+
+- 🐛Add telemetry manager
+- 🌟Fix plugins versions and remove unused plugins
+- 🌟Add history delete
+
 
 ## [v4.0.12](https://github.com/pubnub/python/tree/v4.0.12)
 

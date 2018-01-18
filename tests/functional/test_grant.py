@@ -2,6 +2,7 @@ import unittest
 
 from pubnub import utils
 from pubnub.endpoints.access.grant import Grant
+from pubnub.managers import TelemetryManager
 
 try:
     from mock import MagicMock
@@ -22,6 +23,7 @@ class TestGrant(unittest.TestCase):
             uuid=None
         )
         self.pubnub.uuid = "UUID_GrantUnitTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.grant = Grant(self.pubnub)
 
     def test_grant_read_and_write_to_channel(self):

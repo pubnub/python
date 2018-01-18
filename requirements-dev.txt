@@ -2,7 +2,6 @@ pytest
 pytest-cov
 codacy-coverage
 pycryptodomex
-pytest-benchmark
 twisted
 flake8
 -e git://github.com/pubnub/vcrpy@twisted#egg=vcrpy

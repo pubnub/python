@@ -15,7 +15,7 @@ class TestPubNubAsyncWhereNow(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/where_now/single_channel.yaml',
-        filter_query_parameters=['uuid', 'pnsdk'])
+        filter_query_parameters=['uuid', 'pnsdk', 'l_pres'])
     @tornado.testing.gen_test(timeout=15)
     def test_where_now_single_channel(self):
         ch = "where-now-tornado-ch"
@@ -39,7 +39,7 @@ class TestPubNubAsyncWhereNow(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/where_now/multiple_channels.yaml',
-        filter_query_parameters=['uuid', 'pnsdk'])
+        filter_query_parameters=['uuid', 'pnsdk', 'l_pres'])
     @tornado.testing.gen_test(timeout=15)
     def test_multiple_channels(self):
         ch1 = "where-now-tornado-ch1"

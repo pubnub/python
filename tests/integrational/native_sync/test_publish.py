@@ -291,7 +291,7 @@ class TestPubNubPublish(unittest.TestCase):
             self.fail(e)
 
     @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_do_not_store.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+                         filter_query_parameters=['uuid', 'pnsdk', 'l_pub'])
     def test_publish_do_not_store(self):
         try:
             env = PubNub(pnconf_enc).publish() \

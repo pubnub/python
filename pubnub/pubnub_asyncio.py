@@ -4,6 +4,7 @@ import asyncio
 import aiohttp
 import math
 import six
+import time
 
 from asyncio import Event, Queue, Semaphore
 
@@ -13,7 +14,7 @@ from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
 from .pubnub_core import PubNubCore
 from .workers import SubscribeMessageWorker
-from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager
+from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
 from . import utils
 from .structures import ResponseInfo, RequestOptions
 from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
@@ -50,6 +51,8 @@ class PubNubAsyncio(PubNubCore):
 
         self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop,
                                                                        PubNubCore.MAX_SEQUENCE)
+
+        self._telemetry_manager = AsyncioTelemetryManager()
 
     def set_connector(self, cn):
         if self._session is not None and self._session.closed:
@@ -157,6 +160,7 @@ class PubNubAsyncio(PubNubCore):
             url = URL(url, encoded=True)
 
         try:
+            start_timestamp = time.time()
             response = yield from asyncio.wait_for(
                 self._session.request(options.method_string, url,
                                       headers=self.headers,
@@ -245,6 +249,8 @@ class PubNubAsyncio(PubNubCore):
                                    )
                                    )
         else:
+            self._telemetry_manager.store_latency(time.time() - start_timestamp, options.operation_type)
+
             return AsyncioEnvelope(
                 result=create_response(data),
                 status=create_status(
@@ -665,3 +671,20 @@ class SubscribeListener(SubscribeCallback):
                     continue
             finally:
                 self.presence_queue.task_done()
+
+
+class AsyncioTelemetryManager(TelemetryManager):
+    def __init__(self):
+        TelemetryManager.__init__(self)
+        self._timer = AsyncioPeriodicCallback(
+            self._start_clean_up_timer,
+            self.CLEAN_UP_INTERVAL * self.CLEAN_UP_INTERVAL_MULTIPLIER,
+            asyncio.get_event_loop())
+        self._timer.start()
+
+    @asyncio.coroutine
+    def _start_clean_up_timer(self):
+        self.clean_up_telemetry_data()
+
+    def _stop_clean_up_timer(self):
+        self._timer.stop()

@@ -5,7 +5,7 @@ from pubnub.pubnub import PubNub
 from tests.helper import pnconf
 
 
-class TestPubNubSuccessHistoryDelete(unittest.TestCase): # pylint: disable=W0612
+class TestPubNubSuccessHistoryDelete(unittest.TestCase):  # pylint: disable=W0612
     def setUp(self):
         self.event = threading.Event()
 

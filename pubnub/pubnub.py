@@ -442,7 +442,7 @@ class NonSubscribeListener(object):
         self.done_event.clear()
 
 
-class NativeTelemetryManager(TelemetryManager): # pylint: disable=W0612
+class NativeTelemetryManager(TelemetryManager):  # pylint: disable=W0612
     def __init__(self):
         TelemetryManager.__init__(self)
         self._timer = NativePeriodicCallback(

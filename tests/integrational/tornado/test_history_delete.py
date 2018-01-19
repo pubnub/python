@@ -4,7 +4,7 @@ from pubnub.pubnub_tornado import PubNubTornado
 from tests.helper import pnconf
 
 
-class TestPubNubAsyncPublish(AsyncTestCase): # pylint: disable=W0612
+class TestPubNubAsyncPublish(AsyncTestCase):  # pylint: disable=W0612
     def setUp(self):
         AsyncTestCase.setUp(self)
         self.env = None

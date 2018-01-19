@@ -5,7 +5,7 @@ from pubnub.managers import TelemetryManager
 from pubnub.enums import PNOperationType
 
 
-class TestTelemetryManager(unittest.TestCase): # pylint: disable=W0612
+class TestTelemetryManager(unittest.TestCase):  # pylint: disable=W0612
     @classmethod
     def test_clean_up(cls):
         manager = TelemetryManager()

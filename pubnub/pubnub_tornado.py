@@ -666,7 +666,7 @@ class SubscribeListener(SubscribeCallback):
                 self.presence_queue.task_done()
 
 
-class TornadoTelemetryManager(TelemetryManager): # pylint: disable=W0612
+class TornadoTelemetryManager(TelemetryManager):  # pylint: disable=W0612
     def __init__(self, ioloop):
         TelemetryManager.__init__(self)
         self.ioloop = ioloop

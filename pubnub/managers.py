@@ -346,7 +346,7 @@ class SubscriptionManager(object):
         self._stop_heartbeat_timer()
 
 
-class TelemetryManager(object): # pylint: disable=W0612
+class TelemetryManager(object):  # pylint: disable=W0612
     TIMESTAMP_DIVIDER = 1000
     MAXIMUM_LATENCY_DATA_AGE = 60
     CLEAN_UP_INTERVAL = 1

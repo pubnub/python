@@ -14,7 +14,7 @@ pnconf = pnconf_pam_copy()
 pnconf.secret_key = None
 
 
-class TestHistoryDelete(unittest.TestCase):
+class TestHistoryDelete(unittest.TestCase): # pylint: disable=W0612
     def setUp(self):
         self.pubnub = MagicMock(
             spec=PubNub,

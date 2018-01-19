@@ -5,7 +5,7 @@ from tests.helper import pnconf
 from pubnub.pubnub import PubNub
 
 
-class TestPubNubHistoryDelete(unittest.TestCase):
+class TestPubNubHistoryDelete(unittest.TestCase): # pylint: disable=W0612
     def test_success(self):
         try:
             env = PubNub(pnconf).delete_messages() \

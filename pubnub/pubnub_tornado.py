@@ -656,7 +656,7 @@ class SubscribeListener(SubscribeCallback):
             try:
                 try:
                     env = yield self._wait_for(self.presence_queue.get())
-                except: # NOQA E722
+                except: # NOQA E722 pylint: disable=W0702
                     break
                 if env.channel in channel_names:
                     raise tornado.gen.Return(env)
@@ -666,7 +666,7 @@ class SubscribeListener(SubscribeCallback):
                 self.presence_queue.task_done()
 
 
-class TornadoTelemetryManager(TelemetryManager):
+class TornadoTelemetryManager(TelemetryManager): # pylint: disable=W0612
     def __init__(self, ioloop):
         TelemetryManager.__init__(self)
         self.ioloop = ioloop

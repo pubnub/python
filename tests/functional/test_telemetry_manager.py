@@ -6,7 +6,8 @@ from pubnub.enums import PNOperationType
 
 
 class TestTelemetryManager(unittest.TestCase):
-    def test_clean_up(self):
+    @classmethod
+    def test_clean_up(cls):
         manager = TelemetryManager()
         manager.MAXIMUM_LATENCY_DATA_AGE = 1
 

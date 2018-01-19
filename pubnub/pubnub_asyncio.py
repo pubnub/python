@@ -673,7 +673,7 @@ class SubscribeListener(SubscribeCallback):
                 self.presence_queue.task_done()
 
 
-class AsyncioTelemetryManager(TelemetryManager): # pylint: disable=W0612
+class AsyncioTelemetryManager(TelemetryManager):  # pylint: disable=W0612
     def __init__(self):
         TelemetryManager.__init__(self)
         self._timer = AsyncioPeriodicCallback(

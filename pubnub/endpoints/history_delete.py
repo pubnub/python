@@ -51,7 +51,7 @@ class HistoryDelete(Endpoint):
         self.validate_subscribe_key()
         self.validate_channel()
 
-    def create_response(self, envelope):
+    def create_response(self, endpoint):
         return {}
 
     def request_timeout(self):

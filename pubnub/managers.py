@@ -369,7 +369,7 @@ class TelemetryManager(object):
         for endpoint_name, endpoint_latencies in self.latencies.items():
             latency_key = 'l_' + endpoint_name
 
-            endpoint_average_latency = self.average_latency_from_data(self.latencies[endpoint_name])
+            endpoint_average_latency = self.average_latency_from_data(endpoint_latencies)
 
             if (endpoint_average_latency > 0):
                 operation_latencies[latency_key] = endpoint_average_latency

@@ -3,7 +3,7 @@ from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.endpoints.endpoint import Endpoint
 
 
-class HistoryDelete(Endpoint): # pylint: disable=W0612
+class HistoryDelete(Endpoint):  # pylint: disable=W0612
     HISTORY_DELETE_PATH = "/v3/history/sub-key/%s/channel/%s"
 
     def __init__(self, pubnub):

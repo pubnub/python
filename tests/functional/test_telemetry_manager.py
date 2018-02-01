@@ -20,4 +20,5 @@ class TestTelemetryManager(unittest.TestCase):  # pylint: disable=W0612
         manager.clean_up_telemetry_data()
         print(manager.latencies)
 
-        assert 0 == len(manager.operation_latencies())
+        if not 0 == len(manager.operation_latencies()):
+            raise AssertionError()

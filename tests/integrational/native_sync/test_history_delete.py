@@ -15,7 +15,8 @@ class TestPubNubHistoryDelete(unittest.TestCase):  # pylint: disable=W0612
                 .sync()
 
             print(env)
-            assert not env.status.error
+            if env.status.error:
+                raise AssertionError()
         except PubNubException as e:
             self.fail(e)
 

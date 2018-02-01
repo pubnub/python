@@ -20,7 +20,8 @@ class TestPubNubAsyncPublish(AsyncTestCase):  # pylint: disable=W0612
         self.pubnub.start()
         self.wait()
 
-        assert not self.env.status.error
+        if self.env.status.error:
+            raise AssertionError()
 
     def test_success(self):
         self.pubnub = PubNubTornado(pnconf, custom_ioloop=self.io_loop)

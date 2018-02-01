@@ -14,7 +14,8 @@ def test_average_latency():
 
     averageLatency = manager.average_latency_from_data(endpointLatencies)
 
-    assert 30 == averageLatency
+    if not 30 == averageLatency:
+        raise AssertionError()
 
 
 def test_valid_queries():
@@ -32,6 +33,9 @@ def test_valid_queries():
 
     queries = manager.operation_latencies()
 
-    assert queries['l_pub'] == 2
-    assert queries['l_hist'] == 5
-    assert queries['l_cg'] == 8
+    if not queries['l_pub'] == 2:
+        raise AssertionError()
+    if not queries['l_hist'] == 5:
+        raise AssertionError()
+    if not queries['l_cg'] == 8:
+        raise AssertionError()

@@ -20,4 +20,5 @@ def test_super_call(event_loop):
 
     res = yield from pubnub.delete_messages().channel("my-ch- |.* $").start(123).end(456).future()
 
-    assert not res.status.is_error()
+    if res.status.is_error():
+        raise AssertionError()

@@ -2,6 +2,7 @@ import unittest
 
 from pubnub.endpoints.presence.get_state import GetState
 
+
 try:
     from mock import MagicMock
 except ImportError:
@@ -9,6 +10,7 @@ except ImportError:
 
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name
+from pubnub.managers import TelemetryManager
 
 
 class TestGetState(unittest.TestCase):
@@ -20,6 +22,7 @@ class TestGetState(unittest.TestCase):
             uuid=None
         )
         self.pubnub.uuid = "UUID_GetStateTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.get_state = GetState(self.pubnub)
 
     def test_get_state_single_channel(self):

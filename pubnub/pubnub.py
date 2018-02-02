@@ -13,7 +13,7 @@ from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.leave import Leave
 from .endpoints.pubsub.subscribe import Subscribe
 from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
-from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager
+from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
 from .models.consumer.common import PNStatus
 from .pnconfiguration import PNConfiguration
 from .pubnub_core import PubNubCore
@@ -36,6 +36,8 @@ class PubNub(PubNubCore):
             self._subscription_manager = NativeSubscriptionManager(self)
 
         self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
+
+        self._telemetry_manager = NativeTelemetryManager()
 
     def sdk_platform(self):
         return ""
@@ -438,3 +440,18 @@ class NonSubscribeListener(object):
         self.result = None
         self.status = None
         self.done_event.clear()
+
+
+class NativeTelemetryManager(TelemetryManager):  # pylint: disable=W0612
+    def __init__(self):
+        TelemetryManager.__init__(self)
+        self._timer = NativePeriodicCallback(
+            self._start_clean_up_timer,
+            self.CLEAN_UP_INTERVAL * self.CLEAN_UP_INTERVAL_MULTIPLIER)
+        self._timer.start()
+
+    def _start_clean_up_timer(self):
+        self.clean_up_telemetry_data()
+
+    def _stop_clean_up_timer(self):
+        self._timer.stop()

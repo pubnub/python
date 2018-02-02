@@ -8,6 +8,7 @@ except ImportError:
 from pubnub.endpoints.presence.where_now import WhereNow
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name, pnconf_copy
+from pubnub.managers import TelemetryManager
 
 
 class TestWhereNow(unittest.TestCase):
@@ -18,6 +19,7 @@ class TestWhereNow(unittest.TestCase):
             sdk_name=sdk_name
         )
         self.pubnub.config.uuid = "UUID_WhereNowTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.where_now = WhereNow(self.pubnub)
 
     def test_where_now(self):

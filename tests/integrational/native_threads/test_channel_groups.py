@@ -24,7 +24,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
 
     @use_cassette_and_stub_time_sleep_native(
         'tests/integrational/fixtures/native_threads/channel_groups/single_channel.yaml',
-        filter_query_parameters=['uuid', 'pnsdk'])
+        filter_query_parameters=['uuid', 'pnsdk', 'l_cg'])
     def test_single_channel(self):
         ch = "channel-groups-unit-ch"
         gr = "channel-groups-unit-cg"
@@ -78,7 +78,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
 
     @use_cassette_and_stub_time_sleep_native(
         'tests/integrational/fixtures/native_threads/channel_groups/add_remove_multiple_channels.yaml',
-        filter_query_parameters=['uuid', 'pnsdk'])
+        filter_query_parameters=['uuid', 'pnsdk', 'l_cg'])
     def test_add_remove_multiple_channels(self):
         ch1 = "channel-groups-unit-ch1"
         ch2 = "channel-groups-unit-ch2"
@@ -134,7 +134,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
 
     @use_cassette_and_stub_time_sleep_native(
         'tests/integrational/fixtures/native_threads/channel_groups/add_channel_remove_group.yaml',
-        filter_query_parameters=['uuid', 'pnsdk'])
+        filter_query_parameters=['uuid', 'pnsdk', 'l_cg'])
     def test_add_channel_remove_group(self):
         ch = "channel-groups-unit-ch"
         gr = "channel-groups-unit-cg"

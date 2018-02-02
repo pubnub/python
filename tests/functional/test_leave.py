@@ -1,6 +1,7 @@
 import unittest
 
 from pubnub.endpoints.presence.leave import Leave
+from pubnub.managers import TelemetryManager
 
 try:
     from mock import MagicMock
@@ -20,6 +21,7 @@ class TestLeave(unittest.TestCase):
             uuid=None
         )
         self.pubnub.uuid = "UUID_SubscribeUnitTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.leave = Leave(self.pubnub)
 
     def test_leave_single_channel(self):

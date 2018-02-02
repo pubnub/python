@@ -21,18 +21,20 @@ from .endpoints.presence.set_state import SetState
 from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.here_now import HereNow
 from .endpoints.presence.where_now import WhereNow
+from .endpoints.history_delete import HistoryDelete
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
 from .endpoints.push.remove_device import RemoveDeviceFromPush
 from .endpoints.push.list_push_provisions import ListPushProvisions
+from .managers import TelemetryManager
 
 logger = logging.getLogger("pubnub")
 
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "4.0.13"
+    SDK_VERSION = "4.1.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -49,6 +51,7 @@ class PubNubCore:
 
         self._subscription_manager = None
         self._publish_sequence_manager = None
+        self._telemetry_manager = TelemetryManager()
         self._base_path_manager = BasePathManager(config)
 
     @property
@@ -156,6 +159,9 @@ class PubNubCore:
 
     def time(self):
         return Time(self)
+
+    def delete_messages(self):
+        return HistoryDelete(self)
 
     @staticmethod
     def timestamp():

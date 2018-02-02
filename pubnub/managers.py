@@ -2,9 +2,11 @@ import logging
 from abc import abstractmethod, ABCMeta
 
 import math
+import time
+import copy
 
 from . import utils
-from .enums import PNStatusCategory, PNReconnectionPolicy
+from .enums import PNStatusCategory, PNReconnectionPolicy, PNOperationType
 from .models.consumer.common import PNStatus
 from .models.server.subscribe import SubscribeEnvelope
 from .dtos import SubscribeOperation, UnsubscribeOperation
@@ -342,3 +344,106 @@ class SubscriptionManager(object):
     # TODO: make abstract
     def _register_heartbeat_timer(self):
         self._stop_heartbeat_timer()
+
+
+class TelemetryManager(object):  # pylint: disable=W0612
+    TIMESTAMP_DIVIDER = 1000
+    MAXIMUM_LATENCY_DATA_AGE = 60
+    CLEAN_UP_INTERVAL = 1
+    CLEAN_UP_INTERVAL_MULTIPLIER = 1000
+
+    def __init__(self):
+        self.latencies = {}
+
+    @abstractmethod
+    def _start_clean_up_timer(self):
+        pass
+
+    @abstractmethod
+    def _stop_clean_up_timer(self):
+        pass
+
+    def operation_latencies(self):
+        operation_latencies = {}
+
+        for endpoint_name, endpoint_latencies in self.latencies.items():
+            latency_key = 'l_' + endpoint_name
+
+            endpoint_average_latency = self.average_latency_from_data(endpoint_latencies)
+
+            if (endpoint_average_latency > 0):
+                operation_latencies[latency_key] = endpoint_average_latency
+
+        return operation_latencies
+
+    def clean_up_telemetry_data(self):
+        current_timestamp = time.time()
+
+        copy_latencies = copy.deepcopy(dict(self.latencies))
+
+        for endpoint_name, endpoint_latencies in copy_latencies.items():
+            for latency_information in list(endpoint_latencies):
+                if current_timestamp - latency_information['d'] > self.MAXIMUM_LATENCY_DATA_AGE:
+                    self.latencies[endpoint_name].remove(latency_information)
+
+            if len(self.latencies[endpoint_name]) == 0:
+                del self.latencies[endpoint_name]
+
+    def store_latency(self, latency, operation_type):
+        if operation_type != PNOperationType.PNSubscribeOperation and latency > 0:
+            endpoint_name = self.endpoint_name_for_operation(operation_type)
+
+            store_timestamp = time.time()
+
+            if endpoint_name not in self.latencies:
+                self.latencies[endpoint_name] = []
+
+            latency_entry = {
+                'd': store_timestamp,
+                'l': latency,
+            }
+
+            self.latencies[endpoint_name].append(latency_entry)
+
+    @staticmethod
+    def average_latency_from_data(endpoint_latencies):
+        total_latency = 0
+
+        for k in endpoint_latencies:
+            total_latency += k['l']
+
+        return total_latency / len(endpoint_latencies)
+
+    @staticmethod
+    def endpoint_name_for_operation(operation_type):
+        endpoint = {
+            PNOperationType.PNPublishOperation: 'pub',
+
+            PNOperationType.PNHistoryOperation: 'hist',
+            PNOperationType.PNHistoryDeleteOperation: 'hist',
+
+            PNOperationType.PNUnsubscribeOperation: 'pres',
+            PNOperationType.PNWhereNowOperation: 'pres',
+            PNOperationType.PNHereNowOperation: 'pres',
+            PNOperationType.PNGetState: 'pres',
+            PNOperationType.PNSetStateOperation: 'pres',
+
+            PNOperationType.PNAddChannelsToGroupOperation: 'cg',
+            PNOperationType.PNRemoveChannelsFromGroupOperation: 'cg',
+            PNOperationType.PNChannelGroupsOperation: 'cg',
+            PNOperationType.PNChannelsForGroupOperation: 'cg',
+            PNOperationType.PNRemoveGroupOperation: 'cg',
+
+            PNOperationType.PNAddPushNotificationsOnChannelsOperation: 'push',
+            PNOperationType.PNPushNotificationEnabledChannelsOperation: 'push',
+            PNOperationType.PNRemoveAllPushNotificationsOperation: 'push',
+            PNOperationType.PNRemovePushNotificationsFromChannelsOperation: 'push',
+
+            PNOperationType.PNAccessManagerAudit: 'pam',
+            PNOperationType.PNAccessManagerGrant: 'pam',
+            PNOperationType.PNAccessManagerRevoke: 'pam',
+
+            PNOperationType.PNTimeOperation: 'pam',
+        }[operation_type]
+
+        return endpoint

@@ -27,7 +27,7 @@ from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperation
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED, PNERR_CLIENT_TIMEOUT, \
     PNERR_CONNECTION_ERROR
 from .exceptions import PubNubException
-from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager
+from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
 from .pubnub_core import PubNubCore
 from .structures import ResponseInfo
 from .workers import SubscribeMessageWorker
@@ -80,6 +80,8 @@ class PubNubTornado(PubNubCore):
             'Accept-Encoding': 'utf-8'
         }
 
+        self._telemetry_manager = TornadoTelemetryManager(self.ioloop)
+
     def request_sync(self, *args):
         raise NotImplementedError
 
@@ -94,8 +96,8 @@ class PubNubTornado(PubNubCore):
         try:
             envelope = yield self._request_helper(options_func, cancellation_event)
             raise tornado.gen.Return(envelope.result)
-        except PubNubTornadoException as e:
-            raise e.status.error_data.exception
+        except PubNubTornadoException as ex:
+            raise ex.status.error_data.exception
 
     @tornado.gen.coroutine
     def request_future(self, options_func, cancellation_event):
@@ -119,6 +121,7 @@ class PubNubTornado(PubNubCore):
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
+        # validate_params()
         options = options_func()
 
         create_response = options.create_response
@@ -135,7 +138,10 @@ class PubNubTornado(PubNubCore):
 
         url = utils.build_url(self.config.scheme(), self.base_origin,
                               options.path, options.query_string)
+
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
+
+        start_timestamp = time.time()
 
         request = tornado.httpclient.HTTPRequest(
             url=url,
@@ -236,6 +242,8 @@ class PubNubTornado(PubNubCore):
                     status=create_status_response(status_category, data, response_info, e)
                 ))
             else:
+                self._telemetry_manager.store_latency(time.time() - start_timestamp, options.operation_type)
+
                 future.set_result(TornadoEnvelope(
                     result=create_response(data),
                     status=create_status_response(
@@ -492,7 +500,6 @@ class TornadoSubscriptionManager(SubscriptionManager):
 
     def _register_heartbeat_timer(self):
         super(TornadoSubscriptionManager, self)._register_heartbeat_timer()
-
         self._heartbeat_periodic_callback = PeriodicCallback(
             stack_context.wrap(self._perform_heartbeat_loop),
             self._pubnub.config.heartbeat_interval *
@@ -633,7 +640,7 @@ class SubscribeListener(SubscribeCallback):
     def wait_for_message_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
-            try:
+            try: # NOQA
                 env = yield self._wait_for(self.message_queue.get())
                 if env.channel in channel_names:
                     raise tornado.gen.Return(env)
@@ -649,7 +656,7 @@ class SubscribeListener(SubscribeCallback):
             try:
                 try:
                     env = yield self._wait_for(self.presence_queue.get())
-                except:
+                except: # NOQA E722 pylint: disable=W0702
                     break
                 if env.channel in channel_names:
                     raise tornado.gen.Return(env)
@@ -657,3 +664,21 @@ class SubscribeListener(SubscribeCallback):
                     continue
             finally:
                 self.presence_queue.task_done()
+
+
+class TornadoTelemetryManager(TelemetryManager):  # pylint: disable=W0612
+    def __init__(self, ioloop):
+        TelemetryManager.__init__(self)
+        self.ioloop = ioloop
+        self._timer = PeriodicCallback(
+            stack_context.wrap(self._start_clean_up_timer),
+            self.CLEAN_UP_INTERVAL * self.CLEAN_UP_INTERVAL_MULTIPLIER,
+            self.ioloop)
+        self._timer.start()
+
+    @tornado.gen.coroutine
+    def _start_clean_up_timer(self):
+        self.clean_up_telemetry_data()
+
+    def _stop_clean_up_timer(self):
+        self._timer.stop()

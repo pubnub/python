@@ -3,6 +3,7 @@ import unittest
 
 from pubnub.endpoints.presence.set_state import SetState
 from tests import helper
+from pubnub.managers import TelemetryManager
 
 try:
     from mock import MagicMock
@@ -22,6 +23,7 @@ class TestSetState(unittest.TestCase):
             uuid=None
         )
         self.pubnub.uuid = "UUID_SetStateTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.set_state = SetState(self.pubnub)
         self.state = {'name': 'Alex', "count": 5}
 

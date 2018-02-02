@@ -8,6 +8,7 @@ except ImportError:
 from pubnub.endpoints.history import History
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf_pam_copy, sdk_name
+from pubnub.managers import TelemetryManager
 
 pnconf = pnconf_pam_copy()
 pnconf.secret_key = None
@@ -23,6 +24,7 @@ class TestHistory(unittest.TestCase):
             uuid=None
         )
         self.pubnub.uuid = "UUID_UnitTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.history = History(self.pubnub)
 
     def test_history_basic(self):

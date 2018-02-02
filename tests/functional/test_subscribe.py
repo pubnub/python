@@ -8,6 +8,7 @@ except ImportError:
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name
+from pubnub.managers import TelemetryManager
 
 
 class TestSubscribe(unittest.TestCase):
@@ -18,6 +19,7 @@ class TestSubscribe(unittest.TestCase):
             sdk_name=sdk_name
         )
         self.pubnub.uuid = "UUID_SubscribeUnitTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.sub = Subscribe(self.pubnub)
 
     def test_pub_single_channel(self):

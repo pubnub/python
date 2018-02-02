@@ -21,7 +21,7 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/here_now/single.yaml',
-        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_pres'])
     @tornado.testing.gen_test(timeout=15)
     def test_here_now_single_channel(self):
         ch = 'test-here-now-channel'
@@ -48,7 +48,7 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/here_now/multiple.yaml',
-        filter_query_parameters=['uuid', 'tt', 'tr', 'pnsdk'])
+        filter_query_parameters=['uuid', 'tt', 'tr', 'pnsdk', 'l_pres'])
     @tornado.testing.gen_test(timeout=120)
     def test_here_now_multiple_channels(self):
         ch1 = 'test-here-now-channel1'
@@ -83,7 +83,7 @@ class TestPubNubAsyncHereNow(AsyncTestCase):
 
     @use_cassette_and_stub_time_sleep(
         'tests/integrational/fixtures/tornado/here_now/global.yaml',
-        filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+        filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_pres'])
     @tornado.testing.gen_test(timeout=15)
     def test_here_now_global(self):
         ch1 = 'test-here-now-channel1'

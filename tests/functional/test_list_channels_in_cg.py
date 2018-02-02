@@ -1,6 +1,7 @@
 import unittest
 
 from pubnub.endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
+from pubnub.managers import TelemetryManager
 
 try:
     from mock import MagicMock
@@ -20,6 +21,7 @@ class TestListChannelsInChannelGroup(unittest.TestCase):
             uuid=None
         )
         self.pubnub.uuid = "UUID_ListChannelsInCGTest"
+        self.pubnub._telemetry_manager = TelemetryManager()
         self.list = ListChannelsInChannelGroup(self.pubnub)
 
     def test_list_channel_group(self):

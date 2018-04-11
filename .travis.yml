@@ -14,3 +14,5 @@ script:
   - python scripts/run-tests.py
 after_success:
   - python-codacy-coverage -r coverage.xml
+addons:
+  srcclr: true

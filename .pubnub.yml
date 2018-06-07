@@ -1,5 +1,5 @@
 name: python
-version: 4.0.13
+version: 4.1.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:

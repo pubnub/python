@@ -1,7 +1,7 @@
 # Developers manual
 
 ## Supported Python versions
-We support Python 2.6, 2.7 and >=3.3
+We support Python 2.7 and >=3.3
 
 ## Supported platforms
 We maintain and test our SDK using Travis.CI and Ubuntu.

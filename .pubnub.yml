@@ -1,5 +1,5 @@
 name: python
-version: 4.0.13
+version: 4.1.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
@@ -150,7 +150,6 @@ supported-platforms:
       - Mac OS X 10.8 or later, amd64
       - Windows 7 or later, amd64, 386
     editors:
-      - python 2.6.9
       - python 2.7.13
       - python 3.3.6
       - python 3.4.5

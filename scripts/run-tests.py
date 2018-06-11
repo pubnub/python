@@ -27,10 +27,7 @@ print("Version is", version)
 def run(command):
     return check_call(command, shell=True)
 
-if version.startswith('2.6'):
-    run(
-        '%s--ignore=tests/integrational/tornado/ --ignore=tests/integrational/twisted/ --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/python_v35/' % tcmn)  # noqa: E501
-elif version.startswith('2.7') or version.startswith('anaconda2'):
+if version.startswith('2.7') or version.startswith('anaconda2'):
     run("%s,*asyncio*,*python_v35*,examples/" % fcmn)
     run('%s --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/twisted/ --ignore=tests/integrational/python_v35/' % tcmn)
 elif version.startswith('3.3'):

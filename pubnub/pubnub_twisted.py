@@ -131,7 +131,7 @@ class TwistedSubscriptionManager(SubscriptionManager):
             self._heartbeat_call.cancel()
 
         if self._heartbeat_loop is not None:
-            self._heartbeat_loop.cancel()
+            self._heartbeat_loop.stop()
 
     def _register_heartbeat_timer(self):
         super(TwistedSubscriptionManager, self)._register_heartbeat_timer()

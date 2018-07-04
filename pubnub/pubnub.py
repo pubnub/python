@@ -280,9 +280,12 @@ class NativeSubscriptionManager(SubscriptionManager):
 
                 if status is not None and status.category == PNStatusCategory.PNAccessDeniedCategory:
                     status.operation = PNOperationType.PNUnsubscribeOperation
+                    self._listener_manager.announce_status(status)
+                    self.unsubscribe_all()
+                    self.disconnect()
+                    return
 
                 self._listener_manager.announce_status(status)
-
                 self._reconnection_manager.start_polling()
                 self.disconnect()
             else:

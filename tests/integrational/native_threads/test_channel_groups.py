@@ -34,7 +34,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         pubnub.add_channel_to_channel_group() \
             .channels(ch) \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert not self.status.is_error()
@@ -46,7 +46,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         # list
         pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert isinstance(self.response, PNChannelGroupsListResult)
@@ -58,7 +58,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         pubnub.remove_channel_from_channel_group() \
             .channels(ch) \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert isinstance(self.response, PNChannelGroupsRemoveChannelResult)
@@ -69,7 +69,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         # list
         pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert isinstance(self.response, PNChannelGroupsListResult)
@@ -89,7 +89,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         pubnub.add_channel_to_channel_group() \
             .channels([ch1, ch2]) \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert not self.status.is_error()
@@ -101,7 +101,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         # list
         pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert isinstance(self.response, PNChannelGroupsListResult)
@@ -114,7 +114,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         pubnub.remove_channel_from_channel_group() \
             .channels([ch1, ch2]) \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert isinstance(self.response, PNChannelGroupsRemoveChannelResult)
@@ -125,7 +125,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         # list
         pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert isinstance(self.response, PNChannelGroupsListResult)
@@ -144,7 +144,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         pubnub.add_channel_to_channel_group() \
             .channels(ch) \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert not self.status.is_error()
@@ -156,7 +156,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         # list
         pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert isinstance(self.response, PNChannelGroupsListResult)
@@ -167,7 +167,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         # remove
         pubnub.remove_channel_group() \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert isinstance(self.response, PNChannelGroupsRemoveGroupResult)
@@ -178,7 +178,7 @@ class TestPubNubChannelGroups(unittest.TestCase):
         # list
         pubnub.list_channels_in_channel_group() \
             .channel_group(gr) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert isinstance(self.response, PNChannelGroupsListResult)

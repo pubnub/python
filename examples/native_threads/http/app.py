@@ -113,7 +113,7 @@ def publish_async():
         pass
 
     pubnub.publish().channel(channel).message("hello from yield-based publish")\
-        .async(stub)
+        .pn_async(stub)
 
     return jsonify({
         "message": "Publish task scheduled"

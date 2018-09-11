@@ -34,7 +34,7 @@ def main():
                 # Connect event. You can do stuff like publish, and know you'll get it.
                 # Or just use the connected event to confirm you are subscribed for
                 # UI / internal notifications, etc
-                pubnub.publish().channel("awesome_channel").message("Hello!").async(my_publish_callback),
+                pubnub.publish().channel("awesome_channel").message("Hello!").pn_async(my_publish_callback),
 
             elif status.category == PNStatusCategory.PNReconnectedCategory:
                 pass

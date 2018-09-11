@@ -58,7 +58,7 @@ class TestPubNubSubscription(unittest.TestCase):
             pubnub.subscribe().channels(ch).execute()
             subscribe_listener.wait_for_connect()
 
-            pubnub.publish().channel(ch).message(message).async(publish_operation.callback)
+            pubnub.publish().channel(ch).message(message).pn_async(publish_operation.callback)
 
             if publish_operation.await() is False:
                 self.fail("Publish operation timeout")
@@ -140,7 +140,7 @@ class TestPubNubSubscription(unittest.TestCase):
         pubnub.add_channel_to_channel_group()\
             .channel_group(gr)\
             .channels(ch)\
-            .async(cg_operation.callback)
+            .pn_async(cg_operation.callback)
         result = cg_operation.await_result()
         assert isinstance(result, PNChannelGroupsAddChannelResult)
         cg_operation.reset()
@@ -157,7 +157,7 @@ class TestPubNubSubscription(unittest.TestCase):
         pubnub.remove_channel_from_channel_group()\
             .channel_group(gr)\
             .channels(ch)\
-            .async(cg_operation.callback)
+            .pn_async(cg_operation.callback)
         result = cg_operation.await_result()
         assert isinstance(result, PNChannelGroupsRemoveChannelResult)
 
@@ -175,7 +175,7 @@ class TestPubNubSubscription(unittest.TestCase):
         pubnub.add_channel_to_channel_group() \
             .channel_group(gr) \
             .channels(ch) \
-            .async(non_subscribe_listener.callback)
+            .pn_async(non_subscribe_listener.callback)
         result = non_subscribe_listener.await_result_and_reset()
         assert isinstance(result, PNChannelGroupsAddChannelResult)
 
@@ -185,7 +185,7 @@ class TestPubNubSubscription(unittest.TestCase):
         pubnub.subscribe().channel_groups(gr).execute()
         callback_messages.wait_for_connect()
 
-        pubnub.publish().message(message).channel(ch).async(non_subscribe_listener.callback)
+        pubnub.publish().message(message).channel(ch).pn_async(non_subscribe_listener.callback)
         result = non_subscribe_listener.await_result_and_reset()
         assert isinstance(result, PNPublishResult)
         assert result.timetoken > 0
@@ -196,7 +196,7 @@ class TestPubNubSubscription(unittest.TestCase):
         pubnub.remove_channel_from_channel_group() \
             .channel_group(gr) \
             .channels(ch) \
-            .async(non_subscribe_listener.callback)
+            .pn_async(non_subscribe_listener.callback)
         result = non_subscribe_listener.await_result_and_reset()
         assert isinstance(result, PNChannelGroupsRemoveChannelResult)
 
@@ -214,7 +214,7 @@ class TestPubNubSubscription(unittest.TestCase):
         pubnub.add_channel_to_channel_group() \
             .channel_group(gr) \
             .channels(ch) \
-            .async(non_subscribe_listener.callback)
+            .pn_async(non_subscribe_listener.callback)
         result = non_subscribe_listener.await_result_and_reset()
         assert isinstance(result, PNChannelGroupsAddChannelResult)
 
@@ -257,7 +257,7 @@ class TestPubNubSubscription(unittest.TestCase):
         pubnub.remove_channel_from_channel_group() \
             .channel_group(gr) \
             .channels(ch) \
-            .async(non_subscribe_listener.callback)
+            .pn_async(non_subscribe_listener.callback)
         result = non_subscribe_listener.await_result_and_reset()
         assert isinstance(result, PNChannelGroupsRemoveChannelResult)
 

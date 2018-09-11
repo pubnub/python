@@ -1,8 +1,13 @@
 name: python
-version: 4.1.0
+version: 4.1.1
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.1.1
+    date: Sep 11, 2018
+    changes:
+      - type: improvement
+        text: Rename async to pn_async
   - version: v4.1.0
     date: Jan 18, 2018
     changes:

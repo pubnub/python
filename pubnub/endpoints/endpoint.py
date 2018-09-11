@@ -98,7 +98,7 @@ class Endpoint(object):
 
         return envelope
 
-    def async(self, callback):
+    def pn_async(self, callback):
         try:
             self.validate_params()
             options = self.options()

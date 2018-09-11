@@ -22,7 +22,7 @@ listener = NonSubscribeListener()
 pubnub.publish() \
     .channel("blah") \
     .message("hey") \
-    .async(listener.callback)
+    .pn_async(listener.callback)
 
 result = listener.await_result_and_reset(5)
 # FIX: returns None

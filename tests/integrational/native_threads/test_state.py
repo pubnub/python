@@ -31,7 +31,7 @@ class TestPubNubState(unittest.TestCase):
         pubnub.set_state() \
             .channels(ch) \
             .state(state) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert not self.status.is_error()
@@ -42,7 +42,7 @@ class TestPubNubState(unittest.TestCase):
         self.event.clear()
         pubnub.get_state() \
             .channels(ch) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert not self.status.is_error()
@@ -62,7 +62,7 @@ class TestPubNubState(unittest.TestCase):
         pubnub.set_state() \
             .channels([ch1, ch2]) \
             .state(state) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert not self.status.is_error()
@@ -73,7 +73,7 @@ class TestPubNubState(unittest.TestCase):
         self.event.clear()
         pubnub.get_state() \
             .channels([ch1, ch2]) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
         assert not self.status.is_error()

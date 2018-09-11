@@ -103,7 +103,7 @@ class NativeReconnectionManager(ReconnectionManager):
         self._timer.start()
 
     def _call_time(self):
-        self._pubnub.time().async(self._call_time_callback)
+        self._pubnub.time().pn_async(self._call_time_callback)
 
     def _call_time_callback(self, resp, status):
         if not status.is_error():
@@ -183,7 +183,7 @@ class NativeSubscriptionManager(SubscriptionManager):
 
         Leave(self._pubnub) \
             .channels(unsubscribe_operation.channels) \
-            .channel_groups(unsubscribe_operation.channel_groups).async(leave_callback)
+            .channel_groups(unsubscribe_operation.channel_groups).pn_async(leave_callback)
 
     def _register_heartbeat_timer(self):
         super(NativeSubscriptionManager, self)._register_heartbeat_timer()
@@ -224,7 +224,7 @@ class NativeSubscriptionManager(SubscriptionManager):
              .channels(presence_channels)
              .channel_groups(presence_groups)
              .state(state_payload)
-             .async(heartbeat_callback))
+             .pn_async(heartbeat_callback))
         except Exception as e:
             logger.error("Heartbeat request failed: %s" % e)
 
@@ -297,7 +297,7 @@ class NativeSubscriptionManager(SubscriptionManager):
                 .channels(combined_channels).channel_groups(combined_groups) \
                 .timetoken(self._timetoken).region(self._region) \
                 .filter_expression(self._pubnub.config.filter_expression) \
-                .async(callback)
+                .pn_async(callback)
         except Exception as e:
             logger.error("Subscribe request failed: %s" % e)
 

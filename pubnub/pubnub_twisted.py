@@ -157,7 +157,7 @@ class TwistedSubscriptionManager(SubscriptionManager):
             .channels(channels) \
             .channel_groups(channel_groups) \
             .state(state_payload) \
-            .async(heartbeat_callback)
+            .pn_async(heartbeat_callback)
 
     def _send_leave(self, unsubscribe_operation):
         def announce_leave_status(response, status):
@@ -166,7 +166,7 @@ class TwistedSubscriptionManager(SubscriptionManager):
         Leave(self._pubnub) \
             .channels(unsubscribe_operation.channels) \
             .channel_groups(unsubscribe_operation.channel_groups) \
-            .async(announce_leave_status)
+            .pn_async(announce_leave_status)
 
     def reconnect(self):
         # TODO: REVIEW

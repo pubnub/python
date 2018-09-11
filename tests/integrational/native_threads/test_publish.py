@@ -35,7 +35,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         PubNub(pnconf).publish() \
             .channel("ch1") \
             .message(msg) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.assert_success()
 
@@ -44,7 +44,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
             .channel("ch1") \
             .message(msg) \
             .use_post(True) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.assert_success()
 
@@ -68,7 +68,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         pubnub.publish() \
             .channel("ch1") \
             .message(["encrypted", "list"]) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.assert_success()
 
@@ -76,7 +76,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         PubNub(pnconf_enc).publish() \
             .channel("ch1") \
             .message("encrypted string") \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.assert_success()
 
@@ -85,7 +85,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
             .channel("ch1") \
             .message(["encrypted", "list"]) \
             .use_post(True) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.assert_success()
 
@@ -94,7 +94,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
             .channel("ch1") \
             .message("encrypted string") \
             .use_post(True) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.assert_success()
 
@@ -105,7 +105,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
             .channel("ch1") \
             .message("hey") \
             .meta(meta) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.assert_success()
 
@@ -114,7 +114,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
             .channel("ch1") \
             .message("hey") \
             .should_store(False) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.assert_success()
 
@@ -138,7 +138,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         PubNub(config).publish() \
             .channel("ch1") \
             .message("hey") \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
 
@@ -153,7 +153,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         PubNub(pnconf).publish() \
             .channel("ch1") \
             .message(None) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
 
@@ -165,7 +165,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         PubNub(pnconf).publish() \
             .channel("") \
             .message("hey") \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         assert self.status.is_error()
         assert self.response is None
@@ -178,7 +178,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         PubNub(pnconf).publish() \
             .channel("ch1") \
             .message(method) \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
 
@@ -193,7 +193,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         PubNub(pnconf).publish() \
             .channel("not_permitted_channel") \
             .message("correct message") \
-            .async(self.callback)
+            .pn_async(self.callback)
 
         self.event.wait()
 

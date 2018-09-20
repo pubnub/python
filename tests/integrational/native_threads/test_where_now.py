@@ -39,7 +39,7 @@ class TestPubNubState(unittest.TestCase):
             .uuid(uuid) \
             .pn_async(where_now_listener.callback)
 
-        if where_now_listener.await() is False:
+        if where_now_listener.pn_await() is False:
             self.fail("WhereNow operation timeout")
 
         result = where_now_listener.result
@@ -75,7 +75,7 @@ class TestPubNubState(unittest.TestCase):
             .uuid(uuid) \
             .pn_async(where_now_listener.callback)
 
-        if where_now_listener.await() is False:
+        if where_now_listener.pn_await() is False:
             self.fail("WhereNow operation timeout")
 
         result = where_now_listener.result

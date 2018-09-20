@@ -40,7 +40,7 @@ class TestPubNubState(unittest.TestCase):
             .include_uuids(True) \
             .pn_async(here_now_listener.callback)
 
-        if here_now_listener.await() is False:
+        if here_now_listener.pn_await() is False:
             self.fail("HereNow operation timeout")
 
         result = here_now_listener.result
@@ -74,7 +74,7 @@ class TestPubNubState(unittest.TestCase):
             .channels([ch1, ch2]) \
             .pn_async(here_now_listener.callback)
 
-        if here_now_listener.await() is False:
+        if here_now_listener.pn_await() is False:
             self.fail("HereNow operation timeout")
 
         result = here_now_listener.result

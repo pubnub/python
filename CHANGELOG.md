@@ -1,3 +1,10 @@
+
+## [4.1.2](https://github.com/pubnub/python/tree/v4.1.2)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.1.1...v4.1.2)
+
+- 🐛Rename await to pn_await
+
 ## [4.1.1](https://github.com/pubnub/python/tree/v4.1.1)
 
   [Full Changelog](https://github.com/pubnub/python/compare/v4.1.0...v4.1.1)

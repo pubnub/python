@@ -3,8 +3,8 @@ version: 4.1.2
 schema: 1
 scm: github.com/pubnub/python
 changelog:
-  - version: v4.1.2
-    date: Sep 19, 2018
+- version: v4.1.2
+    date: Sep 20, 2018
     changes:
       - type: improvement
         text: Rename await to pn_await

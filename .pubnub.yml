@@ -1,8 +1,13 @@
 name: python
-version: 4.1.1
+version: 4.1.2
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+- version: v4.1.2
+    date: Sep 20, 2018
+    changes:
+      - type: improvement
+        text: Rename await to pn_await
   - version: v4.1.1
     date: Sep 11, 2018
     changes:

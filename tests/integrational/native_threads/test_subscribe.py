@@ -60,7 +60,7 @@ class TestPubNubSubscription(unittest.TestCase):
 
             pubnub.publish().channel(ch).message(message).pn_async(publish_operation.callback)
 
-            if publish_operation.await() is False:
+            if publish_operation.pn_await() is False:
                 self.fail("Publish operation timeout")
 
             publish_result = publish_operation.result

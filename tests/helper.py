@@ -131,7 +131,7 @@ class CountDownLatch(object):
         self.lock.notifyAll()
         self.lock.release()
 
-    def await(self, timeout=5):
+    def pn_await(self, timeout=5):
         self.lock.acquire()
 
         self.t = threading.Timer(timeout, self._release)

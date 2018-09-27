@@ -425,16 +425,16 @@ class NonSubscribeListener(object):
         self.status = status
         self.done_event.set()
 
-    def await(self, timeout=5):
+    def pn_await(self, timeout=5):
         """ Returns False if a timeout happened, otherwise True"""
         return self.done_event.wait(timeout)
 
     def await_result(self, timeout=5):
-        self.await(timeout)
+        self.pn_await(timeout)
         return self.result
 
     def await_result_and_reset(self, timeout=5):
-        self.await(timeout)
+        self.pn_await(timeout)
         cp = copy.copy(self.result)
         self.reset()
         return cp

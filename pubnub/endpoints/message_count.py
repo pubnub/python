@@ -17,6 +17,7 @@ class MessageCount(Endpoint):
         return self
 
     def channel_timetokens(self, timetokens):
+        timetokens = [str(item) for item in timetokens]
         utils.extend_list(self._channels_timetoken, timetokens)
         return self
 

@@ -2,6 +2,7 @@ from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.exceptions import PubNubException
+from pubnub.models.consumer.message_count import PNMessageCountResult
 
 
 class MessageCount(Endpoint):
@@ -49,8 +50,8 @@ class MessageCount(Endpoint):
         if len(self._channels_timetoken) != len(self._channel):
             raise PubNubException('The number of channels and the number of timetokens do not match.')
 
-    def create_response(self, envelope):
-        return envelope
+    def create_response(self, result):
+        return PNMessageCountResult(result)
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

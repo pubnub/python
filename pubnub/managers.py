@@ -421,6 +421,7 @@ class TelemetryManager(object):  # pylint: disable=W0612
 
             PNOperationType.PNHistoryOperation: 'hist',
             PNOperationType.PNHistoryDeleteOperation: 'hist',
+            PNOperationType.PNMessageCountOperation: 'hist',
 
             PNOperationType.PNUnsubscribeOperation: 'pres',
             PNOperationType.PNWhereNowOperation: 'pres',

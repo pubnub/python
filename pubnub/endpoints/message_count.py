@@ -10,23 +10,23 @@ class MessageCount(Endpoint):
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
         self._channel = []
-        self._channel_timetokens = []
+        self._channels_timetoken = []
 
     def channel(self, channel):
         utils.extend_list(self._channel, channel)
         return self
 
     def channel_timetokens(self, timetokens):
-        utils.extend_list(self._channel_timetokens, timetokens)
+        utils.extend_list(self._channels_timetoken, timetokens)
         return self
 
     def custom_params(self):
         params = {}
-        if len(self._channel_timetokens) > 0:
-            if len(self._channel_timetokens) > 1:
-                params['channelsTimetokens'] = utils.join_items(self._channel_timetokens)
+        if len(self._channels_timetoken) > 0:
+            if len(self._channels_timetoken) > 1:
+                params['channelsTimetoken'] = utils.join_items(self._channels_timetoken)
             else:
-                params['timetoken'] = self._channel_timetokens[0]
+                params['timetoken'] = self._channels_timetoken[0]
         return params
 
     def build_path(self):
@@ -45,7 +45,7 @@ class MessageCount(Endpoint):
         self.validate_subscribe_key()
         self.validate_channel()
 
-        if len(self._channel_timetokens) != len(self._channel):
+        if len(self._channels_timetoken) != len(self._channel):
             raise PubNubException('The number of channels and the number of timetokens do not match.')
 
     def create_response(self, envelope):

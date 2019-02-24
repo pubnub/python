@@ -7,7 +7,7 @@ from tests.helper import pnconf_mc_copy
 
 
 @pytest.fixture
-def pn(event_loop):
+def pn():
     config = pnconf_mc_copy()
     config.enable_subscribe = False
     return PubNub(config)

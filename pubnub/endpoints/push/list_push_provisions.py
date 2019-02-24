@@ -33,8 +33,8 @@ class ListPushProvisions(Endpoint):
         return params
 
     def build_path(self):
-            return ListPushProvisions.LIST_PATH % (
-                self.pubnub.config.subscribe_key, self._device_id)
+        return ListPushProvisions.LIST_PATH % (
+            self.pubnub.config.subscribe_key, self._device_id)
 
     def http_method(self):
         return HttpMethod.GET

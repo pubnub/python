@@ -71,10 +71,10 @@ class History(Endpoint):
         return params
 
     def build_path(self):
-            return History.HISTORY_PATH % (
-                self.pubnub.config.subscribe_key,
-                utils.url_encode(self._channel)
-            )
+        return History.HISTORY_PATH % (
+            self.pubnub.config.subscribe_key,
+            utils.url_encode(self._channel)
+        )
 
     def http_method(self):
         return HttpMethod.GET

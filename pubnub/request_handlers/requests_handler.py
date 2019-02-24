@@ -2,7 +2,7 @@ import logging
 import threading
 import requests
 import six
-import json
+import json # noqa
 
 from requests import Session
 from requests.adapters import HTTPAdapter

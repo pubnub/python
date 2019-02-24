@@ -32,10 +32,10 @@ class MessageCount(Endpoint):
         return params
 
     def build_path(self):
-            return MessageCount.MESSAGE_COUNT_PATH % (
-                self.pubnub.config.subscribe_key,
-                utils.join_channels(self._channel)
-            )
+        return MessageCount.MESSAGE_COUNT_PATH % (
+            self.pubnub.config.subscribe_key,
+            utils.join_channels(self._channel)
+        )
 
     def http_method(self):
         return HttpMethod.GET

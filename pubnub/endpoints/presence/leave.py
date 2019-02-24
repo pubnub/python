@@ -39,7 +39,7 @@ class Leave(Endpoint):
         return params
 
     def build_path(self):
-            return Leave.LEAVE_PATH % (self.pubnub.config.subscribe_key, utils.join_channels(self._channels))
+        return Leave.LEAVE_PATH % (self.pubnub.config.subscribe_key, utils.join_channels(self._channels))
 
     def http_method(self):
         return HttpMethod.GET

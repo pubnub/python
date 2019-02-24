@@ -36,10 +36,10 @@ class HistoryDelete(Endpoint):  # pylint: disable=W0612
         return params
 
     def build_path(self):
-            return HistoryDelete.HISTORY_DELETE_PATH % (
-                self.pubnub.config.subscribe_key,
-                utils.url_encode(self._channel)
-            )
+        return HistoryDelete.HISTORY_DELETE_PATH % (
+            self.pubnub.config.subscribe_key,
+            utils.url_encode(self._channel)
+        )
 
     def http_method(self):
         return HttpMethod.DELETE

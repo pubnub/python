@@ -1,4 +1,4 @@
-pytest
+pytest==4.3.0
 codacy-coverage
 pycryptodomex
 flake8==3.6.0

@@ -1,17 +1,14 @@
 import pytest
 
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 from pubnub.models.consumer.message_count import PNMessageCountResult
 from pubnub.models.consumer.common import PNStatus
+from tests.helper import pnconf_mc_copy
 
 
 @pytest.fixture
 def pn(event_loop):
-    config = PNConfiguration()
-    config.publish_key = 'demo-36'
-    config.subscribe_key = 'demo-36'
-    config.origin = 'balancer1g.bronze.aws-pdx-1.ps.pn'
+    config = pnconf_mc_copy()
     config.enable_subscribe = False
     return PubNub(config)
 

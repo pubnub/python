@@ -1,19 +1,16 @@
 import tornado
 from tornado.testing import AsyncTestCase
 
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope
 from pubnub.models.consumer.message_count import PNMessageCountResult
 from pubnub.models.consumer.common import PNStatus
+from tests.helper import pnconf_mc_copy
 
 
 class TestMessageCount(AsyncTestCase):
     def setUp(self):
         AsyncTestCase.setUp(self)
-        config = PNConfiguration()
-        config.publish_key = 'demo-36'
-        config.subscribe_key = 'demo-36'
-        config.origin = 'balancer1g.bronze.aws-pdx-1.ps.pn'
+        config = pnconf_mc_copy()
         config.enable_subscribe = False
         self.pn = PubNubTornado(config, custom_ioloop=self.io_loop)
 

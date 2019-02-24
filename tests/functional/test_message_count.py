@@ -13,7 +13,7 @@ SUB_KEY = 'bla'
 def mc():
     config = PNConfiguration()
     config.subscribe_key = SUB_KEY
-    return PubNub(config).message_count()
+    return PubNub(config).message_counts()
 
 
 def test_single_channel(mc):

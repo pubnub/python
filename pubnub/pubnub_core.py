@@ -158,7 +158,7 @@ class PubNubCore:
     def history(self):
         return History(self)
 
-    def message_count(self):
+    def message_counts(self):
         return MessageCount(self)
 
     def time(self):

@@ -18,7 +18,7 @@ def test_single_channel(pn):
 
     def callback(result, status):
         time = result.timetoken - 1
-        pn.message_count().channel(chan).channel_timetokens([time]).pn_async(check_result)
+        pn.message_counts().channel(chan).channel_timetokens([time]).pn_async(check_result)
 
     def check_result(result, status):
         assert not status.is_error()
@@ -36,7 +36,7 @@ def test_multiple_channels(pn):
 
     def callback(result, status):
         time = result.timetoken - 1
-        pn.message_count().channel(chans).channel_timetokens([time, time]).pn_async(check_result)
+        pn.message_counts().channel(chans).channel_timetokens([time, time]).pn_async(check_result)
 
     def check_result(result, status):
         assert not status.is_error()

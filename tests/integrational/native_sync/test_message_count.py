@@ -18,7 +18,7 @@ def test_single_channel(pn):
     chan = 'unique_sync'
     envelope = pn.publish().channel(chan).message('bla').sync()
     time = envelope.result.timetoken - 1
-    envelope = pn.message_count().channel(chan).channel_timetokens([time]).sync()
+    envelope = pn.message_counts().channel(chan).channel_timetokens([time]).sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
@@ -33,7 +33,7 @@ def test_multiple_channels(pn):
     chans = ','.join([chan_1, chan_2])
     envelope = pn.publish().channel(chan_1).message('something').sync()
     time = envelope.result.timetoken - 1
-    envelope = pn.message_count().channel(chans).channel_timetokens([time, time]).sync()
+    envelope = pn.message_counts().channel(chans).channel_timetokens([time, time]).sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()

@@ -17,7 +17,7 @@ def test_single_channel(pn):
     chan = 'unique_threads'
 
     def callback(result, status):
-        time = result.timetoken - 1
+        time = result.timetoken - 10
         pn.message_counts().channel(chan).channel_timetokens([time]).pn_async(check_result)
 
     def check_result(result, status):
@@ -35,7 +35,7 @@ def test_multiple_channels(pn):
     chans = ','.join([chan_1, chan_2])
 
     def callback(result, status):
-        time = result.timetoken - 1
+        time = result.timetoken - 10
         pn.message_counts().channel(chans).channel_timetokens([time, time]).pn_async(check_result)
 
     def check_result(result, status):

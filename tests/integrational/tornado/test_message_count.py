@@ -18,7 +18,7 @@ class TestMessageCount(AsyncTestCase):
     def test_single_channel(self):
         chan = 'unique_tornado'
         envelope = yield self.pn.publish().channel(chan).message('bla').future()
-        time = envelope.result.timetoken - 1
+        time = envelope.result.timetoken - 10
         envelope = yield self.pn.message_counts().channel(chan).channel_timetokens([time]).future()
 
         assert(isinstance(envelope, TornadoEnvelope))
@@ -35,7 +35,7 @@ class TestMessageCount(AsyncTestCase):
         chan_2 = 'unique_asyncio_2'
         chans = ','.join([chan_1, chan_2])
         envelope = yield self.pn.publish().channel(chan_1).message('something').future()
-        time = envelope.result.timetoken - 1
+        time = envelope.result.timetoken - 10
         envelope = yield self.pn.message_counts().channel(chans).channel_timetokens([time, time]).future()
 
         assert(isinstance(envelope, TornadoEnvelope))

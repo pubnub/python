@@ -1,5 +1,4 @@
 pytest
-pytest-cov<2.6.0
 codacy-coverage
 pycryptodomex
 flake8==3.6.0

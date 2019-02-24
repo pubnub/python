@@ -30,9 +30,6 @@ def run(command):
 if version.startswith('2.7') or version.startswith('anaconda2'):
     run("%s,*asyncio*,*python_v35*,examples/" % fcmn)
     run('%s --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/twisted/ --ignore=tests/integrational/python_v35/' % tcmn)
-elif version.startswith('3.3'):
-    run("%s,*asyncio*,*python_v35*" % fcmn)
-    run('%s--ignore=tests/integrational/asyncio/ --ignore=tests/integrational/twisted/ --ignore=tests/integrational/python_v35/' % tcmn)
 elif version.startswith('3.4'):
     run("%s,*python_v35*,examples" % fcmn)
     run('%s--ignore=tests/integrational/python_v35/ --ignore=tests/integrational/twisted/' % tcmn)

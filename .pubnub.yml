@@ -161,7 +161,6 @@ supported-platforms:
       - Windows 7 or later, amd64, 386
     editors:
       - python 2.7.13
-      - python 3.3.6
       - python 3.4.5
       - python 3.5.2
       - python 3.6.0
@@ -175,7 +174,6 @@ supported-platforms:
       - Windows 7 or later, amd64, 386
     editors:
       - python 2.7.13
-      - python 3.3.6
       - python 3.4.5
       - python 3.5.2
       - python 3.6.0

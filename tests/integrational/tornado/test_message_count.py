@@ -1,4 +1,3 @@
-import pytest
 import tornado
 from tornado.testing import AsyncTestCase
 

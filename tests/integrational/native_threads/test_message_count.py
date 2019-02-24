@@ -1,11 +1,9 @@
 import pytest
 
-import pubnub
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 from pubnub.models.consumer.message_count import PNMessageCountResult
 from pubnub.models.consumer.common import PNStatus
-from pubnub.structures import Envelope
 
 
 @pytest.fixture
@@ -49,6 +47,5 @@ def test_multiple_channels(pn):
         assert result.channels[chan_2] == 0
         assert isinstance(result, PNMessageCountResult)
         assert isinstance(status, PNStatus)
-    
-    pn.publish().channel(chan_1).message('something').pn_async(callback)
 
+    pn.publish().channel(chan_1).message('something').pn_async(callback)

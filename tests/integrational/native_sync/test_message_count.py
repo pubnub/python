@@ -1,6 +1,5 @@
 import pytest
 
-import pubnub
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 from pubnub.models.consumer.message_count import PNMessageCountResult

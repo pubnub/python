@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent: [PubNub-Python-Asyncio/4.1.0]
+    method: GET
+    uri: http://balancer1g.bronze.aws-pdx-1.ps.pn/publish/demo-36/demo-36/0/unique_asyncio/0/%22bla%22
+  response:
+    body: {string: '[1,"Sent","15510391957007182"]'}
+    headers: {Access-Control-Allow-Methods: GET, Access-Control-Allow-Origin: '*',
+      Cache-Control: no-cache, Connection: keep-alive, Content-Length: '30', Content-Type: text/javascript;
+        charset="UTF-8", Date: 'Sun, 24 Feb 2019 20:13:15 GMT'}
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [http, balancer1g.bronze.aws-pdx-1.ps.pn,
+        /publish/demo-36/demo-36/0/unique_asyncio/0/%22bla%22, seqn=1&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=68f7b4f4-c169-4a49-b09d-7c68e22049b8,
+        '']
+- request:
+    body: null
+    headers:
+      User-Agent: [PubNub-Python-Asyncio/4.1.0]
+    method: GET
+    uri: http://balancer1g.bronze.aws-pdx-1.ps.pn/v3/history/sub-key/demo-36/message-counts/unique_asyncio?timetoken=15510391957007172
+  response:
+    body: {string: '{"status": 200, "error": false, "error_message": "", "channels":
+        {"unique_asyncio":1}}'}
+    headers: {Accept-Ranges: bytes, Access-Control-Allow-Methods: 'GET, DELETE, OPTIONS',
+      Access-Control-Allow-Origin: '*', Age: '0', Cache-Control: no-cache, Connection: keep-alive,
+      Content-Length: '86', Content-Type: text/javascript; charset="UTF-8", Date: 'Sun,
+        24 Feb 2019 20:13:15 GMT', Server: Pubnub}
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [http, balancer1g.bronze.aws-pdx-1.ps.pn,
+        /v3/history/sub-key/demo-36/message-counts/unique_asyncio, timetoken=15510391957007172&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=68f7b4f4-c169-4a49-b09d-7c68e22049b8&l_pub=0.4618048667907715,
+        '']
+version: 1

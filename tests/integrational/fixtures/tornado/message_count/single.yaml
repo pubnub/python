@@ -1,0 +1,78 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.1.0]
+    method: GET
+    uri: http://balancer1g.bronze.aws-pdx-1.ps.pn/publish/demo-36/demo-36/0/unique_tornado/0/%22bla%22
+  response:
+    body: {string: '[1,"Sent","15510394397882441"]'}
+    headers:
+    - !!python/tuple
+      - Date
+      - ['Sun, 24 Feb 2019 20:17:19 GMT']
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Content-Length
+      - ['30']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    status: {code: 200, message: OK}
+    url: http://balancer1g.bronze.aws-pdx-1.ps.pn/publish/demo-36/demo-36/0/unique_tornado/0/%22bla%22?seqn=1&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=e2282d1f-2682-4d11-9722-721d1a555bdb
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.1.0]
+    method: GET
+    uri: http://balancer1g.bronze.aws-pdx-1.ps.pn/v3/history/sub-key/demo-36/message-counts/unique_tornado?timetoken=15510394397882431
+  response:
+    body: {string: '{"status": 200, "error": false, "error_message": "", "channels":
+        {"unique_tornado":1}}'}
+    headers:
+    - !!python/tuple
+      - Date
+      - ['Sun, 24 Feb 2019 20:17:20 GMT']
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Content-Length
+      - ['86']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - ['GET, DELETE, OPTIONS']
+    - !!python/tuple
+      - Accept-Ranges
+      - [bytes]
+    - !!python/tuple
+      - Age
+      - ['0']
+    - !!python/tuple
+      - Server
+      - [Pubnub]
+    status: {code: 200, message: OK}
+    url: http://balancer1g.bronze.aws-pdx-1.ps.pn/v3/history/sub-key/demo-36/message-counts/unique_tornado?timetoken=15510394397882431&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=e2282d1f-2682-4d11-9722-721d1a555bdb&l_pub=0.36996030807495117
+version: 1

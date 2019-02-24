@@ -4,6 +4,7 @@ from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
 from pubnub.models.consumer.message_count import PNMessageCountResult
 from pubnub.models.consumer.common import PNStatus
 from tests.helper import pnconf_mc_copy
+from tests.integrational.vcr_helper import pn_vcr
 
 
 @pytest.fixture
@@ -15,6 +16,8 @@ def pn(event_loop):
     pn.stop()
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/message_count/single.yaml',
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_cg', 'l_pub'])
 @pytest.mark.asyncio
 def test_single_channel(pn):
     chan = 'unique_asyncio'
@@ -29,6 +32,8 @@ def test_single_channel(pn):
     assert isinstance(envelope.status, PNStatus)
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/message_count/multi.yaml',
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_cg', 'l_pub'])
 @pytest.mark.asyncio
 def test_multiple_channels(pn):
     chan_1 = 'unique_asyncio_1'

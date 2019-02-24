@@ -5,6 +5,7 @@ from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope
 from pubnub.models.consumer.message_count import PNMessageCountResult
 from pubnub.models.consumer.common import PNStatus
 from tests.helper import pnconf_mc_copy
+from tests.integrational.vcr_helper import pn_vcr
 
 
 class TestMessageCount(AsyncTestCase):
@@ -14,6 +15,8 @@ class TestMessageCount(AsyncTestCase):
         config.enable_subscribe = False
         self.pn = PubNubTornado(config, custom_ioloop=self.io_loop)
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/tornado/message_count/single.yaml',
+                         filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_cg', 'l_pub'])
     @tornado.testing.gen_test
     def test_single_channel(self):
         chan = 'unique_tornado'
@@ -29,6 +32,8 @@ class TestMessageCount(AsyncTestCase):
 
         self.pn.stop()
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/tornado/message_count/multi.yaml',
+                         filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_cg', 'l_pub'])
     @tornado.testing.gen_test
     def test_multiple_channels(self):
         chan_1 = 'unique_asyncio_1'

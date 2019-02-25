@@ -1,3 +1,8 @@
+## [4.1.3](https://github.com/pubnub/python/tree/v4.1.3)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.1.2...v4.1.3)
+
+- 🐛Implement history message counts
 
 ## [4.1.2](https://github.com/pubnub/python/tree/v4.1.2)
 

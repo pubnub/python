@@ -50,7 +50,7 @@ class MessageCount(Endpoint):
         if len(self._channels_timetoken) != len(self._channel):
             raise PubNubException('The number of channels and the number of timetokens do not match.')
 
-    def create_response(self, result):
+    def create_response(self, result):  # pylint: disable=W0221
         return PNMessageCountResult(result)
 
     def request_timeout(self):

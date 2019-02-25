@@ -2,7 +2,7 @@ import logging
 import threading
 import requests
 import six
-import json # noqa
+import json # noqa # pylint: disable=W0611
 
 from requests import Session
 from requests.adapters import HTTPAdapter

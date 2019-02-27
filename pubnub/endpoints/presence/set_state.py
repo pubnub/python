@@ -46,11 +46,11 @@ class SetState(Endpoint):
         return params
 
     def build_path(self):
-            return SetState.SET_STATE_PATH % (
-                self.pubnub.config.subscribe_key,
-                utils.join_channels(self._channels),
-                utils.url_encode(self.pubnub.uuid)
-            )
+        return SetState.SET_STATE_PATH % (
+            self.pubnub.config.subscribe_key,
+            utils.join_channels(self._channels),
+            utils.url_encode(self.pubnub.uuid)
+        )
 
     def http_method(self):
         return HttpMethod.GET
@@ -66,7 +66,7 @@ class SetState(Endpoint):
             raise PubNubException(pn_error=PNERR_STATE_MISSING)
 
     def create_response(self, envelope):
-        if 'status' in envelope and envelope['status'] is 200:
+        if 'status' in envelope and envelope['status'] == 200:
             return PNSetStateResult(envelope['payload'])
         else:
             return envelope

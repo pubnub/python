@@ -2,6 +2,7 @@ import logging
 import threading
 import requests
 import six
+import json # noqa # pylint: disable=W0611
 
 from requests import Session
 from requests.adapters import HTTPAdapter
@@ -14,6 +15,12 @@ from pubnub.errors import PNERR_SERVER_ERROR
 from pubnub.exceptions import PubNubException
 from pubnub.request_handlers.base import BaseRequestHandler
 from pubnub.structures import RequestOptions, PlatformOptions, ResponseInfo, Envelope
+
+try:
+    from json.decoder import JSONDecodeError
+except ImportError:
+    JSONDecodeError = ValueError
+
 
 logger = logging.getLogger("pubnub")
 
@@ -144,12 +151,15 @@ class RequestsRequestHandler(BaseRequestHandler):
                 err = PNERR_SERVER_ERROR
             else:
                 err = PNERR_CLIENT_ERROR
-
+            try:
+                response = res.json()
+            except JSONDecodeError:
+                response = None
             return Envelope(
                 result=None,
                 status=e_options.create_status(
                     category=status_category,
-                    response=res.json(),
+                    response=response,
                     response_info=response_info,
                     exception=PubNubException(
                         pn_error=err,

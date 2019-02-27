@@ -31,6 +31,16 @@ class TestGrant(unittest.TestCase):
 
         self.assertEquals(self.grant.build_path(), Grant.GRANT_PATH % pnconf_pam.subscribe_key)
 
+        pam_args = utils.prepare_pam_arguments({
+            'r': '1',
+            'w': '1',
+            'ttl': '7',
+            'timestamp': 123,
+            'channel': 'ch',
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid
+        })
+        sign_input = pnconf_pam.subscribe_key + "\n" + pnconf_pam.publish_key + "\n" + "grant\n" + pam_args
         self.assertEqual(self.grant.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
@@ -39,17 +49,7 @@ class TestGrant(unittest.TestCase):
             'ttl': '7',
             'timestamp': '123',
             'channel': 'ch',
-            'signature': utils.sign_sha256(pnconf_pam.secret_key,
-                                           pnconf_pam.subscribe_key + "\n" + pnconf_pam.publish_key + "\n" +
-                                           "grant\n" + utils.prepare_pam_arguments({
-                                               'r': '1',
-                                               'w': '1',
-                                               'ttl': '7',
-                                               'timestamp': 123,
-                                               'channel': 'ch',
-                                               'pnsdk': sdk_name,
-                                               'uuid': self.pubnub.uuid
-                                           }))
+            'signature': utils.sign_sha256(pnconf_pam.secret_key, sign_input)
         })
 
     def test_grant_read_and_write_to_channel_group(self):
@@ -57,6 +57,15 @@ class TestGrant(unittest.TestCase):
 
         self.assertEquals(self.grant.build_path(), Grant.GRANT_PATH % pnconf_pam.subscribe_key)
 
+        pam_args = utils.prepare_pam_arguments({
+            'r': '1',
+            'w': '1',
+            'timestamp': 123,
+            'channel-group': 'gr1,gr2',
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid
+        })
+        sign_input = pnconf_pam.subscribe_key + "\n" + pnconf_pam.publish_key + "\n" + "grant\n" + pam_args
         self.assertEqual(self.grant.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
@@ -64,14 +73,5 @@ class TestGrant(unittest.TestCase):
             'w': '1',
             'timestamp': '123',
             'channel-group': 'gr1,gr2',
-            'signature': utils.sign_sha256(pnconf_pam.secret_key,
-                                           pnconf_pam.subscribe_key + "\n" + pnconf_pam.publish_key + "\n" +
-                                           "grant\n" + utils.prepare_pam_arguments({
-                                               'r': '1',
-                                               'w': '1',
-                                               'timestamp': 123,
-                                               'channel-group': 'gr1,gr2',
-                                               'pnsdk': sdk_name,
-                                               'uuid': self.pubnub.uuid
-                                           }))
+            'signature': utils.sign_sha256(pnconf_pam.secret_key, sign_input)
         })

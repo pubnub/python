@@ -10,7 +10,7 @@ class Time(Endpoint):
         return {}
 
     def build_path(self):
-            return Time.TIME_PATH
+        return Time.TIME_PATH
 
     def http_method(self):
         return HttpMethod.GET

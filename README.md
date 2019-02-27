@@ -5,7 +5,7 @@
 [![PyPI](https://img.shields.io/pypi/pyversions/pubnub.svg)](https://pypi.python.org/pypi/pubnub/)
 [![Docs](https://img.shields.io/badge/docs-online-blue.svg)](https://www.pubnub.com/docs/python/pubnub-python-sdk-v4)
 
-The SDK supports Python 2.7, 3.3, 3.4, 3.5, 3.6, 3.7 and pypy.
+The SDK supports Python 2.7, 3.4, 3.5, 3.6, 3.7 and pypy.
 
 ## Documentation
 

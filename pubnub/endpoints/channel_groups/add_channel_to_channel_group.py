@@ -34,8 +34,8 @@ class AddChannelToChannelGroup(Endpoint):
         return {'add': utils.join_items(self._channels)}
 
     def build_path(self):
-            return AddChannelToChannelGroup.ADD_PATH % (
-                self.pubnub.config.subscribe_key, utils.url_encode(self._channel_group))
+        return AddChannelToChannelGroup.ADD_PATH % (
+            self.pubnub.config.subscribe_key, utils.url_encode(self._channel_group))
 
     def http_method(self):
         return HttpMethod.GET

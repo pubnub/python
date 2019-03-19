@@ -193,7 +193,7 @@ class Endpoint(object):
             raise PubNubException(pn_error=PNERR_SECRET_KEY_MISSING)
 
     def validate_channel(self):
-        if self._channel is None or len(self._channel) is 0:
+        if self._channel is None or len(self._channel) == 0:
             raise PubNubException(pn_error=PNERR_CHANNEL_MISSING)
 
     def validate_channels_and_groups(self):

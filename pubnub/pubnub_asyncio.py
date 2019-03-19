@@ -480,7 +480,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
                     self._listener_manager.announce_status(envelope.status)
 
-        except PubNubAsyncioException as e:
+        except PubNubAsyncioException:
             pass
             # TODO: check correctness
             # if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:

@@ -15,7 +15,7 @@ def main():
     def my_publish_callback(result, status):
         # Check whether request successfully completed or not
         if not status.is_error():
-            envelope = result  # NOQA:W292
+            envelope = result  # noqa
             pass  # Message successfully published to specified channel.
         else:
             pass  # Handle message publish error. Check 'category' property to find out possible issue

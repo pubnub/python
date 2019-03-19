@@ -22,6 +22,7 @@ from .endpoints.pubsub.publish import Publish
 from .endpoints.presence.here_now import HereNow
 from .endpoints.presence.where_now import WhereNow
 from .endpoints.history_delete import HistoryDelete
+from .endpoints.message_count import MessageCount
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -156,6 +157,9 @@ class PubNubCore:
 
     def history(self):
         return History(self)
+
+    def message_counts(self):
+        return MessageCount(self)
 
     def time(self):
         return Time(self)

@@ -502,8 +502,7 @@ class TornadoSubscriptionManager(SubscriptionManager):
         super(TornadoSubscriptionManager, self)._register_heartbeat_timer()
         self._heartbeat_periodic_callback = PeriodicCallback(
             stack_context.wrap(self._perform_heartbeat_loop),
-            self._pubnub.config.heartbeat_interval *
-            TornadoSubscriptionManager.HEARTBEAT_INTERVAL_MULTIPLIER,
+            self._pubnub.config.heartbeat_interval * TornadoSubscriptionManager.HEARTBEAT_INTERVAL_MULTIPLIER,
             self._pubnub.ioloop)
         self._heartbeat_periodic_callback.start()
 

@@ -57,7 +57,7 @@ def uuid():
 
 
 def split_items(items_string):
-    if len(items_string) is 0:
+    if len(items_string) == 0:
         return []
     else:
         return items_string.split(",")

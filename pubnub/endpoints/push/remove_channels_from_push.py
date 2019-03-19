@@ -36,8 +36,8 @@ class RemoveChannelsFromPush(Endpoint):
         return params
 
     def build_path(self):
-            return RemoveChannelsFromPush.REMOVE_PATH % (
-                self.pubnub.config.subscribe_key, self._device_id)
+        return RemoveChannelsFromPush.REMOVE_PATH % (
+            self.pubnub.config.subscribe_key, self._device_id)
 
     def http_method(self):
         return HttpMethod.GET

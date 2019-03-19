@@ -54,6 +54,11 @@ pnconf_ssl.publish_key = pub_key
 pnconf_ssl.subscribe_key = sub_key
 pnconf_ssl.ssl = True
 
+message_count_config = PNConfiguration()
+message_count_config.publish_key = 'demo-36'
+message_count_config.subscribe_key = 'demo-36'
+message_count_config.origin = 'balancer1g.bronze.aws-pdx-1.ps.pn'
+
 
 def pnconf_copy():
     return copy(pnconf)
@@ -77,6 +82,10 @@ def pnconf_pam_copy():
 
 def pnconf_ssl_copy():
     return copy(pnconf_ssl)
+
+
+def pnconf_mc_copy():
+    return copy(message_count_config)
 
 
 sdk_name = "Python-UnitTest"

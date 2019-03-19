@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent: [PubNub-Python-Asyncio/4.1.0]
+    method: GET
+    uri: http://balancer1g.bronze.aws-pdx-1.ps.pn/publish/demo-36/demo-36/0/unique_asyncio_1/0/%22something%22
+  response:
+    body: {string: '[1,"Sent","15510391962937056"]'}
+    headers: {Access-Control-Allow-Methods: GET, Access-Control-Allow-Origin: '*',
+      Cache-Control: no-cache, Connection: keep-alive, Content-Length: '30', Content-Type: text/javascript;
+        charset="UTF-8", Date: 'Sun, 24 Feb 2019 20:13:16 GMT'}
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [http, balancer1g.bronze.aws-pdx-1.ps.pn,
+        /publish/demo-36/demo-36/0/unique_asyncio_1/0/%22something%22, seqn=1&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=d2a546ca-037c-499a-9d87-35951bbbd289,
+        '']
+- request:
+    body: null
+    headers:
+      User-Agent: [PubNub-Python-Asyncio/4.1.0]
+    method: GET
+    uri: http://balancer1g.bronze.aws-pdx-1.ps.pn/v3/history/sub-key/demo-36/message-counts/unique_asyncio_1,unique_asyncio_2?channelsTimetoken=15510391962937046%2C15510391962937046
+  response:
+    body: {string: '{"status": 200, "error": false, "error_message": "", "channels":
+        {"unique_asyncio_1":1,"unique_asyncio_2":0}}'}
+    headers: {Accept-Ranges: bytes, Access-Control-Allow-Methods: 'GET, DELETE, OPTIONS',
+      Access-Control-Allow-Origin: '*', Age: '0', Cache-Control: no-cache, Connection: keep-alive,
+      Content-Length: '109', Content-Type: text/javascript; charset="UTF-8", Date: 'Sun,
+        24 Feb 2019 20:13:16 GMT', Server: Pubnub}
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [http, balancer1g.bronze.aws-pdx-1.ps.pn,
+        '/v3/history/sub-key/demo-36/message-counts/unique_asyncio_1,unique_asyncio_2',
+        'channelsTimetoken=15510391962937046,15510391962937046&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=d2a546ca-037c-499a-9d87-35951bbbd289&l_pub=0.37061548233032227',
+        '']
+version: 1

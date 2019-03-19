@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [PubNub-Python/4.1.0]
+    method: GET
+    uri: http://balancer1g.bronze.aws-pdx-1.ps.pn/publish/demo-36/demo-36/0/unique_sync_1/0/%22something%22
+  response:
+    body: {string: '[1,"Sent","15510379567122102"]'}
+    headers:
+      Access-Control-Allow-Methods: [GET]
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Length: ['30']
+      Content-Type: [text/javascript; charset="UTF-8"]
+      Date: ['Sun, 24 Feb 2019 19:52:36 GMT']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [PubNub-Python/4.1.0]
+    method: GET
+    uri: http://balancer1g.bronze.aws-pdx-1.ps.pn/v3/history/sub-key/demo-36/message-counts/unique_sync_1,unique_sync_2?channelsTimetoken=15510379567122092%2C15510379567122092
+  response:
+    body: {string: '{"status": 200, "error": false, "error_message": "", "channels":
+        {"unique_sync_1":1,"unique_sync_2":0}}'}
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Methods: ['GET, DELETE, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Age: ['0']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Length: ['103']
+      Content-Type: [text/javascript; charset="UTF-8"]
+      Date: ['Sun, 24 Feb 2019 19:52:37 GMT']
+      Server: [Pubnub]
+    status: {code: 200, message: OK}
+version: 1

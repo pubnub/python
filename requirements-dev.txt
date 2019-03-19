@@ -1,6 +1,4 @@
-pytest
-pytest-cov
 codacy-coverage
 pycryptodomex
-flake8
+flake8==3.6.0
 -e git://github.com/pubnub/vcrpy@twisted#egg=vcrpy

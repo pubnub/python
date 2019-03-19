@@ -25,8 +25,8 @@ class ListChannelsInChannelGroup(Endpoint):
         return {}
 
     def build_path(self):
-            return ListChannelsInChannelGroup.LIST_PATH % (
-                self.pubnub.config.subscribe_key, utils.url_encode(self._channel_group))
+        return ListChannelsInChannelGroup.LIST_PATH % (
+            self.pubnub.config.subscribe_key, utils.url_encode(self._channel_group))
 
     def http_method(self):
         return HttpMethod.GET

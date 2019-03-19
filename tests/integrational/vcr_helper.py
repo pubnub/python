@@ -102,7 +102,7 @@ def string_list_in_path_matcher(r1, r2, positions=None):
             else:
                 assert v == path2[k]
 
-    except (AssertionError, IndexError) as e:
+    except (AssertionError, IndexError):
         return False
     except Exception as e:
         print("Non-Assertion Exception: %s" % e)
@@ -150,7 +150,7 @@ def string_list_in_query_matcher(r1, r2, list_keys=None, filter_keys=None):
             else:
                 assert v == list2[ik][1]
 
-    except (AssertionError, IndexError) as e:
+    except (AssertionError, IndexError):
         return False
     except Exception as e:
         print("Non-Assertion Exception: %s" % e)

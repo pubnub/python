@@ -68,9 +68,9 @@ class Publish(Endpoint):
 
         if self._replicate is not None:
             if self._replicate:
-                params["replicate"] = "1"
+                params["norep"] = "0"
             else:
-                params["replicate"] = "0"
+                params["norep"] = "1"
         # REVIEW: should auth key be assigned here?
         if self.pubnub.config.auth_key is not None:
             params["auth"] = utils.url_encode(self.pubnub.config.auth_key)

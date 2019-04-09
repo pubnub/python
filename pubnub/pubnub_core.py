@@ -19,6 +19,7 @@ from .endpoints.presence.get_state import GetState
 from .endpoints.presence.heartbeat import Heartbeat
 from .endpoints.presence.set_state import SetState
 from .endpoints.pubsub.publish import Publish
+from .endpoints.pubsub.fire import Fire
 from .endpoints.presence.here_now import HereNow
 from .endpoints.presence.where_now import WhereNow
 from .endpoints.history_delete import HistoryDelete
@@ -160,6 +161,9 @@ class PubNubCore:
 
     def message_counts(self):
         return MessageCount(self)
+
+    def fire(self):
+        return Fire(self)
 
     def time(self):
         return Time(self)

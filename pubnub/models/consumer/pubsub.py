@@ -75,3 +75,16 @@ class PNPublishResult(object):
 
     def __str__(self):
         return "Publish success with timetoken %s" % self.timetoken
+
+
+class PNFireResult(object):
+    def __init__(self, envelope, timetoken):
+        """
+        Representation of fire server response
+
+        :param timetoken: of fire operation
+        """
+        self.timetoken = timetoken
+
+    def __str__(self):
+        return "Fire success with timetoken %s" % self.timetoken

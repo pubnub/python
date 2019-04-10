@@ -1,0 +1,19 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent: [PubNub-Python-Asyncio/4.1.0]
+    method: GET
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/unique_sync/0/%22bla%22?norep=1&store=0
+  response:
+    body: {string: '[1,"Sent","15549258055663067"]'}
+    headers: {Access-Control-Allow-Methods: GET, Access-Control-Allow-Origin: '*',
+      Cache-Control: no-cache, Connection: keep-alive, Content-Length: '30', Content-Type: text/javascript;
+        charset="UTF-8", Date: 'Wed, 10 Apr 2019 19:50:05 GMT'}
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [http, ps.pndsn.com, /publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/unique_sync/0/%22bla%22,
+        store=0&norep=1&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=f88b25d0-45ca-41b5-870f-9118a002e4e3,
+        '']
+version: 1

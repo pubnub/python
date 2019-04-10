@@ -1,8 +1,13 @@
 name: python
-version: 4.1.3
+version: 4.1.4
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.1.4
+    date: Apr 10, 2019
+    changes:
+      - type: improvement
+        text: implement Fire
   - version: v4.1.3
     date: Feb 25, 2019
     changes:

@@ -1,0 +1,22 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [PubNub-Python/4.1.0]
+    method: GET
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/unique_sync/0/%22bla%22?norep=1&store=0
+  response:
+    body: {string: '[1,"Sent","15549250946019633"]'}
+    headers:
+      Access-Control-Allow-Methods: [GET]
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: [no-cache]
+      Connection: [keep-alive]
+      Content-Length: ['30']
+      Content-Type: [text/javascript; charset="UTF-8"]
+      Date: ['Wed, 10 Apr 2019 19:38:14 GMT']
+    status: {code: 200, message: OK}
+version: 1

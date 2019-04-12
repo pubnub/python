@@ -1,22 +1,20 @@
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.errors import PNERR_MESSAGE_MISSING
-from pubnub.exceptions import PubNubException
-from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.exceptions import PubNubException
+from pubnub.errors import PNERR_MESSAGE_MISSING
+from pubnub.models.consumer.pubsub import PNFireResult
 
 
-class Publish(Endpoint):
+class Fire(Endpoint):
     # /publish/<pub_key>/<sub_key>/<signature>/<channel>/<callback>/<message>[?argument(s)]
-    PUBLISH_GET_PATH = "/publish/%s/%s/0/%s/%s/%s"
-    PUBLISH_POST_PATH = "/publish/%s/%s/0/%s/%s"
+    FIRE_GET_PATH = "/publish/%s/%s/0/%s/%s/%s"
+    FIRE_POST_PATH = "/publish/%s/%s/0/%s/%s"
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
         self._channel = None
         self._message = None
-        self._should_store = None
-        self._replicate = None
         self._use_post = None
         self._meta = None
 
@@ -30,14 +28,6 @@ class Publish(Endpoint):
 
     def use_post(self, use_post):
         self._use_post = bool(use_post)
-        return self
-
-    def replicate(self, replicate):
-        self._replicate = bool(replicate)
-        return self
-
-    def should_store(self, should_store):
-        self._should_store = bool(should_store)
         return self
 
     def meta(self, meta):
@@ -56,32 +46,19 @@ class Publish(Endpoint):
 
     def custom_params(self):
         params = {}
-
         if self._meta is not None:
             params['meta'] = utils.write_value_as_string(self._meta)
-
-        if self._should_store is not None:
-            if self._should_store:
-                params["store"] = "1"
-            else:
-                params["store"] = "0"
-
-        if self._replicate is not None:
-            if self._replicate:
-                params["norep"] = "0"
-            else:
-                params["norep"] = "1"
-        # REVIEW: should auth key be assigned here?
+        params["store"] = "0"
+        params["norep"] = "1"
         if self.pubnub.config.auth_key is not None:
             params["auth"] = utils.url_encode(self.pubnub.config.auth_key)
-
         return params
 
     def build_path(self):
         if self._use_post:
-            return Publish.PUBLISH_POST_PATH % (self.pubnub.config.publish_key,
-                                                self.pubnub.config.subscribe_key,
-                                                utils.url_encode(self._channel), 0)
+            return Fire.FIRE_POST_PATH % (self.pubnub.config.publish_key,
+                                          self.pubnub.config.subscribe_key,
+                                          utils.url_encode(self._channel), 0)
         else:
             cipher = self.pubnub.config.cipher_key
             stringified_message = utils.write_value_as_string(self._message)
@@ -91,9 +68,9 @@ class Publish(Endpoint):
 
             stringified_message = utils.url_encode(stringified_message)
 
-            return Publish.PUBLISH_GET_PATH % (self.pubnub.config.publish_key,
-                                               self.pubnub.config.subscribe_key,
-                                               utils.url_encode(self._channel), 0, stringified_message)
+            return Fire.FIRE_GET_PATH % (self.pubnub.config.publish_key,
+                                         self.pubnub.config.subscribe_key,
+                                         utils.url_encode(self._channel), 0, stringified_message)
 
     def http_method(self):
         if self._use_post is True:
@@ -120,7 +97,7 @@ class Publish(Endpoint):
 
         timetoken = int(envelope[2])
 
-        res = PNPublishResult(envelope, timetoken)
+        res = PNFireResult(envelope, timetoken)
 
         return res
 
@@ -140,7 +117,7 @@ class Publish(Endpoint):
         return self.pubnub.config.connect_timeout
 
     def operation_type(self):
-        return PNOperationType.PNPublishOperation
+        return PNOperationType.PNFireOperation
 
     def name(self):
-        return "Publish"
+        return "Fire"

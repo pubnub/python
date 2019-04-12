@@ -418,6 +418,7 @@ class TelemetryManager(object):  # pylint: disable=W0612
     def endpoint_name_for_operation(operation_type):
         endpoint = {
             PNOperationType.PNPublishOperation: 'pub',
+            PNOperationType.PNFireOperation: 'pub',
 
             PNOperationType.PNHistoryOperation: 'hist',
             PNOperationType.PNHistoryDeleteOperation: 'hist',

@@ -18,13 +18,13 @@ pn.set_stream_logger('pubnub', logging.DEBUG)
     filter_query_parameters=['uuid', 'pnsdk'],
     match_on=['method', 'host', 'path', 'state_object_in_query'])
 @pytest.mark.asyncio
-def test_single_channelx(event_loop):
+async def test_single_channelx(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
     ch = 'test-state-asyncio-ch'
     pubnub.config.uuid = 'test-state-asyncio-uuid'
     state = {"name": "Alex", "count": 5}
 
-    env = yield from pubnub.set_state() \
+    env = await pubnub.set_state() \
         .channels(ch) \
         .state(state) \
         .future()
@@ -32,7 +32,7 @@ def test_single_channelx(event_loop):
     assert env.result.state['name'] == "Alex"
     assert env.result.state['count'] == 5
 
-    env = yield from pubnub.get_state() \
+    env = await pubnub.get_state() \
         .channels(ch) \
         .future()
 
@@ -48,7 +48,7 @@ def test_single_channelx(event_loop):
     filter_query_parameters=['uuid', 'pnsdk'],
     match_on=['method', 'host', 'path', 'state_object_in_query'])
 @pytest.mark.asyncio
-def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
+async def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
     pnconf = pnconf_sub_copy()
     pnconf.set_presence_timeout(12)
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
@@ -60,10 +60,10 @@ def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
     pubnub.add_listener(callback)
     pubnub.subscribe().channels(ch).execute()
 
-    yield from callback.wait_for_connect()
-    yield from sleeper(20)
+    await callback.wait_for_connect()
+    await sleeper(20)
 
-    env = yield from pubnub.set_state() \
+    env = await pubnub.set_state() \
         .channels(ch) \
         .state(state) \
         .future()
@@ -71,7 +71,7 @@ def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
     assert env.result.state['name'] == "Alex"
     assert env.result.state['count'] == 5
 
-    env = yield from pubnub.get_state() \
+    env = await pubnub.get_state() \
         .channels(ch) \
         .future()
 
@@ -79,7 +79,7 @@ def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
     assert env.result.channels[ch]['count'] == 5
 
     pubnub.unsubscribe().channels(ch).execute()
-    yield from callback.wait_for_disconnect()
+    await callback.wait_for_disconnect()
 
     pubnub.stop()
 
@@ -89,14 +89,14 @@ def test_single_channel_with_subscription(event_loop, sleeper=asyncio.sleep):
     filter_query_parameters=['uuid', 'pnsdk'],
     match_on=['method', 'host', 'path', 'state_object_in_query'])
 @pytest.mark.asyncio
-def test_multiple_channels(event_loop):
+async def test_multiple_channels(event_loop):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
     ch1 = 'test-state-asyncio-ch1'
     ch2 = 'test-state-asyncio-ch2'
     pubnub.config.uuid = 'test-state-asyncio-uuid'
     state = {"name": "Alex", "count": 5}
 
-    env = yield from pubnub.set_state() \
+    env = await pubnub.set_state() \
         .channels([ch1, ch2]) \
         .state(state) \
         .future()
@@ -104,7 +104,7 @@ def test_multiple_channels(event_loop):
     assert env.result.state['name'] == "Alex"
     assert env.result.state['count'] == 5
 
-    env = yield from pubnub.get_state() \
+    env = await pubnub.get_state() \
         .channels([ch1, ch2]) \
         .future()
 
@@ -117,7 +117,7 @@ def test_multiple_channels(event_loop):
 
 
 @pytest.mark.asyncio
-def test_state_super_admin_call(event_loop):
+async def test_state_super_admin_call(event_loop):
     pnconf = pnconf_pam_copy()
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
     ch1 = 'test-state-asyncio-ch1'
@@ -125,13 +125,13 @@ def test_state_super_admin_call(event_loop):
     pubnub.config.uuid = 'test-state-asyncio-uuid-|.*$'
     state = {"name": "Alex", "count": 5}
 
-    env = yield from pubnub.set_state() \
+    env = await pubnub.set_state() \
         .channels([ch1, ch2]) \
         .state(state) \
         .future()
     assert isinstance(env.result, PNSetStateResult)
 
-    env = yield from pubnub.get_state() \
+    env = await pubnub.get_state() \
         .channels([ch1, ch2]) \
         .future()
     assert isinstance(env.result, PNGetStateResult)

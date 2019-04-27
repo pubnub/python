@@ -19,11 +19,11 @@ def pn(event_loop):
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/message_count/single.yaml',
                      filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_cg', 'l_pub'])
 @pytest.mark.asyncio
-def test_single_channel(pn):
+async def test_single_channel(pn):
     chan = 'unique_asyncio'
-    envelope = yield from pn.publish().channel(chan).message('bla').future()
+    envelope = await pn.publish().channel(chan).message('bla').future()
     time = envelope.result.timetoken - 10
-    envelope = yield from pn.message_counts().channel(chan).channel_timetokens([time]).future()
+    envelope = await pn.message_counts().channel(chan).channel_timetokens([time]).future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
@@ -35,13 +35,13 @@ def test_single_channel(pn):
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/message_count/multi.yaml',
                      filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_cg', 'l_pub'])
 @pytest.mark.asyncio
-def test_multiple_channels(pn):
+async def test_multiple_channels(pn):
     chan_1 = 'unique_asyncio_1'
     chan_2 = 'unique_asyncio_2'
     chans = ','.join([chan_1, chan_2])
-    envelope = yield from pn.publish().channel(chan_1).message('something').future()
+    envelope = await pn.publish().channel(chan_1).message('something').future()
     time = envelope.result.timetoken - 10
-    envelope = yield from pn.message_counts().channel(chans).channel_timetokens([time, time]).future()
+    envelope = await pn.message_counts().channel(chans).channel_timetokens([time, time]).future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()

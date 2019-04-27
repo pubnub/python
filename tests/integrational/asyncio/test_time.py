@@ -10,10 +10,10 @@ from tests.integrational.vcr_helper import pn_vcr
     'tests/integrational/fixtures/asyncio/time/get.yaml',
     filter_query_parameters=['uuid', 'pnsdk'])
 @pytest.mark.asyncio
-def test_time(event_loop):
+async def test_time(event_loop):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
-    res = yield from pubnub.time().result()
+    res = await pubnub.time().result()
 
     assert int(res) > 0
     assert isinstance(res.date_time(), date)

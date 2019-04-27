@@ -46,7 +46,7 @@ class ReconnectedListener(SubscribeCallback):
 
 
 @pytest.mark.asyncio
-def test_access_denied_unsubscribe_operation(event_loop):
+async def test_access_denied_unsubscribe_operation(event_loop):
     channel = "not-permitted-channel"
     pnconf = pnconf_pam_copy()
     pnconf.secret_key = None
@@ -58,7 +58,7 @@ def test_access_denied_unsubscribe_operation(event_loop):
     pubnub.add_listener(callback)
 
     pubnub.subscribe().channels(channel).execute()
-    yield from callback.access_denied_event.wait()
+    await callback.access_denied_event.wait()
 
     pubnub.stop()
 

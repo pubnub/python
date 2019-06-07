@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding: [utf-8]
+      User-Agent: [PubNub-Python-Tornado/4.1.0]
+    method: GET
+    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/unique_sync/0/%22bla%22?norep=1&store=0
+  response:
+    body: {string: '[1,"Sent","15549262187838808"]'}
+    headers:
+    - !!python/tuple
+      - Date
+      - ['Wed, 10 Apr 2019 19:56:58 GMT']
+    - !!python/tuple
+      - Content-Type
+      - [text/javascript; charset="UTF-8"]
+    - !!python/tuple
+      - Content-Length
+      - ['30']
+    - !!python/tuple
+      - Connection
+      - [close]
+    - !!python/tuple
+      - Cache-Control
+      - [no-cache]
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - ['*']
+    - !!python/tuple
+      - Access-Control-Allow-Methods
+      - [GET]
+    status: {code: 200, message: OK}
+    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/unique_sync/0/%22bla%22?store=0&norep=1&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=d27c2c35-509a-4db2-8fa1-bfcc89233af8
+version: 1

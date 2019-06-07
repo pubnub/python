@@ -1,3 +1,9 @@
+## [4.1.4](https://github.com/pubnub/python/tree/v4.1.4)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.1.3...v4.1.4)
+
+- 🐛implement fire
+
 ## [4.1.3](https://github.com/pubnub/python/tree/v4.1.3)
 
   [Full Changelog](https://github.com/pubnub/python/compare/v4.1.2...v4.1.3)

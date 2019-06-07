@@ -60,6 +60,7 @@ class PNOperationType(object):
     PNAccessManagerRevoke = 22
     PNHistoryDeleteOperation = 23
     PNMessageCountOperation = 24
+    PNFireOperation = 25
 
 
 class PNHeartbeatNotificationOptions(object):

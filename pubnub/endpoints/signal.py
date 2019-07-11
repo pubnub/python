@@ -1,7 +1,6 @@
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
-from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.signal import PNSignalResult
 
 

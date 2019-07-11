@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: '"test"'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '6'
+      User-Agent:
+      - PubNub-Python/4.1.0
+    method: POST
+    uri: http://ps.pndsn.com/v1/signal/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/unique_sync
+  response:
+    body:
+      string: "[\n  1,\n  \"Sent\",\n  \"15614849564528142\"\n]"
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Content-Length:
+      - '40'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 11 Jul 2019 20:48:45 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

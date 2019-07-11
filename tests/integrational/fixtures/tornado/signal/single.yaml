@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: '"test"'
+    headers:
+      Accept-Encoding:
+      - utf-8
+      User-Agent:
+      - PubNub-Python-Tornado/4.1.0
+    method: POST
+    uri: http://ps.pndsn.com/v1/signal/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/unique_sync
+  response:
+    body:
+      string: "[\n  1,\n  \"Sent\",\n  \"15614849564528142\"\n]"
+    headers:
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - - '*'
+    - !!python/tuple
+      - Content-Type
+      - - application/json
+    - !!python/tuple
+      - Date
+      - - Thu, 11 Jul 2019 20:59:43 GMT
+    - !!python/tuple
+      - Content-Length
+      - - '40'
+    - !!python/tuple
+      - Connection
+      - - close
+    status:
+      code: 200
+      message: OK
+    url: http://ps.pndsn.com/v1/signal/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/unique_sync?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=8780cb69-245b-4f06-a75f-1739670c2dab
+version: 1

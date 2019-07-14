@@ -2,7 +2,7 @@ from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 from pubnub.structures import Envelope
 from pubnub.pubnub import PubNub
-from pubnub.models.consumer.user import PNGetUsersResult
+from pubnub.models.consumer.user import PNGetUsersResult, PNCreateUserResult
 from pubnub.models.consumer.common import PNStatus
 
 
@@ -24,3 +24,25 @@ def test_get_users():
                 'custom', 'created', 'updated', 'eTag']) == set(data[0])
     assert set(['name', 'id', 'externalId', 'profileUrl', 'email',
                 'custom', 'created', 'updated', 'eTag']) == set(data[1])
+
+
+@pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/user/create_user.yaml',
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+def test_create_user():
+    config = pnconf_copy()
+    pn = PubNub(config)
+    envelope = pn.create_user().include({'id': 'user-1', 'name': 'John Doe',
+                                         'externalId': None, 'profileUrl': None, 'email': 'jack@twitter.com'}).sync()
+
+    assert(isinstance(envelope, Envelope))
+    assert not envelope.status.is_error()
+    assert isinstance(envelope.result, PNCreateUserResult)
+    assert isinstance(envelope.status, PNStatus)
+    data = envelope.result.data
+    assert data['id'] == 'user-1'
+    assert data['name'] == 'John Doe'
+    assert data['externalId'] is None
+    assert data['profileUrl'] is None
+    assert data['email'] == 'jack@twitter.com'
+    assert data['created'] == '2019-02-20T23:11:20.893755'
+    assert data['updated'] == '2019-02-20T23:11:20.893755'

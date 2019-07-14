@@ -26,6 +26,7 @@ from .endpoints.history_delete import HistoryDelete
 from .endpoints.message_count import MessageCount
 from .endpoints.signal import Signal
 from .endpoints.users.get_users import GetUsers
+from .endpoints.users.create_user import CreateUser
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -172,6 +173,9 @@ class PubNubCore:
 
     def get_users(self):
         return GetUsers(self)
+
+    def create_user(self):
+        return CreateUser(self)
 
     def time(self):
         return Time(self)

@@ -85,4 +85,4 @@ class GetUsers(Endpoint):
         return PNOperationType.PNGetUsersOperation
 
     def name(self):
-        return "Get users"
+        return 'Get users'

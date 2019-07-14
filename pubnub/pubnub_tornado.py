@@ -158,7 +158,6 @@ class PubNubTornado(PubNubCore):
             body = response.body
             response_info = None
             status_category = PNStatusCategory.PNUnknownCategory
-
             if response is not None:
                 request_url = six.moves.urllib.parse.urlparse(response.effective_url)
                 query = six.moves.urllib.parse.parse_qs(request_url.query)
@@ -639,7 +638,7 @@ class SubscribeListener(SubscribeCallback):
     def wait_for_message_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
-            try: # NOQA
+            try:  # NOQA
                 env = yield self._wait_for(self.message_queue.get())
                 if env.channel in channel_names:
                     raise tornado.gen.Return(env)
@@ -655,7 +654,7 @@ class SubscribeListener(SubscribeCallback):
             try:
                 try:
                     env = yield self._wait_for(self.presence_queue.get())
-                except: # NOQA E722 pylint: disable=W0702
+                except:  # NOQA E722 pylint: disable=W0702
                     break
                 if env.channel in channel_names:
                     raise tornado.gen.Return(env)

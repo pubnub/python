@@ -17,7 +17,7 @@ def test_get_users():
     assert users.build_path() == GetUsers.GET_USERS_PATH % SUB_KEY
 
     params = users.custom_params()
-    assert params['include'] == ['a', 'b']
+    assert params['include'] == '%5B%22a%22%2C%20%22b%22%5D'
     assert params['limit'] == 30
     assert params['end'] == 'XXX'
     assert 'count' not in params

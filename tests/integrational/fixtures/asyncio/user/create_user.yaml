@@ -1,11 +1,12 @@
 interactions:
 - request:
-    body: null
+    body: '{"id": "user-1", "name": "John Doe", "externalId": null, "profileUrl":
+      null, "email": "jack@twitter.com"}'
     headers:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: POST
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users?include=%7B%22id%22%3A+%22user-1%22%2C+%22name%22%3A+%22John+Doe%22%2C+%22externalId%22%3A+null%2C+%22profileUrl%22%3A+null%2C+%22email%22%3A+%22jack%40twitter.com%22%7D
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users
   response:
     body:
       string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
@@ -18,7 +19,7 @@ interactions:
       Access-Control-Allow-Origin: '*'
       Content-Length: '319'
       Content-Type: application/json
-      Date: Sun, 14 Jul 2019 20:29:48 GMT
+      Date: Sun, 14 Jul 2019 21:56:58 GMT
     status:
       code: 200
       message: OK
@@ -28,6 +29,6 @@ interactions:
         - http
         - ps.pndsn.com
         - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users
-        - include=%7B%22id%22%3A%20%22user-1%22%2C%20%22name%22%3A%20%22John%20Doe%22%2C%20%22externalId%22%3A%20null%2C%20%22profileUrl%22%3A%20null%2C%20%22email%22%3A%20%22jack%40twitter.com%22%7D&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=6217bb6b-01b1-466a-a3ff-61625f616999
+        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=4a32bdb1-122d-4c1d-902b-2ee854c3b151
         - ''
 version: 1

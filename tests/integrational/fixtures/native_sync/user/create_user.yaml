@@ -1,6 +1,7 @@
 interactions:
 - request:
-    body: null
+    body: '{"id": "user-1", "name": "John Doe", "externalId": null, "profileUrl":
+      null, "email": "jack@twitter.com"}'
     headers:
       Accept:
       - '*/*'
@@ -9,11 +10,11 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '0'
+      - '105'
       User-Agent:
       - PubNub-Python/4.1.0
     method: POST
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users?include=%7B%22id%22%3A+%22user-1%22%2C+%22name%22%3A+%22John+Doe%22%2C+%22externalId%22%3A+null%2C+%22profileUrl%22%3A+null%2C+%22email%22%3A+%22jack%40twitter.com%22%7D
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users
   response:
     body:
       string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
@@ -30,7 +31,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Sun, 14 Jul 2019 20:25:20 GMT
+      - Sun, 14 Jul 2019 21:57:11 GMT
     status:
       code: 200
       message: OK

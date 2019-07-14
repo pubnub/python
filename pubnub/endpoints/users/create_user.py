@@ -18,9 +18,10 @@ class CreateUser(Endpoint):
         return self
 
     def custom_params(self):
-        params = {}
-        params['include'] = utils.url_write(self._include)
-        return params
+        return {}
+
+    def build_data(self):
+        return utils.write_value_as_string(self._include)
 
     def validate_params(self):
         self.validate_subscribe_key()

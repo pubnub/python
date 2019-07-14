@@ -23,7 +23,7 @@ interactions:
       Access-Control-Allow-Origin: '*'
       Content-Length: '738'
       Content-Type: application/json
-      Date: Sun, 14 Jul 2019 17:15:25 GMT
+      Date: Sun, 14 Jul 2019 21:31:55 GMT
     status:
       code: 200
       message: OK
@@ -33,6 +33,6 @@ interactions:
         - http
         - ps.pndsn.com
         - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users
-        - include=%5B%22externalId%22%2C%20%22profileUrl%22%2C%20%22email%22%2C%20%22custom%22%2C%20%22created%22%2C%20%22updated%22%2C%20%22eTag%22%5D&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=dd63672b-cec0-49e0-af1c-1b0e38204154
+        - include=%5B%22externalId%22%2C%20%22profileUrl%22%2C%20%22email%22%2C%20%22custom%22%2C%20%22created%22%2C%20%22updated%22%2C%20%22eTag%22%5D&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=ce392d26-151b-4eac-8143-c7e8b9c5cdf9
         - ''
 version: 1

@@ -451,6 +451,7 @@ class TelemetryManager(object):  # pylint: disable=W0612
 
             PNOperationType.PNTimeOperation: 'pam',
             PNOperationType.PNSignalOperation: 'sig',
+            PNOperationType.PNGetUsersOperation: 'user',
         }[operation_type]
 
         return endpoint

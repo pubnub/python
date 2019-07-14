@@ -62,6 +62,7 @@ class PNOperationType(object):
     PNMessageCountOperation = 24
     PNFireOperation = 25
     PNSignalOperation = 26
+    PNGetUsersOperation = 27
 
 
 class PNHeartbeatNotificationOptions(object):

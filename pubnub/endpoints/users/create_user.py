@@ -36,7 +36,7 @@ class CreateUser(Endpoint):
     def is_auth_required(self):
         return True
 
-    def create_response(self, envelope):
+    def create_response(self, envelope):  # pylint: disable=W0221
         return PNCreateUserResult(envelope)
 
     def request_timeout(self):

@@ -72,7 +72,7 @@ class GetUsers(Endpoint):
     def validate_params(self):
         self.validate_subscribe_key()
 
-    def create_response(self, envelope):
+    def create_response(self, envelope):   # pylint: disable=W0221
         return PNGetUsersResult(envelope)
 
     def request_timeout(self):

@@ -64,6 +64,7 @@ class PNOperationType(object):
     PNSignalOperation = 26
     PNGetUsersOperation = 27
     PNCreateUserOperation = 28
+    PNFetchUserOperation = 29
 
 
 class PNHeartbeatNotificationOptions(object):

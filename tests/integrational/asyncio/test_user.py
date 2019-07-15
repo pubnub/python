@@ -3,7 +3,7 @@ import pytest
 from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
-from pubnub.models.consumer.user import PNGetUsersResult, PNCreateUserResult
+from pubnub.models.consumer.user import PNGetUsersResult, PNCreateUserResult, PNFetchUserResult
 from pubnub.models.consumer.common import PNStatus
 
 
@@ -32,7 +32,7 @@ def test_get_users(event_loop):
 @pytest.mark.asyncio
 def test_create_user(event_loop):
     config = pnconf_copy()
-    pn = PubNubAsyncio(config)
+    pn = PubNubAsyncio(config, custom_event_loop=event_loop)
     data = {'id': 'user-1', 'name': 'John Doe',
             'externalId': None, 'profileUrl': None, 'email': 'jack@twitter.com'}
     envelope = yield from pn.create_user().include(data).future()
@@ -49,3 +49,22 @@ def test_create_user(event_loop):
     assert data['email'] == 'jack@twitter.com'
     assert data['created'] == '2019-02-20T23:11:20.893755'
     assert data['updated'] == '2019-02-20T23:11:20.893755'
+
+
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/user/fetch_user.yaml',
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+@pytest.mark.asyncio
+def test_fetch_user(event_loop):
+    config = pnconf_copy()
+    pn = PubNubAsyncio(config, custom_event_loop=event_loop)
+    envelope = yield from pn.fetch_user().user_id('user-1').include(['externalId', 'profileUrl', 'email',
+                                                                     'created', 'updated', 'eTag']).future()
+
+    assert(isinstance(envelope, AsyncioEnvelope))
+    assert not envelope.status.is_error()
+    assert isinstance(envelope.result, PNFetchUserResult)
+    assert isinstance(envelope.status, PNStatus)
+    data = envelope.result.data
+    assert set(['name', 'id', 'externalId', 'profileUrl', 'email',
+                'created', 'updated', 'eTag']) == set(data)
+    assert data['id'] == 'user-1'

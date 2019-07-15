@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - utf-8
+      User-Agent:
+      - PubNub-Python-Tornado/4.1.0
+    method: GET
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1?include=%5B%22externalId%22%2C+%22profileUrl%22%2C+%22email%22%2C+%22created%22%2C+%22updated%22%2C+%22eTag%22%5D
+  response:
+    body:
+      string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
+        \    \"eTag\": \"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg==\",\n\
+        \    \"email\": \"jack@twitter.com\",\n    \"externalId\": null,\n    \"id\"\
+        : \"user-1\",\n    \"name\": \"John Doe\",\n    \"profileUrl\": null,\n  \
+        \  \"updated\": \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": \"ok\"\
+        \n}"
+    headers:
+    - !!python/tuple
+      - Access-Control-Allow-Origin
+      - - '*'
+    - !!python/tuple
+      - Content-Type
+      - - application/json
+    - !!python/tuple
+      - Date
+      - - Mon, 15 Jul 2019 20:41:54 GMT
+    - !!python/tuple
+      - Content-Length
+      - - '319'
+    - !!python/tuple
+      - Connection
+      - - close
+    status:
+      code: 200
+      message: OK
+    url: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1?include=%5B%22externalId%22%2C%20%22profileUrl%22%2C%20%22email%22%2C%20%22created%22%2C%20%22updated%22%2C%20%22eTag%22%5D&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=f0717bf9-f478-4a9f-be66-068aa23084ce
+version: 1

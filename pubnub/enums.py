@@ -2,6 +2,7 @@ class HttpMethod(object):
     GET = 1
     POST = 2
     DELETE = 3
+    PATCH = 4
 
     @classmethod
     def string(cls, method):
@@ -11,6 +12,8 @@ class HttpMethod(object):
             return "POST"
         elif method == cls.DELETE:
             return "DELETE"
+        elif method == cls.PATCH:
+            return "PATCH"
 
 
 class PNStatusCategory(object):
@@ -65,6 +68,7 @@ class PNOperationType(object):
     PNGetUsersOperation = 27
     PNCreateUserOperation = 28
     PNFetchUserOperation = 29
+    PNUpdateUserOperation = 30
 
 
 class PNHeartbeatNotificationOptions(object):

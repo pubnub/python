@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: '{"id": "user-1", "name": "John Doe", "externalId": null, "profileUrl":
+      null, "email": "jack@twitter.com"}'
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
+    method: PATCH
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1
+  response:
+    body:
+      string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
+        \    \"eTag\": \"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg==\",\n\
+        \    \"email\": \"jack@twitter.com\",\n    \"externalId\": null,\n    \"id\"\
+        : \"user-1\",\n    \"name\": \"John Doe\",\n    \"profileUrl\": null,\n  \
+        \  \"updated\": \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": \"ok\"\
+        \n}"
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Content-Length: '319'
+      Content-Type: application/json
+      Date: Tue, 16 Jul 2019 17:28:55 GMT
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1
+        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=4c5beff4-a917-4e22-b539-d00806703889
+        - ''
+version: 1

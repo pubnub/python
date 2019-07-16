@@ -2,7 +2,8 @@ from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 from pubnub.structures import Envelope
 from pubnub.pubnub import PubNub
-from pubnub.models.consumer.user import PNGetUsersResult, PNCreateUserResult, PNFetchUserResult
+from pubnub.models.consumer.user import (PNGetUsersResult, PNCreateUserResult, PNFetchUserResult,
+                                         PNUpdateUserResult)
 from pubnub.models.consumer.common import PNStatus
 
 
@@ -64,3 +65,23 @@ def test_fetch_user():
     assert set(['name', 'id', 'externalId', 'profileUrl', 'email',
                 'created', 'updated', 'eTag']) == set(data)
     assert data['id'] == 'user-1'
+
+
+@pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/user/update_user.yaml',
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+def test_update_user():
+    config = pnconf_copy()
+    pn = PubNub(config)
+    envelope = pn.update_user().user_id('user-1').include({'id': 'user-1', 'name': 'John Doe',
+                                                           'externalId': None, 'profileUrl': None,
+                                                           'email': 'jack@twitter.com'}).sync()
+
+    assert(isinstance(envelope, Envelope))
+    assert not envelope.status.is_error()
+    assert isinstance(envelope.result, PNUpdateUserResult)
+    assert isinstance(envelope.status, PNStatus)
+    data = envelope.result.data
+    assert set(['name', 'id', 'externalId', 'profileUrl', 'email',
+                'created', 'updated', 'eTag']) == set(data)
+    assert data['id'] == 'user-1'
+    assert data['name'] == 'John Doe'

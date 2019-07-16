@@ -2,7 +2,8 @@ import tornado
 from tornado.testing import AsyncTestCase
 
 from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope
-from pubnub.models.consumer.user import PNGetUsersResult, PNCreateUserResult, PNFetchUserResult
+from pubnub.models.consumer.user import (PNGetUsersResult, PNCreateUserResult, PNFetchUserResult,
+                                         PNUpdateUserResult)
 from pubnub.models.consumer.common import PNStatus
 from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
@@ -70,4 +71,23 @@ class TestGetUsers(AsyncTestCase):
         assert set(['name', 'id', 'externalId', 'profileUrl', 'email',
                     'created', 'updated', 'eTag']) == set(data)
         assert data['id'] == 'user-1'
+        self.pn.stop()
+
+    @pn_vcr.use_cassette('tests/integrational/fixtures/tornado/user/update_user.yaml',
+                         filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+    @tornado.testing.gen_test
+    def test_update_user(self):
+        envelope = yield self.pn.update_user().user_id('user-1').include({'id': 'user-1', 'name': 'John Doe',
+                                                                          'externalId': None, 'profileUrl': None,
+                                                                          'email': 'jack@twitter.com'}).future()
+
+        assert(isinstance(envelope, TornadoEnvelope))
+        assert not envelope.status.is_error()
+        assert isinstance(envelope.result, PNUpdateUserResult)
+        assert isinstance(envelope.status, PNStatus)
+        data = envelope.result.data
+        assert set(['name', 'id', 'externalId', 'profileUrl', 'email',
+                    'created', 'updated', 'eTag']) == set(data)
+        assert data['id'] == 'user-1'
+        assert data['name'] == 'John Doe'
         self.pn.stop()

@@ -11,7 +11,8 @@ class RequestOptions(object):
         assert isinstance(method, six.integer_types)
         assert isinstance(request_timeout, six.integer_types)
         assert isinstance(connect_timeout, six.integer_types)
-        if not (method is HttpMethod.GET or method is HttpMethod.POST or method is HttpMethod.DELETE):
+        if not (method is HttpMethod.GET or method is HttpMethod.POST or method is HttpMethod.DELETE
+                or method is HttpMethod.PATCH):  # noqa
             raise AssertionError()
 
         self.params = None

@@ -70,6 +70,11 @@ class PNOperationType(object):
     PNFetchUserOperation = 29
     PNUpdateUserOperation = 30
     PNDeleteUserOperation = 31
+    PNGetSpacesOperation = 32
+    PNCreateSpaceOperation = 33
+    PNGetSpaceOperation = 34
+    PNUpdateSpaceOperation = 35
+    PNDeleteSpaceOperation = 36
 
 
 class PNHeartbeatNotificationOptions(object):

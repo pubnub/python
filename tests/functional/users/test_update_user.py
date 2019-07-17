@@ -1,4 +1,5 @@
 import pytest
+import json
 
 from pubnub.pubnub import PubNub
 from pubnub.pnconfiguration import PNConfiguration
@@ -21,5 +22,5 @@ def test_fetch_user():
 
     user.user_id('foo')
     assert user.build_path() == UpdateUser.UPDATE_USER_PATH % (SUB_KEY, 'foo')
-    assert user.build_data() == '{"a": 3, "b": 1}'
+    assert json.loads(user.build_data()) == {'a': 3, 'b': 1}
     assert AUTH == user.build_params_callback()({})['auth']

@@ -7,6 +7,9 @@ class PNGetUsersResult(object):
         """
         self.data = result['data']
         self.status = result['status']
+        self.total_count = result.get('totalCount', None)
+        self.next = result.get('next', None)
+        self.prev = result.get('prev', None)
 
     def __str__(self):
         return "Get users success with data: %s" % self.data

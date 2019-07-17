@@ -1,0 +1,28 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
+    method: DELETE
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1
+  response:
+    body:
+      string: "{\n  \"data\": {},\n  \"status\": \"ok\"\n}"
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Content-Length: '34'
+      Content-Type: application/json
+      Date: Wed, 17 Jul 2019 18:02:00 GMT
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1
+        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=b3eb632c-e5da-4649-bd60-bc0a9ecd95ed
+        - ''
+version: 1

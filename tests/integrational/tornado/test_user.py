@@ -3,7 +3,7 @@ from tornado.testing import AsyncTestCase
 
 from pubnub.pubnub_tornado import PubNubTornado, TornadoEnvelope
 from pubnub.models.consumer.user import (PNGetUsersResult, PNCreateUserResult, PNFetchUserResult,
-                                         PNUpdateUserResult)
+                                         PNUpdateUserResult, PNDeleteUserResult)
 from pubnub.models.consumer.common import PNStatus
 from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
@@ -90,4 +90,17 @@ class TestGetUsers(AsyncTestCase):
                     'created', 'updated', 'eTag']) == set(data)
         assert data['id'] == 'user-1'
         assert data['name'] == 'John Doe'
+        self.pn.stop()
+
+    @pn_vcr.use_cassette('tests/integrational/fixtures/tornado/user/delete_user.yaml',
+                         filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+    @tornado.testing.gen_test
+    def test_delete_user(self):
+        envelope = yield self.pn.delete_user().user_id('user-1').future()
+
+        assert(isinstance(envelope, TornadoEnvelope))
+        assert not envelope.status.is_error()
+        assert isinstance(envelope.result, PNDeleteUserResult)
+        assert isinstance(envelope.status, PNStatus)
+        assert envelope.result.data == {}
         self.pn.stop()

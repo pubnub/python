@@ -69,6 +69,7 @@ class PNOperationType(object):
     PNCreateUserOperation = 28
     PNFetchUserOperation = 29
     PNUpdateUserOperation = 30
+    PNDeleteUserOperation = 31
 
 
 class PNHeartbeatNotificationOptions(object):

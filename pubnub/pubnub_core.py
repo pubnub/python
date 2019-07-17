@@ -29,6 +29,7 @@ from .endpoints.users.get_users import GetUsers
 from .endpoints.users.create_user import CreateUser
 from .endpoints.users.fetch_user import FetchUser
 from .endpoints.users.update_user import UpdateUser
+from .endpoints.users.delete_user import DeleteUser
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -184,6 +185,9 @@ class PubNubCore:
 
     def update_user(self):
         return UpdateUser(self)
+
+    def delete_user(self):
+        return DeleteUser(self)
 
     def time(self):
         return Time(self)

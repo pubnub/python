@@ -455,6 +455,7 @@ class TelemetryManager(object):  # pylint: disable=W0612
             PNOperationType.PNCreateUserOperation: 'user',
             PNOperationType.PNFetchUserOperation: 'user',
             PNOperationType.PNUpdateUserOperation: 'user',
+            PNOperationType.PNDeleteUserOperation: 'user'
         }[operation_type]
 
         return endpoint

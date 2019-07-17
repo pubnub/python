@@ -3,7 +3,7 @@ from tests.integrational.vcr_helper import pn_vcr
 from pubnub.structures import Envelope
 from pubnub.pubnub import PubNub
 from pubnub.models.consumer.user import (PNGetUsersResult, PNCreateUserResult, PNFetchUserResult,
-                                         PNUpdateUserResult)
+                                         PNUpdateUserResult, PNDeleteUserResult)
 from pubnub.models.consumer.common import PNStatus
 
 
@@ -85,3 +85,17 @@ def test_update_user():
                 'created', 'updated', 'eTag']) == set(data)
     assert data['id'] == 'user-1'
     assert data['name'] == 'John Doe'
+
+
+@pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/user/delete_user.yaml',
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+def test_delete_user():
+    config = pnconf_copy()
+    pn = PubNub(config)
+    envelope = pn.delete_user().user_id('user-1').sync()
+
+    assert(isinstance(envelope, Envelope))
+    assert not envelope.status.is_error()
+    assert isinstance(envelope.result, PNDeleteUserResult)
+    assert isinstance(envelope.status, PNStatus)
+    assert envelope.result.data == {}

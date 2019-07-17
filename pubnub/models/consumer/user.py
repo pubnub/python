@@ -52,3 +52,17 @@ class PNUpdateUserResult(object):
 
     def __str__(self):
         return "Update user success with data: %s" % self.data
+
+
+class PNDeleteUserResult(object):
+    def __init__(self, result):
+        """
+        Representation of delete user server response
+
+        :param result: result of delete user operation
+        """
+        self.data = result['data']
+        self.status = result['status']
+
+    def __str__(self):
+        return "Delete user success with data: %s" % self.data

@@ -4,7 +4,7 @@ from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
 from pubnub.models.consumer.user import (PNGetUsersResult, PNCreateUserResult, PNFetchUserResult,
-                                         PNUpdateUserResult)
+                                         PNUpdateUserResult, PNDeleteUserResult)
 from pubnub.models.consumer.common import PNStatus
 
 
@@ -90,3 +90,18 @@ def test_update_user(event_loop):
                 'created', 'updated', 'eTag']) == set(data)
     assert data['id'] == 'user-1'
     assert data['name'] == 'John Doe'
+
+
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/user/delete_user.yaml',
+                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+@pytest.mark.asyncio
+def test_delete_user(event_loop):
+    config = pnconf_copy()
+    pn = PubNubAsyncio(config, custom_event_loop=event_loop)
+    envelope = yield from pn.delete_user().user_id('user-1').future()
+
+    assert(isinstance(envelope, AsyncioEnvelope))
+    assert not envelope.status.is_error()
+    assert isinstance(envelope.result, PNDeleteUserResult)
+    assert isinstance(envelope.status, PNStatus)
+    assert envelope.result.data == {}

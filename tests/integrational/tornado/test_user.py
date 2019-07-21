@@ -9,7 +9,7 @@ from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 
-class TestGetUsers(AsyncTestCase):
+class TestUser(AsyncTestCase):
     def setUp(self):
         AsyncTestCase.setUp(self)
         config = pnconf_copy()

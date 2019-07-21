@@ -9,7 +9,7 @@ SUB_KEY = 'sub'
 AUTH = 'auth'
 
 
-def test_get_users():
+def test_create_user():
     config = PNConfiguration()
     config.subscribe_key = SUB_KEY
     config.auth_key = AUTH

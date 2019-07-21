@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: '{"id": "my-channel", "name": "My space", "description": "A space that is
+      mine"}'
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
+    method: POST
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces
+  response:
+    body:
+      string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
+        \    \"description\": \"A space that is mine\",\n    \"eTag\": \"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg==\"\
+        ,\n    \"id\": \"my-channel\",\n    \"name\": \"My space\",\n    \"updated\"\
+        : \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": \"ok\"\n}"
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Content-Length: '285'
+      Content-Type: application/json
+      Date: Sun, 21 Jul 2019 11:50:35 GMT
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces
+        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=d4cb114b-f8b6-4eb7-b37d-886a613629c4
+        - ''
+version: 1

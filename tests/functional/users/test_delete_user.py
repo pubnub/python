@@ -10,7 +10,7 @@ SUB_KEY = 'sub'
 AUTH = 'auth'
 
 
-def test_fetch_user():
+def test_delete_user():
     config = PNConfiguration()
     config.subscribe_key = SUB_KEY
     config.auth_key = AUTH

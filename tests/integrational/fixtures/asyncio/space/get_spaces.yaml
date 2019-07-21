@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
+    method: GET
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces?include=%5B%22description%22%2C+%22custom%22%2C+%22created%22%2C+%22updated%22%2C+%22eTag%22%5D
+  response:
+    body:
+      string: "{\n  \"data\": [\n    {\n      \"created\": \"2019-02-20T23:11:20.893755\"\
+        ,\n      \"custom\": null,\n      \"description\": \"A space that is mine\"\
+        ,\n      \"eTag\": \"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg==\"\
+        ,\n      \"id\": \"my-channel\",\n      \"name\": \"My space\",\n      \"\
+        updated\": \"2019-02-20T23:11:20.893755\"\n    },\n    {\n      \"created\"\
+        : \"2019-02-20T23:11:20.893755\",\n      \"custom\": {\n        \"motd\":\
+        \ \"Always check your spelling!\",\n        \"public\": true\n      },\n \
+        \     \"description\": \"The main space\",\n      \"eTag\": \"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg==\"\
+        ,\n      \"id\": \"main\",\n      \"name\": \"Main space\",\n      \"updated\"\
+        : \"2019-02-20T23:11:20.893755\"\n    }\n  ],\n  \"next\": \"MUIwQTAwMUItQkRBRC00NDkyLTgyMEMtODg2OUU1N0REMTNBCg==\"\
+        ,\n  \"prev\": \"M0FFODRENzMtNjY2Qy00RUExLTk4QzktNkY1Q0I2MUJFNDRCCg==\",\n\
+        \  \"status\": \"ok\",\n  \"totalCount\": 9\n}"
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Content-Length: '842'
+      Content-Type: application/json
+      Date: Sun, 21 Jul 2019 11:50:35 GMT
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces
+        - include=%5B%22description%22%2C%20%22custom%22%2C%20%22created%22%2C%20%22updated%22%2C%20%22eTag%22%5D&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=726f3828-77b8-4af6-b633-8b81313543d5
+        - ''
+version: 1

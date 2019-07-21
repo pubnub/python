@@ -30,6 +30,11 @@ from .endpoints.users.create_user import CreateUser
 from .endpoints.users.fetch_user import FetchUser
 from .endpoints.users.update_user import UpdateUser
 from .endpoints.users.delete_user import DeleteUser
+from .endpoints.space.get_spaces import GetSpaces
+from .endpoints.space.get_space import GetSpace
+from .endpoints.space.update_space import UpdateSpace
+from .endpoints.space.delete_space import DeleteSpace
+from .endpoints.space.create_space import CreateSpace
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -188,6 +193,21 @@ class PubNubCore:
 
     def delete_user(self):
         return DeleteUser(self)
+
+    def get_spaces(self):
+        return GetSpaces(self)
+
+    def get_space(self):
+        return GetSpace(self)
+
+    def update_space(self):
+        return UpdateSpace(self)
+
+    def delete_space(self):
+        return DeleteSpace(self)
+
+    def create_space(self):
+        return CreateSpace(self)
 
     def time(self):
         return Time(self)

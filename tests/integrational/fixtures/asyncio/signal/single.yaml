@@ -1,19 +1,23 @@
 interactions:
 - request:
-    body: '"test"'
+    body: null
     headers:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
-    method: POST
-    uri: http://ps.pndsn.com/v1/signal/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/unique_sync
+    method: GET
+    uri: http://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22
   response:
     body:
-      string: "[\n  1,\n  \"Sent\",\n  \"15614849564528142\"\n]"
+      string: '[1,"Sent","15640051159323676"]'
     headers:
+      Access-Control-Allow-Methods: GET
       Access-Control-Allow-Origin: '*'
-      Content-Length: '40'
-      Content-Type: application/json
-      Date: Thu, 11 Jul 2019 21:04:18 GMT
+      Cache-Control: no-cache
+      Connection: keep-alive
+      Content-Length: '30'
+      Content-Type: text/javascript; charset="UTF-8"
+      Date: Wed, 24 Jul 2019 21:51:55 GMT
+      PN-MsgEntityType: '1'
     status:
       code: 200
       message: OK
@@ -22,7 +26,7 @@ interactions:
       - !!python/object/new:urllib.parse.SplitResult
         - http
         - ps.pndsn.com
-        - /v1/signal/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/unique_sync
-        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=fdd53206-f85b-4f92-920d-fe3992781c3b
+        - /signal/demo/demo/0/unique_sync/0/%22test%22
+        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=f5706789-e3a0-459e-871d-e4aed46e5458
         - ''
 version: 1

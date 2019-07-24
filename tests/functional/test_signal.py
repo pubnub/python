@@ -22,11 +22,12 @@ def test_signal():
     config.auth_key = AUTH
     signal = PubNub(config).signal()
 
+    with pytest.raises(PubNubException):
+        signal.validate_params()
     signal.message(MSG)
     with pytest.raises(PubNubException):
         signal.validate_params()
     signal.channel(CHAN)
-    assert signal.build_path() == Signal.SIGNAL_PATH % (PUB_KEY, SUB_KEY, CHAN)
+    assert signal.build_path() == Signal.SIGNAL_PATH % (PUB_KEY, SUB_KEY, CHAN, MSG_ENCODED)
     assert 'auth' in signal.build_params_callback()({})
     assert AUTH == signal.build_params_callback()({})['auth']
-    assert signal.build_data() == '"x"'

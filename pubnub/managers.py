@@ -203,6 +203,10 @@ class ListenerManager(object):
         for callback in self._listeners:
             callback.message(self._pubnub, message)
 
+    def announce_signal(self, signal):
+        for callback in self._listeners:
+            callback.signal(self._pubnub, signal)
+
     def announce_presence(self, presence):
         for callback in self._listeners:
             callback.presence(self._pubnub, presence)

@@ -5,40 +5,47 @@ from pubnub.models.consumer.signal import PNSignalResult
 
 
 class Signal(Endpoint):
-    SIGNAL_PATH = '/v1/signal/%s/%s/%s'
+    SIGNAL_PATH = '/signal/%s/%s/0/%s/0/%s'
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
-        self._channel = []
+        self._channel = None
         self._message = None
+        self._meta = None
 
     def channel(self, channel):
-        utils.extend_list(self._channel, channel)
+        self._channel = str(channel)
         return self
 
     def message(self, message):
         self._message = message
         return self
 
+    def meta(self, meta):
+        self._meta = meta
+        return self
+
     def build_path(self):
+        cipher = self.pubnub.config.cipher_key
+        stringified_message = utils.write_value_as_string(self._message)
+        if cipher is not None:
+            stringified_message = '"' + self.pubnub.config.crypto.encrypt(cipher, stringified_message) + '"'
+
+        msg = utils.url_encode(stringified_message)
+
         return Signal.SIGNAL_PATH % (
-            self.pubnub.config.publish_key,
-            self.pubnub.config.subscribe_key,
-            utils.join_channels(self._channel)
+            self.pubnub.config.publish_key, self.pubnub.config.subscribe_key,
+            utils.url_encode(self._channel), msg
         )
 
     def custom_params(self):
-        return {}
-
-    def build_data(self):
-        cipher = self.pubnub.config.cipher_key
-        msg = utils.write_value_as_string(self._message)
-        if cipher is not None:
-            return '"{}"'.format(self.pubnub.config.crypto.encrypt(cipher, msg))
-        return msg
+        params = {}
+        if self._meta is not None:
+            params['meta'] = utils.write_value_as_string(self._meta)
+        return params
 
     def http_method(self):
-        return HttpMethod.POST
+        return HttpMethod.GET
 
     def is_auth_required(self):
         return True

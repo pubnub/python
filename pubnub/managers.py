@@ -448,20 +448,24 @@ class TelemetryManager(object):  # pylint: disable=W0612
             PNOperationType.PNAccessManagerAudit: 'pam',
             PNOperationType.PNAccessManagerGrant: 'pam',
             PNOperationType.PNAccessManagerRevoke: 'pam',
-
             PNOperationType.PNTimeOperation: 'pam',
-            PNOperationType.PNSignalOperation: 'sig',
-            PNOperationType.PNGetUsersOperation: 'user',
-            PNOperationType.PNCreateUserOperation: 'user',
-            PNOperationType.PNFetchUserOperation: 'user',
-            PNOperationType.PNUpdateUserOperation: 'user',
-            PNOperationType.PNDeleteUserOperation: 'user',
 
-            PNOperationType.PNGetSpacesOperation: 'spc',
-            PNOperationType.PNCreateSpaceOperation: 'spc',
-            PNOperationType.PNGetSpaceOperation: 'spc',
-            PNOperationType.PNUpdateSpaceOperation: 'spc',
-            PNOperationType.PNDeleteSpaceOperation: 'spc',
+            PNOperationType.PNSignalOperation: 'sig',
+
+            PNOperationType.PNGetUsersOperation: 'obj',
+            PNOperationType.PNCreateUserOperation: 'obj',
+            PNOperationType.PNFetchUserOperation: 'obj',
+            PNOperationType.PNUpdateUserOperation: 'obj',
+            PNOperationType.PNDeleteUserOperation: 'obj',
+            PNOperationType.PNGetSpacesOperation: 'obj',
+            PNOperationType.PNCreateSpaceOperation: 'obj',
+            PNOperationType.PNGetSpaceOperation: 'obj',
+            PNOperationType.PNUpdateSpaceOperation: 'obj',
+            PNOperationType.PNDeleteSpaceOperation: 'obj',
+            PNOperationType.PNGetMembersOperation: 'obj',
+            PNOperationType.PNGetSpaceMembershipsOperation: 'obj',
+            PNOperationType.PNUpdateMembersOperation: 'obj',
+            PNOperationType.PNUpdateSpaceMembershipsOperation: 'obj',
         }[operation_type]
 
         return endpoint

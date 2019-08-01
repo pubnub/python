@@ -26,13 +26,8 @@ class Signal(Endpoint):
         return self
 
     def build_path(self):
-        cipher = self.pubnub.config.cipher_key
         stringified_message = utils.write_value_as_string(self._message)
-        if cipher is not None:
-            stringified_message = '"' + self.pubnub.config.crypto.encrypt(cipher, stringified_message) + '"'
-
         msg = utils.url_encode(stringified_message)
-
         return Signal.SIGNAL_PATH % (
             self.pubnub.config.publish_key, self.pubnub.config.subscribe_key,
             utils.url_encode(self._channel), msg

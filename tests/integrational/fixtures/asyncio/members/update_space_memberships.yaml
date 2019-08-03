@@ -1,0 +1,47 @@
+interactions:
+- request:
+    body: '{"add": [{"id": "my-channel"}], "update": [{"id": "main", "custom": {"starred":
+      true}}], "remove": [{"id": "space-0"}]}'
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
+    method: PATCH
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/charlie/spaces?count=True&include=%22custom%22&limit=10
+  response:
+    body:
+      string: "{\n  \"data\": [\n    {\n      \"created\": \"2019-02-20T23:11:20.893755\"\
+        ,\n      \"custom\": {\n        \"starred\": false\n      },\n      \"eTag\"\
+        : \"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg==\",\n      \"id\"\
+        : \"my-channel\",\n      \"space\": {\n        \"created\": \"2019-02-20T23:11:20.893755\"\
+        ,\n        \"description\": \"A space that is mine\",\n        \"eTag\": \"\
+        RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg==\",\n        \"id\": \"\
+        my-channel\",\n        \"name\": \"My space\",\n        \"updated\": \"2019-02-20T23:11:20.893755\"\
+        \n      },\n      \"updated\": \"2019-02-20T23:11:20.893755\"\n    },\n  \
+        \  {\n      \"created\": \"2019-02-20T23:11:20.893755\",\n      \"custom\"\
+        : {\n        \"starred\": true\n      },\n      \"eTag\": \"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg==\"\
+        ,\n      \"id\": \"main\",\n      \"space\": {\n        \"created\": \"2019-02-20T23:11:20.893755\"\
+        ,\n        \"custom\": {\n          \"motd\": \"Always check your spelling!\"\
+        ,\n          \"public\": true\n        },\n        \"description\": \"The\
+        \ main space\",\n        \"eTag\": \"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg==\"\
+        ,\n        \"id\": \"main\",\n        \"name\": \"Main space\",\n        \"\
+        updated\": \"2019-02-20T23:11:20.893755\"\n      },\n      \"updated\": \"\
+        2019-02-20T23:11:20.893755\"\n    }\n  ],\n  \"next\": \"RDIwQUIwM0MtNUM2Ni00ODQ5LUFGRjMtNDk1MzNDQzE3MUVCCg==\"\
+        ,\n  \"prev\": \"MzY5RjkzQUQtNTM0NS00QjM0LUI0M0MtNjNBQUFGODQ5MTk2Cg==\",\n\
+        \  \"status\": 200,\n  \"totalCount\": 7\n}"
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Content-Length: '1378'
+      Content-Type: application/json
+      Date: Sat, 03 Aug 2019 22:37:18 GMT
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/charlie/spaces
+        - count=True&limit=10&include=%22custom%22&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=3ca7ed05-0507-4c58-8e1b-92d811ab9cb7
+        - ''
+version: 1

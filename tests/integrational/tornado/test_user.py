@@ -19,8 +19,7 @@ class TestUser(AsyncTestCase):
                          filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     @tornado.testing.gen_test
     def test_single_channel(self):
-        envelope = yield self.pn.get_users().include(['externalId', 'profileUrl', 'email',
-                                                      'custom', 'created', 'updated', 'eTag']).future()
+        envelope = yield self.pn.get_users().future()
 
         assert(isinstance(envelope, TornadoEnvelope))
         assert not envelope.status.is_error()
@@ -40,7 +39,7 @@ class TestUser(AsyncTestCase):
     def test_create_user(self):
         data = {'id': 'user-1', 'name': 'John Doe',
                 'externalId': None, 'profileUrl': None, 'email': 'jack@twitter.com'}
-        envelope = yield self.pn.create_user().include(data).future()
+        envelope = yield self.pn.create_user().data(data).future()
 
         assert(isinstance(envelope, TornadoEnvelope))
         assert not envelope.status.is_error()
@@ -60,8 +59,7 @@ class TestUser(AsyncTestCase):
                          filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     @tornado.testing.gen_test
     def test_fetch_user(self):
-        envelope = yield self.pn.fetch_user().user_id('user-1').include(['externalId', 'profileUrl', 'email',
-                                                                         'created', 'updated', 'eTag']).future()
+        envelope = yield self.pn.fetch_user().user_id('user-1').future()
 
         assert(isinstance(envelope, TornadoEnvelope))
         assert not envelope.status.is_error()
@@ -77,9 +75,9 @@ class TestUser(AsyncTestCase):
                          filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     @tornado.testing.gen_test
     def test_update_user(self):
-        envelope = yield self.pn.update_user().user_id('user-1').include({'id': 'user-1', 'name': 'John Doe',
-                                                                          'externalId': None, 'profileUrl': None,
-                                                                          'email': 'jack@twitter.com'}).future()
+        envelope = yield self.pn.update_user().user_id('user-1').data({'name': 'John Doe',
+                                                                       'externalId': None, 'profileUrl': None,
+                                                                       'email': 'jack@twitter.com'}).future()
 
         assert(isinstance(envelope, TornadoEnvelope))
         assert not envelope.status.is_error()

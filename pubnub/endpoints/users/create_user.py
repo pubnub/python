@@ -10,23 +10,33 @@ class CreateUser(Endpoint):
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
-        self._include = {}
+        self._include = None
+        self._data = None
 
     def include(self, data):
-        assert isinstance(data, dict)
         self._include = data
         return self
 
     def custom_params(self):
-        return {}
+        params = {}
+        if self._include:
+            params['include'] = utils.url_write(self._include)
+        return params
+
+    def data(self, data):
+        assert isinstance(data, dict)
+        if 'id' not in data or 'name' not in data:
+            raise PubNubException("User's id or name missing.")
+        self._data = data
+        return self
 
     def build_data(self):
-        return utils.write_value_as_string(self._include)
+        return utils.write_value_as_string(self._data)
 
     def validate_params(self):
         self.validate_subscribe_key()
-        if 'id' not in self._include or 'name' not in self._include:
-            raise PubNubException('"id" or "name" not found in include data.')
+        if self._data is None:
+            raise PubNubException('No data supplied.')
 
     def build_path(self):
         return CreateUser.CREATE_USER_PATH % (self.pubnub.config.subscribe_key)

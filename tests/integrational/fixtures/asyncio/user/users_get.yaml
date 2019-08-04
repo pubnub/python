@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users?include=%5B%22externalId%22%2C+%22profileUrl%22%2C+%22email%22%2C+%22custom%22%2C+%22created%22%2C+%22updated%22%2C+%22eTag%22%5D
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users
   response:
     body:
       string: "{\n  \"data\": [\n    {\n      \"created\": \"2019-02-20T23:11:20.893755\"\
@@ -18,12 +18,12 @@ interactions:
         ,\n      \"email\": \"bobc@example.com\",\n      \"externalId\": null,\n \
         \     \"id\": \"user-2\",\n      \"name\": \"Bob Cat\",\n      \"profileUrl\"\
         : null,\n      \"updated\": \"2019-02-21T03:29:00.173452\"\n    }\n  ],\n\
-        \  \"status\": \"ok\"\n}"
+        \  \"status\": 200\n}"
     headers:
       Access-Control-Allow-Origin: '*'
-      Content-Length: '738'
+      Content-Length: '737'
       Content-Type: application/json
-      Date: Sun, 14 Jul 2019 21:31:55 GMT
+      Date: Sun, 04 Aug 2019 18:44:33 GMT
     status:
       code: 200
       message: OK
@@ -33,6 +33,6 @@ interactions:
         - http
         - ps.pndsn.com
         - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users
-        - include=%5B%22externalId%22%2C%20%22profileUrl%22%2C%20%22email%22%2C%20%22custom%22%2C%20%22created%22%2C%20%22updated%22%2C%20%22eTag%22%5D&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=ce392d26-151b-4eac-8143-c7e8b9c5cdf9
+        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=2f59bc97-a946-4abe-b1f8-0efebbacde4d
         - ''
 version: 1

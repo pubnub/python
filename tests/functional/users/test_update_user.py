@@ -16,11 +16,14 @@ def test_update_user():
     config.subscribe_key = SUB_KEY
     config.auth_key = AUTH
     user = PubNub(config).update_user()
-    user.include({'a': 3, 'b': 1})
     with pytest.raises(PubNubException):
         user.build_path()
 
     user.user_id('foo')
     assert user.build_path() == UpdateUser.UPDATE_USER_PATH % (SUB_KEY, 'foo')
-    assert json.loads(user.build_data()) == {'a': 3, 'b': 1}
+    with pytest.raises(PubNubException):
+        user.validate_params()
+    user.data({'name': 'username'})
+    user.validate_params()
+    assert json.loads(user.build_data()) == {'name': 'username'}
     assert AUTH == user.build_params_callback()({})['auth']

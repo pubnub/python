@@ -14,6 +14,7 @@ class UpdateUser(Endpoint):
         Endpoint.__init__(self, pubnub)
         self._user_id = None
         self._include = None
+        self._data = None
 
     def user_id(self, user_id):
         assert isinstance(user_id, six.string_types)
@@ -21,17 +22,22 @@ class UpdateUser(Endpoint):
         return self
 
     def include(self, data):
-        assert isinstance(data, dict)
         self._include = data
         return self
 
+    def data(self, data):
+        assert isinstance(data, dict)
+        self._data = data
+        return self
+
     def custom_params(self):
-        return {}
+        params = {}
+        if self._include:
+            params['include'] = utils.url_write(self._include)
+        return params
 
     def build_data(self):
-        if self._include:
-            return utils.write_value_as_string(self._include)
-        return ''
+        return utils.write_value_as_string(self._data)
 
     def build_path(self):
         if self._user_id is None:
@@ -46,6 +52,8 @@ class UpdateUser(Endpoint):
 
     def validate_params(self):
         self.validate_subscribe_key()
+        if self._data is None:
+            raise PubNubException('No data supplied.')
 
     def create_response(self, envelope):   # pylint: disable=W0221
         return PNUpdateUserResult(envelope)

@@ -19,7 +19,7 @@ class TestSpace(AsyncTestCase):
                          filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     @tornado.testing.gen_test
     def test_get_spaces(self):
-        envelope = yield self.pn.get_spaces().include(['description', 'custom', 'created', 'updated', 'eTag']).future()
+        envelope = yield self.pn.get_spaces().future()
 
         assert(isinstance(envelope, TornadoEnvelope))
         assert not envelope.status.is_error()
@@ -35,8 +35,8 @@ class TestSpace(AsyncTestCase):
                          filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     @tornado.testing.gen_test
     def test_create_space(self):
-        envelope = yield self.pn.create_space().include({'id': 'my-channel', 'name': 'My space',
-                                                         'description': 'A space that is mine'}).future()
+        envelope = yield self.pn.create_space().data({'id': 'my-channel', 'name': 'My space',
+                                                      'description': 'A space that is mine'}).future()
 
         assert(isinstance(envelope, TornadoEnvelope))
         assert not envelope.status.is_error()
@@ -55,7 +55,7 @@ class TestSpace(AsyncTestCase):
     @tornado.testing.gen_test
     def test_get_space(self):
         envelope = yield self.pn.get_space().space_id(
-            'my-chanel').include(['description', 'name', 'created', 'updated', 'eTag']).future()
+            'my-chanel').future()
 
         assert(isinstance(envelope, TornadoEnvelope))
         assert not envelope.status.is_error()
@@ -74,9 +74,8 @@ class TestSpace(AsyncTestCase):
                          filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
     @tornado.testing.gen_test
     def test_update_space(self):
-        include = {'id': 'my-channel', 'name': 'My space',
-                   'description': 'A space that is mine'}
-        envelope = yield self.pn.update_space().space_id('my-channel').include(include).future()
+        data = {'name': 'My space', 'description': 'A space that is mine'}
+        envelope = yield self.pn.update_space().space_id('my-channel').data(data).future()
 
         assert(isinstance(envelope, TornadoEnvelope))
         assert not envelope.status.is_error()

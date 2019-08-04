@@ -12,8 +12,7 @@ from pubnub.models.consumer.common import PNStatus
 def test_get_users():
     config = pnconf_copy()
     pn = PubNub(config)
-    envelope = pn.get_users().include(['externalId', 'profileUrl', 'email',
-                                       'custom', 'created', 'updated', 'eTag']).sync()
+    envelope = pn.get_users().sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
@@ -32,8 +31,8 @@ def test_get_users():
 def test_create_user():
     config = pnconf_copy()
     pn = PubNub(config)
-    envelope = pn.create_user().include({'id': 'user-1', 'name': 'John Doe',
-                                         'externalId': None, 'profileUrl': None, 'email': 'jack@twitter.com'}).sync()
+    envelope = pn.create_user().data({'id': 'user-1', 'name': 'John Doe',
+                                      'externalId': None, 'profileUrl': None, 'email': 'jack@twitter.com'}).sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
@@ -54,8 +53,7 @@ def test_create_user():
 def test_fetch_user():
     config = pnconf_copy()
     pn = PubNub(config)
-    envelope = pn.fetch_user().user_id('user-1').include(['externalId', 'profileUrl', 'email',
-                                                          'created', 'updated', 'eTag']).sync()
+    envelope = pn.fetch_user().user_id('user-1').sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
@@ -72,9 +70,9 @@ def test_fetch_user():
 def test_update_user():
     config = pnconf_copy()
     pn = PubNub(config)
-    envelope = pn.update_user().user_id('user-1').include({'id': 'user-1', 'name': 'John Doe',
-                                                           'externalId': None, 'profileUrl': None,
-                                                           'email': 'jack@twitter.com'}).sync()
+    envelope = pn.update_user().user_id('user-1').data({'name': 'John Doe',
+                                                        'externalId': None, 'profileUrl': None,
+                                                        'email': 'jack@twitter.com'}).sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()

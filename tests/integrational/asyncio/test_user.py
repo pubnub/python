@@ -14,8 +14,7 @@ from pubnub.models.consumer.common import PNStatus
 def test_get_users(event_loop):
     config = pnconf_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    envelope = yield from pn.get_users().include(['externalId', 'profileUrl', 'email',
-                                                  'custom', 'created', 'updated', 'eTag']).future()
+    envelope = yield from pn.get_users().future()
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
     assert isinstance(envelope.result, PNGetUsersResult)
@@ -36,7 +35,7 @@ def test_create_user(event_loop):
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
     data = {'id': 'user-1', 'name': 'John Doe',
             'externalId': None, 'profileUrl': None, 'email': 'jack@twitter.com'}
-    envelope = yield from pn.create_user().include(data).future()
+    envelope = yield from pn.create_user().data(data).future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
@@ -58,8 +57,7 @@ def test_create_user(event_loop):
 def test_fetch_user(event_loop):
     config = pnconf_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    envelope = yield from pn.fetch_user().user_id('user-1').include(['externalId', 'profileUrl', 'email',
-                                                                     'created', 'updated', 'eTag']).future()
+    envelope = yield from pn.fetch_user().user_id('user-1').future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
@@ -77,9 +75,9 @@ def test_fetch_user(event_loop):
 def test_update_user(event_loop):
     config = pnconf_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    envelope = yield from pn.update_user().user_id('user-1').include({'id': 'user-1', 'name': 'John Doe',
-                                                                      'externalId': None, 'profileUrl': None,
-                                                                      'email': 'jack@twitter.com'}).future()
+    envelope = yield from pn.update_user().user_id('user-1').data({'name': 'John Doe',
+                                                                   'externalId': None, 'profileUrl': None,
+                                                                   'email': 'jack@twitter.com'}).future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()

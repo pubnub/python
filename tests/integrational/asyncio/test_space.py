@@ -14,7 +14,7 @@ from pubnub.models.consumer.common import PNStatus
 def test_get_spaces(event_loop):
     config = pnconf_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    envelope = yield from pn.get_spaces().include(['description', 'custom', 'created', 'updated', 'eTag']).future()
+    envelope = yield from pn.get_spaces().future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
@@ -32,8 +32,8 @@ def test_get_spaces(event_loop):
 def test_create_space(event_loop):
     config = pnconf_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    envelope = yield from pn.create_space().include({'id': 'my-channel', 'name': 'My space',
-                                                     'description': 'A space that is mine'}).future()
+    envelope = yield from pn.create_space().data({'id': 'my-channel', 'name': 'My space',
+                                                  'description': 'A space that is mine'}).future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
@@ -53,8 +53,7 @@ def test_create_space(event_loop):
 def test_get_space(event_loop):
     config = pnconf_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    envelope = yield from pn.get_space().space_id(
-        'my-chanel').include(['description', 'name', 'created', 'updated', 'eTag']).future()
+    envelope = yield from pn.get_space().space_id('my-chanel').future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
@@ -75,9 +74,8 @@ def test_get_space(event_loop):
 def test_update_space(event_loop):
     config = pnconf_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    include = {'id': 'my-channel', 'name': 'My space',
-               'description': 'A space that is mine'}
-    envelope = yield from pn.update_space().space_id('my-channel').include(include).future()
+    data = {'name': 'My space', 'description': 'A space that is mine'}
+    envelope = yield from pn.update_space().space_id('my-channel').data(data).future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()

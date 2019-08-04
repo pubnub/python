@@ -16,11 +16,14 @@ def test_update_space():
     config.subscribe_key = SUB_KEY
     config.auth_key = AUTH
     space = PubNub(config).update_space()
-    space.include({'a': 3, 'b': 1})
+    space.include('custom')
     with pytest.raises(PubNubException):
         space.build_path()
 
     space.space_id('foo')
     assert space.build_path() == UpdateSpace.UPDATE_SPACE_PATH % (SUB_KEY, 'foo')
-    assert json.loads(space.build_data()) == {'a': 3, 'b': 1}
+    with pytest.raises(PubNubException):
+        space.validate_params()
+    space.data({'name': 'bar'})
+    assert json.loads(space.build_data()) == {'name': 'bar'}
     assert AUTH == space.build_params_callback()({})['auth']

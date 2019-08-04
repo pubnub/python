@@ -14,24 +14,30 @@ class UpdateSpace(Endpoint):
         Endpoint.__init__(self, pubnub)
         self._space_id = None
         self._include = None
+        self._data = None
 
     def space_id(self, space_id):
         assert isinstance(space_id, six.string_types)
         self._space_id = space_id
         return self
 
-    def include(self, data):
+    def data(self, data):
         assert isinstance(data, dict)
+        self._data = data
+        return self
+
+    def include(self, data):
         self._include = data
         return self
 
     def custom_params(self):
-        return {}
+        params = {}
+        if self._include:
+            params['include'] = utils.url_write(self._include)
+        return params
 
     def build_data(self):
-        if self._include:
-            return utils.write_value_as_string(self._include)
-        return ''
+        return utils.write_value_as_string(self._data)
 
     def build_path(self):
         if self._space_id is None:
@@ -46,6 +52,8 @@ class UpdateSpace(Endpoint):
 
     def validate_params(self):
         self.validate_subscribe_key()
+        if self._data is None:
+            raise PubNubException('No data supplied.')
 
     def create_response(self, envelope):   # pylint: disable=W0221
         return PNUpdateSpaceResult(envelope)

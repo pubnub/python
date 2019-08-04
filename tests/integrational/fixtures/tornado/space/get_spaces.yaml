@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces?include=%5B%22description%22%2C+%22custom%22%2C+%22created%22%2C+%22updated%22%2C+%22eTag%22%5D
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces
   response:
     body:
       string: "{\n  \"data\": [\n    {\n      \"created\": \"2019-02-20T23:11:20.893755\"\
@@ -21,7 +21,7 @@ interactions:
         ,\n      \"id\": \"main\",\n      \"name\": \"Main space\",\n      \"updated\"\
         : \"2019-02-20T23:11:20.893755\"\n    }\n  ],\n  \"next\": \"MUIwQTAwMUItQkRBRC00NDkyLTgyMEMtODg2OUU1N0REMTNBCg==\"\
         ,\n  \"prev\": \"M0FFODRENzMtNjY2Qy00RUExLTk4QzktNkY1Q0I2MUJFNDRCCg==\",\n\
-        \  \"status\": \"ok\",\n  \"totalCount\": 9\n}"
+        \  \"status\": 200,\n  \"totalCount\": 9\n}"
     headers:
     - !!python/tuple
       - Access-Control-Allow-Origin
@@ -31,15 +31,15 @@ interactions:
       - - application/json
     - !!python/tuple
       - Date
-      - - Sun, 21 Jul 2019 11:57:06 GMT
+      - - Sun, 04 Aug 2019 17:43:40 GMT
     - !!python/tuple
       - Content-Length
-      - - '842'
+      - - '841'
     - !!python/tuple
       - Connection
       - - close
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces?include=%5B%22description%22%2C%20%22custom%22%2C%20%22created%22%2C%20%22updated%22%2C%20%22eTag%22%5D&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=363b0152-af3e-4635-9046-b5a761ca182b
+    url: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=0851146a-88f5-48f3-8762-7e4ce787897f
 version: 1

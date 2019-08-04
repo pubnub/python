@@ -12,7 +12,7 @@ from pubnub.models.consumer.common import PNStatus
 def test_get_spaces():
     config = pnconf_copy()
     pn = PubNub(config)
-    envelope = pn.get_spaces().include(['description', 'custom', 'created', 'updated', 'eTag']).sync()
+    envelope = pn.get_spaces().sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
@@ -29,8 +29,8 @@ def test_get_spaces():
 def test_create_space():
     config = pnconf_copy()
     pn = PubNub(config)
-    envelope = pn.create_space().include({'id': 'my-channel', 'name': 'My space',
-                                          'description': 'A space that is mine'}).sync()
+    envelope = pn.create_space().data({'id': 'my-channel', 'name': 'My space',
+                                       'description': 'A space that is mine'}).sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
@@ -49,8 +49,7 @@ def test_create_space():
 def test_get_space():
     config = pnconf_copy()
     pn = PubNub(config)
-    envelope = pn.get_space().space_id(
-        'my-chanel').include(['description', 'name', 'created', 'updated', 'eTag']).sync()
+    envelope = pn.get_space().space_id('my-chanel').sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
@@ -70,8 +69,8 @@ def test_get_space():
 def test_update_space():
     config = pnconf_copy()
     pn = PubNub(config)
-    envelope = pn.update_space().space_id('my-channel').include({'id': 'my-channel', 'name': 'My space',
-                                                                 'description': 'A space that is mine'}).sync()
+    envelope = pn.update_space().space_id('my-channel').data({'name': 'My space',
+                                                              'description': 'A space that is mine'}).sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()

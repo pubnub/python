@@ -5,20 +5,19 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1?include=%5B%22externalId%22%2C+%22profileUrl%22%2C+%22email%22%2C+%22created%22%2C+%22updated%22%2C+%22eTag%22%5D
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1
   response:
     body:
       string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
         \    \"eTag\": \"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg==\",\n\
         \    \"email\": \"jack@twitter.com\",\n    \"externalId\": null,\n    \"id\"\
         : \"user-1\",\n    \"name\": \"John Doe\",\n    \"profileUrl\": null,\n  \
-        \  \"updated\": \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": \"ok\"\
-        \n}"
+        \  \"updated\": \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": 200\n}"
     headers:
       Access-Control-Allow-Origin: '*'
-      Content-Length: '319'
+      Content-Length: '318'
       Content-Type: application/json
-      Date: Mon, 15 Jul 2019 20:37:59 GMT
+      Date: Sun, 04 Aug 2019 17:36:22 GMT
     status:
       code: 200
       message: OK
@@ -28,6 +27,6 @@ interactions:
         - http
         - ps.pndsn.com
         - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1
-        - include=%5B%22externalId%22%2C%20%22profileUrl%22%2C%20%22email%22%2C%20%22created%22%2C%20%22updated%22%2C%20%22eTag%22%5D&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=a9542de8-67ab-4ac6-8747-a05acbf247dd
+        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=fa2600b7-d476-4080-8e43-1666b030b661
         - ''
 version: 1

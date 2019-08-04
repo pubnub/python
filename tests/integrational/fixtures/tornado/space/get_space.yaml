@@ -7,13 +7,13 @@ interactions:
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/my-chanel?include=%5B%22description%22%2C+%22name%22%2C+%22created%22%2C+%22updated%22%2C+%22eTag%22%5D
+    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/my-chanel
   response:
     body:
       string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
         \    \"description\": \"A space that is mine\",\n    \"eTag\": \"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg==\"\
         ,\n    \"id\": \"my-channel\",\n    \"name\": \"My space\",\n    \"updated\"\
-        : \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": \"ok\"\n}"
+        : \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": 200\n}"
     headers:
     - !!python/tuple
       - Access-Control-Allow-Origin
@@ -23,15 +23,15 @@ interactions:
       - - application/json
     - !!python/tuple
       - Date
-      - - Sun, 21 Jul 2019 11:57:06 GMT
+      - - Sun, 04 Aug 2019 17:43:40 GMT
     - !!python/tuple
       - Content-Length
-      - - '285'
+      - - '284'
     - !!python/tuple
       - Connection
       - - close
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/my-chanel?include=%5B%22description%22%2C%20%22name%22%2C%20%22created%22%2C%20%22updated%22%2C%20%22eTag%22%5D&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=0da25714-4f0c-4b3b-adcd-33bfc44d1431
+    url: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/my-chanel?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=54fdaf57-ca7b-4fcd-a4b8-b8a0c1b87998
 version: 1

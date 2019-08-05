@@ -10,7 +10,7 @@ SUB_KEY = 'sub'
 AUTH = 'auth'
 
 
-def test_fetch_space():
+def test_get_space():
     config = PNConfiguration()
     config.subscribe_key = SUB_KEY
     config.auth_key = AUTH

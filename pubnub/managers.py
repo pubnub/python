@@ -454,7 +454,7 @@ class TelemetryManager(object):  # pylint: disable=W0612
 
             PNOperationType.PNGetUsersOperation: 'obj',
             PNOperationType.PNCreateUserOperation: 'obj',
-            PNOperationType.PNFetchUserOperation: 'obj',
+            PNOperationType.PNGetUserOperation: 'obj',
             PNOperationType.PNUpdateUserOperation: 'obj',
             PNOperationType.PNDeleteUserOperation: 'obj',
             PNOperationType.PNGetSpacesOperation: 'obj',

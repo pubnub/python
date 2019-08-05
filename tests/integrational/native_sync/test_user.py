@@ -2,7 +2,7 @@ from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 from pubnub.structures import Envelope
 from pubnub.pubnub import PubNub
-from pubnub.models.consumer.user import (PNGetUsersResult, PNCreateUserResult, PNFetchUserResult,
+from pubnub.models.consumer.user import (PNGetUsersResult, PNCreateUserResult, PNGetUserResult,
                                          PNUpdateUserResult, PNDeleteUserResult)
 from pubnub.models.consumer.common import PNStatus
 
@@ -50,14 +50,14 @@ def test_create_user():
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/user/fetch_user.yaml',
                      filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
-def test_fetch_user():
+def test_get_user():
     config = pnconf_copy()
     pn = PubNub(config)
-    envelope = pn.fetch_user().user_id('user-1').sync()
+    envelope = pn.get_user().user_id('user-1').sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
-    assert isinstance(envelope.result, PNFetchUserResult)
+    assert isinstance(envelope.result, PNGetUserResult)
     assert isinstance(envelope.status, PNStatus)
     data = envelope.result.data
     assert set(['name', 'id', 'externalId', 'profileUrl', 'email',

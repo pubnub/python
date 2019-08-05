@@ -67,7 +67,7 @@ class PNOperationType(object):
     PNSignalOperation = 26
     PNGetUsersOperation = 27
     PNCreateUserOperation = 28
-    PNFetchUserOperation = 29
+    PNGetUserOperation = 29
     PNUpdateUserOperation = 30
     PNDeleteUserOperation = 31
     PNGetSpacesOperation = 32

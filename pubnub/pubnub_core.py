@@ -27,7 +27,7 @@ from .endpoints.message_count import MessageCount
 from .endpoints.signal import Signal
 from .endpoints.users.get_users import GetUsers
 from .endpoints.users.create_user import CreateUser
-from .endpoints.users.fetch_user import FetchUser
+from .endpoints.users.get_user import GetUser
 from .endpoints.users.update_user import UpdateUser
 from .endpoints.users.delete_user import DeleteUser
 from .endpoints.space.get_spaces import GetSpaces
@@ -189,8 +189,8 @@ class PubNubCore:
     def create_user(self):
         return CreateUser(self)
 
-    def fetch_user(self):
-        return FetchUser(self)
+    def get_user(self):
+        return GetUser(self)
 
     def update_user(self):
         return UpdateUser(self)

@@ -3,7 +3,7 @@ import pytest
 from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
-from pubnub.models.consumer.user import (PNGetUsersResult, PNCreateUserResult, PNFetchUserResult,
+from pubnub.models.consumer.user import (PNGetUsersResult, PNCreateUserResult, PNGetUserResult,
                                          PNUpdateUserResult, PNDeleteUserResult)
 from pubnub.models.consumer.common import PNStatus
 
@@ -54,14 +54,14 @@ def test_create_user(event_loop):
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/user/fetch_user.yaml',
                      filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
-def test_fetch_user(event_loop):
+def test_get_user(event_loop):
     config = pnconf_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    envelope = yield from pn.fetch_user().user_id('user-1').future()
+    envelope = yield from pn.get_user().user_id('user-1').future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
-    assert isinstance(envelope.result, PNFetchUserResult)
+    assert isinstance(envelope.result, PNGetUserResult)
     assert isinstance(envelope.status, PNStatus)
     data = envelope.result.data
     assert set(['name', 'id', 'externalId', 'profileUrl', 'email',

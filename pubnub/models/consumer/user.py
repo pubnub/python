@@ -29,18 +29,18 @@ class PNCreateUserResult(object):
         return "User created with data: %s" % self.data
 
 
-class PNFetchUserResult(object):
+class PNGetUserResult(object):
     def __init__(self, result):
         """
-        Representation of fetch user server response
+        Representation of get user server response
 
-        :param result: result of fetch user operation
+        :param result: result of get user operation
         """
         self.data = result['data']
         self.status = result['status']
 
     def __str__(self):
-        return "Fetch user success with data: %s" % self.data
+        return "Get user success with data: %s" % self.data
 
 
 class PNUpdateUserResult(object):

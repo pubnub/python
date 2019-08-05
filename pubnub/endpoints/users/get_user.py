@@ -2,13 +2,13 @@ import six
 
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.models.consumer.user import PNFetchUserResult
+from pubnub.models.consumer.user import PNGetUserResult
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.exceptions import PubNubException
 
 
-class FetchUser(Endpoint):
-    FETCH_USER_PATH = '/v1/objects/%s/users/%s'
+class GetUser(Endpoint):
+    GET_USER_PATH = '/v1/objects/%s/users/%s'
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
@@ -33,7 +33,7 @@ class FetchUser(Endpoint):
     def build_path(self):
         if self._user_id is None:
             raise PubNubException('Provide user_id.')
-        return FetchUser.FETCH_USER_PATH % (self.pubnub.config.subscribe_key, self._user_id)
+        return GetUser.GET_USER_PATH % (self.pubnub.config.subscribe_key, self._user_id)
 
     def http_method(self):
         return HttpMethod.GET
@@ -45,7 +45,7 @@ class FetchUser(Endpoint):
         self.validate_subscribe_key()
 
     def create_response(self, envelope):   # pylint: disable=W0221
-        return PNFetchUserResult(envelope)
+        return PNGetUserResult(envelope)
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout
@@ -54,7 +54,7 @@ class FetchUser(Endpoint):
         return self.pubnub.config.connect_timeout
 
     def operation_type(self):
-        return PNOperationType.PNFetchUserOperation
+        return PNOperationType.PNGetUserOperation
 
     def name(self):
-        return 'Fetch user'
+        return 'Get user'

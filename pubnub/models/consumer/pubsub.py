@@ -32,6 +32,10 @@ class PNMessageResult(object):
         self.publisher = publisher
 
 
+class PNSignalMessageResult(PNMessageResult):
+    pass
+
+
 class PNPresenceEventResult(object):
     def __init__(self, event, uuid, timestamp, occupancy, subscription, channel,
                  timetoken, state, user_metadata=None):

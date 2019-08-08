@@ -1,0 +1,38 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.1.0
+    method: GET
+    uri: http://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22
+  response:
+    body:
+      string: '[1,"Sent","15640049765289377"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Wed, 24 Jul 2019 21:49:36 GMT
+      PN-MsgEntityType:
+      - '1'
+    status:
+      code: 200
+      message: OK
+version: 1

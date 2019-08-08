@@ -32,11 +32,13 @@ class SubscribeMessage:
         self.origination_timetoken = None
         self.publish_metadata = None
         self.only_channel_subscription = False
+        self.is_signal = False
 
     @classmethod
     def from_json(cls, json_input):
         message = SubscribeMessage()
-        message.shard = json_input['a']
+        if 'a' in json_input:
+            message.shard = json_input['a']
         if 'b' in json_input:
             message.subscription_match = json_input['b']
         message.channel = json_input['c']
@@ -48,7 +50,8 @@ class SubscribeMessage:
         if 'o' in json_input:
             message.origination_timetoken = json_input['o']
         message.publish_metadata = PublishMetadata.from_json(json_input['p'])
-
+        if 'e' in json_input and json_input['e'] == 1:
+            message.is_signal = True
         return message
 
 

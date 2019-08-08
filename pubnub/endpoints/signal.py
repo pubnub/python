@@ -11,7 +11,6 @@ class Signal(Endpoint):
         Endpoint.__init__(self, pubnub)
         self._channel = None
         self._message = None
-        self._meta = None
 
     def channel(self, channel):
         self._channel = str(channel)
@@ -19,10 +18,6 @@ class Signal(Endpoint):
 
     def message(self, message):
         self._message = message
-        return self
-
-    def meta(self, meta):
-        self._meta = meta
         return self
 
     def build_path(self):
@@ -34,10 +29,7 @@ class Signal(Endpoint):
         )
 
     def custom_params(self):
-        params = {}
-        if self._meta is not None:
-            params['meta'] = utils.write_value_as_string(self._meta)
-        return params
+        return {}
 
     def http_method(self):
         return HttpMethod.GET

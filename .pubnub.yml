@@ -146,7 +146,6 @@ features:
     - PUBLISH-GET
     - PUBLISH-ASYNC
     - PUBLISH-FIRE
-    - PUBLISH-SIGNAL
   storage:
     - STORAGE-REVERSE
     - STORAGE-INCLUDE-TIMETOKEN
@@ -163,6 +162,9 @@ features:
     - SUBSCRIBE-WITH-TIMETOKEN
     - SUBSCRIBE-WILDCARD
     - SUBSCRIBE-PUBLISHER-UUID
+    - SUBSCRIBE-SIGNAL-LISTENER
+  signal:
+    - SIGNAL-SEND
 
 supported-platforms:
   -

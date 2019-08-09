@@ -1,3 +1,9 @@
+## [4.1.5](https://github.com/pubnub/python/tree/v4.1.5)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.1.4...v4.1.5)
+
+- 🐛implement signal
+
 ## [4.1.4](https://github.com/pubnub/python/tree/v4.1.4)
 
   [Full Changelog](https://github.com/pubnub/python/compare/v4.1.3...v4.1.4)

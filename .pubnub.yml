@@ -1,8 +1,13 @@
 name: python
-version: 4.1.4
+version: 4.1.5
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.1.5
+    date: Aug 9, 2019
+    changes:
+      - type: improvement
+        text: implement Signal
   - version: v4.1.4
     date: Apr 10, 2019
     changes:
@@ -162,6 +167,9 @@ features:
     - SUBSCRIBE-WITH-TIMETOKEN
     - SUBSCRIBE-WILDCARD
     - SUBSCRIBE-PUBLISHER-UUID
+    - SUBSCRIBE-SIGNAL-LISTENER
+  signal:
+    - SIGNAL-SEND
 
 supported-platforms:
   -

@@ -2,7 +2,7 @@ import logging
 
 from abc import abstractmethod
 from .utils import strip_right
-from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult
+from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult, PNSignalMessageResult
 from .models.server.subscribe import SubscribeMessage, PresenceEnvelope
 
 logger = logging.getLogger("pubnub")
@@ -72,13 +72,22 @@ class SubscribeMessageWorker(object):
 
             if extracted_message is None:
                 logger.debug("unable to parse payload on #processIncomingMessages")
+            if message.is_signal:
+                pn_signal_result = PNSignalMessageResult(
+                    message=extracted_message,
+                    channel=channel,
+                    subscription=subscription_match,
+                    timetoken=publish_meta_data.publish_timetoken,
+                    publisher=publisher
+                )
+                self._listener_manager.announce_signal(pn_signal_result)
+            else:
+                pn_message_result = PNMessageResult(
+                    message=extracted_message,
+                    channel=channel,
+                    subscription=subscription_match,
+                    timetoken=publish_meta_data.publish_timetoken,
+                    publisher=publisher
+                )
 
-            pn_message_result = PNMessageResult(
-                message=extracted_message,
-                channel=channel,
-                subscription=subscription_match,
-                timetoken=publish_meta_data.publish_timetoken,
-                publisher=publisher
-            )
-
-            self._listener_manager.announce_message(pn_message_result)
+                self._listener_manager.announce_message(pn_message_result)

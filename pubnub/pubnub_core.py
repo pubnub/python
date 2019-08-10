@@ -24,6 +24,7 @@ from .endpoints.presence.here_now import HereNow
 from .endpoints.presence.where_now import WhereNow
 from .endpoints.history_delete import HistoryDelete
 from .endpoints.message_count import MessageCount
+from .endpoints.signal import Signal
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -164,6 +165,9 @@ class PubNubCore:
 
     def fire(self):
         return Fire(self)
+
+    def signal(self):
+        return Signal(self)
 
     def time(self):
         return Time(self)

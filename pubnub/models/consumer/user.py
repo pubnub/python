@@ -69,3 +69,12 @@ class PNDeleteUserResult(object):
 
     def __str__(self):
         return "Delete user success with data: %s" % self.data
+
+
+class PNUserResult(object):
+    def __init__(self, event, data):
+        self.data = data
+        self.event = event
+
+    def __str__(self):
+        return "User %s event with data: %s" % (self.event, self.data)

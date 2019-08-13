@@ -207,6 +207,18 @@ class ListenerManager(object):
         for callback in self._listeners:
             callback.signal(self._pubnub, signal)
 
+    def announce_user(self, user):
+        for callback in self._listeners:
+            callback.user(self._pubnub, user)
+
+    def announce_space(self, space):
+        for callback in self._listeners:
+            callback.space(self._pubnub, space)
+
+    def announce_membership(self, membership):
+        for callback in self._listeners:
+            callback.membership(self._pubnub, membership)
+
     def announce_presence(self, presence):
         for callback in self._listeners:
             callback.presence(self._pubnub, presence)

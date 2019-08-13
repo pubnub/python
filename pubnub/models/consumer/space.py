@@ -69,3 +69,12 @@ class PNDeleteSpaceResult(object):
 
     def __str__(self):
         return "Delete space success with data: %s" % self.data
+
+
+class PNSpaceResult(object):
+    def __init__(self, event, data):
+        self.data = data
+        self.event = event
+
+    def __str__(self):
+        return "Space %s event with data: %s" % (self.event, self.data)

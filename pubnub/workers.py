@@ -4,6 +4,9 @@ from abc import abstractmethod
 from .utils import strip_right
 from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult, PNSignalMessageResult
 from .models.server.subscribe import SubscribeMessage, PresenceEnvelope
+from .models.consumer.user import PNUserResult
+from .models.consumer.space import PNSpaceResult
+from .models.consumer.membership import PNMembershipResult
 
 logger = logging.getLogger("pubnub")
 
@@ -66,6 +69,25 @@ class SubscribeMessageWorker(object):
                 state=presence_payload.data
             )
             self._listener_manager.announce_presence(pn_presence_event_result)
+        elif message.is_object:
+            if message.payload['type'] == 'user':
+                user_result = PNUserResult(
+                    type=message.payload['event'],
+                    data=message.payload['data']
+                )
+                self._listener_manager.announce_user(user_result)
+            elif message.payload['type'] == 'space':
+                space_result = PNSpaceResult(
+                    type=message.payload['event'],
+                    data=message.payload['data']
+                )
+                self._listener_manager.announce_space(space_result)
+            else:
+                membership_result = PNMembershipResult(
+                    type=message.payload['event'],
+                    data=message.payload['data']
+                )
+                self._listener_manager.announce_membership(membership_result)
         else:
             extracted_message = self._process_message(message.payload)
             publisher = message.issuing_client_id

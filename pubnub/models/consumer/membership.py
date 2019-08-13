@@ -64,3 +64,12 @@ class PNUpdateMembersResult(object):
 
     def __str__(self):
         return "Update update members success with data: %s" % self.data
+
+
+class PNMembershipResult(object):
+    def __init__(self, event, data):
+        self.data = data
+        self.event = event
+
+    def __str__(self):
+        return "Membership %s event with data: %s" % (self.event, self.data)

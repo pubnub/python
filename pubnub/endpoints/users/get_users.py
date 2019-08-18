@@ -1,5 +1,5 @@
 import six
-from pubnub import utils
+
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.models.consumer.user import PNGetUsersResult
 from pubnub.enums import HttpMethod, PNOperationType
@@ -56,7 +56,7 @@ class GetUsers(Endpoint):
             params['limit'] = self._limit
 
         if self._include:
-            params['include'] = utils.url_write(self._include)
+            params['include'] = self._include
 
         return params
 

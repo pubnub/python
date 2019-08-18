@@ -41,6 +41,9 @@ class RequestOptions(object):
     def is_post(self):
         return self._method is HttpMethod.POST
 
+    def is_patch(self):
+        return self._method is HttpMethod.PATCH
+
     def query_list(self):
         """ All query keys and values should be already encoded inside a build_params() method"""
         s = []

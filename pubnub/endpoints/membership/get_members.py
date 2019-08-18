@@ -64,7 +64,7 @@ class GetMembers(Endpoint):
             params['limit'] = self._limit
 
         if self._include:
-            params['include'] = utils.url_write(self._include)
+            params['include'] = utils.join_items(self._include)
 
         return params
 

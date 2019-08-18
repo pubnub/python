@@ -27,7 +27,7 @@ class CreateSpace(Endpoint):
     def custom_params(self):
         params = {}
         if self._include:
-            params['include'] = utils.url_write(self._include)
+            params['include'] = self._include
         return params
 
     def build_data(self):

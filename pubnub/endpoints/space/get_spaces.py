@@ -1,5 +1,5 @@
 import six
-from pubnub import utils
+
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.models.consumer.space import PNGetSpacesResult
 from pubnub.enums import HttpMethod, PNOperationType

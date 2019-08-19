@@ -7,28 +7,28 @@ interactions:
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: DELETE
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/main
+    uri: http://ps.pndsn.com/v1/objects/demo/spaces/in_space
   response:
     body:
-      string: "{\n  \"data\": {},\n  \"status\": \"ok\"\n}"
+      string: '{"status":200,"data":null}'
     headers:
     - !!python/tuple
-      - Access-Control-Allow-Origin
-      - - '*'
+      - Date
+      - - Mon, 19 Aug 2019 21:20:42 GMT
     - !!python/tuple
       - Content-Type
       - - application/json
     - !!python/tuple
-      - Date
-      - - Sun, 21 Jul 2019 11:57:06 GMT
-    - !!python/tuple
       - Content-Length
-      - - '34'
+      - - '26'
     - !!python/tuple
       - Connection
       - - close
+    - !!python/tuple
+      - Server
+      - - nginx/1.15.6
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/main?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=93064877-8c6b-4882-8152-83eed20d09e4
+    url: http://ps.pndsn.com/v1/objects/demo/spaces/in_space?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=5b19a0b7-dcb7-409e-94e1-a235d1cdd1ad
 version: 1

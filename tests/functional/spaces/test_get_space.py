@@ -23,5 +23,5 @@ def test_get_space():
     assert space.build_path() == GetSpace.GET_SPACE_PATH % (SUB_KEY, 'foo')
 
     params = space.custom_params()
-    assert params['include'] == '%5B%22a%22%2C%20%22b%22%5D'
+    assert params['include'] == ['a', 'b']
     assert AUTH == space.build_params_callback()({})['auth']

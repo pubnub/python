@@ -5,15 +5,16 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: DELETE
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/main
+    uri: http://ps.pndsn.com/v1/objects/demo/spaces/in_space
   response:
     body:
-      string: "{\n  \"data\": {},\n  \"status\": \"ok\"\n}"
+      string: '{"status":200,"data":null}'
     headers:
-      Access-Control-Allow-Origin: '*'
-      Content-Length: '34'
+      Connection: keep-alive
+      Content-Length: '26'
       Content-Type: application/json
-      Date: Sun, 21 Jul 2019 11:50:36 GMT
+      Date: Mon, 19 Aug 2019 21:24:38 GMT
+      Server: nginx/1.15.6
     status:
       code: 200
       message: OK
@@ -22,7 +23,7 @@ interactions:
       - !!python/object/new:urllib.parse.SplitResult
         - http
         - ps.pndsn.com
-        - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/main
-        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=a08a0bdc-6626-4926-ac86-ff77e8af18be
+        - /v1/objects/demo/spaces/in_space
+        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=982fa2bc-479b-4f37-a3a0-1a44f7a00011
         - ''
 version: 1

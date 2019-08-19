@@ -7,32 +7,28 @@ interactions:
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1
+    uri: http://ps.pndsn.com/v1/objects/demo/users/mg?include=custom
   response:
     body:
-      string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
-        \    \"eTag\": \"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg==\",\n\
-        \    \"email\": \"jack@twitter.com\",\n    \"externalId\": null,\n    \"id\"\
-        : \"user-1\",\n    \"name\": \"John Doe\",\n    \"profileUrl\": null,\n  \
-        \  \"updated\": \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": 200\n}"
+      string: '{"status":200,"data":{"id":"mg","name":"MAGNUM","externalId":null,"profileUrl":null,"email":null,"custom":{"XXX":"YYYY"},"created":"2019-08-19T20:58:35.105244Z","updated":"2019-08-19T20:58:35.105244Z","eTag":"Aaa/h+eBi9elsgE"}}'
     headers:
     - !!python/tuple
-      - Access-Control-Allow-Origin
-      - - '*'
+      - Date
+      - - Mon, 19 Aug 2019 20:58:40 GMT
     - !!python/tuple
       - Content-Type
       - - application/json
     - !!python/tuple
-      - Date
-      - - Sun, 04 Aug 2019 17:41:24 GMT
-    - !!python/tuple
       - Content-Length
-      - - '318'
+      - - '227'
     - !!python/tuple
       - Connection
       - - close
+    - !!python/tuple
+      - Server
+      - - nginx/1.15.6
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=e998d43a-3fc8-45c0-bb35-11c1ec6d8de6
+    url: http://ps.pndsn.com/v1/objects/demo/users/mg?include=custom&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=b7c0580f-4599-4a9d-aea0-c36f5a8a1e4a
 version: 1

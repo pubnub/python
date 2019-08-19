@@ -1,40 +1,34 @@
 interactions:
 - request:
-    body: '{"id": "user-1", "name": "John Doe", "externalId": null, "profileUrl":
-      null, "email": "jack@twitter.com"}'
+    body: '{"id": "mg", "name": "MAGNUM", "custom": {"XXX": "YYYY"}}'
     headers:
       Accept-Encoding:
       - utf-8
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: POST
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users
+    uri: http://ps.pndsn.com/v1/objects/demo/users?include=custom
   response:
     body:
-      string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
-        \    \"eTag\": \"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg==\",\n\
-        \    \"email\": \"jack@twitter.com\",\n    \"externalId\": null,\n    \"id\"\
-        : \"user-1\",\n    \"name\": \"John Doe\",\n    \"profileUrl\": null,\n  \
-        \  \"updated\": \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": \"ok\"\
-        \n}"
+      string: '{"status":200,"data":{"id":"mg","name":"MAGNUM","externalId":null,"profileUrl":null,"email":null,"custom":{"XXX":"YYYY"},"created":"2019-08-19T20:58:35.105244Z","updated":"2019-08-19T20:58:35.105244Z","eTag":"Aaa/h+eBi9elsgE"}}'
     headers:
     - !!python/tuple
-      - Access-Control-Allow-Origin
-      - - '*'
+      - Date
+      - - Mon, 19 Aug 2019 20:58:35 GMT
     - !!python/tuple
       - Content-Type
       - - application/json
     - !!python/tuple
-      - Date
-      - - Sun, 14 Jul 2019 21:53:18 GMT
-    - !!python/tuple
       - Content-Length
-      - - '319'
+      - - '227'
     - !!python/tuple
       - Connection
       - - close
+    - !!python/tuple
+      - Server
+      - - nginx/1.15.6
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=180dbd47-34a5-4a71-afc8-a8a3097e0eba
+    url: http://ps.pndsn.com/v1/objects/demo/users?include=custom&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=7efb3606-842f-4148-b231-fbd69df616fd
 version: 1

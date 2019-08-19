@@ -13,19 +13,21 @@ interactions:
       User-Agent:
       - PubNub-Python/4.1.0
     method: DELETE
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/user-1
+    uri: http://ps.pndsn.com/v1/objects/demo/users/mg
   response:
     body:
-      string: "{\n  \"data\": {},\n  \"status\": \"ok\"\n}"
+      string: '{"status":200,"data":null}'
     headers:
-      Access-Control-Allow-Origin:
-      - '*'
+      Connection:
+      - keep-alive
       Content-Length:
-      - '34'
+      - '26'
       Content-Type:
       - application/json
       Date:
-      - Wed, 17 Jul 2019 18:02:08 GMT
+      - Mon, 19 Aug 2019 20:48:48 GMT
+      Server:
+      - nginx/1.15.6
     status:
       code: 200
       message: OK

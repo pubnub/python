@@ -23,5 +23,5 @@ def test_get_user():
     assert user.build_path() == GetUser.GET_USER_PATH % (SUB_KEY, 'foo')
 
     params = user.custom_params()
-    assert params['include'] == '%5B%22a%22%2C%20%22b%22%5D'
+    assert params['include'] == ['a', 'b']
     assert AUTH == user.build_params_callback()({})['auth']

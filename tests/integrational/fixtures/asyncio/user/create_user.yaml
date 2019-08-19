@@ -1,25 +1,20 @@
 interactions:
 - request:
-    body: '{"id": "user-1", "name": "John Doe", "externalId": null, "profileUrl":
-      null, "email": "jack@twitter.com"}'
+    body: '{"id": "mg", "name": "MAGNUM", "custom": {"XXX": "YYYY"}}'
     headers:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: POST
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users
+    uri: http://ps.pndsn.com/v1/objects/demo/users?include=custom
   response:
     body:
-      string: "{\n  \"data\": {\n    \"created\": \"2019-02-20T23:11:20.893755\",\n\
-        \    \"eTag\": \"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg==\",\n\
-        \    \"email\": \"jack@twitter.com\",\n    \"externalId\": null,\n    \"id\"\
-        : \"user-1\",\n    \"name\": \"John Doe\",\n    \"profileUrl\": null,\n  \
-        \  \"updated\": \"2019-02-20T23:11:20.893755\"\n  },\n  \"status\": \"ok\"\
-        \n}"
+      string: '{"status":200,"data":{"id":"mg","name":"MAGNUM","externalId":null,"profileUrl":null,"email":null,"custom":{"XXX":"YYYY"},"created":"2019-08-19T21:04:00.148418Z","updated":"2019-08-19T21:04:00.148418Z","eTag":"Aaa/h+eBi9elsgE"}}'
     headers:
-      Access-Control-Allow-Origin: '*'
-      Content-Length: '319'
+      Connection: keep-alive
+      Content-Length: '227'
       Content-Type: application/json
-      Date: Sun, 14 Jul 2019 21:56:58 GMT
+      Date: Mon, 19 Aug 2019 21:04:00 GMT
+      Server: nginx/1.15.6
     status:
       code: 200
       message: OK
@@ -28,7 +23,7 @@ interactions:
       - !!python/object/new:urllib.parse.SplitResult
         - http
         - ps.pndsn.com
-        - /v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users
-        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=4a32bdb1-122d-4c1d-902b-2ee854c3b151
+        - /v1/objects/demo/users
+        - include=custom&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=9065de8e-c73a-4fd8-80bc-a59644b08df8
         - ''
 version: 1

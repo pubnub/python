@@ -7,49 +7,34 @@ interactions:
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/main/users?count=True&include=%5B%22custom%22%2C+%22user%22%5D&limit=10
+    uri: http://ps.pndsn.com/v1/objects/demo/spaces/value1/users?count=True&include=custom%2Cuser%2Cuser.custom
   response:
     body:
-      string: "{\n  \"data\": [\n    {\n      \"created\": \"2019-02-20T23:11:20.893755\"\
-        ,\n      \"custom\": {\n        \"role\": \"admin\"\n      },\n      \"eTag\"\
-        : \"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg==\",\n      \"id\"\
-        : \"user-1\",\n      \"updated\": \"2019-02-20T23:11:20.893755\",\n      \"\
-        user\": {\n        \"created\": \"2019-02-20T23:11:20.893755\",\n        \"\
-        custom\": null,\n        \"eTag\": \"MDcyQ0REOTUtNEVBOC00QkY2LTgwOUUtNDkwQzI4MjgzMTcwCg==\"\
-        ,\n        \"email\": \"jack@twitter.com\",\n        \"externalId\": null,\n\
-        \        \"id\": \"user-1\",\n        \"name\": \"John Doe\",\n        \"\
-        profileUrl\": null,\n        \"updated\": \"2019-02-20T23:11:20.893755\"\n\
-        \      }\n    },\n    {\n      \"created\": \"2019-02-20T23:11:20.893755\"\
-        ,\n      \"custom\": {\n        \"role\": \"moderator\"\n      },\n      \"\
-        eTag\": \"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg==\",\n      \"\
-        id\": \"user-2\",\n      \"updated\": \"2019-02-20T23:11:20.893755\",\n  \
-        \    \"user\": {\n        \"created\": \"2019-02-19T13:10:20.893755\",\n \
-        \       \"custom\": {\n          \"phone\": \"999-999-9999\"\n        },\n\
-        \        \"eTag\": \"QkRENDA5MjItMUZCNC00REI5LUE4QTktRjJGNUMxNTc2MzE3Cg==\"\
-        ,\n        \"email\": \"bobc@example.com\",\n        \"externalId\": null,\n\
-        \        \"id\": \"user-2\",\n        \"name\": \"Bob Cat\",\n        \"profileUrl\"\
-        : null,\n        \"updated\": \"2019-02-21T03:29:00.173452\"\n      }\n  \
-        \  }\n  ],\n  \"next\": \"RDIwQUIwM0MtNUM2Ni00ODQ5LUFGRjMtNDk1MzNDQzE3MUVCCg==\"\
-        ,\n  \"prev\": \"MzY5RjkzQUQtNTM0NS00QjM0LUI0M0MtNjNBQUFGODQ5MTk2Cg==\",\n\
-        \  \"status\": 200,\n  \"totalCount\": 37\n}"
+      string: '{"status":200,"data":[{"id":"mg3","custom":null,"user":{"id":"mg3","name":"MAGNUM3","externalId":null,"profileUrl":null,"email":null,"custom":{"ZZZ":"IIII"},"created":"2019-08-18T12:56:23.449026Z","updated":"2019-08-18T12:56:23.449026Z","eTag":"AfjKyYTB8vSyVA"},"created":"2019-08-20T18:44:30.776833Z","updated":"2019-08-20T18:44:30.776833Z","eTag":"AY39mJKK//C0VA"}],"totalCount":1,"next":"MQ"}'
     headers:
     - !!python/tuple
-      - Access-Control-Allow-Origin
-      - - '*'
+      - Date
+      - - Tue, 20 Aug 2019 18:53:16 GMT
     - !!python/tuple
       - Content-Type
       - - application/json
     - !!python/tuple
-      - Date
-      - - Tue, 30 Jul 2019 17:57:24 GMT
-    - !!python/tuple
-      - Content-Length
-      - - '1455'
+      - Transfer-Encoding
+      - - chunked
     - !!python/tuple
       - Connection
       - - close
+    - !!python/tuple
+      - Server
+      - - nginx/1.15.6
+    - !!python/tuple
+      - Vary
+      - - Accept-Encoding
+    - !!python/tuple
+      - X-Consumed-Content-Encoding
+      - - gzip
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/spaces/main/users?count=True&limit=10&include=%5B%22custom%22%2C%20%22user%22%5D&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=fad8dc01-8290-4739-888d-97526afbefb2
+    url: http://ps.pndsn.com/v1/objects/demo/spaces/value1/users?count=True&include=custom,user,user.custom&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=eaf633c6-898f-48f6-8a71-b639320f814f
 version: 1

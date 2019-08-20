@@ -1,6 +1,6 @@
 interactions:
 - request:
-    body: null
+    body: '{"add": [{"id": "value1"}]}'
     headers:
       Accept:
       - '*/*'
@@ -9,41 +9,31 @@ interactions:
       Connection:
       - keep-alive
       Content-Length:
-      - '0'
+      - '27'
       User-Agent:
       - PubNub-Python/4.1.0
     method: PATCH
-    uri: http://ps.pndsn.com/v1/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/users/charlie/spaces?count=True&include=%22custom%22&limit=10
+    uri: http://ps.pndsn.com/v1/objects/demo/users/mg/spaces?include=custom%2Cspace%2Cspace.custom
   response:
     body:
-      string: "{\n  \"data\": [\n    {\n      \"created\": \"2019-02-20T23:11:20.893755\"\
-        ,\n      \"custom\": {\n        \"starred\": false\n      },\n      \"eTag\"\
-        : \"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg==\",\n      \"id\"\
-        : \"my-channel\",\n      \"space\": {\n        \"created\": \"2019-02-20T23:11:20.893755\"\
-        ,\n        \"description\": \"A space that is mine\",\n        \"eTag\": \"\
-        RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg==\",\n        \"id\": \"\
-        my-channel\",\n        \"name\": \"My space\",\n        \"updated\": \"2019-02-20T23:11:20.893755\"\
-        \n      },\n      \"updated\": \"2019-02-20T23:11:20.893755\"\n    },\n  \
-        \  {\n      \"created\": \"2019-02-20T23:11:20.893755\",\n      \"custom\"\
-        : {\n        \"starred\": true\n      },\n      \"eTag\": \"RUNDMDUwNjktNUYwRC00RTI0LUI1M0QtNUUzNkE2NkU0MEVFCg==\"\
-        ,\n      \"id\": \"main\",\n      \"space\": {\n        \"created\": \"2019-02-20T23:11:20.893755\"\
-        ,\n        \"custom\": {\n          \"motd\": \"Always check your spelling!\"\
-        ,\n          \"public\": true\n        },\n        \"description\": \"The\
-        \ main space\",\n        \"eTag\": \"RTc1NUQwNUItREMyNy00Q0YxLUJCNDItMEZDMTZDMzVCN0VGCg==\"\
-        ,\n        \"id\": \"main\",\n        \"name\": \"Main space\",\n        \"\
-        updated\": \"2019-02-20T23:11:20.893755\"\n      },\n      \"updated\": \"\
-        2019-02-20T23:11:20.893755\"\n    }\n  ],\n  \"next\": \"RDIwQUIwM0MtNUM2Ni00ODQ5LUFGRjMtNDk1MzNDQzE3MUVCCg==\"\
-        ,\n  \"prev\": \"MzY5RjkzQUQtNTM0NS00QjM0LUI0M0MtNjNBQUFGODQ5MTk2Cg==\",\n\
-        \  \"status\": 200,\n  \"totalCount\": 7\n}"
+      string: !!binary |
+        H4sIAAAAAAAAA4yQSwvCMBCE/8ueq01SW2tuxYtYRIQiqHhYk1ALfdkkokj/u/HQiw8Q9jK7387A
+        PEAbNFYDZ4R4INEg8MMDCgkcrlhaRcEDYbVpKuC1LUsPdItCAX+HaqzUoJnTUmnRFa0pmtqt8STk
+        h5PoFBr1cmGEzkYkHlGWMcbDKQ8nYxpN3ezdl23lX5zKMHdQggs87y/63kXJOof+WxAjGY35xHmE
+        4zCgLPgR9J0bgnbBrFqmqe/PyTaB/uhaUDfjLqsN9E8AAAD//wMA4a243FwBAAA=
     headers:
-      Access-Control-Allow-Origin:
-      - '*'
-      Content-Length:
-      - '1378'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json
       Date:
-      - Sat, 03 Aug 2019 22:33:56 GMT
+      - Tue, 20 Aug 2019 18:42:55 GMT
+      Server:
+      - nginx/1.15.6
+      Vary:
+      - Accept-Encoding
     status:
       code: 200
       message: OK

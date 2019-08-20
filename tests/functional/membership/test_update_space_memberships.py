@@ -14,7 +14,7 @@ def test_get_space_memberships():
     config.subscribe_key = SUB_KEY
     config.auth_key = AUTH
     membership = PubNub(config).update_space_memberships()
-    membership.include('custom').limit(30).end('XXX')
+    membership.include(['custom']).limit(30).end('XXX')
 
     with pytest.raises(PubNubException):
         membership.validate_params()
@@ -23,7 +23,7 @@ def test_get_space_memberships():
     assert membership.build_path() == UpdateSpaceMemberships.UPDATE_SPACE_MEMBERSHIPS_PATH % (SUB_KEY, 'foo')
 
     params = membership.custom_params()
-    assert params['include'] == '%22custom%22'
+    assert params['include'] == 'custom'
     assert params['limit'] == 30
     assert params['end'] == 'XXX'
     assert 'count' not in params

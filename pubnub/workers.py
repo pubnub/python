@@ -72,19 +72,19 @@ class SubscribeMessageWorker(object):
         elif message.is_object:
             if message.payload['type'] == 'user':
                 user_result = PNUserResult(  # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
-                    type=message.payload['event'],
+                    event=message.payload['event'],
                     data=message.payload['data']
                 )
                 self._listener_manager.announce_user(user_result)
             elif message.payload['type'] == 'space':
                 space_result = PNSpaceResult(  # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
-                    type=message.payload['event'],
+                    event=message.payload['event'],
                     data=message.payload['data']
                 )
                 self._listener_manager.announce_space(space_result)
             else:
                 membership_result = PNMembershipResult(  # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
-                    type=message.payload['event'],
+                    event=message.payload['event'],
                     data=message.payload['data']
                 )
                 self._listener_manager.announce_membership(membership_result)

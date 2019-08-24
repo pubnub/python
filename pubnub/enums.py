@@ -77,8 +77,8 @@ class PNOperationType(object):
     PNDeleteSpaceOperation = 36
     PNGetMembersOperation = 37
     PNGetSpaceMembershipsOperation = 38
-    PNUpdateMembersOperation = 39
-    PNUpdateSpaceMembershipsOperation = 40
+    PNManageMembersOperation = 39
+    PNManageMembershipsOperation = 40
 
 
 class PNHeartbeatNotificationOptions(object):

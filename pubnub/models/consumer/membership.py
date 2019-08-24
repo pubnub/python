@@ -15,12 +15,12 @@ class PNGetSpaceMembershipsResult(object):
         return "Get space memberships success with data: %s" % self.space
 
 
-class PNUpdateSpaceMembershipsResult(object):
+class PNManageMembershipsResult(object):
     def __init__(self, result):
         """
-        Representation of update space memeberships response
+        Representation of manage memeberships response
 
-        :param result: result of update space memeberships operation
+        :param result: result of manage memeberships operation
         """
         self.data = result['data']
         self.status = result['status']
@@ -29,7 +29,7 @@ class PNUpdateSpaceMembershipsResult(object):
         self.prev = result.get('prev', None)
 
     def __str__(self):
-        return "Update space memebership success with data: %s" % self.data
+        return "Manage memeberships success with data: %s" % self.data
 
 
 class PNGetMembersResult(object):
@@ -49,12 +49,12 @@ class PNGetMembersResult(object):
         return "Get members success with data: %s" % self.data
 
 
-class PNUpdateMembersResult(object):
+class PNManageMembersResult(object):
     def __init__(self, result):
         """
-        Representation of update members server response
+        Representation of manage members server response
 
-        :param result: result of update members operation
+        :param result: result of manage members operation
         """
         self.data = result['data']
         self.status = result['status']
@@ -63,7 +63,7 @@ class PNUpdateMembersResult(object):
         self.prev = result.get('prev', None)
 
     def __str__(self):
-        return "Update update members success with data: %s" % self.data
+        return "Manage members success with data: %s" % self.data
 
 
 class PNMembershipResult(object):

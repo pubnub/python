@@ -1,7 +1,7 @@
 import pytest
 from pubnub.pubnub import PubNub
 from pubnub.pnconfiguration import PNConfiguration
-from pubnub.endpoints.membership.update_space_memberships import UpdateSpaceMemberships
+from pubnub.endpoints.membership.manage_memberships import ManageMemberships
 from pubnub.exceptions import PubNubException
 
 
@@ -9,18 +9,18 @@ SUB_KEY = 'sub'
 AUTH = 'auth'
 
 
-def test_get_space_memberships():
+def test_manage_memberships():
     config = PNConfiguration()
     config.subscribe_key = SUB_KEY
     config.auth_key = AUTH
-    membership = PubNub(config).update_space_memberships()
+    membership = PubNub(config).manage_memberships()
     membership.include(['custom']).limit(30).end('XXX')
 
     with pytest.raises(PubNubException):
         membership.validate_params()
 
     membership.user_id('foo')
-    assert membership.build_path() == UpdateSpaceMemberships.UPDATE_SPACE_MEMBERSHIPS_PATH % (SUB_KEY, 'foo')
+    assert membership.build_path() == ManageMemberships.MANAGE_MEMBERSHIPS_PATH % (SUB_KEY, 'foo')
 
     params = membership.custom_params()
     assert params['include'] == 'custom'

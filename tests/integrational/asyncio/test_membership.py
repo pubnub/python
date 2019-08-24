@@ -4,7 +4,7 @@ from tests.helper import pnconf_obj_copy
 from tests.integrational.vcr_helper import pn_vcr
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
 from pubnub.models.consumer.membership import (PNGetMembersResult, PNGetSpaceMembershipsResult,
-                                               PNUpdateMembersResult, PNUpdateSpaceMembershipsResult)
+                                               PNManageMembersResult, PNManageMembershipsResult)
 from pubnub.models.consumer.common import PNStatus
 
 
@@ -56,15 +56,15 @@ def test_get_space_memberships(event_loop):
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/members/update_space_memberships.yaml',
                      filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
-def test_update_space_memberships(event_loop):
+def test_manage_memberships(event_loop):
     config = pnconf_obj_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    envelope = yield from pn.update_space_memberships().user_id('mg').data(
+    envelope = yield from pn.manage_memberships().user_id('mg').data(
         {'add': [{'id': 'value1'}]}).include(['custom', 'space', 'space.custom']).future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
-    assert isinstance(envelope.result, PNUpdateSpaceMembershipsResult)
+    assert isinstance(envelope.result, PNManageMembershipsResult)
     assert isinstance(envelope.status, PNStatus)
     data = envelope.result.data
     assert len(data) == 1
@@ -78,15 +78,15 @@ def test_update_space_memberships(event_loop):
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/members/update_members.yaml',
                      filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
-def test_update_members(event_loop):
+def test_manage_members(event_loop):
     config = pnconf_obj_copy()
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    envelope = yield from pn.update_members().space_id('value1').data(
+    envelope = yield from pn.manage_members().space_id('value1').data(
         {'add': [{'id': 'mg3'}]}).include(['custom', 'user', 'user.custom']).future()
 
     assert(isinstance(envelope, AsyncioEnvelope))
     assert not envelope.status.is_error()
-    assert isinstance(envelope.result, PNUpdateMembersResult)
+    assert isinstance(envelope.result, PNManageMembersResult)
     assert isinstance(envelope.status, PNStatus)
     data = envelope.result.data
     assert len(data) == 2

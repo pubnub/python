@@ -3,7 +3,7 @@ from tests.integrational.vcr_helper import pn_vcr
 from pubnub.structures import Envelope
 from pubnub.pubnub import PubNub
 from pubnub.models.consumer.membership import (PNGetMembersResult, PNGetSpaceMembershipsResult,
-                                               PNUpdateSpaceMembershipsResult, PNUpdateMembersResult)
+                                               PNManageMembershipsResult, PNManageMembersResult)
 from pubnub.models.consumer.common import PNStatus
 
 
@@ -50,15 +50,15 @@ def test_get_space_memberships():
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/members/update_space_memberships.yaml',
                      filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
-def test_update_space_memberships():
+def test_manage_memberships():
     config = pnconf_obj_copy()
     pn = PubNub(config)
-    envelope = pn.update_space_memberships().user_id('mg').data(
+    envelope = pn.manage_memberships().user_id('mg').data(
         {'add': [{'id': 'value1'}]}).include(['custom', 'space', 'space.custom']).sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
-    assert isinstance(envelope.result, PNUpdateSpaceMembershipsResult)
+    assert isinstance(envelope.result, PNManageMembershipsResult)
     assert isinstance(envelope.status, PNStatus)
     data = envelope.result.data
     assert len(data) == 1
@@ -71,15 +71,15 @@ def test_update_space_memberships():
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/members/update_members.yaml',
                      filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
-def test_update_members():
+def test_manage_members():
     config = pnconf_obj_copy()
     pn = PubNub(config)
-    envelope = pn.update_members().space_id('value1').data(
+    envelope = pn.manage_members().space_id('value1').data(
         {'add': [{'id': 'mg3'}]}).include(['custom', 'user', 'user.custom']).sync()
 
     assert(isinstance(envelope, Envelope))
     assert not envelope.status.is_error()
-    assert isinstance(envelope.result, PNUpdateMembersResult)
+    assert isinstance(envelope.result, PNManageMembersResult)
     assert isinstance(envelope.status, PNStatus)
     data = envelope.result.data
     assert len(data) == 2

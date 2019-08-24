@@ -37,8 +37,8 @@ from .endpoints.space.delete_space import DeleteSpace
 from .endpoints.space.create_space import CreateSpace
 from .endpoints.membership.get_space_memberships import GetSpaceMemberships
 from .endpoints.membership.get_members import GetMembers
-from .endpoints.membership.update_members import UpdateMembers
-from .endpoints.membership.update_space_memberships import UpdateSpaceMemberships
+from .endpoints.membership.manage_members import ManageMembers
+from .endpoints.membership.manage_memberships import ManageMemberships
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -219,11 +219,11 @@ class PubNubCore:
     def get_members(self):
         return GetMembers(self)
 
-    def update_members(self):
-        return UpdateMembers(self)
+    def manage_members(self):
+        return ManageMembers(self)
 
-    def update_space_memberships(self):
-        return UpdateSpaceMemberships(self)
+    def manage_memberships(self):
+        return ManageMemberships(self)
 
     def time(self):
         return Time(self)

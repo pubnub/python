@@ -2,28 +2,28 @@ import six
 
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.models.consumer.membership import PNUpdateMembersResult
+from pubnub.models.consumer.membership import PNManageMembershipsResult
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.exceptions import PubNubException
 
 
-class UpdateMembers(Endpoint):
-    UPDATE_MEMBERS_PATH = '/v1/objects/%s/spaces/%s/users'
+class ManageMemberships(Endpoint):
+    MANAGE_MEMBERSHIPS_PATH = '/v1/objects/%s/users/%s/spaces'
     MAX_LIMIT = 100
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
         self._start = None
         self._end = None
-        self._limit = UpdateMembers.MAX_LIMIT
+        self._limit = ManageMemberships.MAX_LIMIT
         self._count = False
         self._include = None
-        self._space_id = None
+        self._user_id = None
         self._data = None
 
-    def space_id(self, space_id):
-        assert isinstance(space_id, six.string_types)
-        self._space_id = space_id
+    def user_id(self, user_id):
+        assert isinstance(user_id, six.string_types)
+        self._user_id = user_id
         return self
 
     def start(self, start):
@@ -70,7 +70,7 @@ class UpdateMembers(Endpoint):
         if self._count is True:
             params['count'] = True
 
-        if self._limit != UpdateMembers.MAX_LIMIT:
+        if self._limit != ManageMemberships.MAX_LIMIT:
             params['limit'] = self._limit
 
         if self._include:
@@ -79,9 +79,9 @@ class UpdateMembers(Endpoint):
         return params
 
     def build_path(self):
-        if self._space_id is None:
-            raise PubNubException('Provide space_id.')
-        return UpdateMembers.UPDATE_MEMBERS_PATH % (self.pubnub.config.subscribe_key, self._space_id)
+        if self._user_id is None:
+            raise PubNubException('Provide user_id.')
+        return ManageMemberships.MANAGE_MEMBERSHIPS_PATH % (self.pubnub.config.subscribe_key, self._user_id)
 
     def http_method(self):
         return HttpMethod.PATCH
@@ -91,11 +91,11 @@ class UpdateMembers(Endpoint):
 
     def validate_params(self):
         self.validate_subscribe_key()
-        if self._space_id is None:
-            raise PubNubException('Provide space_id.')
+        if self._user_id is None:
+            raise PubNubException('Provide user_id.')
 
     def create_response(self, envelope):   # pylint: disable=W0221
-        return PNUpdateMembersResult(envelope)
+        return PNManageMembershipsResult(envelope)
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout
@@ -104,7 +104,7 @@ class UpdateMembers(Endpoint):
         return self.pubnub.config.connect_timeout
 
     def operation_type(self):
-        return PNOperationType.PNUpdateMembersOperation
+        return PNOperationType.PNManageMembershipsOperation
 
     def name(self):
-        return 'Update members'
+        return 'Update space memberships'

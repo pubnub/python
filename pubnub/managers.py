@@ -476,8 +476,8 @@ class TelemetryManager(object):  # pylint: disable=W0612
             PNOperationType.PNDeleteSpaceOperation: 'obj',
             PNOperationType.PNGetMembersOperation: 'obj',
             PNOperationType.PNGetSpaceMembershipsOperation: 'obj',
-            PNOperationType.PNUpdateMembersOperation: 'obj',
-            PNOperationType.PNUpdateSpaceMembershipsOperation: 'obj',
+            PNOperationType.PNManageMembersOperation: 'obj',
+            PNOperationType.PNManageMembershipsOperation: 'obj',
         }[operation_type]
 
         return endpoint

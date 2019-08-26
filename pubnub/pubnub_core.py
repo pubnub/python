@@ -25,6 +25,20 @@ from .endpoints.presence.where_now import WhereNow
 from .endpoints.history_delete import HistoryDelete
 from .endpoints.message_count import MessageCount
 from .endpoints.signal import Signal
+from .endpoints.users.get_users import GetUsers
+from .endpoints.users.create_user import CreateUser
+from .endpoints.users.get_user import GetUser
+from .endpoints.users.update_user import UpdateUser
+from .endpoints.users.delete_user import DeleteUser
+from .endpoints.space.get_spaces import GetSpaces
+from .endpoints.space.get_space import GetSpace
+from .endpoints.space.update_space import UpdateSpace
+from .endpoints.space.delete_space import DeleteSpace
+from .endpoints.space.create_space import CreateSpace
+from .endpoints.membership.get_space_memberships import GetSpaceMemberships
+from .endpoints.membership.get_members import GetMembers
+from .endpoints.membership.manage_members import ManageMembers
+from .endpoints.membership.manage_memberships import ManageMemberships
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -168,6 +182,48 @@ class PubNubCore:
 
     def signal(self):
         return Signal(self)
+
+    def get_users(self):
+        return GetUsers(self)
+
+    def create_user(self):
+        return CreateUser(self)
+
+    def get_user(self):
+        return GetUser(self)
+
+    def update_user(self):
+        return UpdateUser(self)
+
+    def delete_user(self):
+        return DeleteUser(self)
+
+    def get_spaces(self):
+        return GetSpaces(self)
+
+    def get_space(self):
+        return GetSpace(self)
+
+    def update_space(self):
+        return UpdateSpace(self)
+
+    def delete_space(self):
+        return DeleteSpace(self)
+
+    def create_space(self):
+        return CreateSpace(self)
+
+    def get_space_memberships(self):
+        return GetSpaceMemberships(self)
+
+    def get_members(self):
+        return GetMembers(self)
+
+    def manage_members(self):
+        return ManageMembers(self)
+
+    def manage_memberships(self):
+        return ManageMemberships(self)
 
     def time(self):
         return Time(self)

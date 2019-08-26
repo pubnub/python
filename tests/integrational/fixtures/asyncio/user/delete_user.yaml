@@ -1,0 +1,29 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
+    method: DELETE
+    uri: http://ps.pndsn.com/v1/objects/demo/users/mg
+  response:
+    body:
+      string: '{"status":200,"data":null}'
+    headers:
+      Connection: keep-alive
+      Content-Length: '26'
+      Content-Type: application/json
+      Date: Mon, 19 Aug 2019 21:02:59 GMT
+      Server: nginx/1.15.6
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v1/objects/demo/users/mg
+        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=1e0a67ef-817e-4f95-a90d-c089b4f6f8d8
+        - ''
+version: 1

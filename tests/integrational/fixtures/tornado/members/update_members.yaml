@@ -1,0 +1,41 @@
+interactions:
+- request:
+    body: '{"add": [{"id": "mg3"}]}'
+    headers:
+      Accept-Encoding:
+      - utf-8
+      User-Agent:
+      - PubNub-Python-Tornado/4.1.0
+    method: PATCH
+    uri: http://ps.pndsn.com/v1/objects/demo/spaces/value1/users?include=custom%2Cuser%2Cuser.custom
+  response:
+    body:
+      string: '{"status":200,"data":[{"id":"mg","custom":null,"user":{"id":"mg","name":"number
+        3","externalId":null,"profileUrl":null,"email":null,"custom":{"XXX":"YYYY"},"created":"2019-08-19T21:04:00.148418Z","updated":"2019-08-19T21:04:59.878283Z","eTag":"Af/+vv+glMjK3gE"},"created":"2019-08-20T18:56:06.814728Z","updated":"2019-08-20T18:56:06.814728Z","eTag":"AY39mJKK//C0VA"},{"id":"mg3","custom":null,"user":{"id":"mg3","name":"MAGNUM3","externalId":null,"profileUrl":null,"email":null,"custom":{"ZZZ":"IIII"},"created":"2019-08-18T12:56:23.449026Z","updated":"2019-08-18T12:56:23.449026Z","eTag":"AfjKyYTB8vSyVA"},"created":"2019-08-20T18:57:59.610446Z","updated":"2019-08-20T18:57:59.610446Z","eTag":"AY39mJKK//C0VA"}],"next":"Mg"}'
+    headers:
+    - !!python/tuple
+      - Date
+      - - Tue, 20 Aug 2019 18:57:59 GMT
+    - !!python/tuple
+      - Content-Type
+      - - application/json
+    - !!python/tuple
+      - Transfer-Encoding
+      - - chunked
+    - !!python/tuple
+      - Connection
+      - - close
+    - !!python/tuple
+      - Server
+      - - nginx/1.15.6
+    - !!python/tuple
+      - Vary
+      - - Accept-Encoding
+    - !!python/tuple
+      - X-Consumed-Content-Encoding
+      - - gzip
+    status:
+      code: 200
+      message: OK
+    url: http://ps.pndsn.com/v1/objects/demo/spaces/value1/users?include=custom,user,user.custom&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=418f4ab8-a5ea-4316-91b4-e831c138d71c
+version: 1

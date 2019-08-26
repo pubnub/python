@@ -2,7 +2,7 @@ import logging
 import threading
 import requests
 import six
-import json # noqa # pylint: disable=W0611
+import json  # noqa # pylint: disable=W0611
 
 from requests import Session
 from requests.adapters import HTTPAdapter
@@ -189,7 +189,7 @@ class RequestsRequestHandler(BaseRequestHandler):
             'timeout': (e_options.connect_timeout, e_options.request_timeout)
         }
 
-        if e_options.is_post():
+        if e_options.is_post() or e_options.is_patch():
             args['data'] = e_options.data
             logger.debug("%s %s %s" % (
                 e_options.method_string,

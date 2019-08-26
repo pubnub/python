@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - utf-8
+      User-Agent:
+      - PubNub-Python-Tornado/4.1.0
+    method: DELETE
+    uri: http://ps.pndsn.com/v1/objects/demo/users/mg
+  response:
+    body:
+      string: '{"status":200,"data":null}'
+    headers:
+    - !!python/tuple
+      - Date
+      - - Mon, 19 Aug 2019 20:58:14 GMT
+    - !!python/tuple
+      - Content-Type
+      - - application/json
+    - !!python/tuple
+      - Content-Length
+      - - '26'
+    - !!python/tuple
+      - Connection
+      - - close
+    - !!python/tuple
+      - Server
+      - - nginx/1.15.6
+    status:
+      code: 200
+      message: OK
+    url: http://ps.pndsn.com/v1/objects/demo/users/mg?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=f31366e5-e3e1-4d8c-be9f-3a437c3687de
+version: 1

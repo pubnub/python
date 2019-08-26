@@ -33,6 +33,7 @@ class SubscribeMessage:
         self.publish_metadata = None
         self.only_channel_subscription = False
         self.is_signal = False
+        self.is_object = False
 
     @classmethod
     def from_json(cls, json_input):
@@ -52,6 +53,8 @@ class SubscribeMessage:
         message.publish_metadata = PublishMetadata.from_json(json_input['p'])
         if 'e' in json_input and json_input['e'] == 1:
             message.is_signal = True
+        if 'e' in json_input and json_input['e'] == 2:
+            message.is_object = True
         return message
 
 

@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: '{"add": [{"id": "value1"}]}'
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
+    method: PATCH
+    uri: http://ps.pndsn.com/v1/objects/demo/users/mg/spaces?include=custom%2Cspace%2Cspace.custom
+  response:
+    body:
+      string: '{"status":200,"data":[{"id":"value1","custom":null,"space":{"id":"value1","name":"value2","description":"abcd","custom":null,"created":"2019-08-12T22:57:54.167167Z","updated":"2019-08-12T22:57:54.167167Z","eTag":"AaHahZqsyr6AOg"},"created":"2019-08-20T19:01:57.736172Z","updated":"2019-08-20T19:01:57.736172Z","eTag":"AY39mJKK//C0VA"}],"next":"MQ"}'
+    headers:
+      Connection: keep-alive
+      Content-Encoding: gzip
+      Content-Type: application/json
+      Date: Tue, 20 Aug 2019 19:01:57 GMT
+      Server: nginx/1.15.6
+      Transfer-Encoding: chunked
+      Vary: Accept-Encoding
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v1/objects/demo/users/mg/spaces
+        - include=custom,space,space.custom&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=ca41ef07-c7db-4874-be1d-7039c919ef6f
+        - ''
+version: 1

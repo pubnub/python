@@ -207,6 +207,18 @@ class ListenerManager(object):
         for callback in self._listeners:
             callback.signal(self._pubnub, signal)
 
+    def announce_user(self, user):
+        for callback in self._listeners:
+            callback.user(self._pubnub, user)
+
+    def announce_space(self, space):
+        for callback in self._listeners:
+            callback.space(self._pubnub, space)
+
+    def announce_membership(self, membership):
+        for callback in self._listeners:
+            callback.membership(self._pubnub, membership)
+
     def announce_presence(self, presence):
         for callback in self._listeners:
             callback.presence(self._pubnub, presence)
@@ -448,9 +460,24 @@ class TelemetryManager(object):  # pylint: disable=W0612
             PNOperationType.PNAccessManagerAudit: 'pam',
             PNOperationType.PNAccessManagerGrant: 'pam',
             PNOperationType.PNAccessManagerRevoke: 'pam',
-
             PNOperationType.PNTimeOperation: 'pam',
+
             PNOperationType.PNSignalOperation: 'sig',
+
+            PNOperationType.PNGetUsersOperation: 'obj',
+            PNOperationType.PNCreateUserOperation: 'obj',
+            PNOperationType.PNGetUserOperation: 'obj',
+            PNOperationType.PNUpdateUserOperation: 'obj',
+            PNOperationType.PNDeleteUserOperation: 'obj',
+            PNOperationType.PNGetSpacesOperation: 'obj',
+            PNOperationType.PNCreateSpaceOperation: 'obj',
+            PNOperationType.PNGetSpaceOperation: 'obj',
+            PNOperationType.PNUpdateSpaceOperation: 'obj',
+            PNOperationType.PNDeleteSpaceOperation: 'obj',
+            PNOperationType.PNGetMembersOperation: 'obj',
+            PNOperationType.PNGetSpaceMembershipsOperation: 'obj',
+            PNOperationType.PNManageMembersOperation: 'obj',
+            PNOperationType.PNManageMembershipsOperation: 'obj',
         }[operation_type]
 
         return endpoint

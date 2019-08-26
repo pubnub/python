@@ -59,6 +59,10 @@ message_count_config.publish_key = 'demo-36'
 message_count_config.subscribe_key = 'demo-36'
 message_count_config.origin = 'balancer1g.bronze.aws-pdx-1.ps.pn'
 
+objects_config = PNConfiguration()
+objects_config.publish_key = 'demo'
+objects_config.subscribe_key = 'demo'
+
 
 def pnconf_copy():
     return copy(pnconf)
@@ -86,6 +90,10 @@ def pnconf_ssl_copy():
 
 def pnconf_mc_copy():
     return copy(message_count_config)
+
+
+def pnconf_obj_copy():
+    return copy(objects_config)
 
 
 sdk_name = "Python-UnitTest"

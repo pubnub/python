@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept-Encoding:
+      - utf-8
+      User-Agent:
+      - PubNub-Python-Tornado/4.1.0
+    method: GET
+    uri: http://ps.pndsn.com/v1/objects/demo/users/mg3/spaces?count=True&include=custom%2Cspace%2Cspace.custom
+  response:
+    body:
+      string: '{"status":200,"data":[{"id":"value1","custom":null,"space":{"id":"value1","name":"value2","description":"abcd","custom":null,"created":"2019-08-12T22:57:54.167167Z","updated":"2019-08-12T22:57:54.167167Z","eTag":"AaHahZqsyr6AOg"},"created":"2019-08-20T18:44:30.776833Z","updated":"2019-08-20T18:44:30.776833Z","eTag":"AY39mJKK//C0VA"}],"totalCount":1,"next":"MQ"}'
+    headers:
+    - !!python/tuple
+      - Date
+      - - Tue, 20 Aug 2019 18:53:15 GMT
+    - !!python/tuple
+      - Content-Type
+      - - application/json
+    - !!python/tuple
+      - Transfer-Encoding
+      - - chunked
+    - !!python/tuple
+      - Connection
+      - - close
+    - !!python/tuple
+      - Server
+      - - nginx/1.15.6
+    - !!python/tuple
+      - Vary
+      - - Accept-Encoding
+    - !!python/tuple
+      - X-Consumed-Content-Encoding
+      - - gzip
+    status:
+      code: 200
+      message: OK
+    url: http://ps.pndsn.com/v1/objects/demo/users/mg3/spaces?count=True&include=custom,space,space.custom&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=62d2895d-d784-42d9-a182-aa0e44e74874
+version: 1

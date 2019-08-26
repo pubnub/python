@@ -181,7 +181,7 @@ class Urllib2RequestHandler(BaseRequestHandler):
             'timeout': (e_options.connect_timeout, e_options.request_timeout)
         }
 
-        if e_options.is_post():
+        if e_options.is_post() or e_options.is_patch():
             args['data'] = e_options.data
             logger.debug("%s %s %s" % (e_options.method_string, url, e_options.data))
         else:

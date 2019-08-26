@@ -1,0 +1,29 @@
+interactions:
+- request:
+    body: '{"description": "desc"}'
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
+    method: PATCH
+    uri: http://ps.pndsn.com/v1/objects/demo/spaces/in_space?include=custom
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"in_space","name":"some_name","description":"desc","custom":{"a":3},"created":"2019-08-19T21:24:47.720337Z","updated":"2019-08-19T21:25:07.19264Z","eTag":"Ad/T8bjmyoKQWw"}}'
+    headers:
+      Connection: keep-alive
+      Content-Length: '199'
+      Content-Type: application/json
+      Date: Mon, 19 Aug 2019 21:25:07 GMT
+      Server: nginx/1.15.6
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v1/objects/demo/spaces/in_space
+        - include=custom&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=116bf7ab-5fa8-4735-8f23-3b458cfc336f
+        - ''
+version: 1

@@ -1,0 +1,29 @@
+interactions:
+- request:
+    body: '{"id": "mg", "name": "MAGNUM", "custom": {"XXX": "YYYY"}}'
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
+    method: POST
+    uri: http://ps.pndsn.com/v1/objects/demo/users?include=custom
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"mg","name":"MAGNUM","externalId":null,"profileUrl":null,"email":null,"custom":{"XXX":"YYYY"},"created":"2019-08-19T21:04:00.148418Z","updated":"2019-08-19T21:04:00.148418Z","eTag":"Aaa/h+eBi9elsgE"}}'
+    headers:
+      Connection: keep-alive
+      Content-Length: '227'
+      Content-Type: application/json
+      Date: Mon, 19 Aug 2019 21:04:00 GMT
+      Server: nginx/1.15.6
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v1/objects/demo/users
+        - include=custom&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=9065de8e-c73a-4fd8-80bc-a59644b08df8
+        - ''
+version: 1

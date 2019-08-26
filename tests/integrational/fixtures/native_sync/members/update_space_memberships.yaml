@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: '{"add": [{"id": "value1"}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '27'
+      User-Agent:
+      - PubNub-Python/4.1.0
+    method: PATCH
+    uri: http://ps.pndsn.com/v1/objects/demo/users/mg/spaces?include=custom%2Cspace%2Cspace.custom
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yQSwvCMBCE/8ueq01SW2tuxYtYRIQiqHhYk1ALfdkkokj/u/HQiw8Q9jK7387A
+        PEAbNFYDZ4R4INEg8MMDCgkcrlhaRcEDYbVpKuC1LUsPdItCAX+HaqzUoJnTUmnRFa0pmtqt8STk
+        h5PoFBr1cmGEzkYkHlGWMcbDKQ8nYxpN3ezdl23lX5zKMHdQggs87y/63kXJOof+WxAjGY35xHmE
+        4zCgLPgR9J0bgnbBrFqmqe/PyTaB/uhaUDfjLqsN9E8AAAD//wMA4a243FwBAAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 20 Aug 2019 18:42:55 GMT
+      Server:
+      - nginx/1.15.6
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

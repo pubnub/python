@@ -25,6 +25,15 @@ class SubscribeCallback(object):
     def signal(self, pubnub, signal):
         pass
 
+    def user(self, pubnub, user):
+        pass
+
+    def space(self, pubnub, space):
+        pass
+
+    def membership(self, pubnub, membership):
+        pass
+
 
 class ReconnectionCallback(object):
     @abstractmethod

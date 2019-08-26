@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.1.0
+    method: GET
+    uri: http://ps.pndsn.com/v1/objects/demo/users/mg3/spaces?count=True&include=custom%2Cspace%2Cspace.custom
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yQzWrDMBCE32XOTiIpsRPtzeRSEkopmEJTethIIjX4L5ZUWoLfveohlzaFwh52
+        hm9nYC/wgUP0ICVEBsuBQS8X1BaEd26ik8hgog99C+pi02TwAxsH+gl13LqrVklb581YD6Huu2Tz
+        0dhfSWZ0HNx3ihJSz8RmJlWlFOVryldzWazTHNJVHOy/OFfxKUEl3/Hb4ew/x6J8OGG6WbSpZEFL
+        TSs9V3mh/+q5hV1rnpe63e33i8VWPJWYXjOEPnCz7WMXQDK9xH2kBfePmL4AAAD//wMADdpHBmkB
+        AAA=
+    headers:
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 20 Aug 2019 18:40:54 GMT
+      Server:
+      - nginx/1.15.6
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

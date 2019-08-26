@@ -1,3 +1,9 @@
+## [4.1.6](https://github.com/pubnub/python/tree/v4.1.6)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.1.5...v4.1.6)
+
+- 🐛implement Objects API
+
 ## [4.1.5](https://github.com/pubnub/python/tree/v4.1.5)
 
   [Full Changelog](https://github.com/pubnub/python/compare/v4.1.4...v4.1.5)

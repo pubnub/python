@@ -66,7 +66,10 @@ class SubscribeMessageWorker(object):
                 occupancy=presence_payload.occupancy,
                 uuid=presence_payload.uuid,
                 timestamp=presence_payload.timestamp,
-                state=presence_payload.data
+                state=presence_payload.data,
+                join = message.payload.get('join', None),
+                leave = message.payload.get('leave', None),
+                timeout = message.payload.get('timeout', None)
             )
             self._listener_manager.announce_presence(pn_presence_event_result)
         elif message.is_object:

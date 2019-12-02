@@ -1,3 +1,9 @@
+## [4.1.7](https://github.com/pubnub/python/tree/v4.1.7)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.1.6...v4.1.7)
+
+- 🌟Add users join, leave and timeout fields to interval event
+
 ## [4.1.6](https://github.com/pubnub/python/tree/v4.1.6)
 
   [Full Changelog](https://github.com/pubnub/python/compare/v4.1.5...v4.1.6)

@@ -38,7 +38,7 @@ class PNSignalMessageResult(PNMessageResult):
 
 class PNPresenceEventResult(object):
     def __init__(self, event, uuid, timestamp, occupancy, subscription, channel,
-                 timetoken, state, user_metadata=None):
+                 timetoken, state, join, leave, timeout, user_metadata=None):
 
         assert isinstance(event, six.string_types)
         assert isinstance(timestamp, six.integer_types)
@@ -57,6 +57,9 @@ class PNPresenceEventResult(object):
         self.timestamp = timestamp
         self.occupancy = occupancy
         self.state = state
+        self.join = join
+        self.leave = leave
+        self.timeout = timeout
 
         # DEPRECATED: subscribed_channel and actual_channel properties are deprecated
         # self.subscribed_channel = subscribed_channel <= now known as subscription

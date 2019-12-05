@@ -1,8 +1,13 @@
 name: python
-version: 4.1.6
+version: 4.1.7
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.1.7
+    date: Dec 2, 2019
+    changes:
+      - type: improvement
+        text: Add users join, leave and timeout fields to interval event
   - version: v4.1.6
     date: Aug 24, 2019
     changes:

@@ -5,7 +5,7 @@ Possible responses of PAM request
 
 
 class _PAMResult(object):
-    def __init__(self, level, subscribe_key, channels, groups, ttl=None, r=None, w=None, m=None):
+    def __init__(self, level, subscribe_key, channels, groups, ttl=None, r=None, w=None, m=None, d=None):
         self.level = level
         self.subscribe_key = subscribe_key
         self.channels = channels
@@ -14,12 +14,13 @@ class _PAMResult(object):
         self.read_enabled = r
         self.write_enabled = w
         self.manage_enabled = m
+        self.delete_enabled = d
 
     @classmethod
     def from_json(cls, json_input):
         constructed_channels = {}
         constructed_groups = {}
-        r, w, m, ttl = fetch_permissions(json_input)
+        r, w, m, d, ttl = fetch_permissions(json_input)
 
         if 'channel' in json_input:
             channel_name = json_input['channel']
@@ -74,6 +75,7 @@ class _PAMResult(object):
             r=r,
             w=w,
             m=m,
+            d=d,
             ttl=ttl,
         )
 
@@ -91,24 +93,25 @@ class PNAccessManagerGrantResult(_PAMResult):
 
 
 class _PAMEntityData(object):
-    def __init__(self, name, auth_keys=None, r=None, w=None, m=None, ttl=None):
+    def __init__(self, name, auth_keys=None, r=None, w=None, m=None, d=None, ttl=None):
         self.name = name
         self.auth_keys = auth_keys
         self.read_enabled = r
         self.write_enabled = w
         self.manage_enabled = m
+        self.delete_enabled = d
         self.ttl = ttl
 
     @classmethod
     def from_json(cls, name, json_input):
-        r, w, m, ttl = fetch_permissions(json_input)
+        r, w, m, d, ttl = fetch_permissions(json_input)
         constructed_auth_keys = {}
 
         if 'auths' in json_input:
             for auth_key, value in json_input['auths'].items():
                 constructed_auth_keys[auth_key] = PNAccessManagerKeyData.from_json(value)
 
-        return cls(name, constructed_auth_keys, r, w, m)
+        return cls(name, constructed_auth_keys, r, w, m, d)
 
 
 class PNAccessManagerChannelData(_PAMEntityData):
@@ -120,22 +123,24 @@ class PNAccessManagerChannelGroupData(_PAMEntityData):
 
 
 class PNAccessManagerKeyData(object):
-    def __init__(self, r, w, m, ttl=None):
+    def __init__(self, r, w, m, d, ttl=None):
         self.read_enabled = r
         self.write_enabled = w
         self.manage_enabled = m
+        self.delete_enabled = d
         self.ttl = ttl
 
     @classmethod
     def from_json(cls, json_input):
-        r, w, m, ttl = fetch_permissions(json_input)
-        return PNAccessManagerKeyData(r, w, m, ttl)
+        r, w, m, d, ttl = fetch_permissions(json_input)
+        return PNAccessManagerKeyData(r, w, m, d, ttl)
 
 
 def fetch_permissions(json_input):
     r = None
     w = None
     m = None
+    d = None
     ttl = None
 
     if 'r' in json_input:
@@ -147,7 +152,10 @@ def fetch_permissions(json_input):
     if 'm' in json_input:
         m = json_input['m'] == 1
 
+    if 'd' in json_input:
+        d = json_input['d'] == 1
+
     if 'ttl' in json_input:
         ttl = json_input['ttl']
 
-    return r, w, m, ttl
+    return r, w, m, d, ttl

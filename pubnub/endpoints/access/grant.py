@@ -17,6 +17,7 @@ class Grant(Endpoint):
         self._read = None
         self._write = None
         self._manage = None
+        self._delete = None
         self._ttl = None
 
         self._sort_params = True
@@ -45,6 +46,10 @@ class Grant(Endpoint):
         self._manage = flag
         return self
 
+    def delete(self, flag):
+        self._delete = flag
+        return self
+
     def ttl(self, ttl):
         self._ttl = ttl
         return self
@@ -58,6 +63,8 @@ class Grant(Endpoint):
             params['w'] = '1' if self._write is True else '0'
         if self._manage is not None:
             params['m'] = '1' if self._manage is True else '0'
+        if self._delete is not None:
+            params['d'] = '1' if self._delete is True else '0'
 
         if len(self._auth_keys) > 0:
             params['auth'] = utils.join_items_and_encode(self._auth_keys)

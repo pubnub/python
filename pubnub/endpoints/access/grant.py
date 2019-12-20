@@ -7,7 +7,7 @@ from pubnub.models.consumer.access_manager import PNAccessManagerGrantResult
 
 
 class Grant(Endpoint):
-    GRANT_PATH = "/v1/auth/grant/sub-key/%s"
+    GRANT_PATH = "/v2/auth/grant/sub-key/%s"
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)

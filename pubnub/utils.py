@@ -15,7 +15,7 @@ except ImportError:
 
 import six
 
-from .enums import PNStatusCategory, PNOperationType, PNPushType
+from .enums import PNStatusCategory, PNOperationType, PNPushType, HttpMethod
 from .models.consumer.common import PNStatus
 from .errors import PNERR_JSON_NOT_SERIALIZABLE
 from .exceptions import PubNubException
@@ -173,3 +173,34 @@ def strip_right(text, suffix):
 
 def datetime_now():
     return datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+
+
+def sign_request(endpoint, pn, custom_params, method, body):
+    custom_params['timestamp'] = str(pn.timestamp())
+
+    request_url = endpoint.build_path()
+
+    encoded_query_string = prepare_pam_arguments(custom_params)
+
+    is_v2_signature = not(request_url.startswith("/publish") and method == HttpMethod.POST)
+
+    signed_input = ""
+    if not is_v2_signature:
+        signed_input += pn.config.subscribe_key + "\n"
+        signed_input += pn.config.publish_key + "\n"
+        signed_input += request_url + "\n"
+        signed_input += encoded_query_string
+    else:
+        signed_input += HttpMethod.string(method).upper() + "\n"
+        signed_input += pn.config.publish_key + "\n"
+        signed_input += request_url + "\n"
+        signed_input += encoded_query_string + "\n"
+        if body is not None:
+          signed_input += body
+
+    signature = sign_sha256(pn.config.secret_key, signed_input)
+    if is_v2_signature:
+        signature = signature.rstrip("=")
+        signature = "v2." + signature
+
+    custom_params['signature'] = signature

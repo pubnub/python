@@ -155,6 +155,9 @@ class PubNubAsyncio(PubNubCore):
                                   options.path, options.query_string)
         logger.debug("%s %s %s" % (options.method_string, log_url, options.data))
 
+        if options.method_string == "POST":
+            self.headers['Content-type'] = "application/json"
+
         if AIOHTTP_V in (1, 2):
             from yarl import URL
             url = URL(url, encoded=True)
@@ -287,7 +290,7 @@ class AsyncioReconnectionManager(ReconnectionManager):
 
     def start_polling(self):
         if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.NONE:
-            logger.warn("reconnection policy is disabled, please handle reconnection manually.")
+            logger.warning("reconnection policy is disabled, please handle reconnection manually.")
             return
 
         self._task = asyncio.ensure_future(self._register_heartbeat_timer())

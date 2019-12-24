@@ -2,33 +2,32 @@ interactions:
 - request:
     body: null
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
+      User-Agent:
+      - PubNub-Python-Asyncio/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=test-pam-asyncio-auth&channel-group=test-pam-asyncio-cg1%2Ctest-pam-asyncio-cg2&r=1&uuid=my_uuid&w=1
+    uri: http://ps.pndsn.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=test-pam-asyncio-auth&channel-group=test-pam-asyncio-cg1%2Ctest-pam-asyncio-cg2&r=1&uuid=my_uuid&w=1
   response:
-    body: {string: '{"message":"Success","payload":{"level":"channel-group+auth","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1440,"channel-groups":{"test-pam-asyncio-cg1":{"auths":{"test-pam-asyncio-auth":{"r":1,"w":1,"m":0}}},"test-pam-asyncio-cg2":{"auths":{"test-pam-asyncio-auth":{"r":1,"w":1,"m":0}}}}},"service":"Access
-        Manager","status":200}'}
-    headers: {ACCESS-CONTROL-ALLOW-HEADERS: 'Origin, X-Requested-With, Content-Type,
-        Accept', ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
-      CACHE-CONTROL: 'no-cache, no-store, must-revalidate', CONNECTION: keep-alive,
-      CONTENT-LENGTH: '351', CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Fri,
-        16 Dec 2016 13:52:14 GMT'}
-    status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=test-pam-asyncio-auth&channel-group=test-pam-asyncio-cg1,test-pam-asyncio-cg2&pnsdk=PubNub-Python-Asyncio%2F4.0.4&r=1&signature=Lokw1jIF_zlAlk8VKfDZGechmTe9u6HaeSnvtaaQtXM=&timestamp=1481896333&uuid=my_uuid&w=1
-- request:
-    body: null
+    body:
+      string: '{"message":"Success","payload":{"level":"channel-group+auth","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1440,"channel-groups":{"test-pam-asyncio-cg1":{"auths":{"test-pam-asyncio-auth":{"r":1,"w":1,"m":0,"d":0}}},"test-pam-asyncio-cg2":{"auths":{"test-pam-asyncio-auth":{"r":1,"w":1,"m":0,"d":0}}}}},"service":"Access
+        Manager","status":200}'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
-    method: GET
-    uri: http://ps.pndsn.com/v1/auth/audit/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?channel-group=test-pam-asyncio-cg1%2Ctest-pam-asyncio-cg2&uuid=my_uuid
-  response:
-    body: {string: '{"message":"Success","payload":{"level":"channel-group","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","channel-groups":{"test-pam-asyncio-cg1":{"r":1,"m":0,"w":1,"ttl":1440,"auths":{"test-pam-asyncio-auth":{"r":1,"m":0,"w":1,"ttl":1440}}},"test-pam-asyncio-cg2":{"r":1,"m":0,"w":1,"ttl":1440,"auths":{"test-pam-asyncio-auth":{"r":1,"m":0,"w":1,"ttl":1440}}}}},"service":"Access
-        Manager","status":200}'}
-    headers: {ACCESS-CONTROL-ALLOW-HEADERS: 'Origin, X-Requested-With, Content-Type,
-        Accept', ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
-      CACHE-CONTROL: 'no-cache, no-store, must-revalidate', CONNECTION: keep-alive,
-      CONTENT-LENGTH: '415', CONTENT-TYPE: text/javascript; charset=UTF-8, DATE: 'Fri,
-        16 Dec 2016 13:52:14 GMT'}
-    status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/auth/audit/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?channel-group=test-pam-asyncio-cg1,test-pam-asyncio-cg2&pnsdk=PubNub-Python-Asyncio%2F4.0.4&signature=ZgUT1TBwYYEChvdtr2xQS3Ln7YZD2b6R8ktUW44zbkY=&timestamp=1481896334&uuid=my_uuid
+      Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods: GET
+      Access-Control-Allow-Origin: '*'
+      Cache-Control: no-cache, no-store, must-revalidate
+      Connection: keep-alive
+      Content-Length: '363'
+      Content-Type: text/javascript; charset=UTF-8
+      Date: Tue, 24 Dec 2019 12:05:40 GMT
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - http
+        - ps.pndsn.com
+        - /v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f
+        - auth=test-pam-asyncio-auth&channel-group=test-pam-asyncio-cg1,test-pam-asyncio-cg2&pnsdk=PubNub-Python-Asyncio%2F4.1.0&r=1&signature=v2.pjnKPVphocAsl8BsxLeirCZMbNVzNOQV3CS6mfm1Bbc&timestamp=1577189139&uuid=my_uuid&w=1
+        - ''
 version: 1

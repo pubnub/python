@@ -80,6 +80,8 @@ class PNOperationType(object):
     PNManageMembersOperation = 39
     PNManageMembershipsOperation = 40
 
+    PNAccessManagerGrantToken = 41
+
 
 class PNHeartbeatNotificationOptions(object):
     NONE = 1
@@ -97,3 +99,15 @@ class PNPushType(object):
     APNS = 1
     MPNS = 2
     GCM = 3
+
+
+class PNResourceType(object):
+    CHANNEL = "channel"
+    GROUP = "group"
+    USER = "user"
+    SPACE = "space"
+
+
+class PNMatchType(object):
+    RESOURCE = "resource"
+    PATTERN = "pattern"

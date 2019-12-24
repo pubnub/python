@@ -15,9 +15,9 @@ except ImportError:
 
 import six
 
-from .enums import PNStatusCategory, PNOperationType, PNPushType
+from .enums import PNStatusCategory, PNOperationType, PNPushType, HttpMethod
 from .models.consumer.common import PNStatus
-from .errors import PNERR_JSON_NOT_SERIALIZABLE
+from .errors import PNERR_JSON_NOT_SERIALIZABLE, PNERR_PERMISSION_MISSING
 from .exceptions import PubNubException
 
 
@@ -173,3 +173,108 @@ def strip_right(text, suffix):
 
 def datetime_now():
     return datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+
+
+def sign_request(endpoint, pn, custom_params, method, body):
+    custom_params['timestamp'] = str(pn.timestamp())
+
+    request_url = endpoint.build_path()
+
+    encoded_query_string = prepare_pam_arguments(custom_params)
+
+    is_v2_signature = not (request_url.startswith("/publish") and method == HttpMethod.POST)
+
+    signed_input = ""
+    if not is_v2_signature:
+        signed_input += pn.config.subscribe_key + "\n"
+        signed_input += pn.config.publish_key + "\n"
+        signed_input += request_url + "\n"
+        signed_input += encoded_query_string
+    else:
+        signed_input += HttpMethod.string(method).upper() + "\n"
+        signed_input += pn.config.publish_key + "\n"
+        signed_input += request_url + "\n"
+        signed_input += encoded_query_string + "\n"
+        if body is not None:
+            signed_input += body
+
+    signature = sign_sha256(pn.config.secret_key, signed_input)
+    if is_v2_signature:
+        signature = signature.rstrip("=")
+        signature = "v2." + signature
+
+    custom_params['signature'] = signature
+
+
+def parse_resources(resource_list, resource_set_name, resources, patterns):
+    if resource_list is not None:
+        for pn_resource in resource_list:
+            resource_object = {}
+
+            if pn_resource.is_pattern_resource():
+                determined_object = patterns
+            else:
+                determined_object = resources
+
+            if resource_set_name in determined_object:
+                determined_object[resource_set_name][pn_resource.get_id()] = calculate_bitmask(pn_resource)
+            else:
+                resource_object[pn_resource.get_id()] = calculate_bitmask(pn_resource)
+                determined_object[resource_set_name] = resource_object
+
+    if resource_set_name not in resources:
+        resources[resource_set_name] = {}
+
+    if resource_set_name not in patterns:
+        patterns[resource_set_name] = {}
+
+
+def calculate_bitmask(pn_resource):
+    bit_sum = 0
+    from .endpoints.access.grant_token import GrantToken
+
+    if pn_resource.is_read() is True:
+        bit_sum += GrantToken.READ
+
+    if pn_resource.is_write() is True:
+        bit_sum += GrantToken.WRITE
+
+    if pn_resource.is_manage() is True:
+        bit_sum += GrantToken.MANAGE
+
+    if pn_resource.is_delete() is True:
+        bit_sum += GrantToken.DELETE
+
+    if pn_resource.is_create() is True:
+        bit_sum += GrantToken.CREATE
+
+    if bit_sum == 0:
+        raise PubNubException(pn_error=PNERR_PERMISSION_MISSING)
+
+    return bit_sum
+
+
+def decode_utf8_dict(dic):
+    if isinstance(dic, bytes):
+        return dic.decode("utf-8")
+    elif isinstance(dic, dict):
+        new_dic = {}
+
+        for key in dic:
+            new_key = key
+            if isinstance(key, bytes):
+                new_key = key.decode("UTF-8")
+
+            if new_key == "sig" and isinstance(dic[key], bytes):
+                new_dic[new_key] = dic[key]
+            else:
+                new_dic[new_key] = decode_utf8_dict(dic[key])
+
+        return new_dic
+    elif isinstance(dic, list):
+        new_l = []
+        for e in dic:
+            new_l.append(decode_utf8_dict(e))
+        return new_l
+    else:
+        return dic

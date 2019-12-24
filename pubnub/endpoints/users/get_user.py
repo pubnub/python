@@ -1,8 +1,9 @@
 import six
 
 from pubnub.endpoints.endpoint import Endpoint
+from pubnub.managers import TokenManagerProperties
 from pubnub.models.consumer.user import PNGetUserResult
-from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.enums import HttpMethod, PNOperationType, PNResourceType
 from pubnub.exceptions import PubNubException
 
 
@@ -57,3 +58,9 @@ class GetUser(Endpoint):
 
     def name(self):
         return 'Get user'
+
+    def get_tms_properties(self):
+        return TokenManagerProperties(
+            resource_type=PNResourceType.USER,
+            resource_id=self._user_id
+        )

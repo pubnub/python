@@ -82,14 +82,14 @@ class _PAMResult(object):
 
 class PNAccessManagerAuditResult(_PAMResult):
     def __str__(self):
-        return "Current permissions are valid for %d minutes: read %s, write %s, manage: %s" % \
-               (self.ttl or 0, self.read_enabled, self.write_enabled, self.manage_enabled)
+        return "Current permissions are valid for %d minutes: read %s, write %s, manage: %s, delete: %s" % \
+               (self.ttl or 0, self.read_enabled, self.write_enabled, self.manage_enabled, self.delete_enabled)
 
 
 class PNAccessManagerGrantResult(_PAMResult):
     def __str__(self):
-        return "New permissions are set for %d minutes: read %s, write %s, manage: %s" % \
-               (self.ttl or 0, self.read_enabled, self.write_enabled, self.manage_enabled)
+        return "New permissions are set for %d minutes: read %s, write %s, manage: %s, delete: %s" % \
+               (self.ttl or 0, self.read_enabled, self.write_enabled, self.manage_enabled, self.delete_enabled)
 
 
 class _PAMEntityData(object):

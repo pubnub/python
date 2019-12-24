@@ -4,6 +4,8 @@ import json
 import uuid as u
 import threading
 
+from pubnub.endpoints.access.grant_token import GrantToken
+
 try:
     from hashlib import sha256
 
@@ -17,7 +19,7 @@ import six
 
 from .enums import PNStatusCategory, PNOperationType, PNPushType, HttpMethod
 from .models.consumer.common import PNStatus
-from .errors import PNERR_JSON_NOT_SERIALIZABLE
+from .errors import PNERR_JSON_NOT_SERIALIZABLE, PNERR_PERMISSION_MISSING
 from .exceptions import PubNubException
 
 
@@ -107,7 +109,7 @@ def is_subscribed_event(status):
 def is_unsubscribed_event(status):
     assert isinstance(status, PNStatus)
     return status.category == PNStatusCategory.PNAcknowledgmentCategory \
-        and status.operation == PNOperationType.PNUnsubscribeOperation
+           and status.operation == PNOperationType.PNUnsubscribeOperation
 
 
 def prepare_pam_arguments(unsorted_params):
@@ -182,7 +184,7 @@ def sign_request(endpoint, pn, custom_params, method, body):
 
     encoded_query_string = prepare_pam_arguments(custom_params)
 
-    is_v2_signature = not(request_url.startswith("/publish") and method == HttpMethod.POST)
+    is_v2_signature = not (request_url.startswith("/publish") and method == HttpMethod.POST)
 
     signed_input = ""
     if not is_v2_signature:
@@ -196,7 +198,7 @@ def sign_request(endpoint, pn, custom_params, method, body):
         signed_input += request_url + "\n"
         signed_input += encoded_query_string + "\n"
         if body is not None:
-          signed_input += body
+            signed_input += body
 
     signature = sign_sha256(pn.config.secret_key, signed_input)
     if is_v2_signature:
@@ -204,3 +206,76 @@ def sign_request(endpoint, pn, custom_params, method, body):
         signature = "v2." + signature
 
     custom_params['signature'] = signature
+
+
+def parse_resources(resource_list, resource_set_name, resources, patterns):
+    if resource_list is not None:
+        for pn_resource in resource_list:
+            resource_object = {}
+
+            if pn_resource.is_pattern_resource():
+                determined_object = patterns
+            else:
+                determined_object = resources
+
+            if resource_set_name in determined_object:
+                determined_object[resource_set_name][pn_resource.get_id()] = calculate_bitmask(pn_resource)
+            else:
+                resource_object[pn_resource.get_id()] = calculate_bitmask(pn_resource)
+                determined_object[resource_set_name] = resource_object
+
+    if resource_set_name not in resources:
+        resources[resource_set_name] = {}
+
+    if resource_set_name not in patterns:
+        patterns[resource_set_name] = {}
+
+
+def calculate_bitmask(pn_resource):
+    bit_sum = 0
+
+    if pn_resource.is_read() is True:
+        bit_sum += GrantToken.READ
+
+    if pn_resource.is_write() is True:
+        bit_sum += GrantToken.WRITE
+
+    if pn_resource.is_manage() is True:
+        bit_sum += GrantToken.MANAGE
+
+    if pn_resource.is_delete() is True:
+        bit_sum += GrantToken.DELETE
+
+    if pn_resource.is_create() is True:
+        bit_sum += GrantToken.CREATE
+
+    if bit_sum == 0:
+        raise PubNubException(pn_error=PNERR_PERMISSION_MISSING)
+
+    return bit_sum
+
+
+def decode_utf8_dict(dic):
+    if isinstance(dic, bytes):
+        return dic.decode("utf-8")
+    elif isinstance(dic, dict):
+        new_dic = {}
+
+        for key in dic:
+            new_key = key
+            if isinstance(key, bytes):
+                new_key = key.decode("UTF-8")
+
+            if new_key == "sig" and isinstance(dic[key], bytes):
+                new_dic[new_key] = dic[key]
+            else:
+                new_dic[new_key] = decode_utf8_dict(dic[key])
+
+        return new_dic
+    elif isinstance(dic, list):
+        new_l = []
+        for e in dic:
+            new_l.append(decode_utf8_dict(e))
+        return new_l
+    else:
+        return dic

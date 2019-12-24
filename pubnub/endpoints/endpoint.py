@@ -1,4 +1,7 @@
 from abc import ABCMeta, abstractmethod
+
+import logging
+
 from pubnub import utils
 from pubnub.enums import PNStatusCategory, PNOperationType
 from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING, \
@@ -6,8 +9,10 @@ from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pn_error_data import PNErrorData
-from pubnub.utils import sign_request
 from ..structures import RequestOptions, ResponseInfo
+
+logger = logging.getLogger("pubnub")
+
 
 class Endpoint(object):
     SERVER_RESPONSE_SUCCESS = 200
@@ -89,7 +94,6 @@ class Endpoint(object):
 
     def sync(self):
         self.validate_params()
-
         envelope = self.pubnub.request_sync(self.options())
 
         if envelope.status.is_error():
@@ -153,8 +157,27 @@ class Endpoint(object):
             if self.is_auth_required() and self.pubnub.config.auth_key is not None:
                 custom_params['auth'] = self.pubnub.config.auth_key
 
+            if self.pubnub.config.disable_token_manager is False and self.pubnub.config.auth_key is None:
+                if self.operation_type() in [
+                    PNOperationType.PNGetUsersOperation, PNOperationType.PNCreateUserOperation,
+                    PNOperationType.PNGetUserOperation, PNOperationType.PNUpdateUserOperation,
+                    PNOperationType.PNDeleteUserOperation, PNOperationType.PNGetSpacesOperation,
+                    PNOperationType.PNCreateSpaceOperation, PNOperationType.PNGetSpaceOperation,
+                    PNOperationType.PNUpdateSpaceOperation, PNOperationType.PNDeleteSpaceOperation,
+                    PNOperationType.PNGetMembersOperation, PNOperationType.PNGetSpaceMembershipsOperation,
+                    PNOperationType.PNManageMembersOperation, PNOperationType.PNManageMembershipsOperation
+                ]:
+
+                    token_manager_properties = self.get_tms_properties()
+
+                    token = self.pubnub.get_token(token_manager_properties)
+                    if token is not None:
+                        custom_params['auth'] = token
+                    else:
+                        logger.warning("No token found for: "  + str(token_manager_properties))
+
             if self.pubnub.config.secret_key is not None:
-                sign_request(self, self.pubnub, custom_params, self.http_method(), self.build_data())
+                utils.sign_request(self, self.pubnub, custom_params, self.http_method(), self.build_data())
 
             # REVIEW: add encoder map to not hardcode encoding here
             if operation_type == PNOperationType.PNPublishOperation and 'meta' in custom_params:
@@ -233,3 +256,6 @@ class Endpoint(object):
         exception.status = status
 
         return exception
+
+    def get_tms_properties(self):
+        return None

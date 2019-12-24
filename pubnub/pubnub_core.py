@@ -3,7 +3,8 @@ import time
 
 from abc import ABCMeta, abstractmethod
 
-from .managers import BasePathManager
+from pubnub.endpoints.access.grant_token import GrantToken
+from .managers import BasePathManager, TokenManager, TokenManagerProperties
 from .builders import SubscribeBuilder
 from .builders import UnsubscribeBuilder
 from .endpoints.time import Time
@@ -70,6 +71,7 @@ class PubNubCore:
         self._publish_sequence_manager = None
         self._telemetry_manager = TelemetryManager()
         self._base_path_manager = BasePathManager(config)
+        self._token_manager = TokenManager()
 
     @property
     def base_origin(self):
@@ -152,6 +154,9 @@ class PubNubCore:
     def grant(self):
         return Grant(self)
 
+    def grant_token(self):
+        return GrantToken(self)
+
     def revoke(self):
         return Revoke(self)
 
@@ -230,6 +235,24 @@ class PubNubCore:
 
     def delete_messages(self):
         return HistoryDelete(self)
+
+    def set_token(self, token):
+        self._token_manager.set_token(token)
+
+    def set_tokens(self, tokens):
+        self._token_manager.set_tokens(tokens)
+
+    def get_token(self, token_manager_properties):
+        return self._token_manager.get_token(token_manager_properties)
+
+    def get_token_by_resource(self, resource_id, resource_type):
+        return self._token_manager.get_token(TokenManagerProperties(
+            resource_id=resource_id,
+            resource_type=resource_type
+        ))
+
+    def get_tokens_by_resource(self, resource_type):
+        return self._token_manager.get_tokens_by_resource(resource_type)
 
     @staticmethod
     def timestamp():

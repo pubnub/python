@@ -4,9 +4,13 @@ from abc import abstractmethod, ABCMeta
 import math
 import time
 import copy
+import base64
+from cbor2 import loads
 
+from pubnub.errors import PNERR_INVALID_ACCESS_TOKEN
+from pubnub.exceptions import PubNubException
 from . import utils
-from .enums import PNStatusCategory, PNReconnectionPolicy, PNOperationType
+from .enums import PNStatusCategory, PNReconnectionPolicy, PNOperationType, PNResourceType, PNMatchType
 from .models.consumer.common import PNStatus
 from .models.server.subscribe import SubscribeEnvelope
 from .dtos import SubscribeOperation, UnsubscribeOperation
@@ -478,6 +482,130 @@ class TelemetryManager(object):  # pylint: disable=W0612
             PNOperationType.PNGetSpaceMembershipsOperation: 'obj',
             PNOperationType.PNManageMembersOperation: 'obj',
             PNOperationType.PNManageMembershipsOperation: 'obj',
+
+            PNOperationType.PNAccessManagerGrantToken: 'pamv3',
         }[operation_type]
 
         return endpoint
+
+
+class TokenManager(object):
+
+    def __init__(self):
+        self._map = {}
+        self.init_map()
+
+    def init_map(self):
+        resources = [
+            PNResourceType.USER,
+            PNResourceType.SPACE
+         ]
+
+        for resource in resources:
+            skeleton_map = {
+                PNMatchType.RESOURCE: {},
+                PNMatchType.PATTERN: {}
+            }
+            self._map[resource] = skeleton_map
+
+    def set_token(self, token):
+        unwrapped_token = self.unwrap_token(token)
+        self.store_token(unwrapped_token, token)
+
+    def set_tokens(self, tokens):
+        for token in tokens:
+            self.set_token(token)
+
+    def get_token(self, token_manager_properties):
+        resource_token = self.get_token_by_match(token_manager_properties, PNMatchType.RESOURCE)
+
+        if resource_token is None:
+            return self.get_token_by_match(token_manager_properties, PNMatchType.PATTERN)
+
+        return resource_token
+
+    def get_tokens(self):
+        return self._map
+
+    def get_tokens_by_resource(self, resource_type):
+        return self._map[resource_type]
+
+    def store_token(self, unwrapped_token, token):
+        match_types = [
+            PNMatchType.RESOURCE,
+            PNMatchType.PATTERN
+        ]
+
+        for asset in match_types:
+            short_match_type = self.get_shortened_match_type(asset)
+
+            if short_match_type in unwrapped_token:
+                res_object = unwrapped_token[short_match_type]
+
+                for r_type in res_object.keys():
+                    single_res_object = res_object[r_type]
+                    for r_name in single_res_object.keys():
+                        if asset == PNMatchType.PATTERN:
+                            self._map[self.get_extended_resource_type(r_type)][asset].clear()
+
+                        self._map[self.get_extended_resource_type(r_type)][asset][r_name] = token
+
+    def unwrap_token(self, token):
+        raw = token
+
+        raw = raw.replace("_", "/").replace("-", "+")
+        byte_array = base64.b64decode(raw)
+
+        try:
+            unwrapped_obj = loads(byte_array)
+            decoded_obj = utils.decode_utf8_dict(unwrapped_obj)
+
+            return decoded_obj
+        except Exception:
+            raise PubNubException(pn_error=PNERR_INVALID_ACCESS_TOKEN)
+
+    def get_token_by_match(self, token_manager_properties, match_type):
+        if token_manager_properties is None or token_manager_properties.resource_type is None or token_manager_properties.resource_id is None:
+            return None
+
+        if match_type != PNMatchType.PATTERN:
+            if token_manager_properties.resource_id in self._map[token_manager_properties.resource_type][match_type]:
+                token = self._map[token_manager_properties.resource_type][match_type][token_manager_properties.resource_id]
+                if token is not None:
+                    return token
+        else:
+            string_token_wrapper_dict = self._map[token_manager_properties.resource_type][match_type]
+            if len(string_token_wrapper_dict.keys()) > 0:
+                first_key = list(string_token_wrapper_dict.keys())[0]
+                return string_token_wrapper_dict[first_key]
+
+        return None
+
+    def get_extended_resource_type(self, r_type_abbr):
+        if r_type_abbr == "chan":
+            return PNResourceType.CHANNEL
+        if r_type_abbr == "grp":
+            return PNResourceType.GROUP
+        if r_type_abbr == "usr":
+            return PNResourceType.USER
+        if r_type_abbr == "spc":
+            return PNResourceType.SPACE
+
+        return r_type_abbr
+
+    def get_shortened_match_type(self, match_type):
+        if match_type == PNMatchType.RESOURCE:
+            return "res"
+        if match_type == PNMatchType.PATTERN:
+            return "pat"
+
+        return match_type
+
+
+class TokenManagerProperties:
+    def __init__(self, resource_type, resource_id):
+        self.resource_type = resource_type
+        self.resource_id = resource_id
+
+    def __str__(self):
+        return "resource_type: " + self.resource_type + ", resource_id: " + self.resource_id

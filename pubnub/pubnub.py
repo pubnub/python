@@ -47,6 +47,9 @@ class PubNub(PubNubCore):
         self._request_handler = handler
 
     def request_sync(self, endpoint_call_options):
+        if endpoint_call_options.method_string == "POST":
+            self.headers['Content-type'] = "application/json"
+
         platform_options = PlatformOptions(self.headers, self.config)
 
         self.merge_in_params(endpoint_call_options)
@@ -57,6 +60,9 @@ class PubNub(PubNubCore):
         return self._request_handler.sync_request(platform_options, endpoint_call_options)
 
     def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event):
+        if endpoint_call_options.method_string == "POST":
+            self.headers['Content-type'] = "application/json"
+
         platform_options = PlatformOptions(self.headers, self.config)
 
         self.merge_in_params(endpoint_call_options)

@@ -141,6 +141,9 @@ class PubNubTornado(PubNubCore):
 
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 
+        if options.method_string == "POST":
+            self.headers['Content-type'] = "application/json"
+
         start_timestamp = time.time()
 
         request = tornado.httpclient.HTTPRequest(

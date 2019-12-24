@@ -26,6 +26,7 @@ class PNConfiguration(object):
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.NONE
         self.daemon = False
+        self.disable_token_manager = False
 
         self.heartbeat_default_values = True
         self._presence_timeout = PNConfiguration.DEFAULT_PRESENCE_TIMEOUT

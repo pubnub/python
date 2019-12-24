@@ -155,6 +155,9 @@ class PubNubAsyncio(PubNubCore):
                                   options.path, options.query_string)
         logger.debug("%s %s %s" % (options.method_string, log_url, options.data))
 
+        if options.method_string == "POST":
+            self.headers['Content-type'] = "application/json"
+
         if AIOHTTP_V in (1, 2):
             from yarl import URL
             url = URL(url, encoded=True)

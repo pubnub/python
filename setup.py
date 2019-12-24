@@ -28,7 +28,8 @@ setup(
     install_requires=[
         'pycryptodomex>=3.3',
         'requests>=2.4',
-        'six>=1.10'
+        'six>=1.10',
+        'cbor2'
     ],
     zip_safe=False,
 )

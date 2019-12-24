@@ -111,7 +111,7 @@ class _PAMEntityData(object):
             for auth_key, value in json_input['auths'].items():
                 constructed_auth_keys[auth_key] = PNAccessManagerKeyData.from_json(value)
 
-        return cls(name, constructed_auth_keys, r, w, m, d)
+        return cls(name, constructed_auth_keys, r, w, m, d, ttl)
 
 
 class PNAccessManagerChannelData(_PAMEntityData):

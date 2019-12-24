@@ -30,7 +30,7 @@ class TestHeartbeat(unittest.TestCase):
     def test_sub_single_channel(self):
         self.hb.channels('ch')
 
-        self.assertEquals(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
+        self.assertEqual(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
                           % (pnconf.subscribe_key, 'ch'))
 
         self.assertEqual(self.hb.build_params_callback()({}), {
@@ -44,7 +44,7 @@ class TestHeartbeat(unittest.TestCase):
     def test_hb_multiple_channels_using_list(self):
         self.hb.channels(['ch1', 'ch2', 'ch3'])
 
-        self.assertEquals(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
+        self.assertEqual(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
                           % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
         self.assertEqual(self.hb.build_params_callback()({}), {
@@ -58,7 +58,7 @@ class TestHeartbeat(unittest.TestCase):
     def test_hb_single_group(self):
         self.hb.channel_groups("gr")
 
-        self.assertEquals(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
+        self.assertEqual(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
                           % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.hb.build_params_callback()({}), {
@@ -73,7 +73,7 @@ class TestHeartbeat(unittest.TestCase):
     def test_hb_multiple_groups_using_list(self):
         self.hb.channel_groups(['gr1', 'gr2', 'gr3'])
 
-        self.assertEquals(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
+        self.assertEqual(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
                           % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.hb.build_params_callback()({}), {
@@ -91,7 +91,7 @@ class TestHeartbeat(unittest.TestCase):
         state = {"name": "Alex", "count": 7}
         self.hb.channels('ch1,ch2').state(state)
 
-        self.assertEquals(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
+        self.assertEqual(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
                           % (pnconf.subscribe_key, "ch1,ch2"))
 
         params = self.hb.build_params_callback()({})

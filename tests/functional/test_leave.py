@@ -27,7 +27,7 @@ class TestLeave(unittest.TestCase):
     def test_leave_single_channel(self):
         self.leave.channels('ch')
 
-        self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch"))
+        self.assertEqual(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch"))
 
         self.assertEqual(self.leave.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -39,7 +39,7 @@ class TestLeave(unittest.TestCase):
     def test_leave_multiple_channels(self):
         self.leave.channels("ch1,ch2,ch3")
 
-        self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2,ch3"))
+        self.assertEqual(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
         self.assertEqual(self.leave.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -51,7 +51,7 @@ class TestLeave(unittest.TestCase):
     def test_leave_multiple_channels_using_list(self):
         self.leave.channels(['ch1', 'ch2', 'ch3'])
 
-        self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2,ch3"))
+        self.assertEqual(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
         self.assertEqual(self.leave.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -63,7 +63,7 @@ class TestLeave(unittest.TestCase):
     def test_leave_multiple_channels_using_tuple(self):
         self.leave.channels(('ch1', 'ch2', 'ch3'))
 
-        self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2,ch3"))
+        self.assertEqual(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
         self.assertEqual(self.leave.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -75,7 +75,7 @@ class TestLeave(unittest.TestCase):
     def test_leave_single_group(self):
         self.leave.channel_groups("gr")
 
-        self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH
+        self.assertEqual(self.leave.build_path(), Leave.LEAVE_PATH
                           % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.leave.build_params_callback()({}), {
@@ -89,7 +89,7 @@ class TestLeave(unittest.TestCase):
     def test_leave_multiple_groups_using_string(self):
         self.leave.channel_groups("gr1,gr2,gr3")
 
-        self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH
+        self.assertEqual(self.leave.build_path(), Leave.LEAVE_PATH
                           % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.leave.build_params_callback()({}), {
@@ -103,7 +103,7 @@ class TestLeave(unittest.TestCase):
     def test_leave_multiple_groups_using_list(self):
         self.leave.channel_groups(['gr1', 'gr2', 'gr3'])
 
-        self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH
+        self.assertEqual(self.leave.build_path(), Leave.LEAVE_PATH
                           % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.leave.build_params_callback()({}), {
@@ -117,7 +117,7 @@ class TestLeave(unittest.TestCase):
     def test_leave_channels_and_groups(self):
         self.leave.channels('ch1,ch2').channel_groups(["gr1", "gr2"])
 
-        self.assertEquals(self.leave.build_path(), Leave.LEAVE_PATH
+        self.assertEqual(self.leave.build_path(), Leave.LEAVE_PATH
                           % (pnconf.subscribe_key, "ch1,ch2"))
 
         self.assertEqual(self.leave.build_params_callback()({}), {

@@ -27,7 +27,7 @@ class TestHereNow(unittest.TestCase):
     def test_here_now(self):
         self.here_now.channels("ch1")
 
-        self.assertEquals(self.here_now.build_path(), HereNow.HERE_NOW_PATH
+        self.assertEqual(self.here_now.build_path(), HereNow.HERE_NOW_PATH
                           % (pnconf.subscribe_key, "ch1"))
 
         self.assertEqual(self.here_now.build_params_callback()({}), {
@@ -38,7 +38,7 @@ class TestHereNow(unittest.TestCase):
     def test_here_now_groups(self):
         self.here_now.channel_groups("gr1")
 
-        self.assertEquals(self.here_now.build_path(), HereNow.HERE_NOW_PATH
+        self.assertEqual(self.here_now.build_path(), HereNow.HERE_NOW_PATH
                           % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.here_now.build_params_callback()({}), {
@@ -50,7 +50,7 @@ class TestHereNow(unittest.TestCase):
     def test_here_now_with_options(self):
         self.here_now.channels(["ch1"]).channel_groups("gr1").include_state(True).include_uuids(False)
 
-        self.assertEquals(self.here_now.build_path(), HereNow.HERE_NOW_PATH
+        self.assertEqual(self.here_now.build_path(), HereNow.HERE_NOW_PATH
                           % (pnconf.subscribe_key, "ch1"))
 
         self.assertEqual(self.here_now.build_params_callback()({}), {

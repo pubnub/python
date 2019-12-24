@@ -30,7 +30,7 @@ class TestHistoryDelete(unittest.TestCase):  # pylint: disable=W0612
     def test_history_delete_basic(self):
         self.history_delete.channel('ch')
 
-        self.assertEquals(self.history_delete.build_path(), HistoryDelete.HISTORY_DELETE_PATH %
+        self.assertEqual(self.history_delete.build_path(), HistoryDelete.HISTORY_DELETE_PATH %
                           (pnconf.subscribe_key, 'ch'))
 
         self.assertEqual(self.history_delete.build_params_callback()({}), {
@@ -41,7 +41,7 @@ class TestHistoryDelete(unittest.TestCase):  # pylint: disable=W0612
     def test_history_delete_full(self):
         self.history_delete.channel('ch').start(100000).end(200000)
 
-        self.assertEquals(self.history_delete.build_path(), HistoryDelete.HISTORY_DELETE_PATH %
+        self.assertEqual(self.history_delete.build_path(), HistoryDelete.HISTORY_DELETE_PATH %
                           (pnconf.subscribe_key, 'ch'))
 
         self.assertEqual(self.history_delete.build_params_callback()({}), {

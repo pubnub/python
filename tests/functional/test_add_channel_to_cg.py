@@ -27,7 +27,7 @@ class TestAddChannelToChannelGroup(unittest.TestCase):
     def test_add_single_channel(self):
         self.add.channels('ch').channel_group('gr')
 
-        self.assertEquals(self.add.build_path(),
+        self.assertEqual(self.add.build_path(),
                           AddChannelToChannelGroup.ADD_PATH % (
                               pnconf.subscribe_key, "gr"))
 
@@ -42,7 +42,7 @@ class TestAddChannelToChannelGroup(unittest.TestCase):
     def test_add_multiple_channels(self):
         self.add.channels(['ch1', 'ch2']).channel_group('gr')
 
-        self.assertEquals(self.add.build_path(),
+        self.assertEqual(self.add.build_path(),
                           AddChannelToChannelGroup.ADD_PATH % (
                               pnconf.subscribe_key, "gr"))
 

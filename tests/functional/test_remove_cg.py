@@ -27,7 +27,7 @@ class TestRemoveChannelGroup(unittest.TestCase):
     def test_list_channel_group(self):
         self.list.channel_group('gr')
 
-        self.assertEquals(self.list.build_path(),
+        self.assertEqual(self.list.build_path(),
                           RemoveChannelGroup.REMOVE_PATH % (
                               pnconf.subscribe_key, "gr"))
 

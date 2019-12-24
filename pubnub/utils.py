@@ -4,8 +4,6 @@ import json
 import uuid as u
 import threading
 
-from pubnub.endpoints.access.grant_token import GrantToken
-
 try:
     from hashlib import sha256
 
@@ -233,6 +231,7 @@ def parse_resources(resource_list, resource_set_name, resources, patterns):
 
 def calculate_bitmask(pn_resource):
     bit_sum = 0
+    from .endpoints.access.grant_token import GrantToken
 
     if pn_resource.is_read() is True:
         bit_sum += GrantToken.READ

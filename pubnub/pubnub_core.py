@@ -3,7 +3,6 @@ import time
 
 from abc import ABCMeta, abstractmethod
 
-from pubnub.endpoints.access.grant_token import GrantToken
 from .managers import BasePathManager, TokenManager, TokenManagerProperties
 from .builders import SubscribeBuilder
 from .builders import UnsubscribeBuilder
@@ -11,6 +10,7 @@ from .endpoints.time import Time
 from .endpoints.history import History
 from .endpoints.access.audit import Audit
 from .endpoints.access.grant import Grant
+from .endpoints.access.grant_token import GrantToken
 from .endpoints.access.revoke import Revoke
 from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
 from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup

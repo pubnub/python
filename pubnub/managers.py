@@ -7,8 +7,6 @@ import copy
 import base64
 from cbor2 import loads
 
-from pubnub.errors import PNERR_INVALID_ACCESS_TOKEN
-from pubnub.exceptions import PubNubException
 from . import utils
 from .enums import PNStatusCategory, PNReconnectionPolicy, PNOperationType, PNResourceType, PNMatchType
 from .models.consumer.common import PNStatus
@@ -16,6 +14,8 @@ from .models.server.subscribe import SubscribeEnvelope
 from .dtos import SubscribeOperation, UnsubscribeOperation
 from .callbacks import SubscribeCallback, ReconnectionCallback
 from .models.subscription_item import SubscriptionItem
+from .errors import PNERR_INVALID_ACCESS_TOKEN
+from .exceptions import PubNubException
 
 logger = logging.getLogger("pubnub")
 

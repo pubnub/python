@@ -129,7 +129,7 @@ class NativeReconnectionManager(ReconnectionManager):
 
     def start_polling(self):
         if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.NONE:
-            logger.warn("reconnection policy is disabled, please handle reconnection manually.")
+            logger.warning("reconnection policy is disabled, please handle reconnection manually.")
             return
 
         logger.debug("reconnection manager start at: %s" % utils.datetime_now())

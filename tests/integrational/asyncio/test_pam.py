@@ -24,6 +24,7 @@ def test_global_level(event_loop):
     assert env.result.read_enabled is True
     assert env.result.write_enabled is True
     assert env.result.manage_enabled is False
+    assert env.result.delete_enabled is False
 
     env = yield from pubnub.revoke().future()
 
@@ -33,6 +34,7 @@ def test_global_level(event_loop):
     assert env.result.read_enabled is False
     assert env.result.write_enabled is False
     assert env.result.manage_enabled is False
+    assert env.result.delete_enabled is False
 
     pubnub.stop()
 
@@ -55,6 +57,7 @@ def test_single_channel(event_loop):
     assert env.result.channels[ch].read_enabled == 1
     assert env.result.channels[ch].write_enabled == 1
     assert env.result.channels[ch].manage_enabled == 0
+    assert env.result.channels[ch].delete_enabled == 0
 
     pubnub.stop()
 
@@ -79,6 +82,7 @@ def test_single_channel_with_auth(event_loop):
     assert env.result.channels[ch].auth_keys[auth].read_enabled == 1
     assert env.result.channels[ch].auth_keys[auth].write_enabled == 1
     assert env.result.channels[ch].auth_keys[auth].manage_enabled == 0
+    assert env.result.channels[ch].auth_keys[auth].delete_enabled == 0
 
     pubnub.stop()
 
@@ -110,6 +114,8 @@ def test_multiple_channels(event_loop):
     assert env.result.channels[ch2].write_enabled is True
     assert env.result.channels[ch1].manage_enabled is False
     assert env.result.channels[ch2].manage_enabled is False
+    assert env.result.channels[ch1].delete_enabled is False
+    assert env.result.channels[ch2].delete_enabled is False
 
     pubnub.stop()
 
@@ -143,6 +149,8 @@ def test_multiple_channels_with_auth(event_loop):
     assert env.result.channels[ch2].auth_keys[auth].write_enabled is True
     assert env.result.channels[ch1].auth_keys[auth].manage_enabled is False
     assert env.result.channels[ch2].auth_keys[auth].manage_enabled is False
+    assert env.result.channels[ch1].auth_keys[auth].delete_enabled is False
+    assert env.result.channels[ch2].auth_keys[auth].delete_enabled is False
 
     pubnub.stop()
 
@@ -166,6 +174,7 @@ def test_single_channel_group(event_loop):
     assert env.result.groups[cg].read_enabled == 1
     assert env.result.groups[cg].write_enabled == 1
     assert env.result.groups[cg].manage_enabled == 0
+    assert env.result.groups[cg].delete_enabled == 0
 
     pubnub.stop()
 
@@ -191,6 +200,7 @@ def test_single_channel_group_with_auth(event_loop):
     assert env.result.groups[gr].auth_keys[auth].read_enabled == 1
     assert env.result.groups[gr].auth_keys[auth].write_enabled == 1
     assert env.result.groups[gr].auth_keys[auth].manage_enabled == 0
+    assert env.result.groups[gr].auth_keys[auth].delete_enabled == 0
 
     pubnub.stop()
 
@@ -222,6 +232,8 @@ def test_multiple_channel_groups(event_loop):
     assert env.result.groups[gr2].write_enabled is True
     assert env.result.groups[gr1].manage_enabled is False
     assert env.result.groups[gr2].manage_enabled is False
+    assert env.result.groups[gr1].delete_enabled is False
+    assert env.result.groups[gr2].delete_enabled is False
 
     pubnub.stop()
 
@@ -255,5 +267,7 @@ def test_multiple_channel_groups_with_auth(event_loop):
     assert env.result.groups[gr2].auth_keys[auth].write_enabled is True
     assert env.result.groups[gr1].auth_keys[auth].manage_enabled is False
     assert env.result.groups[gr2].auth_keys[auth].manage_enabled is False
+    assert env.result.groups[gr1].auth_keys[auth].delete_enabled is False
+    assert env.result.groups[gr2].auth_keys[auth].delete_enabled is False
 
     pubnub.stop()

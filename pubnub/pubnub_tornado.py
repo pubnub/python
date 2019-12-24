@@ -323,7 +323,7 @@ class TornadoReconnectionManager(ReconnectionManager):
 
     def start_polling(self):
         if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.NONE:
-            logger.warn("reconnection policy is disabled, please handle reconnection manually.")
+            logger.warning("reconnection policy is disabled, please handle reconnection manually.")
             return
 
         self._pubnub.ioloop.spawn_callback(self._register_heartbeat_timer)

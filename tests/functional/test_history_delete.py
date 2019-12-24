@@ -31,7 +31,7 @@ class TestHistoryDelete(unittest.TestCase):  # pylint: disable=W0612
         self.history_delete.channel('ch')
 
         self.assertEqual(self.history_delete.build_path(), HistoryDelete.HISTORY_DELETE_PATH %
-                          (pnconf.subscribe_key, 'ch'))
+                         (pnconf.subscribe_key, 'ch'))
 
         self.assertEqual(self.history_delete.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -42,7 +42,7 @@ class TestHistoryDelete(unittest.TestCase):  # pylint: disable=W0612
         self.history_delete.channel('ch').start(100000).end(200000)
 
         self.assertEqual(self.history_delete.build_path(), HistoryDelete.HISTORY_DELETE_PATH %
-                          (pnconf.subscribe_key, 'ch'))
+                         (pnconf.subscribe_key, 'ch'))
 
         self.assertEqual(self.history_delete.build_params_callback()({}), {
             'pnsdk': sdk_name,

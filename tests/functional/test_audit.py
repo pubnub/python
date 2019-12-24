@@ -39,7 +39,10 @@ class TestAudit(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        sign_input = HttpMethod.string(self.audit.http_method()).upper() + "\n" + pnconf_pam.publish_key + "\n" + self.audit.build_path() + "\n" + pam_args + "\n"
+        sign_input = HttpMethod.string(self.audit.http_method()).upper() + "\n" + \
+            pnconf_pam.publish_key + "\n" + \
+            self.audit.build_path() + "\n" + \
+            pam_args + "\n"
 
         self.assertEqual(self.audit.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -60,7 +63,10 @@ class TestAudit(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
-        sign_input = HttpMethod.string(self.audit.http_method()).upper() + "\n" + pnconf_pam.publish_key + "\n" + self.audit.build_path() + "\n" + pam_args + "\n"
+        sign_input = HttpMethod.string(self.audit.http_method()).upper() + "\n" + \
+            pnconf_pam.publish_key + "\n" + \
+            self.audit.build_path() + "\n" + \
+            pam_args + "\n"
         self.assertEqual(self.audit.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,

@@ -36,7 +36,7 @@ class TestPublish(unittest.TestCase):
         self.pub.channel("ch1").message(message)
 
         self.assertEqual(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
-                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
         self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -52,7 +52,7 @@ class TestPublish(unittest.TestCase):
         self.pub.channel("ch1").message(message)
 
         self.assertEqual(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
-                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
         self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -69,7 +69,7 @@ class TestPublish(unittest.TestCase):
         self.pub.channel("ch1").message(message).meta(meta)
 
         self.assertEqual(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
-                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
         self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -86,7 +86,7 @@ class TestPublish(unittest.TestCase):
         self.pub.channel("ch1").message(message).should_store(True)
 
         self.assertEqual(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
-                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
         self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -103,7 +103,7 @@ class TestPublish(unittest.TestCase):
         self.pub.channel("ch1").message(message).should_store(False)
 
         self.assertEqual(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
-                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
         self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -129,7 +129,7 @@ class TestPublish(unittest.TestCase):
         pub.channel("ch1").message(message)
 
         self.assertEqual(pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
-                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
         self.assertEqual(pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -157,7 +157,7 @@ class TestPublish(unittest.TestCase):
         pub.channel("ch1").message(message)
 
         self.assertEqual(pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
-                          % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
 
         self.assertEqual(pub.build_params_callback()({}), {
             'pnsdk': sdk_name,

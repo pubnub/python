@@ -45,7 +45,10 @@ class TestRevoke(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
-        sign_input = HttpMethod.string(self.revoke.http_method()).upper() + "\n" + pnconf.publish_key + "\n" + self.revoke.build_path() + "\n" + pam_args + "\n"
+        sign_input = HttpMethod.string(self.revoke.http_method()).upper() + "\n" + \
+            pnconf.publish_key + "\n" + \
+            self.revoke.build_path() + "\n" + \
+            pam_args + "\n"
         self.assertEqual(self.revoke.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
@@ -77,7 +80,10 @@ class TestRevoke(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
-        sign_input = HttpMethod.string(self.revoke.http_method()).upper() + "\n" + pnconf.publish_key + "\n" + self.revoke.build_path() + "\n" + pam_args + "\n"
+        sign_input = HttpMethod.string(self.revoke.http_method()).upper() + "\n" + \
+            pnconf.publish_key + "\n" + \
+            self.revoke.build_path() + "\n" + \
+            pam_args + "\n"
         self.assertEqual(self.revoke.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,

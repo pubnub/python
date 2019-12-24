@@ -496,10 +496,7 @@ class TokenManager(object):
         self.init_map()
 
     def init_map(self):
-        resources = [
-            PNResourceType.USER,
-            PNResourceType.SPACE
-         ]
+        resources = [PNResourceType.USER, PNResourceType.SPACE]
 
         for resource in resources:
             skeleton_map = {
@@ -516,11 +513,11 @@ class TokenManager(object):
         for token in tokens:
             self.set_token(token)
 
-    def get_token(self, token_manager_properties):
-        resource_token = self.get_token_by_match(token_manager_properties, PNMatchType.RESOURCE)
+    def get_token(self, tms_properties):
+        resource_token = self.get_token_by_match(tms_properties, PNMatchType.RESOURCE)
 
         if resource_token is None:
-            return self.get_token_by_match(token_manager_properties, PNMatchType.PATTERN)
+            return self.get_token_by_match(tms_properties, PNMatchType.PATTERN)
 
         return resource_token
 
@@ -564,17 +561,17 @@ class TokenManager(object):
         except Exception:
             raise PubNubException(pn_error=PNERR_INVALID_ACCESS_TOKEN)
 
-    def get_token_by_match(self, token_manager_properties, match_type):
-        if token_manager_properties is None or token_manager_properties.resource_type is None or token_manager_properties.resource_id is None:
+    def get_token_by_match(self, tms_properties, match_type):
+        if tms_properties is None or tms_properties.resource_type is None or tms_properties.resource_id is None:
             return None
 
         if match_type != PNMatchType.PATTERN:
-            if token_manager_properties.resource_id in self._map[token_manager_properties.resource_type][match_type]:
-                token = self._map[token_manager_properties.resource_type][match_type][token_manager_properties.resource_id]
+            if tms_properties.resource_id in self._map[tms_properties.resource_type][match_type]:
+                token = self._map[tms_properties.resource_type][match_type][tms_properties.resource_id]
                 if token is not None:
                     return token
         else:
-            string_token_wrapper_dict = self._map[token_manager_properties.resource_type][match_type]
+            string_token_wrapper_dict = self._map[tms_properties.resource_type][match_type]
             if len(string_token_wrapper_dict.keys()) > 0:
                 first_key = list(string_token_wrapper_dict.keys())[0]
                 return string_token_wrapper_dict[first_key]

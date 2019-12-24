@@ -3,7 +3,6 @@ import unittest
 from pubnub.endpoints.presence.here_now import HereNow
 from pubnub.managers import TelemetryManager
 
-
 try:
     from mock import MagicMock
 except ImportError:
@@ -28,7 +27,7 @@ class TestHereNow(unittest.TestCase):
         self.here_now.channels("ch1")
 
         self.assertEqual(self.here_now.build_path(), HereNow.HERE_NOW_PATH
-                          % (pnconf.subscribe_key, "ch1"))
+                         % (pnconf.subscribe_key, "ch1"))
 
         self.assertEqual(self.here_now.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -39,7 +38,7 @@ class TestHereNow(unittest.TestCase):
         self.here_now.channel_groups("gr1")
 
         self.assertEqual(self.here_now.build_path(), HereNow.HERE_NOW_PATH
-                          % (pnconf.subscribe_key, ","))
+                         % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.here_now.build_params_callback()({}), {
             'channel-group': 'gr1',
@@ -51,7 +50,7 @@ class TestHereNow(unittest.TestCase):
         self.here_now.channels(["ch1"]).channel_groups("gr1").include_state(True).include_uuids(False)
 
         self.assertEqual(self.here_now.build_path(), HereNow.HERE_NOW_PATH
-                          % (pnconf.subscribe_key, "ch1"))
+                         % (pnconf.subscribe_key, "ch1"))
 
         self.assertEqual(self.here_now.build_params_callback()({}), {
             'channel-group': 'gr1',

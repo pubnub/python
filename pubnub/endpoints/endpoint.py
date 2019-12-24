@@ -168,13 +168,13 @@ class Endpoint(object):
                     PNOperationType.PNManageMembersOperation, PNOperationType.PNManageMembershipsOperation
                 ]:
 
-                    token_manager_properties = self.get_tms_properties()
+                    tms_properties = self.get_tms_properties()
 
-                    token = self.pubnub.get_token(token_manager_properties)
+                    token = self.pubnub.get_token(tms_properties)
                     if token is not None:
                         custom_params['auth'] = token
                     else:
-                        logger.warning("No token found for: "  + str(token_manager_properties))
+                        logger.warning("No token found for: " + str(tms_properties))
 
             if self.pubnub.config.secret_key is not None:
                 utils.sign_request(self, self.pubnub, custom_params, self.http_method(), self.build_data())

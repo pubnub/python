@@ -26,7 +26,7 @@ class TestSubscribe(unittest.TestCase):
         self.sub.channels('ch')
 
         self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
-                          % (pnconf.subscribe_key, 'ch'))
+                         % (pnconf.subscribe_key, 'ch'))
 
         self.assertEqual(self.sub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -39,7 +39,7 @@ class TestSubscribe(unittest.TestCase):
         self.sub.channels("ch1,ch2,ch3")
 
         self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
-                          % (pnconf.subscribe_key, "ch1,ch2,ch3"))
+                         % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
         self.assertEqual(self.sub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -52,7 +52,7 @@ class TestSubscribe(unittest.TestCase):
         self.sub.channels(['ch1', 'ch2', 'ch3'])
 
         self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
-                          % (pnconf.subscribe_key, "ch1,ch2,ch3"))
+                         % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
         self.assertEqual(self.sub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -65,7 +65,7 @@ class TestSubscribe(unittest.TestCase):
         self.sub.channels(('ch1', 'ch2', 'ch3'))
 
         self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
-                          % (pnconf.subscribe_key, "ch1,ch2,ch3"))
+                         % (pnconf.subscribe_key, "ch1,ch2,ch3"))
 
         self.assertEqual(self.sub.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -78,7 +78,7 @@ class TestSubscribe(unittest.TestCase):
         self.sub.channel_groups("gr")
 
         self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
-                          % (pnconf.subscribe_key, ","))
+                         % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.sub.build_params_callback()({}), {
             'channel-group': 'gr',
@@ -92,7 +92,7 @@ class TestSubscribe(unittest.TestCase):
         self.sub.channel_groups("gr1,gr2,gr3")
 
         self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
-                          % (pnconf.subscribe_key, ","))
+                         % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.sub.build_params_callback()({}), {
             'channel-group': 'gr1,gr2,gr3',
@@ -106,7 +106,7 @@ class TestSubscribe(unittest.TestCase):
         self.sub.channel_groups(['gr1', 'gr2', 'gr3'])
 
         self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
-                          % (pnconf.subscribe_key, ","))
+                         % (pnconf.subscribe_key, ","))
 
         self.assertEqual(self.sub.build_params_callback()({}), {
             'channel-group': 'gr1,gr2,gr3',
@@ -120,7 +120,7 @@ class TestSubscribe(unittest.TestCase):
         self.sub.channels('ch1,ch2').filter_expression('blah').region('us-east-1').timetoken('123')
 
         self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
-                          % (pnconf.subscribe_key, "ch1,ch2"))
+                         % (pnconf.subscribe_key, "ch1,ch2"))
 
         self.assertEqual(self.sub.build_params_callback()({}), {
             'pnsdk': sdk_name,

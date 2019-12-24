@@ -41,7 +41,10 @@ class TestGrant(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
-        sign_input = HttpMethod.string(self.grant.http_method()).upper() + "\n" + pnconf_pam.publish_key + "\n" + self.grant.build_path() + "\n" + pam_args + "\n"
+        sign_input = HttpMethod.string(self.grant.http_method()).upper() + "\n" + \
+            pnconf_pam.publish_key + "\n" + \
+            self.grant.build_path() + "\n" + \
+            pam_args + "\n"
         self.assertEqual(self.grant.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
@@ -66,7 +69,10 @@ class TestGrant(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
-        sign_input = HttpMethod.string(self.grant.http_method()).upper() + "\n" + pnconf_pam.publish_key + "\n" + self.grant.build_path() + "\n" + pam_args + "\n"
+        sign_input = HttpMethod.string(self.grant.http_method()).upper() + "\n" + \
+            pnconf_pam.publish_key + "\n" + \
+            self.grant.build_path() + "\n" + \
+            pam_args + "\n"
         self.assertEqual(self.grant.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,

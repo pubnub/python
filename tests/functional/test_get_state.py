@@ -2,7 +2,6 @@ import unittest
 
 from pubnub.endpoints.presence.get_state import GetState
 
-
 try:
     from mock import MagicMock
 except ImportError:
@@ -29,8 +28,8 @@ class TestGetState(unittest.TestCase):
         self.get_state.channels('ch')
 
         self.assertEqual(self.get_state.build_path(), GetState.GET_STATE_PATH % (pnconf.subscribe_key,
-                                                                                  "ch",
-                                                                                  self.pubnub.uuid))
+                                                                                 "ch",
+                                                                                 self.pubnub.uuid))
 
         self.assertEqual(self.get_state.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -43,8 +42,8 @@ class TestGetState(unittest.TestCase):
         self.get_state.channel_groups('gr')
 
         self.assertEqual(self.get_state.build_path(), GetState.GET_STATE_PATH % (pnconf.subscribe_key,
-                                                                                  ",",
-                                                                                  self.pubnub.uuid))
+                                                                                 ",",
+                                                                                 self.pubnub.uuid))
 
         self.assertEqual(self.get_state.build_params_callback()({}), {
             'pnsdk': sdk_name,

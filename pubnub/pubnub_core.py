@@ -242,8 +242,8 @@ class PubNubCore:
     def set_tokens(self, tokens):
         self._token_manager.set_tokens(tokens)
 
-    def get_token(self, token_manager_properties):
-        return self._token_manager.get_token(token_manager_properties)
+    def get_token(self, tms_properties):
+        return self._token_manager.get_token(tms_properties)
 
     def get_token_by_resource(self, resource_id, resource_type):
         return self._token_manager.get_token(TokenManagerProperties(

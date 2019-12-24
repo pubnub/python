@@ -1,6 +1,6 @@
 import pytest
 
-from pubnub.models.consumer.access_manager import PNAccessManagerGrantResult, PNAccessManagerAuditResult
+from pubnub.models.consumer.access_manager import PNAccessManagerGrantResult
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.helper import pnconf_pam_copy
 from tests.integrational.vcr_helper import pn_vcr
@@ -21,16 +21,6 @@ def test_global_level(event_loop):
     assert isinstance(env.result, PNAccessManagerGrantResult)
     assert len(env.result.channels) == 0
     assert len(env.result.groups) == 0
-    assert env.result.read_enabled is True
-    assert env.result.write_enabled is True
-    assert env.result.manage_enabled is False
-
-    env = (yield from pubnub.audit()
-           .future())
-
-    assert isinstance(env.result, PNAccessManagerAuditResult)
-    assert len(env.result.channels) >= 0
-    assert len(env.result.groups) >= 0
     assert env.result.read_enabled is True
     assert env.result.write_enabled is True
     assert env.result.manage_enabled is False
@@ -66,15 +56,6 @@ def test_single_channel(event_loop):
     assert env.result.channels[ch].write_enabled == 1
     assert env.result.channels[ch].manage_enabled == 0
 
-    env = (yield from pubnub.audit()
-           .channels(ch)
-           .future())
-
-    assert isinstance(env.result, PNAccessManagerAuditResult)
-    assert env.result.channels[ch].read_enabled == 1
-    assert env.result.channels[ch].write_enabled == 1
-    assert env.result.channels[ch].manage_enabled == 0
-
     pubnub.stop()
 
 
@@ -95,16 +76,6 @@ def test_single_channel_with_auth(event_loop):
            .future())
 
     assert isinstance(env.result, PNAccessManagerGrantResult)
-    assert env.result.channels[ch].auth_keys[auth].read_enabled == 1
-    assert env.result.channels[ch].auth_keys[auth].write_enabled == 1
-    assert env.result.channels[ch].auth_keys[auth].manage_enabled == 0
-
-    env = (yield from pubnub.audit()
-           .channels(ch)
-           .auth_keys(auth)
-           .future())
-
-    assert isinstance(env.result, PNAccessManagerAuditResult)
     assert env.result.channels[ch].auth_keys[auth].read_enabled == 1
     assert env.result.channels[ch].auth_keys[auth].write_enabled == 1
     assert env.result.channels[ch].auth_keys[auth].manage_enabled == 0
@@ -133,18 +104,6 @@ def test_multiple_channels(event_loop):
            .future())
 
     assert isinstance(env.result, PNAccessManagerGrantResult)
-    assert env.result.channels[ch1].read_enabled is True
-    assert env.result.channels[ch2].read_enabled is True
-    assert env.result.channels[ch1].write_enabled is True
-    assert env.result.channels[ch2].write_enabled is True
-    assert env.result.channels[ch1].manage_enabled is False
-    assert env.result.channels[ch2].manage_enabled is False
-
-    env = (yield from pubnub.audit()
-           .channels([ch1, ch2])
-           .future())
-
-    assert isinstance(env.result, PNAccessManagerAuditResult)
     assert env.result.channels[ch1].read_enabled is True
     assert env.result.channels[ch2].read_enabled is True
     assert env.result.channels[ch1].write_enabled is True
@@ -185,18 +144,6 @@ def test_multiple_channels_with_auth(event_loop):
     assert env.result.channels[ch1].auth_keys[auth].manage_enabled is False
     assert env.result.channels[ch2].auth_keys[auth].manage_enabled is False
 
-    env = (yield from pubnub.audit()
-           .channels([ch1, ch2])
-           .future())
-
-    assert isinstance(env.result, PNAccessManagerAuditResult)
-    assert env.result.channels[ch1].auth_keys[auth].read_enabled is True
-    assert env.result.channels[ch2].auth_keys[auth].read_enabled is True
-    assert env.result.channels[ch1].auth_keys[auth].write_enabled is True
-    assert env.result.channels[ch2].auth_keys[auth].write_enabled is True
-    assert env.result.channels[ch1].auth_keys[auth].manage_enabled is False
-    assert env.result.channels[ch2].auth_keys[auth].manage_enabled is False
-
     pubnub.stop()
 
 
@@ -215,16 +162,6 @@ def test_single_channel_group(event_loop):
            .future())
 
     assert isinstance(env.result, PNAccessManagerGrantResult)
-    assert env.result.level == 'channel-group'
-    assert env.result.groups[cg].read_enabled == 1
-    assert env.result.groups[cg].write_enabled == 1
-    assert env.result.groups[cg].manage_enabled == 0
-
-    env = (yield from pubnub.audit()
-           .channel_groups(cg)
-           .future())
-
-    assert isinstance(env.result, PNAccessManagerAuditResult)
     assert env.result.level == 'channel-group'
     assert env.result.groups[cg].read_enabled == 1
     assert env.result.groups[cg].write_enabled == 1
@@ -251,16 +188,6 @@ def test_single_channel_group_with_auth(event_loop):
 
     assert isinstance(env.result, PNAccessManagerGrantResult)
     assert env.result.level == 'channel-group+auth'
-    assert env.result.groups[gr].auth_keys[auth].read_enabled == 1
-    assert env.result.groups[gr].auth_keys[auth].write_enabled == 1
-    assert env.result.groups[gr].auth_keys[auth].manage_enabled == 0
-
-    env = (yield from pubnub.audit()
-           .channel_groups(gr)
-           .auth_keys(auth)
-           .future())
-
-    assert isinstance(env.result, PNAccessManagerAuditResult)
     assert env.result.groups[gr].auth_keys[auth].read_enabled == 1
     assert env.result.groups[gr].auth_keys[auth].write_enabled == 1
     assert env.result.groups[gr].auth_keys[auth].manage_enabled == 0
@@ -296,18 +223,6 @@ def test_multiple_channel_groups(event_loop):
     assert env.result.groups[gr1].manage_enabled is False
     assert env.result.groups[gr2].manage_enabled is False
 
-    env = (yield from pubnub.audit()
-           .channel_groups([gr1, gr2])
-           .future())
-
-    assert isinstance(env.result, PNAccessManagerAuditResult)
-    assert env.result.groups[gr1].read_enabled is True
-    assert env.result.groups[gr2].read_enabled is True
-    assert env.result.groups[gr1].write_enabled is True
-    assert env.result.groups[gr2].write_enabled is True
-    assert env.result.groups[gr1].manage_enabled is False
-    assert env.result.groups[gr2].manage_enabled is False
-
     pubnub.stop()
 
 
@@ -334,18 +249,6 @@ def test_multiple_channel_groups_with_auth(event_loop):
            .future())
 
     assert isinstance(env.result, PNAccessManagerGrantResult)
-    assert env.result.groups[gr1].auth_keys[auth].read_enabled is True
-    assert env.result.groups[gr2].auth_keys[auth].read_enabled is True
-    assert env.result.groups[gr1].auth_keys[auth].write_enabled is True
-    assert env.result.groups[gr2].auth_keys[auth].write_enabled is True
-    assert env.result.groups[gr1].auth_keys[auth].manage_enabled is False
-    assert env.result.groups[gr2].auth_keys[auth].manage_enabled is False
-
-    env = (yield from pubnub.audit()
-           .channel_groups([gr1, gr2])
-           .future())
-
-    assert isinstance(env.result, PNAccessManagerAuditResult)
     assert env.result.groups[gr1].auth_keys[auth].read_enabled is True
     assert env.result.groups[gr2].auth_keys[auth].read_enabled is True
     assert env.result.groups[gr1].auth_keys[auth].write_enabled is True

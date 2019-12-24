@@ -21,4 +21,3 @@ class PNGrantTokenResult(_PAMv3Result):
 
     def get_token(self):
         return self.token
-

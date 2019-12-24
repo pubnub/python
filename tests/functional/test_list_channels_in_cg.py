@@ -28,8 +28,8 @@ class TestListChannelsInChannelGroup(unittest.TestCase):
         self.list.channel_group('gr')
 
         self.assertEqual(self.list.build_path(),
-                          ListChannelsInChannelGroup.LIST_PATH % (
-                              pnconf.subscribe_key, "gr"))
+                         ListChannelsInChannelGroup.LIST_PATH % (
+                             pnconf.subscribe_key, "gr"))
 
         self.assertEqual(self.list.build_params_callback()({}), {
             'pnsdk': sdk_name,

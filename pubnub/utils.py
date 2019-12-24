@@ -109,7 +109,7 @@ def is_subscribed_event(status):
 def is_unsubscribed_event(status):
     assert isinstance(status, PNStatus)
     return status.category == PNStatusCategory.PNAcknowledgmentCategory \
-           and status.operation == PNOperationType.PNUnsubscribeOperation
+        and status.operation == PNOperationType.PNUnsubscribeOperation
 
 
 def prepare_pam_arguments(unsorted_params):

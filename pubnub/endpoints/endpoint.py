@@ -158,18 +158,8 @@ class Endpoint(object):
                 custom_params['auth'] = self.pubnub.config.auth_key
 
             if self.pubnub.config.disable_token_manager is False and self.pubnub.config.auth_key is None:
-                if self.operation_type() in [
-                    PNOperationType.PNGetUsersOperation, PNOperationType.PNCreateUserOperation,
-                    PNOperationType.PNGetUserOperation, PNOperationType.PNUpdateUserOperation,
-                    PNOperationType.PNDeleteUserOperation, PNOperationType.PNGetSpacesOperation,
-                    PNOperationType.PNCreateSpaceOperation, PNOperationType.PNGetSpaceOperation,
-                    PNOperationType.PNUpdateSpaceOperation, PNOperationType.PNDeleteSpaceOperation,
-                    PNOperationType.PNGetMembersOperation, PNOperationType.PNGetSpaceMembershipsOperation,
-                    PNOperationType.PNManageMembersOperation, PNOperationType.PNManageMembershipsOperation
-                ]:
-
-                    tms_properties = self.get_tms_properties()
-
+                tms_properties = self.get_tms_properties()
+                if tms_properties is not None:
                     token = self.pubnub.get_token(tms_properties)
                     if token is not None:
                         custom_params['auth'] = token

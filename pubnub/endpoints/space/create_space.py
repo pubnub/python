@@ -66,5 +66,5 @@ class CreateSpace(Endpoint):
     def get_tms_properties(self):
         return TokenManagerProperties(
             resource_type=PNResourceType.SPACE,
-            resource_id=self._data['id']
+            resource_id=self._data['id'] if self._data is not None else ""
         )

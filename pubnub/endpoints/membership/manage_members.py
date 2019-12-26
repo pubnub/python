@@ -113,5 +113,5 @@ class ManageMembers(Endpoint):
     def get_tms_properties(self):
         return TokenManagerProperties(
             resource_type=PNResourceType.SPACE,
-            resource_id=self._space_id
+            resource_id=self._space_id if self._space_id is not None else ""
         )

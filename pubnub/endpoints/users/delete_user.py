@@ -57,5 +57,5 @@ class DeleteUser(Endpoint):
     def get_tms_properties(self):
         return TokenManagerProperties(
             resource_type=PNResourceType.USER,
-            resource_id=self._user_id
+            resource_id=self._user_id if self._user_id is not None else ""
         )

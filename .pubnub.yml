@@ -1,8 +1,21 @@
 name: python
-version: 4.1.7
+version: 4.1.8
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.1.8
+    date: Dec 24, 2019
+    changes:
+      - type: improvement
+        text: Introduced delete permission to Grant endpoint. Migrated to v2 enpdoints for old PAM methods.
+      - type: feature
+        text: Added TokenManager and GrantToken method.
+      - type: improvement
+        text: Resolved warnings caused by the use of deprecated methods.
+      - type: bug
+        text: Removed Audit tests.
+      - type: bug
+        text: Resolved incorrectly reported SDK version.
   - version: v4.1.7
     date: Dec 2, 2019
     changes:

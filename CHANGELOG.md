@@ -1,6 +1,6 @@
-## [4.1.8](https://github.com/pubnub/python/tree/v4.1.8)
+## [4.2.0](https://github.com/pubnub/python/tree/v4.2.0)
 
-  [Full Changelog](https://github.com/pubnub/python/compare/v4.1.7...v4.1.8)
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.1.7...v4.2.0)
 
 - 🌟 Introduced delete permission to Grant endpoint. Migrated to v2 enpdoints for old PAM methods.
 - 🌟 Added TokenManager and GrantToken method.

@@ -1,9 +1,9 @@
 name: python
-version: 4.1.8
+version: 4.2.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
-  - version: v4.1.8
+  - version: v4.2.0
     date: Dec 24, 2019
     changes:
       - type: improvement

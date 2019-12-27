@@ -30,9 +30,9 @@ class TestSetState(unittest.TestCase):
     def test_set_state_single_channel(self):
         self.set_state.channels('ch').state(self.state)
 
-        self.assertEquals(self.set_state.build_path(), SetState.SET_STATE_PATH % (pnconf.subscribe_key,
-                                                                                  "ch",
-                                                                                  self.pubnub.uuid))
+        self.assertEqual(self.set_state.build_path(), SetState.SET_STATE_PATH % (pnconf.subscribe_key,
+                                                                                 "ch",
+                                                                                 self.pubnub.uuid))
 
         params = self.set_state.build_params_callback()({})
         self.assertEqual(params['pnsdk'], sdk_name)
@@ -45,9 +45,9 @@ class TestSetState(unittest.TestCase):
     def test_set_state_single_group(self):
         self.set_state.channel_groups('gr').state(self.state)
 
-        self.assertEquals(self.set_state.build_path(), SetState.SET_STATE_PATH % (pnconf.subscribe_key,
-                                                                                  ",",
-                                                                                  self.pubnub.uuid))
+        self.assertEqual(self.set_state.build_path(), SetState.SET_STATE_PATH % (pnconf.subscribe_key,
+                                                                                 ",",
+                                                                                 self.pubnub.uuid))
 
         params = self.set_state.build_params_callback()({})
         self.assertEqual(params['pnsdk'], sdk_name)

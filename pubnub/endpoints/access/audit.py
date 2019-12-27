@@ -5,7 +5,7 @@ from pubnub.models.consumer.access_manager import PNAccessManagerAuditResult
 
 
 class Audit(Endpoint):
-    AUDIT_PATH = "/v1/auth/audit/sub-key/%s"
+    AUDIT_PATH = "/v2/auth/audit/sub-key/%s"
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)

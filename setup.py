@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub',
-    version='4.1.7',
+    version='4.1.8',
     description='PubNub Real-time push service in the cloud',
     author='PubNub',
     author_email='support@pubnub.com',
@@ -28,7 +28,8 @@ setup(
     install_requires=[
         'pycryptodomex>=3.3',
         'requests>=2.4',
-        'six>=1.10'
+        'six>=1.10',
+        'cbor2'
     ],
     zip_safe=False,
 )

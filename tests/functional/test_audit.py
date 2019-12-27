@@ -2,6 +2,7 @@ import unittest
 
 from pubnub import utils
 from pubnub.endpoints.access.audit import Audit
+from pubnub.enums import HttpMethod
 from pubnub.managers import TelemetryManager
 
 try:
@@ -29,7 +30,7 @@ class TestAudit(unittest.TestCase):
     def test_audit_channel(self):
         self.audit.channels('ch')
 
-        self.assertEquals(self.audit.build_path(), Audit.AUDIT_PATH % pnconf_pam.subscribe_key)
+        self.assertEqual(self.audit.build_path(), Audit.AUDIT_PATH % pnconf_pam.subscribe_key)
 
         pam_args = utils.prepare_pam_arguments({
             'timestamp': 123,
@@ -37,19 +38,24 @@ class TestAudit(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
-        sign_input = pnconf_pam.subscribe_key + "\n" + pnconf_pam.publish_key + "\n" + "audit\n" + pam_args
+
+        sign_input = HttpMethod.string(self.audit.http_method()).upper() + "\n" + \
+            pnconf_pam.publish_key + "\n" + \
+            self.audit.build_path() + "\n" + \
+            pam_args + "\n"
+
         self.assertEqual(self.audit.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'timestamp': '123',
             'channel': 'ch',
-            'signature': utils.sign_sha256(pnconf_pam.secret_key, sign_input)
+            'signature': "v2." + utils.sign_sha256(pnconf_pam.secret_key, sign_input).rstrip("=")
         })
 
     def test_audit_channel_group(self):
         self.audit.channel_groups(['gr1', 'gr2'])
 
-        self.assertEquals(self.audit.build_path(), Audit.AUDIT_PATH % pnconf_pam.subscribe_key)
+        self.assertEqual(self.audit.build_path(), Audit.AUDIT_PATH % pnconf_pam.subscribe_key)
 
         pam_args = utils.prepare_pam_arguments({
             'timestamp': 123,
@@ -57,11 +63,14 @@ class TestAudit(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
-        sign_input = pnconf_pam.subscribe_key + "\n" + pnconf_pam.publish_key + "\n" + "audit\n" + pam_args
+        sign_input = HttpMethod.string(self.audit.http_method()).upper() + "\n" + \
+            pnconf_pam.publish_key + "\n" + \
+            self.audit.build_path() + "\n" + \
+            pam_args + "\n"
         self.assertEqual(self.audit.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'timestamp': '123',
             'channel-group': 'gr1,gr2',
-            'signature': utils.sign_sha256(pnconf_pam.secret_key, sign_input)
+            'signature': "v2." + utils.sign_sha256(pnconf_pam.secret_key, sign_input).rstrip("=")
         })

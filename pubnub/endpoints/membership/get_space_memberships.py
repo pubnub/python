@@ -2,8 +2,9 @@ import six
 
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
+from pubnub.managers import TokenManagerProperties
 from pubnub.models.consumer.membership import PNGetSpaceMembershipsResult
-from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.enums import HttpMethod, PNOperationType, PNResourceType
 from pubnub.exceptions import PubNubException
 
 
@@ -98,3 +99,9 @@ class GetSpaceMemberships(Endpoint):
 
     def name(self):
         return 'Get space membership'
+
+    def get_tms_properties(self):
+        return TokenManagerProperties(
+            resource_type=PNResourceType.USER,
+            resource_id=self._user_id if self._user_id is not None else ""
+        )

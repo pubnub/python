@@ -4,3 +4,4 @@ pytest-cov<2.6.0
 tornado==4.5.3
 aiohttp==2.3.10
 typing==3.6.4
+cbor2

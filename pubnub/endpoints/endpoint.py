@@ -1,5 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
+import logging
+
 from pubnub import utils
 from pubnub.enums import PNStatusCategory, PNOperationType
 from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING, \
@@ -8,6 +10,8 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pn_error_data import PNErrorData
 from ..structures import RequestOptions, ResponseInfo
+
+logger = logging.getLogger("pubnub")
 
 
 class Endpoint(object):
@@ -90,7 +94,6 @@ class Endpoint(object):
 
     def sync(self):
         self.validate_params()
-
         envelope = self.pubnub.request_sync(self.options())
 
         if envelope.status.is_error():
@@ -154,22 +157,17 @@ class Endpoint(object):
             if self.is_auth_required() and self.pubnub.config.auth_key is not None:
                 custom_params['auth'] = self.pubnub.config.auth_key
 
+            if self.pubnub.config.disable_token_manager is False and self.pubnub.config.auth_key is None:
+                tms_properties = self.get_tms_properties()
+                if tms_properties is not None:
+                    token = self.pubnub.get_token(tms_properties)
+                    if token is not None:
+                        custom_params['auth'] = token
+                    else:
+                        logger.warning("No token found for: " + str(tms_properties))
+
             if self.pubnub.config.secret_key is not None:
-                custom_params['timestamp'] = str(self.pubnub.timestamp())
-                signed_input = (self.pubnub.config.subscribe_key + "\n" + self.pubnub.config.publish_key + "\n")
-
-                if operation_type == PNOperationType.PNAccessManagerAudit:
-                    signed_input += 'audit\n'
-                elif operation_type == PNOperationType.PNAccessManagerGrant or \
-                        operation_type == PNOperationType.PNAccessManagerRevoke:
-                    signed_input += 'grant\n'
-                else:
-                    signed_input += self.build_path() + "\n"
-
-                signed_input += utils.prepare_pam_arguments(custom_params)
-                signature = utils.sign_sha256(self.pubnub.config.secret_key, signed_input)
-
-                custom_params['signature'] = signature
+                utils.sign_request(self, self.pubnub, custom_params, self.http_method(), self.build_data())
 
             # REVIEW: add encoder map to not hardcode encoding here
             if operation_type == PNOperationType.PNPublishOperation and 'meta' in custom_params:
@@ -248,3 +246,6 @@ class Endpoint(object):
         exception.status = status
 
         return exception
+
+    def get_tms_properties(self):
+        return None

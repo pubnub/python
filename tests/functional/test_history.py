@@ -30,7 +30,7 @@ class TestHistory(unittest.TestCase):
     def test_history_basic(self):
         self.history.channel('ch')
 
-        self.assertEquals(self.history.build_path(), History.HISTORY_PATH % (pnconf.subscribe_key, 'ch'))
+        self.assertEqual(self.history.build_path(), History.HISTORY_PATH % (pnconf.subscribe_key, 'ch'))
 
         self.assertEqual(self.history.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -41,7 +41,7 @@ class TestHistory(unittest.TestCase):
     def test_history_full(self):
         self.history.channel('ch').start(100000).end(200000).reverse(False).count(3).include_timetoken(True)
 
-        self.assertEquals(self.history.build_path(), History.HISTORY_PATH % (pnconf.subscribe_key, 'ch'))
+        self.assertEqual(self.history.build_path(), History.HISTORY_PATH % (pnconf.subscribe_key, 'ch'))
 
         self.assertEqual(self.history.build_params_callback()({}), {
             'pnsdk': sdk_name,

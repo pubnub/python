@@ -224,6 +224,9 @@ class PubNubTwisted(PubNubCore):
             raise Exception("Subscription manager is not enabled for this instance")
 
     def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event):
+        if endpoint_call_options.method_string == "POST":
+            self.headers['Content-type'] = "application/json"
+
         def async_request(endpoint_call_options, cancellation_event, callback):
             def manage_failures(failure):
                 # Cancelled

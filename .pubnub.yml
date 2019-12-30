@@ -1,8 +1,21 @@
 name: python
-version: 4.1.7
+version: 4.2.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.2.0
+    date: Dec 24, 2019
+    changes:
+      - type: improvement
+        text: Introduced delete permission to Grant endpoint. Migrated to v2 enpdoints for old PAM methods.
+      - type: feature
+        text: Added TokenManager and GrantToken method.
+      - type: improvement
+        text: Resolved warnings caused by the use of deprecated methods.
+      - type: bug
+        text: Removed Audit tests.
+      - type: bug
+        text: Resolved incorrectly reported SDK version.
   - version: v4.1.7
     date: Dec 2, 2019
     changes:
@@ -137,6 +150,10 @@ changelog:
 features:
   access:
     - ACCESS-GRANT
+    - ACCESS-GRANT-MANAGE
+    - ACCESS-GRANT-DELETE
+    - ACCESS-GRANT-V3
+    - ACCESS-TOKEN-MANAGEMENT
     - ACCESS-SECRET-KEY-ALL-ACCESS    
   channel-groups:
     - CHANNEL-GROUPS-ADD-CHANNELS
@@ -159,8 +176,10 @@ features:
     - PUBLISH-RAW-JSON
     - PUBLISH-WITH-METADATA
     - PUBLISH-GET
+    - PUBLISH-POST
     - PUBLISH-ASYNC
     - PUBLISH-FIRE
+    - PUBLISH-REPLICATION-FLAG
   storage:
     - STORAGE-REVERSE
     - STORAGE-INCLUDE-TIMETOKEN
@@ -195,6 +214,8 @@ features:
     - OBJECTS-UPDATE-SPACE
     - OBJECTS-DELETE-SPACE
     - OBJECTS-GET-MEMBERSHIPS
+    - OBJECTS-MANAGE-MEMBERSHIPS
+    - OBJECTS-MANAGE-MEMBERS
     - OBJECTS-JOIN-SPACES
     - OBJECTS-UPDATE-MEMBERSHIPS
     - OBJECTS-LEAVE-SPACES

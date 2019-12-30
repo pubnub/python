@@ -3,13 +3,14 @@ import time
 
 from abc import ABCMeta, abstractmethod
 
-from .managers import BasePathManager
+from .managers import BasePathManager, TokenManager, TokenManagerProperties
 from .builders import SubscribeBuilder
 from .builders import UnsubscribeBuilder
 from .endpoints.time import Time
 from .endpoints.history import History
 from .endpoints.access.audit import Audit
 from .endpoints.access.grant import Grant
+from .endpoints.access.grant_token import GrantToken
 from .endpoints.access.revoke import Revoke
 from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
 from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
@@ -51,7 +52,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "4.1.0"
+    SDK_VERSION = "4.1.8"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -70,6 +71,7 @@ class PubNubCore:
         self._publish_sequence_manager = None
         self._telemetry_manager = TelemetryManager()
         self._base_path_manager = BasePathManager(config)
+        self._token_manager = TokenManager()
 
     @property
     def base_origin(self):
@@ -152,6 +154,9 @@ class PubNubCore:
     def grant(self):
         return Grant(self)
 
+    def grant_token(self):
+        return GrantToken(self)
+
     def revoke(self):
         return Revoke(self)
 
@@ -230,6 +235,24 @@ class PubNubCore:
 
     def delete_messages(self):
         return HistoryDelete(self)
+
+    def set_token(self, token):
+        self._token_manager.set_token(token)
+
+    def set_tokens(self, tokens):
+        self._token_manager.set_tokens(tokens)
+
+    def get_token(self, tms_properties):
+        return self._token_manager.get_token(tms_properties)
+
+    def get_token_by_resource(self, resource_id, resource_type):
+        return self._token_manager.get_token(TokenManagerProperties(
+            resource_id=resource_id,
+            resource_type=resource_type
+        ))
+
+    def get_tokens_by_resource(self, resource_type):
+        return self._token_manager.get_tokens_by_resource(resource_type)
 
     @staticmethod
     def timestamp():

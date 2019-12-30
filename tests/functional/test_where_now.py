@@ -25,8 +25,8 @@ class TestWhereNow(unittest.TestCase):
     def test_where_now(self):
         self.where_now.uuid("person_uuid")
 
-        self.assertEquals(self.where_now.build_path(), WhereNow.WHERE_NOW_PATH
-                          % (pnconf.subscribe_key, "person_uuid"))
+        self.assertEqual(self.where_now.build_path(), WhereNow.WHERE_NOW_PATH
+                         % (pnconf.subscribe_key, "person_uuid"))
 
         self.assertEqual(self.where_now.build_params_callback()({}), {
             'pnsdk': sdk_name,
@@ -34,8 +34,8 @@ class TestWhereNow(unittest.TestCase):
         })
 
     def test_where_now_no_uuid(self):
-        self.assertEquals(self.where_now.build_path(), WhereNow.WHERE_NOW_PATH
-                          % (pnconf.subscribe_key, self.pubnub.config.uuid))
+        self.assertEqual(self.where_now.build_path(), WhereNow.WHERE_NOW_PATH
+                         % (pnconf.subscribe_key, self.pubnub.config.uuid))
 
         self.assertEqual(self.where_now.build_params_callback()({}), {
             'pnsdk': sdk_name,

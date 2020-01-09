@@ -44,7 +44,7 @@ def write_value_as_string(data):
 
 
 def url_encode(data):
-    return six.moves.urllib.parse.quote(data, safe="").replace("+", "%2B")
+    return six.moves.urllib.parse.quote(data, safe="~").replace("+", "%2B")
 
 
 def url_write(data):
@@ -183,7 +183,6 @@ def sign_request(endpoint, pn, custom_params, method, body):
     encoded_query_string = prepare_pam_arguments(custom_params)
 
     is_v2_signature = not (request_url.startswith("/publish") and method == HttpMethod.POST)
-
     signed_input = ""
     if not is_v2_signature:
         signed_input += pn.config.subscribe_key + "\n"
@@ -195,6 +194,7 @@ def sign_request(endpoint, pn, custom_params, method, body):
         signed_input += pn.config.publish_key + "\n"
         signed_input += request_url + "\n"
         signed_input += encoded_query_string + "\n"
+        print(request_url)
         if body is not None:
             signed_input += body
 

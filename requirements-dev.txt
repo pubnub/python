@@ -1,4 +1,5 @@
 codacy-coverage
+pyyaml==5.2
 pycryptodomex
 flake8==3.6.0
 -e git://github.com/pubnub/vcrpy@twisted#egg=vcrpy

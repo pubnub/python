@@ -44,7 +44,7 @@ def write_value_as_string(data):
 
 
 def url_encode(data):
-    return six.moves.urllib.parse.quote(data, safe="").replace("+", "%2B")
+    return six.moves.urllib.parse.quote(data, safe="~").replace("+", "%2B")
 
 
 def url_write(data):

@@ -1,3 +1,9 @@
+## [4.2.1](https://github.com/pubnub/python/tree/v4.2.1)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.2.0...v4.2.1)
+
+- 🐛Excluded the tilde symbol from being encoded by the url_encode method to fix invalid PAM signature issue.
+
 ## [4.2.0](https://github.com/pubnub/python/tree/v4.2.0)
 
   [Full Changelog](https://github.com/pubnub/python/compare/v4.1.7...v4.2.0)

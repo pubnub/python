@@ -52,7 +52,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "4.1.8"
+    SDK_VERSION = "4.2.1"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000

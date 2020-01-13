@@ -1,8 +1,13 @@
 name: python
-version: 4.2.0
+version: 4.2.1
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.2.1
+    date: Jan 9, 2020
+    changes:
+      - type: bug
+        text: Excluded the tilde symbol from being encoded by the url_encode method to fix invalid PAM signature issue.
   - version: v4.2.0
     date: Dec 24, 2019
     changes:

@@ -484,6 +484,10 @@ class TelemetryManager(object):  # pylint: disable=W0612
             PNOperationType.PNManageMembershipsOperation: 'obj',
 
             PNOperationType.PNAccessManagerGrantToken: 'pamv3',
+
+            PNOperationType.PNAddMessageAction: 'msga',
+            PNOperationType.PNGetMessageActions: 'msga',
+            PNOperationType.PNDeleteMessageAction: 'msga'
         }[operation_type]
 
         return endpoint

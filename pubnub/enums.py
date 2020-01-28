@@ -81,6 +81,9 @@ class PNOperationType(object):
     PNManageMembershipsOperation = 40
 
     PNAccessManagerGrantToken = 41
+    PNAddMessageAction = 42
+    PNGetMessageActions = 43
+    PNDeleteMessageAction = 44
 
 
 class PNHeartbeatNotificationOptions(object):

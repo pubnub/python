@@ -263,6 +263,9 @@ class PubNubCore:
             resource_type=resource_type
         ))
 
+    def get_tokens(self):
+        return self._token_manager.get_tokens()
+
     def get_tokens_by_resource(self, resource_type):
         return self._token_manager.get_tokens_by_resource(resource_type)
 

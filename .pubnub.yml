@@ -1,8 +1,21 @@
 name: python
-version: 4.2.1
+version: 4.2.2
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.2.2
+    date: Jan 28, 2020
+    changes:
+      - type: feature
+        text: Implemented Message Actions API
+      - type: feature
+        text: Implemented Fetch Messages API
+      - type: feature
+        text: Added 'include_meta' to history()
+      - type: feature
+        text: Added 'include_meta' to fetch_messages()
+      - type: feature
+        text: Added 'include_message_actions' to fetch_messages()
   - version: v4.2.1
     date: Jan 9, 2020
     changes:
@@ -191,6 +204,9 @@ features:
     - STORAGE-START-END
     - STORAGE-COUNT
     - STORAGE-MESSAGE-COUNT
+    - STORAGE-HISTORY-WITH-META
+    - STORAGE-FETCH-WITH-META
+    - STORAGE-FETCH-WITH-MESSAGE-ACTIONS
   time:
     - TIME-TIME
   subscribe:
@@ -205,6 +221,7 @@ features:
     - SUBSCRIBE-USER-LISTENER
     - SUBSCRIBE-SPACE-LISTENER
     - SUBSCRIBE-MEMBERSHIP-LISTENER
+    - SUBSCRIBE-MESSAGE-ACTIONS-LISTENER
   signal:
     - SIGNAL-SEND
   objects:
@@ -228,6 +245,10 @@ features:
     - OBJECTS-ADD-MEMBERS
     - OBJECTS-UPDATE-MEMBERS
     - OBJECTS-REMOVE-MEMBERS
+  message-actions:
+    - MESSAGE-ACTIONS-GET
+    - MESSAGE-ACTIONS-ADD
+    - MESSAGE-ACTIONS-REMOVE
 
 supported-platforms:
   -

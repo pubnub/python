@@ -1,3 +1,13 @@
+## [4.2.2](https://github.com/pubnub/python/tree/v4.2.2)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.2.1...v4.2.2)
+
+- 🌟 Implemented Message Actions API
+- 🌟 Implemented Fetch Messages API
+- 🌟 Added 'include_meta' to history()
+- 🌟 Added 'include_meta' to fetch_messages()
+- 🌟 Added 'include_message_actions' to fetch_messages()
+
 ## [4.2.1](https://github.com/pubnub/python/tree/v4.2.1)
 
   [Full Changelog](https://github.com/pubnub/python/compare/v4.2.0...v4.2.1)

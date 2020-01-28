@@ -118,7 +118,7 @@ class FetchMessages(Endpoint):
                 self._maximum_per_channel = FetchMessages.MAX_MESSAGES_ACTIONS
                 logger.info("maximum_per_channel param defaulting to %d", FetchMessages.DEFAULT_MESSAGES)
 
-    def create_response(self, envelope):
+    def create_response(self, envelope):  # pylint: disable=W0221
         return PNFetchMessagesResult.from_json(
             json_input=envelope,
             include_message_actions=self._include_message_actions,

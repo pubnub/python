@@ -3,6 +3,9 @@ import time
 
 from abc import ABCMeta, abstractmethod
 
+from pubnub.endpoints.message_actions.add_message_action import AddMessageAction
+from pubnub.endpoints.message_actions.get_message_actions import GetMessageActions
+from pubnub.endpoints.message_actions.remove_message_action import RemoveMessageAction
 from .managers import BasePathManager, TokenManager, TokenManagerProperties
 from .builders import SubscribeBuilder
 from .builders import UnsubscribeBuilder
@@ -229,6 +232,15 @@ class PubNubCore:
 
     def manage_memberships(self):
         return ManageMemberships(self)
+
+    def add_message_action(self):
+        return AddMessageAction(self)
+
+    def get_message_actions(self):
+        return GetMessageActions(self)
+
+    def remove_message_action(self):
+        return RemoveMessageAction(self)
 
     def time(self):
         return Time(self)

@@ -33,3 +33,11 @@ PNERR_TTL_MISSING = "TTL missing"
 PNERR_INVALID_META = "Invalid meta parameter"
 PNERR_PERMISSION_MISSING = "Permission missing"
 PNERR_INVALID_ACCESS_TOKEN = "Invalid access token"
+PNERR_MESSAGE_ACTION_MISSING = "Message action is missing"
+PNERR_MESSAGE_ACTION_TYPE_MISSING = "Message action type is missing"
+PNERR_MESSAGE_ACTION_VALUE_MISSING = "Message action value is missing"
+PNERR_MESSAGE_TIMETOKEN_MISSING = "Message timetoken is missing"
+PNERR_MESSAGE_ACTION_TIMETOKEN_MISSING = "Message action timetoken is missing"
+PNERR_HISTORY_MESSAGE_ACTIONS_MULTIPLE_CHANNELS = "History can return message action data for a single channel only. " \
+                                                  "Either pass a single channel or disable the includeMessageActions " \
+                                                  "flag. "

@@ -3,9 +3,6 @@ import time
 
 from abc import ABCMeta, abstractmethod
 
-from pubnub.endpoints.message_actions.add_message_action import AddMessageAction
-from pubnub.endpoints.message_actions.get_message_actions import GetMessageActions
-from pubnub.endpoints.message_actions.remove_message_action import RemoveMessageAction
 from .managers import BasePathManager, TokenManager, TokenManagerProperties
 from .builders import SubscribeBuilder
 from .builders import UnsubscribeBuilder
@@ -43,6 +40,9 @@ from .endpoints.membership.get_space_memberships import GetSpaceMemberships
 from .endpoints.membership.get_members import GetMembers
 from .endpoints.membership.manage_members import ManageMembers
 from .endpoints.membership.manage_memberships import ManageMemberships
+from .endpoints.message_actions.add_message_action import AddMessageAction
+from .endpoints.message_actions.get_message_actions import GetMessageActions
+from .endpoints.message_actions.remove_message_action import RemoveMessageAction
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush

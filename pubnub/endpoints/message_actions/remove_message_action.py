@@ -48,7 +48,7 @@ class RemoveMessageAction(Endpoint):
         self.validate_channel()
         self.validate_timetokens()
 
-    def create_response(self, envelope):
+    def create_response(self, envelope):  # pylint: disable=W0221
         return {}
 
     def is_auth_required(self):

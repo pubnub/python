@@ -49,7 +49,7 @@ class AddMessageAction(Endpoint):
         self.validate_channel()
         self.validate_message_action()
 
-    def create_response(self, envelope):
+    def create_response(self, envelope):  # pylint: disable=W0221
         return PNAddMessageActionResult(envelope['data'])
 
     def is_auth_required(self):

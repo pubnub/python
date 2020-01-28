@@ -50,7 +50,7 @@ class Endpoint(object):
         pass
 
     @abstractmethod
-    def create_response(self, envelope):
+    def create_response(self, endpoint):
         pass
 
     @abstractmethod

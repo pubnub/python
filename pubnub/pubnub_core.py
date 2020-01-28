@@ -40,6 +40,7 @@ from .endpoints.membership.get_space_memberships import GetSpaceMemberships
 from .endpoints.membership.get_members import GetMembers
 from .endpoints.membership.manage_members import ManageMembers
 from .endpoints.membership.manage_memberships import ManageMemberships
+from .endpoints.fetch_messages import FetchMessages
 from .endpoints.message_actions.add_message_action import AddMessageAction
 from .endpoints.message_actions.get_message_actions import GetMessageActions
 from .endpoints.message_actions.remove_message_action import RemoveMessageAction
@@ -232,6 +233,9 @@ class PubNubCore:
 
     def manage_memberships(self):
         return ManageMemberships(self)
+
+    def fetch_messages(self):
+        return FetchMessages(self)
 
     def add_message_action(self):
         return AddMessageAction(self)

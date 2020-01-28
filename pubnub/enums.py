@@ -84,6 +84,7 @@ class PNOperationType(object):
     PNAddMessageAction = 42
     PNGetMessageActions = 43
     PNDeleteMessageAction = 44
+    PNFetchMessagesOperation = 45
 
 
 class PNHeartbeatNotificationOptions(object):

@@ -34,6 +34,9 @@ class SubscribeCallback(object):
     def membership(self, pubnub, membership):
         pass
 
+    def message_action(self, pubnub, message_action):
+        pass
+
 
 class ReconnectionCallback(object):
     @abstractmethod

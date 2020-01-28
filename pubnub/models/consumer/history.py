@@ -1,4 +1,3 @@
-
 class PNHistoryResult(object):
     def __init__(self, messages, start_timetoken, end_timetoken):
         self.messages = messages
@@ -9,7 +8,7 @@ class PNHistoryResult(object):
         return "History result for range %d..%d" % (self.start_timetoken, self.end_timetoken)
 
     @classmethod
-    def from_json(cls, json_input, crypto, include_tt_option=False, cipher=None):
+    def from_json(cls, json_input, crypto, include_timetoken=False, include_meta=False, cipher=None):
         start_timetoken = json_input[1]
         end_timetoken = json_input[2]
 
@@ -17,8 +16,13 @@ class PNHistoryResult(object):
         messages = []
 
         for item in raw_items:
-            if isinstance(item, dict) and 'timetoken' in item and 'message' in item and include_tt_option:
-                message = PNHistoryItemResult(item['message'], crypto, item['timetoken'])
+            if (include_timetoken or include_meta) and isinstance(item, dict) and 'message' in item:
+                message = PNHistoryItemResult(item['message'], crypto)
+                if include_timetoken and 'timetoken' in item:
+                    message.timetoken = item['timetoken']
+                if include_meta and 'meta' in item:
+                    message.meta = item['meta']
+
             else:
                 message = PNHistoryItemResult(item, crypto)
 
@@ -35,8 +39,9 @@ class PNHistoryResult(object):
 
 
 class PNHistoryItemResult(object):
-    def __init__(self, entry, crypto, timetoken=None):
+    def __init__(self, entry, crypto, timetoken=None, meta=None):
         self.timetoken = timetoken
+        self.meta = meta
         self.entry = entry
         self.crypto = crypto
 

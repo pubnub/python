@@ -223,6 +223,10 @@ class ListenerManager(object):
         for callback in self._listeners:
             callback.membership(self._pubnub, membership)
 
+    def announce_message_action(self, message_action):
+        for callback in self._listeners:
+            callback.message_action(self._pubnub, message_action)
+
     def announce_presence(self, presence):
         for callback in self._listeners:
             callback.presence(self._pubnub, presence)
@@ -484,6 +488,10 @@ class TelemetryManager(object):  # pylint: disable=W0612
             PNOperationType.PNManageMembershipsOperation: 'obj',
 
             PNOperationType.PNAccessManagerGrantToken: 'pamv3',
+
+            PNOperationType.PNAddMessageAction: 'msga',
+            PNOperationType.PNGetMessageActions: 'msga',
+            PNOperationType.PNDeleteMessageAction: 'msga'
         }[operation_type]
 
         return endpoint
@@ -579,10 +587,6 @@ class TokenManager(object):
         return None
 
     def get_extended_resource_type(self, r_type_abbr):
-        if r_type_abbr == "chan":
-            return PNResourceType.CHANNEL
-        if r_type_abbr == "grp":
-            return PNResourceType.GROUP
         if r_type_abbr == "usr":
             return PNResourceType.USER
         if r_type_abbr == "spc":

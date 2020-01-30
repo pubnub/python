@@ -40,6 +40,10 @@ from .endpoints.membership.get_space_memberships import GetSpaceMemberships
 from .endpoints.membership.get_members import GetMembers
 from .endpoints.membership.manage_members import ManageMembers
 from .endpoints.membership.manage_memberships import ManageMemberships
+from .endpoints.fetch_messages import FetchMessages
+from .endpoints.message_actions.add_message_action import AddMessageAction
+from .endpoints.message_actions.get_message_actions import GetMessageActions
+from .endpoints.message_actions.remove_message_action import RemoveMessageAction
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -52,7 +56,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "4.2.1"
+    SDK_VERSION = "4.3.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -230,6 +234,18 @@ class PubNubCore:
     def manage_memberships(self):
         return ManageMemberships(self)
 
+    def fetch_messages(self):
+        return FetchMessages(self)
+
+    def add_message_action(self):
+        return AddMessageAction(self)
+
+    def get_message_actions(self):
+        return GetMessageActions(self)
+
+    def remove_message_action(self):
+        return RemoveMessageAction(self)
+
     def time(self):
         return Time(self)
 
@@ -250,6 +266,9 @@ class PubNubCore:
             resource_id=resource_id,
             resource_type=resource_type
         ))
+
+    def get_tokens(self):
+        return self._token_manager.get_tokens()
 
     def get_tokens_by_resource(self, resource_type):
         return self._token_manager.get_tokens_by_resource(resource_type)

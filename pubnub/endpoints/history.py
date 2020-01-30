@@ -18,6 +18,7 @@ class History(Endpoint):
         self._reverse = None
         self._count = None
         self._include_timetoken = None
+        self._include_meta = None
 
     def channel(self, channel):
         self._channel = channel
@@ -48,6 +49,11 @@ class History(Endpoint):
         self._include_timetoken = include_timetoken
         return self
 
+    def include_meta(self, include_meta):
+        assert isinstance(include_meta, bool)
+        self._include_meta = include_meta
+        return self
+
     def custom_params(self):
         params = {}
 
@@ -67,6 +73,9 @@ class History(Endpoint):
 
         if self._include_timetoken is not None:
             params['include_token'] = "true" if self._include_timetoken else "false"
+
+        if self._include_meta is not None:
+            params['include_meta'] = "true" if self._include_meta else "false"
 
         return params
 
@@ -90,7 +99,8 @@ class History(Endpoint):
         return PNHistoryResult.from_json(
             json_input=envelope,
             crypto=self.pubnub.config.crypto,
-            include_tt_option=self._include_timetoken,
+            include_timetoken=self._include_timetoken,
+            include_meta=self._include_meta,
             cipher=self.pubnub.config.cipher_key)
 
     def request_timeout(self):

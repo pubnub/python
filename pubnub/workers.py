@@ -2,7 +2,7 @@ import logging
 
 from abc import abstractmethod
 from .utils import strip_right
-from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult, PNSignalMessageResult
+from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult, PNSignalMessageResult, PNMessageActionResult
 from .models.server.subscribe import SubscribeMessage, PresenceEnvelope
 from .models.consumer.user import PNUserResult
 from .models.consumer.space import PNSpaceResult
@@ -12,6 +12,11 @@ logger = logging.getLogger("pubnub")
 
 
 class SubscribeMessageWorker(object):
+    TYPE_MESSAGE = 0
+    TYPE_SIGNAL = 1
+    TYPE_OBJECT = 2
+    TYPE_MESSAGE_ACTION = 3
+
     def __init__(self, pubnub_instance, listener_manager_instance, queue_instance, event):
         # assert isinstance(pubnub_instnace, PubNubCore)
         # assert isinstance(listener_manager_instance, ListenerManager)
@@ -72,7 +77,7 @@ class SubscribeMessageWorker(object):
                 timeout=message.payload.get('timeout', None)
             )
             self._listener_manager.announce_presence(pn_presence_event_result)
-        elif message.is_object:
+        elif message.type == SubscribeMessageWorker.TYPE_OBJECT:
             if message.payload['type'] == 'user':
                 user_result = PNUserResult(  # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
                     event=message.payload['event'],
@@ -97,7 +102,8 @@ class SubscribeMessageWorker(object):
 
             if extracted_message is None:
                 logger.debug("unable to parse payload on #processIncomingMessages")
-            if message.is_signal:
+
+            if message.type == SubscribeMessageWorker.TYPE_SIGNAL:
                 pn_signal_result = PNSignalMessageResult(
                     message=extracted_message,
                     channel=channel,
@@ -106,6 +112,13 @@ class SubscribeMessageWorker(object):
                     publisher=publisher
                 )
                 self._listener_manager.announce_signal(pn_signal_result)
+            elif message.type == SubscribeMessageWorker.TYPE_MESSAGE_ACTION:
+                message_action = extracted_message['data']
+                if 'uuid' not in message_action:
+                    message_action['uuid'] = publisher
+
+                message_action_result = PNMessageActionResult(message_action)
+                self._listener_manager.announce_message_action(message_action_result)
             else:
                 pn_message_result = PNMessageResult(
                     message=extracted_message,
@@ -114,5 +127,4 @@ class SubscribeMessageWorker(object):
                     timetoken=publish_meta_data.publish_timetoken,
                     publisher=publisher
                 )
-
                 self._listener_manager.announce_message(pn_message_result)

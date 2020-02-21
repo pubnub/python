@@ -62,3 +62,17 @@ class TestRemoveDeviceFromPush(unittest.TestCase):
             'uuid': self.pubnub.uuid,
             'type': 'mpns',
         })
+
+    def test_remove_push_apns2(self):
+        self.remove_device.push_type(pubnub.enums.PNPushType.APNS2).device_id("coolDevice")\
+            .environment(pubnub.enums.PNPushEnvironment.PRODUCTION).topic("testTopic")
+
+        params = (pnconf.subscribe_key, "coolDevice")
+        self.assertEqual(self.remove_device.build_path(), RemoveDeviceFromPush.REMOVE_PATH_APNS2 % params)
+
+        self.assertEqual(self.remove_device.build_params_callback()({}), {
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid,
+            'environment': pubnub.enums.PNPushEnvironment.PRODUCTION,
+            'topic': 'testTopic'
+        })

@@ -103,6 +103,7 @@ class PNPushType(object):
     APNS = 1
     MPNS = 2
     GCM = 3
+    APNS2 = 4
 
 
 class PNResourceType(object):
@@ -115,3 +116,8 @@ class PNResourceType(object):
 class PNMatchType(object):
     RESOURCE = "resource"
     PATTERN = "pattern"
+
+
+class PNPushEnvironment(object):
+    DEVELOPMENT = "development"
+    PRODUCTION = "production"

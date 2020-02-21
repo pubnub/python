@@ -41,3 +41,5 @@ PNERR_MESSAGE_ACTION_TIMETOKEN_MISSING = "Message action timetoken is missing"
 PNERR_HISTORY_MESSAGE_ACTIONS_MULTIPLE_CHANNELS = "History can return message action data for a single channel only. " \
                                                   "Either pass a single channel or disable the include_message_action" \
                                                   "s flag. "
+
+PNERR_PUSH_TOPIC_MISSING = "Push notification topic is missing. Required only if push type is APNS2."

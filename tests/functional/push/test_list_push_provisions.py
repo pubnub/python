@@ -1,7 +1,9 @@
 import unittest
+import pytest
 
 from pubnub.endpoints.push.list_push_provisions import ListPushProvisions
 from pubnub.enums import PNPushType
+from pubnub.exceptions import PubNubException
 
 try:
     from mock import MagicMock
@@ -79,5 +81,25 @@ class TestListPushProvisions(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'environment': pubnub.enums.PNPushEnvironment.PRODUCTION,
+            'topic': 'testTopic'
+        })
+
+    def test_apns2_no_topic(self):
+        push = self.list_push.push_type(PNPushType.APNS2).device_id('coolDevice')
+
+        with pytest.raises(PubNubException):
+            push.validate_params()
+
+    def test_apns2_default_environment(self):
+        self.list_push.push_type(PNPushType.APNS2).device_id('coolDevice').topic("testTopic")
+
+        self.assertEqual(self.list_push.build_path(),
+                         ListPushProvisions.LIST_PATH_APNS2 % (
+                             pnconf.subscribe_key, "coolDevice"))
+
+        self.assertEqual(self.list_push.build_params_callback()({}), {
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid,
+            'environment': pubnub.enums.PNPushEnvironment.DEVELOPMENT,
             'topic': 'testTopic'
         })

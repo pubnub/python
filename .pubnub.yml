@@ -1,8 +1,13 @@
 name: python
-version: 4.3.0
+version: 4.4.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.4.0
+    date: Feb 20, 2020
+    changes:
+      - type: feature
+        text: Add support for APNS2 Push API
   - version: v4.3.0
     date: Jan 28, 2020
     changes:
@@ -178,11 +183,18 @@ features:
     - CHANNEL-GROUPS-REMOVE-CHANNELS
     - CHANNEL-GROUPS-REMOVE-GROUPS
     - CHANNEL-GROUPS-LIST-CHANNELS-IN-GROUP
+  others:
+    - TELEMETRY
+    - CREATE-PUSH-PAYLOAD
   push:
     - PUSH-ADD-DEVICE-TO-CHANNELS
     - PUSH-REMOVE-DEVICE-FROM-CHANNELS
     - PUSH-LIST-CHANNELS-FROM-DEVICE
     - PUSH-REMOVE-DEVICE
+    - PUSH-TYPE-APNS
+    - PUSH-TYPE-APNS2
+    - PUSH-TYPE-FCM
+    - PUSH-TYPE-MPNS
   presence:
     - PRESENCE-HERE-NOW
     - PRESENCE-WHERE-NOW

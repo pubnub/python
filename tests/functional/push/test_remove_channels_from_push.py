@@ -72,3 +72,20 @@ class TestRemoveChannelsFromPush(unittest.TestCase):
         })
 
         self.assertEqual(self.remove_channels._channels, ['ch1', 'ch2', 'ch3'])
+
+    def test_push_remove_single_channel_apns2(self):
+        self.remove_channels.channels(['ch']).push_type(pubnub.enums.PNPushType.APNS2).device_id("coolDevice")\
+            .environment(pubnub.enums.PNPushEnvironment.PRODUCTION).topic("testTopic")
+
+        params = (pnconf.subscribe_key, "coolDevice")
+        self.assertEqual(self.remove_channels.build_path(), RemoveChannelsFromPush.REMOVE_PATH_APNS2 % params)
+
+        self.assertEqual(self.remove_channels.build_params_callback()({}), {
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid,
+            'remove': 'ch',
+            'environment': pubnub.enums.PNPushEnvironment.PRODUCTION,
+            'topic': 'testTopic'
+        })
+
+        self.assertEqual(self.remove_channels._channels, ['ch'])

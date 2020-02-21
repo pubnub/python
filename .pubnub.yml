@@ -1,9 +1,9 @@
 name: python
-version: 4.3.1
+version: 4.4.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
-  - version: v4.3.1
+  - version: v4.4.0
     date: Feb 20, 2020
     changes:
       - type: feature

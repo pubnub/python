@@ -49,6 +49,9 @@ class RemoveChannelsFromPush(Endpoint):
         if self._push_type != PNPushType.APNS2:
             params['type'] = utils.push_type_to_string(self._push_type)
         else:
+            if self._environment is None:
+                self._environment = PNPushEnvironment.DEVELOPMENT
+
             params['environment'] = self._environment
             params['topic'] = self._topic
 
@@ -80,9 +83,6 @@ class RemoveChannelsFromPush(Endpoint):
         if self._push_type == PNPushType.APNS2:
             if not isinstance(self._topic, six.string_types) or len(self._topic) == 0:
                 raise PubNubException(pn_error=PNERR_PUSH_TOPIC_MISSING)
-
-            if self._environment is None:
-                self._environment = PNPushEnvironment.DEVELOPMENT
 
     def create_response(self, envelope):
         return PNPushRemoveChannelResult()

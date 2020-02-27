@@ -1,8 +1,13 @@
 name: python
-version: 4.4.0
+version: 4.5.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.5.0
+    date: Feb 27, 2020
+    changes:
+      - type: feature
+        text: Implemented Objects Filtering API
   - version: v4.4.0
     date: Feb 20, 2020
     changes:

@@ -4,6 +4,7 @@ from pubnub.endpoints.endpoint import Endpoint
 from pubnub.managers import TokenManagerProperties
 from pubnub.models.consumer.space import PNGetSpacesResult
 from pubnub.enums import HttpMethod, PNOperationType, PNResourceType
+from pubnub import utils
 
 
 class GetSpaces(Endpoint):
@@ -17,6 +18,7 @@ class GetSpaces(Endpoint):
         self._limit = GetSpaces.MAX_LIMIT
         self._count = False
         self._include = None
+        self._filter = None
 
     def start(self, start):
         assert isinstance(start, six.string_types)
@@ -41,6 +43,11 @@ class GetSpaces(Endpoint):
         self._include = data
         return self
 
+    def filter(self, filter):
+        assert isinstance(filter, six.string_types)
+        self._filter = filter
+        return self
+
     def custom_params(self):
         params = {}
 
@@ -58,6 +65,9 @@ class GetSpaces(Endpoint):
 
         if self._include:
             params['include'] = self._include
+
+        if self._filter:
+            params['filter'] = utils.url_encode(self._filter)
 
         return params
 

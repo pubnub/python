@@ -4,6 +4,7 @@ from pubnub.endpoints.endpoint import Endpoint
 from pubnub.managers import TokenManagerProperties
 from pubnub.models.consumer.user import PNGetUsersResult
 from pubnub.enums import HttpMethod, PNOperationType, PNResourceType
+from pubnub import utils
 
 
 class GetUsers(Endpoint):
@@ -17,6 +18,7 @@ class GetUsers(Endpoint):
         self._limit = GetUsers.MAX_LIMIT
         self._count = False
         self._include = None
+        self._filter = None
 
     def start(self, start):
         assert isinstance(start, six.string_types)
@@ -41,6 +43,11 @@ class GetUsers(Endpoint):
         self._include = data
         return self
 
+    def filter(self, _filter):
+        assert isinstance(_filter, six.string_types)
+        self._filter = _filter
+        return self
+
     def custom_params(self):
         params = {}
 
@@ -58,6 +65,9 @@ class GetUsers(Endpoint):
 
         if self._include:
             params['include'] = self._include
+
+        if self._filter:
+            params['filter'] = utils.url_encode(self._filter)
 
         return params
 

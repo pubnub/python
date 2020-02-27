@@ -1,3 +1,9 @@
+## [4.5.0](https://github.com/pubnub/python/tree/v4.5.0)
+
+  [Full Changelog](https://github.com/pubnub/python/compare/v4.4.0...v4.5.0)
+
+- 🌟 Implemented Objects Filtering API
+
 ## [4.4.0](https://github.com/pubnub/python/tree/v4.4.0)
 
   [Full Changelog](https://github.com/pubnub/python/compare/v4.3.0...v4.4.0)

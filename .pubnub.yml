@@ -1,8 +1,13 @@
 name: python
-version: 4.4.0
+version: 4.5.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.5.0
+    date: Feb 27, 2020
+    changes:
+      - type: feature
+        text: Implemented Objects Filtering API
   - version: v4.4.0
     date: Feb 20, 2020
     changes:
@@ -193,6 +198,7 @@ features:
     - PUSH-REMOVE-DEVICE
     - PUSH-TYPE-APNS
     - PUSH-TYPE-APNS2
+    - PUSH-TYPE-GCM
     - PUSH-TYPE-FCM
     - PUSH-TYPE-MPNS
   presence:
@@ -257,6 +263,7 @@ features:
     - OBJECTS-ADD-MEMBERS
     - OBJECTS-UPDATE-MEMBERS
     - OBJECTS-REMOVE-MEMBERS
+    - OBJECTS-FILTERING
   message-actions:
     - MESSAGE-ACTIONS-GET
     - MESSAGE-ACTIONS-ADD

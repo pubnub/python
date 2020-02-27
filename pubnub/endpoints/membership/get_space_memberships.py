@@ -20,6 +20,7 @@ class GetSpaceMemberships(Endpoint):
         self._count = False
         self._include = None
         self._user_id = None
+        self._filter = None
 
     def user_id(self, user_id):
         assert isinstance(user_id, six.string_types)
@@ -49,6 +50,11 @@ class GetSpaceMemberships(Endpoint):
         self._include = data
         return self
 
+    def filter(self, _filter):
+        assert isinstance(_filter, six.string_types)
+        self._filter = _filter
+        return self
+
     def custom_params(self):
         params = {}
 
@@ -66,6 +72,9 @@ class GetSpaceMemberships(Endpoint):
 
         if self._include:
             params['include'] = utils.join_items(self._include)
+
+        if self._filter:
+            params['filter'] = utils.url_encode(self._filter)
 
         return params
 

@@ -20,6 +20,7 @@ class GetMembers(Endpoint):
         self._count = False
         self._include = None
         self._space_id = None
+        self._filter = None
 
     def space_id(self, space_id):
         assert isinstance(space_id, six.string_types)
@@ -49,6 +50,11 @@ class GetMembers(Endpoint):
         self._include = data
         return self
 
+    def filter(self, filter):
+        assert isinstance(filter, six.string_types)
+        self._filter = filter
+        return self
+
     def custom_params(self):
         params = {}
 
@@ -66,6 +72,9 @@ class GetMembers(Endpoint):
 
         if self._include:
             params['include'] = utils.join_items(self._include)
+
+        if self._filter:
+            params['filter'] = utils.url_encode(self._filter)
 
         return params
 

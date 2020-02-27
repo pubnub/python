@@ -50,9 +50,9 @@ class GetMembers(Endpoint):
         self._include = data
         return self
 
-    def filter(self, filter):
-        assert isinstance(filter, six.string_types)
-        self._filter = filter
+    def filter(self, _filter):
+        assert isinstance(_filter, six.string_types)
+        self._filter = _filter
         return self
 
     def custom_params(self):

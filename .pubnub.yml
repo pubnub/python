@@ -1,8 +1,14 @@
 name: python
-version: 4.5.0
+version: 4.5.1
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.5.1
+    date: May 4, 2020
+    changes:
+      -
+        text: "Using SSL by default from the Python SDK to be more consistent and encourage best practices."
+        type: bug
   - version: v4.5.0
     date: Feb 27, 2020
     changes:

@@ -4,20 +4,20 @@ interactions:
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch/0?tt=0
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch/0?tt=0
   response:
     body: {string: '{"t":{"t":"14841800755720521","r":12},"m":[]}'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Thu, 12 Jan 2017 00:14:35 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch/0?tt=0&uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch/0?tt=0&uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "Presence", "uuids":
         ["test-here-now-asyncio-uuid1"], "occupancy": 1}'}
@@ -26,13 +26,13 @@ interactions:
       CONTENT-LENGTH: '113', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
         12 Jan 2017 00:14:41 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch?state=1
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch?state=1
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "Presence", "uuids":
         [{"uuid": "test-here-now-asyncio-uuid1"}], "occupancy": 1}'}
@@ -41,13 +41,13 @@ interactions:
       CONTENT-LENGTH: '123', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
         12 Jan 2017 00:14:41 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch?uuid=test-here-now-asyncio-uuid1&state=1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch?uuid=test-here-now-asyncio-uuid1&state=1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 - request:
     body: null
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch/leave
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch/leave
   response:
     body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
         "Presence"}'}
@@ -56,5 +56,5 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
         12 Jan 2017 00:14:42 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch/leave?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch/leave?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 version: 1

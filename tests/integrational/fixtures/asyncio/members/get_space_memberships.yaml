@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/objects/demo/users/mg3/spaces?count=True&include=custom%2Cspace%2Cspace.custom
+    uri: https://ps.pndsn.com/v1/objects/demo/users/mg3/spaces?count=True&include=custom%2Cspace%2Cspace.custom
   response:
     body:
       string: '{"status":200,"data":[{"id":"value1","custom":null,"space":{"id":"value1","name":"value2","description":"abcd","custom":null,"created":"2019-08-12T22:57:54.167167Z","updated":"2019-08-12T22:57:54.167167Z","eTag":"AaHahZqsyr6AOg"},"created":"2019-08-20T18:57:59.610446Z","updated":"2019-08-20T18:57:59.610446Z","eTag":"AY39mJKK//C0VA"}],"totalCount":1,"next":"MQ"}'

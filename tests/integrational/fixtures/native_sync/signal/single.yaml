@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22
+    uri: https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22
   response:
     body:
       string: '[1,"Sent","15640049765289377"]'

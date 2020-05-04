@@ -1,3 +1,9 @@
+## [v4.5.1](https://github.com/pubnub/python/releases/tag/v4.5.1)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v4.5.0...v4.5.1)
+
+- 🐛 Using SSL by default from the Python SDK to be more consistent and encourage best practices. 
+
 ## [4.5.0](https://github.com/pubnub/python/tree/v4.5.0)
 
   [Full Changelog](https://github.com/pubnub/python/compare/v4.4.0...v4.5.0)
@@ -238,5 +244,3 @@
 
 
 - ⭐Initial Release
-
-

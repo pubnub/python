@@ -13,7 +13,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.1.0
     method: PATCH
-    uri: http://ps.pndsn.com/v1/objects/demo/users/mg?include=custom
+    uri: https://ps.pndsn.com/v1/objects/demo/users/mg?include=custom
   response:
     body:
       string: '{"status":200,"data":{"id":"mg","name":"number 3","externalId":null,"profileUrl":null,"email":null,"custom":{"XXX":"YYYY"},"created":"2019-08-19T20:50:08.99614Z","updated":"2019-08-19T20:52:17.656249Z","eTag":"Af/+vv+glMjK3gE"}}'

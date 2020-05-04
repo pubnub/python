@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: DELETE
-    uri: http://ps.pndsn.com/v1/objects/demo/spaces/in_space
+    uri: https://ps.pndsn.com/v1/objects/demo/spaces/in_space
   response:
     body:
       string: '{"status":200,"data":null}'
@@ -30,5 +30,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/v1/objects/demo/spaces/in_space?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=5b19a0b7-dcb7-409e-94e1-a235d1cdd1ad
+    url: https://ps.pndsn.com/v1/objects/demo/spaces/in_space?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=5b19a0b7-dcb7-409e-94e1-a235d1cdd1ad
 version: 1

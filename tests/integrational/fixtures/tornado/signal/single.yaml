@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22
+    uri: https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22
   response:
     body:
       string: '[1,"Sent","15640051976283377"]'
@@ -39,5 +39,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=186191e7-ea00-4a3f-bc2c-392494abd07a
+    url: https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=186191e7-ea00-4a3f-bc2c-392494abd07a
 version: 1

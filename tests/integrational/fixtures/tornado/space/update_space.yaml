@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: PATCH
-    uri: http://ps.pndsn.com/v1/objects/demo/spaces/in_space?include=custom
+    uri: https://ps.pndsn.com/v1/objects/demo/spaces/in_space?include=custom
   response:
     body:
       string: '{"status":200,"data":{"id":"in_space","name":"some_name","description":"desc","custom":{"a":3},"created":"2019-08-19T21:20:47.314439Z","updated":"2019-08-19T21:20:56.991607Z","eTag":"Ad/T8bjmyoKQWw"}}'
@@ -30,5 +30,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/v1/objects/demo/spaces/in_space?include=custom&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=9dd7e485-fa79-4f5b-926f-09f5dbd4bd6c
+    url: https://ps.pndsn.com/v1/objects/demo/spaces/in_space?include=custom&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=9dd7e485-fa79-4f5b-926f-09f5dbd4bd6c
 version: 1

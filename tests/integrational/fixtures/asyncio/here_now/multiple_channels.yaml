@@ -4,20 +4,20 @@ interactions:
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.5]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/0?tt=0&uuid=test-here-now-asyncio-uuid1
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/0?tt=0&uuid=test-here-now-asyncio-uuid1
   response:
     body: {string: '{"t":{"t":"14841814610610668","r":12},"m":[]}'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '45', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Thu, 12 Jan 2017 00:37:41 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/0?uuid=test-here-now-asyncio-uuid1&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.0.5
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/0?uuid=test-here-now-asyncio-uuid1&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.0.5
 - request:
     body: null
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.5]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?uuid=test-here-now-asyncio-uuid1
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?uuid=test-here-now-asyncio-uuid1
   response:
     body: {string: '{"status": 200, "message": "OK", "payload": {"channels": {"test-here-now-asyncio-ch2":
         {"uuids": ["test-here-now-asyncio-uuid1"], "occupancy": 1}, "test-here-now-asyncio-ch1":
@@ -28,13 +28,13 @@ interactions:
       CONTENT-LENGTH: '303', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
         12 Jan 2017 00:37:47 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.5
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.5
 - request:
     body: null
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.5]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?state=1&uuid=test-here-now-asyncio-uuid1
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?state=1&uuid=test-here-now-asyncio-uuid1
   response:
     body: {string: '{"status": 200, "message": "OK", "payload": {"channels": {"test-here-now-asyncio-ch2":
         {"uuids": [{"uuid": "test-here-now-asyncio-uuid1"}], "occupancy": 1}, "test-here-now-asyncio-ch1":
@@ -45,13 +45,13 @@ interactions:
       CONTENT-LENGTH: '323', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
         12 Jan 2017 00:37:47 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?state=1&uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.5
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2?state=1&uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.5
 - request:
     body: null
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.5]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/leave?uuid=test-here-now-asyncio-uuid1
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/leave?uuid=test-here-now-asyncio-uuid1
   response:
     body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
         "Presence"}'}
@@ -60,5 +60,5 @@ interactions:
       CONTENT-LENGTH: '74', CONTENT-TYPE: text/javascript; charset="UTF-8", DATE: 'Thu,
         12 Jan 2017 00:37:48 GMT', SERVER: Pubnub Presence}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/leave?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.5
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/leave?uuid=test-here-now-asyncio-uuid1&pnsdk=PubNub-Python-Asyncio%2F4.0.5
 version: 1

@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg/remove
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg/remove
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -31,7 +31,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?add=channel-groups-native-ch
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?add=channel-groups-native-ch
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -55,7 +55,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg
   response:
     body: {string: '{"status": 200, "payload": {"channels": ["channel-groups-native-ch"],
         "group": "channel-groups-native-cg"}, "service": "channel-registry", "error":
@@ -80,7 +80,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?remove=channel-groups-native-ch
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg?remove=channel-groups-native-ch
   response:
     body: {string: '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -104,7 +104,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/channel-groups-native-cg
   response:
     body: {string: '{"status": 200, "payload": {"channels": [], "group": "channel-groups-native-cg"},
         "service": "channel-registry", "error": false}'}

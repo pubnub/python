@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [vcrpy-test]
     method: GET
-    uri: http://seomoz.org/
+    uri: https://seomoz.org/
   response:
     body: {string: !!python/unicode ''}
     headers:

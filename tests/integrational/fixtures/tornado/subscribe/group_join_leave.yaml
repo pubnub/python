@@ -5,7 +5,7 @@ interactions:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-test-group?add=subscribe-test-channel
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-test-group?add=subscribe-test-channel
   response:
     body: {string: !!python/unicode '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -41,14 +41,14 @@ interactions:
       - Age
       - ['0']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-test-group?add=subscribe-test-channel&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-subscribe-messenger
+    url: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-test-group?add=subscribe-test-channel&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-subscribe-messenger
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tt=0
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tt=0
   response:
     body: {string: !!python/unicode '{"t":{"t":"14818869649333428","r":12},"m":[]}'}
     headers:
@@ -74,14 +74,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tt=0&uuid=test-subscribe-listener
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tt=0&uuid=test-subscribe-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tr=12&tt=14818869649333428
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tr=12&tt=14818869649333428
   response:
     body: {string: !!python/unicode '{"t":{"t":"14818869660519117","r":12},"m":[{"a":"2","f":0,"p":{"t":"14818869659745206","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-test-channel-pnpres","d":{"action":
         "join", "timestamp": 1481886965, "uuid": "test-subscribe-listener", "occupancy":
@@ -109,14 +109,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14818869649333428&uuid=test-subscribe-listener
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14818869649333428&uuid=test-subscribe-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group&tt=0
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group&tt=0
   response:
     body: {string: !!python/unicode '{"t":{"t":"14818869660187938","r":12},"m":[]}'}
     headers:
@@ -142,14 +142,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group&pnsdk=PubNub-Python-Tornado%2F4.0.4&tt=0&uuid=test-subscribe-messenger
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group&pnsdk=PubNub-Python-Tornado%2F4.0.4&tt=0&uuid=test-subscribe-messenger
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tr=12&tt=14818869660519117
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tr=12&tt=14818869660519117
   response:
     body: {string: !!python/unicode '{"t":{"t":"14818869669268862","r":12},"m":[{"a":"2","f":0,"p":{"t":"14818869668806336","r":2},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-test-channel-pnpres","d":{"action":
         "join", "timestamp": 1481886966, "uuid": "test-subscribe-messenger", "occupancy":
@@ -177,14 +177,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14818869660519117&uuid=test-subscribe-listener
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14818869660519117&uuid=test-subscribe-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-test-group
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-test-group
   response:
     body: {string: !!python/unicode '{"status": 200, "action": "leave", "message":
         "OK", "service": "Presence"}'}
@@ -220,14 +220,14 @@ interactions:
       - Age
       - ['0']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-test-group&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-subscribe-messenger
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-test-group&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-subscribe-messenger
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tr=12&tt=14818869669268862
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tr=12&tt=14818869669268862
   response:
     body: {string: !!python/unicode '{"t":{"t":"14818869671710838","r":12},"m":[{"a":"2","f":0,"p":{"t":"14818869670946160","r":1},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-test-channel-pnpres","d":{"action":
         "leave", "timestamp": 1481886967, "uuid": "test-subscribe-messenger", "occupancy":
@@ -255,14 +255,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14818869669268862&uuid=test-subscribe-listener
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14818869669268862&uuid=test-subscribe-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tr=12&tt=14818869671710838
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group%2Csubscribe-test-group-pnpres&tr=12&tt=14818869671710838
   response:
     body: {string: !!python/unicode '{"t":{"t":"14818869675101369","r":12},"m":[{"a":"2","f":0,"p":{"t":"14818869674639626","r":2},"k":"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe","c":"subscribe-test-channel-pnpres","d":{"action":
         "leave", "timestamp": 1481886967, "uuid": "test-subscribe-listener", "occupancy":
@@ -290,14 +290,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14818869671710838&uuid=test-subscribe-listener
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=subscribe-test-group,subscribe-test-group-pnpres&pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=12&tt=14818869671710838&uuid=test-subscribe-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-test-group
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-test-group
   response:
     body: {string: !!python/unicode '{"status": 200, "action": "leave", "message":
         "OK", "service": "Presence"}'}
@@ -333,14 +333,14 @@ interactions:
       - Age
       - ['0']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-test-group&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-subscribe-listener
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=subscribe-test-group&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-subscribe-listener
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-test-group?remove=subscribe-test-channel
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-test-group?remove=subscribe-test-channel
   response:
     body: {string: !!python/unicode '{"status": 200, "message": "OK", "service": "channel-registry",
         "error": false}'}
@@ -376,5 +376,5 @@ interactions:
       - Age
       - ['0']
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-test-group?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-subscribe-messenger&remove=subscribe-test-channel
+    url: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/subscribe-test-group?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-subscribe-messenger&remove=subscribe-test-channel
 version: 1

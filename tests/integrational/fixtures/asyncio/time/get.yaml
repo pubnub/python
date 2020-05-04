@@ -4,12 +4,12 @@ interactions:
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/time/0
+    uri: https://ps.pndsn.com/time/0
   response:
     body: {string: '[14818963707386265]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '19', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Fri, 16 Dec 2016 13:52:50 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/time/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-state-asyncio-uuid
+    url: https://ps.pndsn.com/time/0?pnsdk=PubNub-Python-Asyncio%2F4.0.4&uuid=test-state-asyncio-uuid
 version: 1

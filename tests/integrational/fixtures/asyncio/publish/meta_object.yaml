@@ -4,12 +4,12 @@ interactions:
     headers:
       USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22hey%22?meta=%7B%22a%22%3A+2%2C+%22b%22%3A+%22qwer%22%7D
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22hey%22?meta=%7B%22a%22%3A+2%2C+%22b%22%3A+%22qwer%22%7D
   response:
     body: {string: '[1,"Sent","14820978548732558"]'}
     headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
       CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
         charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22hey%22?seqn=1&meta=%7B%22a%22%3A%202%2C%20%22b%22%3A%20%22qwer%22%7D&uuid=5cf73370-124e-4bc0-8d93-ce450d3dbfe3&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0/%22hey%22?seqn=1&meta=%7B%22a%22%3A%202%2C%20%22b%22%3A%20%22qwer%22%7D&uuid=5cf73370-124e-4bc0-8d93-ce450d3dbfe3&pnsdk=PubNub-Python-Asyncio%2F4.0.4
 version: 1

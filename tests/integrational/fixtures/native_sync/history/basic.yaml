@@ -7,7 +7,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-0%22?seqn=1
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-0%22?seqn=1
   response:
     body: {string: '[1,"Sent","14820999261239656"]'}
     headers:
@@ -27,7 +27,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-1%22?seqn=2
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-1%22?seqn=2
   response:
     body: {string: '[1,"Sent","14820999261946479"]'}
     headers:
@@ -47,7 +47,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-2%22?seqn=3
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-2%22?seqn=3
   response:
     body: {string: '[1,"Sent","14820999262698311"]'}
     headers:
@@ -67,7 +67,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-3%22?seqn=4
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-3%22?seqn=4
   response:
     body: {string: '[1,"Sent","14820999263462219"]'}
     headers:
@@ -87,7 +87,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-4%22?seqn=5
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22hey-4%22?seqn=5
   response:
     body: {string: '[1,"Sent","14820999264622346"]'}
     headers:
@@ -107,7 +107,7 @@ interactions:
       Connection: [keep-alive]
       User-Agent: [PubNub-Python/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/history/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/history-native-sync-ch?count=5
+    uri: https://ps.pndsn.com/v2/history/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/history-native-sync-ch?count=5
   response:
     body: {string: '[["hey-0","hey-1","hey-2","hey-3","hey-4"],14820999261239656,14820999264622346]'}
     headers:

@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: DELETE
-    uri: http://ps.pndsn.com/v1/objects/demo/spaces/in_space
+    uri: https://ps.pndsn.com/v1/objects/demo/spaces/in_space
   response:
     body:
       string: '{"status":200,"data":null}'

@@ -5,7 +5,7 @@ interactions:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel1/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tt=0
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel1/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tt=0
   response:
     body: {string: '{"t":{"t":"14717797368453656","r":3},"m":[]}'}
     headers:
@@ -31,14 +31,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel1/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid&tt=0
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel1/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid&tt=0
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel2,test-here-now-channel1/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=3&tt=0
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel2,test-here-now-channel1/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=3&tt=0
   response:
     body: {string: '{"t":{"t":"14717797368952132","r":3},"m":[]}'}
     headers:
@@ -64,14 +64,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel2,test-here-now-channel1/0?tr=3&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid&tt=0
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel2,test-here-now-channel1/0?tr=3&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid&tt=0
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel2,test-here-now-channel1/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=3&tt=0
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel2,test-here-now-channel1/0?pnsdk=PubNub-Python-Tornado%2F4.0.4&tr=3&tt=0
   response:
     body: {string: '{"t":{"t":"14717797368988362","r":3},"m":[]}'}
     headers:
@@ -97,14 +97,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel2,test-here-now-channel1/0?tr=3&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid&tt=0
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-here-now-channel2,test-here-now-channel1/0?tr=3&pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid&tt=0
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe?pnsdk=PubNub-Python-Tornado%2F4.0.4
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '{"status": 200, "message": "OK", "payload": {"channels": {"test-here-now-channel1":
         {"uuids": ["test-here-now-uuid"], "occupancy": 1}, "test-here-now-channel2":
@@ -142,14 +142,14 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid
 - request:
     body: null
     headers:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.4]
     method: GET
-    uri: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-channel1,test-here-now-channel2/leave?pnsdk=PubNub-Python-Tornado%2F4.0.4
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-channel1,test-here-now-channel2/leave?pnsdk=PubNub-Python-Tornado%2F4.0.4
   response:
     body: {string: '{"status": 200, "action": "leave", "message": "OK", "service":
         "Presence"}'}
@@ -185,5 +185,5 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: http://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-channel1,test-here-now-channel2/leave?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid
+    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-here-now-channel1,test-here-now-channel2/leave?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=test-here-now-uuid
 version: 1

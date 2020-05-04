@@ -13,7 +13,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.1.0
     method: PATCH
-    uri: http://ps.pndsn.com/v1/objects/demo/spaces/value1/users?include=custom%2Cuser%2Cuser.custom
+    uri: https://ps.pndsn.com/v1/objects/demo/spaces/value1/users?include=custom%2Cuser%2Cuser.custom
   response:
     body:
       string: !!binary |

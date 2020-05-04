@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/objects/demo/users/mg?include=custom
+    uri: https://ps.pndsn.com/v1/objects/demo/users/mg?include=custom
   response:
     body:
       string: '{"status":200,"data":{"id":"mg","name":"MAGNUM","externalId":null,"profileUrl":null,"email":null,"custom":{"XXX":"YYYY"},"created":"2019-08-19T21:04:00.148418Z","updated":"2019-08-19T21:04:00.148418Z","eTag":"Aaa/h+eBi9elsgE"}}'

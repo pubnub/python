@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.1.0
     method: GET
-    uri: http://ps.pndsn.com/v1/objects/demo/users/mg3/spaces?count=True&include=custom%2Cspace%2Cspace.custom
+    uri: https://ps.pndsn.com/v1/objects/demo/users/mg3/spaces?count=True&include=custom%2Cspace%2Cspace.custom
   response:
     body:
       string: !!binary |

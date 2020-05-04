@@ -5,7 +5,7 @@ interactions:
       Accept-Encoding: [utf-8]
       User-Agent: [PubNub-Python-Tornado/4.0.2]
     method: GET
-    uri: http://ps.pndsn.com/publish/blah/blah/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2
+    uri: https://ps.pndsn.com/publish/blah/blah/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2
   response:
     body: {string: !!python/unicode '{"message":"Invalid Subscribe Key","error":true,"service":"Access
         Manager","status":400}
@@ -40,5 +40,5 @@ interactions:
       - Content-Type
       - [text/javascript; charset=UTF-8]
     status: {code: 400, message: Bad Request}
-    url: http://ps.pndsn.com/publish/blah/blah/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2&seqn=1&uuid=189c0a7b-13b1-4d4c-a257-14fc2a124aaa
+    url: https://ps.pndsn.com/publish/blah/blah/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2&seqn=1&uuid=189c0a7b-13b1-4d4c-a257-14fc2a124aaa
 version: 1

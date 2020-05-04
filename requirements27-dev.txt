@@ -1,6 +1,6 @@
 pytest==4.3.0
 tornado==4.5.3
-twisted
+twisted==19.10.0
 pyopenssl
 pytest-cov<2.6.0
 cbor2

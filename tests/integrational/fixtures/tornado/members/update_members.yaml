@@ -7,7 +7,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Tornado/4.1.0
     method: PATCH
-    uri: http://ps.pndsn.com/v1/objects/demo/spaces/value1/users?include=custom%2Cuser%2Cuser.custom
+    uri: https://ps.pndsn.com/v1/objects/demo/spaces/value1/users?include=custom%2Cuser%2Cuser.custom
   response:
     body:
       string: '{"status":200,"data":[{"id":"mg","custom":null,"user":{"id":"mg","name":"number
@@ -37,5 +37,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: http://ps.pndsn.com/v1/objects/demo/spaces/value1/users?include=custom,user,user.custom&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=418f4ab8-a5ea-4316-91b4-e831c138d71c
+    url: https://ps.pndsn.com/v1/objects/demo/spaces/value1/users?include=custom,user,user.custom&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=418f4ab8-a5ea-4316-91b4-e831c138d71c
 version: 1

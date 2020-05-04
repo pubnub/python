@@ -10,7 +10,7 @@ class PNConfiguration(object):
         # TODO: add validation
         self.uuid = None
         self.origin = "ps.pndsn.com"
-        self.ssl = False
+        self.ssl = True
         self.non_subscribe_request_timeout = 10
         self.subscribe_request_timeout = 310
         self.connect_timeout = 5
@@ -23,6 +23,7 @@ class PNConfiguration(object):
         self.enable_subscribe = True
         self.crypto_instance = None
         self.log_verbosity = False
+        self.enable_presence_heartbeat = False
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.NONE
         self.daemon = False

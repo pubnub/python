@@ -16,7 +16,7 @@ class FetchMessages(Endpoint):
     FETCH_MESSAGES_PATH = "/v3/history/sub-key/%s/channel/%s"
     FETCH_MESSAGES_WITH_ACTIONS_PATH = "/v3/history-with-actions/sub-key/%s/channel/%s"
 
-    DEFAULT_MESSAGES = 100
+    DEFAULT_MESSAGES = 25
     MAX_MESSAGES = 25
     MAX_MESSAGES_ACTIONS = 100
 
@@ -25,7 +25,7 @@ class FetchMessages(Endpoint):
         self._channels = []
         self._start = None
         self._end = None
-        self._maximum_per_channel = None
+        self._count = None
         self._include_meta = None
         self._include_message_actions = None
 
@@ -33,10 +33,13 @@ class FetchMessages(Endpoint):
         utils.extend_list(self._channels, channels)
         return self
 
-    def maximum_per_channel(self, maximum_per_channel):
-        assert isinstance(maximum_per_channel, six.integer_types)
-        self._maximum_per_channel = maximum_per_channel
+    def count(self, count):
+        assert isinstance(count, six.integer_types)
+        self._count = count
         return self
+
+    def maximum_per_channel(self, maximum_per_channel):
+        return self.count(maximum_per_channel)
 
     def start(self, start):
         assert isinstance(start, six.integer_types)
@@ -59,7 +62,7 @@ class FetchMessages(Endpoint):
         return self
 
     def custom_params(self):
-        params = {'max': str(self._maximum_per_channel)}
+        params = {'max': int(self._count)}
 
         if self._start is not None:
             params['start'] = str(self._start)
@@ -103,20 +106,20 @@ class FetchMessages(Endpoint):
             self._include_message_actions = False
 
         if self._include_message_actions is False:
-            if self._maximum_per_channel is None or self._maximum_per_channel < FetchMessages.DEFAULT_MESSAGES:
-                self._maximum_per_channel = FetchMessages.DEFAULT_MESSAGES
-                logger.info("maximum_per_channel param defaulting to %d", FetchMessages.DEFAULT_MESSAGES)
-            elif self._maximum_per_channel > FetchMessages.MAX_MESSAGES:
-                self._maximum_per_channel = FetchMessages.MAX_MESSAGES
-                logger.info("maximum_per_channel param defaulting to %d", FetchMessages.DEFAULT_MESSAGES)
+            if self._count is None or self._count < 1:
+                self._count = FetchMessages.DEFAULT_MESSAGES
+                logger.info("count param defaulting to %d", FetchMessages.DEFAULT_MESSAGES)
+            elif self._count > FetchMessages.MAX_MESSAGES:
+                self._count = FetchMessages.MAX_MESSAGES
+                logger.info("count param defaulting to %d", FetchMessages.MAX_MESSAGES)
         else:
             if len(self._channels) > 1:
                 raise PubNubException(pn_error=PNERR_HISTORY_MESSAGE_ACTIONS_MULTIPLE_CHANNELS)
 
-            if self._maximum_per_channel is None or self._maximum_per_channel < 1 or\
-                    self._maximum_per_channel > FetchMessages.MAX_MESSAGES_ACTIONS:
-                self._maximum_per_channel = FetchMessages.MAX_MESSAGES_ACTIONS
-                logger.info("maximum_per_channel param defaulting to %d", FetchMessages.DEFAULT_MESSAGES)
+            if self._count is None or self._count < 1 or\
+                    self._count > FetchMessages.MAX_MESSAGES_ACTIONS:
+                self._count = FetchMessages.MAX_MESSAGES_ACTIONS
+                logger.info("count param defaulting to %d", FetchMessages.MAX_MESSAGES_ACTIONS)
 
     def create_response(self, envelope):  # pylint: disable=W0221
         return PNFetchMessagesResult.from_json(

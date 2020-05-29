@@ -1,8 +1,14 @@
 name: python
-version: 4.5.1
+version: 4.5.2
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.5.2
+    date: May 29, 2020
+    changes:
+      -
+        text: "Fix bug with max message count parameter for Fetch Messages endpoint. Rename maximum_per_channel parameter to count for Fetch Messages, keeping the old name for compatibility."
+        type: bug
   - version: v4.5.1
     date: May 4, 2020
     changes:

@@ -1,6 +1,10 @@
-## [v4.5.1](https://github.com/pubnub/python/releases/tag/v4.5.1)
+## [v4.5.2](https://github.com/pubnub/python/releases/tag/v4.5.2)
 
-[Full Changelog](https://github.com/pubnub/python/compare/v4.5.0...v4.5.1)
+[Full Changelog](https://github.com/pubnub/python/compare/v4.5.1...v4.5.2)
+
+- 🐛 Fix bug with max message count parameter for Fetch Messages endpoint. Rename maximum_per_channel parameter to count for Fetch Messages, keeping the old name for compatibility. 
+
+## [v4.5.1](https://github.com/pubnub/python/releases/tag/v4.5.1)
 
 - 🐛 Using SSL by default from the Python SDK to be more consistent and encourage best practices. 
 

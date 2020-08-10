@@ -455,15 +455,6 @@ class NonSubscribeListener(object):
 
 
 class NativeTelemetryManager(TelemetryManager):  # pylint: disable=W0612
-    def __init__(self):
-        TelemetryManager.__init__(self)
-        self._timer = NativePeriodicCallback(
-            self._start_clean_up_timer,
-            self.CLEAN_UP_INTERVAL * self.CLEAN_UP_INTERVAL_MULTIPLIER)
-        self._timer.start()
-
-    def _start_clean_up_timer(self):
+    def store_latency(self, latency, operation_type):
+        super(NativeTelemetryManager, self).store_latency(latency, operation_type)
         self.clean_up_telemetry_data()
-
-    def _stop_clean_up_timer(self):
-        self._timer.stop()

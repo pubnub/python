@@ -243,7 +243,7 @@ class SubscriptionManager(object):
 
         self._subscription_state = StateManager()
         self._listener_manager = ListenerManager(self._pubnub)
-        self._timetoken = int(0)
+        self._timetoken = 0
         self._region = None
 
         self._should_stop = False
@@ -395,19 +395,18 @@ class TelemetryManager(object):  # pylint: disable=W0612
 
             endpoint_average_latency = self.average_latency_from_data(endpoint_latencies)
 
-            if (endpoint_average_latency > 0):
+            if endpoint_average_latency > 0:
                 operation_latencies[latency_key] = endpoint_average_latency
 
         return operation_latencies
 
     def clean_up_telemetry_data(self):
         current_timestamp = time.time()
-
-        copy_latencies = copy.deepcopy(dict(self.latencies))
+        copy_latencies = copy.deepcopy(self.latencies)
 
         for endpoint_name, endpoint_latencies in copy_latencies.items():
-            for latency_information in list(endpoint_latencies):
-                if current_timestamp - latency_information['d'] > self.MAXIMUM_LATENCY_DATA_AGE:
+            for latency_information in endpoint_latencies:
+                if current_timestamp - latency_information["timestamp"] > self.MAXIMUM_LATENCY_DATA_AGE:
                     self.latencies[endpoint_name].remove(latency_information)
 
             if len(self.latencies[endpoint_name]) == 0:
@@ -423,8 +422,8 @@ class TelemetryManager(object):  # pylint: disable=W0612
                 self.latencies[endpoint_name] = []
 
             latency_entry = {
-                'd': store_timestamp,
-                'l': latency,
+                "timestamp": store_timestamp,
+                "latency": latency,
             }
 
             self.latencies[endpoint_name].append(latency_entry)
@@ -433,8 +432,8 @@ class TelemetryManager(object):  # pylint: disable=W0612
     def average_latency_from_data(endpoint_latencies):
         total_latency = 0
 
-        for k in endpoint_latencies:
-            total_latency += k['l']
+        for latency_data in endpoint_latencies:
+            total_latency += latency_data['latency']
 
         return total_latency / len(endpoint_latencies)
 

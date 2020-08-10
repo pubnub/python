@@ -5,11 +5,11 @@ from pubnub.enums import PNOperationType
 def test_average_latency():
     manager = TelemetryManager()
     endpointLatencies = [
-        {"d": 100, "l": 10},
-        {"d": 100, "l": 20},
-        {"d": 100, "l": 30},
-        {"d": 100, "l": 40},
-        {"d": 100, "l": 50},
+        {"timestamp": 100, "latency": 10},
+        {"timestamp": 100, "latency": 20},
+        {"timestamp": 100, "latency": 30},
+        {"timestamp": 100, "latency": 40},
+        {"timestamp": 100, "latency": 50},
     ]
 
     averageLatency = manager.average_latency_from_data(endpointLatencies)

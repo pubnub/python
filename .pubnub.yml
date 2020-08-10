@@ -1,8 +1,14 @@
 name: python
-version: 4.5.2
+version: 4.5.3
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.5.3
+    date: Aug 10, 2020
+    changes:
+      -
+        text: "Allocating separate thread that basically waits certain amount of time to clean telemetry data is a waste of memory/OS data strucutres. Clening mentioned data can be incorporated into regular logic."
+        type: improvement
   - version: v4.5.2
     date: May 29, 2020
     changes:

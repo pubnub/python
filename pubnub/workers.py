@@ -99,7 +99,7 @@ class SubscribeMessageWorker(object):
         else:
             try:
                 extracted_message = self._process_message(message.payload)
-            except:
+            except Exception:
                 extracted_message = None
             publisher = message.issuing_client_id
 

@@ -97,7 +97,10 @@ class SubscribeMessageWorker(object):
                 )
                 self._listener_manager.announce_membership(membership_result)
         else:
-            extracted_message = self._process_message(message.payload)
+            try:
+                extracted_message = self._process_message(message.payload)
+            except:
+                extracted_message = None
             publisher = message.issuing_client_id
 
             if extracted_message is None:

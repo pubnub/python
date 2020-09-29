@@ -1,6 +1,10 @@
 import logging
 
 from abc import abstractmethod
+
+from .enums import PNStatusCategory, PNOperationType
+from .models.consumer.common import PNStatus
+from .models.consumer.pn_error_data import PNErrorData
 from .utils import strip_right
 from .models.consumer.pubsub import PNPresenceEventResult, PNMessageResult, PNSignalMessageResult, PNMessageActionResult
 from .models.server.subscribe import SubscribeMessage, PresenceEnvelope
@@ -39,7 +43,17 @@ class SubscribeMessageWorker(object):
         if self._pubnub.config.cipher_key is None:
             return message_input
         else:
-            return self._pubnub.config.crypto.decrypt(self._pubnub.config.cipher_key, message_input)
+            try:
+                return self._pubnub.config.crypto.decrypt(self._pubnub.config.cipher_key, message_input)
+            except Exception as exception:
+                logger.warning("could not decrypt message: \"%s\", due to error %s" % (message_input, str(exception)))
+                pn_status = PNStatus()
+                pn_status.category = PNStatusCategory.PNDecryptionErrorCategory
+                pn_status.error_data = PNErrorData(str(exception), exception)
+                pn_status.error = True
+                pn_status.operation = PNOperationType.PNSubscribeOperation
+                self._listener_manager.announce_status(pn_status)
+                return message_input
 
     def _process_incoming_payload(self, message):
         assert isinstance(message, SubscribeMessage)

@@ -1,3 +1,10 @@
+## [v4.5.4](https://github.com/pubnub/python/releases/tag/v4.5.4)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v4.5.3...v4.5.4)
+
+- 🌟️ Add `suppress_leave_events` configuration option which can be used to opt-out presence leave call on unsubscribe. 
+- ⭐️️ Log out message decryption error and pass received message with `PNDecryptionErrorCategory` category to status listeners. 
+
 ## [v4.5.3](https://github.com/pubnub/python/releases/tag/v4.5.3)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v4.5.2...v4.5.3)

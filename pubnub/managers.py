@@ -316,7 +316,8 @@ class SubscriptionManager(object):
 
         self._subscription_state.adapt_unsubscribe_builder(unsubscribe_operation)
 
-        self._send_leave(unsubscribe_operation)
+        if not self._pubnub.config.suppress_leave_events:
+            self._send_leave(unsubscribe_operation)
 
         if self._subscription_state.is_empty():
             self._region = None

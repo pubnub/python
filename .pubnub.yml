@@ -1,8 +1,17 @@
 name: python
-version: 4.5.3
+version: 4.5.4
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.5.4
+    date: Sep 29, 2020
+    changes:
+      -
+        text: "Add `suppress_leave_events` configuration option which can be used to opt-out presence leave call on unsubscribe."
+        type: feature
+      -
+        text: "Log out message decryption error and pass received message with `PNDecryptionErrorCategory` category to status listeners."
+        type: improvement
   - version: v4.5.3
     date: Aug 10, 2020
     changes:

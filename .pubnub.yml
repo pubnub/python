@@ -1,8 +1,14 @@
 name: python
-version: 4.5.4
+version: 4.6.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.6.0
+    date: Oct 22, 2020
+    changes:
+      -
+        text: "File Upload added to the Python SDK."
+        type: feature
   - version: v4.5.4
     date: Sep 29, 2020
     changes:
@@ -16,7 +22,7 @@ changelog:
     date: Aug 10, 2020
     changes:
       -
-        text: "Allocating separate thread that basically waits certain amount of time to clean telemetry data is a waste of memory/OS data strucutres. Clening mentioned data can be incorporated into regular logic."
+        text: "Allocating separate thread that basically waits a certain amount of time to clean telemetry data is a waste of memory/OS data structures. Cleaning mentioned data can be incorporated into regular logic."
         type: improvement
   - version: v4.5.2
     date: May 29, 2020
@@ -62,7 +68,7 @@ changelog:
     date: Dec 24, 2019
     changes:
       - type: improvement
-        text: Introduced delete permission to Grant endpoint. Migrated to v2 enpdoints for old PAM methods.
+        text: Introduced delete permission to Grant endpoint. Migrated to v2 endpoints for old PAM methods.
       - type: feature
         text: Added TokenManager and GrantToken method.
       - type: improvement
@@ -121,7 +127,7 @@ changelog:
     date: Jun 14, 2017
     changes:
       - type: improvement
-        text: Added deamon option for PNConfig
+        text: Added daemon option for PNConfig
   - version: v4.0.12
     date:
     changes:
@@ -191,7 +197,7 @@ changelog:
       - type: improvement
         text: Adjusting maximum pool size for requests installations
       - type: improvement
-        text: Adding Publsher UUID
+        text: Adding Publisher UUID
   - version: v4.0.1
     date: Nov 8, 2016
     changes:

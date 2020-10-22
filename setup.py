@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub',
-    version='4.5.4',
+    version='4.6.0',
     description='PubNub Real-time push service in the cloud',
     author='PubNub',
     author_email='support@pubnub.com',

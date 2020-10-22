@@ -37,6 +37,9 @@ class SubscribeCallback(object):
     def message_action(self, pubnub, message_action):
         pass
 
+    def file(self, pubnub, file_message):
+        pass
+
 
 class ReconnectionCallback(object):
     @abstractmethod

@@ -4,8 +4,14 @@ from .enums import HttpMethod
 
 
 class RequestOptions(object):
-    def __init__(self, path, params_callback, method, request_timeout, connect_timeout, create_response,
-                 create_status, create_exception, operation_type, data=None, sort_arguments=False):
+    def __init__(
+            self, path, params_callback,
+            method, request_timeout, connect_timeout,
+            create_response, create_status, create_exception,
+            operation_type, data=None, sort_arguments=False,
+            allow_redirects=True, use_base_path=None, files=None,
+            request_headers=None, non_json_response=False
+    ):
         assert len(path) > 0
         assert callable(params_callback)
         assert isinstance(method, six.integer_types)
@@ -23,6 +29,7 @@ class RequestOptions(object):
         self.connect_timeout = connect_timeout
         # TODO: rename 'data' => 'body'
         self.data = data
+        self.files = files
         self.body = data
         self.sort_params = sort_arguments
 
@@ -30,6 +37,10 @@ class RequestOptions(object):
         self.create_status = create_status
         self.create_exception = create_exception
         self.operation_type = operation_type
+        self.allow_redirects = allow_redirects
+        self.use_base_path = use_base_path
+        self.request_headers = request_headers
+        self.non_json_response = non_json_response
 
     def merge_params_in(self, params_to_merge_in):
         self.params = self.params_callback(params_to_merge_in)

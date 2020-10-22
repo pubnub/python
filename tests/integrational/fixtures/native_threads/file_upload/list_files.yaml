@@ -1,0 +1,32 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_threads_ch/files?pnsdk=PubNub-Python%2F4.5.4&uuid=files_threads_uuid
+  response:
+    body:
+      string: '{"status":200,"data":[{"name":"king_arthur.txt","id":"47811ab3-ff1b-48ae-8717-ac0afdd4b51e","size":19,"created":"2020-10-21T17:15:52Z"}],"next":null,"count":1}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '159'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 21 Oct 2020 17:17:27 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

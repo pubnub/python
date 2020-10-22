@@ -43,3 +43,7 @@ PNERR_HISTORY_MESSAGE_ACTIONS_MULTIPLE_CHANNELS = "History can return message ac
                                                   "s flag. "
 
 PNERR_PUSH_TOPIC_MISSING = "Push notification topic is missing. Required only if push type is APNS2."
+
+PNERR_FILE_OBJECT_MISSING = "File object is missing."
+PNERR_FILE_NAME_MISSING = "File name is missing."
+PNERR_FILE_ID_MISSING = "File id is missing."

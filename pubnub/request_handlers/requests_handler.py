@@ -48,7 +48,7 @@ class RequestsRequestHandler(BaseRequestHandler):
         if cancellation_event is None:
             cancellation_event = threading.Event()
 
-        def callback_to_invoke_in_another_thread():
+        def callback_to_invoke_in_separate_thread():
             try:
                 envelope = self._build_envelope(platform_options, endpoint_call_options)
                 if cancellation_event is not None and cancellation_event.isSet():
@@ -78,17 +78,54 @@ class RequestsRequestHandler(BaseRequestHandler):
             finally:
                 call.executed_cb()
 
+        self.execute_callback_in_separate_thread(
+            callback_to_invoke_in_separate_thread,
+            endpoint_name,
+            call,
+            cancellation_event
+        )
+
+    def execute_callback_in_separate_thread(
+            self, callback_to_invoke_in_another_thread, operation_name, call_obj, cancellation_event
+    ):
         client = AsyncHTTPClient(callback_to_invoke_in_another_thread)
 
         thread = threading.Thread(
             target=client.run,
-            name="EndpointThread-%s-%d" % (endpoint_name, ++RequestsRequestHandler.ENDPOINT_THREAD_COUNTER)
+            name="Thread-%s-%d" % (operation_name, ++RequestsRequestHandler.ENDPOINT_THREAD_COUNTER)
         )
         thread.setDaemon(self.pubnub.config.daemon)
         thread.start()
 
-        call.thread = thread
-        call.cancellation_event = cancellation_event
+        call_obj.thread = thread
+        call_obj.cancellation_event = cancellation_event
+
+        return call_obj
+
+    def async_file_based_operation(self, func, callback, operation_name, cancellation_event=None):
+        call = Call()
+
+        if cancellation_event is None:
+            cancellation_event = threading.Event()
+
+        def callback_to_invoke_in_separate_thread():
+            try:
+                envelope = func()
+                callback(envelope.result, envelope.status)
+            except Exception as e:
+                logger.error("Async file upload request Exception. %s" % str(e))
+                callback(
+                    Envelope(result=None, status=e)
+                )
+            finally:
+                call.executed_cb()
+
+        self.execute_callback_in_separate_thread(
+            callback_to_invoke_in_separate_thread,
+            operation_name,
+            call,
+            cancellation_event
+        )
 
         return call
 
@@ -98,8 +135,9 @@ class RequestsRequestHandler(BaseRequestHandler):
         status_category = PNStatusCategory.PNUnknownCategory
         response_info = None
 
+        url_base_path = self.pubnub.base_origin if e_options.use_base_path else None
         try:
-            res = self._invoke_request(p_options, e_options, self.pubnub.base_origin)
+            res = self._invoke_request(p_options, e_options, url_base_path)
         except PubNubException as e:
             if e._pn_error is PNERR_CONNECTION_ERROR:
                 status_category = PNStatusCategory.PNUnexpectedDisconnectCategory
@@ -135,7 +173,7 @@ class RequestsRequestHandler(BaseRequestHandler):
                 client_request=res.request
             )
 
-        if res.status_code != requests.codes.ok:
+        if not res.ok:
             if res.status_code == 403:
                 status_category = PNStatusCategory.PNAccessDeniedCategory
 
@@ -167,30 +205,45 @@ class RequestsRequestHandler(BaseRequestHandler):
                         status_code=res.status_code
                     )))
         else:
+            if e_options.non_json_response:
+                response = res
+            else:
+                response = res.json()
+
             return Envelope(
-                result=e_options.create_response(res.json()),
+                result=e_options.create_response(response),
                 status=e_options.create_status(
                     category=PNStatusCategory.PNAcknowledgmentCategory,
-                    response=res.json(),
+                    response=response,
                     response_info=response_info,
-                    exception=None))
+                    exception=None
+                )
+            )
 
     def _invoke_request(self, p_options, e_options, base_origin):
         assert isinstance(p_options, PlatformOptions)
         assert isinstance(e_options, RequestOptions)
 
-        url = p_options.pn_config.scheme() + "://" + base_origin + e_options.path
+        if base_origin:
+            url = p_options.pn_config.scheme() + "://" + base_origin + e_options.path
+        else:
+            url = e_options.path
+
+        if e_options.request_headers:
+            p_options.update(e_options.request_headers)
 
         args = {
             "method": e_options.method_string,
-            'headers': p_options.headers,
+            "headers": p_options.headers,
             "url": url,
-            'params': e_options.query_string,
-            'timeout': (e_options.connect_timeout, e_options.request_timeout)
+            "params": e_options.query_string,
+            "timeout": (e_options.connect_timeout, e_options.request_timeout),
+            "allow_redirects": e_options.allow_redirects
         }
 
         if e_options.is_post() or e_options.is_patch():
-            args['data'] = e_options.data
+            args["data"] = e_options.data
+            args["files"] = e_options.files
             logger.debug("%s %s %s" % (
                 e_options.method_string,
                 utils.build_url(

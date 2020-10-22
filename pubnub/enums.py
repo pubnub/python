@@ -86,6 +86,14 @@ class PNOperationType(object):
     PNDeleteMessageAction = 44
     PNFetchMessagesOperation = 45
 
+    PNGetFilesAction = 46
+    PNDeleteFileOperation = 47
+    PNGetFileDownloadURLAction = 48
+    PNFetchFileUploadS3DataAction = 49
+    PNDownloadFileAction = 50
+    PNSendFileAction = 51
+    PNSendFileNotification = 52
+
 
 class PNHeartbeatNotificationOptions(object):
     NONE = 1

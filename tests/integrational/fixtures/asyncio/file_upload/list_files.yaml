@@ -1,0 +1,31 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.5.4
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_asyncio_ch/files
+  response:
+    body:
+      string: '{"status":200,"data":[{"name":"king_arthur.txt","id":"05fe1901-dfea-4ccf-abd6-423deda262aa","size":19,"created":"2020-10-21T15:27:06Z"},{"name":"king_arthur.txt","id":"2a7d29c8-e8f4-4c2b-a24d-4b5f165d366e","size":19,"created":"2020-10-21T15:20:48Z"},{"name":"king_arthur.txt","id":"2f9c0888-375b-4599-a086-0f47837eee87","size":19,"created":"2020-10-21T15:31:34Z"},{"name":"king_arthur.txt","id":"320a8c88-a412-43a4-957e-fec73a4a781f","size":19,"created":"2020-10-21T15:31:13Z"},{"name":"king_arthur.txt","id":"7ce8d4ad-92b7-430a-ab8a-ba6b3489049f","size":19,"created":"2020-10-21T16:59:30Z"},{"name":"king_arthur.txt","id":"803716aa-7624-4a80-bf58-142c6b665eea","size":19,"created":"2020-10-21T17:04:01Z"},{"name":"king_arthur.txt","id":"8051678d-ed6c-45b6-9e93-6aa261c6b4b8","size":48,"created":"2020-10-21T17:02:45Z"},{"name":"king_arthur.txt","id":"826b36c4-638c-43d6-ba68-9911494599ec","size":19,"created":"2020-10-21T15:27:04Z"},{"name":"king_arthur.txt","id":"865fee42-6f14-4bcf-bd00-745a26cd1eda","size":48,"created":"2020-10-21T15:20:47Z"},{"name":"king_arthur.txt","id":"883119dc-b2d9-4b5a-9d46-2750f5619668","size":19,"created":"2020-10-21T17:00:43Z"},{"name":"king_arthur.txt","id":"945b11a9-156f-4506-a90f-ded77fcdcb44","size":48,"created":"2020-10-21T17:02:11Z"},{"name":"king_arthur.txt","id":"9dae0510-5c78-408d-b372-8f6401c9d127","size":19,"created":"2020-10-21T15:31:12Z"},{"name":"king_arthur.txt","id":"9efbccf0-91d7-4e86-a6db-6904c6aa955f","size":19,"created":"2020-10-21T15:27:13Z"},{"name":"king_arthur.txt","id":"a0dfd470-f114-4bfc-9f20-b1d4a1be940e","size":48,"created":"2020-10-21T15:27:05Z"},{"name":"king_arthur.txt","id":"a5dc8c14-a663-4f34-b7af-b5cb5f4a1694","size":19,"created":"2020-10-21T17:00:35Z"},{"name":"king_arthur.txt","id":"aa6b6b1a-0d40-4044-ad08-3535667ea9ef","size":19,"created":"2020-10-21T15:27:12Z"},{"name":"king_arthur.txt","id":"b0749af2-8ffc-4ac4-bc11-c81d50491d95","size":19,"created":"2020-10-21T17:01:45Z"},{"name":"king_arthur.txt","id":"c4476763-522b-4408-9743-ed5777151e8b","size":19,"created":"2020-10-21T15:20:46Z"},{"name":"king_arthur.txt","id":"c97c65ea-7f35-43cf-b3b9-a01117e38f63","size":19,"created":"2020-10-21T15:31:32Z"},{"name":"king_arthur.txt","id":"d3a8e2e5-d925-4b21-aa77-a036dd1c21dc","size":48,"created":"2020-10-21T15:31:33Z"},{"name":"king_arthur.txt","id":"efa78132-b224-4c77-8b7e-ce834381ce9a","size":19,"created":"2020-10-21T17:03:43Z"},{"name":"king_arthur.txt","id":"f6fd8772-0d7c-48e4-b161-dce210a947e8","size":19,"created":"2020-10-21T16:59:35Z"},{"name":"king_arthur.txt","id":"ffce293c-1ccc-43f8-9952-808505cc3803","size":19,"created":"2020-10-21T17:00:24Z"}],"next":null,"count":23}'
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Connection: keep-alive
+      Content-Encoding: gzip
+      Content-Type: application/json
+      Date: Wed, 21 Oct 2020 17:05:38 GMT
+      Transfer-Encoding: chunked
+      Vary: Accept-Encoding
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - ps.pndsn.com
+        - /v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_asyncio_ch/files
+        - pnsdk=PubNub-Python-Asyncio%2F4.5.4&uuid=43086006-0f8e-422b-8e88-43fea4afde7d
+        - ''
+version: 1

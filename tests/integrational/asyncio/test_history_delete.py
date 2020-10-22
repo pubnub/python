@@ -4,6 +4,7 @@ from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.helper import pnconf
 
 
+# TODO: Those tests are calling PubNub infrastructure. Mock them. Remove mutable pnconf.
 @pytest.mark.asyncio
 def test_success(event_loop):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)

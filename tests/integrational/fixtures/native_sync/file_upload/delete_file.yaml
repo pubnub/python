@@ -1,0 +1,175 @@
+interactions:
+- request:
+    body: '{"name": "king_arthur.txt"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '27'
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: POST
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/generate-upload-url?uuid=files_native_sync_uuid
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4xV2ZKiSBT9lQlfuylJNqUm+sHClQYUgWSZmahIIEGUxZakFDrq3yfRqmqn62Ue
+        kLw373LOzUP6c1ATRJp68Mix7NdBjAgaPP4cZPHgcSDzXMRxvMSgUYIZQRYFBgkRz4h4HLE4QaIY
+        x4OvgxIVmEYfsjJ9Rieya04P5EIGr18HSZbj5+aYVyh+PuEfDa5JX7w55TR+R8ixfhwOj01YNiFT
+        lLio6rbETJ9VM7hhIlySE8oZwBxP8UPNP6ACdVWJzvVDVBVD2rrAZFf1UDdry6Y2vhyzEyJZVT5T
+        Jj0qjuVYBrAMB2wweuTHj8IooIFJdSqekwznMWX+18/BAbc0mKA0pSzo/gvKmz7974Zl+ci++a8G
+        /nBZmPzmuTe/4/ZmrsM9johta6tyitr6tjv82L7ZsO93c4C3iDvXm+e3DsPPGIb/QUqP4J1Z//uL
+        VU3nHTHReMwJXIIYwCPMAIBDJox4gY5dSmJZGqFEFocJQ1aTyPDUtVyMQeJC+FwxiWUyL7g5Gic7
+        r+DE2YTYMc3h/9HL8LNM3jEqVUnoiTN2e8R3YAm+kOExR1n55x/RDp1qTL41JGHGd6keMyk6Rjnh
+        mBbIUH6XPvm+mvijiSMtzKn43X2y+Pli2KsCsBwY3qtsWPNDqi3hQ6q/17dw1Jwy0jJ2dcDlXY9P
+        kZM8rWjkrrgH4loCs9QnCmMtJ5wofUqa9or9Ff+OkeqWH/eq/RW/qfIsuj9Qpay/K5aa4+XTMSrm
+        LHLlZrWv0tV+ddb3E6Lb9NnPHd2OJL1LJWMao1V27nP2IScekLc90nfX57jnSlW8OvNLuEccZK91
+        yifgFyLwM0DCApKQN8SwcEhQ5HXg6STwHOJzsImX6i5U2IvmPbWBosrahNaCdRZ4s0xTJpm63O4C
+        Lj6GRXS1N/MP+8t1DYw8ngpjuJiXm/1FC7zDF5tTfwSuwcL5VrdcceZ7ebdR5OveZh7swiXMN/vZ
+        WAPv6/PLLf/2diiH93XA5U3QCZlnUe5mHq4KeKFzSFfZ9kTrXTFFPMw0Vyd+lwr63myDYkbnZ+wC
+        i73obr+n7vXOpHwdLihM0djHu2B/ABrnk3iWP/ms6FuHsRja6SXIYxfm8ovmBrZjAS7w4NkuVSdc
+        yK4JoekXEDpw9rK29dbvVq3e+cS344L2Yte2w2rujPU7nRiuI/jdU06xAMPdHjSO0JnFie+pLFrC
+        Viu3Qqyo8fu8fU5u4gU9DwXUgSuW8SIlVBdNwDk9xzN9QM9tPU3PH7MoDbavF7X0PvC21dtcplQX
+        LK3BanArRotrfrbK2VpJDypuVUFz5wRnYB8V8NDHIXdeXzVzmGuWMw8Mdg6NQ7zdTqEGWdXW2WCp
+        dVddXvTp6qJxEGiukYfltvXdM9EtudNbeRfzOuvxah55MI94M0tuOEerMiW+CyTNM3Kfhy3FKmre
+        9oVq9ab57E13VMNYAbvQq2j8pQx59RgvduQNm+fQM7Rm4MlsgW3NZq1h+597uNtdTDmvs0lG8bb6
+        dHZ++4669dTk3WyVJmaleuZRVtJv3z5fGVla0r/X0/2HPQYjzEVCFMpIjoEwlmJ6OcaihEejRGQl
+        zItcJLFAkiQgjjkxARhLIifgSOTkBCBh8PrP6+u/AAAA//8DAMzAFzi4BwAA
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 21 Oct 2020 17:37:47 GMT
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: "--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition: form-data; name=\"tagging\"\r\n\r\n<Tagging><TagSet><Tag><Key>ObjectTTLInDays</Key><Value>1</Value></Tag></TagSet></Tagging>\r\n--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition:
+      form-data; name=\"key\"\r\n\r\nsub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/932c2236-a7fe-4954-a4c3-5e8c0efa55dd/king_arthur.txt\r\n--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition:
+      form-data; name=\"Content-Type\"\r\n\r\ntext/plain; charset=utf-8\r\n--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition:
+      form-data; name=\"X-Amz-Credential\"\r\n\r\nAKIAY7AU6GQD5KWBS3FG/20201021/eu-central-1/s3/aws4_request\r\n--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition:
+      form-data; name=\"X-Amz-Security-Token\"\r\n\r\n\r\n--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition:
+      form-data; name=\"X-Amz-Algorithm\"\r\n\r\nAWS4-HMAC-SHA256\r\n--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition:
+      form-data; name=\"X-Amz-Date\"\r\n\r\n20201021T173847Z\r\n--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition:
+      form-data; name=\"Policy\"\r\n\r\nCnsKCSJleHBpcmF0aW9uIjogIjIwMjAtMTAtMjFUMTc6Mzg6NDdaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1L2YtdElBY05YSk85bTgxZldWVl9vLWZTUS12ZXVwTnJUbG9WQVVQYmVVUVEvOTMyYzIyMzYtYTdmZS00OTU0LWE0YzMtNWU4YzBlZmE1NWRkL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRDVLV0JTM0ZHLzIwMjAxMDIxL2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMDEwMjFUMTczODQ3WiIgfQoJXQp9Cg==\r\n--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition:
+      form-data; name=\"X-Amz-Signature\"\r\n\r\n817e2c4cb9a9d1486d0efd56e77f506e352c60166615825f1ee6524ec529f1a4\r\n--354e9677668b51b8f2b6f0e2399c021a\r\nContent-Disposition:
+      form-data; name=\"file\"; filename=\"king_arthur.txt\"\r\n\r\nKnights who say
+      Ni!\r\n--354e9677668b51b8f2b6f0e2399c021a--\r\n"
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2314'
+      Content-Type:
+      - multipart/form-data; boundary=354e9677668b51b8f2b6f0e2399c021a
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: POST
+    uri: https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/
+  response:
+    body:
+      string: ''
+    headers:
+      Date:
+      - Wed, 21 Oct 2020 17:37:48 GMT
+      ETag:
+      - '"3676cdb7a927db43c846070c4e7606c7"'
+      Location:
+      - https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95%2Ff-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ%2F932c2236-a7fe-4954-a4c3-5e8c0efa55dd%2Fking_arthur.txt
+      Server:
+      - AmazonS3
+      x-amz-expiration:
+      - expiry-date="Fri, 23 Oct 2020 00:00:00 GMT", rule-id="Archive file 1 day after
+        creation"
+      x-amz-id-2:
+      - 48VpIxIuXzH00PRlNZwRUKkhE8UoWe10Gf6UT2qas/dXpcKLvs2/sLeq7stOP5XJdOxk4HE0uhE=
+      x-amz-request-id:
+      - C4E8AD3DC97537E6
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 204
+      message: No Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/files_native_sync_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22932c2236-a7fe-4954-a4c3-5e8c0efa55dd%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=True&ttl=222&uuid=files_native_sync_uuid
+  response:
+    body:
+      string: '[1,"Sent","16033018679897300"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Wed, 21 Oct 2020 17:37:47 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: DELETE
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/files/932c2236-a7fe-4954-a4c3-5e8c0efa55dd/king_arthur.txt?uuid=files_native_sync_uuid
+  response:
+    body:
+      string: '{"status":200}'
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 21 Oct 2020 17:37:48 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

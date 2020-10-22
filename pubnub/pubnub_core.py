@@ -44,6 +44,13 @@ from .endpoints.fetch_messages import FetchMessages
 from .endpoints.message_actions.add_message_action import AddMessageAction
 from .endpoints.message_actions.get_message_actions import GetMessageActions
 from .endpoints.message_actions.remove_message_action import RemoveMessageAction
+from .endpoints.file_operations.list_files import ListFiles
+from .endpoints.file_operations.delete_file import DeleteFile
+from .endpoints.file_operations.get_file_url import GetFileDownloadUrl
+from .endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
+from .endpoints.file_operations.send_file import SendFileNative
+from .endpoints.file_operations.download_file import DownloadFileNative
+from .endpoints.file_operations.publish_file_message import PublishFileMessage
 
 from .endpoints.push.add_channels_to_push import AddChannelsToPush
 from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
@@ -56,7 +63,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "4.5.4"
+    SDK_VERSION = "4.6.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -272,6 +279,45 @@ class PubNubCore:
 
     def get_tokens_by_resource(self, resource_type):
         return self._token_manager.get_tokens_by_resource(resource_type)
+
+    def send_file(self):
+        if not self.sdk_platform():
+            return SendFileNative(self)
+        elif "Asyncio" in self.sdk_platform():
+            from .endpoints.file_operations.send_file_asyncio import AsyncioSendFile
+            return AsyncioSendFile(self)
+        else:
+            raise NotImplementedError
+
+    def download_file(self):
+        if not self.sdk_platform():
+            return DownloadFileNative(self)
+        elif "Asyncio" in self.sdk_platform():
+            from .endpoints.file_operations.download_file_asyncio import DownloadFileAsyncio
+            return DownloadFileAsyncio(self)
+        else:
+            raise NotImplementedError
+
+    def list_files(self):
+        return ListFiles(self)
+
+    def get_file_url(self):
+        return GetFileDownloadUrl(self)
+
+    def delete_file(self):
+        return DeleteFile(self)
+
+    def _fetch_file_upload_s3_data(self):
+        return FetchFileUploadS3Data(self)
+
+    def publish_file_message(self):
+        return PublishFileMessage(self)
+
+    def decrypt(self, cipher_key, file):
+        return self.config.file_crypto.decrypt(cipher_key, file)
+
+    def encrypt(self, cipher_key, file):
+        return self.config.file_crypto.encrypt(cipher_key, file)
 
     @staticmethod
     def timestamp():

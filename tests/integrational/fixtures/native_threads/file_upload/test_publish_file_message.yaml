@@ -1,0 +1,36 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/files_native_threads_ch/0/%7B%22message%22%3A%20%7B%22test%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%222222%22%2C%20%22name%22%3A%20%22test%22%7D%7D?meta=%7B%7D&ttl=222&store=True&pnsdk=PubNub-Python%2F4.5.4&uuid=files_threads_uuid
+  response:
+    body:
+      string: '[1,"Sent","16033011692080880"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Wed, 21 Oct 2020 17:26:09 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

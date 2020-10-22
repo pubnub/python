@@ -11,8 +11,19 @@ from tests.helper import url_decode
 
 vcr_dir = os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__)))))
 
+
+def remove_request_body(request):
+    request.body = ""
+    return request
+
+
 pn_vcr = vcr.VCR(
     cassette_library_dir=vcr_dir
+)
+
+pn_vcr_with_empty_body_request = vcr.VCR(
+    cassette_library_dir=vcr_dir,
+    before_record_request=remove_request_body
 )
 
 

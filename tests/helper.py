@@ -13,7 +13,7 @@ try:
 except ImportError:
     from unittest.mock import patch  # noqa: F401
 
-crypto = PubNubCryptodome()
+crypto = PubNubCryptodome(PNConfiguration())
 
 
 pub_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"
@@ -62,6 +62,14 @@ message_count_config.origin = 'balancer1g.bronze.aws-pdx-1.ps.pn'
 objects_config = PNConfiguration()
 objects_config.publish_key = 'demo'
 objects_config.subscribe_key = 'demo'
+
+file_upload_config = PNConfiguration()
+file_upload_config.publish_key = "pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3"
+file_upload_config.subscribe_key = "sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95"
+
+
+def pnconf_file_copy():
+    return copy(file_upload_config)
 
 
 def pnconf_copy():

@@ -1,0 +1,58 @@
+interactions:
+- request:
+    body: '{"name": "king_arthur.txt"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '27'
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: POST
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/generate-upload-url?uuid=files_native_sync_uuid
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4xV23KjOBD9lS2/zhBLYByTrXlw8JUBxxgsLrtbKYHEzVw8RsTGU/n3FXaS8U5e
+        9gGjbp1une4+yD97NcOsqXsPIgBfewQz3Hv42UtJ76E3IlSK7qkkACINhAEBsjASiSJI90GAIziK
+        pGHY+9orcUE5epeW8TM+sKQ53LET671+7UVpTp+bfV5h8nygPxpasy55c8g5PmFsXz/0+/smKJtA
+        KEpaVHVbUqGLqgXaCCEt2QHnAhT2B3JXS3e4wOeqxMf6LqyKPj+6oCypOqrrJ8vmNj3t0wNmaVU+
+        80o6ViIQgQCBIEIb3j9IygMc+BwYVYfiOUppTnjlf/3s7WjLwQzHMa+C77/gvOnC/24AkEL76r8Y
+        9MNlUfab59b8Ttur+RRkNGS2rS/LCW7r627/Y/tqo+68qwO+IW5cb57fTuh/5tD/D1M+gvfKut9f
+        VdW836EQjkbiQIywACVMBQhpIAQhH3RIhxFRhvc4UuR+JLDlOFy52pNSjGDkIPRcCZFlCi+02a8O
+        dl6h8XYd0K1p9v+PXvqfZfLOUa1Kxicu2O2e3pBl9MT6+xyn5Z9/hAk+1JR9a1gkjG5CXWFcnAX1
+        QAlPkOL8Jnz8fTn27sfb4dycyN+dR0uazfudKiAQYf9WZf1a6nNtDT6k+nt+i4bNIWWtYFc7Wt6c
+        8Qk5zuOKI5PilohjDYSFMVYFazEW5eGnoEmn2F/4d45ct5LSqfYXfl3laXg7ULWsv6uWltPF4z4s
+        ZgA7SrPMqniZLY9GNmaGzZ9stjXscGicd0PD3uBleuxiskCUd9jd7Pn73MU4x0pT3Tr1SpRhEYFL
+        nvIReoUMvRSyoEAskFZyUGyZX+S17xrMd7fME1FDFloSqOCku4+tr2qKPua5UJ367jTV1XGqLTaJ
+        L5J9UIQXez37sL9c1nCVk8lghOazcp2ddN/dfbFF7YfvrACabQzLkaeem5/XqnLZW8/8JFigfJ1N
+        Rzp8Xx9frvHX95bX8L72xbzxz4PUtXjtZh4sC3TifYiX6ebA8104hRJKdcdg3jkeGJnZ+sWU92+V
+        +BY4GU63p2XG2eT1bkW/MOVVRhI/20Fd9BiZ5o8ekD1rN5IDOz75OXFQrrzojm9vLSj6LjrapbYN
+        5opjImR6BUJbNH15mm9yQ/Qk3zaYMTfPKxUAfzKGuh23/mTHjDNJvWJWGHZSGGc/00XGe0Yiz9UA
+        XqBWLzcDomrkvd+eqDRkzuehwtp35JLMY8Z10fjitqvxyB/Y1fY0iY8fvShXoMsXtvw+cDfVW18m
+        XBeA5wA62sjh/BKfLnNQq/FOo6020J0ZoynMwgLtOhx2ZvVFM7uZbm1n/grM0GpHNpsJ0hHQbAP4
+        C/180eXJmCxPuoig7qzyoNy0nnNkhqWcjVZJiGQAV9Ly0EV5KJlpdOV5vyxj5jlwqLur3JNQy7nK
+        urt54Vq9aj590x3XMFVhErgVx5/KQNL2ZJ6wN27uls/QmsJHs4W2NZ22K9v7fIazSQiv+Skdp5xv
+        a0ymx7fv6PxkT4GTLuPIrDTX3Ctq/O3b5ysjjUv+93q4/bAJvydhROUhFpUhHkHML9tRGI2GAAay
+        LMlAggGWIJQDGcABIWKoRGIwlOUowrJCot7rP6+v/wIAAP//AwBA2W25uAcAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 21 Oct 2020 17:38:14 GMT
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

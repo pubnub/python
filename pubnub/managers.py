@@ -231,6 +231,10 @@ class ListenerManager(object):
         for callback in self._listeners:
             callback.presence(self._pubnub, presence)
 
+    def announce_file_message(self, file_message):
+        for callback in self._listeners:
+            callback.file(self._pubnub, file_message)
+
 
 class SubscriptionManager(object):
     __metaclass__ = ABCMeta
@@ -491,7 +495,15 @@ class TelemetryManager(object):  # pylint: disable=W0612
 
             PNOperationType.PNAddMessageAction: 'msga',
             PNOperationType.PNGetMessageActions: 'msga',
-            PNOperationType.PNDeleteMessageAction: 'msga'
+            PNOperationType.PNDeleteMessageAction: 'msga',
+
+            PNOperationType.PNGetFilesAction: 'file',
+            PNOperationType.PNDeleteFileOperation: 'file',
+            PNOperationType.PNGetFileDownloadURLAction: 'file',
+            PNOperationType.PNFetchFileUploadS3DataAction: 'file',
+            PNOperationType.PNDownloadFileAction: 'file',
+            PNOperationType.PNSendFileAction: 'file',
+
         }[operation_type]
 
         return endpoint

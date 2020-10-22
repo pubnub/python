@@ -4,8 +4,11 @@ import logging
 
 from pubnub import utils
 from pubnub.enums import PNStatusCategory, PNOperationType
-from pubnub.errors import PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING, \
-    PNERR_SECRET_KEY_MISSING, PNERR_CHANNEL_MISSING
+from pubnub.errors import (
+    PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING,
+    PNERR_SECRET_KEY_MISSING, PNERR_CHANNEL_MISSING, PNERR_FILE_OBJECT_MISSING,
+    PNERR_FILE_ID_MISSING, PNERR_FILE_NAME_MISSING
+)
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pn_error_data import PNErrorData
@@ -78,6 +81,24 @@ class Endpoint(object):
     def affected_channels_groups(self):
         return None
 
+    def allow_redirects(self):
+        return True
+
+    def use_base_path(self):
+        return True
+
+    def request_headers(self):
+        if self.http_method() == "POST":
+            return {"Content-type": "application/json"}
+        else:
+            return {}
+
+    def build_file_upload_request(self):
+        return
+
+    def non_json_response(self):
+        return False
+
     def options(self):
         return RequestOptions(
             path=self.build_path(),
@@ -90,7 +111,13 @@ class Endpoint(object):
             create_exception=self.create_exception,
             operation_type=self.operation_type(),
             data=self.build_data(),
-            sort_arguments=self._sort_params)
+            files=self.build_file_upload_request(),
+            sort_arguments=self._sort_params,
+            allow_redirects=self.allow_redirects(),
+            use_base_path=self.use_base_path(),
+            request_headers=self.request_headers(),
+            non_json_response=self.non_json_response()
+        )
 
     def sync(self):
         self.validate_params()
@@ -201,6 +228,18 @@ class Endpoint(object):
     def validate_publish_key(self):
         if self.pubnub.config.publish_key is None or len(self.pubnub.config.publish_key) == 0:
             raise PubNubException(pn_error=PNERR_PUBLISH_KEY_MISSING)
+
+    def validate_file_object(self):
+        if not self._file_object:
+            raise PubNubException(pn_error=PNERR_FILE_OBJECT_MISSING)
+
+    def validate_file_name(self):
+        if not self._file_name:
+            raise PubNubException(pn_error=PNERR_FILE_NAME_MISSING)
+
+    def validate_file_id(self):
+        if not self._file_id:
+            raise PubNubException(pn_error=PNERR_FILE_ID_MISSING)
 
     def create_status(self, category, response, response_info, exception):
         if response_info is not None:

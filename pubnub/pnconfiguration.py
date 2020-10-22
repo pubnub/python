@@ -13,7 +13,7 @@ class PNConfiguration(object):
         self.ssl = True
         self.non_subscribe_request_timeout = 10
         self.subscribe_request_timeout = 310
-        self.connect_timeout = 5
+        self.connect_timeout = 10
         self.subscribe_key = None
         self.publish_key = None
         self.secret_key = None
@@ -22,12 +22,14 @@ class PNConfiguration(object):
         self.filter_expression = None
         self.enable_subscribe = True
         self.crypto_instance = None
+        self.file_crypto_instance = None
         self.log_verbosity = False
         self.enable_presence_heartbeat = False
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.NONE
         self.daemon = False
         self.disable_token_manager = False
+        self.use_random_initialization_vector = False
         self.suppress_leave_events = False
 
         self.heartbeat_default_values = True
@@ -69,7 +71,18 @@ class PNConfiguration(object):
 
     def _init_cryptodome(self):
         from .crypto import PubNubCryptodome
-        self.crypto_instance = PubNubCryptodome()
+        self.crypto_instance = PubNubCryptodome(self)
+
+    def _init_file_crypto(self):
+        from .crypto import PubNubFileCrypto
+        self.file_crypto_instance = PubNubFileCrypto(self)
+
+    @property
+    def file_crypto(self):
+        if not self.file_crypto_instance:
+            self._init_file_crypto()
+
+        return self.file_crypto_instance
 
     @property
     def port(self):

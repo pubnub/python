@@ -150,13 +150,15 @@ class PubNubAsyncio(PubNubCore):
 
         options.merge_params_in(params_to_merge_in)
 
-        url = utils.build_url(self.config.scheme(), self.base_origin, options.path, options.query_string)
-        log_url = utils.build_url(self.config.scheme(), self.base_origin,
-                                  options.path, options.query_string)
-        logger.debug("%s %s %s" % (options.method_string, log_url, options.data))
+        if options.use_base_path:
+            url = utils.build_url(self.config.scheme(), self.base_origin, options.path, options.query_string)
+        else:
+            url = utils.build_url(scheme="", origin="", path=options.path, params=options.query_string)
 
-        if options.method_string == "POST":
-            self.headers['Content-type'] = "application/json"
+        logger.debug("%s %s %s" % (options.method_string, url, options.data))
+
+        if options.request_headers:
+            self.headers.update(options.request_headers)
 
         if AIOHTTP_V in (1, 2):
             from yarl import URL
@@ -165,17 +167,24 @@ class PubNubAsyncio(PubNubCore):
         try:
             start_timestamp = time.time()
             response = yield from asyncio.wait_for(
-                self._session.request(options.method_string, url,
-                                      headers=self.headers,
-                                      data=options.data if options.data is not None else None),
-                options.request_timeout)
+                self._session.request(
+                    options.method_string, url,
+                    headers=self.headers,
+                    data=options.data if options.data else None,
+                    allow_redirects=options.allow_redirects
+                ),
+                options.request_timeout
+            )
         except (asyncio.TimeoutError, asyncio.CancelledError):
             raise
         except Exception as e:
             logger.error("session.request exception: %s" % str(e))
             raise
 
-        body = yield from response.text()
+        if not options.non_json_response:
+            body = yield from response.text()
+        else:
+            body = yield from response.read()
 
         if cancellation_event is not None and cancellation_event.is_set():
             return
@@ -205,32 +214,37 @@ class PubNubAsyncio(PubNubCore):
                 client_response=response
             )
 
+        # if body is not None and len(body) > 0 and not options.non_json_response:
         if body is not None and len(body) > 0:
-            try:
-                data = json.loads(body)
-            except ValueError:
-                if response.status == 599 and len(body) > 0:
-                    data = body
-                else:
-                    raise
-            except TypeError:
+            if options.non_json_response:
+                data = body
+            else:
                 try:
-                    data = json.loads(body.decode("utf-8"))
+                    data = json.loads(body)
                 except ValueError:
-                    raise create_exception(category=status_category,
-                                           response=response,
-                                           response_info=response_info,
-                                           exception=PubNubException(
-                                               pn_error=PNERR_JSON_DECODING_FAILED,
-                                               errormsg='json decode error',
-                                           )
-                                           )
+                    if response.status == 599 and len(body) > 0:
+                        data = body
+                    else:
+                        raise
+                except TypeError:
+                    try:
+                        data = json.loads(body.decode("utf-8"))
+                    except ValueError:
+                        raise create_exception(category=status_category,
+                                               response=response,
+                                               response_info=response_info,
+                                               exception=PubNubException(
+                                                   pn_error=PNERR_JSON_DECODING_FAILED,
+                                                   errormsg='json decode error',
+                                               )
+                                               )
         else:
             data = "N/A"
 
         logger.debug(data)
 
-        if response.status != 200:
+        if response.status not in (200, 307, 204):
+
             if response.status >= 500:
                 err = PNERR_SERVER_ERROR
             else:
@@ -242,25 +256,27 @@ class PubNubAsyncio(PubNubCore):
             if response.status == 400:
                 status_category = PNStatusCategory.PNBadRequestCategory
 
-            raise create_exception(category=status_category,
-                                   response=data,
-                                   response_info=response_info,
-                                   exception=PubNubException(
-                                       errormsg=data,
-                                       pn_error=err,
-                                       status_code=response.status
-                                   )
-                                   )
+            raise create_exception(
+                category=status_category,
+                response=data,
+                response_info=response_info,
+                exception=PubNubException(
+                    errormsg=data,
+                    pn_error=err,
+                    status_code=response.status
+                )
+            )
         else:
             self._telemetry_manager.store_latency(time.time() - start_timestamp, options.operation_type)
 
             return AsyncioEnvelope(
-                result=create_response(data),
+                result=create_response(data) if not options.non_json_response else create_response(response, data),
                 status=create_status(
                     PNStatusCategory.PNAcknowledgmentCategory,
                     data,
                     response_info,
-                    None)
+                    None
+                )
             )
 
 

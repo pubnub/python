@@ -38,6 +38,18 @@ class PNSignalMessageResult(PNMessageResult):
     pass
 
 
+class PNFileMessageResult(PNMessageResult):
+    def __init__(
+            self, message, subscription,
+            channel, timetoken, publisher,
+            file_url, file_id, file_name
+    ):
+        super(PNFileMessageResult, self).__init__(message, subscription, channel, timetoken, publisher=publisher)
+        self.file_url = file_url
+        self.file_id = file_id
+        self.file_name = file_name
+
+
 class PNPresenceEventResult(object):
     def __init__(self, event, uuid, timestamp, occupancy, subscription, channel,
                  timetoken, state, join, leave, timeout, user_metadata=None):

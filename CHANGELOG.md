@@ -1,3 +1,10 @@
+## [v4.6.0](https://github.com/pubnub/python/releases/tag/v4.6.0)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v4.5.4...v4.6.0)
+
+- 🌟️ File Upload added to the Python SDK. 
+- ⭐️️ Fix spelling typos in `.pubnub.yml` file. Addresses the following PRs from [@samiahmedsiddiqui](https://github.com/samiahmedsiddiqui): [#92](https://github.com/pubnub/python/pull/92).
+
 ## [v4.5.4](https://github.com/pubnub/python/releases/tag/v4.5.4)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v4.5.3...v4.5.4)

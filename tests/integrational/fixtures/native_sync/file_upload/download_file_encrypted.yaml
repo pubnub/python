@@ -1,0 +1,257 @@
+interactions:
+- request:
+    body: '{"name": "king_arthur.txt"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '27'
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: POST
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/generate-upload-url?uuid=files_native_sync_uuid
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4xV25KiSBD9lQ1fZ2irClHojXmw8QYNKHJnd6ODS4EgF0eKVpyYf99Cu3vc6Zd9
+        QCqzTmadzDyUPwYNCUjbDB4RAF8HcUCCweOPQRYPHgchDoV4kgAGQyFkRiOWZ8JJGDFhiAROEBIw
+        CdnB10EVlJii91mVvgRHsmuPD+RMBj+/DpKswC/toaiD+OWIv7e4IX3y9lhQ/I6QQ/M4HB7asGpD
+        pqxwWTddhZk+qmFwy0S4IsegYCBzOMYPDfsQlMGlroJT8xDV5ZAeXWKyq3uqm7VhUhufD9kxIFld
+        vdBKelYIIMBAwCBowskjyz+isU+BSX0sX5IMFzGt/K8fgz3uKJgEaUqroPuvQdH24X+3ALCRefNf
+        DfzhMjD5zXNvPuPuZq7DHEfENBWpmgVdc9sdfmzfbLs/7+aAb4g715vntxOGnzkM/8OUjuC9sv73
+        V1UN7XfERDyPRigJGMgGmIEQh0wYsSPa9nESC+NJkAjcMGGINI00V14LJQ8Tx7ZfaiYxdOYVtwft
+        aBa1PbU2IbZ0ffh/9DL8LJN3jmJdETpxxuwO+I4swWcyPBRBVv35R7QLjg0m31qSMPxdqMtMywsj
+        HnFME2RBcRc+fZam3mRqjZf6jHt2ngx2sRz2qoAAweG9yoYNO6TaGn1I9ff8Bo7aY0Y6xqz3uLo7
+        4xNyWqQ1Re7KeyKOMWJW6lRkjNUUceNPQbNesb/w7xypblm+V+0v/KYusuh+oGLVPIuGXODV0yEq
+        FyBwhFbK61TKpZOaT4lq0idfWKoZjdVLOlZzP5CyUx+Th4jbB+72QN+XPsY51bLoNplX2XmAbHDN
+        Uz1Br+Sgl0ESljYJWY0LS4v4ZdH4rkp81yIestt4Je9CEZwV96nzRVlQpjSX3WS+O88UcZrJq+3O
+        R/EhLKOrvVl82F+ua6gV8WzE28tFtcnPiu/uv5hI/u47GrAXW9VwuLnnFpeNKFz3Ngt/F67sYpPP
+        eQW+r0+vt/jb26I1vK99VLT+ZZS5Bq1dL0KptM+0D6mUbY8035VTxNqZ4qjEu6QjNdc7v5zT/mk7
+        3wBn1en35Fy96LReC/mlzml5vPPzPVSQR+J58eQBzjP2PBea6dkvYscuhFfF8U3LgMh37ZNZyVa4
+        FBzdtnWvtG3Lnr/Sd7Z2dNans/LNOedlAGgzdaQ4EuuVlEspdWvT4taOd9KQdFEQoT2LE8+VQbCy
+        O6XajmJRjt/77SGhjZd0HiJsfIer4mVKqC5aH1l9jSf6wL629Sw9ffSi0kCfL+rofeBu67e+zKgu
+        AM0BFHvLRctrfCYVoBHTvYw7mXJcEJzBPCrtfY8LnEVz1cx+oRjWwtfAwtb28XY7sxUbyKYK/JVy
+        ueryrM6ks4JsqDhaEVbbznNORDWEi9oJu5hVgcvKReTaRcTqWXLjOZGqlHgOHCuuVnis3VGunOJu
+        X6lWb5rP3nRHNYxFuAvdmuLPVcjKh3i5I2/cXIvO0JjDJ72DpjGfd5rpfT7D2e5iWvM6m2aUb6fO
+        5qe37+iynknIyaQ00WvZ1Q+CmH779vnKyNKK/r0e7z9sjCFELAI8P454gWPHGCQBm/ATDCb8WOAQ
+        4mOYCDHHAYQmHIpHIwC5gMOTGEYRohfHPz9//gsAAP//AwCuZ0gyuAcAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 21 Oct 2020 17:37:26 GMT
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: !!binary |
+      LS01MmRlMDZlMGU5YzMzOWQxMDhiYzIzYTFiYWUwYzFkNA0KQ29udGVudC1EaXNwb3NpdGlvbjog
+      Zm9ybS1kYXRhOyBuYW1lPSJ0YWdnaW5nIg0KDQo8VGFnZ2luZz48VGFnU2V0PjxUYWc+PEtleT5P
+      YmplY3RUVExJbkRheXM8L0tleT48VmFsdWU+MTwvVmFsdWU+PC9UYWc+PC9UYWdTZXQ+PC9UYWdn
+      aW5nPg0KLS01MmRlMDZlMGU5YzMzOWQxMDhiYzIzYTFiYWUwYzFkNA0KQ29udGVudC1EaXNwb3Np
+      dGlvbjogZm9ybS1kYXRhOyBuYW1lPSJrZXkiDQoNCnN1Yi1jLWM4ODI0MmZhLTEzYWUtMTFlYi1i
+      YzM0LWNlNmZkOTY3YWY5NS9mLXRJQWNOWEpPOW04MWZXVlZfby1mU1EtdmV1cE5yVGxvVkFVUGJl
+      VVFRL2JlYjlkN2YwLWUxOWItNDQzOC1iN2JjLWJiMjk1OTlmMDdiMy9raW5nX2FydGh1ci50eHQN
+      Ci0tNTJkZTA2ZTBlOWMzMzlkMTA4YmMyM2ExYmFlMGMxZDQNCkNvbnRlbnQtRGlzcG9zaXRpb246
+      IGZvcm0tZGF0YTsgbmFtZT0iQ29udGVudC1UeXBlIg0KDQp0ZXh0L3BsYWluOyBjaGFyc2V0PXV0
+      Zi04DQotLTUyZGUwNmUwZTljMzM5ZDEwOGJjMjNhMWJhZTBjMWQ0DQpDb250ZW50LURpc3Bvc2l0
+      aW9uOiBmb3JtLWRhdGE7IG5hbWU9IlgtQW16LUNyZWRlbnRpYWwiDQoNCkFLSUFZN0FVNkdRRDVL
+      V0JTM0ZHLzIwMjAxMDIxL2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QNCi0tNTJkZTA2ZTBl
+      OWMzMzlkMTA4YmMyM2ExYmFlMGMxZDQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsg
+      bmFtZT0iWC1BbXotU2VjdXJpdHktVG9rZW4iDQoNCg0KLS01MmRlMDZlMGU5YzMzOWQxMDhiYzIz
+      YTFiYWUwYzFkNA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJYLUFtei1B
+      bGdvcml0aG0iDQoNCkFXUzQtSE1BQy1TSEEyNTYNCi0tNTJkZTA2ZTBlOWMzMzlkMTA4YmMyM2Ex
+      YmFlMGMxZDQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iWC1BbXotRGF0
+      ZSINCg0KMjAyMDEwMjFUMTczODI2Wg0KLS01MmRlMDZlMGU5YzMzOWQxMDhiYzIzYTFiYWUwYzFk
+      NA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJQb2xpY3kiDQoNCkNuc0tD
+      U0psZUhCcGNtRjBhVzl1SWpvZ0lqSXdNakF0TVRBdE1qRlVNVGM2TXpnNk1qWmFJaXdLQ1NKamIy
+      NWthWFJwYjI1eklqb2dXd29KQ1hzaVluVmphMlYwSWpvZ0luQjFZbTUxWWkxdGJtVnRiM041Ym1V
+      dFptbHNaWE10WlhVdFkyVnVkSEpoYkMweExYQnlaQ0o5TEFvSkNWc2laWEVpTENBaUpIUmhaMmRw
+      Ym1jaUxDQWlQRlJoWjJkcGJtYytQRlJoWjFObGRENDhWR0ZuUGp4TFpYaytUMkpxWldOMFZGUk1T
+      VzVFWVhselBDOUxaWGsrUEZaaGJIVmxQakU4TDFaaGJIVmxQand2VkdGblBqd3ZWR0ZuVTJWMFBq
+      d3ZWR0ZuWjJsdVp6NGlYU3dLQ1FsYkltVnhJaXdnSWlSclpYa2lMQ0FpYzNWaUxXTXRZemc0TWpR
+      eVptRXRNVE5oWlMweE1XVmlMV0pqTXpRdFkyVTJabVE1TmpkaFpqazFMMll0ZEVsQlkwNVlTazg1
+      YlRneFpsZFdWbDl2TFdaVFVTMTJaWFZ3VG5KVWJHOVdRVlZRWW1WVlVWRXZZbVZpT1dRM1pqQXRa
+      VEU1WWkwME5ETTRMV0kzWW1NdFltSXlPVFU1T1dZd04ySXpMMnRwYm1kZllYSjBhSFZ5TG5SNGRD
+      SmRMQW9KQ1ZzaVkyOXVkR1Z1ZEMxc1pXNW5kR2d0Y21GdVoyVWlMQ0F3TENBMU1qUXlPRGd3WFN3
+      S0NRbGJJbk4wWVhKMGN5MTNhWFJvSWl3Z0lpUkRiMjUwWlc1MExWUjVjR1VpTENBaUlsMHNDZ2tK
+      ZXlKNExXRnRlaTFqY21Wa1pXNTBhV0ZzSWpvZ0lrRkxTVUZaTjBGVk5rZFJSRFZMVjBKVE0wWkhM
+      ekl3TWpBeE1ESXhMMlYxTFdObGJuUnlZV3d0TVM5ek15OWhkM00wWDNKbGNYVmxjM1FpZlN3S0NR
+      bDdJbmd0WVcxNkxYTmxZM1Z5YVhSNUxYUnZhMlZ1SWpvZ0lpSjlMQW9KQ1hzaWVDMWhiWG90WVd4
+      bmIzSnBkR2h0SWpvZ0lrRlhVelF0U0UxQlF5MVRTRUV5TlRZaWZTd0tDUWw3SW5ndFlXMTZMV1Jo
+      ZEdVaU9pQWlNakF5TURFd01qRlVNVGN6T0RJMldpSWdmUW9KWFFwOUNnPT0NCi0tNTJkZTA2ZTBl
+      OWMzMzlkMTA4YmMyM2ExYmFlMGMxZDQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsg
+      bmFtZT0iWC1BbXotU2lnbmF0dXJlIg0KDQplZTExMjMyMDg4NmM4OTUzNmUwZmEzZjg3ZTA3ODY5
+      NTIyOGQxZjlkNTUwMjI3NTJkNDQwMTVhNWU3ZDFjYzI2DQotLTUyZGUwNmUwZTljMzM5ZDEwOGJj
+      MjNhMWJhZTBjMWQ0DQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImZpbGUi
+      OyBmaWxlbmFtZT0ia2luZ19hcnRodXIudHh0Ig0KDQo3NTM5MTQzOTUwNzY4NzEzAzzvkJ+IvUkI
+      pgIM6cRWyt+OS54iOzhaB0cKnz6vNcINCi0tNTJkZTA2ZTBlOWMzMzlkMTA4YmMyM2ExYmFlMGMx
+      ZDQtLQ0K
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2343'
+      Content-Type:
+      - multipart/form-data; boundary=52de06e0e9c339d108bc23a1bae0c1d4
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: POST
+    uri: https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/
+  response:
+    body:
+      string: ''
+    headers:
+      Date:
+      - Wed, 21 Oct 2020 17:37:27 GMT
+      ETag:
+      - '"60e49d4f6550a2784fe8e91b7eda0d0b"'
+      Location:
+      - https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95%2Ff-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ%2Fbeb9d7f0-e19b-4438-b7bc-bb29599f07b3%2Fking_arthur.txt
+      Server:
+      - AmazonS3
+      x-amz-expiration:
+      - expiry-date="Fri, 23 Oct 2020 00:00:00 GMT", rule-id="Archive file 1 day after
+        creation"
+      x-amz-id-2:
+      - N0W32R/ej2O7mDHEjW34bEBChufFtw+gAzXVSy9WFnkeKo1hsClb5kpdXyr6CQK6sokNnDcgyjY=
+      x-amz-request-id:
+      - CF3B8DF3593DD4BB
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 204
+      message: No Content
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/files_native_sync_ch/0/%22nuKM7r9zoS9IXo%2FL7H3LqqeXhVHlHVM32Jwyjm0BBrYN%2FybeKX8eYOqvVUv5sQVBjt%2FVzQ0OPKpCk6wEPepUFoVHOKiTX%2Fngr%2BiKRmvt4Zddec4Q%2Bj%2By1JN%2BdBNn%2BqAVoYXNgtNsh9YCpD3NkwaYO0at2onH8ax00TzUYBbfeqo%3D%22?meta=null&store=True&ttl=222&uuid=files_native_sync_uuid
+  response:
+    body:
+      string: '[1,"Sent","16033018470668399"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Wed, 21 Oct 2020 17:37:27 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/files/beb9d7f0-e19b-4438-b7bc-bb29599f07b3/king_arthur.txt?uuid=files_native_sync_uuid
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - public, max-age=1593, immutable
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Wed, 21 Oct 2020 17:37:27 GMT
+      Location:
+      - https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/beb9d7f0-e19b-4438-b7bc-bb29599f07b3/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201021%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201021T170000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=dd7de7f3adb79d7e911f4f6568f9597e19b1bf40e542725932c58f47187e0065
+    status:
+      code: 307
+      message: Temporary Redirect
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: GET
+    uri: https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/beb9d7f0-e19b-4438-b7bc-bb29599f07b3/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201021%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201021T170000Z&X-Amz-Expires=3900&X-Amz-Signature=dd7de7f3adb79d7e911f4f6568f9597e19b1bf40e542725932c58f47187e0065&X-Amz-SignedHeaders=host
+  response:
+    body:
+      string: !!binary |
+        NzUzOTE0Mzk1MDc2ODcxMwM875CfiL1JCKYCDOnEVsrfjkueIjs4WgdHCp8+rzXC
+    headers:
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '48'
+      Content-Type:
+      - text/plain; charset=utf-8
+      Date:
+      - Wed, 21 Oct 2020 17:37:28 GMT
+      ETag:
+      - '"60e49d4f6550a2784fe8e91b7eda0d0b"'
+      Last-Modified:
+      - Wed, 21 Oct 2020 17:37:27 GMT
+      Server:
+      - AmazonS3
+      Via:
+      - 1.1 48c20cb247b267a59a8191c4d3bd787c.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - SKaoCKtiX5gfNSMyjKlaJVanxePbz1KMmF_PdtQFQw38yIeDMMGRYg==
+      X-Amz-Cf-Pop:
+      - MUC50-C1
+      X-Cache:
+      - Miss from cloudfront
+      x-amz-expiration:
+      - expiry-date="Fri, 23 Oct 2020 00:00:00 GMT", rule-id="Archive file 1 day after
+        creation"
+      x-amz-server-side-encryption:
+      - AES256
+    status:
+      code: 200
+      message: OK
+version: 1

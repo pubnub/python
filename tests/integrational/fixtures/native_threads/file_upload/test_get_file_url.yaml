@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_threads_ch/files/47811ab3-ff1b-48ae-8717-ac0afdd4b51e/king_arthur.txt?pnsdk=PubNub-Python%2F4.5.4&uuid=files_threads_uuid
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - public, max-age=2397, immutable
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      Date:
+      - Wed, 21 Oct 2020 17:24:04 GMT
+      Location:
+      - https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/jaDgk-9c_B8i5c_vBjUOQQfLTonvLy7MImT7mZ_coCQ/47811ab3-ff1b-48ae-8717-ac0afdd4b51e/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201021%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201021T170000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=3e4d34d038f34ec647a684a9e9c36c9b8e246001ee759c1674771f390cdf06d3
+    status:
+      code: 307
+      message: Temporary Redirect
+version: 1

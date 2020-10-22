@@ -1,0 +1,41 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/files?uuid=files_native_sync_uuid
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5TSwY5VIQwG4HdhfWqAFmjPc7jSTEyBojfOHJN7z00mTubdxbtwqbiEQL/0b9/c
+        7dTzfnN79H5zXU91++c3d+iLud19vxxfv+j1/Ha/fjhfT7e5S5/XsSr5FAxCJgJqxsBVEihxziWE
+        Qd7m29vl5yxCvLl2NT3t8dVHD8FDDB9D2RF38p/c+/YvMRX0ySNDTTxFEwPtPQLmlK39Nlv/Iwb5
+        i5j2wCti1lFaDxkMDYGEI3BMHVJvgzFUbl4XxLR72VNZEYtvWKIgKLIBMXvQKYHZTHVISD21tVQn
+        utQjoygmyxALFSC1AlLFQ8+Ve2zSfOQF8dEjLYkSuY6SDAaKzB4rg7bagVONoqVSX0+VllKtnLKW
+        GEHFD6AUK2jBArmbkKWGanFB/I9UW/VkiHOEfsxdTXOONWaC2mnEjq3EsriruKOsiEMpq1qDNMLc
+        VSWBimX2WIb3gqULl1XxkerT5g6b9ffj/vw8n/+4H/Mg778AAAD//wMAINFBWi8EAAA=
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 21 Oct 2020 17:36:44 GMT
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

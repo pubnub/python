@@ -1,0 +1,97 @@
+interactions:
+- request:
+    body: ''
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '20'
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: POST
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/generate-upload-url?uuid=files_native_sync_uuid
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4xVW5eiOBD+L77uMCZcvPSbDV6ggRaFcNnd0yeQoCAXR6I2zun/vkHHGWf6ZR9i
+        qipVqa+qvuD3XsMwOza9JxGALz2CGe49fe9lpPfUU9IRIeJoLACIiSADZSyMZCALIwkTeZAqQxin
+        vS+9CpeUe6dZQd+UMu59fLnJx31RY/J2oN+OtGHdrcdDwR23jO2bp35/f4yrYyyUFS3rpq2o0EU1
+        Aj0KCa3YARcCFPYH8rWRvuISX+oKn5uvSV32ec6Ssm3dYVy+rl2u0/d9dsAsq6s3XkIHRwQiECAQ
+        ROiKgBf3JIsRd0zrQ/mWZrQgvOS/v/d2tOXODG82WbXh5ydcHLvwf44ASIl7s18V+tO0puwPy6P6
+        Qtub+hrnNGGua+qVhtvmdtr/eXzTUZfvZoA/PB5MPyx/ZOh/xtD/DSkfwb2y7vdXVQ3vdyIko5Eo
+        iykWoISpACGNhTiRZN72QUrGgyFOx0o/FZg+SezAeB2XI5j6CL3VQrp2hBM97u2DW9Ro4i1j6jlO
+        //8Qpf/Ajzs4ta4YH7Xgtnv6gDLOKnxo+3XCKBMadqC4fAgKhEl5EdQDJTw0w8VD4ORFn4TDiTeY
+        O5ry4j+vpdm83xEBAhH2H4nVb6Q+p5P8k51/3r+myfGQsVZw6x2tHnJ88pwUm5p7bstHIP5aFhbW
+        RBXWi4moDD4FaR1Jf/nfMbqd0BH1l/+yLrLkcYZq1byoa6Ogi+d9Us4A9sdHPa83eq6frXzCLJev
+        fOZxedAtWzOwnp27mDwWlR0OVnu+X7oY/1wbatBkYYVyLCJwvad6hmGpwDCDLC4RiyVbiUuPRWXR
+        RIHFosBjoYiOZGFsYxW8m8FzG6nG2Jzwu1CTRcE0M9VJZixW20gk+7hMrvpy9lP/6ypDuyCaPELz
+        WbXM380o2P3lisa3yLcBmq2sta9Mw6C4LNXx9Ww5i7bxAhXLfDoy4V0+n27xt93jNdzlSCyO0UXO
+        gjWv3SlivUTvvA8bPVsd+H1XTImEMtO3WHjZyFbutFE55f2zt9EavFt+d2bk1sXh9XpiVDqKnZNt
+        lO+gKYaMTIvnECjhejdSYnfzHhXER8X4ZPqR662hGAXo7FaGF8/HvoOQE5YIeWh6sv1QjuZO+6rt
+        mKXNtpEKgKV5iulu+O6wV43n1xwxyj3J8o3SFKN9PEep7cNML0CjbnaG315nCSJfAab/XsQlAViF
+        begrVbTWG12b8OW1tqbLr9ozuc8mkVbbpFpdzIDsyXxzm9PUPsXVqogrh6FFcb7Gq/q9b0O92rDQ
+        hwPTt9vI7/xW+9A/Z6/ZJHM8ZjhoJznIE1dwNrU9FjiFdVntkhPnXmtpU87J6ekTZyTrYoozKbms
+        0oTPhXfuQu4c4nykKtzGQc0SEeUkMPZksWNkPj5EvnzNq1e3PtDWkE1/xmjG/efklJQFwHNww4aI
+        a6tQd72ZZiJbd1wd2tnnHNF8BnjNA14zx8vfkMtxI+cq397O81jdFEStwMvnz0S2qfjf5+G3x0wG
+        WAYglukAUjqkMEkHUqrIlMijhECRwOEwTmUwxLEykDpZGqRjKqUSERUFDnsf/358/AcAAP//AwDj
+        9pvemAcAAA==
+    headers:
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 21 Oct 2020 20:19:42 GMT
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+- request:
+    body: ''
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '10488023'
+      Content-Type:
+      - multipart/form-data; boundary=be1bf8971123ddecbbd5ce51cb07fe71
+      User-Agent:
+      - PubNub-Python/4.5.4
+    method: POST
+    uri: https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/
+  response:
+    body:
+      string: '<?xml version="1.0" encoding="UTF-8"?>
+
+        <Error><Code>EntityTooLarge</Code><Message>Your proposed upload exceeds the
+        maximum allowed size</Message><ProposedSize>5244681</ProposedSize><MaxSizeAllowed>5242880</MaxSizeAllowed><RequestId>8W8NAT1S1REK9Y3P</RequestId><HostId>l075W1QNv/VxQLeuGXoSSaOlFVJ/p4Bo3XRKrD3vf9m9TSAvmnqK8mWnMmHRRLXHdSUmCkyoG+U=</HostId></Error>'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/xml
+      Date:
+      - Wed, 21 Oct 2020 20:19:49 GMT
+      Server:
+      - AmazonS3
+      x-amz-id-2:
+      - l075W1QNv/VxQLeuGXoSSaOlFVJ/p4Bo3XRKrD3vf9m9TSAvmnqK8mWnMmHRRLXHdSUmCkyoG+U=
+      x-amz-request-id:
+      - 8W8NAT1S1REK9Y3P
+    status:
+      code: 400
+      message: Bad Request
+version: 1

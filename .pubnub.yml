@@ -1,8 +1,14 @@
 name: python
-version: 4.6.0
+version: 4.6.1
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.6.1
+    date: Oct 27, 2020
+    changes:
+      -
+        text: "Passing uuid to the get_state endpoint call added."
+        type: bug
   - version: v4.6.0
     date: Oct 22, 2020
     changes:

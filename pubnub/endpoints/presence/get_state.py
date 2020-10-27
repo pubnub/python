@@ -2,9 +2,10 @@ from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.presence import PNGetStateResult
+from pubnub.endpoints.validators import UUIDValidatorMixin
 
 
-class GetState(Endpoint):
+class GetState(Endpoint, UUIDValidatorMixin):
     # /v2/presence/sub-key/<subscribe_key>/channel/<channel>/uuid/<uuid>/data?state=<state>
     GET_STATE_PATH = "/v2/presence/sub-key/%s/channel/%s/uuid/%s"
 
@@ -12,9 +13,14 @@ class GetState(Endpoint):
         Endpoint.__init__(self, pubnub)
         self._channels = []
         self._groups = []
+        self._uuid = self.pubnub.uuid
 
     def channels(self, channels):
         utils.extend_list(self._channels, channels)
+        return self
+
+    def uuid(self, uuid):
+        self._uuid = uuid
         return self
 
     def channel_groups(self, channel_groups):
@@ -33,7 +39,7 @@ class GetState(Endpoint):
         return GetState.GET_STATE_PATH % (
             self.pubnub.config.subscribe_key,
             utils.join_channels(self._channels),
-            utils.url_encode(self.pubnub.uuid)
+            utils.url_encode(self._uuid)
         )
 
     def http_method(self):
@@ -41,8 +47,8 @@ class GetState(Endpoint):
 
     def validate_params(self):
         self.validate_subscribe_key()
-
         self.validate_channels_and_groups()
+        self.validate_uuid()
 
     def create_response(self, envelope):
         if len(self._channels) == 1 and len(self._groups) == 0:

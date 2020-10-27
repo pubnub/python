@@ -78,3 +78,17 @@ class TestPubNubState(unittest.TestCase):
         assert env.result.channels[ch2]['name'] == "Alex"
         assert env.result.channels[ch1]['count'] == 5
         assert env.result.channels[ch2]['count'] == 5
+
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/state/state_with_user_defined_uuid.yaml',
+                         filter_query_parameters=['uuid', 'pnsdk'], match_on=['state_object_in_query'])
+    def test_get_state_passes_user_defined_uuid(self):
+        ch = "state-native-sync-ch"
+        pubnub = PubNub(pnconf_copy())
+        pubnub.config.uuid = "test_uuid"
+        client_uuid = "state-native-sync-uuid"
+
+        envelope = pubnub.get_state().channels(ch).uuid(client_uuid).sync()
+
+        assert isinstance(envelope.result, PNGetStateResult)
+        assert envelope.result.channels[ch]['name'] == "Alex"
+        assert envelope.result.channels[ch]['count'] == 5

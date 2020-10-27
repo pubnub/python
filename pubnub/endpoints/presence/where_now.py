@@ -1,14 +1,11 @@
-import six
-
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
-from pubnub.errors import PNERR_UUID_MISSING
-from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.presence import PNWhereNowResult
+from pubnub.endpoints.validators import UUIDValidatorMixin
 
 
-class WhereNow(Endpoint):
+class WhereNow(Endpoint, UUIDValidatorMixin):
     # /v2/presence/sub-key/<subscribe_key>/uuid/<uuid>
     WHERE_NOW_PATH = "/v2/presence/sub-key/%s/uuid/%s"
 
@@ -31,9 +28,7 @@ class WhereNow(Endpoint):
 
     def validate_params(self):
         self.validate_subscribe_key()
-
-        if self._uuid is None or not isinstance(self._uuid, six.string_types):
-            raise PubNubException(pn_error=PNERR_UUID_MISSING)
+        self.validate_uuid()
 
     def is_auth_required(self):
         return True

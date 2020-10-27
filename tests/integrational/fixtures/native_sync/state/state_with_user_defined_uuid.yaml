@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.6.0
+    method: GET
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/state-native-sync-ch/uuid/state-native-sync-uuid
+  response:
+    body:
+      string: '{"status": 200, "message": "OK", "payload": {"count": 5, "name": "Alex"},
+        "uuid": "state-native-sync-uuid", "channel": "state-native-sync-ch", "service":
+        "Presence"}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Methods:
+      - OPTIONS, GET, POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '165'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Mon, 26 Oct 2020 16:37:28 GMT
+      Server:
+      - Pubnub Presence
+    status:
+      code: 200
+      message: OK
+version: 1

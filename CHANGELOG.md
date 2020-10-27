@@ -1,3 +1,9 @@
+## [v4.6.1](https://github.com/pubnub/python/releases/tag/v4.6.1)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v4.6.0...v4.6.1)
+
+- 🐛 Passing uuid to the get_state endpoint call added. 
+
 ## [v4.6.0](https://github.com/pubnub/python/releases/tag/v4.6.0)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v4.5.4...v4.6.0)

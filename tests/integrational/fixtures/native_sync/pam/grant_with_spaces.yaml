@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.6.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=client+auth+key+with+spaces&channel=test+channel&r=1&signature=v2.4se-YdYJx5VMZsBjzVgBxG8rRfr62Wabb516r2F3mtQ&timestamp=1604650731&ttl=60&w=1
+  response:
+    body:
+      string: '{"message":"Success","payload":{"level":"user","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":60,"channel":"test
+        channel","auths":{"client auth key with spaces":{"r":1,"w":1,"m":0,"d":0,"g":0,"u":0,"j":0}}},"service":"Access
+        Manager","status":200}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '267'
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Date:
+      - Fri, 06 Nov 2020 08:18:52 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

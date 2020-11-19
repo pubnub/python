@@ -7,11 +7,12 @@ from pubnub.models.consumer.file import PNSendFileResult
 from pubnub.endpoints.file_operations.publish_file_message import PublishFileMessage
 from pubnub.endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
 from pubnub.request_handlers.requests_handler import RequestsRequestHandler
+from pubnub.endpoints.mixins import TimeTokenOverrideMixin
 
 
-class SendFileNative(FileOperationEndpoint):
+class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
     def __init__(self, pubnub):
-        FileOperationEndpoint.__init__(self, pubnub)
+        super(SendFileNative, self).__init__(pubnub)
         self._file_name = None
         self._pubnub = pubnub
         self._file_upload_envelope = None
@@ -21,6 +22,8 @@ class SendFileNative(FileOperationEndpoint):
         self._meta = None
         self._cipher_key = None
         self._file_object = None
+        self._replicate = None
+        self._ptto = None
 
     def file_object(self, fd):
         self._file_object = fd
@@ -128,6 +131,8 @@ class SendFileNative(FileOperationEndpoint):
             file_name(response_envelope.result.name).\
             should_store(self._should_store).\
             ttl(self._ttl).\
+            replicate(self._replicate).\
+            ptto(self._ptto).\
             cipher_key(self._cipher_key).sync()
 
         response_envelope.result.timestamp = publish_file_response.result.timestamp

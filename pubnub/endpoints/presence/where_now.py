@@ -2,7 +2,7 @@ from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.presence import PNWhereNowResult
-from pubnub.endpoints.validators import UUIDValidatorMixin
+from pubnub.endpoints.mixins import UUIDValidatorMixin
 
 
 class WhereNow(Endpoint, UUIDValidatorMixin):

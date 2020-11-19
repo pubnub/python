@@ -30,6 +30,11 @@ class SetState(Endpoint):
         self._state = state
         return self
 
+    def encoded_params(self):
+        return {
+            "state": utils.url_write(self._state)
+        }
+
     def custom_params(self):
         if self._subscription_manager is not None:
             self._subscription_manager.adapt_state_builder(StateOperation(

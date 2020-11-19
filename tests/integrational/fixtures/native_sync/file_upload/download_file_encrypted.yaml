@@ -11,34 +11,34 @@ interactions:
       Content-Length:
       - '27'
       User-Agent:
-      - PubNub-Python/4.5.4
+      - PubNub-Python/4.6.1
     method: POST
     uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/generate-upload-url?uuid=files_native_sync_uuid
   response:
     body:
       string: !!binary |
-        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
+        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
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -49,7 +49,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 21 Oct 2020 17:37:26 GMT
+      - Thu, 19 Nov 2020 20:00:28 GMT
       Vary:
       - Accept-Encoding
     status:
@@ -57,48 +57,48 @@ interactions:
       message: OK
 - request:
     body: !!binary |
-      LS01MmRlMDZlMGU5YzMzOWQxMDhiYzIzYTFiYWUwYzFkNA0KQ29udGVudC1EaXNwb3NpdGlvbjog
+      LS1iYzM1Y2JlMzRjMTBmMGJmZTFiNDg1ODQ2YTcyM2UzYQ0KQ29udGVudC1EaXNwb3NpdGlvbjog
       Zm9ybS1kYXRhOyBuYW1lPSJ0YWdnaW5nIg0KDQo8VGFnZ2luZz48VGFnU2V0PjxUYWc+PEtleT5P
       YmplY3RUVExJbkRheXM8L0tleT48VmFsdWU+MTwvVmFsdWU+PC9UYWc+PC9UYWdTZXQ+PC9UYWdn
-      aW5nPg0KLS01MmRlMDZlMGU5YzMzOWQxMDhiYzIzYTFiYWUwYzFkNA0KQ29udGVudC1EaXNwb3Np
+      aW5nPg0KLS1iYzM1Y2JlMzRjMTBmMGJmZTFiNDg1ODQ2YTcyM2UzYQ0KQ29udGVudC1EaXNwb3Np
       dGlvbjogZm9ybS1kYXRhOyBuYW1lPSJrZXkiDQoNCnN1Yi1jLWM4ODI0MmZhLTEzYWUtMTFlYi1i
       YzM0LWNlNmZkOTY3YWY5NS9mLXRJQWNOWEpPOW04MWZXVlZfby1mU1EtdmV1cE5yVGxvVkFVUGJl
-      VVFRL2JlYjlkN2YwLWUxOWItNDQzOC1iN2JjLWJiMjk1OTlmMDdiMy9raW5nX2FydGh1ci50eHQN
-      Ci0tNTJkZTA2ZTBlOWMzMzlkMTA4YmMyM2ExYmFlMGMxZDQNCkNvbnRlbnQtRGlzcG9zaXRpb246
+      VVFRL2ExMzViYmFlLTllNTEtNDg3NC1iZTYzLTM0NmQwOGI3NzliNS9raW5nX2FydGh1ci50eHQN
+      Ci0tYmMzNWNiZTM0YzEwZjBiZmUxYjQ4NTg0NmE3MjNlM2ENCkNvbnRlbnQtRGlzcG9zaXRpb246
       IGZvcm0tZGF0YTsgbmFtZT0iQ29udGVudC1UeXBlIg0KDQp0ZXh0L3BsYWluOyBjaGFyc2V0PXV0
-      Zi04DQotLTUyZGUwNmUwZTljMzM5ZDEwOGJjMjNhMWJhZTBjMWQ0DQpDb250ZW50LURpc3Bvc2l0
+      Zi04DQotLWJjMzVjYmUzNGMxMGYwYmZlMWI0ODU4NDZhNzIzZTNhDQpDb250ZW50LURpc3Bvc2l0
       aW9uOiBmb3JtLWRhdGE7IG5hbWU9IlgtQW16LUNyZWRlbnRpYWwiDQoNCkFLSUFZN0FVNkdRRDVL
-      V0JTM0ZHLzIwMjAxMDIxL2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QNCi0tNTJkZTA2ZTBl
-      OWMzMzlkMTA4YmMyM2ExYmFlMGMxZDQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsg
-      bmFtZT0iWC1BbXotU2VjdXJpdHktVG9rZW4iDQoNCg0KLS01MmRlMDZlMGU5YzMzOWQxMDhiYzIz
-      YTFiYWUwYzFkNA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJYLUFtei1B
-      bGdvcml0aG0iDQoNCkFXUzQtSE1BQy1TSEEyNTYNCi0tNTJkZTA2ZTBlOWMzMzlkMTA4YmMyM2Ex
-      YmFlMGMxZDQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iWC1BbXotRGF0
-      ZSINCg0KMjAyMDEwMjFUMTczODI2Wg0KLS01MmRlMDZlMGU5YzMzOWQxMDhiYzIzYTFiYWUwYzFk
-      NA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJQb2xpY3kiDQoNCkNuc0tD
-      U0psZUhCcGNtRjBhVzl1SWpvZ0lqSXdNakF0TVRBdE1qRlVNVGM2TXpnNk1qWmFJaXdLQ1NKamIy
+      V0JTM0ZHLzIwMjAxMTE5L2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QNCi0tYmMzNWNiZTM0
+      YzEwZjBiZmUxYjQ4NTg0NmE3MjNlM2ENCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsg
+      bmFtZT0iWC1BbXotU2VjdXJpdHktVG9rZW4iDQoNCg0KLS1iYzM1Y2JlMzRjMTBmMGJmZTFiNDg1
+      ODQ2YTcyM2UzYQ0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJYLUFtei1B
+      bGdvcml0aG0iDQoNCkFXUzQtSE1BQy1TSEEyNTYNCi0tYmMzNWNiZTM0YzEwZjBiZmUxYjQ4NTg0
+      NmE3MjNlM2ENCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iWC1BbXotRGF0
+      ZSINCg0KMjAyMDExMTlUMjAwMTI4Wg0KLS1iYzM1Y2JlMzRjMTBmMGJmZTFiNDg1ODQ2YTcyM2Uz
+      YQ0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJQb2xpY3kiDQoNCkNuc0tD
+      U0psZUhCcGNtRjBhVzl1SWpvZ0lqSXdNakF0TVRFdE1UbFVNakE2TURFNk1qaGFJaXdLQ1NKamIy
       NWthWFJwYjI1eklqb2dXd29KQ1hzaVluVmphMlYwSWpvZ0luQjFZbTUxWWkxdGJtVnRiM041Ym1V
       dFptbHNaWE10WlhVdFkyVnVkSEpoYkMweExYQnlaQ0o5TEFvSkNWc2laWEVpTENBaUpIUmhaMmRw
       Ym1jaUxDQWlQRlJoWjJkcGJtYytQRlJoWjFObGRENDhWR0ZuUGp4TFpYaytUMkpxWldOMFZGUk1T
       VzVFWVhselBDOUxaWGsrUEZaaGJIVmxQakU4TDFaaGJIVmxQand2VkdGblBqd3ZWR0ZuVTJWMFBq
       d3ZWR0ZuWjJsdVp6NGlYU3dLQ1FsYkltVnhJaXdnSWlSclpYa2lMQ0FpYzNWaUxXTXRZemc0TWpR
       eVptRXRNVE5oWlMweE1XVmlMV0pqTXpRdFkyVTJabVE1TmpkaFpqazFMMll0ZEVsQlkwNVlTazg1
-      YlRneFpsZFdWbDl2TFdaVFVTMTJaWFZ3VG5KVWJHOVdRVlZRWW1WVlVWRXZZbVZpT1dRM1pqQXRa
-      VEU1WWkwME5ETTRMV0kzWW1NdFltSXlPVFU1T1dZd04ySXpMMnRwYm1kZllYSjBhSFZ5TG5SNGRD
+      YlRneFpsZFdWbDl2TFdaVFVTMTJaWFZ3VG5KVWJHOVdRVlZRWW1WVlVWRXZZVEV6TldKaVlXVXRP
+      V1UxTVMwME9EYzBMV0psTmpNdE16UTJaREE0WWpjM09XSTFMMnRwYm1kZllYSjBhSFZ5TG5SNGRD
       SmRMQW9KQ1ZzaVkyOXVkR1Z1ZEMxc1pXNW5kR2d0Y21GdVoyVWlMQ0F3TENBMU1qUXlPRGd3WFN3
       S0NRbGJJbk4wWVhKMGN5MTNhWFJvSWl3Z0lpUkRiMjUwWlc1MExWUjVjR1VpTENBaUlsMHNDZ2tK
       ZXlKNExXRnRlaTFqY21Wa1pXNTBhV0ZzSWpvZ0lrRkxTVUZaTjBGVk5rZFJSRFZMVjBKVE0wWkhM
-      ekl3TWpBeE1ESXhMMlYxTFdObGJuUnlZV3d0TVM5ek15OWhkM00wWDNKbGNYVmxjM1FpZlN3S0NR
+      ekl3TWpBeE1URTVMMlYxTFdObGJuUnlZV3d0TVM5ek15OWhkM00wWDNKbGNYVmxjM1FpZlN3S0NR
       bDdJbmd0WVcxNkxYTmxZM1Z5YVhSNUxYUnZhMlZ1SWpvZ0lpSjlMQW9KQ1hzaWVDMWhiWG90WVd4
       bmIzSnBkR2h0SWpvZ0lrRlhVelF0U0UxQlF5MVRTRUV5TlRZaWZTd0tDUWw3SW5ndFlXMTZMV1Jo
-      ZEdVaU9pQWlNakF5TURFd01qRlVNVGN6T0RJMldpSWdmUW9KWFFwOUNnPT0NCi0tNTJkZTA2ZTBl
-      OWMzMzlkMTA4YmMyM2ExYmFlMGMxZDQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsg
-      bmFtZT0iWC1BbXotU2lnbmF0dXJlIg0KDQplZTExMjMyMDg4NmM4OTUzNmUwZmEzZjg3ZTA3ODY5
-      NTIyOGQxZjlkNTUwMjI3NTJkNDQwMTVhNWU3ZDFjYzI2DQotLTUyZGUwNmUwZTljMzM5ZDEwOGJj
-      MjNhMWJhZTBjMWQ0DQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImZpbGUi
-      OyBmaWxlbmFtZT0ia2luZ19hcnRodXIudHh0Ig0KDQo3NTM5MTQzOTUwNzY4NzEzAzzvkJ+IvUkI
-      pgIM6cRWyt+OS54iOzhaB0cKnz6vNcINCi0tNTJkZTA2ZTBlOWMzMzlkMTA4YmMyM2ExYmFlMGMx
-      ZDQtLQ0K
+      ZEdVaU9pQWlNakF5TURFeE1UbFVNakF3TVRJNFdpSWdmUW9KWFFwOUNnPT0NCi0tYmMzNWNiZTM0
+      YzEwZjBiZmUxYjQ4NTg0NmE3MjNlM2ENCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsg
+      bmFtZT0iWC1BbXotU2lnbmF0dXJlIg0KDQoxNzRkMmFhMTVjNWQzMTZiMjA0Yzg2YzRmOGNjZGFl
+      MDc3ZjU5M2Q0ZTJmMjgxZjZjNzBlODBjYWFkOTc2Yzg4DQotLWJjMzVjYmUzNGMxMGYwYmZlMWI0
+      ODU4NDZhNzIzZTNhDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImZpbGUi
+      OyBmaWxlbmFtZT0ia2luZ19hcnRodXIudHh0Ig0KDQo3NzY1MjM3Njk4MjgxOTc2y74RdLA0kXQl
+      Ksi9dUEbSIRSw/RIqx6P1Sy3aTIt8QANCi0tYmMzNWNiZTM0YzEwZjBiZmUxYjQ4NTg0NmE3MjNl
+      M2EtLQ0K
     headers:
       Accept:
       - '*/*'
@@ -109,9 +109,9 @@ interactions:
       Content-Length:
       - '2343'
       Content-Type:
-      - multipart/form-data; boundary=52de06e0e9c339d108bc23a1bae0c1d4
+      - multipart/form-data; boundary=bc35cbe34c10f0bfe1b485846a723e3a
       User-Agent:
-      - PubNub-Python/4.5.4
+      - PubNub-Python/4.6.1
     method: POST
     uri: https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/
   response:
@@ -119,20 +119,20 @@ interactions:
       string: ''
     headers:
       Date:
-      - Wed, 21 Oct 2020 17:37:27 GMT
+      - Thu, 19 Nov 2020 20:00:30 GMT
       ETag:
-      - '"60e49d4f6550a2784fe8e91b7eda0d0b"'
+      - '"7061d101babb659b3a9488d7354632c5"'
       Location:
-      - https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95%2Ff-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ%2Fbeb9d7f0-e19b-4438-b7bc-bb29599f07b3%2Fking_arthur.txt
+      - https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95%2Ff-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ%2Fa135bbae-9e51-4874-be63-346d08b779b5%2Fking_arthur.txt
       Server:
       - AmazonS3
       x-amz-expiration:
-      - expiry-date="Fri, 23 Oct 2020 00:00:00 GMT", rule-id="Archive file 1 day after
+      - expiry-date="Sat, 21 Nov 2020 00:00:00 GMT", rule-id="Archive file 1 day after
         creation"
       x-amz-id-2:
-      - N0W32R/ej2O7mDHEjW34bEBChufFtw+gAzXVSy9WFnkeKo1hsClb5kpdXyr6CQK6sokNnDcgyjY=
+      - nQJwMSrjP2I/t3qI0wGt7vbM6FMnCdZKv6rBhaF0NoXVf3ccoNZii1cUB5EYd+yClr0jVHsl3oU=
       x-amz-request-id:
-      - CF3B8DF3593DD4BB
+      - 397B1B26DB37F896
       x-amz-server-side-encryption:
       - AES256
     status:
@@ -148,12 +148,12 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - PubNub-Python/4.5.4
+      - PubNub-Python/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/files_native_sync_ch/0/%22nuKM7r9zoS9IXo%2FL7H3LqqeXhVHlHVM32Jwyjm0BBrYN%2FybeKX8eYOqvVUv5sQVBjt%2FVzQ0OPKpCk6wEPepUFoVHOKiTX%2Fngr%2BiKRmvt4Zddec4Q%2Bj%2By1JN%2BdBNn%2BqAVoYXNgtNsh9YCpD3NkwaYO0at2onH8ax00TzUYBbfeqo%3D%22?meta=null&store=True&ttl=222&uuid=files_native_sync_uuid
+    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/files_native_sync_ch/0/%22nuKM7r9zoS9IXo%2FL7H3LqqeXhVHlHVM32Jwyjm0BBrYN%2FybeKX8eYOqvVUv5sQVB13wo5w0cjFPzuH2m%2Bo4rzzOpxdZHtSlHb1NT07lBbxN0bMVzxb2lpEynkuba%2Bn1aTq8hPfPTkLSyxtaqeCMpyMlE36VkCUIU864UdW%2FWDHY%3D%22?meta=null&store=1&ttl=222&uuid=files_native_sync_uuid
   response:
     body:
-      string: '[1,"Sent","16033018470668399"]'
+      string: '[1,"Sent","16058160292498374"]'
     headers:
       Access-Control-Allow-Methods:
       - GET
@@ -168,7 +168,7 @@ interactions:
       Content-Type:
       - text/javascript; charset="UTF-8"
       Date:
-      - Wed, 21 Oct 2020 17:37:27 GMT
+      - Thu, 19 Nov 2020 20:00:29 GMT
     status:
       code: 200
       message: OK
@@ -182,9 +182,9 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - PubNub-Python/4.5.4
+      - PubNub-Python/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/files/beb9d7f0-e19b-4438-b7bc-bb29599f07b3/king_arthur.txt?uuid=files_native_sync_uuid
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/files/a135bbae-9e51-4874-be63-346d08b779b5/king_arthur.txt?uuid=files_native_sync_uuid
   response:
     body:
       string: ''
@@ -192,15 +192,15 @@ interactions:
       Access-Control-Allow-Origin:
       - '*'
       Cache-Control:
-      - public, max-age=1593, immutable
+      - public, max-age=3811, immutable
       Connection:
       - keep-alive
       Content-Length:
       - '0'
       Date:
-      - Wed, 21 Oct 2020 17:37:27 GMT
+      - Thu, 19 Nov 2020 20:00:29 GMT
       Location:
-      - https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/beb9d7f0-e19b-4438-b7bc-bb29599f07b3/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201021%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201021T170000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=dd7de7f3adb79d7e911f4f6568f9597e19b1bf40e542725932c58f47187e0065
+      - https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/a135bbae-9e51-4874-be63-346d08b779b5/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=a8d69e02f8ebbed81e265bb9c13520d56f213815af6cf395c57f0ce9c9d3e776
     status:
       code: 307
       message: Temporary Redirect
@@ -214,13 +214,13 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - PubNub-Python/4.5.4
+      - PubNub-Python/4.6.1
     method: GET
-    uri: https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/beb9d7f0-e19b-4438-b7bc-bb29599f07b3/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201021%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201021T170000Z&X-Amz-Expires=3900&X-Amz-Signature=dd7de7f3adb79d7e911f4f6568f9597e19b1bf40e542725932c58f47187e0065&X-Amz-SignedHeaders=host
+    uri: https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/a135bbae-9e51-4874-be63-346d08b779b5/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-Signature=a8d69e02f8ebbed81e265bb9c13520d56f213815af6cf395c57f0ce9c9d3e776&X-Amz-SignedHeaders=host
   response:
     body:
       string: !!binary |
-        NzUzOTE0Mzk1MDc2ODcxMwM875CfiL1JCKYCDOnEVsrfjkueIjs4WgdHCp8+rzXC
+        Nzc2NTIzNzY5ODI4MTk3Nsu+EXSwNJF0JSrIvXVBG0iEUsP0SKsej9Ust2kyLfEA
     headers:
       Accept-Ranges:
       - bytes
@@ -231,23 +231,23 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Wed, 21 Oct 2020 17:37:28 GMT
+      - Thu, 19 Nov 2020 20:00:30 GMT
       ETag:
-      - '"60e49d4f6550a2784fe8e91b7eda0d0b"'
+      - '"7061d101babb659b3a9488d7354632c5"'
       Last-Modified:
-      - Wed, 21 Oct 2020 17:37:27 GMT
+      - Thu, 19 Nov 2020 20:00:30 GMT
       Server:
       - AmazonS3
       Via:
-      - 1.1 48c20cb247b267a59a8191c4d3bd787c.cloudfront.net (CloudFront)
+      - 1.1 131c765a25a20275f6d8dc2fce7692e7.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - SKaoCKtiX5gfNSMyjKlaJVanxePbz1KMmF_PdtQFQw38yIeDMMGRYg==
+      - elubIfqXPtCLE24b5--klyuwN_PKsyI3u-8TMGenjPdvyX_NugSYQQ==
       X-Amz-Cf-Pop:
-      - MUC50-C1
+      - BUD50-C1
       X-Cache:
       - Miss from cloudfront
       x-amz-expiration:
-      - expiry-date="Fri, 23 Oct 2020 00:00:00 GMT", rule-id="Archive file 1 day after
+      - expiry-date="Sat, 21 Nov 2020 00:00:00 GMT", rule-id="Archive file 1 day after
         creation"
       x-amz-server-side-encryption:
       - AES256

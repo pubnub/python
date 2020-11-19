@@ -23,18 +23,24 @@ pubnub = PubNub(pnconf_file_copy())
 pubnub.config.uuid = "files_native_sync_uuid"
 
 
-def send_file(file_for_upload, cipher_key=None, pass_binary=False):
+def send_file(file_for_upload, cipher_key=None, pass_binary=False, timetoken_override=None):
     with open(file_for_upload.strpath, "rb") as fd:
         if pass_binary:
             fd = fd.read()
-        envelope = pubnub.send_file().\
+
+        send_file_endpoint = pubnub.send_file().\
             channel(CHANNEL).\
             file_name(file_for_upload.basename).\
             message({"test_message": "test"}).\
             should_store(True).\
             ttl(222).\
             file_object(fd).\
-            cipher_key(cipher_key).sync()
+            cipher_key(cipher_key)
+
+        if timetoken_override:
+            send_file_endpoint = send_file_endpoint.ptto(timetoken_override)
+
+        envelope = send_file_endpoint.sync()
 
     assert isinstance(envelope.result, PNSendFileResult)
     assert envelope.result.name
@@ -201,3 +207,32 @@ def test_publish_file_message_with_encryption():
         ttl(222).sync()
 
     assert isinstance(envelope.result, PNPublishFileMessageResult)
+
+
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/publish_file_message_with_ptto.yaml",
+    filter_query_parameters=('pnsdk',)
+)
+def test_publish_file_message_with_overriding_time_token():
+    timetoken_to_override = 16057799474000000
+    envelope = PublishFileMessage(pubnub).\
+        channel(CHANNEL).\
+        meta({}).\
+        message({"test": "test"}).\
+        file_id("2222").\
+        file_name("test").\
+        should_store(True).\
+        replicate(True).\
+        ptto(timetoken_to_override).\
+        ttl(222).sync()
+
+    assert isinstance(envelope.result, PNPublishFileMessageResult)
+    assert "ptto" in envelope.status.client_request.url
+
+
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/send_file_with_ptto.yaml",
+    filter_query_parameters=('pnsdk',)
+)
+def test_send_file_with_timetoken_override(file_for_upload):
+    send_file(file_for_upload, pass_binary=True, timetoken_override=16057799474000000)

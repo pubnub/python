@@ -1,8 +1,14 @@
 name: python
-version: 4.6.1
+version: 4.7.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4
+    date: Nov 19, 2020
+    changes:
+      -
+        text: "Within this release problems with double PAM calls encoding and Publish oriented bugs were fixed."
+        type: bug
   - version: v4.6.1
     date: Oct 27, 2020
     changes:

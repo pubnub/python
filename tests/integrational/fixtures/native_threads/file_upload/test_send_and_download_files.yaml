@@ -9,9 +9,9 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - PubNub-Python/4.5.4
+      - PubNub-Python/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_threads_ch/files/47811ab3-ff1b-48ae-8717-ac0afdd4b51e/king_arthur.txt?pnsdk=PubNub-Python%2F4.5.4&uuid=files_threads_uuid
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_threads_ch/files/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?uuid=files_threads_uuid
   response:
     body:
       string: ''
@@ -19,15 +19,15 @@ interactions:
       Access-Control-Allow-Origin:
       - '*'
       Cache-Control:
-      - public, max-age=2467, immutable
+      - public, max-age=3236, immutable
       Connection:
       - keep-alive
       Content-Length:
       - '0'
       Date:
-      - Wed, 21 Oct 2020 17:22:53 GMT
+      - Thu, 19 Nov 2020 20:10:04 GMT
       Location:
-      - https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/jaDgk-9c_B8i5c_vBjUOQQfLTonvLy7MImT7mZ_coCQ/47811ab3-ff1b-48ae-8717-ac0afdd4b51e/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201021%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201021T170000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=3e4d34d038f34ec647a684a9e9c36c9b8e246001ee759c1674771f390cdf06d3
+      - https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/jaDgk-9c_B8i5c_vBjUOQQfLTonvLy7MImT7mZ_coCQ/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=c7b0e30a1488b0f463c6eb92422ca3620d30cd800145330cfe118631539d19cc
     status:
       code: 307
       message: Temporary Redirect
@@ -41,9 +41,9 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - PubNub-Python/4.5.4
+      - PubNub-Python/4.6.1
     method: GET
-    uri: https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/jaDgk-9c_B8i5c_vBjUOQQfLTonvLy7MImT7mZ_coCQ/47811ab3-ff1b-48ae-8717-ac0afdd4b51e/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201021%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201021T170000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=3e4d34d038f34ec647a684a9e9c36c9b8e246001ee759c1674771f390cdf06d3
+    uri: https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/jaDgk-9c_B8i5c_vBjUOQQfLTonvLy7MImT7mZ_coCQ/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-Signature=c7b0e30a1488b0f463c6eb92422ca3620d30cd800145330cfe118631539d19cc&X-Amz-SignedHeaders=host
   response:
     body:
       string: Knights who say Ni!
@@ -57,23 +57,23 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Wed, 21 Oct 2020 17:22:54 GMT
+      - Thu, 19 Nov 2020 20:10:05 GMT
       ETag:
       - '"3676cdb7a927db43c846070c4e7606c7"'
       Last-Modified:
-      - Wed, 21 Oct 2020 17:15:52 GMT
+      - Thu, 19 Nov 2020 20:09:35 GMT
       Server:
       - AmazonS3
       Via:
-      - 1.1 2b782f5f082f9e98adf8c50f24b6bb6d.cloudfront.net (CloudFront)
+      - 1.1 31035bb61f7468c9d95f8f0f36403249.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - z01BNGhf8i3yLVlNp6wx_nJEyLAP9f6a2yz-5O-6Bl6pwHH7tAVZuQ==
+      - cjnzAPi7WvHbEPVsWw1c_CbNymikI8PS8QwY1vLom0Yp16giV7we1w==
       X-Amz-Cf-Pop:
-      - HAM50-C3
+      - BUD50-C1
       X-Cache:
       - Miss from cloudfront
       x-amz-expiration:
-      - expiry-date="Fri, 23 Oct 2020 00:00:00 GMT", rule-id="Archive file 1 day after
+      - expiry-date="Sat, 21 Nov 2020 00:00:00 GMT", rule-id="Archive file 1 day after
         creation"
       x-amz-server-side-encryption:
       - AES256

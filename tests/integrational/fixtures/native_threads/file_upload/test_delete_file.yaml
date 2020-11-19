@@ -11,9 +11,9 @@ interactions:
       Content-Length:
       - '0'
       User-Agent:
-      - PubNub-Python/4.5.4
+      - PubNub-Python/4.6.1
     method: DELETE
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_threads_ch/files/47811ab3-ff1b-48ae-8717-ac0afdd4b51e/king_arthur.txt?pnsdk=PubNub-Python%2F4.5.4&uuid=files_threads_uuid
+    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_threads_ch/files/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?uuid=files_threads_uuid
   response:
     body:
       string: '{"status":200}'
@@ -27,7 +27,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 21 Oct 2020 17:23:16 GMT
+      - Thu, 19 Nov 2020 20:11:15 GMT
     status:
       code: 200
       message: OK

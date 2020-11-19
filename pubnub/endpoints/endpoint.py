@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 import logging
 
 from pubnub import utils
-from pubnub.enums import PNStatusCategory, PNOperationType
+from pubnub.enums import PNStatusCategory
 from pubnub.errors import (
     PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING,
     PNERR_SECRET_KEY_MISSING, PNERR_CHANNEL_MISSING, PNERR_FILE_OBJECT_MISSING,
@@ -99,6 +99,9 @@ class Endpoint(object):
     def non_json_response(self):
         return False
 
+    def encoded_params(self):
+        return {}
+
     def options(self):
         return RequestOptions(
             path=self.build_path(),
@@ -171,7 +174,6 @@ class Endpoint(object):
 
     def build_params_callback(self):
         def callback(params_to_merge):
-            operation_type = self.operation_type()
             custom_params = self.custom_params()
             custom_params.update(params_to_merge)
 
@@ -196,11 +198,7 @@ class Endpoint(object):
             if self.pubnub.config.secret_key is not None:
                 utils.sign_request(self, self.pubnub, custom_params, self.http_method(), self.build_data())
 
-            # REVIEW: add encoder map to not hardcode encoding here
-            if operation_type == PNOperationType.PNPublishOperation and 'meta' in custom_params:
-                custom_params['meta'] = utils.url_encode(custom_params['meta'])
-            if operation_type == PNOperationType.PNSetStateOperation and 'state' in custom_params:
-                custom_params['state'] = utils.url_encode(custom_params['state'])
+            custom_params.update(self.encoded_params())
 
             # reassign since pnsdk should be signed unencoded
             custom_params['pnsdk'] = utils.url_encode(self.pubnub.sdk_name)
@@ -268,7 +266,7 @@ class Endpoint(object):
         pn_status.operation = self.operation_type()
         pn_status.category = category
         pn_status.affected_channels = self.affected_channels()
-        pn_status.affected_channels_groups = self.affected_channels_groups()
+        pn_status.affected_groups = self.affected_channels_groups()
 
         return pn_status
 

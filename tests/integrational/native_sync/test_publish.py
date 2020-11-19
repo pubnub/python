@@ -6,7 +6,7 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_enc
+from tests.helper import pnconf, pnconf_enc, pnconf_file_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
@@ -304,3 +304,21 @@ class TestPubNubPublish(unittest.TestCase):
             assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
+
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/native_sync/publish/publish_with_ptto_and_replicate.yaml',
+        filter_query_parameters=['uuid', 'pnsdk', 'l_pub']
+    )
+    def test_publish_with_ptto_and_replicate(self):
+        timetoken_to_override = 16057799474000000
+
+        env = PubNub(pnconf_file_copy()).publish()\
+            .channel("ch1")\
+            .message("hi")\
+            .replicate(False)\
+            .ptto(timetoken_to_override)\
+            .sync()
+
+        assert isinstance(env.result, PNPublishResult)
+        assert "ptto" in env.status.client_request.url
+        assert "norep" in env.status.client_request.url

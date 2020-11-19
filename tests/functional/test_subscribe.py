@@ -132,3 +132,11 @@ class TestSubscribe(unittest.TestCase):
 
         self.assertEqual(self.sub._groups, [])
         self.assertEqual(self.sub._channels, ['ch1', 'ch2'])
+
+    def test_affected_channels_returns_provided_channels(self):
+        self.sub.channels(('ch1', 'ch2', 'ch3'))
+        self.assertEqual(self.sub.affected_channels(), ['ch1', 'ch2', 'ch3'])
+
+    def test_affected_channel_groups_returns_provided_channels(self):
+        self.sub.channel_groups(('ch1', 'ch2', 'ch3'))
+        self.assertEqual(self.sub.affected_channels_groups(), ['ch1', 'ch2', 'ch3'])

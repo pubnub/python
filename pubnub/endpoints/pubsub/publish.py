@@ -4,21 +4,23 @@ from pubnub.errors import PNERR_MESSAGE_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.endpoints.mixins import TimeTokenOverrideMixin
 
 
-class Publish(Endpoint):
+class Publish(Endpoint, TimeTokenOverrideMixin):
     # /publish/<pub_key>/<sub_key>/<signature>/<channel>/<callback>/<message>[?argument(s)]
     PUBLISH_GET_PATH = "/publish/%s/%s/0/%s/%s/%s"
     PUBLISH_POST_PATH = "/publish/%s/%s/0/%s/%s"
 
     def __init__(self, pubnub):
-        Endpoint.__init__(self, pubnub)
+        super(Publish, self).__init__(pubnub)
         self._channel = None
         self._message = None
         self._should_store = None
-        self._replicate = None
         self._use_post = None
         self._meta = None
+        self._replicate = None
+        self._ptto = None
 
     def channel(self, channel):
         self._channel = str(channel)
@@ -30,10 +32,6 @@ class Publish(Endpoint):
 
     def use_post(self, use_post):
         self._use_post = bool(use_post)
-        return self
-
-    def replicate(self, replicate):
-        self._replicate = bool(replicate)
         return self
 
     def should_store(self, should_store):
@@ -54,10 +52,18 @@ class Publish(Endpoint):
         else:
             return None
 
-    def custom_params(self):
-        params = {}
+    def encoded_params(self):
+        if self._meta:
+            return {
+                "meta": utils.url_write(self._meta)
+            }
+        else:
+            return {}
 
-        if self._meta is not None:
+    def custom_params(self):
+        params = TimeTokenOverrideMixin.custom_params(self)
+
+        if self._meta:
             params['meta'] = utils.write_value_as_string(self._meta)
 
         if self._should_store is not None:
@@ -66,11 +72,6 @@ class Publish(Endpoint):
             else:
                 params["store"] = "0"
 
-        if self._replicate is not None:
-            if self._replicate:
-                params["norep"] = "0"
-            else:
-                params["norep"] = "1"
         # REVIEW: should auth key be assigned here?
         if self.pubnub.config.auth_key is not None:
             params["auth"] = utils.url_encode(self.pubnub.config.auth_key)

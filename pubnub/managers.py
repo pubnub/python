@@ -354,6 +354,8 @@ class SubscriptionManager(object):
             pn_status.client_request = status.client_request
             pn_status.origin = status.origin
             pn_status.tls_enabled = status.tls_enabled
+            pn_status.affected_channels = status.affected_channels
+            pn_status.affected_groups = status.affected_groups
 
             self._subscription_status_announced = True
             self._listener_manager.announce_status(pn_status)

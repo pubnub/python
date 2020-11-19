@@ -54,6 +54,20 @@ class Grant(Endpoint):
         self._ttl = ttl
         return self
 
+    def encoded_params(self):
+        params = {}
+
+        if self._auth_keys:
+            params['auth'] = utils.join_items_and_encode(self._auth_keys)
+
+        if self._channels:
+            params['channel'] = utils.join_channels(self._channels)
+
+        if self._groups:
+            params['channel-group'] = utils.join_items_and_encode(self._groups)
+
+        return params
+
     def custom_params(self):
         params = {}
 
@@ -66,13 +80,13 @@ class Grant(Endpoint):
         if self._delete is not None:
             params['d'] = '1' if self._delete is True else '0'
 
-        if len(self._auth_keys) > 0:
-            params['auth'] = utils.join_items_and_encode(self._auth_keys)
+        if self._auth_keys:
+            params['auth'] = utils.join_items(self._auth_keys)
 
-        if len(self._channels) > 0:
+        if self._channels:
             params['channel'] = utils.join_items(self._channels)
 
-        if len(self._groups) > 0:
+        if self._groups:
             params['channel-group'] = utils.join_items(self._groups)
 
         if self._ttl is not None:

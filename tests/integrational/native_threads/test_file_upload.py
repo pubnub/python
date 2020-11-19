@@ -85,7 +85,7 @@ class TestFileUploadThreads(unittest.TestCase):
         assert self.response.data.decode("utf-8") == self.file_upload_test_data["FILE_CONTENT"]
 
     @pn_vcr.use_cassette(
-        "tests/integrational/fixtures/native_threads/file_upload/test_download_file.yaml",
+        "tests/integrational/fixtures/native_threads/file_upload/test_delete_file.yaml",
         filter_query_parameters=('pnsdk',)
     )
     def test_delete_file(self):

@@ -11,10 +11,10 @@ interactions:
       User-Agent:
       - PubNub-Python/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/files_native_sync_ch/0/%7B%22message%22%3A%20%7B%22test%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%222222%22%2C%20%22name%22%3A%20%22test%22%7D%7D?meta=%7B%7D&store=1&ttl=222&uuid=files_native_sync_uuid
+    uri: https://ps.pndsn.com/publish/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/ch1/0/%22hi%22?norep=true&ptto=16057799474000000&seqn=1
   response:
     body:
-      string: '[1,"Sent","16058161010686497"]'
+      string: '[1,"Sent","16057799474000000"]'
     headers:
       Access-Control-Allow-Methods:
       - GET
@@ -29,7 +29,7 @@ interactions:
       Content-Type:
       - text/javascript; charset="UTF-8"
       Date:
-      - Thu, 19 Nov 2020 20:01:41 GMT
+      - Thu, 19 Nov 2020 19:59:27 GMT
     status:
       code: 200
       message: OK

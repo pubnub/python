@@ -2,13 +2,14 @@ from pubnub.endpoints.file_operations.file_based_endpoint import FileOperationEn
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub import utils
 from pubnub.models.consumer.file import PNPublishFileMessageResult
+from pubnub.endpoints.mixins import TimeTokenOverrideMixin
 
 
-class PublishFileMessage(FileOperationEndpoint):
+class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
     PUBLISH_FILE_MESSAGE = "/v1/files/publish-file/%s/%s/0/%s/0/%s"
 
     def __init__(self, pubnub):
-        FileOperationEndpoint.__init__(self, pubnub)
+        super(PublishFileMessage, self).__init__(pubnub)
         self._file_id = None
         self._file_name = None
         self._pubnub = pubnub
@@ -17,6 +18,8 @@ class PublishFileMessage(FileOperationEndpoint):
         self._ttl = 0
         self._meta = None
         self._cipher_key = None
+        self._replicate = None
+        self._ptto = None
 
     def meta(self, meta):
         self._meta = meta
@@ -79,11 +82,13 @@ class PublishFileMessage(FileOperationEndpoint):
         return HttpMethod.GET
 
     def custom_params(self):
-        return {
+        params = TimeTokenOverrideMixin.custom_params(self)
+        params.update({
             "meta": utils.url_write(self._meta),
             "ttl": self._ttl,
-            "store": self._should_store
-        }
+            "store": 1 if self._should_store else 0
+        })
+        return params
 
     def is_auth_required(self):
         return True

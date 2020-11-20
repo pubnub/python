@@ -3,7 +3,7 @@ version: 4.7.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
-  - version: v4
+  - version: v4.7.0
     date: Nov 19, 2020
     changes:
       -

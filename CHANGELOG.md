@@ -1,6 +1,6 @@
-## [v4](https://github.com/pubnub/python/releases/tag/v4)
+## [v4.7.0](https://github.com/pubnub/python/releases/tag/v4.7.0)
 
-[Full Changelog](https://github.com/pubnub/python/compare/v4.6.1...v4)
+[Full Changelog](https://github.com/pubnub/python/compare/v4.6.1...v4.7.0)
 
 - 🐛 Within this release problems with double PAM calls encoding and Publish oriented bugs were fixed. 
 

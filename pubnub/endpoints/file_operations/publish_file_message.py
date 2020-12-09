@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from pubnub.endpoints.file_operations.file_based_endpoint import FileOperationEndpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub import utils
@@ -59,15 +60,13 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
             return message
 
     def _build_message(self):
-        return self._encrypt_message(
-            {
-                "message": self._message,
-                "file": {
-                    "id": self._file_id,
-                    "name": self._file_name
-                }
-            }
-        )
+        message = OrderedDict()  # TODO: remove OrderedDict while removing EOL versions of Python (v5 release, SDK-181)
+        message["message"] = self._message
+        message["file"] = OrderedDict()
+        message["file"]["id"] = self._file_id
+        message["file"]["name"] = self._file_name
+
+        return self._encrypt_message(message)
 
     def build_path(self):
         message = self._build_message()

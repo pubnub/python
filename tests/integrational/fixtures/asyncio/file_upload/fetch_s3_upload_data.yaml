@@ -5,10 +5,10 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.5.4
     method: POST
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_asyncio_ch/generate-upload-url?pnsdk=PubNub-Python-Asyncio%2F4.5.4&uuid=291d63f9-3b21-48b9-8088-8a21fb1ba39a
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/generate-upload-url?pnsdk=PubNub-Python-Asyncio%2F4.5.4&uuid=291d63f9-3b21-48b9-8088-8a21fb1ba39a
   response:
     body:
-      string: '{"status":200,"data":{"id":"7191ce86-eb00-46d5-be04-fd273f0ad721","name":"king_arthur.txt"},"file_upload_request":{"url":"https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/","method":"POST","expiration_date":"2020-10-21T15:32:33Z","form_fields":[{"key":"tagging","value":"\u003cTagging\u003e\u003cTagSet\u003e\u003cTag\u003e\u003cKey\u003eObjectTTLInDays\u003c/Key\u003e\u003cValue\u003e1\u003c/Value\u003e\u003c/Tag\u003e\u003c/TagSet\u003e\u003c/Tagging\u003e"},{"key":"key","value":"sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/7191ce86-eb00-46d5-be04-fd273f0ad721/king_arthur.txt"},{"key":"Content-Type","value":"text/plain;
+      string: '{"status":200,"data":{"id":"7191ce86-eb00-46d5-be04-fd273f0ad721","name":"king_arthur.txt"},"file_upload_request":{"url":"https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/","method":"POST","expiration_date":"2020-10-21T15:32:33Z","form_fields":[{"key":"tagging","value":"\u003cTagging\u003e\u003cTagSet\u003e\u003cTag\u003e\u003cKey\u003eObjectTTLInDays\u003c/Key\u003e\u003cValue\u003e1\u003c/Value\u003e\u003c/Tag\u003e\u003c/TagSet\u003e\u003c/Tagging\u003e"},{"key":"key","value":"sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/7191ce86-eb00-46d5-be04-fd273f0ad721/king_arthur.txt"},{"key":"Content-Type","value":"text/plain;
         charset=utf-8"},{"key":"X-Amz-Credential","value":"AKIAY7AU6GQD5KWBS3FG/20201021/eu-central-1/s3/aws4_request"},{"key":"X-Amz-Security-Token","value":""},{"key":"X-Amz-Algorithm","value":"AWS4-HMAC-SHA256"},{"key":"X-Amz-Date","value":"20201021T153233Z"},{"key":"Policy","value":"CnsKCSJleHBpcmF0aW9uIjogIjIwMjAtMTAtMjFUMTU6MzI6MzNaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvNzE5MWNlODYtZWIwMC00NmQ1LWJlMDQtZmQyNzNmMGFkNzIxL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRDVLV0JTM0ZHLzIwMjAxMDIxL2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMDEwMjFUMTUzMjMzWiIgfQoJXQp9Cg=="},{"key":"X-Amz-Signature","value":"409079715b1bb3062f2c243c6cabe75175b24c758c8c723154bd2aa89f500e75"}]}}'
     headers:
       Access-Control-Allow-Origin: '*'
@@ -26,7 +26,7 @@ interactions:
       - !!python/object/new:urllib.parse.SplitResult
         - https
         - ps.pndsn.com
-        - /v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_asyncio_ch/generate-upload-url
+        - /v1/files/sub-c-mock-key/channels/files_asyncio_ch/generate-upload-url
         - pnsdk=PubNub-Python-Asyncio%2F4.5.4&uuid=291d63f9-3b21-48b9-8088-8a21fb1ba39a
         - ''
 version: 1

@@ -184,7 +184,10 @@ class PubNubAsyncio(PubNubCore):
         if not options.non_json_response:
             body = yield from response.text()
         else:
-            body = yield from response.read()
+            if isinstance(response.content, bytes):
+                body = response.content  # TODO: simplify this logic within the v5 release
+            else:
+                body = yield from response.read()
 
         if cancellation_event is not None and cancellation_event.is_set():
             return

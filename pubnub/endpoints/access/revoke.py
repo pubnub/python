@@ -8,6 +8,9 @@ class Revoke(Grant):
         self._read = False
         self._write = False
         self._manage = False
+        self._get = False
+        self._update = False
+        self._join = False
 
         self._sort_params = True
 

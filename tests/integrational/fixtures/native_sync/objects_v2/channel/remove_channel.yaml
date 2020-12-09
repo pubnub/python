@@ -1,0 +1,36 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: DELETE
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannelid
+  response:
+    body:
+      string: '{"status":200,"data":null}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '26'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 30 Sep 2020 13:24:53 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

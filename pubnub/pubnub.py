@@ -376,6 +376,9 @@ class SubscribeListener(SubscribeCallback):
         self.disconnected_event = Event()
         self.presence_queue = Queue()
         self.message_queue = Queue()
+        self.channel_queue = Queue()
+        self.uuid_queue = Queue()
+        self.membership_queue = Queue()
 
     def status(self, pubnub, status):
         if utils.is_subscribed_event(status) and not self.connected_event.is_set():
@@ -394,6 +397,15 @@ class SubscribeListener(SubscribeCallback):
             self.connected_event.wait()
         else:
             raise Exception("the instance is already connected")
+
+    def channel(self, pubnub, channel):
+        self.channel_queue.put(channel)
+
+    def uuid(self, pubnub, uuid):
+        self.uuid_queue.put(uuid)
+
+    def membership(self, pubnub, membership):
+        self.membership_queue.put(membership)
 
     def wait_for_disconnect(self):
         if not self.disconnected_event.is_set():

@@ -13,7 +13,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.6.1
     method: DELETE
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_threads_ch/files/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?uuid=files_threads_uuid
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_native_threads_ch/files/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?uuid=files_threads_uuid
   response:
     body:
       string: '{"status":200}'

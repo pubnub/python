@@ -3,12 +3,12 @@ interactions:
     body: null
     headers:
       User-Agent:
-      - PubNub-Python-Asyncio/4.1.0
+      - PubNub-Python-Asyncio/4.7.0
     method: GET
     uri: https://ps.pndsn.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?r=1&uuid=my_uuid&w=1
   response:
     body:
-      string: '{"message":"Success","payload":{"level":"subkey","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1440,"r":1,"w":1,"m":0,"d":0},"service":"Access
+      string: '{"message":"Success","payload":{"level":"subkey","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1440,"r":1,"w":1,"m":0,"d":0,"g":0,"u":0,"j":0},"service":"Access
         Manager","status":200}'
     headers:
       Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
@@ -16,30 +16,30 @@ interactions:
       Access-Control-Allow-Origin: '*'
       Cache-Control: no-cache, no-store, must-revalidate
       Connection: keep-alive
-      Content-Length: '186'
+      Content-Length: '204'
       Content-Type: text/javascript; charset=UTF-8
-      Date: Tue, 24 Dec 2019 12:05:39 GMT
+      Date: Wed, 25 Nov 2020 11:24:28 GMT
     status:
       code: 200
       message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult
-        - http
+        - https
         - ps.pndsn.com
         - /v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f
-        - pnsdk=PubNub-Python-Asyncio%2F4.1.0&r=1&signature=v2.M8jqdYI2ejBcOZgPxzjie18ZaCB1wZ9WysQZK7HVw6Y&timestamp=1577189138&uuid=my_uuid&w=1
+        - pnsdk=PubNub-Python-Asyncio%2F4.7.0&r=1&signature=v2.Um4OSe_f8tRtFo2tuw0lmwE6Rq5wgjTHmfblkIyoZ4I&timestamp=1606303468&uuid=my_uuid&w=1
         - ''
 - request:
     body: null
     headers:
       User-Agent:
-      - PubNub-Python-Asyncio/4.1.0
+      - PubNub-Python-Asyncio/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?m=0&r=0&uuid=my_uuid&w=0
+    uri: https://ps.pndsn.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?g=0&j=0&m=0&r=0&u=0&uuid=my_uuid&w=0
   response:
     body:
-      string: '{"message":"Success","payload":{"level":"subkey","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1,"r":0,"w":0,"m":0,"d":0},"service":"Access
+      string: '{"message":"Success","payload":{"level":"subkey","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1,"r":0,"w":0,"m":0,"d":0,"g":0,"u":0,"j":0},"service":"Access
         Manager","status":200}'
     headers:
       Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
@@ -47,18 +47,18 @@ interactions:
       Access-Control-Allow-Origin: '*'
       Cache-Control: no-cache, no-store, must-revalidate
       Connection: keep-alive
-      Content-Length: '183'
+      Content-Length: '201'
       Content-Type: text/javascript; charset=UTF-8
-      Date: Tue, 24 Dec 2019 12:05:39 GMT
+      Date: Wed, 25 Nov 2020 11:24:28 GMT
     status:
       code: 200
       message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult
-        - http
+        - https
         - ps.pndsn.com
         - /v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f
-        - l_pam=0.07717299461364746&m=0&pnsdk=PubNub-Python-Asyncio%2F4.1.0&r=0&signature=v2.HCUzgODNtMLvsSiK-f0lD0GOVEfzilmWABRKpYDG6cQ&timestamp=1577189138&uuid=my_uuid&w=0
+        - g=0&j=0&l_pam=0.24709081649780273&m=0&pnsdk=PubNub-Python-Asyncio%2F4.7.0&r=0&signature=v2.NyyRFAQKOOpqAAAMlcN6wHg-cmHLwC6L7KgdEqwS7bY&timestamp=1606303468&u=0&uuid=my_uuid&w=0
         - ''
 version: 1

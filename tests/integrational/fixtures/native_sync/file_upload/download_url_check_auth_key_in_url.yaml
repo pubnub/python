@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.5.4
     method: GET
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/files/random_file_id/random_file_name?auth=test_auth_key&uuid=files_native_sync_uuid
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_native_sync_ch/files/random_file_id/random_file_name?auth=test_auth_key&uuid=files_native_sync_uuid
   response:
     body:
       string: ''
@@ -27,7 +27,7 @@ interactions:
       Date:
       - Wed, 21 Oct 2020 17:52:34 GMT
       Location:
-      - https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/random_file_id/random_file_name?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201021%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201021T170000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=6faaeb530e4905cea2969d0e58c19dc9cb9b95dfb9e4ff790459c289f641fd7f
+      - https://files-eu-central-1.pndsn.com/sub-c-mock-key/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/random_file_id/random_file_name?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201021%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201021T170000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=6faaeb530e4905cea2969d0e58c19dc9cb9b95dfb9e4ff790459c289f641fd7f
     status:
       code: 307
       message: Temporary Redirect

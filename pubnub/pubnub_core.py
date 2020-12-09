@@ -3,6 +3,22 @@ import time
 
 from abc import ABCMeta, abstractmethod
 
+from .endpoints.objects_v2.uuid.set_uuid import SetUuid
+from .endpoints.objects_v2.channel.get_all_channels import GetAllChannels
+from .endpoints.objects_v2.channel.get_channel import GetChannel
+from .endpoints.objects_v2.channel.remove_channel import RemoveChannel
+from .endpoints.objects_v2.channel.set_channel import SetChannel
+from .endpoints.objects_v2.members.get_channel_members import GetChannelMembers
+from .endpoints.objects_v2.members.manage_channel_members import ManageChannelMembers
+from .endpoints.objects_v2.members.remove_channel_members import RemoveChannelMembers
+from .endpoints.objects_v2.members.set_channel_members import SetChannelMembers
+from .endpoints.objects_v2.memberships.get_memberships import GetMemberships
+from .endpoints.objects_v2.memberships.manage_memberships import ManageMemberships
+from .endpoints.objects_v2.memberships.remove_memberships import RemoveMemberships
+from .endpoints.objects_v2.memberships.set_memberships import SetMemberships
+from .endpoints.objects_v2.uuid.get_all_uuid import GetAllUuid
+from .endpoints.objects_v2.uuid.get_uuid import GetUuid
+from .endpoints.objects_v2.uuid.remove_uuid import RemoveUuid
 from .managers import BasePathManager, TokenManager, TokenManagerProperties
 from .builders import SubscribeBuilder
 from .builders import UnsubscribeBuilder
@@ -26,20 +42,6 @@ from .endpoints.presence.where_now import WhereNow
 from .endpoints.history_delete import HistoryDelete
 from .endpoints.message_count import MessageCount
 from .endpoints.signal import Signal
-from .endpoints.users.get_users import GetUsers
-from .endpoints.users.create_user import CreateUser
-from .endpoints.users.get_user import GetUser
-from .endpoints.users.update_user import UpdateUser
-from .endpoints.users.delete_user import DeleteUser
-from .endpoints.space.get_spaces import GetSpaces
-from .endpoints.space.get_space import GetSpace
-from .endpoints.space.update_space import UpdateSpace
-from .endpoints.space.delete_space import DeleteSpace
-from .endpoints.space.create_space import CreateSpace
-from .endpoints.membership.get_space_memberships import GetSpaceMemberships
-from .endpoints.membership.get_members import GetMembers
-from .endpoints.membership.manage_members import ManageMembers
-from .endpoints.membership.manage_memberships import ManageMemberships
 from .endpoints.fetch_messages import FetchMessages
 from .endpoints.message_actions.add_message_action import AddMessageAction
 from .endpoints.message_actions.get_message_actions import GetMessageActions
@@ -63,7 +65,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "4.7.0"
+    SDK_VERSION = "4.8.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -199,44 +201,50 @@ class PubNubCore:
     def signal(self):
         return Signal(self)
 
-    def get_users(self):
-        return GetUsers(self)
+    def set_uuid_metadata(self):
+        return SetUuid(self)
 
-    def create_user(self):
-        return CreateUser(self)
+    def get_uuid_metadata(self):
+        return GetUuid(self)
 
-    def get_user(self):
-        return GetUser(self)
+    def remove_uuid_metadata(self):
+        return RemoveUuid(self)
 
-    def update_user(self):
-        return UpdateUser(self)
+    def get_all_uuid_metadata(self):
+        return GetAllUuid(self)
 
-    def delete_user(self):
-        return DeleteUser(self)
+    def set_channel_metadata(self):
+        return SetChannel(self)
 
-    def get_spaces(self):
-        return GetSpaces(self)
+    def get_channel_metadata(self):
+        return GetChannel(self)
 
-    def get_space(self):
-        return GetSpace(self)
+    def remove_channel_metadata(self):
+        return RemoveChannel(self)
 
-    def update_space(self):
-        return UpdateSpace(self)
+    def get_all_channel_metadata(self):
+        return GetAllChannels(self)
 
-    def delete_space(self):
-        return DeleteSpace(self)
+    def set_channel_members(self):
+        return SetChannelMembers(self)
 
-    def create_space(self):
-        return CreateSpace(self)
+    def get_channel_members(self):
+        return GetChannelMembers(self)
 
-    def get_space_memberships(self):
-        return GetSpaceMemberships(self)
+    def remove_channel_members(self):
+        return RemoveChannelMembers(self)
 
-    def get_members(self):
-        return GetMembers(self)
+    def manage_channel_members(self):
+        return ManageChannelMembers(self)
 
-    def manage_members(self):
-        return ManageMembers(self)
+    def set_memberships(self):
+        return SetMemberships(self)
+
+    def get_memberships(self):
+        return GetMemberships(self)
+
+    def remove_memberships(self):
+        return RemoveMemberships(self)
 
     def manage_memberships(self):
         return ManageMemberships(self)

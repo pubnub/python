@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/ch1/0/%22hi%22?norep=true&ptto=16057799474000000&seqn=1
+    uri: https://ps.pndsn.com/publish/pub-c-mock-key/sub-c-mock-key/0/ch1/0/%22hi%22?norep=true&ptto=16057799474000000&seqn=1
   response:
     body:
       string: '[1,"Sent","16057799474000000"]'

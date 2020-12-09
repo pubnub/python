@@ -42,6 +42,9 @@ class TestRevoke(unittest.TestCase):
             'r': '0',
             'w': '0',
             'm': '0',
+            'g': '0',
+            'u': '0',
+            'j': '0',
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid
         })
@@ -57,6 +60,9 @@ class TestRevoke(unittest.TestCase):
             'r': '0',
             'w': '0',
             'm': '0',
+            'g': '0',
+            'u': '0',
+            'j': '0',
             'signature': "v2." + utils.sign_sha256(pnconf.secret_key, sign_input).rstrip("=")
         })
 
@@ -75,6 +81,9 @@ class TestRevoke(unittest.TestCase):
             'r': '0',
             'w': '0',
             'm': '0',
+            'g': '0',
+            'u': '0',
+            'j': '0',
             'timestamp': 123,
             'channel-group': 'gr1,gr2',
             'pnsdk': sdk_name,
@@ -90,6 +99,9 @@ class TestRevoke(unittest.TestCase):
             'r': '0',
             'w': '0',
             'm': '0',
+            'g': '0',
+            'u': '0',
+            'j': '0',
             'timestamp': '123',
             'channel-group': 'gr1,gr2',
             'signature': "v2." + utils.sign_sha256(pnconf.secret_key, sign_input).rstrip("=")

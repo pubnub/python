@@ -211,13 +211,13 @@ class ListenerManager(object):
         for callback in self._listeners:
             callback.signal(self._pubnub, signal)
 
-    def announce_user(self, user):
+    def announce_channel(self, channel):
         for callback in self._listeners:
-            callback.user(self._pubnub, user)
+            callback.channel(self._pubnub, channel)
 
-    def announce_space(self, space):
+    def announce_uuid(self, uuid):
         for callback in self._listeners:
-            callback.space(self._pubnub, space)
+            callback.uuid(self._pubnub, uuid)
 
     def announce_membership(self, membership):
         for callback in self._listeners:
@@ -478,19 +478,24 @@ class TelemetryManager(object):  # pylint: disable=W0612
 
             PNOperationType.PNSignalOperation: 'sig',
 
-            PNOperationType.PNGetUsersOperation: 'obj',
-            PNOperationType.PNCreateUserOperation: 'obj',
-            PNOperationType.PNGetUserOperation: 'obj',
-            PNOperationType.PNUpdateUserOperation: 'obj',
-            PNOperationType.PNDeleteUserOperation: 'obj',
-            PNOperationType.PNGetSpacesOperation: 'obj',
-            PNOperationType.PNCreateSpaceOperation: 'obj',
-            PNOperationType.PNGetSpaceOperation: 'obj',
-            PNOperationType.PNUpdateSpaceOperation: 'obj',
-            PNOperationType.PNDeleteSpaceOperation: 'obj',
-            PNOperationType.PNGetMembersOperation: 'obj',
-            PNOperationType.PNGetSpaceMembershipsOperation: 'obj',
-            PNOperationType.PNManageMembersOperation: 'obj',
+            PNOperationType.PNSetUuidMetadataOperation: 'obj',
+            PNOperationType.PNGetUuidMetadataOperation: 'obj',
+            PNOperationType.PNRemoveUuidMetadataOperation: 'obj',
+            PNOperationType.PNGetAllUuidMetadataOperation: 'obj',
+
+            PNOperationType.PNSetChannelMetadataOperation: 'obj',
+            PNOperationType.PNGetChannelMetadataOperation: 'obj',
+            PNOperationType.PNRemoveChannelMetadataOperation: 'obj',
+            PNOperationType.PNGetAllChannelMetadataOperation: 'obj',
+
+            PNOperationType.PNSetChannelMembersOperation: 'obj',
+            PNOperationType.PNGetChannelMembersOperation: 'obj',
+            PNOperationType.PNRemoveChannelMembersOperation: 'obj',
+            PNOperationType.PNManageChannelMembersOperation: 'obj',
+
+            PNOperationType.PNSetMembershipsOperation: 'obj',
+            PNOperationType.PNGetMembershipsOperation: 'obj',
+            PNOperationType.PNRemoveMembershipsOperation: 'obj',
             PNOperationType.PNManageMembershipsOperation: 'obj',
 
             PNOperationType.PNAccessManagerGrantToken: 'pamv3',

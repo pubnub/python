@@ -1,0 +1,35 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: GET
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannelid?include=custom
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"somechannelid","name":"Some name","description":"Some
+        description","custom":{"key1":"val1","key2":"val2"},"updated":"2020-09-30T12:52:14.765159Z","eTag":"AdyzhpyljqSqHA"}}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '199'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 30 Sep 2020 13:14:48 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

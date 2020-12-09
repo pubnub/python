@@ -1,0 +1,71 @@
+interactions:
+- request:
+    body: '{"name": "Some name", "description": "Some description", "custom": {"key1":
+      "val1", "key2": "val2"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '100'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannelid?include=custom
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"somechannelid","name":"Some name","description":"Some
+        description","custom":{"key1":"val1","key2":"val2"},"updated":"2020-09-30T13:58:47.604494Z","eTag":"AdyzhpyljqSqHA"}}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '199'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 30 Sep 2020 14:00:12 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: GET
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels?count=True&include=custom&limit=10&sort=id%3Aasc%2Cupdated%3Adesc
+  response:
+    body:
+      string: '{"status":200,"data":[{"id":"somechannelid","name":"Some name","description":"Some
+        description","custom":{"key1":"val1","key2":"val2"},"updated":"2020-09-30T13:58:47.604494Z","eTag":"AdyzhpyljqSqHA"}],"totalCount":1,"next":"MQ"}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '228'
+      Content-Type:
+      - application/json
+      Date:
+      - Wed, 30 Sep 2020 14:00:12 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -22,7 +22,7 @@ def send_file(pubnub, file_for_upload, cipher_key=None):
             should_store(True).\
             ttl(222).\
             cipher_key(cipher_key).\
-            file_object(fd).future()
+            file_object(fd.read()).future()
 
     assert isinstance(envelope.result, PNSendFileResult)
     assert envelope.result.name
@@ -31,6 +31,10 @@ def send_file(pubnub, file_for_upload, cipher_key=None):
     return envelope
 
 
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/asyncio/file_upload/delete_file.yaml",
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
+)
 @pytest.mark.asyncio
 def test_delete_file(event_loop, file_for_upload):
     pubnub = PubNubAsyncio(pnconf_file_copy(), custom_event_loop=event_loop)
@@ -49,7 +53,7 @@ def test_delete_file(event_loop, file_for_upload):
 
 @pn_vcr.use_cassette(
     "tests/integrational/fixtures/asyncio/file_upload/list_files.yaml",
-    filter_query_parameters=['uuid', 'seqn', 'pnsdk']
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
 )
 @pytest.mark.asyncio
 def test_list_files(event_loop):
@@ -61,6 +65,10 @@ def test_list_files(event_loop):
     pubnub.stop()
 
 
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_file.yaml",
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
+)
 @pytest.mark.asyncio
 def test_send_and_download_file(event_loop, file_for_upload):
     pubnub = PubNubAsyncio(pnconf_file_copy(), custom_event_loop=event_loop)
@@ -74,6 +82,11 @@ def test_send_and_download_file(event_loop, file_for_upload):
     pubnub.stop()
 
 
+@pytest.mark.skip("Aiohttp and VCR needs to be upgraded(serialization problems). To be fixed within v5 release.")
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file.yaml",
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
+)
 @pytest.mark.asyncio
 def test_send_and_download_file_encrypted(event_loop, file_for_upload, file_upload_test_data):
     pubnub = PubNubAsyncio(pnconf_file_copy(), custom_event_loop=event_loop)
@@ -90,6 +103,10 @@ def test_send_and_download_file_encrypted(event_loop, file_for_upload, file_uplo
     pubnub.stop()
 
 
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/asyncio/file_upload/get_file_url.yaml",
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
+)
 @pytest.mark.asyncio
 def test_get_file_url(event_loop, file_for_upload):
     pubnub = PubNubAsyncio(pnconf_file_copy(), custom_event_loop=event_loop)
@@ -105,7 +122,7 @@ def test_get_file_url(event_loop, file_for_upload):
 
 @pn_vcr.use_cassette(
     "tests/integrational/fixtures/asyncio/file_upload/fetch_s3_upload_data.yaml",
-    filter_query_parameters=['uuid', 'seqn', 'pnsdk']
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
 )
 @pytest.mark.asyncio
 def test_fetch_file_upload_s3_data_with_result_invocation(event_loop, file_upload_test_data):

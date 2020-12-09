@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%222222%22%2C%20%22name%22%3A%20%22test%22%7D%7D?meta=%7B%7D&store=1&ttl=222
+    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-mock-key/sub-c-mock-key/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%222222%22%2C%20%22name%22%3A%20%22test%22%7D%7D?meta=%7B%7D&store=1&ttl=222
   response:
     body:
       string: '[1,"Sent","16058168227970293"]'
@@ -25,7 +25,7 @@ interactions:
       - !!python/object/new:urllib.parse.SplitResult
         - https
         - ps.pndsn.com
-        - /v1/files/publish-file/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%222222%22%2C%20%22name%22%3A%20%22test%22%7D%7D
+        - /v1/files/publish-file/pub-c-mock-key/sub-c-mock-key/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%222222%22%2C%20%22name%22%3A%20%22test%22%7D%7D
         - meta=%7B%7D&ttl=222&store=1&pnsdk=PubNub-Python-Asyncio%2F4.6.1&uuid=9b1fa4b9-75b2-4001-98d7-bf25c45bcaf3
         - ''
 version: 1

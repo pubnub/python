@@ -13,7 +13,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.6.1
     method: POST
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/generate-upload-url?uuid=files_native_sync_uuid
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_native_sync_ch/generate-upload-url?uuid=files_native_sync_uuid
   response:
     body:
       string: !!binary |
@@ -59,7 +59,7 @@ interactions:
     body: "--81a347c1a55f80c7a78e3ce009fb4b6e\r\nContent-Disposition: form-data; name=\"\
       tagging\"\r\n\r\n<Tagging><TagSet><Tag><Key>ObjectTTLInDays</Key><Value>1</Value></Tag></TagSet></Tagging>\r\
       \n--81a347c1a55f80c7a78e3ce009fb4b6e\r\nContent-Disposition: form-data; name=\"\
-      key\"\r\n\r\nsub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/9f144c4c-ea4c-46a5-ab24-d81ef1142994/king_arthur.txt\r\
+      key\"\r\n\r\nsub-c-mock-key/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/9f144c4c-ea4c-46a5-ab24-d81ef1142994/king_arthur.txt\r\
       \n--81a347c1a55f80c7a78e3ce009fb4b6e\r\nContent-Disposition: form-data; name=\"\
       Content-Type\"\r\n\r\ntext/plain; charset=utf-8\r\n--81a347c1a55f80c7a78e3ce009fb4b6e\r\
       \nContent-Disposition: form-data; name=\"X-Amz-Credential\"\r\n\r\nAKIAY7AU6GQD5KWBS3FG/20201119/eu-central-1/s3/aws4_request\r\
@@ -98,7 +98,7 @@ interactions:
       ETag:
       - '"3676cdb7a927db43c846070c4e7606c7"'
       Location:
-      - https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95%2Ff-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ%2F9f144c4c-ea4c-46a5-ab24-d81ef1142994%2Fking_arthur.txt
+      - https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/sub-c-mock-key%2Ff-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ%2F9f144c4c-ea4c-46a5-ab24-d81ef1142994%2Fking_arthur.txt
       Server:
       - AmazonS3
       x-amz-expiration:
@@ -125,7 +125,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/0/files_native_sync_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%229f144c4c-ea4c-46a5-ab24-d81ef1142994%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222&uuid=files_native_sync_uuid
+    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-mock-key/sub-c-mock-key/0/files_native_sync_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%229f144c4c-ea4c-46a5-ab24-d81ef1142994%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222&uuid=files_native_sync_uuid
   response:
     body:
       string: '[1,"Sent","16058160706139422"]'
@@ -159,7 +159,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_sync_ch/files/9f144c4c-ea4c-46a5-ab24-d81ef1142994/king_arthur.txt?uuid=files_native_sync_uuid
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_native_sync_ch/files/9f144c4c-ea4c-46a5-ab24-d81ef1142994/king_arthur.txt?uuid=files_native_sync_uuid
   response:
     body:
       string: ''
@@ -175,7 +175,7 @@ interactions:
       Date:
       - Thu, 19 Nov 2020 20:01:10 GMT
       Location:
-      - https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/9f144c4c-ea4c-46a5-ab24-d81ef1142994/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=3a643977ebb796baafbaa45ad35bedffbb0c7a83adcf84f5ee03eb0edeca49ad
+      - https://files-eu-central-1.pndsn.com/sub-c-mock-key/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/9f144c4c-ea4c-46a5-ab24-d81ef1142994/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=3a643977ebb796baafbaa45ad35bedffbb0c7a83adcf84f5ee03eb0edeca49ad
     status:
       code: 307
       message: Temporary Redirect

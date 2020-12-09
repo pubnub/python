@@ -190,9 +190,9 @@ class TestPubNubErrorPublish(unittest.TestCase):
         pnconf = pnconf_pam_copy()
         pnconf.secret_key = None
 
-        PubNub(pnconf).publish() \
-            .channel("not_permitted_channel") \
-            .message("correct message") \
+        PubNub(pnconf).publish()\
+            .channel("not_permitted_channel")\
+            .message("correct message")\
             .pn_async(self.callback)
 
         self.event.wait()

@@ -65,20 +65,6 @@ class PNOperationType(object):
     PNMessageCountOperation = 24
     PNFireOperation = 25
     PNSignalOperation = 26
-    PNGetUsersOperation = 27
-    PNCreateUserOperation = 28
-    PNGetUserOperation = 29
-    PNUpdateUserOperation = 30
-    PNDeleteUserOperation = 31
-    PNGetSpacesOperation = 32
-    PNCreateSpaceOperation = 33
-    PNGetSpaceOperation = 34
-    PNUpdateSpaceOperation = 35
-    PNDeleteSpaceOperation = 36
-    PNGetMembersOperation = 37
-    PNGetSpaceMembershipsOperation = 38
-    PNManageMembersOperation = 39
-    PNManageMembershipsOperation = 40
 
     PNAccessManagerGrantToken = 41
     PNAddMessageAction = 42
@@ -93,6 +79,26 @@ class PNOperationType(object):
     PNDownloadFileAction = 50
     PNSendFileAction = 51
     PNSendFileNotification = 52
+
+    PNSetUuidMetadataOperation = 53
+    PNGetUuidMetadataOperation = 54
+    PNRemoveUuidMetadataOperation = 55
+    PNGetAllUuidMetadataOperation = 56
+
+    PNSetChannelMetadataOperation = 57
+    PNGetChannelMetadataOperation = 58
+    PNRemoveChannelMetadataOperation = 59
+    PNGetAllChannelMetadataOperation = 60
+
+    PNSetChannelMembersOperation = 61
+    PNGetChannelMembersOperation = 62
+    PNRemoveChannelMembersOperation = 63
+    PNManageChannelMembersOperation = 64
+
+    PNSetMembershipsOperation = 65
+    PNGetMembershipsOperation = 66
+    PNRemoveMembershipsOperation = 67
+    PNManageMembershipsOperation = 68
 
 
 class PNHeartbeatNotificationOptions(object):

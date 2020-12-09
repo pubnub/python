@@ -1,0 +1,37 @@
+interactions:
+- request:
+    body: '{"name": "Some name", "email": "test@example.com", "externalId": "1234",
+      "profileUrl": "http://example.com", "custom": {"key1": "val1", "key2": "val2"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '152'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/uuids/someuuid?include=custom
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"someuuid","name":"Some name","externalId":"1234","profileUrl":"http://example.com","email":"test@example.com","custom":{"key1":"val1","key2":"val2"},"updated":"2020-09-25T14:41:57.579119Z","eTag":"AYTuwrO3kvz6tAE"}}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '243'
+      Content-Type:
+      - application/json
+      Date:
+      - Mon, 28 Sep 2020 11:29:04 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

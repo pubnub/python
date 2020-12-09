@@ -37,13 +37,13 @@ class TestStringify(unittest.TestCase):
         assert str(result) == "Group contains following channels: qwer, asdf, zxcv"
 
     def test_audit(self):
-        result = PNAccessManagerAuditResult(None, None, None, None, 3600, True, False, True, False)
+        result = PNAccessManagerAuditResult(None, None, None, None, None, 3600, True, False, True, False)
 
         assert str(result) == \
             "Current permissions are valid for 3600 minutes: read True, write False, manage: True, delete: False"
 
     def test_grant(self):
-        result = PNAccessManagerGrantResult(None, None, None, None, 3600, True, False, True, False)
+        result = PNAccessManagerGrantResult(None, None, None, None, None, 3600, True, False, True, False)
 
         assert str(result) == \
             "New permissions are set for 3600 minutes: read True, write False, manage: True, delete: False"

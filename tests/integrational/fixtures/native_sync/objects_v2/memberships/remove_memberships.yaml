@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: '{"set": [], "delete": [{"channel": {"id": "somechannel"}}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '59'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/uuids/someuuid/channels?include=custom%2Cchannel.custom
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yRWWvCQBSF/4rMs8vsydw3EaE0LfQhFGwRmcapBrPYZsZUxP/eiUuJ0Grf7jLn
+        fMy5O1RZbV2FgGLcRXNtNYLXHUqWuihMhmCH0jkCVJW5Oc1830WFzg2CwmWZF5kq+UzXNi2L8yhx
+        lS3zRr0yW+L1G50RL/MdPXYU7bvIrT3QNP4UU9wjuIdpjBVwAVj2pcKcBi9eZmK98I+G71GsJqM7
+        xdMRXowbhzPoiP3Vj3CgAijrY6mYIG2/CVP5fRQNBiP8PPR2V/89q1O7nJ2A5wQODzpN3WnWnZ/1
+        rVDYRSj8VihEAqcgWD+QFIey/YkkkpvqabXYuGUybGdy4IgLjrzJCYBhEKHnBISqNudtWxcPcTn4
+        yENXj/9Myzlf/vMyEhgB6i8dciXCK5eZ+rzNl/WbxxrtvwEAAP//AwDIvXqatQIAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Oct 2020 17:45:38 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

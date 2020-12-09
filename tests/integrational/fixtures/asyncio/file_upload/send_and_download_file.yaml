@@ -1,0 +1,549 @@
+interactions:
+- request:
+    body: '{"name": "king_arthur.txt"}'
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.7.0
+    method: POST
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/generate-upload-url
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"862168ec-0048-4578-9e6d-4c69361e9780","name":"king_arthur.txt"},"file_upload_request":{"url":"https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/","method":"POST","expiration_date":"2020-11-25T13:26:54Z","form_fields":[{"key":"tagging","value":"\u003cTagging\u003e\u003cTagSet\u003e\u003cTag\u003e\u003cKey\u003eObjectTTLInDays\u003c/Key\u003e\u003cValue\u003e1\u003c/Value\u003e\u003c/Tag\u003e\u003c/TagSet\u003e\u003c/Tagging\u003e"},{"key":"key","value":"sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/862168ec-0048-4578-9e6d-4c69361e9780/king_arthur.txt"},{"key":"Content-Type","value":"text/plain;
+        charset=utf-8"},{"key":"X-Amz-Credential","value":"AKIAY7AU6GQD5KWBS3FG/20201125/eu-central-1/s3/aws4_request"},{"key":"X-Amz-Security-Token","value":""},{"key":"X-Amz-Algorithm","value":"AWS4-HMAC-SHA256"},{"key":"X-Amz-Date","value":"20201125T132654Z"},{"key":"Policy","value":"CnsKCSJleHBpcmF0aW9uIjogIjIwMjAtMTEtMjVUMTM6MjY6NTRaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvODYyMTY4ZWMtMDA0OC00NTc4LTllNmQtNGM2OTM2MWU5NzgwL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRDVLV0JTM0ZHLzIwMjAxMTI1L2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMDExMjVUMTMyNjU0WiIgfQoJXQp9Cg=="},{"key":"X-Amz-Signature","value":"8c4bc66e328da99c3158877ad5abd093394b24bd22a693af8bd8f9f8438f3471"}]}}'
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Connection: keep-alive
+      Content-Encoding: gzip
+      Content-Type: application/json
+      Date: Wed, 25 Nov 2020 13:25:54 GMT
+      Transfer-Encoding: chunked
+      Vary: Accept-Encoding
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - ps.pndsn.com
+        - /v1/files/sub-c-mock-key/channels/files_asyncio_ch/generate-upload-url
+        - pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=ee97d818-f36d-4524-908f-5738e917bd42
+        - ''
+- request:
+    body: !!python/object:aiohttp.formdata.FormData
+      _charset: null
+      _fields:
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - tagging
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : multipart/form-data
+        - <Tagging><TagSet><Tag><Key>ObjectTTLInDays</Key><Value>1</Value></Tag></TagSet></Tagging>
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - key
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : multipart/form-data
+        - sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/862168ec-0048-4578-9e6d-4c69361e9780/king_arthur.txt
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - Content-Type
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : multipart/form-data
+        - text/plain; charset=utf-8
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - X-Amz-Credential
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : multipart/form-data
+        - AKIAY7AU6GQD5KWBS3FG/20201125/eu-central-1/s3/aws4_request
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - X-Amz-Security-Token
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : multipart/form-data
+        - ''
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - X-Amz-Algorithm
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : multipart/form-data
+        - AWS4-HMAC-SHA256
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - X-Amz-Date
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : multipart/form-data
+        - 20201125T132654Z
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - Policy
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : multipart/form-data
+        - CnsKCSJleHBpcmF0aW9uIjogIjIwMjAtMTEtMjVUMTM6MjY6NTRaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvODYyMTY4ZWMtMDA0OC00NTc4LTllNmQtNGM2OTM2MWU5NzgwL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRDVLV0JTM0ZHLzIwMjAxMTI1L2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMDExMjVUMTMyNjU0WiIgfQoJXQp9Cg==
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - X-Amz-Signature
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : multipart/form-data
+        - 8c4bc66e328da99c3158877ad5abd093394b24bd22a693af8bd8f9f8438f3471
+      - !!python/tuple
+        - !!python/object/apply:multidict._multidict.MultiDict
+          - - !!python/tuple
+              - name
+              - file
+            - !!python/tuple
+              - filename
+              - king_arthur.txt
+        - ? !!python/object/new:multidict._multidict.istr
+          - CONTENT-TYPE
+          : application/octet-stream
+        - !!binary |
+          S25pZ2h0cyB3aG8gc2F5IE5pIQ==
+      _is_multipart: true
+      _quote_fields: true
+      _writer: !!python/object:aiohttp.multipart.MultipartWriter
+        _boundary: !!binary |
+          OTJkNThmNDZjMTlmNDhkMGE3ZDVmN2MyOGZlMGQzNmM=
+        _content_type: multipart/form-data; boundary="92d58f46c19f48d0a7d5f7c28fe0d36c"
+        _encoding: null
+        _filename: null
+        _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+        - - !!python/tuple
+            - !!python/object/new:multidict._multidict.istr
+              - CONTENT-TYPE
+            - multipart/form-data; boundary="92d58f46c19f48d0a7d5f7c28fe0d36c"
+        _parts:
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.StringPayload
+            _content_type: multipart/form-data
+            _encoding: utf-8
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - multipart/form-data
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="tagging"
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '89'
+            _size: 89
+            _value: !!binary |
+              PFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8
+              L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4=
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBtdWx0aXBhcnQvZm9ybS1kYXRhDQpDT05URU5ULURJU1BPU0lUSU9OOiBm
+            b3JtLWRhdGE7IG5hbWU9InRhZ2dpbmciDQpDT05URU5ULUxFTkdUSDogODkNCg0K
+          - ''
+          - ''
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.StringPayload
+            _content_type: multipart/form-data
+            _encoding: utf-8
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - multipart/form-data
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="key"
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '139'
+            _size: 139
+            _value: !!binary |
+              c3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1LzBNUjEtejJ3MG5TSll4
+              d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvODYyMTY4ZWMtMDA0OC00NTc4LTllNmQtNGM2
+              OTM2MWU5NzgwL2tpbmdfYXJ0aHVyLnR4dA==
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBtdWx0aXBhcnQvZm9ybS1kYXRhDQpDT05URU5ULURJU1BPU0lUSU9OOiBm
+            b3JtLWRhdGE7IG5hbWU9ImtleSINCkNPTlRFTlQtTEVOR1RIOiAxMzkNCg0K
+          - ''
+          - ''
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.StringPayload
+            _content_type: multipart/form-data
+            _encoding: utf-8
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - multipart/form-data
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="Content-Type"
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '25'
+            _size: 25
+            _value: !!binary |
+              dGV4dC9wbGFpbjsgY2hhcnNldD11dGYtOA==
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBtdWx0aXBhcnQvZm9ybS1kYXRhDQpDT05URU5ULURJU1BPU0lUSU9OOiBm
+            b3JtLWRhdGE7IG5hbWU9IkNvbnRlbnQtVHlwZSINCkNPTlRFTlQtTEVOR1RIOiAyNQ0KDQo=
+          - ''
+          - ''
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.StringPayload
+            _content_type: multipart/form-data
+            _encoding: utf-8
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - multipart/form-data
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="X-Amz-Credential"
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '58'
+            _size: 58
+            _value: !!binary |
+              QUtJQVk3QVU2R1FENUtXQlMzRkcvMjAyMDExMjUvZXUtY2VudHJhbC0xL3MzL2F3czRfcmVxdWVz
+              dA==
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBtdWx0aXBhcnQvZm9ybS1kYXRhDQpDT05URU5ULURJU1BPU0lUSU9OOiBm
+            b3JtLWRhdGE7IG5hbWU9IlgtQW16LUNyZWRlbnRpYWwiDQpDT05URU5ULUxFTkdUSDogNTgNCg0K
+          - ''
+          - ''
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.StringPayload
+            _content_type: multipart/form-data
+            _encoding: utf-8
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - multipart/form-data
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="X-Amz-Security-Token"
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '0'
+            _size: 0
+            _value: !!binary ""
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBtdWx0aXBhcnQvZm9ybS1kYXRhDQpDT05URU5ULURJU1BPU0lUSU9OOiBm
+            b3JtLWRhdGE7IG5hbWU9IlgtQW16LVNlY3VyaXR5LVRva2VuIg0KQ09OVEVOVC1MRU5HVEg6IDAN
+            Cg0K
+          - ''
+          - ''
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.StringPayload
+            _content_type: multipart/form-data
+            _encoding: utf-8
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - multipart/form-data
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="X-Amz-Algorithm"
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '16'
+            _size: 16
+            _value: !!binary |
+              QVdTNC1ITUFDLVNIQTI1Ng==
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBtdWx0aXBhcnQvZm9ybS1kYXRhDQpDT05URU5ULURJU1BPU0lUSU9OOiBm
+            b3JtLWRhdGE7IG5hbWU9IlgtQW16LUFsZ29yaXRobSINCkNPTlRFTlQtTEVOR1RIOiAxNg0KDQo=
+          - ''
+          - ''
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.StringPayload
+            _content_type: multipart/form-data
+            _encoding: utf-8
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - multipart/form-data
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="X-Amz-Date"
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '16'
+            _size: 16
+            _value: !!binary |
+              MjAyMDExMjVUMTMyNjU0Wg==
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBtdWx0aXBhcnQvZm9ybS1kYXRhDQpDT05URU5ULURJU1BPU0lUSU9OOiBm
+            b3JtLWRhdGE7IG5hbWU9IlgtQW16LURhdGUiDQpDT05URU5ULUxFTkdUSDogMTYNCg0K
+          - ''
+          - ''
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.StringPayload
+            _content_type: multipart/form-data
+            _encoding: utf-8
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - multipart/form-data
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="Policy"
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '904'
+            _size: 904
+            _value: !!binary |
+              Q25zS0NTSmxlSEJwY21GMGFXOXVJam9nSWpJd01qQXRNVEV0TWpWVU1UTTZNalk2TlRSYUlpd0tD
+              U0pqYjI1a2FYUnBiMjV6SWpvZ1d3b0pDWHNpWW5WamEyVjBJam9nSW5CMVltNTFZaTF0Ym1WdGIz
+              TjVibVV0Wm1sc1pYTXRaWFV0WTJWdWRISmhiQzB4TFhCeVpDSjlMQW9KQ1ZzaVpYRWlMQ0FpSkhS
+              aFoyZHBibWNpTENBaVBGUmhaMmRwYm1jK1BGUmhaMU5sZEQ0OFZHRm5QanhMWlhrK1QySnFaV04w
+              VkZSTVNXNUVZWGx6UEM5TFpYaytQRlpoYkhWbFBqRThMMVpoYkhWbFBqd3ZWR0ZuUGp3dlZHRm5V
+              MlYwUGp3dlZHRm5aMmx1Wno0aVhTd0tDUWxiSW1WeElpd2dJaVJyWlhraUxDQWljM1ZpTFdNdFl6
+              ZzRNalF5Wm1FdE1UTmhaUzB4TVdWaUxXSmpNelF0WTJVMlptUTVOamRoWmprMUx6Qk5VakV0ZWpK
+              M01HNVRTbGw0ZDBWNU56UndOVkZxVmpnMVZHMW5Ua0pMVUhKV056RjBOVFZPVkRBdk9EWXlNVFk0
+              WldNdE1EQTBPQzAwTlRjNExUbGxObVF0TkdNMk9UTTJNV1U1Tnpnd0wydHBibWRmWVhKMGFIVnlM
+              blI0ZENKZExBb0pDVnNpWTI5dWRHVnVkQzFzWlc1bmRHZ3RjbUZ1WjJVaUxDQXdMQ0ExTWpReU9E
+              Z3dYU3dLQ1FsYkluTjBZWEowY3kxM2FYUm9JaXdnSWlSRGIyNTBaVzUwTFZSNWNHVWlMQ0FpSWww
+              c0Nna0pleUo0TFdGdGVpMWpjbVZrWlc1MGFXRnNJam9nSWtGTFNVRlpOMEZWTmtkUlJEVkxWMEpU
+              TTBaSEx6SXdNakF4TVRJMUwyVjFMV05sYm5SeVlXd3RNUzl6TXk5aGQzTTBYM0psY1hWbGMzUWlm
+              U3dLQ1FsN0luZ3RZVzE2TFhObFkzVnlhWFI1TFhSdmEyVnVJam9nSWlKOUxBb0pDWHNpZUMxaGJY
+              b3RZV3huYjNKcGRHaHRJam9nSWtGWFV6UXRTRTFCUXkxVFNFRXlOVFlpZlN3S0NRbDdJbmd0WVcx
+              NkxXUmhkR1VpT2lBaU1qQXlNREV4TWpWVU1UTXlOalUwV2lJZ2ZRb0pYUXA5Q2c9PQ==
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBtdWx0aXBhcnQvZm9ybS1kYXRhDQpDT05URU5ULURJU1BPU0lUSU9OOiBm
+            b3JtLWRhdGE7IG5hbWU9IlBvbGljeSINCkNPTlRFTlQtTEVOR1RIOiA5MDQNCg0K
+          - ''
+          - ''
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.StringPayload
+            _content_type: multipart/form-data
+            _encoding: utf-8
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - multipart/form-data
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="X-Amz-Signature"
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '64'
+            _size: 64
+            _value: !!binary |
+              OGM0YmM2NmUzMjhkYTk5YzMxNTg4NzdhZDVhYmQwOTMzOTRiMjRiZDIyYTY5M2FmOGJkOGY5Zjg0
+              MzhmMzQ3MQ==
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBtdWx0aXBhcnQvZm9ybS1kYXRhDQpDT05URU5ULURJU1BPU0lUSU9OOiBm
+            b3JtLWRhdGE7IG5hbWU9IlgtQW16LVNpZ25hdHVyZSINCkNPTlRFTlQtTEVOR1RIOiA2NA0KDQo=
+          - ''
+          - ''
+        - !!python/tuple
+          - !!python/object:aiohttp.payload.BytesPayload
+            _content_type: application/octet-stream
+            _encoding: null
+            _filename: null
+            _headers: !!python/object/apply:multidict._multidict.CIMultiDict
+            - - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-TYPE
+                - application/octet-stream
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-DISPOSITION
+                - form-data; name="file"; filename="king_arthur.txt"; filename*=utf-8''king_arthur.txt
+              - !!python/tuple
+                - !!python/object/new:multidict._multidict.istr
+                  - CONTENT-LENGTH
+                - '19'
+            _size: 19
+            _value: !!binary |
+              S25pZ2h0cyB3aG8gc2F5IE5pIQ==
+          - !!binary |
+            Q09OVEVOVC1UWVBFOiBhcHBsaWNhdGlvbi9vY3RldC1zdHJlYW0NCkNPTlRFTlQtRElTUE9TSVRJ
+            T046IGZvcm0tZGF0YTsgbmFtZT0iZmlsZSI7IGZpbGVuYW1lPSJraW5nX2FydGh1ci50eHQiOyBm
+            aWxlbmFtZSo9dXRmLTgnJ2tpbmdfYXJ0aHVyLnR4dA0KQ09OVEVOVC1MRU5HVEg6IDE5DQoNCg==
+          - ''
+          - ''
+        _value: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.7.0
+    method: POST
+    uri: https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/
+  response:
+    body:
+      string: ''
+    headers:
+      Date: Wed, 25 Nov 2020 13:25:55 GMT
+      ETag: '"3676cdb7a927db43c846070c4e7606c7"'
+      Location: https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/sub-c-mock-key%2F0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0%2F862168ec-0048-4578-9e6d-4c69361e9780%2Fking_arthur.txt
+      Server: AmazonS3
+      x-amz-expiration: expiry-date="Fri, 27 Nov 2020 00:00:00 GMT", rule-id="Archive
+        file 1 day after creation"
+      x-amz-id-2: oQNsM/Ih2gVYskQl1csWFbx5mbP7t37lMPdjnQHfbtFN85qNiV9JHA73kmWqaGnIk4nak5urV6s=
+      x-amz-request-id: 6P1NBGDZDW4NBJ6T
+      x-amz-server-side-encryption: AES256
+    status:
+      code: 204
+      message: No Content
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com
+        - /
+        - ''
+        - ''
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.7.0
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-mock-key/sub-c-mock-key/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22862168ec-0048-4578-9e6d-4c69361e9780%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222
+  response:
+    body:
+      string: '[1,"Sent","16063107548270363"]'
+    headers:
+      Access-Control-Allow-Methods: GET
+      Access-Control-Allow-Origin: '*'
+      Cache-Control: no-cache
+      Connection: keep-alive
+      Content-Length: '30'
+      Content-Type: text/javascript; charset="UTF-8"
+      Date: Wed, 25 Nov 2020 13:25:54 GMT
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - ps.pndsn.com
+        - /v1/files/publish-file/pub-c-mock-key/sub-c-mock-key/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22862168ec-0048-4578-9e6d-4c69361e9780%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D
+        - meta=null&ttl=222&store=1&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=ee97d818-f36d-4524-908f-5738e917bd42&l_file=0.27685248851776123
+        - ''
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.7.0
+    method: GET
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/files/862168ec-0048-4578-9e6d-4c69361e9780/king_arthur.txt
+  response:
+    body:
+      string: ''
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Cache-Control: public, max-age=2286, immutable
+      Connection: keep-alive
+      Content-Length: '0'
+      Date: Wed, 25 Nov 2020 13:25:54 GMT
+      Location: https://files-eu-central-1.pndsn.com/sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/862168ec-0048-4578-9e6d-4c69361e9780/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201125%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201125T130000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=094b5452e8788ee0ace5be5397c41cb3b0ba0b9db93797630010a250fae4b196
+    status:
+      code: 307
+      message: Temporary Redirect
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - ps.pndsn.com
+        - /v1/files/sub-c-mock-key/channels/files_asyncio_ch/files/862168ec-0048-4578-9e6d-4c69361e9780/king_arthur.txt
+        - pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=ee97d818-f36d-4524-908f-5738e917bd42&l_file=0.19709094365437826
+        - ''
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.7.0
+    method: GET
+    uri: https://files-eu-central-1.pndsn.com/sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/862168ec-0048-4578-9e6d-4c69361e9780/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201125%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201125T130000Z&X-Amz-Expires=3900&X-Amz-Signature=094b5452e8788ee0ace5be5397c41cb3b0ba0b9db93797630010a250fae4b196&X-Amz-SignedHeaders=host
+  response:
+    body:
+      string: Knights who say Ni!
+    headers:
+      Accept-Ranges: bytes
+      Connection: keep-alive
+      Content-Length: '19'
+      Content-Type: text/plain; charset=utf-8
+      Date: Wed, 25 Nov 2020 13:25:56 GMT
+      ETag: '"3676cdb7a927db43c846070c4e7606c7"'
+      Last-Modified: Wed, 25 Nov 2020 13:25:55 GMT
+      Server: AmazonS3
+      Via: 1.1 e86025dac63232624d2273c5fd256ce4.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id: JxKntRKPJTqm1yjJBSY8tGTsbQ6V23bKVqmt6efKi_hJ5BrLEyLaUw==
+      X-Amz-Cf-Pop: FRA2-C1
+      X-Cache: Miss from cloudfront
+      x-amz-expiration: expiry-date="Fri, 27 Nov 2020 00:00:00 GMT", rule-id="Archive
+        file 1 day after creation"
+      x-amz-server-side-encryption: AES256
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - files-eu-central-1.pndsn.com
+        - /sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/862168ec-0048-4578-9e6d-4c69361e9780/king_arthur.txt
+        - X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201125%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201125T130000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=094b5452e8788ee0ace5be5397c41cb3b0ba0b9db93797630010a250fae4b196
+        - ''
+version: 1

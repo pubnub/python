@@ -13,7 +13,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.5.4
     method: POST
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_threads_ch/generate-upload-url?pnsdk=PubNub-Python%2F4.5.4&uuid=files_threads_uuid
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_native_threads_ch/generate-upload-url?pnsdk=PubNub-Python%2F4.5.4&uuid=files_threads_uuid
   response:
     body:
       string: !!binary |

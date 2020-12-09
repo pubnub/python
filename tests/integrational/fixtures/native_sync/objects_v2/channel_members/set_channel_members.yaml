@@ -1,0 +1,118 @@
+interactions:
+- request:
+    body: '{"name": "some name", "email": null, "externalId": null, "profileUrl":
+      null, "custom": null}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '92'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/uuids/someuuid
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"someuuid","name":"some name","externalId":null,"profileUrl":null,"email":null,"updated":"2020-10-02T09:37:20.549679Z","eTag":"AbvQtpLpgIGEZA"}}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '171'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Oct 2020 11:28:59 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"name": "some name with custom", "email": null, "externalId": null, "profileUrl":
+      null, "custom": {"key3": "val1", "key4": "val2"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '132'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/uuids/someuuid_with_custom
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"someuuid_with_custom","name":"some name
+        with custom","externalId":null,"profileUrl":null,"email":null,"updated":"2020-10-02T09:37:21.511049Z","eTag":"AefalozsjJrzmAE"}}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '196'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Oct 2020 11:29:00 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"set": [{"uuid": {"id": "someuuid"}}, {"uuid": {"id": "someuuid_with_custom"},
+      "custom": {"key5": "val1", "key6": "val2"}}], "delete": []}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '139'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannelid/uuids?include=custom%2Cuuid.custom
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5yRX0/CMBTFvwq5z2NruxZc34ghhj8+mEwTMYZUKThtt7m1ICx8dzoEwmI0xJem
+        596b8+s9raA0wtgSOEHIg5kwAvhTBdYmM+AV1CeUmZb7ggep0PJQae3vHsgvI4tUqIEbTa1SHuRF
+        Nk+UvC/UsSK1SE7i1ZYm00dlcweVNYYggtoYtRGJUcTDrnuSz2jU6UaTGhOLhRvqvSzvTD7OF4Ob
+        /qQH2wvscIwpp5iHod9BlDF2bvcYRno4GgXBNXqo7X5ZfbpKzNv0gPoZQ6tut07tf0dSwYdch855
+        KRR2Rk7Rb0XqVf/KCvsMY0QbWcm5UNmmfB8WG93rn4e1B7EGqHMBiGGOIp9gRghtfMp6lY7jLPjU
+        V3blQM8uIheCa90uYLsDAAD//wMAnBDTUmUCAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Oct 2020 11:29:01 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -28,6 +28,7 @@ PNERR_STATE_SETTER_FOR_GROUPS_NOT_SUPPORTED_YET = "State setter for channel grou
 PNERR_PUSH_DEVICE_MISSING = "Device ID is missing for push operation"
 PNERROR_PUSH_TYPE_MISSING = "Push Type is missing"
 PNERR_PAM_NO_FLAGS = "At least one flag should be specified"
+PNERR_PAM_INVALID_ARGUMENTS = "Invalid arguments"
 PNERR_RESOURCES_MISSING = "Resources missing"
 PNERR_TTL_MISSING = "TTL missing"
 PNERR_INVALID_META = "Invalid meta parameter"

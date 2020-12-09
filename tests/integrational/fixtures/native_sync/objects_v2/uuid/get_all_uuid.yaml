@@ -1,0 +1,49 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: GET
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/uuids?count=True&include=custom&limit=10&sort=id%3Aasc%2Cupdated%3Adesc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA8yVuXLcMAyG34VtljIBELyqpEzvNEnFA4o90do7Xm3GGY/fPdAkTTqlUyGNcFDQ
+        px8g38x1revtago6dzKjrtWUb2/mcZhiyNHsakrWx8TWh9FtrsNbzNJwxO5DAnMyT/UspjzdluVk
+        5HWVl6e6fN7WA5LX+OXleX5c5MvLor6Hdb2Uuzt5refLIlN/PmuGnOvjFlzlun78N9Rv11Ufypv5
+        Ib9Ac37WZSuqFv6x0LyfzO2iny5bUXTorMsW+R58QS7EU8yRmL9ule7rd036NAv75w/eSWB1vJ/+
+        EnNLiZGG1Uus9yI29cwW08jkpPco8eDEwMXniR05zDuIQ+4co66eKyoxiVdi6BaYOkNnYcmHJsbC
+        oQBNEIED7CEe0nNkb3vF2Xqeh61IzaY0u+gJOiR3aGLaNGY3gUeiPcBq+07BUgoqseRq2yZ2GD6F
+        HCBh9YcG1jEOhVVigOj3SJzEO55V0xxId6/ekm2Uqs2gczwDZgjp0MTa1LEwTp6CQ9xB3KRSQ18t
+        uaRNXQfaVEe1M2X2oD6gfmhi3bh0jHGKAVOOO4h74FglZRv7iHo4tWEba3+z/gcgx3EeRz+cIBWk
+        yQVtyD1z3Cu54YPCNn2LV6VtzXPUWwwCsWFu9L/EvwEAAP//orOPjUxABZeZsaEBMVGcYmpiamxg
+        nqibmmZuDIxiYL1smQhM4yYGhomGKcbJqalmRoPaw8BsbGJlYgSMYgsTS3ztj1gdpZL8ksQc5/zS
+        vBIlK0NDoK+AXgGq9A1xVKoFAAAA//8DADSKwcGmCQAA
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 29 Sep 2020 13:30:11 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

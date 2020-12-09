@@ -31,8 +31,8 @@ if version.startswith('2.7') or version.startswith('anaconda2'):
     run("%s,*asyncio*,*python_v35*,examples/" % fcmn)
     run('%s --ignore=tests/integrational/asyncio/ --ignore=tests/integrational/twisted/ --ignore=tests/integrational/python_v35/' % tcmn)
 elif version.startswith('3.4'):
-    run("%s,*python_v35*,examples" % fcmn)  # File upload with threading scenario temporarily disabled. Investigation within SDK-180.
-    run('%s--ignore=tests/integrational/python_v35/ --ignore=tests/integrational/twisted/ --ignore=tests/integrational/native_threads/test_file_upload.py --ignore=tests/integrational/asyncio/test_file_upload.py' % tcmn)
+    run("%s,*python_v35*,examples" % fcmn)
+    run('%s--ignore=tests/integrational/python_v35/ --ignore=tests/integrational/twisted/' % tcmn)
 elif version.startswith('3.5'):
     run(fcmn)
     run('%s--ignore=tests/integrational/twisted/' % tcmn)

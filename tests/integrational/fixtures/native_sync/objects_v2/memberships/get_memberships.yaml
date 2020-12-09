@@ -1,0 +1,115 @@
+interactions:
+- request:
+    body: '{"name": "some name", "description": null, "custom": null}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '58'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannel
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"somechannel","name":"some name","description":null,"updated":"2020-10-02T16:42:52.805737Z","eTag":"Ac7cyYSP3pe7Kg"}}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '144'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Oct 2020 17:38:21 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"name": "some name with custom", "description": null, "custom": {"key3":
+      "val1", "key4": "val2"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '98'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannel_with_custom
+  response:
+    body:
+      string: '{"status":200,"data":{"id":"somechannel_with_custom","name":"some name
+        with custom","description":null,"updated":"2020-10-02T16:42:53.762086Z","eTag":"AcK6vsPkgvuhcA"}}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '168'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Oct 2020 17:38:22 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: GET
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/uuids/someuuid/channels?include=custom%2Cchannel.custom
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5xSa0vDMBT9KyOfty7vNPfbGAOxIoJFmCKjdrEr62PaZnMU/7vZS1bUbfgtJzf3
+        nJxzb4OqOqpthYBi3EXTqI4QPDUonkVFYTIEDUqnCFBV5uZw10VFlJv9ZWd7dp2mit/TRZ2WBYLC
+        ZlkXxbaqy/yA7MKRmw0XxRT3CO5hGhIJnIKgno+FYurREZkwStyjQazi9fj+ji2MChL0eSmdICCk
+        5yvJuX9MN2Y6vw6Cfn+IHwaO7qRFhw8md2on3DVobtbE9S+jjLg2h+gO0c2vf/0n1sAFYOlJjTlt
+        2X4NQj0eXmmeDnEyutQ3ByqAMg9LzQT5t+/JKq1nk73gzzF3NuXOd/lcKKwVCj8Xyn4XmKckxb5s
+        7UIgl9XdPFnaWTw4zmSrI1o68qyOAoZB+E5HEaqPdV7Wq+ImLPtvuW9Xoz/TstYdL5yMBEaAukn7
+        XItTG/ns8jYftavcOvQFAAD//wMAci33eJgDAAA=
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Oct 2020 17:38:22 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

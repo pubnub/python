@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/channels/files_native_threads_ch/files/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?uuid=files_threads_uuid
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_native_threads_ch/files/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?uuid=files_threads_uuid
   response:
     body:
       string: ''
@@ -27,7 +27,7 @@ interactions:
       Date:
       - Thu, 19 Nov 2020 20:10:04 GMT
       Location:
-      - https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/jaDgk-9c_B8i5c_vBjUOQQfLTonvLy7MImT7mZ_coCQ/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=c7b0e30a1488b0f463c6eb92422ca3620d30cd800145330cfe118631539d19cc
+      - https://files-eu-central-1.pndsn.com/sub-c-mock-key/jaDgk-9c_B8i5c_vBjUOQQfLTonvLy7MImT7mZ_coCQ/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=c7b0e30a1488b0f463c6eb92422ca3620d30cd800145330cfe118631539d19cc
     status:
       code: 307
       message: Temporary Redirect
@@ -43,7 +43,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.6.1
     method: GET
-    uri: https://files-eu-central-1.pndsn.com/sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95/jaDgk-9c_B8i5c_vBjUOQQfLTonvLy7MImT7mZ_coCQ/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-Signature=c7b0e30a1488b0f463c6eb92422ca3620d30cd800145330cfe118631539d19cc&X-Amz-SignedHeaders=host
+    uri: https://files-eu-central-1.pndsn.com/sub-c-mock-key/jaDgk-9c_B8i5c_vBjUOQQfLTonvLy7MImT7mZ_coCQ/e8c30743-6a47-4954-927c-5498270972b5/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201119%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201119T200000Z&X-Amz-Expires=3900&X-Amz-Signature=c7b0e30a1488b0f463c6eb92422ca3620d30cd800145330cfe118631539d19cc&X-Amz-SignedHeaders=host
   response:
     body:
       string: Knights who say Ni!

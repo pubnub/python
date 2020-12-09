@@ -1,0 +1,45 @@
+interactions:
+- request:
+    body: '{"set": [], "delete": [{"uuid": {"id": "someuuid"}}]}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '53'
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannelid/uuids?include=custom%2Cuuid.custom
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yQQU/DMAyF/0rlczcSrwWa2w4chtgBqVxAaDIsg7Kk2ZqEslX77zhiTOzGJfLz
+        c95neQAfKEQPCoXIYUmBQD0NEGOzBDVAesE7q1Nj0TfhffEafXAWcmjJ6qObpTpLdnay9VfQXUtm
+        xhFtNCaHTedWjdEPnfntaEvNSRx/MnWtdxNO/iQjOYhV8aMQDjnEDW+p014oUIykGAmsRaUmVwrl
+        uJRSFNVj4tf0xkNTvSLj9v7jttvb6U1KOAOVZ6DLf4BKqUQ1RlkiFn9BL7u+vavdxdZex55Bz3wi
+        PgJb83s4fAMAAP//AwCchNwWagEAAA==
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 02 Oct 2020 11:59:19 GMT
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - Accept-Encoding
+    status:
+      code: 200
+      message: OK
+version: 1

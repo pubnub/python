@@ -1,0 +1,39 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/4.5.3
+    method: GET
+    uri: https://ps.pndsn.com/v2/auth/grant/sub-key/SUB_KEY?auth=authKey123&g=1&j=1&target-uuid=someuuid&ttl=120&u=1
+  response:
+    body:
+      string: '{"message":"Success","payload":{"level":"uuid","subscribe_key":"SUB_KEY","ttl":120,"uuids":{"someuuid":{"auths":{"authKey123":{"r":0,"w":0,"m":0,"d":0,"g":1,"u":1,"j":1}}}}},"service":"Access
+        Manager","status":200}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '249'
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Date:
+      - Wed, 28 Oct 2020 17:30:06 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

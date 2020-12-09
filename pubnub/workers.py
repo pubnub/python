@@ -4,15 +4,15 @@ from abc import abstractmethod
 
 from .enums import PNStatusCategory, PNOperationType
 from .models.consumer.common import PNStatus
+from .models.consumer.objects_v2.channel import PNChannelMetadataResult
+from .models.consumer.objects_v2.memberships import PNMembershipResult
+from .models.consumer.objects_v2.uuid import PNUUIDMetadataResult
 from .models.consumer.pn_error_data import PNErrorData
 from .utils import strip_right
 from .models.consumer.pubsub import (
     PNPresenceEventResult, PNMessageResult, PNSignalMessageResult, PNMessageActionResult, PNFileMessageResult
 )
 from .models.server.subscribe import SubscribeMessage, PresenceEnvelope
-from .models.consumer.user import PNUserResult
-from .models.consumer.space import PNSpaceResult
-from .models.consumer.membership import PNMembershipResult
 from .endpoints.file_operations.get_file_url import GetFileDownloadUrl
 
 
@@ -106,25 +106,24 @@ class SubscribeMessageWorker(object):
             )
             self._listener_manager.announce_presence(pn_presence_event_result)
         elif message.type == SubscribeMessageWorker.TYPE_OBJECT:
-            if message.payload['type'] == 'user':
-                user_result = PNUserResult(  # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+            if message.payload['type'] == 'channel':
+                channel_result = PNChannelMetadataResult(
                     event=message.payload['event'],
                     data=message.payload['data']
                 )
-                self._listener_manager.announce_user(user_result)
-            elif message.payload['type'] == 'space':
-                space_result = PNSpaceResult(  # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+                self._listener_manager.announce_channel(channel_result)
+            elif message.payload['type'] == 'uuid':
+                uuid_result = PNUUIDMetadataResult(
                     event=message.payload['event'],
                     data=message.payload['data']
                 )
-                self._listener_manager.announce_space(space_result)
-            else:
-                membership_result = PNMembershipResult(  # pylint: disable=unexpected-keyword-arg,no-value-for-parameter
+                self._listener_manager.announce_uuid(uuid_result)
+            elif message.payload['type'] == 'membership':
+                membership_result = PNMembershipResult(
                     event=message.payload['event'],
                     data=message.payload['data']
                 )
                 self._listener_manager.announce_membership(membership_result)
-
         elif message.type == SubscribeMessageWorker.TYPE_FILE_MESSAGE:
             extracted_message = self._process_message(message.payload)
             download_url = self._get_url_for_file_event_message(channel, extracted_message)

@@ -25,10 +25,10 @@ class SubscribeCallback(object):
     def signal(self, pubnub, signal):
         pass
 
-    def user(self, pubnub, user):
+    def channel(self, pubnub, channel):
         pass
 
-    def space(self, pubnub, space):
+    def uuid(self, pubnub, uuid):
         pass
 
     def membership(self, pubnub, membership):

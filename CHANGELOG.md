@@ -1,3 +1,9 @@
+## [v4.8.0](https://github.com/pubnub/python/releases/tag/v4.8.0)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v4...v4.8.0)
+
+- 🌟️ Objects v2 implementation added to the PythonSDK with additional improvements to the test isolation within whole test suite. 
+
 ## [v4.7.0](https://github.com/pubnub/python/releases/tag/v4.7.0)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v4.6.1...v4.7.0)

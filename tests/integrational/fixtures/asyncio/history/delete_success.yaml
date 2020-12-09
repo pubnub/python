@@ -1,0 +1,34 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/4.7.0
+    method: DELETE
+    uri: https://ps.pndsn.com/v3/history/sub-key/sub-c-mock-key/channel/my-ch?end=456&start=123
+  response:
+    body:
+      string: '{"status": 200, "error": false, "error_message": ""}'
+    headers:
+      Accept-Ranges: bytes
+      Access-Control-Allow-Methods: GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin: '*'
+      Age: '0'
+      Cache-Control: no-cache
+      Connection: keep-alive
+      Content-Length: '52'
+      Content-Type: text/javascript; charset="UTF-8"
+      Date: Tue, 24 Nov 2020 12:04:43 GMT
+      Server: Pubnub
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - ps.pndsn.com
+        - /v3/history/sub-key/sub-c-mock-key/channel/my-ch
+        - start=123&end=456&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=af9429d0-aa10-4919-9670-abe67a5c395f
+        - ''
+version: 1

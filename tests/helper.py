@@ -19,6 +19,9 @@ crypto = PubNubCryptodome(PNConfiguration())
 pub_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"
 sub_key = "sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe"
 
+pub_key_mock = "pub-c-mock-key"
+sub_key_mock = "sub-c-mock-key"
+
 pub_key_pam = "pub-c-98863562-19a6-4760-bf0b-d537d1f5c582"
 sub_key_pam = "sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f"
 sec_key_pam = "sec-c-MGFkMjQxYjMtNTUxZC00YzE3LWFiZGYtNzUwMjdjNmM3NDhk"
@@ -64,8 +67,16 @@ objects_config.publish_key = 'demo'
 objects_config.subscribe_key = 'demo'
 
 file_upload_config = PNConfiguration()
-file_upload_config.publish_key = "pub-c-3c5e736c-62de-4b5e-bcaf-bb5eee46a5a3"
-file_upload_config.subscribe_key = "sub-c-c88242fa-13ae-11eb-bc34-ce6fd967af95"
+file_upload_config.publish_key = pub_key_mock
+file_upload_config.subscribe_key = sub_key_mock
+
+mocked_config = PNConfiguration()
+mocked_config.publish_key = pub_key_mock
+mocked_config.subscribe_key = sub_key_mock
+
+
+def mocked_config_copy():
+    return copy(mocked_config)
 
 
 def pnconf_file_copy():

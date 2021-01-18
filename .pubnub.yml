@@ -1,8 +1,14 @@
 name: python
-version: 4.8.0
+version: 4.8.1
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v4.8.1
+    date: Jan 18, 2021
+    changes:
+      -
+        text: "New v3 History endpoint allows to fetch 100 messages per channel."
+        type: feature
   - version: v4.8.0
     date: Dec 9, 2020
     changes:

@@ -16,9 +16,14 @@ class FetchMessages(Endpoint):
     FETCH_MESSAGES_PATH = "/v3/history/sub-key/%s/channel/%s"
     FETCH_MESSAGES_WITH_ACTIONS_PATH = "/v3/history-with-actions/sub-key/%s/channel/%s"
 
-    DEFAULT_MESSAGES = 25
-    MAX_MESSAGES = 25
-    MAX_MESSAGES_ACTIONS = 100
+    SINGLE_CHANNEL_MAX_MESSAGES = 100
+    DEFAULT_SINGLE_CHANNEL_MESSAGES = 100
+
+    MULTIPLE_CHANNELS_MAX_MESSAGES = 25
+    DEFAULT_MULTIPLE_CHANNELS_MESSAGES = 25
+
+    MAX_MESSAGES_ACTIONS = 25
+    DEFAULT_MESSAGES_ACTIONS = 25
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
@@ -105,21 +110,29 @@ class FetchMessages(Endpoint):
         if self._include_message_actions is None:
             self._include_message_actions = False
 
-        if self._include_message_actions is False:
-            if self._count is None or self._count < 1:
-                self._count = FetchMessages.DEFAULT_MESSAGES
-                logger.info("count param defaulting to %d", FetchMessages.DEFAULT_MESSAGES)
-            elif self._count > FetchMessages.MAX_MESSAGES:
-                self._count = FetchMessages.MAX_MESSAGES
-                logger.info("count param defaulting to %d", FetchMessages.MAX_MESSAGES)
+        if not self._include_message_actions:
+            if len(self._channels) == 1:
+                if self._count is None or self._count < 1:
+                    self._count = FetchMessages.DEFAULT_SINGLE_CHANNEL_MESSAGES
+                    logger.info("count param defaulting to %d", self._count)
+                elif self._count > FetchMessages.SINGLE_CHANNEL_MAX_MESSAGES:
+                    self._count = FetchMessages.DEFAULT_SINGLE_CHANNEL_MESSAGES
+                    logger.info("count param defaulting to %d", self._count)
+            else:
+                if self._count is None or self._count < 1:
+                    self._count = FetchMessages.DEFAULT_MULTIPLE_CHANNELS_MESSAGES
+                    logger.info("count param defaulting to %d", self._count)
+                elif self._count > FetchMessages.MULTIPLE_CHANNELS_MAX_MESSAGES:
+                    self._count = FetchMessages.DEFAULT_MULTIPLE_CHANNELS_MESSAGES
+                    logger.info("count param defaulting to %d", self._count)
         else:
             if len(self._channels) > 1:
                 raise PubNubException(pn_error=PNERR_HISTORY_MESSAGE_ACTIONS_MULTIPLE_CHANNELS)
 
             if self._count is None or self._count < 1 or\
                     self._count > FetchMessages.MAX_MESSAGES_ACTIONS:
-                self._count = FetchMessages.MAX_MESSAGES_ACTIONS
-                logger.info("count param defaulting to %d", FetchMessages.MAX_MESSAGES_ACTIONS)
+                self._count = FetchMessages.DEFAULT_MESSAGES_ACTIONS
+                logger.info("count param defaulting to %d", self._count)
 
     def create_response(self, envelope):  # pylint: disable=W0221
         return PNFetchMessagesResult.from_json(

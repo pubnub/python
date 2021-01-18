@@ -1,3 +1,9 @@
+## [v4.8.1](https://github.com/pubnub/python/releases/tag/v4.8.1)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v4.8.0...v4.8.1)
+
+- 🌟️ New v3 History endpoint allows to fetch 100 messages per channel. 
+
 ## [v4.8.0](https://github.com/pubnub/python/releases/tag/v4.8.0)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v4...v4.8.0)

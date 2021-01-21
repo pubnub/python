@@ -9,16 +9,16 @@ class DownloadFileAsyncio(DownloadFileNative):
             data = self.decrypt_payload(data)
         return PNDownloadFileResult(data)
 
-    def future(self):
-        self._download_data = yield from GetFileDownloadUrl(self._pubnub)\
+    async def future(self):
+        self._download_data = await GetFileDownloadUrl(self._pubnub)\
             .channel(self._channel)\
             .file_name(self._file_name)\
             .file_id(self._file_id)\
             .future()
 
-        downloaded_file = yield from super(DownloadFileAsyncio, self).future()
+        downloaded_file = await super(DownloadFileAsyncio, self).future()
         return downloaded_file
 
-    def result(self):
-        response_envelope = yield from self.future()
+    async def result(self):
+        response_envelope = await self.future()
         return response_envelope.result

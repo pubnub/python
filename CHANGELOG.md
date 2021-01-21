@@ -1,3 +1,9 @@
+## [v5.0.0](https://github.com/pubnub/python/releases/tag/v5.0.0)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v4.8.1...v5.0.0)
+
+- ⭐️️ Apart from bringing the whole SDK up to date, support for Tornado and Twisted was removed and dependiecies were simplified. 
+
 ## [v4.8.1](https://github.com/pubnub/python/releases/tag/v4.8.1)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v4.8.0...v4.8.1)

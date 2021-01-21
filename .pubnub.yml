@@ -1,8 +1,14 @@
 name: python
-version: 4.8.1
+version: 5.0.0
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v5.0.0
+    date: Jan 21, 2021
+    changes:
+      -
+        text: "Apart from bringing the whole SDK up to date, support for Tornado and Twisted was removed and dependiecies were simplified."
+        type: improvement
   - version: v4.8.1
     date: Jan 18, 2021
     changes:

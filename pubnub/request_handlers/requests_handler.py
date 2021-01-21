@@ -1,8 +1,8 @@
 import logging
 import threading
 import requests
-import six
 import json  # noqa # pylint: disable=W0611
+import urllib
 
 from requests import Session
 from requests.adapters import HTTPAdapter
@@ -153,8 +153,8 @@ class RequestsRequestHandler(BaseRequestHandler):
                     exception=e))
 
         if res is not None:
-            url = six.moves.urllib.parse.urlparse(res.url)
-            query = six.moves.urllib.parse.parse_qs(url.query)
+            url = urllib.parse.urlparse(res.url)
+            query = urllib.parse.parse_qs(url.query)
             uuid = None
             auth_key = None
 

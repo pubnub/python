@@ -1,4 +1,3 @@
-from collections import OrderedDict
 from pubnub.endpoints.file_operations.file_based_endpoint import FileOperationEndpoint
 
 from pubnub.crypto import PubNubFileCrypto
@@ -51,7 +50,7 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
 
     def build_file_upload_request(self):
         file = self.encrypt_payload()
-        multipart_body = OrderedDict()  # TODO: remove OrderedDict while removing EOL versions of Python (v5 release)
+        multipart_body = {}
         for form_field in self._file_upload_envelope.result.data["form_fields"]:
             multipart_body[form_field["key"]] = (None, form_field["value"])
 

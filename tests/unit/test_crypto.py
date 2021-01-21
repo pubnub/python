@@ -1,5 +1,3 @@
-import sys
-
 from pubnub.pubnub import PubNub
 from pubnub.crypto import PubNubCryptodome
 from tests.helper import gen_decrypt_func
@@ -9,11 +7,6 @@ crypto = PubNubCryptodome(pnconf_file_copy())
 todecode = 'QfD1NCBJCmt1aPPGU2cshw=='
 plaintext_message = "hey-0"
 KEY = 'testKey'
-
-if sys.version_info > (3, 0):
-    v = 3
-else:
-    v = 2
 
 
 class TestPubNubCryptodome:
@@ -33,7 +26,7 @@ class TestPubNubCryptodome:
         input = b'"9P/7+NNs54o7Go41yh+3rIn8BW0H0ad+mKlKTKGw2i1eoQP1ddHrnIzkRUPEC3ko"'
         # print(json.loads(input.decode('utf-8')))
         assert {"name": "Alex", "online": True} == \
-            gen_decrypt_func('testKey')(input.decode('utf-8'))
+            gen_decrypt_func()(input.decode('utf-8'))
 
     def test_message_encryption_with_random_iv(self, pn_crypto=crypto):
         encrypted = pn_crypto.encrypt(KEY, plaintext_message, use_random_iv=True)
@@ -69,8 +62,4 @@ class TestPubNubFileCrypto:
             encrypted_file = pubnub.encrypt(KEY, fd.read())
 
         decrypted_file = pubnub.decrypt(KEY, encrypted_file)
-
-        if v == 3:
-            assert file_upload_test_data["FILE_CONTENT"] == decrypted_file.decode("utf-8")
-        else:
-            assert file_upload_test_data["FILE_CONTENT"] == decrypted_file
+        assert file_upload_test_data["FILE_CONTENT"] == decrypted_file.decode("utf-8")

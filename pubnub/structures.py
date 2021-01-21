@@ -1,5 +1,3 @@
-import six
-
 from .enums import HttpMethod
 
 
@@ -14,9 +12,9 @@ class RequestOptions(object):
     ):
         assert len(path) > 0
         assert callable(params_callback)
-        assert isinstance(method, six.integer_types)
-        assert isinstance(request_timeout, six.integer_types)
-        assert isinstance(connect_timeout, six.integer_types)
+        assert isinstance(method, int)
+        assert isinstance(request_timeout, int)
+        assert isinstance(connect_timeout, int)
         if not (method is HttpMethod.GET or method is HttpMethod.POST or method is HttpMethod.DELETE
                 or method is HttpMethod.PATCH):  # noqa
             raise AssertionError()

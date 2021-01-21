@@ -1,9 +1,5 @@
-"""
-Placed into the separate file to avoid python <3.4 tests using it
-"""
-import six
-
-from pubnub.exceptions import PubNubException
+from functools import wraps
+from vcr.errors import CannotOverwriteExistingCassetteException
 from pubnub.pubnub_asyncio import SubscribeListener, AsyncioReconnectionManager
 
 from tests.integrational.vcr_helper import pn_vcr
@@ -19,14 +15,13 @@ def get_sleeper(cassette_name):
 
     import asyncio
 
-    @asyncio.coroutine
-    def fake_sleeper(v):
-        yield from asyncio.sleep(0)
+    async def fake_sleeper(v):
+        await asyncio.sleep(0)
 
     def decorate(f):
-        @six.wraps(f)
-        def call(*args, event_loop=None):
-            yield from f(*args, sleeper=(fake_sleeper if (len(cs) > 0) else asyncio.sleep), event_loop=event_loop)
+        @wraps(f)
+        async def call(*args, event_loop=None):
+            await f(*args, sleeper=(fake_sleeper if (len(cs) > 0) else asyncio.sleep), event_loop=event_loop)
 
         return call
     return decorate
@@ -45,22 +40,18 @@ class VCR599Listener(SubscribeListener):
      This means if you use this listener you should determine the amount
      of 599 errors can be raised by you own and explicitly pass it to constructor.
      """
-
-    import asyncio
-
     def __init__(self, raise_times):
         self.silent_limit = raise_times
         self.raised_times = 0
 
         super(VCR599Listener, self).__init__()
 
-    @asyncio.coroutine
-    def _wait_for(self, coro):
+    async def _wait_for(self, coro):
         try:
-            res = yield from super(VCR599Listener, self)._wait_for(coro)
+            res = await super(VCR599Listener, self)._wait_for(coro)
             return res
-        except PubNubException as e:
-            if 'HTTP Server Error (599)' in str(e):
+        except CannotOverwriteExistingCassetteException as e:
+            if "Can't overwrite existing cassette" in str(e):
                 self.raised_times += 1
                 if self.raised_times > self.silent_limit:
                     raise e

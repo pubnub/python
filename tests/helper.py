@@ -1,20 +1,17 @@
 import threading
 import string
 import random
-import six
+import urllib
 
 from copy import copy
 from pubnub import utils
 from pubnub.crypto import PubNubCryptodome
 from pubnub.pnconfiguration import PNConfiguration
 
-try:
-    from mock import patch
-except ImportError:
-    from unittest.mock import patch  # noqa: F401
 
 crypto = PubNubCryptodome(PNConfiguration())
 
+DEFAULT_TEST_CIPHER_KEY = "testKey"
 
 pub_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"
 sub_key = "sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe"
@@ -123,18 +120,18 @@ def url_encode(data):
 
 
 def url_decode(data):
-    return six.moves.urllib.parse.unquote(data)
+    return urllib.parse.unquote(data)
 
 
 def gen_channel(prefix):
     return "%s-%s" % (prefix, gen_string(8))
 
 
-def gen_string(l):
-    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(l))
+def gen_string(length):
+    return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(length))
 
 
-def gen_decrypt_func(cipher_key):
+def gen_decrypt_func(cipher_key=DEFAULT_TEST_CIPHER_KEY):
     def decrypter(entry):
         mr = crypto.decrypt(cipher_key, entry)
         return mr

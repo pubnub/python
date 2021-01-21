@@ -1,5 +1,3 @@
-import six
-
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.models.consumer.message_actions import PNGetMessageActionsResult, PNMessageAction
@@ -22,17 +20,17 @@ class GetMessageActions(Endpoint):
         return self
 
     def start(self, start):
-        assert isinstance(start, six.string_types)
+        assert isinstance(start, str)
         self._start = start
         return self
 
     def end(self, end):
-        assert isinstance(end, six.string_types)
+        assert isinstance(end, str)
         self._end = end
         return self
 
     def limit(self, limit):
-        assert isinstance(limit, six.integer_types)
+        assert isinstance(limit, str)
         self._limit = limit
         return self
 

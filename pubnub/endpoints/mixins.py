@@ -1,12 +1,10 @@
-import six
-
 from pubnub.errors import PNERR_UUID_MISSING
 from pubnub.exceptions import PubNubException
 
 
 class UUIDValidatorMixin:
     def validate_uuid(self):
-        if self._uuid is None or not isinstance(self._uuid, six.string_types):
+        if self._uuid is None or not isinstance(self._uuid, str):
             raise PubNubException(pn_error=PNERR_UUID_MISSING)
 
 
@@ -17,7 +15,7 @@ class TimeTokenOverrideMixin:
 
     def ptto(self, timetoken):
         if timetoken:
-            assert isinstance(timetoken, six.integer_types)
+            assert isinstance(timetoken, int)
             self._ptto = timetoken
         return self
 

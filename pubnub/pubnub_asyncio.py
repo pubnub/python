@@ -3,10 +3,11 @@ import json
 import asyncio
 import aiohttp
 import math
-import six
 import time
+import urllib
 
 from asyncio import Event, Queue, Semaphore
+from yarl import URL
 
 from pubnub.models.consumer.common import PNStatus
 from .endpoints.presence.heartbeat import Heartbeat
@@ -19,14 +20,11 @@ from . import utils
 from .structures import ResponseInfo, RequestOptions
 from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
 from .callbacks import SubscribeCallback, ReconnectionCallback
-from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED, PNERR_REQUEST_CANCELLED, \
+from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED, PNERR_REQUEST_CANCELLED,\
     PNERR_CLIENT_TIMEOUT
 from .exceptions import PubNubException
 
 logger = logging.getLogger("pubnub")
-
-# Major version of aiohttp library
-AIOHTTP_V = int(aiohttp.__version__[0])
 
 
 class PubNubAsyncio(PubNubCore):
@@ -41,10 +39,7 @@ class PubNubAsyncio(PubNubCore):
         self._connector = None
         self._session = None
 
-        if AIOHTTP_V in (0, 1):
-            self.set_connector(aiohttp.TCPConnector(conn_timeout=config.connect_timeout, verify_ssl=True))
-        else:
-            self.set_connector(aiohttp.TCPConnector(verify_ssl=True))
+        self.set_connector(aiohttp.TCPConnector(verify_ssl=True))
 
         if self.config.enable_subscribe:
             self._subscription_manager = AsyncioSubscriptionManager(self)
@@ -60,11 +55,11 @@ class PubNubAsyncio(PubNubCore):
 
         self._connector = cn
 
-        if AIOHTTP_V in (0, 1):
-            self._session = aiohttp.ClientSession(loop=self.event_loop, connector=self._connector)
-        else:
-            self._session = aiohttp.ClientSession(loop=self.event_loop, conn_timeout=self.config.connect_timeout,
-                                                  connector=self._connector)
+        self._session = aiohttp.ClientSession(
+            loop=self.event_loop,
+            conn_timeout=self.config.connect_timeout,
+            connector=self._connector
+        )
 
     def stop(self):
         self._session.close()
@@ -80,15 +75,13 @@ class PubNubAsyncio(PubNubCore):
     def request_deferred(self, *args):
         raise NotImplementedError
 
-    @asyncio.coroutine
-    def request_result(self, options_func, cancellation_event):
-        envelope = yield from self._request_helper(options_func, cancellation_event)
+    async def request_result(self, options_func, cancellation_event):
+        envelope = await self._request_helper(options_func, cancellation_event)
         return envelope.result
 
-    @asyncio.coroutine
-    def request_future(self, options_func, cancellation_event):
+    async def request_future(self, options_func, cancellation_event):
         try:
-            res = yield from self._request_helper(options_func, cancellation_event)
+            res = await self._request_helper(options_func, cancellation_event)
             return res
         except PubNubException as e:
             return PubNubAsyncioException(
@@ -124,8 +117,7 @@ class PubNubAsyncio(PubNubCore):
                                                     e)
             )
 
-    @asyncio.coroutine
-    def _request_helper(self, options_func, cancellation_event):
+    async def _request_helper(self, options_func, cancellation_event):
         """
         Query string should be provided as a manually serialized and encoded string.
 
@@ -146,7 +138,7 @@ class PubNubAsyncio(PubNubCore):
         params_to_merge_in = {}
 
         if options.operation_type == PNOperationType.PNPublishOperation:
-            params_to_merge_in['seqn'] = yield from self._publish_sequence_manager.get_next_sequence()
+            params_to_merge_in['seqn'] = await self._publish_sequence_manager.get_next_sequence()
 
         options.merge_params_in(params_to_merge_in)
 
@@ -155,20 +147,19 @@ class PubNubAsyncio(PubNubCore):
         else:
             url = utils.build_url(scheme="", origin="", path=options.path, params=options.query_string)
 
+        url = URL(url, encoded=True)
+
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 
         if options.request_headers:
             self.headers.update(options.request_headers)
 
-        if AIOHTTP_V in (1, 2):
-            from yarl import URL
-            url = URL(url, encoded=True)
-
         try:
             start_timestamp = time.time()
-            response = yield from asyncio.wait_for(
+            response = await asyncio.wait_for(
                 self._session.request(
-                    options.method_string, url,
+                    options.method_string,
+                    url,
                     headers=self.headers,
                     data=options.data if options.data else None,
                     allow_redirects=options.allow_redirects
@@ -182,12 +173,12 @@ class PubNubAsyncio(PubNubCore):
             raise
 
         if not options.non_json_response:
-            body = yield from response.text()
+            body = await response.text()
         else:
             if isinstance(response.content, bytes):
                 body = response.content  # TODO: simplify this logic within the v5 release
             else:
-                body = yield from response.read()
+                body = await response.read()
 
         if cancellation_event is not None and cancellation_event.is_set():
             return
@@ -196,8 +187,8 @@ class PubNubAsyncio(PubNubCore):
         status_category = PNStatusCategory.PNUnknownCategory
 
         if response is not None:
-            request_url = six.moves.urllib.parse.urlparse(str(response.url))
-            query = six.moves.urllib.parse.parse_qs(request_url.query)
+            request_url = urllib.parse.urlparse(str(response.url))
+            query = urllib.parse.parse_qs(request_url.query)
             uuid = None
             auth_key = None
 
@@ -288,17 +279,16 @@ class AsyncioReconnectionManager(ReconnectionManager):
         self._task = None
         super(AsyncioReconnectionManager, self).__init__(pubnub)
 
-    @asyncio.coroutine
-    def _register_heartbeat_timer(self):
+    async def _register_heartbeat_timer(self):
         while True:
             self._recalculate_interval()
 
-            yield from asyncio.sleep(self._timer_interval)
+            await asyncio.sleep(self._timer_interval)
 
             logger.debug("reconnect loop at: %s" % utils.datetime_now())
 
             try:
-                yield from self._pubnub.time().future()
+                await self._pubnub.time().future()
                 self._connection_errors = 1
                 self._callback.on_reconnect()
                 break
@@ -325,9 +315,8 @@ class AsyncioPublishSequenceManager(PublishSequenceManager):
         self._lock = asyncio.Lock()
         self._event_loop = ioloop
 
-    @asyncio.coroutine
-    def get_next_sequence(self):
-        with (yield from self._lock):
+    async def get_next_sequence(self):
+        async with self._lock:
             if self.max_sequence == self.next_sequence:
                 self.next_sequence = 1
             else:
@@ -396,11 +385,10 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         if self._subscribe_loop_task is not None and not self._subscribe_loop_task.cancelled():
             self._subscribe_loop_task.cancel()
 
-    @asyncio.coroutine
-    def _start_subscribe_loop(self):
+    async def _start_subscribe_loop(self):
         self._stop_subscribe_loop()
 
-        yield from self._subscription_lock.acquire()
+        await self._subscription_lock.acquire()
 
         combined_channels = self._subscription_state.prepare_channel_list(True)
         combined_groups = self._subscription_state.prepare_channel_group_list(True)
@@ -416,7 +404,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                                                              .filter_expression(self._pubnub.config.filter_expression)
                                                              .future())
 
-        e = yield from self._subscribe_request_task
+        e = await self._subscribe_request_task
 
         if self._subscribe_request_task.cancelled():
             self._subscription_lock.release()
@@ -469,8 +457,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         if not self._should_stop:
             self._heartbeat_periodic_callback.start()
 
-    @asyncio.coroutine
-    def _perform_heartbeat_loop(self):
+    async def _perform_heartbeat_loop(self):
         if self._heartbeat_call is not None:
             # TODO: cancel call
             pass
@@ -491,7 +478,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                               .cancellation_event(cancellation_event)
                               .future())
 
-            envelope = yield from heartbeat_call
+            envelope = await heartbeat_call
 
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if envelope.status.is_error:
@@ -515,9 +502,8 @@ class AsyncioSubscriptionManager(SubscriptionManager):
     def _send_leave(self, unsubscribe_operation):
         asyncio.ensure_future(self._send_leave_helper(unsubscribe_operation))
 
-    @asyncio.coroutine
-    def _send_leave_helper(self, unsubscribe_operation):
-        envelope = yield from Leave(self._pubnub) \
+    async def _send_leave_helper(self, unsubscribe_operation):
+        envelope = await Leave(self._pubnub) \
             .channels(unsubscribe_operation.channels) \
             .channel_groups(unsubscribe_operation.channel_groups).future()
 
@@ -525,15 +511,13 @@ class AsyncioSubscriptionManager(SubscriptionManager):
 
 
 class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):
-    @asyncio.coroutine
-    def run(self):
-        yield from self._take_message()
+    async def run(self):
+        await self._take_message()
 
-    @asyncio.coroutine
-    def _take_message(self):
+    async def _take_message(self):
         while True:
             try:
-                msg = yield from self._queue.get()
+                msg = await self._queue.get()
                 if msg is not None:
                     self._process_incoming_payload(msg)
                 self._queue.task_done()
@@ -635,12 +619,11 @@ class SubscribeListener(SubscribeCallback):
     def presence(self, pubnub, presence):
         self.presence_queue.put_nowait(presence)
 
-    @asyncio.coroutine
-    def _wait_for(self, coro):
+    async def _wait_for(self, coro):
         scc_task = asyncio.ensure_future(coro)
         err_task = asyncio.ensure_future(self.error_queue.get())
 
-        yield from asyncio.wait([
+        await asyncio.wait([
             scc_task,
             err_task
         ], return_when=asyncio.FIRST_COMPLETED)
@@ -654,26 +637,23 @@ class SubscribeListener(SubscribeCallback):
                 err_task.cancel()
             return scc_task.result()
 
-    @asyncio.coroutine
-    def wait_for_connect(self):
+    async def wait_for_connect(self):
         if not self.connected_event.is_set():
-            yield from self._wait_for(self.connected_event.wait())
+            await self._wait_for(self.connected_event.wait())
         else:
             raise Exception("instance is already connected")
 
-    @asyncio.coroutine
-    def wait_for_disconnect(self):
+    async def wait_for_disconnect(self):
         if not self.disconnected_event.is_set():
-            yield from self._wait_for(self.disconnected_event.wait())
+            await self._wait_for(self.disconnected_event.wait())
         else:
             raise Exception("instance is already disconnected")
 
-    @asyncio.coroutine
-    def wait_for_message_on(self, *channel_names):
+    async def wait_for_message_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
             try:
-                env = yield from self._wait_for(self.message_queue.get())
+                env = await self._wait_for(self.message_queue.get())
                 if env.channel in channel_names:
                     return env
                 else:
@@ -681,12 +661,11 @@ class SubscribeListener(SubscribeCallback):
             finally:
                 self.message_queue.task_done()
 
-    @asyncio.coroutine
-    def wait_for_presence_on(self, *channel_names):
+    async def wait_for_presence_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
             try:
-                env = yield from self._wait_for(self.presence_queue.get())
+                env = await self._wait_for(self.presence_queue.get())
                 if env.channel in channel_names:
                     return env
                 else:
@@ -704,8 +683,7 @@ class AsyncioTelemetryManager(TelemetryManager):  # pylint: disable=W0612
             asyncio.get_event_loop())
         self._timer.start()
 
-    @asyncio.coroutine
-    def _start_clean_up_timer(self):
+    async def _start_clean_up_timer(self):
         self.clean_up_telemetry_data()
 
     def _stop_clean_up_timer(self):

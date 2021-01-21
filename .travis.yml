@@ -11,31 +11,19 @@ stages:
     if: |
       type != pull_request \
       AND tag IS blank
-  - name: "code coverage"
-    if: |
-      type == pull_request
 
 jobs:
   include:
     - stage: "test"
-      name: 'Python 2.7'
-      python: '2.7'
-      script: python scripts/run-tests.py
-    - name: 'Python 3.4'
-      python: '3.4'
-      script: python scripts/run-tests.py
-    - name: 'Python 3.5'
-      python: '3.5'
-      script: python scripts/run-tests.py
     - name: 'Python 3.6'
-      python: '3.6'
+      python: '3.6.12'
       script: python scripts/run-tests.py
-    - name: 'Python PyPi'
-      python: 'pypy'
+    - name: 'Python 3.7'
+      python: '3.7.9'
       script: python scripts/run-tests.py
-    - stage: "code coverage"
-      name: 'Test & Code coverage'
-      python: '3.6'
+    - name: 'Python 3.8'
+      python: '3.8.6'
       script: python scripts/run-tests.py
-      after_success:
-        - python-codacy-coverage -r coverage.xml
+    - name: 'Python 3.9'
+      python: '3.9.1'
+      script: python scripts/run-tests.py

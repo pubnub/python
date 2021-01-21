@@ -1,14 +1,8 @@
 import unittest
-
-try:
-    from mock import MagicMock
-except ImportError:
-    from unittest.mock import MagicMock
+from unittest.mock import MagicMock
 
 from pubnub.pubnub import PubNub
-
 import pubnub.enums
-
 from pubnub.endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
 from tests.helper import pnconf, sdk_name
 from pubnub.managers import TelemetryManager

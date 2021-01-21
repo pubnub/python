@@ -1,5 +1,3 @@
-import six
-
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_CHANNELS_MISSING, PNERR_GROUP_MISSING
@@ -46,8 +44,7 @@ class AddChannelToChannelGroup(Endpoint):
         if len(self._channels) == 0:
             raise PubNubException(pn_error=PNERR_CHANNELS_MISSING)
 
-        if not isinstance(self._channel_group, six.string_types)\
-                or len(self._channel_group) == 0:
+        if not isinstance(self._channel_group, str) or len(self._channel_group) == 0:
             raise PubNubException(pn_error=PNERR_GROUP_MISSING)
 
     def is_auth_required(self):

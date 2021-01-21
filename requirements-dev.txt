@@ -1,5 +1,10 @@
-codacy-coverage
-pyyaml==5.2
+pyyaml
+pytest-cov
 pycryptodomex
-flake8==3.6.0
--e git://github.com/pubnub/vcrpy@twisted#egg=vcrpy
+flake8
+pytest
+pytest-asyncio
+aiohttp
+requests
+cbor2
+-e  git://github.com/pubnub/vcrpy.git@aiotthp_redirect_enabled#egg=vcrpy

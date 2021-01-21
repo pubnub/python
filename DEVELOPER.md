@@ -45,9 +45,6 @@ Twisted is supported by Python 2.7 only.
 * Test runner: py.test
 * Source code checker: flake
 
-## Crypto library
-We have 2 crypto libraries. By default we use PubNubCryptodome. But for some legacy environment such as Google Cloud PubNubCryptoLegacy should be manually configured, see example here https://github.com/pubnub/python/blob/master/examples/native_threads/custom_crypto.py
-
 ## Daemon mode with Native SDK
 Daemon mode for all requests are disabled by default. This means that all asynchronous requests including will block the main thread until all the children be closed. If SDK user want to use Java-like behaviour when it's up to him to decide should he wait for response completion or continue program execution, he has to explicitly set daemon mode to true:
 

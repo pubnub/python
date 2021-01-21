@@ -1,6 +1,3 @@
-import six
-
-
 class SubscribeEnvelope:
     def __init__(self, messages=None, metadata=None):
         assert isinstance(messages, (list, None))
@@ -71,9 +68,9 @@ class SubscribeMetadata:
 
 class PresenceEnvelope:
     def __init__(self, action, uuid, occupancy, timestamp, data=None):
-        assert isinstance(action, six.string_types)
-        assert isinstance(occupancy, six.integer_types)
-        assert isinstance(timestamp, six.integer_types)
+        assert isinstance(action, str)
+        assert isinstance(occupancy, int)
+        assert isinstance(timestamp, int)
         if data is not None:
             assert isinstance(data, dict)
 
@@ -92,7 +89,6 @@ class PresenceEnvelope:
 
     @classmethod
     def from_json_payload(cls, json):
-
         return PresenceEnvelope(
             action=cls.extract_value(json, 'action'),
             uuid=cls.extract_value(json, 'uuid'),

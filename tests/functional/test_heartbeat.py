@@ -1,15 +1,10 @@
-import unittest
-
 import json
+import unittest
+import urllib
+from unittest.mock import MagicMock
 
 from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.managers import TelemetryManager
-
-try:
-    from mock import MagicMock
-except ImportError:
-    from unittest.mock import MagicMock
-
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name, pnconf_copy
 
@@ -85,8 +80,6 @@ class TestHeartbeat(unittest.TestCase):
         self.assertEqual(self.hb._groups, ['gr1', 'gr2', 'gr3'])
 
     def test_hb_with_state(self):
-        import six
-
         state = {"name": "Alex", "count": 7}
         self.hb.channels('ch1,ch2').state(state)
 
@@ -94,7 +87,7 @@ class TestHeartbeat(unittest.TestCase):
                          % (pnconf.subscribe_key, "ch1,ch2"))
 
         params = self.hb.build_params_callback()({})
-        params['state'] = json.loads(six.moves.urllib.parse.unquote(params['state']))
+        params['state'] = json.loads(urllib.parse.unquote(params['state']))
 
         self.assertEqual(params, {
             'pnsdk': sdk_name,

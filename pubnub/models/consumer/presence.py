@@ -1,10 +1,7 @@
-import six
-
-
-class PNHereNowResult(object):
+class PNHereNowResult:
     def __init__(self, total_channels, total_occupancy, channels):
-        assert isinstance(total_channels, six.integer_types)
-        assert isinstance(total_occupancy, six.integer_types)
+        assert isinstance(total_channels, int)
+        assert isinstance(total_occupancy, int)
 
         self.total_channels = total_channels
         self.total_occupancy = total_occupancy
@@ -50,7 +47,7 @@ class PNHereNowResult(object):
         elif 'uuids' in envelope and isinstance(envelope['uuids'], list):
             occupants = []
             for user in envelope['uuids']:
-                if isinstance(user, six.string_types):
+                if isinstance(user, str):
                     occupants.append(PNHereNowOccupantsData(user, None))
                 else:
                     state = user['state'] if 'state' in user else None

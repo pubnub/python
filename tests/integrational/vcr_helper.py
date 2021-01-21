@@ -1,11 +1,10 @@
 import json
 import os
-import six
 import vcr
-try:
-    from mock import patch
-except ImportError:
-    from unittest.mock import patch
+
+from tests.helper import gen_decrypt_func
+from unittest.mock import patch
+from functools import wraps
 
 from tests.helper import url_decode
 
@@ -53,6 +52,10 @@ def assert_request_equal_with_object_in_query(r1, r2, query_field_name):
     return True
 
 
+def object_in_path_with_decrypt_matcher(r1, r2):
+    return object_in_path_matcher(r1, r2, decrypter=gen_decrypt_func())
+
+
 def object_in_path_matcher(r1, r2, decrypter=None):
     try:
         path1 = r1.path.split('/')
@@ -60,7 +63,7 @@ def object_in_path_matcher(r1, r2, decrypter=None):
 
         for k, v in enumerate(path1):
             if k == (len(path1) - 1):
-                if decrypter is not None:
+                if decrypter:
                     assert decrypter(url_decode(v)) == decrypter(url_decode(path2[k]))
                 else:
                     assert json.loads(url_decode(v)) == json.loads(url_decode(path2[k]))
@@ -71,6 +74,10 @@ def object_in_path_matcher(r1, r2, decrypter=None):
         return False
 
     return True
+
+
+def object_in_body_with_decrypt_matcher(r1, r2):
+    return object_in_body_matcher(r1, r2, decrypter=gen_decrypt_func())
 
 
 def object_in_body_matcher(r1, r2, decrypter=None):
@@ -95,7 +102,7 @@ def string_list_in_path_matcher(r1, r2, positions=None):
 
     if positions is None:
         positions = []
-    elif isinstance(positions, six.integer_types):
+    elif isinstance(positions, int):
         positions = [positions]
 
     try:
@@ -134,12 +141,12 @@ def string_list_in_query_matcher(r1, r2, list_keys=None, filter_keys=None):
 
     if list_keys is None:
         list_keys = []
-    elif isinstance(list_keys, six.string_types):
+    elif isinstance(list_keys, str):
         list_keys = [list_keys]
 
     if filter_keys is None:
         filter_keys = []
-    elif isinstance(filter_keys, six.string_types):
+    elif isinstance(filter_keys, str):
         filter_keys = [filter_keys]
 
     try:
@@ -192,6 +199,8 @@ def check_the_difference_matcher(r1, r2):
 pn_vcr.register_matcher('meta_object_in_query', meta_object_in_query_matcher)
 pn_vcr.register_matcher('state_object_in_query', state_object_in_query_matcher)
 pn_vcr.register_matcher('object_in_path', object_in_path_matcher)
+pn_vcr.register_matcher('object_in_path_with_decrypt', object_in_path_with_decrypt_matcher)
+pn_vcr.register_matcher('object_in_body_with_decrypt', object_in_body_with_decrypt_matcher)
 pn_vcr.register_matcher('object_in_body', object_in_body_matcher)
 pn_vcr.register_matcher('check_the_difference', check_the_difference_matcher)
 pn_vcr.register_matcher('string_list_in_path', string_list_in_path_matcher)
@@ -205,7 +214,7 @@ def use_cassette_and_stub_time_sleep_native(cassette_name, **kwargs):
 
     def _inner(f):
         @patch('time.sleep', return_value=None)
-        @six.wraps(f)
+        @wraps(f)
         def stubbed(*args, **kwargs):
             with context:
                 largs = list(args)
@@ -213,7 +222,7 @@ def use_cassette_and_stub_time_sleep_native(cassette_name, **kwargs):
                 largs.pop(1)
                 return f(*largs, **kwargs)
 
-        @six.wraps(f)
+        @wraps(f)
         def original(*args):
             with context:
                 return f(*args)

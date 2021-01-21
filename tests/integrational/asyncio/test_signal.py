@@ -16,15 +16,17 @@ def pnconf():
     return pnconf
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/signal/single.yaml',
-                     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/signal/single.yaml',
+    filter_query_parameters=['uuid', 'seqn', 'pnsdk']
+)
 @pytest.mark.asyncio
-def test_single_channel(pnconf, event_loop):
+async def test_single_channel(pnconf, event_loop):
     pn = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
     chan = 'unique_sync'
-    envelope = yield from pn.signal().channel(chan).message('test').future()
+    envelope = await pn.signal().channel(chan).message('test').future()
 
-    assert(isinstance(envelope, AsyncioEnvelope))
+    assert isinstance(envelope, AsyncioEnvelope)
     assert not envelope.status.is_error()
     assert envelope.result.timetoken == '15640051159323676'
     assert isinstance(envelope.result, PNSignalResult)

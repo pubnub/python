@@ -1,7 +1,5 @@
 import logging
 
-import six
-
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
@@ -39,7 +37,7 @@ class FetchMessages(Endpoint):
         return self
 
     def count(self, count):
-        assert isinstance(count, six.integer_types)
+        assert isinstance(count, int)
         self._count = count
         return self
 
@@ -47,12 +45,12 @@ class FetchMessages(Endpoint):
         return self.count(maximum_per_channel)
 
     def start(self, start):
-        assert isinstance(start, six.integer_types)
+        assert isinstance(start, int)
         self._start = start
         return self
 
     def end(self, end):
-        assert isinstance(end, six.integer_types)
+        assert isinstance(end, int)
         self._end = end
         return self
 

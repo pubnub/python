@@ -3,17 +3,8 @@ import hmac
 import json
 import uuid as u
 import threading
-
-try:
-    from hashlib import sha256
-
-    digestmod = sha256
-except ImportError:
-    import Crypto.Hash.SHA256 as digestmod
-
-    sha256 = digestmod.new
-
-import six
+import urllib
+from hashlib import sha256
 
 from .enums import PNStatusCategory, PNOperationType, PNPushType, HttpMethod
 from .models.consumer.common import PNStatus
@@ -33,7 +24,7 @@ def get_data_for_user(data):
 
 def write_value_as_string(data):
     try:
-        if isinstance(data, six.string_types):
+        if isinstance(data, str):
             return "\"%s\"" % data
         else:
             return json.dumps(data)
@@ -44,7 +35,7 @@ def write_value_as_string(data):
 
 
 def url_encode(data):
-    return six.moves.urllib.parse.quote(data, safe="~").replace("+", "%2B")
+    return urllib.parse.quote(data, safe="~").replace("+", "%2B")
 
 
 def url_write(data):
@@ -79,14 +70,14 @@ def join_channels(items_list):
 
 
 def extend_list(existing_items, new_items):
-    if isinstance(new_items, six.string_types):
+    if isinstance(new_items, str):
         existing_items.extend(split_items(new_items))
     else:
         existing_items.extend(new_items)
 
 
 def build_url(scheme, origin, path, params={}):
-    return six.moves.urllib.parse.urlunsplit((scheme, origin, path, params, ''))
+    return urllib.parse.urlunsplit((scheme, origin, path, params, ''))
 
 
 def synchronized(func):

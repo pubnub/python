@@ -1,5 +1,3 @@
-import six
-
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_PUSH_DEVICE_MISSING, PNERROR_PUSH_TYPE_MISSING, PNERR_PUSH_TOPIC_MISSING
 from pubnub.exceptions import PubNubException
@@ -65,14 +63,14 @@ class RemoveDeviceFromPush(Endpoint):
     def validate_params(self):
         self.validate_subscribe_key()
 
-        if not isinstance(self._device_id, six.string_types) or len(self._device_id) == 0:
+        if not isinstance(self._device_id, str) or len(self._device_id) == 0:
             raise PubNubException(pn_error=PNERR_PUSH_DEVICE_MISSING)
 
         if self._push_type is None:
             raise PubNubException(pn_error=PNERROR_PUSH_TYPE_MISSING)
 
         if self._push_type == PNPushType.APNS2:
-            if not isinstance(self._topic, six.string_types) or len(self._topic) == 0:
+            if not isinstance(self._topic, str) or len(self._topic) == 0:
                 raise PubNubException(pn_error=PNERR_PUSH_TOPIC_MISSING)
 
     def create_response(self, envelope):

@@ -26,28 +26,25 @@ class MySubscribeCallback(SubscribeCallback):
 
 
 @pytest.mark.asyncio
-def test_blah():
+async def test_blah():
     pnconf = pnconf_sub_copy()
     assert isinstance(pnconf, PNConfiguration)
     pnconf.reconnect_policy = PNReconnectionPolicy.EXPONENTIAL
     pubnub = PubNubAsyncio(pnconf)
     time_until_open_again = 8
 
-    @asyncio.coroutine
-    def close_soon():
-        yield from asyncio.sleep(2)
+    async def close_soon():
+        await asyncio.sleep(2)
         pubnub._connector.close()
         print(">>> connection is broken")
 
-    @asyncio.coroutine
-    def open_again():
-        yield from asyncio.sleep(time_until_open_again)
+    async def open_again():
+        await asyncio.sleep(time_until_open_again)
         pubnub.set_connector(aiohttp.TCPConnector(conn_timeout=pubnub.config.connect_timeout, verify_ssl=True))
         print(">>> connection is open again")
 
-    @asyncio.coroutine
-    def countdown():
-        asyncio.sleep(2)
+    async def countdown():
+        await asyncio.sleep(2)
         opened = False
         count = time_until_open_again
 
@@ -56,7 +53,7 @@ def test_blah():
             count -= 1
             if count <= 0:
                 break
-            yield from asyncio.sleep(1)
+            await asyncio.sleep(1)
 
     my_listener = MySubscribeCallback()
     pubnub.add_listener(my_listener)
@@ -66,4 +63,4 @@ def test_blah():
     asyncio.ensure_future(open_again())
     asyncio.ensure_future(countdown())
 
-    yield from asyncio.sleep(1000)
+    await asyncio.sleep(1000)

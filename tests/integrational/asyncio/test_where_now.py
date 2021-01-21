@@ -13,7 +13,7 @@ from tests.integrational.vcr_helper import pn_vcr
     'tests/integrational/fixtures/asyncio/where_now/single_channel.yaml',
     filter_query_parameters=['uuid', 'pnsdk'])
 @pytest.mark.asyncio
-def test_single_channel(event_loop, sleeper=asyncio.sleep):
+async def test_single_channel(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
     ch = 'test-where-now-asyncio-ch'
     uuid = 'test-where-now-asyncio-uuid'
@@ -23,11 +23,11 @@ def test_single_channel(event_loop, sleeper=asyncio.sleep):
     pubnub.add_listener(callback)
     pubnub.subscribe().channels(ch).execute()
 
-    yield from callback.wait_for_connect()
+    await callback.wait_for_connect()
 
-    yield from sleeper(2)
+    await sleeper(2)
 
-    env = yield from pubnub.where_now() \
+    env = await pubnub.where_now() \
         .uuid(uuid) \
         .future()
 
@@ -37,7 +37,7 @@ def test_single_channel(event_loop, sleeper=asyncio.sleep):
     assert channels[0] == ch
 
     pubnub.unsubscribe().channels(ch).execute()
-    yield from callback.wait_for_disconnect()
+    await callback.wait_for_disconnect()
 
     pubnub.stop()
 
@@ -47,13 +47,9 @@ def test_single_channel(event_loop, sleeper=asyncio.sleep):
     'tests/integrational/fixtures/asyncio/where_now/multiple_channels.yaml',
     filter_query_parameters=['pnsdk'],
     match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
-    match_on_kwargs={
-        'string_list_in_path': {
-            'positions': [4]
-        }
-    })
+)
 @pytest.mark.asyncio
-def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
+async def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
     ch1 = 'test-where-now-asyncio-ch1'
@@ -65,11 +61,11 @@ def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     pubnub.add_listener(callback)
     pubnub.subscribe().channels([ch1, ch2]).execute()
 
-    yield from callback.wait_for_connect()
+    await callback.wait_for_connect()
 
-    yield from sleeper(7)
+    await sleeper(7)
 
-    env = yield from pubnub.where_now() \
+    env = await pubnub.where_now() \
         .uuid(uuid) \
         .future()
 
@@ -80,19 +76,19 @@ def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     assert ch2 in channels
 
     pubnub.unsubscribe().channels([ch1, ch2]).execute()
-    yield from callback.wait_for_disconnect()
+    await callback.wait_for_disconnect()
 
     pubnub.stop()
 
 
 @pytest.mark.asyncio
-def test_where_now_super_admin_call(event_loop):
+async def test_where_now_super_admin_call(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
 
     uuid = 'test-where-now-asyncio-uuid-.*|@'
     pubnub.config.uuid = uuid
 
-    res = yield from pubnub.where_now() \
+    res = await pubnub.where_now() \
         .uuid(uuid) \
         .result()
     assert isinstance(res, PNWhereNowResult)

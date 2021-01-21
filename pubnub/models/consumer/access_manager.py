@@ -1,10 +1,9 @@
-import six
 """
 Possible responses of PAM request
 """
 
 
-class _PAMResult(object):
+class _PAMResult:
     def __init__(self, level, subscribe_key, channels, groups, uuids, ttl=None, r=None, w=None, m=None, d=None):
         self.level = level
         self.subscribe_key = subscribe_key
@@ -29,7 +28,7 @@ class _PAMResult(object):
         if 'channel' in json_input:
             channel_name = json_input['channel']
             constructed_auth_keys = {}
-            for auth_key_name, value in six.iteritems(json_input['auths']):
+            for auth_key_name, value in json_input['auths'].items():
                 constructed_auth_keys[auth_key_name] = PNAccessManagerKeyData.from_json(value)
 
             constructed_channels[channel_name] = PNAccessManagerChannelData(
@@ -39,10 +38,10 @@ class _PAMResult(object):
             )
 
         if 'channel-group' in json_input:
-            if isinstance(json_input['channel-group'], six.string_types):
+            if isinstance(json_input['channel-group'], str):
                 group_name = json_input['channel-group']
                 constructed_auth_keys = {}
-                for auth_key_name, value in six.iteritems(json_input['auths']):
+                for auth_key_name, value in json_input['auths'].items():
                     constructed_auth_keys[auth_key_name] = PNAccessManagerKeyData.from_json(value)
                 constructed_groups[group_name] = PNAccessManagerChannelGroupData(
                     name=group_name,
@@ -51,10 +50,10 @@ class _PAMResult(object):
                 )
 
         if 'channel-groups' in json_input:
-            if isinstance(json_input['channel-groups'], six.string_types):
+            if isinstance(json_input['channel-groups'], str):
                 group_name = json_input['channel-groups']
                 constructed_auth_keys = {}
-                for auth_key_name, value in six.iteritems(json_input['auths']):
+                for auth_key_name, value in json_input['auths'].items():
                     constructed_auth_keys[auth_key_name] = PNAccessManagerKeyData.from_json(value)
                 constructed_groups[group_name] = PNAccessManagerChannelGroupData(
                     name=group_name,
@@ -62,17 +61,15 @@ class _PAMResult(object):
                     ttl=ttl
                 )
             if isinstance(json_input['channel-groups'], dict):
-                for group_name, value in six.iteritems(json_input['channel-groups']):
-                    constructed_groups[group_name] = \
-                        PNAccessManagerChannelGroupData.from_json(group_name, value)
+                for group_name, value in json_input['channel-groups'].items():
+                    constructed_groups[group_name] = PNAccessManagerChannelGroupData.from_json(group_name, value)
 
         if 'channels' in json_input:
-            for channel_name, value in six.iteritems(json_input['channels']):
-                constructed_channels[channel_name] = \
-                    PNAccessManagerChannelData.from_json(channel_name, value)
+            for channel_name, value in json_input['channels'].items():
+                constructed_channels[channel_name] = PNAccessManagerChannelData.from_json(channel_name, value)
 
         if 'uuids' in json_input:
-            for uuid, value in six.iteritems(json_input['uuids']):
+            for uuid, value in json_input['uuids'].items():
                 constructed_uuids[uuid] = PNAccessManagerUuidsData.from_json(uuid, value)
 
         return cls(

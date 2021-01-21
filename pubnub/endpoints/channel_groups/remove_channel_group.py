@@ -1,5 +1,3 @@
-import six
-
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_GROUP_MISSING
@@ -34,8 +32,7 @@ class RemoveChannelGroup(Endpoint):
     def validate_params(self):
         self.validate_subscribe_key()
 
-        if not isinstance(self._channel_group, six.string_types)\
-                or len(self._channel_group) == 0:
+        if not isinstance(self._channel_group, str) or len(self._channel_group) == 0:
             raise PubNubException(pn_error=PNERR_GROUP_MISSING)
 
     def is_auth_required(self):

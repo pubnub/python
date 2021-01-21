@@ -1,4 +1,3 @@
-import asyncio
 import aiohttp
 
 from pubnub.endpoints.file_operations.send_file import SendFileNative
@@ -21,15 +20,14 @@ class AsyncioSendFile(SendFileNative):
         request_options.data = request_options.files
         return request_options
 
-    @asyncio.coroutine
-    def future(self):
-        self._file_upload_envelope = yield from FetchFileUploadS3Data(self._pubnub).\
+    async def future(self):
+        self._file_upload_envelope = await FetchFileUploadS3Data(self._pubnub).\
             channel(self._channel).\
             file_name(self._file_name).future()
 
-        response_envelope = yield from super(SendFileNative, self).future()
+        response_envelope = await super(SendFileNative, self).future()
 
-        publish_file_response = yield from PublishFileMessage(self._pubnub).\
+        publish_file_response = await PublishFileMessage(self._pubnub).\
             channel(self._channel).\
             meta(self._meta).\
             message(self._message).\
@@ -42,6 +40,6 @@ class AsyncioSendFile(SendFileNative):
         response_envelope.result.timestamp = publish_file_response.result.timestamp
         return response_envelope
 
-    def result(self):
-        response_envelope = yield from self.future()
+    async def result(self):
+        response_envelope = await self.future()
         return response_envelope.result

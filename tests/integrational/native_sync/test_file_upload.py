@@ -1,4 +1,3 @@
-import sys
 import pytest
 
 from pubnub.exceptions import PubNubException
@@ -11,11 +10,6 @@ from pubnub.models.consumer.file import (
     PNGetFileDownloadURLResult, PNDeleteFileResult, PNFetchFileUploadS3DataResult,
     PNPublishFileMessageResult
 )
-
-if sys.version_info > (3, 0):
-    py_v = 3
-else:
-    py_v = 2
 
 CHANNEL = "files_native_sync_ch"
 
@@ -75,11 +69,7 @@ def test_send_and_download_file_using_bytes_object(file_for_upload, file_upload_
 
     assert isinstance(download_envelope.result, PNDownloadFileResult)
     data = download_envelope.result.data
-
-    if py_v == 3:
-        assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
-    else:
-        assert data == file_upload_test_data["FILE_CONTENT"]
+    assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
 
 
 @pn_vcr.use_cassette(
@@ -98,11 +88,7 @@ def test_send_and_download_encrypted_file(file_for_upload, file_upload_test_data
 
     assert isinstance(download_envelope.result, PNDownloadFileResult)
     data = download_envelope.result.data
-
-    if py_v == 3:
-        assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
-    else:
-        assert data == file_upload_test_data["FILE_CONTENT"]
+    assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
 
 
 @pn_vcr_with_empty_body_request.use_cassette(

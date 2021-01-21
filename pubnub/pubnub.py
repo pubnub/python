@@ -3,7 +3,7 @@ import logging
 import threading
 
 from threading import Event
-from six.moves.queue import Queue, Empty
+from queue import Queue, Empty
 
 from . import utils
 from .request_handlers.base import BaseRequestHandler
@@ -316,7 +316,7 @@ class NativeSubscriptionManager(SubscriptionManager):
             sc.cancel()
 
 
-class NativePeriodicCallback(object):
+class NativePeriodicCallback:
     def __init__(self, callback, callback_time):
         self._callback = callback
         self._callback_time = callback_time
@@ -434,7 +434,7 @@ class SubscribeListener(SubscribeCallback):
                 continue
 
 
-class NonSubscribeListener(object):
+class NonSubscribeListener:
     def __init__(self):
         self.result = None
         self.status = None

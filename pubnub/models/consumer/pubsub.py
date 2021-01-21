@@ -1,5 +1,3 @@
-import six
-
 from pubnub.models.consumer.message_actions import PNMessageAction
 
 
@@ -8,15 +6,15 @@ class PNMessageResult(object):
         assert message is not None
 
         if subscription is not None:
-            assert isinstance(subscription, six.string_types)
+            assert isinstance(subscription, str)
 
         if channel is not None:
-            assert isinstance(channel, six.string_types)
+            assert isinstance(channel, str)
 
         if publisher is not None:
-            assert isinstance(publisher, six.string_types)
+            assert isinstance(publisher, str)
 
-        assert isinstance(timetoken, six.integer_types)
+        assert isinstance(timetoken, int)
 
         if user_metadata is not None:
             assert isinstance(user_metadata, object)
@@ -54,11 +52,11 @@ class PNPresenceEventResult(object):
     def __init__(self, event, uuid, timestamp, occupancy, subscription, channel,
                  timetoken, state, join, leave, timeout, user_metadata=None):
 
-        assert isinstance(event, six.string_types)
-        assert isinstance(timestamp, six.integer_types)
-        assert isinstance(occupancy, six.integer_types)
-        assert isinstance(channel, six.string_types)
-        assert isinstance(timetoken, six.integer_types)
+        assert isinstance(event, str)
+        assert isinstance(timestamp, int)
+        assert isinstance(occupancy, int)
+        assert isinstance(channel, str)
+        assert isinstance(timetoken, int)
 
         if user_metadata is not None:
             assert isinstance(user_metadata, object)

@@ -34,8 +34,8 @@ class RequestsRequestHandler(BaseRequestHandler):
 
         self.session.mount('http://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
         self.session.mount('https://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
-        self.session.mount('http://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
-        self.session.mount('https://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('http://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
+        self.session.mount('https://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
 
         self.pubnub = pubnub
 

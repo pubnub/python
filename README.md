@@ -7,6 +7,8 @@
 
 This is the official PubNub Python SDK repository.
 
+**Note:** Python SDK version 5.0 no longer supports Python 2.7 Twisted or Tornado, if you still require support for these please use SDK version 4.8.1 
+
 PubNub takes care of the infrastructure and APIs needed for the realtime communication layer of your application. Work on your app's logic and let PubNub handle sending and receiving data across the world in less than 100ms.
 
 ## Get keys

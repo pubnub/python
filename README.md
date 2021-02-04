@@ -7,7 +7,7 @@
 
 This is the official PubNub Python SDK repository.
 
-**Note:** Python SDK version 5.0 no longer supports Python 2.7 Twisted or Tornado, if you still require support for these please use SDK version 4.8.1 
+**Note:** Python SDK version 5.0 no longer supports Python 2.7, Twisted or Tornado, if you still require support for these please use SDK version 4.8.1
 
 PubNub takes care of the infrastructure and APIs needed for the realtime communication layer of your application. Work on your app's logic and let PubNub handle sending and receiving data across the world in less than 100ms.
 
@@ -85,7 +85,6 @@ pubnub.subscribe().channels('my_channel').execute()
 
 * [Build your first realtime Python app with PubNub](https://www.pubnub.com/docs/platform/quickstarts/python)
 * [API reference for Python](https://www.pubnub.com/docs/python/pubnub-python-sdk)
-* [API reference for Python (Tornado)](https://www.pubnub.com/docs/python-tornado/pubnub-python-sdk)
 * [API reference for Python (asyncio)](https://www.pubnub.com/docs/python-aiohttp/pubnub-python-sdk)
 
 ## Support

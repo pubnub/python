@@ -29,8 +29,8 @@ class PubNub(PubNubCore):
     def __init__(self, config):
         assert isinstance(config, PNConfiguration)
 
-        self._request_handler = RequestsRequestHandler(self)
         PubNubCore.__init__(self, config)
+        self._request_handler = RequestsRequestHandler(self)
 
         if self.config.enable_subscribe:
             self._subscription_manager = NativeSubscriptionManager(self)

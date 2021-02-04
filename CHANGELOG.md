@@ -1,3 +1,9 @@
+## [v5.0.1](https://github.com/pubnub/python/releases/tag/v5.0.1)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.0.0...v5.0.1)
+
+- 🌟️ User defined 'origin'(custom domain) value was not used in all required places within this SDK. 
+
 ## [v5.0.0](https://github.com/pubnub/python/releases/tag/v5.0.0)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v4.8.1...v5.0.0)

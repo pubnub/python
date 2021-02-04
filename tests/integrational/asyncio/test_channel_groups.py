@@ -51,7 +51,7 @@ async def test_add_remove_single_channel(event_loop, sleeper=asyncio.sleep):
     assert isinstance(env.result, PNChannelGroupsListResult)
     assert len(env.result.channels) == 0
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/groups/add_remove_multiple_channels.yaml')
@@ -93,7 +93,7 @@ async def test_add_remove_multiple_channels(event_loop, sleeper=asyncio.sleep):
     assert isinstance(env.result, PNChannelGroupsListResult)
     assert len(env.result.channels) == 0
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/groups/add_channel_remove_group.yaml')
@@ -132,7 +132,7 @@ async def test_add_channel_remove_group(event_loop, sleeper=asyncio.sleep):
     assert isinstance(env.result, PNChannelGroupsListResult)
     assert len(env.result.channels) == 0
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -165,4 +165,4 @@ async def test_super_call(event_loop):
     env = await pubnub.list_channels_in_channel_group().channel_group(gr).future()
     assert isinstance(env.result, PNChannelGroupsListResult)
 
-    pubnub.stop()
+    await pubnub.stop()

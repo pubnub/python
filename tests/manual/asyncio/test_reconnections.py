@@ -40,7 +40,7 @@ async def test_blah():
 
     async def open_again():
         await asyncio.sleep(time_until_open_again)
-        pubnub.set_connector(aiohttp.TCPConnector(conn_timeout=pubnub.config.connect_timeout, verify_ssl=True))
+        await pubnub.set_connector(aiohttp.TCPConnector(conn_timeout=pubnub.config.connect_timeout, verify_ssl=True))
         print(">>> connection is open again")
 
     async def countdown():

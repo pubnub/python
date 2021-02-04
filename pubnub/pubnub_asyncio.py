@@ -39,7 +39,12 @@ class PubNubAsyncio(PubNubCore):
         self._connector = None
         self._session = None
 
-        self.set_connector(aiohttp.TCPConnector(verify_ssl=True))
+        self._connector = aiohttp.TCPConnector(verify_ssl=True)
+        self._session = aiohttp.ClientSession(
+            loop=self.event_loop,
+            conn_timeout=self.config.connect_timeout,
+            connector=self._connector
+        )
 
         if self.config.enable_subscribe:
             self._subscription_manager = AsyncioSubscriptionManager(self)
@@ -49,9 +54,8 @@ class PubNubAsyncio(PubNubCore):
 
         self._telemetry_manager = AsyncioTelemetryManager()
 
-    def set_connector(self, cn):
-        if self._session is not None and self._session.closed:
-            self._session.close()
+    async def set_connector(self, cn):
+        await self._session.close()
 
         self._connector = cn
 
@@ -61,8 +65,8 @@ class PubNubAsyncio(PubNubCore):
             connector=self._connector
         )
 
-    def stop(self):
-        self._session.close()
+    async def stop(self):
+        await self._session.close()
         if self._subscription_manager is not None:
             self._subscription_manager.stop()
 

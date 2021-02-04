@@ -52,7 +52,7 @@ async def test_single_channel(event_loop, sleeper=asyncio.sleep):
     pubnub.unsubscribe().channels(ch).execute()
     await callback.wait_for_disconnect()
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml')
@@ -102,7 +102,7 @@ async def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     pubnub.unsubscribe().channels([ch1, ch2]).execute()
     await callback.wait_for_disconnect()
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/here_now/global.yaml')
@@ -138,7 +138,7 @@ async def test_global(event_loop, sleeper=asyncio.sleep):
     pubnub.unsubscribe().channels([ch1, ch2]).execute()
     await callback.wait_for_disconnect()
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -158,4 +158,4 @@ async def test_here_now_super_call(event_loop):
     env = await pubnub.here_now().channels(['ch.bar*', 'ch2']).channel_groups("gr.k").future()
     assert isinstance(env.result, PNHereNowResult)
 
-    pubnub.stop()
+    await pubnub.stop()

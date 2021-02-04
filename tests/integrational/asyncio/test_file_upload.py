@@ -48,7 +48,7 @@ async def test_delete_file(event_loop, file_for_upload):
         file_name(envelope.result.name).future()
 
     assert isinstance(delete_envelope.result, PNDeleteFileResult)
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -64,7 +64,7 @@ async def test_list_files(event_loop):
 
     assert isinstance(envelope.result, PNGetFilesResult)
     assert envelope.result.count == 23
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -81,7 +81,7 @@ async def test_send_and_download_file(event_loop, file_for_upload):
         file_name(envelope.result.name).future()
 
     assert isinstance(download_envelope.result, PNDownloadFileResult)
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -101,7 +101,7 @@ async def test_send_and_download_file_encrypted(event_loop, file_for_upload, fil
 
     assert isinstance(download_envelope.result, PNDownloadFileResult)
     assert download_envelope.result.data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -118,7 +118,7 @@ async def test_get_file_url(event_loop, file_for_upload):
         file_name(envelope.result.name).future()
 
     assert isinstance(file_url_envelope.result, PNGetFileDownloadURLResult)
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -133,7 +133,7 @@ async def test_fetch_file_upload_s3_data_with_result_invocation(event_loop, file
         file_name(file_upload_test_data["UPLOADED_FILENAME"]).result()
 
     assert isinstance(result, PNFetchFileUploadS3DataResult)
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -153,4 +153,4 @@ async def test_publish_file_message_with_encryption(event_loop, file_upload_test
         ttl(222).future()
 
     assert isinstance(envelope.result, PNPublishFileMessageResult)
-    pubnub.stop()
+    await pubnub.stop()

@@ -13,7 +13,6 @@ def pn(event_loop):
     config.enable_subscribe = False
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
     yield pn
-    pn.stop()
 
 
 @pn_vcr.use_cassette(
@@ -32,6 +31,8 @@ async def test_single_channel(pn):
     assert envelope.result.channels[chan] == 1
     assert isinstance(envelope.result, PNMessageCountResult)
     assert isinstance(envelope.status, PNStatus)
+
+    await pn.stop()
 
 
 @pn_vcr.use_cassette(
@@ -53,3 +54,5 @@ async def test_multiple_channels(pn):
     assert envelope.result.channels[chan_2] == 0
     assert isinstance(envelope.result, PNMessageCountResult)
     assert isinstance(envelope.status, PNStatus)
+
+    await pn.stop()

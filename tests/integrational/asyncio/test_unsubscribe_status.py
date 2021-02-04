@@ -78,6 +78,6 @@ def test_access_denied_unsubscribe_operation(event_loop):
 #     pubnub.add_listener(callback)
 #
 #     pubnub.subscribe().channels(channel).execute()
-#     yield from callback.reconnected_event.wait()
+#     await callback.reconnected_event.wait()
 #
-#     yield from pubnub.stop()
+#     await pubnub.stop()

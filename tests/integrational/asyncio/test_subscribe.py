@@ -91,8 +91,8 @@ async def test_subscribe_publish_unsubscribe(event_loop):
     pubnub_sub.unsubscribe().channels(channel).execute()
     # await callback.wait_for_disconnect()
 
-    pubnub_pub.stop()
-    pubnub_sub.stop()
+    await pubnub_pub.stop()
+    await pubnub_sub.stop()
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub_enc.yaml',
@@ -187,7 +187,7 @@ async def test_join_leave(event_loop):
     await callback_presence.wait_for_disconnect()
 
     await pubnub.stop()
-    pubnub_listener.stop()
+    await pubnub_listener.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml')
@@ -327,7 +327,7 @@ async def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     assert envelope.status.original_response['status'] == 200
 
     await pubnub.stop()
-    pubnub_listener.stop()
+    await pubnub_listener.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/unsubscribe_all.yaml')

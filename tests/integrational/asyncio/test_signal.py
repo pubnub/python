@@ -31,4 +31,4 @@ async def test_single_channel(pnconf, event_loop):
     assert envelope.result.timetoken == '15640051159323676'
     assert isinstance(envelope.result, PNSignalResult)
     assert isinstance(envelope.status, PNStatus)
-    pn.stop()
+    await pn.stop()

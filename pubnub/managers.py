@@ -511,6 +511,8 @@ class TelemetryManager(object):  # pylint: disable=W0612
             PNOperationType.PNDownloadFileAction: 'file',
             PNOperationType.PNSendFileAction: 'file',
 
+            PNOperationType.PNHeartbeatOperation: 'hrt',
+
         }[operation_type]
 
         return endpoint

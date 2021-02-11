@@ -6,6 +6,7 @@ import math
 import time
 import urllib
 
+from aiohttp.client_exceptions import ClientConnectorError
 from asyncio import Event, Queue, Semaphore
 from yarl import URL
 
@@ -21,7 +22,7 @@ from .structures import ResponseInfo, RequestOptions
 from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
 from .callbacks import SubscribeCallback, ReconnectionCallback
 from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED, PNERR_REQUEST_CANCELLED,\
-    PNERR_CLIENT_TIMEOUT
+    PNERR_CLIENT_TIMEOUT, PNERR_CONNECTION_ERROR
 from .exceptions import PubNubException
 
 logger = logging.getLogger("pubnub")
@@ -106,6 +107,17 @@ class PubNubAsyncio(PubNubCore):
                                                     None,
                                                     exception=PubNubException(
                                                         pn_error=PNERR_REQUEST_CANCELLED
+                                                    ))
+            )
+        except ClientConnectorError:
+            return PubNubAsyncioException(
+                result=None,
+                status=options_func().create_status(
+                                                    PNStatusCategory.PNNetworkIssuesCategory,
+                                                    None,
+                                                    None,
+                                                    exception=PubNubException(
+                                                        pn_error=PNERR_CONNECTION_ERROR
                                                     ))
             )
         except Exception as e:
@@ -288,7 +300,9 @@ class AsyncioReconnectionManager(ReconnectionManager):
             logger.debug("reconnect loop at: %s" % utils.datetime_now())
 
             try:
-                await self._pubnub.time().future()
+                result = await self._pubnub.time().future()
+                if result.status.is_error():
+                    raise result.status.error_data.exception
                 self._connection_errors = 1
                 self._callback.on_reconnect()
                 break
@@ -416,7 +430,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
                 return
 
             if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
-                self._pubnub.event_loop.call_soon(self._start_subscribe_loop)
+                asyncio.create_task(self._start_subscribe_loop())
                 self._subscription_lock.release()
                 return
 
@@ -481,13 +495,17 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             envelope = await heartbeat_call
 
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
-            if envelope.status.is_error:
-                if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
-                        heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
-                    self._listener_manager.announce_status(envelope.status)
-            else:
-                if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
-                    self._listener_manager.announce_status(envelope.status)
+            if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or (
+                envelope.status.is_error()
+                and heartbeat_verbosity == PNHeartbeatNotificationOptions.FAILURES
+            ):
+                self._listener_manager.announce_status(envelope.status)
+
+            if envelope.status is not None and envelope.status.category in [
+                PNStatusCategory.PNTimeoutCategory,
+                PNStatusCategory.PNNetworkIssuesCategory,
+            ]:
+                await self._start_subscribe_loop()
 
         except PubNubAsyncioException:
             pass

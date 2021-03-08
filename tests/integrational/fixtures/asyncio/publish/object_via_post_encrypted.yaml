@@ -1,15 +1,31 @@
 interactions:
 - request:
-    body: '"Kwwg99lDMKM0/T/3EG49rh+nnex2yBo/4kK5L7CC/F+DtMHVInyW/gaiX6J8iUMc"'
+    body: '"a25pZ2h0c29mbmkxMjM0NZJdqrQwIy2EGbanaofVioxjgR2wkk02J3Z3NvR+zhR3WaTKTArF54xtAoq4J7zUtg=="'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
+      User-Agent:
+      - PubNub-Python-Asyncio/5.0.1
     method: POST
     uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0
   response:
-    body: {string: '[1,"Sent","14820978547800881"]'}
-    headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
-      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
-        charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
-    status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=1&uuid=174a9cbe-2737-4184-9888-c4cfe6767ed5&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    body:
+      string: '[1,"Sent","16148857848332772"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:04 GMT
+    status:
+      code: 200
+      message: OK
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=1&pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=bc256f0e-0b29-46e4-97a1-d8f18a69c7b8
 version: 1

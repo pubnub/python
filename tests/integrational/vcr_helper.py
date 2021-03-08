@@ -2,7 +2,6 @@ import json
 import os
 import vcr
 
-from tests.helper import gen_decrypt_func
 from unittest.mock import patch
 from functools import wraps
 
@@ -52,10 +51,6 @@ def assert_request_equal_with_object_in_query(r1, r2, query_field_name):
     return True
 
 
-def object_in_path_with_decrypt_matcher(r1, r2):
-    return object_in_path_matcher(r1, r2, decrypter=gen_decrypt_func())
-
-
 def object_in_path_matcher(r1, r2, decrypter=None):
     try:
         path1 = r1.path.split('/')
@@ -74,10 +69,6 @@ def object_in_path_matcher(r1, r2, decrypter=None):
         return False
 
     return True
-
-
-def object_in_body_with_decrypt_matcher(r1, r2):
-    return object_in_body_matcher(r1, r2, decrypter=gen_decrypt_func())
 
 
 def object_in_body_matcher(r1, r2, decrypter=None):
@@ -199,8 +190,6 @@ def check_the_difference_matcher(r1, r2):
 pn_vcr.register_matcher('meta_object_in_query', meta_object_in_query_matcher)
 pn_vcr.register_matcher('state_object_in_query', state_object_in_query_matcher)
 pn_vcr.register_matcher('object_in_path', object_in_path_matcher)
-pn_vcr.register_matcher('object_in_path_with_decrypt', object_in_path_with_decrypt_matcher)
-pn_vcr.register_matcher('object_in_body_with_decrypt', object_in_body_with_decrypt_matcher)
 pn_vcr.register_matcher('object_in_body', object_in_body_matcher)
 pn_vcr.register_matcher('check_the_difference', check_the_difference_matcher)
 pn_vcr.register_matcher('string_list_in_path', string_list_in_path_matcher)

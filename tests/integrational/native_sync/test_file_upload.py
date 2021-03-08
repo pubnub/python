@@ -1,5 +1,6 @@
 import pytest
 
+from unittest.mock import patch
 from pubnub.exceptions import PubNubException
 from pubnub.pubnub import PubNub
 from tests.integrational.vcr_helper import pn_vcr, pn_vcr_with_empty_body_request
@@ -78,17 +79,18 @@ def test_send_and_download_file_using_bytes_object(file_for_upload, file_upload_
 )
 def test_send_and_download_encrypted_file(file_for_upload, file_upload_test_data):
     cipher_key = "silly_walk"
-    envelope = send_file(file_for_upload, cipher_key=cipher_key)
+    with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
+        envelope = send_file(file_for_upload, cipher_key=cipher_key)
 
-    download_envelope = pubnub.download_file().\
-        channel(CHANNEL).\
-        file_id(envelope.result.file_id).\
-        file_name(envelope.result.name).\
-        cipher_key(cipher_key).sync()
+        download_envelope = pubnub.download_file().\
+            channel(CHANNEL).\
+            file_id(envelope.result.file_id).\
+            file_name(envelope.result.name).\
+            cipher_key(cipher_key).sync()
 
-    assert isinstance(download_envelope.result, PNDownloadFileResult)
-    data = download_envelope.result.data
-    assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
+        assert isinstance(download_envelope.result, PNDownloadFileResult)
+        data = download_envelope.result.data
+        assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
 
 
 @pn_vcr_with_empty_body_request.use_cassette(

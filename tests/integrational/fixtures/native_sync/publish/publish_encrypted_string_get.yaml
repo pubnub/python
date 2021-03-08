@@ -2,21 +2,35 @@ interactions:
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/5.0.1
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/ch1/0/%22X6%2B3Pm2irEIUtmFispcmehGTHkVSMTmrmdxgjazaA9Q%3D%22?seqn=1
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/ch1/0/%22a25pZ2h0c29mbmkxMjM0NVbvv5XNlM0AubA4nkX8%2FtN2VR8j4gRkWIbG2c4jr23Z%22?seqn=1
   response:
-    body: {string: '[1,"Sent","14820999381884038"]'}
+    body:
+      string: '[1,"Sent","16148818774473495"]'
     headers:
-      Access-Control-Allow-Methods: [GET]
-      Access-Control-Allow-Origin: ['*']
-      Cache-Control: [no-cache]
-      Connection: [keep-alive]
-      Content-Length: ['30']
-      Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Sun, 18 Dec 2016 22:25:38 GMT']
-    status: {code: 200, message: OK}
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 18:17:57 GMT
+    status:
+      code: 200
+      message: OK
 version: 1

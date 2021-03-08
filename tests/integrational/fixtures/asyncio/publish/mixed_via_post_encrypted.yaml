@@ -1,54 +1,118 @@
 interactions:
 - request:
-    body: '"Vx8Hk6iVjiV+Qae1bfMq2w=="'
+    body: '"a25pZ2h0c29mbmkxMjM0NclhU9jqi+5cNMXFiry5TPU="'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
+      User-Agent:
+      - PubNub-Python-Asyncio/5.0.1
     method: POST
     uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0
   response:
-    body: {string: '[1,"Sent","14820978546823218"]'}
-    headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
-      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
-        charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
-    status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=2&uuid=3ced65a6-c223-4602-9f66-be071138f35d&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    body:
+      string: '[1,"Sent","16148857846165706"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:04 GMT
+    status:
+      code: 200
+      message: OK
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=1&pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=ca19afca-c112-4ca1-a7d8-6e8f663ea7d3
 - request:
-    body: '"jw/KAwQAoKtQfHyYrROqSQ=="'
+    body: '"a25pZ2h0c29mbmkxMjM0NdOBbiWd7zGph7bFEv5GX+mTa3M0vVg2xcyYg7CW45mG"'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
+      User-Agent:
+      - PubNub-Python-Asyncio/5.0.1
     method: POST
     uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0
   response:
-    body: {string: '[1,"Sent","14820978546834160"]'}
-    headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
-      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
-        charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
-    status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=3&uuid=3ced65a6-c223-4602-9f66-be071138f35d&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    body:
+      string: '[1,"Sent","16148857846388706"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:04 GMT
+    status:
+      code: 200
+      message: OK
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=4&pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=ca19afca-c112-4ca1-a7d8-6e8f663ea7d3
 - request:
-    body: '"Dt7qBesIhJT2DweUJc2HRQ=="'
+    body: '"a25pZ2h0c29mbmkxMjM0NQ66CzLYXFOKoI1a9G0s0hA="'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
+      User-Agent:
+      - PubNub-Python-Asyncio/5.0.1
     method: POST
     uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0
   response:
-    body: {string: '[1,"Sent","14820978546866887"]'}
-    headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
-      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
-        charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
-    status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=1&uuid=3ced65a6-c223-4602-9f66-be071138f35d&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    body:
+      string: '[1,"Sent","16148857846412945"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:04 GMT
+    status:
+      code: 200
+      message: OK
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=3&pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=ca19afca-c112-4ca1-a7d8-6e8f663ea7d3
 - request:
-    body: '"6uNMePrQmuhzydmUEs6KAl8teZTZfCbG27ApFSKyfr8="'
+    body: '"a25pZ2h0c29mbmkxMjM0NS/B7ZYYL/8ZE/NEGBapOF0="'
     headers:
-      USER-AGENT: [PubNub-Python-Asyncio/4.0.4]
+      User-Agent:
+      - PubNub-Python-Asyncio/5.0.1
     method: POST
     uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0
   response:
-    body: {string: '[1,"Sent","14820978546879220"]'}
-    headers: {ACCESS-CONTROL-ALLOW-METHODS: GET, ACCESS-CONTROL-ALLOW-ORIGIN: '*',
-      CACHE-CONTROL: no-cache, CONNECTION: keep-alive, CONTENT-LENGTH: '30', CONTENT-TYPE: text/javascript;
-        charset="UTF-8", DATE: 'Sun, 18 Dec 2016 21:50:54 GMT'}
-    status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=4&uuid=3ced65a6-c223-4602-9f66-be071138f35d&pnsdk=PubNub-Python-Asyncio%2F4.0.4
+    body:
+      string: '[1,"Sent","16148857846404888"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:04 GMT
+    status:
+      code: 200
+      message: OK
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?seqn=2&pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=ca19afca-c112-4ca1-a7d8-6e8f663ea7d3
 version: 1

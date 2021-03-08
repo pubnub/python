@@ -1,3 +1,9 @@
+## [v5.1.0](https://github.com/pubnub/python/releases/tag/v5.1.0)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.0.1...v5.1.0)
+
+- 🌟️ BREAKING CHANGE: Add randomized initialization vector usage by default for data encryption / decryption in publish / subscribe / history API calls. 
+
 ## [v5.0.1](https://github.com/pubnub/python/releases/tag/v5.0.1)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.0.0...v5.0.1)

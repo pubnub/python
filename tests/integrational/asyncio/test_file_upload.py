@@ -1,5 +1,6 @@
 import pytest
 
+from unittest.mock import patch
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.integrational.vcr_helper import pn_vcr
 from tests.helper import pnconf_file_copy
@@ -91,17 +92,18 @@ async def test_send_and_download_file(event_loop, file_for_upload):
 @pytest.mark.asyncio
 async def test_send_and_download_file_encrypted(event_loop, file_for_upload, file_upload_test_data):
     pubnub = PubNubAsyncio(pnconf_file_copy(), custom_event_loop=event_loop)
-    envelope = await send_file(pubnub, file_for_upload, cipher_key="test")
-    download_envelope = await pubnub.download_file().\
-        channel(CHANNEL).\
-        file_id(envelope.result.file_id).\
-        file_name(envelope.result.name).\
-        cipher_key("test").\
-        future()
+    with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
+        envelope = await send_file(pubnub, file_for_upload, cipher_key="test")
+        download_envelope = await pubnub.download_file().\
+            channel(CHANNEL).\
+            file_id(envelope.result.file_id).\
+            file_name(envelope.result.name).\
+            cipher_key("test").\
+            future()
 
-    assert isinstance(download_envelope.result, PNDownloadFileResult)
-    assert download_envelope.result.data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
-    pubnub.stop()
+        assert isinstance(download_envelope.result, PNDownloadFileResult)
+        assert download_envelope.result.data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
+        pubnub.stop()
 
 
 @pn_vcr.use_cassette(

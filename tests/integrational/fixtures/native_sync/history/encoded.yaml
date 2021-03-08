@@ -2,124 +2,213 @@ interactions:
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/5.0.1
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22QfD1NCBJCmt1aPPGU2cshw%3D%3D%22?seqn=1
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22a25pZ2h0c29mbmkxMjM0NYLqFAmzV6xEhv4befhT3U8%3D%22?seqn=1
   response:
-    body: {string: '[1,"Sent","14820999316486003"]'}
+    body:
+      string: '[1,"Sent","16148858085204084"]'
     headers:
-      Access-Control-Allow-Methods: [GET]
-      Access-Control-Allow-Origin: ['*']
-      Cache-Control: [no-cache]
-      Connection: [keep-alive]
-      Content-Length: ['30']
-      Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Sun, 18 Dec 2016 22:25:31 GMT']
-    status: {code: 200, message: OK}
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:28 GMT
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/5.0.1
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22cIioHNL2bZY8a%2FMa5fBsAA%3D%3D%22?seqn=2
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22a25pZ2h0c29mbmkxMjM0NcZVmNRxZhNvTFrzj1NLAvA%3D%22?seqn=2
   response:
-    body: {string: '[1,"Sent","14820999317435640"]'}
+    body:
+      string: '[1,"Sent","16148858085618717"]'
     headers:
-      Access-Control-Allow-Methods: [GET]
-      Access-Control-Allow-Origin: ['*']
-      Cache-Control: [no-cache]
-      Connection: [keep-alive]
-      Content-Length: ['30']
-      Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Sun, 18 Dec 2016 22:25:31 GMT']
-    status: {code: 200, message: OK}
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:28 GMT
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/5.0.1
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%228YmOnXcBGHtlYIdpGkOvUA%3D%3D%22?seqn=3
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22a25pZ2h0c29mbmkxMjM0NQUHAKTmGtfbQTshE%2BupPfo%3D%22?seqn=3
   response:
-    body: {string: '[1,"Sent","14820999318312588"]'}
+    body:
+      string: '[1,"Sent","16148858086060205"]'
     headers:
-      Access-Control-Allow-Methods: [GET]
-      Access-Control-Allow-Origin: ['*']
-      Cache-Control: [no-cache]
-      Connection: [keep-alive]
-      Content-Length: ['30']
-      Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Sun, 18 Dec 2016 22:25:31 GMT']
-    status: {code: 200, message: OK}
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:28 GMT
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/5.0.1
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22arJa5qQszd4hc65Y4Y2CxA%3D%3D%22?seqn=4
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22a25pZ2h0c29mbmkxMjM0NRb5Ke0DzS9x7TPYNwygP7E%3D%22?seqn=4
   response:
-    body: {string: '[1,"Sent","14820999319032490"]'}
+    body:
+      string: '[1,"Sent","16148858086554931"]'
     headers:
-      Access-Control-Allow-Methods: [GET]
-      Access-Control-Allow-Origin: ['*']
-      Cache-Control: [no-cache]
-      Connection: [keep-alive]
-      Content-Length: ['30']
-      Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Sun, 18 Dec 2016 22:25:31 GMT']
-    status: {code: 200, message: OK}
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:28 GMT
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/5.0.1
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22OJvWYC%2FbWXFvcw%2FTNic9hQ%3D%3D%22?seqn=5
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/history-native-sync-ch/0/%22a25pZ2h0c29mbmkxMjM0NUBxx2hBiI1eW4nG9MkX0Zg%3D%22?seqn=5
   response:
-    body: {string: '[1,"Sent","14820999319748646"]'}
+    body:
+      string: '[1,"Sent","16148858087001780"]'
     headers:
-      Access-Control-Allow-Methods: [GET]
-      Access-Control-Allow-Origin: ['*']
-      Cache-Control: [no-cache]
-      Connection: [keep-alive]
-      Content-Length: ['30']
-      Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Sun, 18 Dec 2016 22:25:31 GMT']
-    status: {code: 200, message: OK}
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:28 GMT
+    status:
+      code: 200
+      message: OK
 - request:
     body: null
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      User-Agent: [PubNub-Python/4.0.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/5.0.1
     method: GET
     uri: https://ps.pndsn.com/v2/history/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/history-native-sync-ch?count=5
   response:
-    body: {string: '[["QfD1NCBJCmt1aPPGU2cshw==","cIioHNL2bZY8a/Ma5fBsAA==","8YmOnXcBGHtlYIdpGkOvUA==","arJa5qQszd4hc65Y4Y2CxA==","OJvWYC/bWXFvcw/TNic9hQ=="],14820999316486003,14820999319748646]'}
+    body:
+      string: '[["a25pZ2h0c29mbmkxMjM0NYLqFAmzV6xEhv4befhT3U8=", "a25pZ2h0c29mbmkxMjM0NcZVmNRxZhNvTFrzj1NLAvA=",
+        "a25pZ2h0c29mbmkxMjM0NQUHAKTmGtfbQTshE+upPfo=", "a25pZ2h0c29mbmkxMjM0NRb5Ke0DzS9x7TPYNwygP7E=",
+        "a25pZ2h0c29mbmkxMjM0NUBxx2hBiI1eW4nG9MkX0Zg="],16148858085204084,16148858087001780]'
     headers:
-      Accept-Ranges: [bytes]
-      Access-Control-Allow-Methods: [GET]
-      Access-Control-Allow-Origin: ['*']
-      Age: ['0']
-      Cache-Control: [no-cache]
-      Connection: [keep-alive]
-      Content-Length: ['174']
-      Content-Type: [text/javascript; charset="UTF-8"]
-      Date: ['Sun, 18 Dec 2016 22:25:37 GMT']
-      Server: [Pubnub]
-    status: {code: 200, message: OK}
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '278'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 04 Mar 2021 19:23:33 GMT
+      Server:
+      - Pubnub
+    status:
+      code: 200
+      message: OK
 version: 1

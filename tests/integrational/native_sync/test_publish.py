@@ -8,6 +8,7 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, pnconf_enc, pnconf_file_copy
 from tests.integrational.vcr_helper import pn_vcr
+from unittest.mock import patch
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -85,9 +86,12 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_encrypted_string_get.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
-    def test_publish_encrypted_string_get(self):
+    @patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345")
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/native_sync/publish/publish_encrypted_string_get.yaml',
+        filter_query_parameters=['uuid', 'pnsdk']
+    )
+    def test_publish_encrypted_string_get(self, crypto_mock):
         try:
             env = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
@@ -99,9 +103,12 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_encrypted_list_get.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
-    def test_publish_encrypted_list_get(self):
+    @patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="spamspamspam1234")
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/native_sync/publish/publish_encrypted_list_get.yaml',
+        filter_query_parameters=['uuid', 'pnsdk']
+    )
+    def test_publish_encrypted_list_get(self, crypto_mock):
         try:
             env = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \
@@ -290,9 +297,12 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_do_not_store.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk', 'l_pub'])
-    def test_publish_do_not_store(self):
+    @patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="killerrabbit1234")
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/native_sync/publish/publish_do_not_store.yaml',
+        filter_query_parameters=['uuid', 'pnsdk', 'l_pub']
+    )
+    def test_publish_do_not_store(self, crypto_mock):
         try:
             env = PubNub(pnconf_enc).publish() \
                 .channel("ch1") \

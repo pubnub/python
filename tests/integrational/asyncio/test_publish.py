@@ -4,6 +4,7 @@ import asyncio
 import pytest
 import pubnub as pn
 
+from unittest.mock import patch
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
@@ -108,27 +109,29 @@ async def test_publish_object_via_post(event_loop):
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 async def test_publish_mixed_via_get_encrypted(event_loop):
-    pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
-    await asyncio.gather(
-        asyncio.ensure_future(assert_success_publish_get(pubnub, "hi")),
-        asyncio.ensure_future(assert_success_publish_get(pubnub, 5)),
-        asyncio.ensure_future(assert_success_publish_get(pubnub, True)),
-        asyncio.ensure_future(assert_success_publish_get(pubnub, ["hi", "hi2", "hi3"])))
+    with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
+        pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
+        await asyncio.gather(
+            asyncio.ensure_future(assert_success_publish_get(pubnub, "hi")),
+            asyncio.ensure_future(assert_success_publish_get(pubnub, 5)),
+            asyncio.ensure_future(assert_success_publish_get(pubnub, True)),
+            asyncio.ensure_future(assert_success_publish_get(pubnub, ["hi", "hi2", "hi3"])))
 
-    pubnub.stop()
+        pubnub.stop()
 
 
 @pn_vcr.use_cassette(
     'tests/integrational/fixtures/asyncio/publish/object_via_get_encrypted.yaml',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
-    match_on=['host', 'method', 'query', 'object_in_path_with_decrypt']
+    match_on=['host', 'method', 'query']
 )
 @pytest.mark.asyncio
 async def test_publish_object_via_get_encrypted(event_loop):
-    pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
-    await asyncio.ensure_future(assert_success_publish_get(pubnub, {"name": "Alex", "online": True}))
+    with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
+        pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
+        await asyncio.ensure_future(assert_success_publish_get(pubnub, {"name": "Alex", "online": True}))
 
-    pubnub.stop()
+        pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -138,28 +141,30 @@ async def test_publish_object_via_get_encrypted(event_loop):
 )
 @pytest.mark.asyncio
 async def test_publish_mixed_via_post_encrypted(event_loop):
-    pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
-    await asyncio.gather(
-        asyncio.ensure_future(assert_success_publish_post(pubnub, "hi")),
-        asyncio.ensure_future(assert_success_publish_post(pubnub, 5)),
-        asyncio.ensure_future(assert_success_publish_post(pubnub, True)),
-        asyncio.ensure_future(assert_success_publish_post(pubnub, ["hi", "hi2", "hi3"]))
-    )
+    with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
+        pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
+        await asyncio.gather(
+            asyncio.ensure_future(assert_success_publish_post(pubnub, "hi")),
+            asyncio.ensure_future(assert_success_publish_post(pubnub, 5)),
+            asyncio.ensure_future(assert_success_publish_post(pubnub, True)),
+            asyncio.ensure_future(assert_success_publish_post(pubnub, ["hi", "hi2", "hi3"]))
+        )
 
-    pubnub.stop()
+        pubnub.stop()
 
 
 @pn_vcr.use_cassette(
     'tests/integrational/fixtures/asyncio/publish/object_via_post_encrypted.yaml',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
-    match_on=['method', 'path', 'query', 'object_in_body_with_decrypt']
+    match_on=['method', 'path', 'query']
 )
 @pytest.mark.asyncio
 async def test_publish_object_via_post_encrypted(event_loop):
-    pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
-    await asyncio.ensure_future(assert_success_publish_post(pubnub, {"name": "Alex", "online": True}))
+    with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
+        pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
+        await asyncio.ensure_future(assert_success_publish_post(pubnub, {"name": "Alex", "online": True}))
 
-    pubnub.stop()
+        pubnub.stop()
 
 
 @pytest.mark.asyncio

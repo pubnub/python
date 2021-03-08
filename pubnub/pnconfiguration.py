@@ -29,7 +29,7 @@ class PNConfiguration(object):
         self.reconnect_policy = PNReconnectionPolicy.NONE
         self.daemon = False
         self.disable_token_manager = False
-        self.use_random_initialization_vector = False
+        self.use_random_initialization_vector = True
         self.suppress_leave_events = False
 
         self.heartbeat_default_values = True

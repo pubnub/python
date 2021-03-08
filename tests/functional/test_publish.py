@@ -1,10 +1,8 @@
 import copy
 import unittest
 
-try:
-    from mock import MagicMock
-except ImportError:
-    from unittest.mock import MagicMock
+
+from unittest.mock import MagicMock
 
 from pubnub.endpoints.pubsub.publish import Publish
 from pubnub.pubnub import PubNub
@@ -139,6 +137,7 @@ class TestPublish(unittest.TestCase):
 
     def test_pub_encrypted_list_message(self):
         conf = copy.copy(pnconf)
+        conf.use_random_initialization_vector = False
         conf.cipher_key = "testCipher"
 
         pubnub = MagicMock(

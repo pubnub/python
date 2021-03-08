@@ -4,6 +4,7 @@ import unittest
 import pubnub
 import pytest
 
+from unittest.mock import patch
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.history import PNHistoryResult
 from pubnub.models.consumer.pubsub import PNPublishResult
@@ -44,9 +45,12 @@ class TestPubNubHistory(unittest.TestCase):
         assert envelope.result.messages[3].entry == 'hey-3'
         assert envelope.result.messages[4].entry == 'hey-4'
 
-    @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/encoded.yaml',
-                                             filter_query_parameters=['uuid', 'pnsdk', 'l_pub'])
-    def test_encrypted(self):
+    @patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345")
+    @use_cassette_and_stub_time_sleep_native(
+        'tests/integrational/fixtures/native_sync/history/encoded.yaml',
+        filter_query_parameters=['uuid', 'pnsdk', 'l_pub']
+    )
+    def test_encrypted(self, crypto_mock):
         ch = "history-native-sync-ch"
         pubnub = PubNub(pnconf_enc_copy())
         pubnub.config.uuid = "history-native-sync-uuid"

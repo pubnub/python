@@ -3,13 +3,13 @@ interactions:
     body: '{"name": "king_arthur.txt"}'
     headers:
       User-Agent:
-      - PubNub-Python-Asyncio/4.7.0
+      - PubNub-Python-Asyncio/5.0.1
     method: POST
     uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/generate-upload-url
   response:
     body:
-      string: '{"status":200,"data":{"id":"e818082d-f0da-435f-bd17-70f0807150c4","name":"king_arthur.txt"},"file_upload_request":{"url":"https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/","method":"POST","expiration_date":"2020-12-09T16:41:05Z","form_fields":[{"key":"tagging","value":"\u003cTagging\u003e\u003cTagSet\u003e\u003cTag\u003e\u003cKey\u003eObjectTTLInDays\u003c/Key\u003e\u003cValue\u003e1\u003c/Value\u003e\u003c/Tag\u003e\u003c/TagSet\u003e\u003c/Tagging\u003e"},{"key":"key","value":"sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/e818082d-f0da-435f-bd17-70f0807150c4/king_arthur.txt"},{"key":"Content-Type","value":"text/plain;
-        charset=utf-8"},{"key":"X-Amz-Credential","value":"AKIAY7AU6GQD5KWBS3FG/20201209/eu-central-1/s3/aws4_request"},{"key":"X-Amz-Security-Token","value":""},{"key":"X-Amz-Algorithm","value":"AWS4-HMAC-SHA256"},{"key":"X-Amz-Date","value":"20201209T164105Z"},{"key":"Policy","value":"CnsKCSJleHBpcmF0aW9uIjogIjIwMjAtMTItMDlUMTY6NDE6MDVaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvZTgxODA4MmQtZjBkYS00MzVmLWJkMTctNzBmMDgwNzE1MGM0L2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRDVLV0JTM0ZHLzIwMjAxMjA5L2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMDEyMDlUMTY0MTA1WiIgfQoJXQp9Cg=="},{"key":"X-Amz-Signature","value":"ee002907feaafc2140855b38a2f98461bc1fe828c77aa0ffc1f5ae1a5d3985d0"}]}}'
+      string: '{"status":200,"data":{"id":"2594cb72-a6e9-4b34-844b-c455269b39ad","name":"king_arthur.txt"},"file_upload_request":{"url":"https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/","method":"POST","expiration_date":"2021-03-04T20:22:43Z","form_fields":[{"key":"tagging","value":"\u003cTagging\u003e\u003cTagSet\u003e\u003cTag\u003e\u003cKey\u003eObjectTTLInDays\u003c/Key\u003e\u003cValue\u003e1\u003c/Value\u003e\u003c/Tag\u003e\u003c/TagSet\u003e\u003c/Tagging\u003e"},{"key":"key","value":"sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/2594cb72-a6e9-4b34-844b-c455269b39ad/king_arthur.txt"},{"key":"Content-Type","value":"text/plain;
+        charset=utf-8"},{"key":"X-Amz-Credential","value":"AKIAY7AU6GQD5KWBS3FG/20210304/eu-central-1/s3/aws4_request"},{"key":"X-Amz-Security-Token","value":""},{"key":"X-Amz-Algorithm","value":"AWS4-HMAC-SHA256"},{"key":"X-Amz-Date","value":"20210304T202243Z"},{"key":"Policy","value":"CnsKCSJleHBpcmF0aW9uIjogIjIwMjEtMDMtMDRUMjA6MjI6NDNaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvMjU5NGNiNzItYTZlOS00YjM0LTg0NGItYzQ1NTI2OWIzOWFkL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRDVLV0JTM0ZHLzIwMjEwMzA0L2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMTAzMDRUMjAyMjQzWiIgfQoJXQp9Cg=="},{"key":"X-Amz-Signature","value":"37aa225bfa58521f4c53bbbb1f9251911f4e4c9d34719739e01b0945d63f9255"}]}}'
     headers:
       Access-Control-Allow-Origin:
       - '*'
@@ -20,7 +20,7 @@ interactions:
       Content-Type:
       - application/json
       Date:
-      - Wed, 09 Dec 2020 16:40:05 GMT
+      - Thu, 04 Mar 2021 20:21:43 GMT
       Transfer-Encoding:
       - chunked
       Vary:
@@ -28,7 +28,7 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/generate-upload-url?pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=b2ad5a21-4f37-4b44-a514-8b7971c57f08
+    url: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/generate-upload-url?pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=7bfa1c79-108a-4fe1-8aa4-b82a06a87fa1
 - request:
     body: !!python/object:aiohttp.formdata.FormData
       _charset: null
@@ -50,7 +50,7 @@ interactions:
         - ? !!python/object/new:multidict._multidict.istr
           - Content-Type
           : multipart/form-data
-        - sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/e818082d-f0da-435f-bd17-70f0807150c4/king_arthur.txt
+        - sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/2594cb72-a6e9-4b34-844b-c455269b39ad/king_arthur.txt
       - !!python/tuple
         - !!python/object/apply:multidict._multidict.MultiDict
           - - !!python/tuple
@@ -68,7 +68,7 @@ interactions:
         - ? !!python/object/new:multidict._multidict.istr
           - Content-Type
           : multipart/form-data
-        - AKIAY7AU6GQD5KWBS3FG/20201209/eu-central-1/s3/aws4_request
+        - AKIAY7AU6GQD5KWBS3FG/20210304/eu-central-1/s3/aws4_request
       - !!python/tuple
         - !!python/object/apply:multidict._multidict.MultiDict
           - - !!python/tuple
@@ -95,7 +95,7 @@ interactions:
         - ? !!python/object/new:multidict._multidict.istr
           - Content-Type
           : multipart/form-data
-        - 20201209T164105Z
+        - 20210304T202243Z
       - !!python/tuple
         - !!python/object/apply:multidict._multidict.MultiDict
           - - !!python/tuple
@@ -104,7 +104,7 @@ interactions:
         - ? !!python/object/new:multidict._multidict.istr
           - Content-Type
           : multipart/form-data
-        - CnsKCSJleHBpcmF0aW9uIjogIjIwMjAtMTItMDlUMTY6NDE6MDVaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvZTgxODA4MmQtZjBkYS00MzVmLWJkMTctNzBmMDgwNzE1MGM0L2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRDVLV0JTM0ZHLzIwMjAxMjA5L2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMDEyMDlUMTY0MTA1WiIgfQoJXQp9Cg==
+        - CnsKCSJleHBpcmF0aW9uIjogIjIwMjEtMDMtMDRUMjA6MjI6NDNaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvMjU5NGNiNzItYTZlOS00YjM0LTg0NGItYzQ1NTI2OWIzOWFkL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRDVLV0JTM0ZHLzIwMjEwMzA0L2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMTAzMDRUMjAyMjQzWiIgfQoJXQp9Cg==
       - !!python/tuple
         - !!python/object/apply:multidict._multidict.MultiDict
           - - !!python/tuple
@@ -113,7 +113,7 @@ interactions:
         - ? !!python/object/new:multidict._multidict.istr
           - Content-Type
           : multipart/form-data
-        - ee002907feaafc2140855b38a2f98461bc1fe828c77aa0ffc1f5ae1a5d3985d0
+        - 37aa225bfa58521f4c53bbbb1f9251911f4e4c9d34719739e01b0945d63f9255
       - !!python/tuple
         - !!python/object/apply:multidict._multidict.MultiDict
           - - !!python/tuple
@@ -126,20 +126,20 @@ interactions:
           - Content-Type
           : application/octet-stream
         - !!binary |
-          MzE1NzcwMTk5MjU1ODExOdgTJiVV1Q1ICoLmCSD1E5Rmql+gmXdArv9kM41mZZsE
+          a25pZ2h0c29mbmkxMjM0NbXi3hAKzpZ0fRIWartga6yBzort6rj11xNWzmdAFGh/
       _is_multipart: true
       _is_processed: true
       _quote_fields: true
       _writer: !!python/object:aiohttp.multipart.MultipartWriter
         _boundary: !!binary |
-          ZjU4NDdkNTdlNjRhNDVlZDg2ZjNhYzQzZGVmMWY2NzI=
+          ZTVmN2VmM2VmZGFiNDc2ODhkMjk2YzJjOWNlMjU0NmY=
         _encoding: null
         _filename: null
         _headers: !!python/object/apply:multidict._multidict.CIMultiDict
         - - !!python/tuple
             - !!python/object/new:multidict._multidict.istr
               - Content-Type
-            - multipart/form-data; boundary=f5847d57e64a45ed86f3ac43def1f672
+            - multipart/form-data; boundary=e5f7ef3efdab47688d296c2c9ce2546f
         _parts:
         - !!python/tuple
           - !!python/object:aiohttp.payload.StringPayload
@@ -184,8 +184,8 @@ interactions:
             _size: 139
             _value: !!binary |
               c3ViLWMtYzg4MjQyZmEtMTNhZS0xMWViLWJjMzQtY2U2ZmQ5NjdhZjk1LzBNUjEtejJ3MG5TSll4
-              d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvZTgxODA4MmQtZjBkYS00MzVmLWJkMTctNzBm
-              MDgwNzE1MGM0L2tpbmdfYXJ0aHVyLnR4dA==
+              d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvMjU5NGNiNzItYTZlOS00YjM0LTg0NGItYzQ1
+              NTI2OWIzOWFkL2tpbmdfYXJ0aHVyLnR4dA==
           - ''
           - ''
         - !!python/tuple
@@ -229,7 +229,7 @@ interactions:
                 - '58'
             _size: 58
             _value: !!binary |
-              QUtJQVk3QVU2R1FENUtXQlMzRkcvMjAyMDEyMDkvZXUtY2VudHJhbC0xL3MzL2F3czRfcmVxdWVz
+              QUtJQVk3QVU2R1FENUtXQlMzRkcvMjAyMTAzMDQvZXUtY2VudHJhbC0xL3MzL2F3czRfcmVxdWVz
               dA==
           - ''
           - ''
@@ -295,7 +295,7 @@ interactions:
                 - '16'
             _size: 16
             _value: !!binary |
-              MjAyMDEyMDlUMTY0MTA1Wg==
+              MjAyMTAzMDRUMjAyMjQzWg==
           - ''
           - ''
         - !!python/tuple
@@ -317,22 +317,22 @@ interactions:
                 - '904'
             _size: 904
             _value: !!binary |
-              Q25zS0NTSmxlSEJwY21GMGFXOXVJam9nSWpJd01qQXRNVEl0TURsVU1UWTZOREU2TURWYUlpd0tD
+              Q25zS0NTSmxlSEJwY21GMGFXOXVJam9nSWpJd01qRXRNRE10TURSVU1qQTZNakk2TkROYUlpd0tD
               U0pqYjI1a2FYUnBiMjV6SWpvZ1d3b0pDWHNpWW5WamEyVjBJam9nSW5CMVltNTFZaTF0Ym1WdGIz
               TjVibVV0Wm1sc1pYTXRaWFV0WTJWdWRISmhiQzB4TFhCeVpDSjlMQW9KQ1ZzaVpYRWlMQ0FpSkhS
               aFoyZHBibWNpTENBaVBGUmhaMmRwYm1jK1BGUmhaMU5sZEQ0OFZHRm5QanhMWlhrK1QySnFaV04w
               VkZSTVNXNUVZWGx6UEM5TFpYaytQRlpoYkhWbFBqRThMMVpoYkhWbFBqd3ZWR0ZuUGp3dlZHRm5V
               MlYwUGp3dlZHRm5aMmx1Wno0aVhTd0tDUWxiSW1WeElpd2dJaVJyWlhraUxDQWljM1ZpTFdNdFl6
               ZzRNalF5Wm1FdE1UTmhaUzB4TVdWaUxXSmpNelF0WTJVMlptUTVOamRoWmprMUx6Qk5VakV0ZWpK
-              M01HNVRTbGw0ZDBWNU56UndOVkZxVmpnMVZHMW5Ua0pMVUhKV056RjBOVFZPVkRBdlpUZ3hPREE0
-              TW1RdFpqQmtZUzAwTXpWbUxXSmtNVGN0TnpCbU1EZ3dOekUxTUdNMEwydHBibWRmWVhKMGFIVnlM
+              M01HNVRTbGw0ZDBWNU56UndOVkZxVmpnMVZHMW5Ua0pMVUhKV056RjBOVFZPVkRBdk1qVTVOR05p
+              TnpJdFlUWmxPUzAwWWpNMExUZzBOR0l0WXpRMU5USTJPV0l6T1dGa0wydHBibWRmWVhKMGFIVnlM
               blI0ZENKZExBb0pDVnNpWTI5dWRHVnVkQzFzWlc1bmRHZ3RjbUZ1WjJVaUxDQXdMQ0ExTWpReU9E
               Z3dYU3dLQ1FsYkluTjBZWEowY3kxM2FYUm9JaXdnSWlSRGIyNTBaVzUwTFZSNWNHVWlMQ0FpSWww
               c0Nna0pleUo0TFdGdGVpMWpjbVZrWlc1MGFXRnNJam9nSWtGTFNVRlpOMEZWTmtkUlJEVkxWMEpU
-              TTBaSEx6SXdNakF4TWpBNUwyVjFMV05sYm5SeVlXd3RNUzl6TXk5aGQzTTBYM0psY1hWbGMzUWlm
+              TTBaSEx6SXdNakV3TXpBMEwyVjFMV05sYm5SeVlXd3RNUzl6TXk5aGQzTTBYM0psY1hWbGMzUWlm
               U3dLQ1FsN0luZ3RZVzE2TFhObFkzVnlhWFI1TFhSdmEyVnVJam9nSWlKOUxBb0pDWHNpZUMxaGJY
               b3RZV3huYjNKcGRHaHRJam9nSWtGWFV6UXRTRTFCUXkxVFNFRXlOVFlpZlN3S0NRbDdJbmd0WVcx
-              NkxXUmhkR1VpT2lBaU1qQXlNREV5TURsVU1UWTBNVEExV2lJZ2ZRb0pYUXA5Q2c9PQ==
+              NkxXUmhkR1VpT2lBaU1qQXlNVEF6TURSVU1qQXlNalF6V2lJZ2ZRb0pYUXA5Q2c9PQ==
           - ''
           - ''
         - !!python/tuple
@@ -354,8 +354,8 @@ interactions:
                 - '64'
             _size: 64
             _value: !!binary |
-              ZWUwMDI5MDdmZWFhZmMyMTQwODU1YjM4YTJmOTg0NjFiYzFmZTgyOGM3N2FhMGZmYzFmNWFlMWE1
-              ZDM5ODVkMA==
+              MzdhYTIyNWJmYTU4NTIxZjRjNTNiYmJiMWY5MjUxOTExZjRlNGM5ZDM0NzE5NzM5ZTAxYjA5NDVk
+              NjNmOTI1NQ==
           - ''
           - ''
         - !!python/tuple
@@ -377,13 +377,13 @@ interactions:
                 - '48'
             _size: 48
             _value: !!binary |
-              MzE1NzcwMTk5MjU1ODExOdgTJiVV1Q1ICoLmCSD1E5Rmql+gmXdArv9kM41mZZsE
+              a25pZ2h0c29mbmkxMjM0NbXi3hAKzpZ0fRIWartga6yBzort6rj11xNWzmdAFGh/
           - ''
           - ''
         _value: null
     headers:
       User-Agent:
-      - PubNub-Python-Asyncio/4.7.0
+      - PubNub-Python-Asyncio/5.0.1
     method: POST
     uri: https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/
   response:
@@ -391,20 +391,20 @@ interactions:
       string: ''
     headers:
       Date:
-      - Wed, 09 Dec 2020 16:40:07 GMT
+      - Thu, 04 Mar 2021 20:21:45 GMT
       Etag:
-      - '"6e9bb1045cac244dfa218593748ee183"'
+      - '"54c0565f0dd787c6d22c3d455b12d6ac"'
       Location:
-      - https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/sub-c-mock-key%2F0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0%2Fe818082d-f0da-435f-bd17-70f0807150c4%2Fking_arthur.txt
+      - https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/sub-c-mock-key%2F0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0%2F2594cb72-a6e9-4b34-844b-c455269b39ad%2Fking_arthur.txt
       Server:
       - AmazonS3
       x-amz-expiration:
-      - expiry-date="Fri, 11 Dec 2020 00:00:00 GMT", rule-id="Archive file 1 day after
+      - expiry-date="Sat, 06 Mar 2021 00:00:00 GMT", rule-id="Archive file 1 day after
         creation"
       x-amz-id-2:
-      - GfB/TSUZRb4Vi87uZrOyBB45GQiWLA9IwWEEhGBa+U77ybMxsBHGYMrD/2YkYRnRSo50oQxqSxw=
+      - gz3pK5wFZq3k+9usuQbkxaE5LOhJVWmpJXZncstQuRO5Wrd/weUWhJncEs2kJN5no7r6jVIcJos=
       x-amz-request-id:
-      - 3E3A2E6D63F7DE13
+      - EHBHAR9W1ZEZ8M3T
       x-amz-server-side-encryption:
       - AES256
     status:
@@ -412,15 +412,15 @@ interactions:
       message: No Content
     url: https://pubnub-mnemosyne-files-eu-central-1-prd.s3.amazonaws.com/
 - request:
-    body: null
+    body: nullq
     headers:
       User-Agent:
-      - PubNub-Python-Asyncio/4.7.0
+      - PubNub-Python-Asyncio/5.0.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-mock-key/sub-c-mock-key/0/files_asyncio_ch/0/%22y3LoIxh%2FhzntHbmJXXPQR%2FcsvR1VWNQHJfPt09gQKtLFCKUis6sfMWit1GDAQjCV8Xb%2FM7nFqDRDsxR61ecxvHUYrgHwDKYjCa2gd7FKSkSx%2BvgykAgMoUnGNKLkydHWJ0QJAtEO3jt4trtUtiUm8IYJSRy04UNOU2IXPyr2yIs%3D%22?meta=null&store=1&ttl=222
+    uri: https://ps.pndsn.com/v1/files/publish-file/pub-c-mock-key/sub-c-mock-key/0/files_asyncio_ch/0/%22a25pZ2h0c29mbmkxMjM0NXmhf%2BORk1GxlwqjcrSxSR7QjuwQHs4oHPiUsXidPQkk1vPPyxRJDAK7XvCHEfoIK0VknkpJ9GQ9zZx1JYyNLjklegZbgatmocU76aLyaNSXhu1Kw2G9Q0TIu0b1sDLIzRRq4o9c02z7QuwLPv8JWzDaxwL8UV4IIOjoeoQbJ9j7%22?meta=null&store=1&ttl=222
   response:
     body:
-      string: '[1,"Sent","16075320062053898"]'
+      string: '[1,"Sent","16148893042407731"]'
     headers:
       Access-Control-Allow-Methods:
       - GET
@@ -435,18 +435,18 @@ interactions:
       Content-Type:
       - text/javascript; charset="UTF-8"
       Date:
-      - Wed, 09 Dec 2020 16:40:06 GMT
+      - Thu, 04 Mar 2021 20:21:44 GMT
     status:
       code: 200
       message: OK
-    url: https://ps.pndsn.com/v1/files/publish-file/pub-c-mock-key/sub-c-mock-key/0/files_asyncio_ch/0/%22y3LoIxh%2FhzntHbmJXXPQR%2FcsvR1VWNQHJfPt09gQKtLFCKUis6sfMWit1GDAQjCV8Xb%2FM7nFqDRDsxR61ecxvHUYrgHwDKYjCa2gd7FKSkSx%2BvgykAgMoUnGNKLkydHWJ0QJAtEO3jt4trtUtiUm8IYJSRy04UNOU2IXPyr2yIs%3D%22?meta=null&ttl=222&store=1&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=b2ad5a21-4f37-4b44-a514-8b7971c57f08&l_file=0.2024080753326416
+    url: https://ps.pndsn.com/v1/files/publish-file/pub-c-mock-key/sub-c-mock-key/0/files_asyncio_ch/0/%22a25pZ2h0c29mbmkxMjM0NXmhf%2BORk1GxlwqjcrSxSR7QjuwQHs4oHPiUsXidPQkk1vPPyxRJDAK7XvCHEfoIK0VknkpJ9GQ9zZx1JYyNLjklegZbgatmocU76aLyaNSXhu1Kw2G9Q0TIu0b1sDLIzRRq4o9c02z7QuwLPv8JWzDaxwL8UV4IIOjoeoQbJ9j7%22?meta=null&ttl=222&store=1&pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=7bfa1c79-108a-4fe1-8aa4-b82a06a87fa1&l_file=0.40791499614715576
 - request:
     body: null
     headers:
       User-Agent:
-      - PubNub-Python-Asyncio/4.7.0
+      - PubNub-Python-Asyncio/5.0.1
     method: GET
-    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/files/e818082d-f0da-435f-bd17-70f0807150c4/king_arthur.txt
+    uri: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/files/2594cb72-a6e9-4b34-844b-c455269b39ad/king_arthur.txt
   response:
     body:
       string: ''
@@ -454,30 +454,30 @@ interactions:
       Access-Control-Allow-Origin:
       - '*'
       Cache-Control:
-      - public, max-age=1434, immutable
+      - public, max-age=2536, immutable
       Connection:
       - keep-alive
       Content-Length:
       - '0'
       Date:
-      - Wed, 09 Dec 2020 16:40:06 GMT
+      - Thu, 04 Mar 2021 20:21:44 GMT
       Location:
-      - https://files-eu-central-1.pndsn.com/sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/e818082d-f0da-435f-bd17-70f0807150c4/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201209%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201209T160000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=6d7034a4f0b199a62d2c11fb1ba3872bdb438b7adc2bc259b8e92b9668a9cceb
+      - https://files-eu-central-1.pndsn.com/sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/2594cb72-a6e9-4b34-844b-c455269b39ad/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20210304%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20210304T200000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=d8e7ea34e3090df853a05941de93d25bd5e6e0aa99106049c7bc63b089cc306e
     status:
       code: 307
       message: Temporary Redirect
-    url: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/files/e818082d-f0da-435f-bd17-70f0807150c4/king_arthur.txt?pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=b2ad5a21-4f37-4b44-a514-8b7971c57f08&l_file=0.14757903416951498
+    url: https://ps.pndsn.com/v1/files/sub-c-mock-key/channels/files_asyncio_ch/files/2594cb72-a6e9-4b34-844b-c455269b39ad/king_arthur.txt?pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=7bfa1c79-108a-4fe1-8aa4-b82a06a87fa1&l_file=0.2835416793823242
 - request:
     body: null
     headers:
       User-Agent:
-      - PubNub-Python-Asyncio/4.7.0
+      - PubNub-Python-Asyncio/5.0.1
     method: GET
-    uri: https://files-eu-central-1.pndsn.com/sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/e818082d-f0da-435f-bd17-70f0807150c4/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201209%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201209T160000Z&X-Amz-Expires=3900&X-Amz-Signature=6d7034a4f0b199a62d2c11fb1ba3872bdb438b7adc2bc259b8e92b9668a9cceb&X-Amz-SignedHeaders=host
+    uri: https://files-eu-central-1.pndsn.com/sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/2594cb72-a6e9-4b34-844b-c455269b39ad/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20210304%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20210304T200000Z&X-Amz-Expires=3900&X-Amz-Signature=d8e7ea34e3090df853a05941de93d25bd5e6e0aa99106049c7bc63b089cc306e&X-Amz-SignedHeaders=host
   response:
     body:
       string: !!binary |
-        MzE1NzcwMTk5MjU1ODExOdgTJiVV1Q1ICoLmCSD1E5Rmql+gmXdArv9kM41mZZsE
+        a25pZ2h0c29mbmkxMjM0NbXi3hAKzpZ0fRIWartga6yBzort6rj11xNWzmdAFGh/
     headers:
       Accept-Ranges:
       - bytes
@@ -488,28 +488,28 @@ interactions:
       Content-Type:
       - text/plain; charset=utf-8
       Date:
-      - Wed, 09 Dec 2020 16:40:07 GMT
+      - Thu, 04 Mar 2021 20:21:45 GMT
       Etag:
-      - '"6e9bb1045cac244dfa218593748ee183"'
+      - '"54c0565f0dd787c6d22c3d455b12d6ac"'
       Last-Modified:
-      - Wed, 09 Dec 2020 16:40:07 GMT
+      - Thu, 04 Mar 2021 20:21:45 GMT
       Server:
       - AmazonS3
       Via:
-      - 1.1 e28c193c96684df9ba36cf3fd8976708.cloudfront.net (CloudFront)
+      - 1.1 4ee178becf6bd81a5ce90c64ae0621b5.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - tVhyL_C8dUjkfNT0nWjRxZfya1e2zXID0l3oYlqRRaCj5CBeWVLacg==
+      - oTbk1AE2s8pYZ6kYOcjSkyePapSBZMGmRsbRq1WOCn36JDM5hxHNkw==
       X-Amz-Cf-Pop:
-      - AMS54-C1
+      - ZRH50-C1
       X-Cache:
       - Miss from cloudfront
       x-amz-expiration:
-      - expiry-date="Fri, 11 Dec 2020 00:00:00 GMT", rule-id="Archive file 1 day after
+      - expiry-date="Sat, 06 Mar 2021 00:00:00 GMT", rule-id="Archive file 1 day after
         creation"
       x-amz-server-side-encryption:
       - AES256
     status:
       code: 200
       message: OK
-    url: https://files-eu-central-1.pndsn.com/sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/e818082d-f0da-435f-bd17-70f0807150c4/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20201209%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20201209T160000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=6d7034a4f0b199a62d2c11fb1ba3872bdb438b7adc2bc259b8e92b9668a9cceb
+    url: https://files-eu-central-1.pndsn.com/sub-c-mock-key/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/2594cb72-a6e9-4b34-844b-c455269b39ad/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQD5KWBS3FG%2F20210304%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20210304T200000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=d8e7ea34e3090df853a05941de93d25bd5e6e0aa99106049c7bc63b089cc306e
 version: 1

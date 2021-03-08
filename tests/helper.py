@@ -8,8 +8,8 @@ from pubnub import utils
 from pubnub.crypto import PubNubCryptodome
 from pubnub.pnconfiguration import PNConfiguration
 
-
-crypto = PubNubCryptodome(PNConfiguration())
+crypto_configuration = PNConfiguration()
+crypto = PubNubCryptodome(crypto_configuration)
 
 DEFAULT_TEST_CIPHER_KEY = "testKey"
 
@@ -71,6 +71,13 @@ mocked_config = PNConfiguration()
 mocked_config.publish_key = pub_key_mock
 mocked_config.subscribe_key = sub_key_mock
 
+hardcoded_iv_config = PNConfiguration()
+hardcoded_iv_config.use_random_initialization_vector = False
+
+
+def hardcoded_iv_config_copy():
+    return copy(hardcoded_iv_config)
+
 
 def mocked_config_copy():
     return copy(mocked_config)
@@ -129,14 +136,6 @@ def gen_channel(prefix):
 
 def gen_string(length):
     return ''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(length))
-
-
-def gen_decrypt_func(cipher_key=DEFAULT_TEST_CIPHER_KEY):
-    def decrypter(entry):
-        mr = crypto.decrypt(cipher_key, entry)
-        return mr
-
-    return decrypter
 
 
 class CountDownLatch(object):

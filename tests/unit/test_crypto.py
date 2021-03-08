@@ -1,9 +1,9 @@
 from pubnub.pubnub import PubNub
 from pubnub.crypto import PubNubCryptodome
-from tests.helper import gen_decrypt_func
-from tests.helper import pnconf_file_copy
+from tests.helper import pnconf_file_copy, hardcoded_iv_config_copy
 
 crypto = PubNubCryptodome(pnconf_file_copy())
+crypto_hardcoded_iv = PubNubCryptodome(hardcoded_iv_config_copy())
 todecode = 'QfD1NCBJCmt1aPPGU2cshw=='
 plaintext_message = "hey-0"
 KEY = 'testKey'
@@ -20,13 +20,9 @@ class TestPubNubCryptodome:
         """
 
         assert crypto.decrypt(KEY, crypto.encrypt(KEY, multiline_test_message)) == multiline_test_message
-        assert crypto.decrypt(KEY, todecode) == plaintext_message
 
-    def test_vc_body_decoder(self):
-        input = b'"9P/7+NNs54o7Go41yh+3rIn8BW0H0ad+mKlKTKGw2i1eoQP1ddHrnIzkRUPEC3ko"'
-        # print(json.loads(input.decode('utf-8')))
-        assert {"name": "Alex", "online": True} == \
-            gen_decrypt_func()(input.decode('utf-8'))
+    def test_decode_aes_default_hardcoded_iv(self):
+        assert crypto_hardcoded_iv.decrypt(KEY, todecode) == plaintext_message
 
     def test_message_encryption_with_random_iv(self, pn_crypto=crypto):
         encrypted = pn_crypto.encrypt(KEY, plaintext_message, use_random_iv=True)
@@ -50,9 +46,12 @@ class TestPubNubCryptodome:
         iv, extracted_message = crypto.extract_random_iv(msg, use_random_iv=True)
         assert extracted_message == plaintext_message
 
-    def test_get_initialization_vector(self):
+    def test_get_initialization_vector_is_random(self):
         iv = crypto.get_initialization_vector(use_random_iv=True)
+        iv2 = crypto.get_initialization_vector(use_random_iv=True)
+
         assert len(iv) == 16
+        assert iv != iv2
 
 
 class TestPubNubFileCrypto:

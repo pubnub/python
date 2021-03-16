@@ -174,7 +174,6 @@ class NativeSubscriptionManager(SubscriptionManager):
 
                 pn_status = PNStatus()
                 pn_status.category = PNStatusCategory.PNReconnectedCategory
-                pn_status.error = False
 
                 subscription_manager._subscription_status_announced = True
                 subscription_manager._listener_manager.announce_status(pn_status)

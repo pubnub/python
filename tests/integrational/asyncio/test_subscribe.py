@@ -44,7 +44,7 @@ async def test_subscribe_unsubscribe(event_loop):
     assert channel not in pubnub.get_subscribed_channels()
     assert len(pubnub.get_subscribed_channels()) == 0
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub.yaml',
@@ -138,7 +138,7 @@ async def test_encrypted_subscribe_publish_unsubscribe(event_loop):
         pubnub.unsubscribe().channels(channel).execute()
         await callback.wait_for_disconnect()
 
-        pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml',
@@ -190,7 +190,7 @@ async def test_join_leave(event_loop):
     pubnub_listener.unsubscribe().channels(channel).execute()
     await callback_presence.wait_for_disconnect()
 
-    pubnub.stop()
+    await pubnub.stop()
     pubnub_listener.stop()
 
 
@@ -220,7 +220,7 @@ async def test_cg_subscribe_unsubscribe(event_loop, sleeper=asyncio.sleep):
     envelope = await pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml')
@@ -264,7 +264,7 @@ async def test_cg_subscribe_publish_unsubscribe(event_loop, sleeper=asyncio.slee
     envelope = await pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.yaml')
@@ -330,7 +330,7 @@ async def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     envelope = await pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    pubnub.stop()
+    await pubnub.stop()
     pubnub_listener.stop()
 
 
@@ -381,4 +381,4 @@ async def test_unsubscribe_all(event_loop, sleeper=asyncio.sleep):
     envelope = await pubnub.remove_channel_from_channel_group().channel_group(gr2).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    pubnub.stop()
+    await pubnub.stop()

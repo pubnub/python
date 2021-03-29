@@ -20,8 +20,10 @@ from . import utils
 from .structures import ResponseInfo, RequestOptions
 from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
 from .callbacks import SubscribeCallback, ReconnectionCallback
-from .errors import PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED, PNERR_REQUEST_CANCELLED,\
-    PNERR_CLIENT_TIMEOUT
+from .errors import (
+    PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED,
+    PNERR_REQUEST_CANCELLED, PNERR_CLIENT_TIMEOUT
+)
 from .exceptions import PubNubException
 
 logger = logging.getLogger("pubnub")
@@ -39,19 +41,22 @@ class PubNubAsyncio(PubNubCore):
         self._connector = None
         self._session = None
 
-        self.set_connector(aiohttp.TCPConnector(verify_ssl=True))
+        self._connector = aiohttp.TCPConnector(verify_ssl=True)
+        self._session = aiohttp.ClientSession(
+            loop=self.event_loop,
+            conn_timeout=self.config.connect_timeout,
+            connector=self._connector
+        )
 
         if self.config.enable_subscribe:
             self._subscription_manager = AsyncioSubscriptionManager(self)
 
-        self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop,
-                                                                       PubNubCore.MAX_SEQUENCE)
+        self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop, PubNubCore.MAX_SEQUENCE)
 
         self._telemetry_manager = AsyncioTelemetryManager()
 
-    def set_connector(self, cn):
-        if self._session is not None and self._session.closed:
-            self._session.close()
+    async def set_connector(self, cn):
+        await self._session.close()
 
         self._connector = cn
 
@@ -61,9 +66,9 @@ class PubNubAsyncio(PubNubCore):
             connector=self._connector
         )
 
-    def stop(self):
-        self._session.close()
-        if self._subscription_manager is not None:
+    async def stop(self):
+        await self._session.close()
+        if self._subscription_manager:
             self._subscription_manager.stop()
 
     def sdk_platform(self):
@@ -91,30 +96,36 @@ class PubNubAsyncio(PubNubCore):
         except asyncio.TimeoutError:
             return PubNubAsyncioException(
                 result=None,
-                status=options_func().create_status(PNStatusCategory.PNTimeoutCategory,
-                                                    None,
-                                                    None,
-                                                    exception=PubNubException(
-                                                        pn_error=PNERR_CLIENT_TIMEOUT
-                                                    ))
+                status=options_func().create_status(
+                    PNStatusCategory.PNTimeoutCategory,
+                    None,
+                    None,
+                    exception=PubNubException(
+                        pn_error=PNERR_CLIENT_TIMEOUT
+                    )
+                )
             )
         except asyncio.CancelledError:
             return PubNubAsyncioException(
                 result=None,
-                status=options_func().create_status(PNStatusCategory.PNCancelledCategory,
-                                                    None,
-                                                    None,
-                                                    exception=PubNubException(
-                                                        pn_error=PNERR_REQUEST_CANCELLED
-                                                    ))
+                status=options_func().create_status(
+                    PNStatusCategory.PNCancelledCategory,
+                    None,
+                    None,
+                    exception=PubNubException(
+                        pn_error=PNERR_REQUEST_CANCELLED
+                    )
+                )
             )
         except Exception as e:
             return PubNubAsyncioException(
                 result=None,
-                status=options_func().create_status(PNStatusCategory.PNUnknownCategory,
-                                                    None,
-                                                    None,
-                                                    e)
+                status=options_func().create_status(
+                    PNStatusCategory.PNUnknownCategory,
+                    None,
+                    None,
+                    e
+                )
             )
 
     async def _request_helper(self, options_func, cancellation_event):
@@ -186,7 +197,7 @@ class PubNubAsyncio(PubNubCore):
         response_info = None
         status_category = PNStatusCategory.PNUnknownCategory
 
-        if response is not None:
+        if response:
             request_url = urllib.parse.urlparse(str(response.url))
             query = urllib.parse.parse_qs(request_url.query)
             uuid = None
@@ -224,14 +235,15 @@ class PubNubAsyncio(PubNubCore):
                     try:
                         data = json.loads(body.decode("utf-8"))
                     except ValueError:
-                        raise create_exception(category=status_category,
-                                               response=response,
-                                               response_info=response_info,
-                                               exception=PubNubException(
-                                                   pn_error=PNERR_JSON_DECODING_FAILED,
-                                                   errormsg='json decode error',
-                                               )
-                                               )
+                        raise create_exception(
+                            category=status_category,
+                            response=response,
+                            response_info=response_info,
+                            exception=PubNubException(
+                                pn_error=PNERR_JSON_DECODING_FAILED,
+                                errormsg='json decode error',
+                            )
+                        )
         else:
             data = "N/A"
 
@@ -361,11 +373,16 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         self._message_queue.put_nowait(message)
 
     def _start_worker(self):
-        consumer = AsyncioSubscribeMessageWorker(self._pubnub,
-                                                 self._listener_manager,
-                                                 self._message_queue, None)
-        self._message_worker = asyncio.ensure_future(consumer.run(),
-                                                     loop=self._pubnub.event_loop)
+        consumer = AsyncioSubscribeMessageWorker(
+            self._pubnub,
+            self._listener_manager,
+            self._message_queue,
+            None
+        )
+        self._message_worker = asyncio.ensure_future(
+            consumer.run(),
+            loop=self._pubnub.event_loop
+        )
 
     def reconnect(self):
         # TODO: method is synchronized in Java
@@ -382,7 +399,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
     def stop(self):
         super(AsyncioSubscriptionManager, self).stop()
         self._reconnection_manager.stop_polling()
-        if self._subscribe_loop_task is not None and not self._subscribe_loop_task.cancelled():
+        if self._subscribe_loop_task and not self._subscribe_loop_task.cancelled():
             self._subscribe_loop_task.cancel()
 
     async def _start_subscribe_loop(self):
@@ -397,12 +414,15 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             self._subscription_lock.release()
             return
 
-        self._subscribe_request_task = asyncio.ensure_future(Subscribe(self._pubnub)
-                                                             .channels(combined_channels)
-                                                             .channel_groups(combined_groups)
-                                                             .timetoken(self._timetoken).region(self._region)
-                                                             .filter_expression(self._pubnub.config.filter_expression)
-                                                             .future())
+        self._subscribe_request_task = asyncio.ensure_future(
+            Subscribe(self._pubnub)
+            .channels(combined_channels)
+            .channel_groups(combined_groups)
+            .timetoken(self._timetoken)
+            .region(self._region)
+            .filter_expression(self._pubnub.config.filter_expression)
+            .future()
+        )
 
         e = await self._subscribe_request_task
 
@@ -411,18 +431,18 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             return
 
         if e.is_error():
-            if e.status is not None and e.status.category == PNStatusCategory.PNCancelledCategory:
+            if e.status and e.status.category == PNStatusCategory.PNCancelledCategory:
                 self._subscription_lock.release()
                 return
 
-            if e.status is not None and e.status.category == PNStatusCategory.PNTimeoutCategory:
-                self._pubnub.event_loop.call_soon(self._start_subscribe_loop)
+            if e.status and e.status.category == PNStatusCategory.PNTimeoutCategory:
+                asyncio.ensure_future(self._start_subscribe_loop())
                 self._subscription_lock.release()
                 return
 
             logger.error("Exception in subscribe loop: %s" % str(e))
 
-            if e.status is not None and e.status.category == PNStatusCategory.PNAccessDeniedCategory:
+            if e.status and e.status.category == PNStatusCategory.PNAccessDeniedCategory:
                 e.status.operation = PNOperationType.PNUnsubscribeOperation
 
             # TODO: raise error
@@ -482,8 +502,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
 
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if envelope.status.is_error:
-                if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
-                        heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                if heartbeat_verbosity in (PNHeartbeatNotificationOptions.ALL, PNHeartbeatNotificationOptions.FAILURES):
                     self._listener_manager.announce_status(envelope.status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
@@ -674,7 +693,7 @@ class SubscribeListener(SubscribeCallback):
                 self.presence_queue.task_done()
 
 
-class AsyncioTelemetryManager(TelemetryManager):  # pylint: disable=W0612
+class AsyncioTelemetryManager(TelemetryManager):
     def __init__(self):
         TelemetryManager.__init__(self)
         self._timer = AsyncioPeriodicCallback(

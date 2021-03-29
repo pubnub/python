@@ -18,7 +18,7 @@ async def test_success(event_loop):
     if res.status.is_error():
         raise AssertionError()
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -34,4 +34,4 @@ async def test_delete_with_space_and_wildcard_in_channel_name(event_loop):
     if res.status.is_error():
         raise AssertionError()
 
-    pubnub.stop()
+    await pubnub.stop()

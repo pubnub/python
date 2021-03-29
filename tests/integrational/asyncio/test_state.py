@@ -39,7 +39,7 @@ async def test_single_channelx(event_loop):
     assert env.result.channels[ch]['name'] == "Alex"
     assert env.result.channels[ch]['count'] == 5
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/state/single_channel_with_subscription.yaml')
@@ -81,7 +81,7 @@ async def test_single_channel_with_subscription(event_loop, sleeper=asyncio.slee
     pubnub.unsubscribe().channels(ch).execute()
     await callback.wait_for_disconnect()
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -113,7 +113,7 @@ async def test_multiple_channels(event_loop):
     assert env.result.channels[ch1]['count'] == 5
     assert env.result.channels[ch2]['count'] == 5
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -136,4 +136,4 @@ async def test_state_super_admin_call(event_loop):
         .future()
     assert isinstance(env.result, PNGetStateResult)
 
-    pubnub.stop()
+    await pubnub.stop()

@@ -20,7 +20,7 @@ from .exceptions import PubNubException
 logger = logging.getLogger("pubnub")
 
 
-class PublishSequenceManager(object):
+class PublishSequenceManager:
     def __init__(self, provided_max_sequence):
         self.max_sequence = provided_max_sequence
         self.next_sequence = 0
@@ -44,23 +44,13 @@ class BasePathManager(object):
         self._current_subdomain = 1
 
     def get_base_path(self):
-        if self.config.origin is not None:
+        if self.config.origin:
             return self.config.origin
-        # TODO: should CacheBusting be used?
-        elif False:
-            constructed_url = ("ps%s.%s" % (self._current_subdomain, BasePathManager.DEFAULT_BASE_PATH))
-
-            if self._current_subdomain == BasePathManager.MAX_SUBDOMAIN:
-                self._current_subdomain = 1
-            else:
-                self._current_subdomain += 1
-
-            return constructed_url
         else:
             return "%s.%s" % (BasePathManager.DEFAULT_SUBDOMAIN, BasePathManager.DEFAULT_BASE_PATH)
 
 
-class ReconnectionManager(object):
+class ReconnectionManager:
     INTERVAL = 3
     MINEXPONENTIALBACKOFF = 1
     MAXEXPONENTIALBACKOFF = 32
@@ -99,7 +89,7 @@ class ReconnectionManager(object):
             self._timer = None
 
 
-class StateManager(object):
+class StateManager:
     def __init__(self):
         self._channels = {}
         self._groups = {}
@@ -186,7 +176,7 @@ class StateManager(object):
         return response
 
 
-class ListenerManager(object):
+class ListenerManager:
     def __init__(self, pubnub_instance):
         self._pubnub = pubnub_instance
         self._listeners = []
@@ -236,7 +226,7 @@ class ListenerManager(object):
             callback.file(self._pubnub, file_message)
 
 
-class SubscriptionManager(object):
+class SubscriptionManager:
     __metaclass__ = ABCMeta
 
     HEARTBEAT_INTERVAL_MULTIPLIER = 1000
@@ -368,7 +358,6 @@ class SubscriptionManager(object):
                     message.only_channel_subscription = True
                 self._message_queue_put(message)
 
-        # REVIEW: is int compatible with long for Python 2
         self._timetoken = int(result.metadata.timetoken)
         self._region = int(result.metadata.region)
 
@@ -377,7 +366,7 @@ class SubscriptionManager(object):
         self._stop_heartbeat_timer()
 
 
-class TelemetryManager(object):  # pylint: disable=W0612
+class TelemetryManager:
     TIMESTAMP_DIVIDER = 1000
     MAXIMUM_LATENCY_DATA_AGE = 60
     CLEAN_UP_INTERVAL = 1
@@ -459,6 +448,7 @@ class TelemetryManager(object):  # pylint: disable=W0612
             PNOperationType.PNHereNowOperation: 'pres',
             PNOperationType.PNGetState: 'pres',
             PNOperationType.PNSetStateOperation: 'pres',
+            PNOperationType.PNHeartbeatOperation: 'pres',
 
             PNOperationType.PNAddChannelsToGroupOperation: 'cg',
             PNOperationType.PNRemoveChannelsFromGroupOperation: 'cg',
@@ -516,7 +506,7 @@ class TelemetryManager(object):  # pylint: disable=W0612
         return endpoint
 
 
-class TokenManager(object):
+class TokenManager:
 
     def __init__(self):
         self._map = {}

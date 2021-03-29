@@ -63,7 +63,7 @@ def test_access_denied_unsubscribe_operation(event_loop):
     pubnub.subscribe().channels(channel).execute()
     yield from callback.access_denied_event.wait()
 
-    pubnub.stop()
+    yield from pubnub.stop()
 
 #
 # @pytest.mark.asyncio
@@ -78,6 +78,6 @@ def test_access_denied_unsubscribe_operation(event_loop):
 #     pubnub.add_listener(callback)
 #
 #     pubnub.subscribe().channels(channel).execute()
-#     await callback.reconnected_event.wait()
+#     yield from callback.reconnected_event.wait()
 #
-#     pubnub.stop()
+#     yield from pubnub.stop()

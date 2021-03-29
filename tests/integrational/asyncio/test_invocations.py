@@ -27,7 +27,7 @@ async def test_publish_future(event_loop):
     result = await pubnub.publish().message('hey').channel('blah').result()
     assert isinstance(result, PNPublishResult)
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -44,7 +44,7 @@ async def test_publish_future_raises_pubnub_error(event_loop):
     assert 'Invalid Subscribe Key' in str(exinfo.value)
     assert 400 == exinfo.value._status_code
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -62,7 +62,7 @@ async def test_publish_future_raises_lower_level_error(event_loop):
 
     assert 'Session is closed' in str(exinfo.value)
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -76,7 +76,7 @@ async def test_publish_envelope(event_loop):
     assert isinstance(envelope, AsyncioEnvelope)
     assert not envelope.is_error()
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -91,7 +91,7 @@ async def test_publish_envelope_raises(event_loop):
     assert e.is_error()
     assert 400 == e.value()._status_code
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -109,4 +109,4 @@ async def test_publish_envelope_raises_lower_level_error(event_loop):
     assert e.is_error()
     assert str(e.value()) == 'Session is closed'
 
-    pubnub.stop()
+    await pubnub.stop()

@@ -1,3 +1,9 @@
+## [v5.1.1](https://github.com/pubnub/python/releases/tag/v5.1.1)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.1.0...v5.1.1)
+
+- 🐛 Multiple community Pull Requests for Asyncio related code applied. 
+
 ## [v5.1.0](https://github.com/pubnub/python/releases/tag/v5.1.0)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.0.1...v5.1.0)

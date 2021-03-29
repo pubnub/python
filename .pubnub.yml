@@ -1,8 +1,14 @@
 name: python
-version: 5.1.0
+version: 5.1.1
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v5.1.1
+    date: Mar 29, 2021
+    changes:
+      -
+        text: "Multiple community Pull Requests for Asyncio related code applied."
+        type: bug
   - version: v5.1.0
     date: Mar 8, 2021
     changes:

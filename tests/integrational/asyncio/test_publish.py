@@ -61,7 +61,7 @@ async def test_publish_mixed_via_get(event_loop):
         asyncio.ensure_future(assert_success_publish_get(pubnub, ["hi", "hi2", "hi3"]))
     )
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -74,7 +74,7 @@ async def test_publish_object_via_get(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
     await asyncio.ensure_future(assert_success_publish_get(pubnub, {"name": "Alex", "online": True}))
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -89,7 +89,7 @@ async def test_publish_mixed_via_post(event_loop):
         asyncio.ensure_future(assert_success_publish_post(pubnub, True)),
         asyncio.ensure_future(assert_success_publish_post(pubnub, ["hi", "hi2", "hi3"])))
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -101,7 +101,7 @@ async def test_publish_object_via_post(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
     await asyncio.ensure_future(assert_success_publish_post(pubnub, {"name": "Alex", "online": True}))
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -117,7 +117,7 @@ async def test_publish_mixed_via_get_encrypted(event_loop):
             asyncio.ensure_future(assert_success_publish_get(pubnub, True)),
             asyncio.ensure_future(assert_success_publish_get(pubnub, ["hi", "hi2", "hi3"])))
 
-        pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -131,7 +131,7 @@ async def test_publish_object_via_get_encrypted(event_loop):
         pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
         await asyncio.ensure_future(assert_success_publish_get(pubnub, {"name": "Alex", "online": True}))
 
-        pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -150,7 +150,7 @@ async def test_publish_mixed_via_post_encrypted(event_loop):
             asyncio.ensure_future(assert_success_publish_post(pubnub, ["hi", "hi2", "hi3"]))
         )
 
-        pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -164,7 +164,7 @@ async def test_publish_object_via_post_encrypted(event_loop):
         pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
         await asyncio.ensure_future(assert_success_publish_post(pubnub, {"name": "Alex", "online": True}))
 
-        pubnub.stop()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -172,7 +172,7 @@ async def test_error_missing_message(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
     await assert_client_side_error(pubnub.publish().channel(ch).message(None), "Message missing")
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -180,7 +180,7 @@ async def test_error_missing_channel(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
     await assert_client_side_error(pubnub.publish().channel("").message("hey"), "Channel missing")
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -191,7 +191,7 @@ async def test_error_non_serializable(event_loop):
         pass
 
     await assert_client_side_error(pubnub.publish().channel(ch).message(method), "not JSON serializable")
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -203,7 +203,7 @@ async def test_publish_with_meta(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
 
     await assert_success_await(pubnub.publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -214,7 +214,7 @@ async def test_publish_do_not_store(event_loop):
     pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
 
     await assert_success_await(pubnub.publish().channel(ch).message("hey").should_store(False))
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -238,7 +238,7 @@ async def test_error_invalid_key(event_loop):
     pubnub = PubNubAsyncio(conf, custom_event_loop=event_loop)
 
     await assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "Invalid Key")
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -251,7 +251,7 @@ async def test_not_permitted(event_loop):
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
     await assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "HTTP Client Error (403")
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -263,4 +263,4 @@ async def test_publish_super_admin_call(event_loop):
         'name': 'alex'
     }).future()
 
-    pubnub.stop()
+    await pubnub.stop()

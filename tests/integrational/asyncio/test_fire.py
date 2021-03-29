@@ -23,4 +23,4 @@ async def test_single_channel(event_loop):
     assert not envelope.status.is_error()
     assert isinstance(envelope.result, PNFireResult)
     assert isinstance(envelope.status, PNStatus)
-    pn.stop()
+    await pn.stop()

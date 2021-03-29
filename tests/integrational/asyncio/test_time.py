@@ -18,4 +18,4 @@ async def test_time(event_loop):
     assert int(res) > 0
     assert isinstance(res.date_time(), date)
 
-    pubnub.stop()
+    await pubnub.stop()

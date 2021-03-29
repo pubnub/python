@@ -22,4 +22,4 @@ async def test_publish_string_via_get_encrypted(event_loop):
     res = await pubnub.publish().channel(ch).message("hey").future()
     assert res.result.timetoken > 0
 
-    pubnub.stop()
+    await pubnub.stop()

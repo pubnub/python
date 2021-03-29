@@ -39,7 +39,7 @@ async def test_single_channel(event_loop, sleeper=asyncio.sleep):
     pubnub.unsubscribe().channels(ch).execute()
     await callback.wait_for_disconnect()
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/where_now/multiple_channels.yaml')
@@ -78,7 +78,7 @@ async def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     pubnub.unsubscribe().channels([ch1, ch2]).execute()
     await callback.wait_for_disconnect()
 
-    pubnub.stop()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -93,4 +93,4 @@ async def test_where_now_super_admin_call(event_loop):
         .result()
     assert isinstance(res, PNWhereNowResult)
 
-    pubnub.stop()
+    await pubnub.stop()

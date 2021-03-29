@@ -39,7 +39,7 @@ class PNConfiguration(object):
     def validate(self):
         assert self.uuid is None or isinstance(self.uuid, str)
 
-        if self.uuid is None:
+        if not self.uuid:
             self.uuid = utils.uuid()
 
     def scheme(self):

@@ -217,8 +217,7 @@ class NativeSubscriptionManager(SubscriptionManager):
         def heartbeat_callback(raw_result, status):
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
             if status.is_error:
-                if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL or \
-                        heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
+                if heartbeat_verbosity in (PNHeartbeatNotificationOptions.ALL, PNHeartbeatNotificationOptions.FAILURES):
                     self._listener_manager.announce_status(status)
             else:
                 if heartbeat_verbosity == PNHeartbeatNotificationOptions.ALL:
@@ -258,10 +257,16 @@ class NativeSubscriptionManager(SubscriptionManager):
         self._stop_subscribe_loop()
 
     def _start_worker(self):
-        consumer = NativeSubscribeMessageWorker(self._pubnub, self._listener_manager,
-                                                self._message_queue, self._consumer_event)
-        self._consumer_thread = threading.Thread(target=consumer.run,
-                                                 name="SubscribeMessageWorker")
+        consumer = NativeSubscribeMessageWorker(
+            self._pubnub,
+            self._listener_manager,
+            self._message_queue,
+            self._consumer_event
+        )
+        self._consumer_thread = threading.Thread(
+            target=consumer.run,
+            name="SubscribeMessageWorker"
+        )
         self._consumer_thread.setDaemon(True)
         self._consumer_thread.start()
 
@@ -277,7 +282,7 @@ class NativeSubscriptionManager(SubscriptionManager):
         def callback(raw_result, status):
             """ SubscribeEndpoint callback"""
             if status.is_error():
-                if status is not None and status.category == PNStatusCategory.PNCancelledCategory:
+                if status and status.category == PNStatusCategory.PNCancelledCategory:
                     return
 
                 if status.category is PNStatusCategory.PNTimeoutCategory and not self._should_stop:
@@ -286,7 +291,7 @@ class NativeSubscriptionManager(SubscriptionManager):
 
                 logger.error("Exception in subscribe loop: %s" % str(status.error_data.exception))
 
-                if status is not None and status.category == PNStatusCategory.PNAccessDeniedCategory:
+                if status and status.category == PNStatusCategory.PNAccessDeniedCategory:
                     status.operation = PNOperationType.PNUnsubscribeOperation
                     self._listener_manager.announce_status(status)
                     self.unsubscribe_all()
@@ -465,7 +470,7 @@ class NonSubscribeListener:
         self.done_event.clear()
 
 
-class NativeTelemetryManager(TelemetryManager):  # pylint: disable=W0612
+class NativeTelemetryManager(TelemetryManager):
     def store_latency(self, latency, operation_type):
         super(NativeTelemetryManager, self).store_latency(latency, operation_type)
         self.clean_up_telemetry_data()

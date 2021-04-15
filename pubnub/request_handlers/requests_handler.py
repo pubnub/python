@@ -230,7 +230,7 @@ class RequestsRequestHandler(BaseRequestHandler):
             url = e_options.path
 
         if e_options.request_headers:
-            p_options.update(e_options.request_headers)
+            p_options.headers.update(e_options.request_headers)
 
         args = {
             "method": e_options.method_string,

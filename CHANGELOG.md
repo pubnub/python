@@ -1,3 +1,9 @@
+## [v5.1.2](https://github.com/pubnub/python/releases/tag/v5.1.2)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.1.1...v5.1.2)
+
+- 🐛 Request headers required by the Grant Token functionality added. 
+
 ## [v5.1.1](https://github.com/pubnub/python/releases/tag/v5.1.1)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.1.0...v5.1.1)

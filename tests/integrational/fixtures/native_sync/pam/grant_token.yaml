@@ -1,0 +1,45 @@
+interactions:
+- request:
+    body: '{"ttl": "15", "permissions": {"resources": {"channels": {"foo": 1, "bar":
+      1}, "groups": {"foo": 1, "bar": 1}, "users": {}, "spaces": {}}, "patterns":
+      {"channels": {}, "groups": {}, "users": {}, "spaces": {}}, "meta": {}}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '221'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/5.1.1
+    method: POST
+    uri: https://ps.pndsn.com/v3/pam/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/grant
+  response:
+    body:
+      string: '{"data":{"message":"Success","token":"p0F2AkF0GmB4Sd9DdHRsD0NyZXOkRGNoYW6iY2ZvbwFjYmFyAUNncnCiY2ZvbwFjYmFyAUN1c3KgQ3NwY6BDcGF0pERjaGFuoENncnCgQ3VzcqBDc3BjoERtZXRhoENzaWdYIBHsbMOeRAHUvsCURvZ3Yehv74QvPT4xqfHY5JPONmyJ"},"service":"Access
+        Manager","status":200}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '257'
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Date:
+      - Thu, 15 Apr 2021 14:12:47 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

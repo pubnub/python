@@ -1,8 +1,14 @@
 name: python
-version: 5.1.1
+version: 5.1.2
 schema: 1
 scm: github.com/pubnub/python
 changelog:
+  - version: v5.1.2
+    date: Apr 15, 2021
+    changes:
+      -
+        text: "Request headers required by the Grant Token functionality added."
+        type: bug
   - version: v5.1.1
     date: Mar 29, 2021
     changes:

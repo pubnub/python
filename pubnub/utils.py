@@ -198,7 +198,7 @@ def sign_request(endpoint, pn, custom_params, method, body):
 
 
 def parse_resources(resource_list, resource_set_name, resources, patterns):
-    if resource_list is not None:
+    if resource_list:
         for pn_resource in resource_list:
             resource_object = {}
 

@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 import logging
 
 from pubnub import utils
-from pubnub.enums import PNStatusCategory
+from pubnub.enums import PNStatusCategory, HttpMethod
 from pubnub.errors import (
     PNERR_SUBSCRIBE_KEY_MISSING, PNERR_PUBLISH_KEY_MISSING, PNERR_CHANNEL_OR_GROUP_MISSING,
     PNERR_SECRET_KEY_MISSING, PNERR_CHANNEL_MISSING, PNERR_FILE_OBJECT_MISSING,
@@ -88,7 +88,7 @@ class Endpoint(object):
         return True
 
     def request_headers(self):
-        if self.http_method() == "POST":
+        if self.http_method() == HttpMethod.POST:
             return {"Content-type": "application/json"}
         else:
             return {}

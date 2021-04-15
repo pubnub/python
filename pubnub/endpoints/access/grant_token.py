@@ -19,10 +19,10 @@ class GrantToken(Endpoint):
         Endpoint.__init__(self, pubnub)
         self._ttl = None
         self._meta = None
-        self._channelList = []
-        self._groupList = []
-        self._userList = []
-        self._spaceList = []
+        self._channels = []
+        self._groups = []
+        self._users = []
+        self._spaces = []
 
         self._sort_params = True
 
@@ -34,28 +34,36 @@ class GrantToken(Endpoint):
         self._meta = meta
         return self
 
+    def channels(self, channels):
+        self._channels = channels
+        return self
+
+    def groups(self, groups):
+        self._groups = groups
+        return self
+
     def users(self, users):
-        self._userList = users
+        self._users = users
         return self
 
     def spaces(self, spaces):
-        self._spaceList = spaces
+        self._spaces = spaces
         return self
 
     def custom_params(self):
         return {}
 
     def build_data(self):
-        params = {'ttl': str(int(self._ttl))}
+        params = {'ttl': str(self._ttl)}
 
         permissions = {}
         resources = {}
         patterns = {}
 
-        utils.parse_resources(self._channelList, "channels", resources, patterns)
-        utils.parse_resources(self._groupList, "groups", resources, patterns)
-        utils.parse_resources(self._userList, "users", resources, patterns)
-        utils.parse_resources(self._spaceList, "spaces", resources, patterns)
+        utils.parse_resources(self._channels, "channels", resources, patterns)
+        utils.parse_resources(self._groups, "groups", resources, patterns)
+        utils.parse_resources(self._users, "users", resources, patterns)
+        utils.parse_resources(self._spaces, "spaces", resources, patterns)
 
         permissions['resources'] = resources
         permissions['patterns'] = patterns
@@ -90,14 +98,6 @@ class GrantToken(Endpoint):
     def is_auth_required(self):
         return False
 
-    def affected_channels(self):
-        # generate a list of channels when they become supported in PAMv3
-        return None
-
-    def affected_channels_groups(self):
-        # generate a list of groups when they become supported in PAMv3
-        return None
-
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout
 
@@ -111,8 +111,10 @@ class GrantToken(Endpoint):
         return "Grant Token"
 
     def validate_resources(self):
-        if (self._userList is None or len(self._userList) == 0) and \
-           (self._spaceList is None or len(self._spaceList) == 0):
+        if (self._channels is None or len(self._channels) == 0) and \
+           (self._groups is None or len(self._groups) == 0) and \
+           (self._users is None or len(self._users) == 0) and \
+           (self._spaces is None or len(self._spaces) == 0):
             raise PubNubException(pn_error=PNERR_RESOURCES_MISSING)
 
     def validate_ttl(self):

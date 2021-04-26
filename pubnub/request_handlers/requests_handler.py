@@ -230,11 +230,13 @@ class RequestsRequestHandler(BaseRequestHandler):
             url = e_options.path
 
         if e_options.request_headers:
-            p_options.headers.update(e_options.request_headers)
+            request_headers = {**p_options.headers, **e_options.request_headers}
+        else:
+            request_headers = p_options.headers
 
         args = {
             "method": e_options.method_string,
-            "headers": p_options.headers,
+            "headers": request_headers,
             "url": url,
             "params": e_options.query_string,
             "timeout": (e_options.connect_timeout, e_options.request_timeout),

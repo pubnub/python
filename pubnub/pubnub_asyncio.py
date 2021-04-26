@@ -163,7 +163,9 @@ class PubNubAsyncio(PubNubCore):
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 
         if options.request_headers:
-            self.headers.update(options.request_headers)
+            request_headers = {**self.headers, **options.request_headers}
+        else:
+            request_headers = self.headers
 
         try:
             start_timestamp = time.time()
@@ -171,7 +173,7 @@ class PubNubAsyncio(PubNubCore):
                 self._session.request(
                     options.method_string,
                     url,
-                    headers=self.headers,
+                    headers=request_headers,
                     data=options.data if options.data else None,
                     allow_redirects=options.allow_redirects
                 ),

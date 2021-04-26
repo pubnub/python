@@ -1,3 +1,9 @@
+## [v5.1.3](https://github.com/pubnub/python/releases/tag/v5.1.3)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.1.2...v5.1.3)
+
+- 🐛 Disabling default request headers within the Endpoind. 
+
 ## [v5.1.2](https://github.com/pubnub/python/releases/tag/v5.1.2)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.1.1...v5.1.2)

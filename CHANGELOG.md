@@ -1,3 +1,9 @@
+## [v5.1.4](https://github.com/pubnub/python/releases/tag/v5.1.4)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.1.3...v5.1.4)
+
+- 🌟️ Additionally, example code for the FastAPI integration was added. 
+
 ## [v5.1.3](https://github.com/pubnub/python/releases/tag/v5.1.3)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.1.2...v5.1.3)

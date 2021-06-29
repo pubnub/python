@@ -1,76 +1,248 @@
 name: python
-version: 5.1.3
+version: 5.1.4
 schema: 1
 scm: github.com/pubnub/python
+sdks:
+  -
+    type: package
+    full-name: Python SDK
+    short-name: Python
+    artifacts:
+      - language: python
+        tags:
+          - Server
+        source-repository: https://github.com/pubnub/python
+        documentation: https://www.pubnub.com/docs/sdks/python/
+        tier: 1
+        artifact-type: library
+        distributions:
+          - distribution-type: library
+            distribution-repository: package
+            package-name: pubnub-5.1.3
+            location: https://pypi.org/project/pubnub/
+            supported-platforms:
+              supported-operating-systems:
+                Linux:
+                  runtime-version:
+                    - Python 3.6
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                  minimum-os-version:
+                    - Ubuntu 12.04
+                  maximum-os-version:
+                    - Ubuntu 20.04 LTS
+                  target-architecture:
+                    - x86
+                    - x86-64
+                  macOS:
+                    runtime-version:
+                      - Python 3.6
+                      - Python 3.7
+                      - Python 3.8
+                      - Python 3.9
+                    minimum-os-version:
+                      - macOS 10.12
+                    maximum-os-version:
+                      - macOS 11.0.1
+                    target-architecture:
+                      - x86-64
+                  Windows:
+                    runtime-version:
+                      - Python 3.6
+                      - Python 3.7
+                      - Python 3.8
+                      - Python 3.9
+                    minimum-os-version:
+                      - Windows Vista Ultimate
+                    maximum-os-version:
+                      - Windows 10 Home
+                    target-architecture:
+                      - x86
+                      - x86-64
+            requires:
+              - name: requests
+                min-version: "2.4"
+                location: https://pypi.org/project/requests/
+                license: Apache Software License (Apache 2.0)
+                license-url: https://github.com/psf/requests/blob/master/LICENSE
+                is-required: Required
+              - name: pycryptodomex
+                min-version: "3.3"
+                location: https://pypi.org/project/pycryptodomex/
+                license: Apache Software License, BSD License, Public Domain (BSD, Public Domain)
+                license-url: https://github.com/Legrandin/pycryptodome/blob/master/LICENSE.rst
+                is-required: Required
+              - name: cbor3
+                min-version: "5.0.0"
+                location: https://pypi.org/project/cbor2/
+                license: MIT License (MIT)
+                license-url: https://github.com/agronholm/cbor2/blob/master/LICENSE.txt
+                is-required: Required
+              - name: aiohttp
+                min-version: "2.3.10"
+                location: https://pypi.org/project/aiohttp/
+                license: Apache Software License (Apache 2)
+                license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
+                is-required: Required
+      -
+        language: python
+        tags:
+          - Server
+        source-repository: https://github.com/pubnub/python
+        documentation: https://www.pubnub.com/docs/sdks/python/
+        tier: 1
+        artifact-type: library
+        distributions:
+          -
+            distribution-type: library
+            distribution-repository: git release
+            package-name: pubnub-5.1.3
+            location: https://github.com/pubnub/python/releases/download/v5.1.3/pubnub-5.1.3.tar.gz
+            supported-platforms:
+              supported-operating-systems:
+                Linux:
+                  runtime-version:
+                    - Python 3.6
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                  minimum-os-version:
+                    - Ubuntu 12.04
+                  maximum-os-version:
+                    - Ubuntu 20.04 LTS
+                  target-architecture:
+                    - x86
+                    - x86-64
+                  macOS:
+                    runtime-version:
+                      - Python 3.6
+                      - Python 3.7
+                      - Python 3.8
+                      - Python 3.9
+                    minimum-os-version:
+                      - macOS 10.12
+                    maximum-os-version:
+                      - macOS 11.0.1
+                    target-architecture:
+                      - x86-64
+                  Windows:
+                    runtime-version:
+                      - Python 3.6
+                      - Python 3.7
+                      - Python 3.8
+                      - Python 3.9
+                    minimum-os-version:
+                      - Windows Vista Ultimate
+                    maximum-os-version:
+                      - Windows 10 Home
+                    target-architecture:
+                      - x86
+                      - x86-64
+            requires:
+              -
+                name: requests
+                min-version: "2.4"
+                location: https://pypi.org/project/requests/
+                license: Apache Software License (Apache 2.0)
+                license-url: https://github.com/psf/requests/blob/master/LICENSE
+                is-required: Required
+              -
+                name: pycryptodomex
+                min-version: "3.3"
+                location: https://pypi.org/project/pycryptodomex/
+                license: Apache Software License, BSD License, Public Domain (BSD, Public Domain)
+                license-url: https://github.com/Legrandin/pycryptodome/blob/master/LICENSE.rst
+                is-required: Required
+              -
+                name: cbor3
+                min-version: "5.0.0"
+                location: https://pypi.org/project/cbor2/
+                license: MIT License (MIT)
+                license-url: https://github.com/agronholm/cbor2/blob/master/LICENSE.txt
+                is-required: Required
+              -
+                name: aiohttp
+                min-version: "2.3.10"
+                location: https://pypi.org/project/aiohttp/
+                license: Apache Software License (Apache 2)
+                license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
+                is-required: Required
 changelog:
+  - version: v5.1.4
+    date: Jun 29, 2021
+    changes:
+      -
+        text: "Additionally, example code for the FastAPI integration was added."
+        type: feature
   - version: v5.1.3
-    date: Apr 26, 2021
+    date: 2021-04-26
     changes:
       -
         text: "Disabling default request headers within the Endpoind."
         type: bug
   - version: v5.1.2
-    date: Apr 15, 2021
+    date: 2021-04-15
     changes:
       -
         text: "Request headers required by the Grant Token functionality added."
         type: bug
   - version: v5.1.1
-    date: Mar 29, 2021
+    date: 2021-03-29
     changes:
       -
         text: "Multiple community Pull Requests for Asyncio related code applied."
         type: bug
   - version: v5.1.0
-    date: Mar 8, 2021
+    date: 2021-03-08
     changes:
       -
         text: "BREAKING CHANGE: Add randomized initialization vector usage by default for data encryption / decryption in publish / subscribe / history API calls."
         type: feature
   - version: v5.0.1
-    date: Feb 4, 2021
+    date: 2021-02-04
     changes:
       -
         text: "User defined 'origin'(custom domain) value was not used in all required places within this SDK."
         type: feature
   - version: v5.0.0
-    date: Jan 21, 2021
+    date: 2021-01-21
     changes:
       -
         text: "Apart from bringing the whole SDK up to date, support for Tornado and Twisted was removed and dependiecies were simplified."
         type: improvement
   - version: v4.8.1
-    date: Jan 18, 2021
+    date: 2021-01-18
     changes:
       -
         text: "New v3 History endpoint allows to fetch 100 messages per channel."
         type: feature
   - version: v4.8.0
-    date: Dec 9, 2020
+    date: 2020-12-09
     changes:
       -
         text: "Objects v2 implementation added to the PythonSDK with additional improvements to the test isolation within whole test suite."
         type: feature
   - version: v4.7.0
-    date: Nov 19, 2020
+    date: 2020-11-19
     changes:
       -
         text: "Within this release problems with double PAM calls encoding and Publish oriented bugs were fixed."
         type: bug
   - version: v4.6.1
-    date: Oct 27, 2020
+    date: 2020-10-27
     changes:
       -
         text: "Passing uuid to the get_state endpoint call added."
         type: bug
   - version: v4.6.0
-    date: Oct 22, 2020
+    date: 2020-10-22
     changes:
       -
         text: "File Upload added to the Python SDK."
         type: feature
   - version: v4.5.4
-    date: Sep 29, 2020
+    date: 2020-09-29
     changes:
       -
         text: "Add `suppress_leave_events` configuration option which can be used to opt-out presence leave call on unsubscribe."
@@ -79,35 +251,35 @@ changelog:
         text: "Log out message decryption error and pass received message with `PNDecryptionErrorCategory` category to status listeners."
         type: improvement
   - version: v4.5.3
-    date: Aug 10, 2020
+    date: 2020-08-10
     changes:
       -
         text: "Allocating separate thread that basically waits a certain amount of time to clean telemetry data is a waste of memory/OS data structures. Cleaning mentioned data can be incorporated into regular logic."
         type: improvement
   - version: v4.5.2
-    date: May 29, 2020
+    date: 2020-05-29
     changes:
       -
         text: "Fix bug with max message count parameter for Fetch Messages endpoint. Rename maximum_per_channel parameter to count for Fetch Messages, keeping the old name for compatibility."
         type: bug
   - version: v4.5.1
-    date: May 4, 2020
+    date: 2020-05-04
     changes:
       -
         text: "Using SSL by default from the Python SDK to be more consistent and encourage best practices."
         type: bug
   - version: v4.5.0
-    date: Feb 27, 2020
+    date: 2020-02-27
     changes:
       - type: feature
         text: Implemented Objects Filtering API
   - version: v4.4.0
-    date: Feb 20, 2020
+    date: 2020-02-20
     changes:
       - type: feature
         text: Add support for APNS2 Push API
   - version: v4.3.0
-    date: Jan 28, 2020
+    date: 2020-01-28
     changes:
       - type: feature
         text: Implemented Message Actions API
@@ -120,12 +292,12 @@ changelog:
       - type: feature
         text: Added 'include_message_actions' to fetch_messages()
   - version: v4.2.1
-    date: Jan 9, 2020
+    date: 2020-01-09
     changes:
       - type: bug
         text: Excluded the tilde symbol from being encoded by the url_encode method to fix invalid PAM signature issue.
   - version: v4.2.0
-    date: Dec 24, 2019
+    date: 2019-12-24
     changes:
       - type: improvement
         text: Introduced delete permission to Grant endpoint. Migrated to v2 endpoints for old PAM methods.
@@ -138,42 +310,42 @@ changelog:
       - type: bug
         text: Resolved incorrectly reported SDK version.
   - version: v4.1.7
-    date: Dec 2, 2019
+    date: 2019-12-02
     changes:
       - type: improvement
         text: Add users join, leave and timeout fields to interval event
   - version: v4.1.6
-    date: Aug 24, 2019
+    date: 2019-08-24
     changes:
       - type: improvement
         text: implement Objects API
   - version: v4.1.5
-    date: Aug 9, 2019
+    date: 2019-08-09
     changes:
       - type: improvement
         text: implement Signal
   - version: v4.1.4
-    date: Apr 10, 2019
+    date: 2019-04-10
     changes:
       - type: improvement
         text: implement Fire
   - version: v4.1.3
-    date: Feb 25, 2019
+    date: 2019-02-25
     changes:
       - type: improvement
         text: implement history Message Counts
   - version: v4.1.2
-    date: Sep 20, 2018
+    date: 2018-09-20
     changes:
       - type: improvement
         text: Rename await to pn_await
   - version: v4.1.1
-    date: Sep 11, 2018
+    date: 2018-09-11
     changes:
       - type: improvement
         text: Rename async to pn_async
   - version: v4.1.0
-    date: Jan 18, 2018
+    date: 2018-01-18
     changes:
       - type: improvement
         text: Add history delete
@@ -184,7 +356,7 @@ changelog:
       - type: bug
         text: Fix plugins versions and remove unused plugins
   - version: v4.0.13
-    date: Jun 14, 2017
+    date: 2017-06-14
     changes:
       - type: improvement
         text: Added daemon option for PNConfig
@@ -194,28 +366,28 @@ changelog:
       - type: bug
         text: Fixed issues with managing push notifications
   - version: v4.0.11
-    date: May 22, 2017
+    date: 2017-05-22
     changes:
       - type: bug
         text: Fix typo on announce_status.
   - version: v4.0.10
-    date: Mar 23, 2017
+    date: 2017-03-23
     changes:
       - type: bug
         text: Fix aiohttp v1.x.x and v2.x.x compatibility
   - version: v4.0.9
-    date: Mar 10, 2017
+    date: 2017-03-10
     changes:
       - type: bug
         text: Fix missing encoder for path elements
       - type: feature
   - version: v4.0.8
-    date: Feb 17, 2017
+    date: 2017-02-17
     changes:
       - type: feature
         text: Support log_verbosity in pnconfiguration to enable HTTP logging.
   - version: v4.0.7
-    date: Feb 5, 2017
+    date: 2017-02-05
     changes:
       - type: bug
         text: Handle interval presence messages gracefully if they do not contain a UUID.
@@ -224,12 +396,12 @@ changelog:
       - type: improvement
         text: designate the request thread as non-daemon to keep the SDK running.
   - version: v4.0.6
-    date: Jan 21, 2017
+    date: 2017-01-21
     changes:
       - type: bug
         text: Fix on state object type definition.
   - version: v4.0.5
-    date: Jan 4, 2017
+    date: 2017-01-04
     changes:
       - type: improvement
         text: new pubnub domain
@@ -242,7 +414,7 @@ changelog:
       - type: improvement
         text: fix blocking Ctrl+C bug
   - version: v4.0.4
-    date: Dec 21, 2016
+    date: 2016-12-21
     changes:
       - type: improvement
         text: Add reconnection managers
@@ -252,19 +424,19 @@ changelog:
       - type: improvement
         text: do not strip plus sign when encoding message.
   - version: v4.0.2
-    date: Nov 14, 2016
+    date: 2016-11-14
     changes:
       - type: improvement
         text: Adjusting maximum pool size for requests installations
       - type: improvement
         text: Adding Publisher UUID
   - version: v4.0.1
-    date: Nov 8, 2016
+    date: 2016-11-08
     changes:
       - type: improvement
         text: Fixing up packaging configuration for py3
   - version: v4.0.0
-    date: Nov 2, 2016
+    date: 2016-11-02
     changes:
       - type: improvement
         text: Initial Release
@@ -291,7 +463,6 @@ features:
     - PUSH-REMOVE-DEVICE
     - PUSH-TYPE-APNS
     - PUSH-TYPE-APNS2
-    - PUSH-TYPE-GCM
     - PUSH-TYPE-FCM
     - PUSH-TYPE-MPNS
   presence:

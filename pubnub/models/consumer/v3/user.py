@@ -35,3 +35,15 @@ class User(PNResource):
     def delete(self):
         self._delete = True
         return self
+
+    def get(self):
+        self._get = True
+        return self
+
+    def update(self):
+        self._get = True
+        return self
+
+    def join(self):
+        self._join = True
+        return self

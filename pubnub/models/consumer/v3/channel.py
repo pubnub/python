@@ -20,10 +20,26 @@ class Channel(PNResource):
         self._read = True
         return self
 
+    def manage(self):
+        self._manage = True
+        return self
+
     def write(self):
         self._write = True
         return self
 
     def delete(self):
         self._delete = True
+        return self
+
+    def get(self):
+        self._get = True
+        return self
+
+    def update(self):
+        self._update = True
+        return self
+
+    def join(self):
+        self._join = True
         return self

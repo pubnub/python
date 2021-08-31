@@ -16,7 +16,8 @@ class TestWhereNow(unittest.TestCase):
         self.pubnub = MagicMock(
             spec=PubNub,
             config=pnconf_copy(),
-            sdk_name=sdk_name
+            sdk_name=sdk_name,
+            _get_token=lambda: None
         )
         self.pubnub.config.uuid = "UUID_WhereNowTest"
         self.pubnub._telemetry_manager = TelemetryManager()

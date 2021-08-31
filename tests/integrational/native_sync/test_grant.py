@@ -35,9 +35,10 @@ def test_grant_token():
     groups = ("foo", "bar")
 
     envelope = pubnub.grant_token()\
-        .channels([Channel.id(channel).read() for channel in channels])\
-        .groups([Group.id(group).read() for group in groups])\
-        .ttl(15)\
+        .channels([Channel.id(channel).read().write().manage().update().join().delete() for channel in channels])\
+        .groups([Group.id(group).read() for group in groups]) \
+        .authorized_uuid("test")\
+        .ttl(60)\
         .sync()
 
     assert isinstance(envelope.result, PNGrantTokenResult)

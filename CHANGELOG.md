@@ -1,3 +1,9 @@
+## [v5.2.0](https://github.com/pubnub/python/releases/tag/v5.2.0)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.1.4...v5.2.0)
+
+- 🌟️ Furthermore PAMv3 tokens can now be used within other PubNub features. 
+
 ## [v5.1.4](https://github.com/pubnub/python/releases/tag/v5.1.4)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.1.3...v5.1.4)

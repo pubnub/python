@@ -18,7 +18,8 @@ class TestRemoveChannelGroup(unittest.TestCase):
             spec=PubNub,
             config=pnconf,
             sdk_name=sdk_name,
-            uuid=None
+            uuid=None,
+            _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_ListChannelsInCGTest"
         self.pubnub._telemetry_manager = TelemetryManager()

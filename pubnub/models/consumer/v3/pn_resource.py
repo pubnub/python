@@ -8,6 +8,9 @@ class PNResource(object):
         self._create = False
         self._manage = False
         self._delete = False
+        self._get = False
+        self._update = False
+        self._join = False
 
     def is_pattern_resource(self):
         return self._resource_pattern is not None
@@ -32,3 +35,12 @@ class PNResource(object):
 
     def is_delete(self):
         return self._delete
+
+    def is_get(self):
+        return self._get
+
+    def is_update(self):
+        return self._update
+
+    def is_join(self):
+        return self._join

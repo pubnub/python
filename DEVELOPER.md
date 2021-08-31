@@ -1,7 +1,7 @@
 # Developers manual
 
 ## Supported Python versions
-We support Python 2.7 and >=3.4
+We support Python 3.6, 3.7, 3.8, 3.9
 
 ## Supported platforms
 We maintain and test our SDK using Travis.CI and Ubuntu.
@@ -30,26 +30,17 @@ There are 2 types of calls:
 
 You can find more examples here https://github.com/pubnub/python/blob/master/tests/integrational/asyncio/test_invocations.py
 
-### Tornado
-Tornado supports by Python 2.7 and Python >= 3.3.
-There are 2 types of calls:
-- using `result()` - only a result will be returned; in case of exception it will be raised natively
-- using `future()` - a wrapper (Envelope) for a result and a status; in case of exception it can be checked using env.is_error()
-
-You can find more examples here https://github.com/pubnub/python/blob/master/tests/integrational/tornado/test_invocations.py
-
-### Twisted
-Twisted is supported by Python 2.7 only.
-
 ## Tests
 * Test runner: py.test
 * Source code checker: flake
+* BDD tests runner: behave - one needs to place needed feature file under acceptance/name_of_the_feature directory.
+   An example: `behave tests/acceptance/pam`
 
 ## Daemon mode with Native SDK
 Daemon mode for all requests are disabled by default. This means that all asynchronous requests including will block the main thread until all the children be closed. If SDK user want to use Java-like behaviour when it's up to him to decide should he wait for response completion or continue program execution, he has to explicitly set daemon mode to true:
 
 ```python
-pubnub.config.daemon = true
+pubnub.config.daemon = True
 ```
 
 ## SubscribeListener

@@ -183,19 +183,13 @@ class Endpoint(object):
             for query_key, query_value in self.pubnub._telemetry_manager.operation_latencies().items():
                 custom_params[query_key] = query_value
 
-            if self.is_auth_required() and self.pubnub.config.auth_key is not None:
-                custom_params['auth'] = self.pubnub.config.auth_key
+            if self.is_auth_required():
+                if self.pubnub._get_token():
+                    custom_params["auth"] = self.pubnub._get_token()
+                elif self.pubnub.config.auth_key:
+                    custom_params["auth"] = self.pubnub.config.auth_key
 
-            if self.pubnub.config.disable_token_manager is False and self.pubnub.config.auth_key is None:
-                tms_properties = self.get_tms_properties()
-                if tms_properties is not None:
-                    token = self.pubnub.get_token(tms_properties)
-                    if token is not None:
-                        custom_params['auth'] = token
-                    else:
-                        logger.warning("No token found for: " + str(tms_properties))
-
-            if self.pubnub.config.secret_key is not None:
+            if self.pubnub.config.secret_key:
                 utils.sign_request(self, self.pubnub, custom_params, self.http_method(), self.build_data())
 
             custom_params.update(self.encoded_params())
@@ -283,6 +277,3 @@ class Endpoint(object):
         exception.status = status
 
         return exception
-
-    def get_tms_properties(self):
-        return None

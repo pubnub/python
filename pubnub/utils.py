@@ -6,9 +6,9 @@ import threading
 import urllib
 from hashlib import sha256
 
-from .enums import PNStatusCategory, PNOperationType, PNPushType, HttpMethod
+from .enums import PNStatusCategory, PNOperationType, PNPushType, HttpMethod, PAMPermissions
 from .models.consumer.common import PNStatus
-from .errors import PNERR_JSON_NOT_SERIALIZABLE, PNERR_PERMISSION_MISSING
+from .errors import PNERR_JSON_NOT_SERIALIZABLE
 from .exceptions import PubNubException
 
 
@@ -222,25 +222,30 @@ def parse_resources(resource_list, resource_set_name, resources, patterns):
 
 def calculate_bitmask(pn_resource):
     bit_sum = 0
-    from .endpoints.access.grant_token import GrantToken
 
-    if pn_resource.is_read() is True:
-        bit_sum += GrantToken.READ
+    if pn_resource.is_read():
+        bit_sum += PAMPermissions.READ.value
 
-    if pn_resource.is_write() is True:
-        bit_sum += GrantToken.WRITE
+    if pn_resource.is_write():
+        bit_sum += PAMPermissions.WRITE.value
 
-    if pn_resource.is_manage() is True:
-        bit_sum += GrantToken.MANAGE
+    if pn_resource.is_manage():
+        bit_sum += PAMPermissions.MANAGE.value
 
-    if pn_resource.is_delete() is True:
-        bit_sum += GrantToken.DELETE
+    if pn_resource.is_delete():
+        bit_sum += PAMPermissions.DELETE.value
 
-    if pn_resource.is_create() is True:
-        bit_sum += GrantToken.CREATE
+    if pn_resource.is_create():
+        bit_sum += PAMPermissions.CREATE.value
 
-    if bit_sum == 0:
-        raise PubNubException(pn_error=PNERR_PERMISSION_MISSING)
+    if pn_resource.is_get():
+        bit_sum += PAMPermissions.GET.value
+
+    if pn_resource.is_update():
+        bit_sum += PAMPermissions.UPDATE.value
+
+    if pn_resource.is_join():
+        bit_sum += PAMPermissions.JOIN.value
 
     return bit_sum
 

@@ -20,7 +20,8 @@ class TestPublish(unittest.TestCase):
             spec=PubNub,
             config=pnconf,
             sdk_name=sdk_name,
-            _publish_sequence_manager=self.sm
+            _publish_sequence_manager=self.sm,
+            _get_token=lambda: None
         )
 
         self.pubnub.uuid = "UUID_PublishUnitTest"
@@ -118,7 +119,8 @@ class TestPublish(unittest.TestCase):
             config=conf,
             sdk_name=sdk_name,
             uuid="UUID_PublishUnitTest",
-            _publish_sequence_manager=self.sm
+            _publish_sequence_manager=self.sm,
+            _get_token=lambda: None
         )
         pubnub._telemetry_manager = TelemetryManager()
         pub = Publish(pubnub)
@@ -145,7 +147,8 @@ class TestPublish(unittest.TestCase):
             config=conf,
             sdk_name=sdk_name,
             uuid="UUID_PublishUnitTest",
-            _publish_sequence_manager=self.sm
+            _publish_sequence_manager=self.sm,
+            _get_token=lambda: None
         )
         pubnub._telemetry_manager = TelemetryManager()
         pub = Publish(pubnub)

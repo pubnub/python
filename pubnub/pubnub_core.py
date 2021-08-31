@@ -19,7 +19,7 @@ from .endpoints.objects_v2.memberships.set_memberships import SetMemberships
 from .endpoints.objects_v2.uuid.get_all_uuid import GetAllUuid
 from .endpoints.objects_v2.uuid.get_uuid import GetUuid
 from .endpoints.objects_v2.uuid.remove_uuid import RemoveUuid
-from .managers import BasePathManager, TokenManager, TokenManagerProperties
+from .managers import BasePathManager, TokenManager
 from .builders import SubscribeBuilder
 from .builders import UnsubscribeBuilder
 from .endpoints.time import Time
@@ -65,7 +65,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "5.1.4"
+    SDK_VERSION = "5.2.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -267,26 +267,14 @@ class PubNubCore:
     def delete_messages(self):
         return HistoryDelete(self)
 
+    def parse_token(self, token):
+        return self._token_manager.unwrap_token(token)
+
     def set_token(self, token):
         self._token_manager.set_token(token)
 
-    def set_tokens(self, tokens):
-        self._token_manager.set_tokens(tokens)
-
-    def get_token(self, tms_properties):
-        return self._token_manager.get_token(tms_properties)
-
-    def get_token_by_resource(self, resource_id, resource_type):
-        return self._token_manager.get_token(TokenManagerProperties(
-            resource_id=resource_id,
-            resource_type=resource_type
-        ))
-
-    def get_tokens(self):
-        return self._token_manager.get_tokens()
-
-    def get_tokens_by_resource(self, resource_type):
-        return self._token_manager.get_tokens_by_resource(resource_type)
+    def _get_token(self):
+        return self._token_manager.get_token()
 
     def send_file(self):
         if not self.sdk_platform():

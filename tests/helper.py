@@ -3,10 +3,19 @@ import string
 import random
 import urllib
 
-from copy import copy
+from copy import copy, deepcopy
 from pubnub import utils
 from pubnub.crypto import PubNubCryptodome
 from pubnub.pnconfiguration import PNConfiguration
+from pubnub.enums import PAMPermissions
+
+
+PAM_TOKEN_WITH_ALL_PERMS_GRANTED = (
+    'qEF2AkF0GmEI03xDdHRsGDxDcmVzpURjaGFuoWljaGFubmVsLTEY70NncnChb2NoYW5uZWxfZ3JvdXAtMQVDdXNyoENzcGOgRHV1aWShZ'
+    'nV1aWQtMRhoQ3BhdKVEY2hhbqFtXmNoYW5uZWwtXFMqJBjvQ2dycKF0XjpjaGFubmVsX2dyb3VwLVxTKiQFQ3VzcqBDc3BjoER1dWlkoW'
+    'pedXVpZC1cUyokGGhEbWV0YaBEdXVpZHR0ZXN0LWF1dGhvcml6ZWQtdXVpZENzaWdYIPpU-vCe9rkpYs87YUrFNWkyNq8CVvmKwEjVinnDrJJc'
+)
+
 
 crypto_configuration = PNConfiguration()
 crypto = PubNubCryptodome(crypto_configuration)
@@ -48,6 +57,7 @@ pnconf_pam.publish_key = pub_key_pam
 pnconf_pam.subscribe_key = sub_key_pam
 pnconf_pam.secret_key = sec_key_pam
 pnconf_pam.enable_subscribe = False
+
 
 pnconf_ssl = PNConfiguration()
 pnconf_ssl.publish_key = pub_key
@@ -104,7 +114,14 @@ def pnconf_enc_sub_copy():
 
 
 def pnconf_pam_copy():
-    return copy(pnconf_pam)
+    return deepcopy(pnconf_pam)
+
+
+def pnconf_pam_acceptance_copy():
+    pam_config = copy(pnconf_pam)
+    pam_config.origin = "localhost:8090"
+    pam_config.ssl = False
+    return pam_config
 
 
 def pnconf_ssl_copy():
@@ -174,3 +191,35 @@ class CountDownLatch(object):
 
         self.t.cancel()
         self.lock.release()
+
+
+def has_permission(perms, perm):
+    return (perms & perm) == perm
+
+
+def has_read_permission(perms):
+    return has_permission(perms, PAMPermissions.READ.value)
+
+
+def has_write_permission(perms):
+    return has_permission(perms, PAMPermissions.WRITE.value)
+
+
+def has_delete_permission(perms):
+    return has_permission(perms, PAMPermissions.DELETE.value)
+
+
+def has_manage_permission(perms):
+    return has_permission(perms, PAMPermissions.MANAGE.value)
+
+
+def has_get_permission(perms):
+    return has_permission(perms, PAMPermissions.GET.value)
+
+
+def has_update_permission(perms):
+    return has_permission(perms, PAMPermissions.UPDATE.value)
+
+
+def has_join_permission(perms):
+    return has_permission(perms, PAMPermissions.JOIN.value)

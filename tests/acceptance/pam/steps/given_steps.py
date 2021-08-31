@@ -1,0 +1,286 @@
+from behave import given
+from tests.helper import pnconf_pam_acceptance_copy
+from pubnub.pubnub import PubNub
+from pubnub.models.consumer.v3.channel import Channel
+from pubnub.models.consumer.v3.group import Group
+from pubnub.models.consumer.v3.uuid import UUID
+
+from tests.helper import (
+    has_join_permission, has_get_permission, has_read_permission, has_write_permission,
+    has_delete_permission, has_update_permission, has_manage_permission, PAM_TOKEN_WITH_ALL_PERMS_GRANTED
+)
+
+
+@given("I have a keyset with access manager enabled")
+def step_impl(context):
+    pubnub_instance = PubNub(pnconf_pam_acceptance_copy())
+    context.peer = pubnub_instance
+
+    context.authorized_uuid = None
+
+    context.channels_to_grant = []
+    context.resources_to_grant = {
+        "CHANNEL": {},
+        "UUID": {},
+        "CHANNEL_GROUPS": {}
+    }
+
+
+@given("the TTL {ttl}")
+def step_impl(context, ttl):
+    context.TTL = ttl
+
+
+@given("token pattern permission READ")
+def step_impl(context):
+    assert has_read_permission(context.token_resource)
+
+
+@given("token pattern permission WRITE")
+def step_impl(context):
+    assert has_write_permission(context.token_resource)
+
+
+@given("token pattern permission MANAGE")
+def step_impl(context):
+    assert has_manage_permission(context.token_resource)
+
+
+@given("token pattern permission UPDATE")
+def step_impl(context):
+    has_update_permission(context.token_resource)
+
+
+@given("token pattern permission JOIN")
+def step_impl(context):
+    has_join_permission(context.token_resource)
+
+
+@given("token pattern permission DELETE")
+def step_impl(context):
+    has_delete_permission(context.token_resource)
+
+
+@given("the {uuid_pattern} UUID pattern access permissions")
+def step_impl(context, uuid_pattern):
+    context.resource_type_to_grant = "UUID"
+    context.resource_name_to_grant = uuid_pattern.strip("'")
+
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant] = UUID.pattern(
+        context.resource_name_to_grant
+    )
+
+
+@given("token resource permission WRITE")
+def step_impl(context):
+    assert has_write_permission(context.token_resource)
+
+
+@given("token resource permission MANAGE")
+def step_impl(context):
+    has_manage_permission(context.token_resource)
+
+
+@given("token resource permission UPDATE")
+def step_impl(context):
+    assert has_update_permission(context.token_resource)
+
+
+@given("token resource permission JOIN")
+def step_impl(context):
+    assert has_join_permission(context.token_resource)
+
+
+@given("token resource permission DELETE")
+def step_impl(context):
+    assert has_delete_permission(context.token_resource)
+
+
+@given("grant pattern permission READ")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].read()
+
+
+@given("grant pattern permission WRITE")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].write()
+
+
+@given("grant pattern permission GET")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].get()
+
+
+@given("grant pattern permission MANAGE")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].manage()
+
+
+@given("grant pattern permission UPDATE")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].update()
+
+
+@given("grant pattern permission JOIN")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].join()
+
+
+@given("grant pattern permission DELETE")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].delete()
+
+
+@given("the {group_pattern} CHANNEL_GROUP pattern access permissions")
+def step_impl(context, group_pattern):
+    context.resource_type_to_grant = "CHANNEL_GROUPS"
+    context.resource_name_to_grant = group_pattern.strip("'")
+
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant] = Group.pattern(
+        context.resource_name_to_grant
+    )
+
+
+@given("token pattern permission GET")
+def step_impl(context):
+    assert has_get_permission(context.token_resource)
+
+
+@given("grant resource permission WRITE")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].write()
+
+
+@given("grant resource permission GET")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].get()
+
+
+@given("grant resource permission MANAGE")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].manage()
+
+
+@given("grant resource permission UPDATE")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].update()
+
+
+@given("grant resource permission JOIN")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].join()
+
+
+@given("grant resource permission DELETE")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].delete()
+
+
+@given("the {channel_group} CHANNEL_GROUP resource access permissions")
+def step_impl(context, channel_group):
+    context.resource_type_to_grant = "CHANNEL_GROUPS"
+    context.resource_name_to_grant = channel_group.strip("'")
+
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant] = Group.id(
+        context.resource_name_to_grant
+    )
+
+
+@given("the {uuid} UUID resource access permissions")
+def step_impl(context, uuid):
+    context.resource_type_to_grant = "UUID"
+    context.resource_name_to_grant = uuid.strip("'")
+
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant] = UUID.id(
+        context.resource_name_to_grant
+    )
+
+
+@given("the {channel_pattern} CHANNEL pattern access permissions")
+def step_impl(context, channel_pattern):
+    context.resource_type_to_grant = "CHANNEL"
+    context.resource_name_to_grant = channel_pattern.strip("'")
+
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant] = Channel.pattern(
+        context.resource_name_to_grant
+    )
+
+
+@given("token resource permission GET")
+def step_impl(context):
+    assert has_get_permission(context.token_resource)
+
+
+@given("I have a known token containing UUID pattern Permissions")
+def step_impl(context):
+    context.token_to_parse = PAM_TOKEN_WITH_ALL_PERMS_GRANTED
+
+
+@given("I have a known token containing UUID resource permissions")
+def step_impl(context):
+    context.token_to_parse = PAM_TOKEN_WITH_ALL_PERMS_GRANTED
+
+
+@given("I have a known token containing an authorized UUID")
+def step_impl(context):
+    context.token_to_parse = PAM_TOKEN_WITH_ALL_PERMS_GRANTED
+
+
+@given("token resource permission READ")
+def step_impl(context):
+    assert has_read_permission(context.token_resource)
+
+
+@given("the authorized UUID {authorized_uuid}")
+def step_impl(context, authorized_uuid):
+    context.authorized_uuid = authorized_uuid.strip('"')
+
+
+@given("the {channel} CHANNEL resource access permissions")
+def step_impl(context, channel):
+    context.resource_type_to_grant = "CHANNEL"
+    context.resource_name_to_grant = channel.strip("'")
+
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant] = Channel.id(
+        context.resource_name_to_grant
+    )
+
+
+@given("grant resource permission READ")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant].read()
+
+
+@given("deny resource permission GET")
+def step_impl(context):
+    context.resources_to_grant[context.resource_type_to_grant][context.resource_name_to_grant]._get = False
+
+
+@given("the error status code is {status}")
+def step_impl(context, status):
+    assert context.grant_call_error["status"] == int(status)
+
+
+@given("the error message is {err_msg}")
+def step_impl(context, err_msg):
+    assert context.grant_call_error["error"]["message"] == err_msg.strip("'")
+
+
+@given("the error source is {err_source}")
+def step_impl(context, err_source):
+    assert context.grant_call_error["error"]["source"] == err_source.strip("'")
+
+
+@given("the error detail message is {err_detail}")
+def step_impl(context, err_detail):
+    assert context.grant_call_error["error"]["details"][0]["message"] == err_detail.strip("'")
+
+
+@given("the error detail location is {err_detail_location}")
+def step_impl(context, err_detail_location):
+    assert context.grant_call_error["error"]["details"][0]["location"] == err_detail_location.strip("'")
+
+
+@given("the error detail location type is {err_detail_location_type}")
+def step_impl(context, err_detail_location_type):
+    assert context.grant_call_error["error"]["details"][0]["locationType"] == err_detail_location_type.strip("'")

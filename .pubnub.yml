@@ -1,5 +1,5 @@
 name: python
-version: 5.2.0
+version: 5.2.1
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -169,6 +169,12 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
+  - version: v5.2.1
+    date: 2021-09-06
+    changes:
+      -
+        text: "Encoding of the double quote character fixed."
+        type: bug
   - version: v5.2.0
     date: 2021-08-31
     changes:

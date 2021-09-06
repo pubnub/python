@@ -1,3 +1,9 @@
+## [v5.2.1](https://github.com/pubnub/python/releases/tag/v5.2.1)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.2.0...v5.2.1)
+
+- 🐛 Encoding of the double quote character fixed. 
+
 ## [v5.2.0](https://github.com/pubnub/python/releases/tag/v5.2.0)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.1.4...v5.2.0)

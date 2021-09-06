@@ -24,10 +24,7 @@ def get_data_for_user(data):
 
 def write_value_as_string(data):
     try:
-        if isinstance(data, str):
-            return "\"%s\"" % data
-        else:
-            return json.dumps(data)
+        return json.dumps(data)
     except TypeError:
         raise PubNubException(
             pn_error=PNERR_JSON_NOT_SERIALIZABLE

@@ -7,13 +7,13 @@ sdks:
     type: package
     full-name: Python SDK
     short-name: Python
+    tier: 1
     artifacts:
       - language: python
         tags:
           - Server
         source-repository: https://github.com/pubnub/python
         documentation: https://www.pubnub.com/docs/sdks/python/
-        tier: 1
         artifact-type: library
         distributions:
           - distribution-type: library
@@ -91,7 +91,6 @@ sdks:
           - Server
         source-repository: https://github.com/pubnub/python
         documentation: https://www.pubnub.com/docs/sdks/python/
-        tier: 1
         artifact-type: library
         distributions:
           -

@@ -1,3 +1,9 @@
+## [v5.3.0](https://github.com/pubnub/python/releases/tag/v5.3.0)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.2.1...v5.3.0)
+
+- 🌟️ Extend grantToken method to enable control of Objects API permission. Enhance granularity of permission control to enable permissions per UUID. 
+
 ## [v5.2.1](https://github.com/pubnub/python/releases/tag/v5.2.1)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.2.0...v5.2.1)

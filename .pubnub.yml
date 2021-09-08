@@ -1,5 +1,5 @@
 name: python
-version: 5.2.1
+version: 5.3.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -169,6 +169,12 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
+  - version: v5.3.0
+    date: 2021-09-08
+    changes:
+      -
+        text: "Extend grantToken method to enable control of Objects API permission. Enhance granularity of permission control to enable permissions per UUID."
+        type: feature
   - version: v5.2.1
     date: 2021-09-06
     changes:

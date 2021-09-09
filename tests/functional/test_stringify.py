@@ -40,13 +40,13 @@ class TestStringify(unittest.TestCase):
         result = PNAccessManagerAuditResult(None, None, None, None, None, 3600, True, False, True, False)
 
         assert str(result) == \
-            "Current permissions are valid for 3600 minutes: read True, write False, manage: True, delete: False"
+            "Permissions are valid for 3600 minutes"
 
     def test_grant(self):
         result = PNAccessManagerGrantResult(None, None, None, None, None, 3600, True, False, True, False)
 
         assert str(result) == \
-            "New permissions are set for 3600 minutes: read True, write False, manage: True, delete: False"
+            "Permissions are valid for 3600 minutes"
 
     def test_history(self):
         assert str(PNHistoryResult(None, 123, 789)) == "History result for range 123..789"

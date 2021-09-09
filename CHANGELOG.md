@@ -1,38 +1,46 @@
+## [v5.3.1](https://github.com/pubnub/python/releases/tag/v5.3.1)
+
+[Full Changelog](https://github.com/pubnub/python/compare/v5.3.0...v5.3.1)
+
+- 🌟️ Grant result object __str__ message unified. 
+
 ## [v5.3.0](https://github.com/pubnub/python/releases/tag/v5.3.0)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.2.1...v5.3.0)
 
-- 🌟️ Extend grantToken method to enable control of Objects API permission. Enhance granularity of permission control to enable permissions per UUID. 
+- 🌟️ Extend grant_token method to enable control of Objects API permission. Enhance granularity of permission control to enable permissions per UUID.
 
 ## [v5.2.1](https://github.com/pubnub/python/releases/tag/v5.2.1)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.2.0...v5.2.1)
 
-- 🐛 Encoding of the double quote character fixed. 
+- 🐛 Encoding of the double quote character fixed.
 
 ## [v5.2.0](https://github.com/pubnub/python/releases/tag/v5.2.0)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.1.4...v5.2.0)
 
-- 🌟️ Furthermore PAMv3 tokens can now be used within other PubNub features. 
+- 🌟️ PAMv3 support for Objects_v2 added (beta).
+     Furthermore PAMv3 tokens can now be used within other PubNub features.
 
 ## [v5.1.4](https://github.com/pubnub/python/releases/tag/v5.1.4)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.1.3...v5.1.4)
 
-- 🌟️ Additionally, example code for the FastAPI integration was added. 
+- 🌟️ SDK metadata was added.
+     Additionally, example code for the FastAPI integration was added.
 
 ## [v5.1.3](https://github.com/pubnub/python/releases/tag/v5.1.3)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.1.2...v5.1.3)
 
-- 🐛 Disabling default request headers within the Endpoind. 
+- 🐛 Disabling default request headers within the Endpoint.
 
 ## [v5.1.2](https://github.com/pubnub/python/releases/tag/v5.1.2)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.1.1...v5.1.2)
 
-- 🐛 Request headers required by the Grant Token functionality added. 
+- 🐛 Request headers required by the Grant Token functionality added.
 
 ## [v5.1.1](https://github.com/pubnub/python/releases/tag/v5.1.1)
 
@@ -56,7 +64,8 @@
 
 [Full Changelog](https://github.com/pubnub/python/compare/v4.8.1...v5.0.0)
 
-- ⭐️️ Apart from bringing the whole SDK up to date, support for Tornado and Twisted was removed and dependiecies were simplified. 
+- ⭐️️ Support for Python 2.7 was removed, support for the contemporary versions of Python was added.
+     Apart from bringing the whole SDK up to date, support for Tornado and Twisted was removed and dependencies were simplified. 
 
 ## [v4.8.1](https://github.com/pubnub/python/releases/tag/v4.8.1)
 

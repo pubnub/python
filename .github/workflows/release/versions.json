@@ -1,0 +1,18 @@
+{
+  ".pubnub.yml": [
+    { "pattern": "^version: (.+)$", "cleared": true },
+    { "pattern": "\\s+package-name: pubnub-((\\d+\\.?){2,})$", "cleared": true },
+    { "pattern": "/releases/download/(.*)/pubnub-.*.tar.gz$", "cleared": false },
+    { "pattern": "/releases/download/.*/pubnub-(.*).tar.gz$", "cleared": true }
+  ],
+  "setup.py": [
+    { "pattern": "^\\s{2,}version='(.+)',$", "cleared": true }
+  ],
+  "README.md": [
+    { "pattern": "^\\s{2,}<version>(.+)<\\/version>$", "cleared": true },
+    { "pattern": "^\\s{2,}implementation 'com\\.pubnub:pubnub-gson:(.+)'$", "cleared": true }
+  ],
+  "pubnub/pubnub_core.py": [
+    { "pattern": "^\\s{2,}SDK_VERSION = \"(.+)\"$", "cleared": true }
+  ]
+}

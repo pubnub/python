@@ -271,3 +271,51 @@ def decode_utf8_dict(dic):
         return new_l
     else:
         return dic
+
+
+def has_permission(perms, perm):
+    return (perms & perm) == perm
+
+
+def has_read_permission(perms):
+    return has_permission(perms, PAMPermissions.READ.value)
+
+
+def has_write_permission(perms):
+    return has_permission(perms, PAMPermissions.WRITE.value)
+
+
+def has_delete_permission(perms):
+    return has_permission(perms, PAMPermissions.DELETE.value)
+
+
+def has_manage_permission(perms):
+    return has_permission(perms, PAMPermissions.MANAGE.value)
+
+
+def has_get_permission(perms):
+    return has_permission(perms, PAMPermissions.GET.value)
+
+
+def has_update_permission(perms):
+    return has_permission(perms, PAMPermissions.UPDATE.value)
+
+
+def has_join_permission(perms):
+    return has_permission(perms, PAMPermissions.JOIN.value)
+
+
+def parse_pam_permissions(resource):
+    new_res = {}
+    for res_name, perms in resource.items():
+        new_res[res_name] = {
+            "read": has_read_permission(perms),
+            "write": has_write_permission(perms),
+            "manage": has_manage_permission(perms),
+            "delete": has_delete_permission(perms),
+            "get": has_get_permission(perms),
+            "update": has_update_permission(perms),
+            "join": has_join_permission(perms)
+        }
+
+    return new_res

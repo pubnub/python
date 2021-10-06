@@ -516,6 +516,42 @@ class TokenManager:
     def get_token(self):
         return self.token
 
+    @classmethod
+    def parse_token(cls, token):
+        token = cls.unwrap_token(token)
+
+        parsed_token = {
+            "version": token["v"],
+            "timestamp": token["t"],
+            "ttl": token["ttl"],
+            "authorized_uuid": token.get("uuid"),
+            "resources": {},
+            "patterns": {},
+            "meta": token["meta"]
+        }
+
+        perm_type_name_mapping = {
+            "res": "resources",
+            "pat": "patterns"
+        }
+
+        for resource_type in perm_type_name_mapping:
+            for resource in token[resource_type]:
+                if resource == "uuid":
+                    parsed_token[perm_type_name_mapping[resource_type]]["uuids"] = utils.parse_pam_permissions(
+                        token[resource_type][resource]
+                    )
+                elif resource == "grp":
+                    parsed_token[perm_type_name_mapping[resource_type]]["groups"] = utils.parse_pam_permissions(
+                        token[resource_type][resource]
+                    )
+                elif resource == "chan":
+                    parsed_token[perm_type_name_mapping[resource_type]]["channels"] = utils.parse_pam_permissions(
+                        token[resource_type][resource]
+                    )
+
+        return parsed_token
+
     @staticmethod
     def unwrap_token(token):
         token = token.replace("_", "/").replace("-", "+")

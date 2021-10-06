@@ -1,5 +1,5 @@
 name: python
-version: 5.4.0
+version: 5.3.1
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -169,12 +169,6 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
-  - version: v5.4.0
-    date: 2021-10-07
-    changes:
-      -
-        text: "Parse_token method refactored."
-        type: feature
   - version: v5.3.1
     date: 2021-09-09
     changes:

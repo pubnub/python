@@ -1,9 +1,3 @@
-## [v5.4.0](https://github.com/pubnub/python/releases/tag/v5.4.0)
-
-[Full Changelog](https://github.com/pubnub/python/compare/v5.3.1...v5.4.0)
-
-- 🌟️ Parse_token method refactored. 
-
 ## [v5.3.1](https://github.com/pubnub/python/releases/tag/v5.3.1)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.3.0...v5.3.1)

@@ -4,11 +4,7 @@ from pubnub.pubnub import PubNub
 from pubnub.models.consumer.v3.channel import Channel
 from pubnub.models.consumer.v3.group import Group
 from pubnub.models.consumer.v3.uuid import UUID
-
-from tests.helper import (
-    has_join_permission, has_get_permission, has_read_permission, has_write_permission,
-    has_delete_permission, has_update_permission, has_manage_permission, PAM_TOKEN_WITH_ALL_PERMS_GRANTED
-)
+from tests.helper import PAM_TOKEN_WITH_ALL_PERMS_GRANTED
 
 
 @given("I have a keyset with access manager enabled")
@@ -33,32 +29,32 @@ def step_impl(context, ttl):
 
 @given("token pattern permission READ")
 def step_impl(context):
-    assert has_read_permission(context.token_resource)
+    assert context.token_resource["read"]
 
 
 @given("token pattern permission WRITE")
 def step_impl(context):
-    assert has_write_permission(context.token_resource)
+    assert context.token_resource["write"]
 
 
 @given("token pattern permission MANAGE")
 def step_impl(context):
-    assert has_manage_permission(context.token_resource)
+    assert context.token_resource["manage"]
 
 
 @given("token pattern permission UPDATE")
 def step_impl(context):
-    has_update_permission(context.token_resource)
+    assert context.token_resource["update"]
 
 
 @given("token pattern permission JOIN")
 def step_impl(context):
-    has_join_permission(context.token_resource)
+    assert context.token_resource["join"]
 
 
 @given("token pattern permission DELETE")
 def step_impl(context):
-    has_delete_permission(context.token_resource)
+    assert context.token_resource["delete"]
 
 
 @given("the {uuid_pattern} UUID pattern access permissions")
@@ -73,27 +69,27 @@ def step_impl(context, uuid_pattern):
 
 @given("token resource permission WRITE")
 def step_impl(context):
-    assert has_write_permission(context.token_resource)
+    assert context.token_resource["write"]
 
 
 @given("token resource permission MANAGE")
 def step_impl(context):
-    has_manage_permission(context.token_resource)
+    assert context.token_resource["manage"]
 
 
 @given("token resource permission UPDATE")
 def step_impl(context):
-    assert has_update_permission(context.token_resource)
+    assert context.token_resource["update"]
 
 
 @given("token resource permission JOIN")
 def step_impl(context):
-    assert has_join_permission(context.token_resource)
+    assert context.token_resource["join"]
 
 
 @given("token resource permission DELETE")
 def step_impl(context):
-    assert has_delete_permission(context.token_resource)
+    assert context.token_resource["delete"]
 
 
 @given("grant pattern permission READ")
@@ -143,7 +139,7 @@ def step_impl(context, group_pattern):
 
 @given("token pattern permission GET")
 def step_impl(context):
-    assert has_get_permission(context.token_resource)
+    assert context.token_resource["get"]
 
 
 @given("grant resource permission WRITE")
@@ -208,7 +204,7 @@ def step_impl(context, channel_pattern):
 
 @given("token resource permission GET")
 def step_impl(context):
-    assert has_get_permission(context.token_resource)
+    assert context.token_resource["get"]
 
 
 @given("I have a known token containing UUID pattern Permissions")
@@ -228,7 +224,7 @@ def step_impl(context):
 
 @given("token resource permission READ")
 def step_impl(context):
-    assert has_read_permission(context.token_resource)
+    assert context.token_resource["read"]
 
 
 @given("the authorized UUID {authorized_uuid}")

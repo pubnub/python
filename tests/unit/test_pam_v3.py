@@ -3,17 +3,20 @@ from tests.helper import pnconf_pam_copy
 
 
 TEST_TOKEN = (
-    'p0F2AkF0GmB4Sd9DdHRsD0NyZXOkRGNoYW6iY2ZvbwFjYmFyAUNncnCiY2ZvbwFjYmFyAUN1c3KgQ'
-    '3NwY6BDcGF0pERjaGFuoENncnCgQ3VzcqBDc3BjoERtZXRhoENzaWdYIBHsbMOeRAHUvsCURvZ3Yehv74QvPT4xqfHY5JPONmyJ'
+    "qEF2AkF0GmFLd-NDdHRsGQWgQ3Jlc6VEY2hhbqFjY2gxGP9DZ3JwoWNjZzEY_0N1c3KgQ3NwY6BEdXVpZKFldXVpZDEY_"
+    "0NwYXSlRGNoYW6gQ2dycKBDdXNyoENzcGOgRHV1aWShYl4kAURtZXRho2VzY29yZRhkZWNvbG9yY3JlZGZhdXRob3JlcGFu"
+    "ZHVEdXVpZGtteWF1dGh1dWlkMUNzaWdYIP2vlxHik0EPZwtgYxAW3-LsBaX_WgWdYvtAXpYbKll3"
 )
+
 
 pubnub = PubNub(pnconf_pam_copy())
 
 
 def test_v3_token_parsing():
     token = pubnub.parse_token(TEST_TOKEN)
-    assert token['v'] == 2  # Token version
-    assert token['t'] == 1618495967  # Token creation time
-    assert token['ttl'] == 15
-    assert token['res']
-    assert token['sig']
+    assert token["version"] == 2
+    assert token["timestamp"] == 1632335843
+    assert token["ttl"] == 1440
+    assert token["authorized_uuid"] == "myauthuuid1"
+    assert token["meta"] == {"score": 100, "color": "red", "author": "pandu"}
+    assert token["resources"]["channels"]["ch1"]

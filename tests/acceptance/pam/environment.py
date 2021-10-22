@@ -23,3 +23,4 @@ def after_scenario(context, feature):
 
             response_json = response.json()
             assert not response_json["expectations"]["failed"]
+            assert not response_json["expectations"]["pending"]

@@ -7,7 +7,6 @@ from copy import copy, deepcopy
 from pubnub import utils
 from pubnub.crypto import PubNubCryptodome
 from pubnub.pnconfiguration import PNConfiguration
-from pubnub.enums import PAMPermissions
 
 
 PAM_TOKEN_WITH_ALL_PERMS_GRANTED = (
@@ -191,35 +190,3 @@ class CountDownLatch(object):
 
         self.t.cancel()
         self.lock.release()
-
-
-def has_permission(perms, perm):
-    return (perms & perm) == perm
-
-
-def has_read_permission(perms):
-    return has_permission(perms, PAMPermissions.READ.value)
-
-
-def has_write_permission(perms):
-    return has_permission(perms, PAMPermissions.WRITE.value)
-
-
-def has_delete_permission(perms):
-    return has_permission(perms, PAMPermissions.DELETE.value)
-
-
-def has_manage_permission(perms):
-    return has_permission(perms, PAMPermissions.MANAGE.value)
-
-
-def has_get_permission(perms):
-    return has_permission(perms, PAMPermissions.GET.value)
-
-
-def has_update_permission(perms):
-    return has_permission(perms, PAMPermissions.UPDATE.value)
-
-
-def has_join_permission(perms):
-    return has_permission(perms, PAMPermissions.JOIN.value)

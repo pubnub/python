@@ -65,7 +65,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "5.3.1"
+    SDK_VERSION = "5.4.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -268,7 +268,7 @@ class PubNubCore:
         return HistoryDelete(self)
 
     def parse_token(self, token):
-        return self._token_manager.unwrap_token(token)
+        return self._token_manager.parse_token(token)
 
     def set_token(self, token):
         self._token_manager.set_token(token)

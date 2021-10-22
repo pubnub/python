@@ -1,5 +1,5 @@
 name: python
-version: 5.3.1
+version: 5.4.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -169,6 +169,12 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
+  - version: v5.4.0
+    date: 2021-10-07
+    changes:
+      -
+        text: "Parse_token method refactored."
+        type: feature
   - version: v5.3.1
     date: 2021-09-09
     changes:
@@ -469,9 +475,10 @@ features:
     - ACCESS-GRANT
     - ACCESS-GRANT-MANAGE
     - ACCESS-GRANT-DELETE
-    - ACCESS-GRANT-V3
-    - ACCESS-TOKEN-MANAGEMENT
-    - ACCESS-SECRET-KEY-ALL-ACCESS    
+    - ACCESS-SECRET-KEY-ALL-ACCESS
+    - ACCESS-GRANT-TOKEN
+    - ACCESS-PARSE-TOKEN
+    - ACCESS-SET-TOKEN
   channel-groups:
     - CHANNEL-GROUPS-ADD-CHANNELS
     - CHANNEL-GROUPS-REMOVE-CHANNELS

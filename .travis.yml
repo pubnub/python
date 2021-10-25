@@ -8,9 +8,7 @@ install:
 
 stages:
   - name: "test"
-    if: |
-      type != pull_request \
-      AND tag IS blank
+    if: tag IS blank
 
 jobs:
   include:

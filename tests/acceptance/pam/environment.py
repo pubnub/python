@@ -11,8 +11,8 @@ def before_scenario(context, feature):
             assert response
 
             response_json = response.json()
-            assert response_json["pending"]
-            assert not response_json["failed"]
+            assert response_json["expectations"]["pending"]
+            assert not response_json["expectations"]["failed"]
 
 
 def after_scenario(context, feature):

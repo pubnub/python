@@ -1,7 +1,7 @@
 {
   ".pubnub.yml": [
     { "pattern": "^version: (.+)$", "cleared": true },
-    { "pattern": "\\s+package-name: pubnub-((\\d+\\.?){2,})$", "clearedPrefix": true },
+    { "pattern": "\\s+package-name: pubnub-(v?(\\d+\\.?){2,}([a-zA-Z0-9-]+(\\.?\\d+)?)?)$", "clearedPrefix": true },
     { "pattern": "/releases/download/(.*)/pubnub-.*.tar.gz$", "cleared": false },
     { "pattern": "/releases/download/.*/pubnub-(.*).tar.gz$", "clearedPrefix": true }
   ],

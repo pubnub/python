@@ -28,7 +28,6 @@ class PNConfiguration(object):
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.NONE
         self.daemon = False
-        self.disable_token_manager = False
         self.use_random_initialization_vector = True
         self.suppress_leave_events = False
 

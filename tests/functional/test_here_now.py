@@ -17,7 +17,8 @@ class TestHereNow(unittest.TestCase):
         self.pubnub = MagicMock(
             spec=PubNub,
             config=pnconf,
-            sdk_name=sdk_name
+            sdk_name=sdk_name,
+            _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_HereNowTest"
         self.pubnub._telemetry_manager = TelemetryManager()

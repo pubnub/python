@@ -1,3 +1,6 @@
+from enum import Enum
+
+
 class HttpMethod(object):
     GET = 1
     POST = 2
@@ -135,3 +138,14 @@ class PNMatchType(object):
 class PNPushEnvironment(object):
     DEVELOPMENT = "development"
     PRODUCTION = "production"
+
+
+class PAMPermissions(Enum):
+    READ = 1
+    WRITE = 2
+    MANAGE = 4
+    DELETE = 8
+    CREATE = 16
+    GET = 32
+    UPDATE = 64
+    JOIN = 128

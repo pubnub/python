@@ -73,3 +73,7 @@ _trial_temp
 
 # jupyter dev notebook
 PubNubTwisted.ipynb
+
+# GitHub Actions #
+##################
+.github/.release

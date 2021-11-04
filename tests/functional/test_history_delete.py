@@ -21,7 +21,8 @@ class TestHistoryDelete(unittest.TestCase):  # pylint: disable=W0612
             config=pnconf,
             sdk_name=sdk_name,
             timestamp=MagicMock(return_value=""),
-            uuid=None
+            uuid=None,
+            _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_UnitTest"
         self.pubnub._telemetry_manager = TelemetryManager()

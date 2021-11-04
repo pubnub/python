@@ -332,3 +332,15 @@ class TestPubNubPublish(unittest.TestCase):
         assert isinstance(env.result, PNPublishResult)
         assert "ptto" in env.status.client_request.url
         assert "norep" in env.status.client_request.url
+
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/native_sync/publish/publish_with_single_quote_message.yaml',
+        filter_query_parameters=['uuid', 'pnsdk', 'l_pub']
+    )
+    def test_single_quote_character_message_encoded_ok(self):
+        envelope = PubNub(pnconf).publish()\
+            .channel("ch1")\
+            .message('"')\
+            .sync()
+
+        assert envelope

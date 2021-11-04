@@ -1,0 +1,14 @@
+{
+  ".pubnub.yml": [
+    { "pattern": "^version: (.+)$", "cleared": true },
+    { "pattern": "\\s+package-name: pubnub-(v?(\\d+\\.?){2,}([a-zA-Z0-9-]+(\\.?\\d+)?)?)$", "clearedPrefix": true },
+    { "pattern": "/releases/download/(v?(\\d+\\.?){2,}([a-zA-Z0-9-]+(\\.?\\d+)?)?)/pubnub-.*.tar.gz$", "cleared": false },
+    { "pattern": "/releases/download/.*/pubnub-(v?(\\d+\\.?){2,}([a-zA-Z0-9-]+(\\.?\\d+)?)?).tar.gz$", "clearedPrefix": true }
+  ],
+  "setup.py": [
+    { "pattern": "^\\s{2,}version='(v?(\\d+\\.?){2,}([a-zA-Z0-9-]+(\\.?\\d+)?)?)',$", "clearedPrefix": true }
+  ],
+  "pubnub/pubnub_core.py": [
+    { "pattern": "^\\s{2,}SDK_VERSION = \"(v?(\\d+\\.?){2,}([a-zA-Z0-9-]+(\\.?\\d+)?)?)\"$", "clearedPrefix": true }
+  ]
+}

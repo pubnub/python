@@ -14,7 +14,8 @@ class TestHeartbeat(unittest.TestCase):
         self.pubnub = MagicMock(
             spec=PubNub,
             config=pnconf_copy(),
-            sdk_name=sdk_name
+            sdk_name=sdk_name,
+            _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_HeartbeatUnitTest"
         self.hb = Heartbeat(self.pubnub)

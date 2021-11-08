@@ -58,6 +58,11 @@ pnconf_pam.secret_key = sec_key_pam
 pnconf_pam.enable_subscribe = False
 
 
+pnconf_pam_stub = PNConfiguration()
+pnconf_pam_stub.publish_key = "pub-stub"
+pnconf_pam_stub.subscribe_key = "sub-c-stub"
+pnconf_pam_stub.secret_key = "sec-c-stub"
+
 pnconf_ssl = PNConfiguration()
 pnconf_ssl.publish_key = pub_key
 pnconf_ssl.subscribe_key = sub_key
@@ -114,6 +119,10 @@ def pnconf_enc_sub_copy():
 
 def pnconf_pam_copy():
     return deepcopy(pnconf_pam)
+
+
+def pnconf_pam_stub_copy():
+    return deepcopy(pnconf_pam_stub)
 
 
 def pnconf_pam_acceptance_copy():

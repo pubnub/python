@@ -54,4 +54,5 @@ jobs:
         uses: ./.github/.release/actions/actions/services/github-release
         with:
           token: ${{ secrets.GH_TOKEN }}
+          jira-api-key: ${{ secrets.JIRA_API_KEY }}
           last-service: true

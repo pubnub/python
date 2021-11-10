@@ -23,4 +23,5 @@ jobs:
         uses: ./.github/.release/actions/actions/commands
         with:
           token: ${{ secrets.GH_TOKEN }}
+          jira-api-key: ${{ secrets.JIRA_API_KEY }}
           listener: client-engineering-bot

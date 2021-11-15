@@ -39,6 +39,11 @@ def step_impl(context, channel):
     context.token = PAM_TOKEN_EXPIRED
 
 
+@given("the token string {token}")
+def step_impl(context, token):
+    context.token = token.strip("'")
+
+
 @given("a token")
 def step_impl(context):
     context.token = PAM_TOKEN_WITH_PUBLISH_ENABLED

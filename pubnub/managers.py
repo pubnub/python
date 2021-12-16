@@ -466,6 +466,9 @@ class TelemetryManager:
             PNOperationType.PNAccessManagerRevoke: 'pam',
             PNOperationType.PNTimeOperation: 'pam',
 
+            PNOperationType.PNAccessManagerGrantToken: 'pamv3',
+            PNOperationType.PNAccessManagerRevokeToken: 'pamv3',
+
             PNOperationType.PNSignalOperation: 'sig',
 
             PNOperationType.PNSetUuidMetadataOperation: 'obj',
@@ -487,8 +490,6 @@ class TelemetryManager:
             PNOperationType.PNGetMembershipsOperation: 'obj',
             PNOperationType.PNRemoveMembershipsOperation: 'obj',
             PNOperationType.PNManageMembershipsOperation: 'obj',
-
-            PNOperationType.PNAccessManagerGrantToken: 'pamv3',
 
             PNOperationType.PNAddMessageAction: 'msga',
             PNOperationType.PNGetMessageActions: 'msga',

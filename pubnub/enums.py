@@ -69,7 +69,9 @@ class PNOperationType(object):
     PNFireOperation = 25
     PNSignalOperation = 26
 
+    PNAccessManagerRevokeToken = 40
     PNAccessManagerGrantToken = 41
+
     PNAddMessageAction = 42
     PNGetMessageActions = 43
     PNDeleteMessageAction = 44

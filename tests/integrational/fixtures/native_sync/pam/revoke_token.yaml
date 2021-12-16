@@ -1,0 +1,84 @@
+interactions:
+- request:
+    body: '{"ttl": 60, "permissions": {"resources": {"channels": {"test_channel":
+      207}, "groups": {}, "uuids": {}, "users": {}, "spaces": {}}, "patterns": {"channels":
+      {}, "groups": {}, "uuids": {}, "users": {}, "spaces": {}}, "meta": {}, "uuid":
+      "test"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '244'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/5.4.0
+    method: POST
+    uri: https://ps.pndsn.com/v3/pam/sub-c-stub/grant
+  response:
+    body:
+      string: '{"data":{"message":"Success","token":"qEF2AkF0GmGFTxxDdHRsGDxDcmVzpURjaGFuoWx0ZXN0X2NoYW5uZWwYz0NncnCgQ3VzcqBDc3BjoER1dWlkoENwYXSlRGNoYW6gQ2dycKBDdXNyoENzcGOgRHV1aWSgRG1ldGGgRHV1aWRkdGVzdENzaWdYIMD7y8nuLytwo00ZNv2Dv9_nQU46Zg5f7qql6Yw9dkhr"},"service":"Access
+        Manager","status":200}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '281'
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Date:
+      - Fri, 05 Nov 2021 15:34:52 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - PubNub-Python/5.4.0
+    method: DELETE
+    uri: https://ps.pndsn.com/v3/pam/sub-c-stub/grant/qEF2AkF0GmGFTxxDdHRsGDxDcmVzpURjaGFuoWx0ZXN0X2NoYW5uZWwYz0NncnCgQ3VzcqBDc3BjoER1dWlkoENwYXSlRGNoYW6gQ2dycKBDdXNyoENzcGOgRHV1aWSgRG1ldGGgRHV1aWRkdGVzdENzaWdYIMD7y8nuLytwo00ZNv2Dv9_nQU46Zg5f7qql6Yw9dkhr
+  response:
+    body:
+      string: '{"data":{"message":"Success"},"service":"Access Manager","status":200}'
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '70'
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Date:
+      - Fri, 05 Nov 2021 15:34:52 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

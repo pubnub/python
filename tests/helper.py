@@ -10,9 +10,23 @@ from pubnub.pnconfiguration import PNConfiguration
 
 
 PAM_TOKEN_WITH_ALL_PERMS_GRANTED = (
-    'qEF2AkF0GmEI03xDdHRsGDxDcmVzpURjaGFuoWljaGFubmVsLTEY70NncnChb2NoYW5uZWxfZ3JvdXAtMQVDdXNyoENzcGOgRHV1aWShZ'
-    'nV1aWQtMRhoQ3BhdKVEY2hhbqFtXmNoYW5uZWwtXFMqJBjvQ2dycKF0XjpjaGFubmVsX2dyb3VwLVxTKiQFQ3VzcqBDc3BjoER1dWlkoW'
-    'pedXVpZC1cUyokGGhEbWV0YaBEdXVpZHR0ZXN0LWF1dGhvcml6ZWQtdXVpZENzaWdYIPpU-vCe9rkpYs87YUrFNWkyNq8CVvmKwEjVinnDrJJc'
+    "qEF2AkF0GmEI03xDdHRsGDxDcmVzpURjaGFuoWljaGFubmVsLTEY70NncnChb2NoYW5uZWxfZ3JvdXAtMQVDdXNyoENzcGOgRHV1aWShZ"
+    "nV1aWQtMRhoQ3BhdKVEY2hhbqFtXmNoYW5uZWwtXFMqJBjvQ2dycKF0XjpjaGFubmVsX2dyb3VwLVxTKiQFQ3VzcqBDc3BjoER1dWlkoW"
+    "pedXVpZC1cUyokGGhEbWV0YaBEdXVpZHR0ZXN0LWF1dGhvcml6ZWQtdXVpZENzaWdYIPpU-vCe9rkpYs87YUrFNWkyNq8CVvmKwEjVinnDrJJc"
+)
+
+PAM_TOKEN_EXPIRED = (
+    "qEF2AkF0GmEI03xDdHRsGDxDcmVzpURjaGFuoWljaGFubmVsLTEY70NncnChb2NoYW5uZWxfZ3JvdXAtMQ"
+    "VDdXNyoENzcGOgRHV1aWShZnV1aWQtMRhoQ3BhdKVEY2hhbqFtXmNoYW5uZWwtXFMqJBjvQ2dycKF0XjpjaG"
+    "FubmVsX2dyb3VwLVxTKiQFQ3VzcqBDc3BjoER1dWlkoWpedXVpZC1cUyokGGhEbWV0YaBEdXVpZHR0ZXN0LWF1"
+    "dGhvcml6ZWQtdXVpZENzaWdYIPpU-vCe9rkpYs87YUrFNWkyNq8CVvmKwEjVinnDrJJc"
+)
+
+PAM_TOKEN_WITH_PUBLISH_ENABLED = (
+    "qEF2AkF0GmEI03xDdHRsGDxDcmVzpURjaGFuoWljaGFubmVsLTEY70NncnChb2NoYW5uZWxfZ3JvdXAtMQ"
+    "VDdXNyoENzcGOgRHV1aWShZnV1aWQtMRhoQ3BhdKVEY2hhbqFtXmNoYW5uZWwtXFMqJBjvQ2dycKF0XjpjaG"
+    "FubmVsX2dyb3VwLVxTKiQFQ3VzcqBDc3BjoER1dWlkoWpedXVpZC1cUyokGGhEbWV0YaBEdXVpZHR0ZXN0LWF1"
+    "dGhvcml6ZWQtdXVpZENzaWdYIPpU-vCe9rkpYs87YUrFNWkyNq8CVvmKwEjVinnDrJJc"
 )
 
 
@@ -57,6 +71,11 @@ pnconf_pam.subscribe_key = sub_key_pam
 pnconf_pam.secret_key = sec_key_pam
 pnconf_pam.enable_subscribe = False
 
+
+pnconf_pam_stub = PNConfiguration()
+pnconf_pam_stub.publish_key = "pub-stub"
+pnconf_pam_stub.subscribe_key = "sub-c-stub"
+pnconf_pam_stub.secret_key = "sec-c-stub"
 
 pnconf_ssl = PNConfiguration()
 pnconf_ssl.publish_key = pub_key
@@ -114,6 +133,10 @@ def pnconf_enc_sub_copy():
 
 def pnconf_pam_copy():
     return deepcopy(pnconf_pam)
+
+
+def pnconf_pam_stub_copy():
+    return deepcopy(pnconf_pam_stub)
 
 
 def pnconf_pam_acceptance_copy():

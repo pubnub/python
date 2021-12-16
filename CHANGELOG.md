@@ -1,3 +1,9 @@
+## v5.5.0
+December 16 2021
+
+## v5.4.0
+December 16 2021
+
 ## [v5.4.0](https://github.com/pubnub/python/releases/tag/v5.4.0)
 
 [Full Changelog](https://github.com/pubnub/python/compare/v5.3.1...v5.4.0)

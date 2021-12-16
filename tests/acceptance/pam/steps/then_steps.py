@@ -1,4 +1,6 @@
+import json
 from behave import then
+from pubnub.exceptions import PubNubException
 
 
 @then("the token contains the TTL 60")
@@ -58,10 +60,26 @@ def step_impl(context, channel_group):
 
 @then("I see the error message {error} and details {error_details}")
 def step_impl(context, error, error_details):
-    assert context.grant_call_error["error"]["message"] == error.strip("'")
-    assert context.grant_call_error["error"]["details"][0]["message"] == error_details.strip("'")
+    assert context.pam_call_error["error"]["message"] == error.strip("'")
+    assert context.pam_call_error["error"]["details"][0]["message"] == error_details.strip("'")
 
 
 @then("an error is returned")
 def step_impl(context):
-    assert context.grant_call_error
+    assert context.pam_call_error
+
+
+@then("I get confirmation that token has been revoked")
+def step_impl(context):
+    assert context.revoke_result.result.status == 200
+
+
+@then("an auth error is returned")
+def step_impl(context):
+    assert isinstance(context.pam_call_result, PubNubException)
+    context.pam_call_error = json.loads(context.pam_call_result._errormsg)
+
+
+@then("the result is successful")
+def step_impl(context):
+    assert context.publish_result.result.timetoken

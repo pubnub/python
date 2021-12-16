@@ -1,6 +1,10 @@
 ## v5.5.0
 December 16 2021
 
+## [v5.5.0](https://github.com/pubnub/python/releases/tag/v5.5.0)  
+
+- 🌟️ Revoke token functionality.
+
 ## v5.4.0
 December 16 2021
 

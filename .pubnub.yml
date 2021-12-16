@@ -172,11 +172,9 @@ changelog:
   - date: 2021-12-16
     version: v5.5.0
     changes:
-
-  - date: 2021-12-16
-    version: v5.4.0
-    changes:
-
+      -
+        text: "Revoke token functionality."
+        type: feature
   - version: v5.4.0
     date: 2021-10-07
     changes:

@@ -37,7 +37,7 @@ class RevokeToken(Endpoint):
         return RevokeToken.REVOKE_TOKEN_PATH % (self.pubnub.config.subscribe_key, utils.url_encode(self.token))
 
     def operation_type(self):
-        return PNOperationType.PNAccessManagerRevoke
+        return PNOperationType.PNAccessManagerRevokeToken
 
     def name(self):
         return "RevokeToken"

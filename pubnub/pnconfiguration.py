@@ -36,7 +36,7 @@ class PNConfiguration(object):
         self._heartbeat_interval = PNConfiguration.DEFAULT_HEARTBEAT_INTERVAL
 
     def validate(self):
-        assert self.uuid is None or isinstance(self.uuid, str)
+        assert self.uuid and isinstance(self.uuid, str), "UUID missing or invalid type"
 
         if not self.uuid:
             self.uuid = utils.uuid()

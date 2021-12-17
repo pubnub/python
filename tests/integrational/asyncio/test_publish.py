@@ -234,6 +234,7 @@ async def test_error_invalid_key(event_loop):
     conf.publish_key = "fake"
     conf.subscribe_key = "demo"
     conf.enable_subscribe = False
+    conf.uuid = "uuid"
 
     pubnub = PubNubAsyncio(conf, custom_event_loop=event_loop)
 
@@ -248,6 +249,7 @@ async def test_error_invalid_key(event_loop):
 async def test_not_permitted(event_loop):
     pnconf = pnconf_pam_copy()
     pnconf.secret_key = None
+    pnconf.uuid = "uuid"
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
     await assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "HTTP Client Error (403")

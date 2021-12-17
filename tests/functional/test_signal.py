@@ -13,6 +13,7 @@ CHAN = 'chan'
 MSG = 'x'
 MSG_ENCODED = url_encode(MSG)
 AUTH = 'auth'
+UUID = 'uuid'
 
 
 def test_signal():
@@ -20,6 +21,7 @@ def test_signal():
     config.subscribe_key = SUB_KEY
     config.publish_key = PUB_KEY
     config.auth_key = AUTH
+    config.uuid = UUID
     signal = PubNub(config).signal()
 
     with pytest.raises(PubNubException):

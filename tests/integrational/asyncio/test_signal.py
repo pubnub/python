@@ -13,6 +13,7 @@ def pnconf():
     pnconf.publish_key = 'demo'
     pnconf.subscribe_key = 'demo'
     pnconf.enable_subscribe = False
+    pnconf.uuid = 'uuid'
     return pnconf
 
 

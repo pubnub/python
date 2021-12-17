@@ -134,6 +134,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         config.publish_key = "fake"
         config.subscribe_key = "demo"
         config.enable_subscribe = False
+        config.uuid = "uuid"
 
         PubNub(config).publish() \
             .channel("ch1") \

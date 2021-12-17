@@ -13,6 +13,7 @@ SUB_KEY = 'bla'
 def mc():
     config = PNConfiguration()
     config.subscribe_key = SUB_KEY
+    config.uuid = 'uuid'
     return PubNub(config).message_counts()
 
 

@@ -233,6 +233,7 @@ class TestPubNubPublish(unittest.TestCase):
         config.publish_key = "fake"
         config.subscribe_key = "demo"
         config.enable_subscribe = False
+        config.uuid = "uuid"
 
         try:
             PubNub(config).publish() \

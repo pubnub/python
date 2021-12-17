@@ -19,6 +19,7 @@ def test_fire():
     config.subscribe_key = SUB_KEY
     config.publish_key = PUB_KEY
     config.auth_key = AUTH
+    config.uuid = 'uuid'
     fire = PubNub(config).fire()
 
     fire.channel(CHAN).message(MSG)

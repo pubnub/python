@@ -21,3 +21,11 @@ class PNGrantTokenResult(_PAMv3Result):
 
     def get_token(self):
         return self.token
+
+
+class PNRevokeTokenResult:
+    def __init__(self, result):
+        self.status = result['status']
+
+    def __str__(self):
+        return "Revoke token success with status: %s" % self.status

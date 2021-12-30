@@ -22,7 +22,10 @@ jobs:
             token: ${{ secrets.GH_TOKEN }}
         - name: Install Python dependencies and run acceptance tests
           run: |
+              cp sdk-specifications/features/access/authorization-failure-reporting.feature tests/acceptance/pam
               cp sdk-specifications/features/access/grant-token.feature tests/acceptance/pam
+              cp sdk-specifications/features/access/revoke-token.feature tests/acceptance/pam
+
               sudo pip3 install -r requirements-dev.txt
               behave --junit tests/acceptance/pam
         - name: Expose acceptance tests reports

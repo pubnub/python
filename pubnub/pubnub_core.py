@@ -27,7 +27,7 @@ from .endpoints.history import History
 from .endpoints.access.audit import Audit
 from .endpoints.access.grant import Grant
 from .endpoints.access.grant_token import GrantToken
-from .endpoints.access.revoke import Revoke
+from .endpoints.access.revoke_token import RevokeToken
 from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
 from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
 from .endpoints.channel_groups.remove_channel_from_channel_group import RemoveChannelFromChannelGroup
@@ -65,7 +65,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "5.4.0"
+    SDK_VERSION = "5.5.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -170,8 +170,8 @@ class PubNubCore:
     def grant_token(self):
         return GrantToken(self)
 
-    def revoke(self):
-        return Revoke(self)
+    def revoke_token(self, token):
+        return RevokeToken(self, token)
 
     def audit(self):
         return Audit(self)

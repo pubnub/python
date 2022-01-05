@@ -3,7 +3,7 @@ import pytest
 
 from pubnub.models.consumer.presence import PNHereNowResult
 from pubnub.pubnub_asyncio import PubNubAsyncio
-from tests.helper import pnconf_sub_copy, pnconf_obj_copy
+from tests.helper import pnconf_sub_copy, pnconf_demo_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper, VCR599Listener
 from tests.integrational.vcr_helper import pn_vcr
 
@@ -143,7 +143,7 @@ async def test_global(event_loop, sleeper=asyncio.sleep):
 
 @pytest.mark.asyncio
 async def test_here_now_super_call(event_loop):
-    pubnub = PubNubAsyncio(pnconf_obj_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_demo_copy(), custom_event_loop=event_loop)
     pubnub.config.uuid = 'test-here-now-asyncio-uuid1'
 
     env = await pubnub.here_now().future()

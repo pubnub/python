@@ -96,10 +96,10 @@ message_count_config.subscribe_key = 'demo-36'
 message_count_config.origin = 'balancer1g.bronze.aws-pdx-1.ps.pn'
 message_count_config.uuid = uuid_mock
 
-objects_config = PNConfiguration()
-objects_config.publish_key = 'demo'
-objects_config.subscribe_key = 'demo'
-objects_config.uuid = uuid_mock
+pnconf_demo = PNConfiguration()
+pnconf_demo.publish_key = 'demo'
+pnconf_demo.subscribe_key = 'demo'
+pnconf_demo.uuid = uuid_mock
 
 file_upload_config = PNConfiguration()
 file_upload_config.publish_key = pub_key_mock
@@ -166,8 +166,8 @@ def pnconf_mc_copy():
     return copy(message_count_config)
 
 
-def pnconf_obj_copy():
-    return copy(objects_config)
+def pnconf_demo_copy():
+    return copy(pnconf_demo)
 
 
 sdk_name = "Python-UnitTest"

@@ -8,7 +8,6 @@ from unittest.mock import patch
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, PubNubAsyncioException
 from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_pam_copy
 from tests.integrational.vcr_helper import pn_vcr
@@ -230,13 +229,9 @@ async def assert_server_side_error_yield(pub, expected_err_msg):
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 async def test_error_invalid_key(event_loop):
-    conf = PNConfiguration()
-    conf.publish_key = "fake"
-    conf.subscribe_key = "demo"
-    conf.enable_subscribe = False
-    conf.uuid = "uuid"
+    pnconf = pnconf_pam_copy()
 
-    pubnub = PubNubAsyncio(conf, custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
     await assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "Invalid Key")
     await pubnub.stop()
@@ -249,7 +244,6 @@ async def test_error_invalid_key(event_loop):
 async def test_not_permitted(event_loop):
     pnconf = pnconf_pam_copy()
     pnconf.secret_key = None
-    pnconf.uuid = "uuid"
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
     await assert_server_side_error_yield(pubnub.publish().channel(ch).message("hey"), "HTTP Client Error (403")

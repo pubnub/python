@@ -54,3 +54,13 @@ def test_uuid_validation_at_setting():
         pnconf.uuid = None
 
     assert str(exception.value) == 'UUID missing or invalid type'
+
+
+def test_whitespace_uuid_validation_at_setting(event_loop):
+    with pytest.raises(AssertionError) as exception:
+        pnconf = PNConfiguration()
+        pnconf.publish_key = "demo"
+        pnconf.subscribe_key = "demo"
+        pnconf.uuid = " "
+
+    assert str(exception.value) == 'UUID missing or invalid type'

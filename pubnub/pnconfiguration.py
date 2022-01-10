@@ -37,8 +37,8 @@ class PNConfiguration(object):
     def validate(self):
         PNConfiguration.validate_not_empty_string(self.uuid)
 
-    def validate_not_empty_string(value):
-        assert value and isinstance(value, str), "UUID missing or invalid type"
+    def validate_not_empty_string(value: str):
+        assert value and isinstance(value, str) and value.strip() != "", "UUID missing or invalid type"
 
     def scheme(self):
         if self.ssl:

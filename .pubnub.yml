@@ -174,10 +174,6 @@ changelog:
     changes:
       - type: improvement
         text: "BREAKING CHANGES: uuid is required parameter while creating an instance of PubNub."
-  - date: 2022-01-12
-    version: v6.0.0
-    changes:
-
   - date: 2021-12-16
     version: v5.5.0
     changes:

@@ -1,19 +1,16 @@
 import pytest
 
 from pubnub.pubnub import PubNub
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.endpoints.message_count import MessageCount
 from pubnub.exceptions import PubNubException
+from tests.helper import pnconf
 
-
-SUB_KEY = 'bla'
+SUB_KEY = pnconf.subscribe_key
 
 
 @pytest.fixture
 def mc():
-    config = PNConfiguration()
-    config.subscribe_key = SUB_KEY
-    return PubNub(config).message_counts()
+    return PubNub(pnconf).message_counts()
 
 
 def test_single_channel(mc):

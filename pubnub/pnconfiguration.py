@@ -1,5 +1,4 @@
 from .enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
-from . import utils
 
 
 class PNConfiguration(object):
@@ -8,7 +7,7 @@ class PNConfiguration(object):
 
     def __init__(self):
         # TODO: add validation
-        self.uuid = None
+        self._uuid = None
         self.origin = "ps.pndsn.com"
         self.ssl = True
         self.non_subscribe_request_timeout = 10
@@ -36,10 +35,10 @@ class PNConfiguration(object):
         self._heartbeat_interval = PNConfiguration.DEFAULT_HEARTBEAT_INTERVAL
 
     def validate(self):
-        assert self.uuid is None or isinstance(self.uuid, str)
+        PNConfiguration.validate_not_empty_string(self.uuid)
 
-        if not self.uuid:
-            self.uuid = utils.uuid()
+    def validate_not_empty_string(value: str):
+        assert value and isinstance(value, str) and value.strip() != "", "UUID missing or invalid type"
 
     def scheme(self):
         if self.ssl:
@@ -97,3 +96,12 @@ class PNConfiguration(object):
 
         # TODO: set log level
         # TODO: set log level
+
+    @property
+    def uuid(self):
+        return self._uuid
+
+    @uuid.setter
+    def uuid(self, uuid):
+        PNConfiguration.validate_not_empty_string(uuid)
+        self._uuid = uuid

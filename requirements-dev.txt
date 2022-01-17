@@ -3,7 +3,7 @@ pytest-cov
 pycryptodomex
 flake8
 pytest
-pytest-asyncio
+pytest-asyncio==0.16.0
 aiohttp
 requests
 cbor2

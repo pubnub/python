@@ -1,26 +1,16 @@
-import pytest
-
 from pubnub.pubnub import PubNub
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.models.consumer.signal import PNSignalResult
 from pubnub.models.consumer.common import PNStatus
 from pubnub.structures import Envelope
+from tests.helper import pnconf_demo_copy
 from tests.integrational.vcr_helper import pn_vcr
-
-
-@pytest.fixture
-def pn():
-    pnconf = PNConfiguration()
-    pnconf.publish_key = 'demo'
-    pnconf.subscribe_key = 'demo'
-    pnconf.enable_subscribe = False
-    return PubNub(pnconf)
 
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/signal/single.yaml',
                      filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
-def test_single_channel(pn):
+def test_single_channel():
     chan = 'unique_sync'
+    pn = PubNub(pnconf_demo_copy())
     envelope = pn.signal().channel(chan).message('test').sync()
 
     assert(isinstance(envelope, Envelope))

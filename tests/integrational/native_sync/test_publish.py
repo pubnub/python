@@ -4,9 +4,8 @@ import unittest
 import pubnub
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_enc, pnconf_file_copy
+from tests.helper import pnconf, pnconf_demo_copy, pnconf_enc, pnconf_file_copy
 from tests.integrational.vcr_helper import pn_vcr
 from unittest.mock import patch
 
@@ -229,10 +228,8 @@ class TestPubNubPublish(unittest.TestCase):
     @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/invalid_key.yaml',
                          filter_query_parameters=['uuid', 'pnsdk'])
     def test_invalid_key(self):
-        config = PNConfiguration()
+        config = pnconf_demo_copy()
         config.publish_key = "fake"
-        config.subscribe_key = "demo"
-        config.enable_subscribe = False
 
         try:
             PubNub(config).publish() \

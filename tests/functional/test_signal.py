@@ -1,26 +1,23 @@
 import pytest
 
 from pubnub.pubnub import PubNub
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.exceptions import PubNubException
 from pubnub.endpoints.signal import Signal
-from tests.helper import url_encode
+from tests.helper import url_encode, pnconf_copy
 
-
-SUB_KEY = 'sub'
-PUB_KEY = 'pub'
+pnconf = pnconf_copy()
+SUB_KEY = pnconf.subscribe_key
+PUB_KEY = pnconf.publish_key
 CHAN = 'chan'
 MSG = 'x'
 MSG_ENCODED = url_encode(MSG)
 AUTH = 'auth'
+UUID = 'uuid'
 
 
 def test_signal():
-    config = PNConfiguration()
-    config.subscribe_key = SUB_KEY
-    config.publish_key = PUB_KEY
-    config.auth_key = AUTH
-    signal = PubNub(config).signal()
+    pnconf.auth_key = AUTH
+    signal = PubNub(pnconf).signal()
 
     with pytest.raises(PubNubException):
         signal.validate_params()

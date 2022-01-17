@@ -5,9 +5,8 @@ import pubnub
 from pubnub.enums import PNStatusCategory
 
 from pubnub.models.consumer.pubsub import PNPublishResult
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_enc, pnconf_pam_copy
+from tests.helper import pnconf, pnconf_enc, pnconf_pam_copy, pnconf_copy
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -130,12 +129,10 @@ class TestPubNubErrorPublish(unittest.TestCase):
 
     def test_invalid_key(self):
         self.invalid_key_message = ""
-        config = PNConfiguration()
-        config.publish_key = "fake"
-        config.subscribe_key = "demo"
-        config.enable_subscribe = False
+        pn_fake_key_config = pnconf_copy()
+        pn_fake_key_config.publish_key = "fake"
 
-        PubNub(config).publish() \
+        PubNub(pn_fake_key_config).publish() \
             .channel("ch1") \
             .message("hey") \
             .pn_async(self.callback)

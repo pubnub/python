@@ -1,12 +1,12 @@
 from pubnub.pubnub import PubNub
-from pubnub.pnconfiguration import PNConfiguration
 from pubnub.endpoints.pubsub.fire import Fire
-from tests.helper import url_encode
+from tests.helper import url_encode, pnconf_copy
 import json
 
+pnconf = pnconf_copy()
 
-SUB_KEY = 'sub'
-PUB_KEY = 'pub'
+SUB_KEY = pnconf.subscribe_key
+PUB_KEY = pnconf.publish_key
 CHAN = 'chan'
 MSG = 'x'
 MSG_ENCODED = url_encode(MSG)
@@ -15,11 +15,8 @@ AUTH = 'auth'
 
 
 def test_fire():
-    config = PNConfiguration()
-    config.subscribe_key = SUB_KEY
-    config.publish_key = PUB_KEY
-    config.auth_key = AUTH
-    fire = PubNub(config).fire()
+    pnconf.auth_key = AUTH
+    fire = PubNub(pnconf).fire()
 
     fire.channel(CHAN).message(MSG)
     assert fire.build_path() == Fire.FIRE_GET_PATH % (PUB_KEY, SUB_KEY, CHAN, 0, MSG_ENCODED)

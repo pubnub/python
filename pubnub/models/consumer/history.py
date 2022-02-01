@@ -65,7 +65,6 @@ class PNFetchMessagesResult(object):
     @classmethod
     def from_json(cls, json_input, include_message_actions=False, start_timetoken=None, end_timetoken=None):
         channels = {}
-        print(json_input['channels'])
 
         for key, entry in json_input['channels'].items():
             channels[key] = []

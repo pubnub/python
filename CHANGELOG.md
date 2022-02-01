@@ -1,3 +1,9 @@
+## v6.0.1
+February 01 2022
+
+#### Fixed
+- Remove unwanted output while calling `fetch_messages`.
+
 ## v6.0.0
 January 13 2022
 

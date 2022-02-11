@@ -18,28 +18,32 @@ jobs:
         with:
           python-version: 3.6.12
       - name: Build and run tests for Python 3.6
-        run:
+        run: |
+          ./scripts/install.sh
           python scripts/run-tests.py
       - name: Setup Python 3.7
         uses: actions/setup-python@v2
         with:
           python-version: 3.7.9
       - name: Build and run tests for Python 3.7
-        run:
+        run: |
+          ./scripts/install.sh
           python scripts/run-tests.py
       - name: Setup Python 3.8
         uses: actions/setup-python@v2
         with:
           python-version: 3.8.6
       - name: Build and run tests for Python 3.8
-        run:
+        run: |
+          ./scripts/install.sh
           python scripts/run-tests.py
       - name: Setup Python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9.1
       - name: Build and run tests for Python 3.9
-        run:
+        run: |
+          ./scripts/install.sh
           python scripts/run-tests.py
   acceptance:
     name: Acceptance tests

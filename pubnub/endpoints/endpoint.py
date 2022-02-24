@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 import logging
+import zlib
 
 from pubnub import utils
 from pubnub.enums import PNStatusCategory, HttpMethod
@@ -88,10 +89,13 @@ class Endpoint(object):
         return True
 
     def request_headers(self):
+        headers = {}
+        if self.pubnub.config.should_compress:
+            headers["Content-Encoding"] = "gzip"
         if self.http_method() == HttpMethod.POST:
-            return {"Content-type": "application/json"}
-        else:
-            return {}
+            headers["Content-type"] = "application/json"
+
+        return headers
 
     def build_file_upload_request(self):
         return
@@ -103,6 +107,9 @@ class Endpoint(object):
         return {}
 
     def options(self):
+        data = self.build_data()
+        if data and self.pubnub.config.should_compress:
+            data = zlib.compress(data.encode('utf-8'), level=2)
         return RequestOptions(
             path=self.build_path(),
             params_callback=self.build_params_callback(),
@@ -113,7 +120,7 @@ class Endpoint(object):
             create_status=self.create_status,
             create_exception=self.create_exception,
             operation_type=self.operation_type(),
-            data=self.build_data(),
+            data=data,
             files=self.build_file_upload_request(),
             sort_arguments=self._sort_params,
             allow_redirects=self.allow_redirects(),

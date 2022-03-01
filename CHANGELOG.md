@@ -1,3 +1,9 @@
+## v6.1.0
+March 01 2022
+
+#### Added
+- Add config option to set Content-Encoding to 'gzip'.
+
 ## v6.0.1
 February 01 2022
 

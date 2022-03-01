@@ -29,6 +29,7 @@ class PNConfiguration(object):
         self.daemon = False
         self.use_random_initialization_vector = True
         self.suppress_leave_events = False
+        self.should_compress = False
 
         self.heartbeat_default_values = True
         self._presence_timeout = PNConfiguration.DEFAULT_PRESENCE_TIMEOUT

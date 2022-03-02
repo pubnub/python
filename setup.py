@@ -7,6 +7,9 @@ setup(
     author='PubNub',
     author_email='support@pubnub.com',
     url='http://pubnub.com',
+    project_urls={
+        'Source': 'https://github.com/pubnub/python',
+    },
     packages=find_packages(exclude=("examples*", 'tests*')),
     license='MIT',
     classifiers=(

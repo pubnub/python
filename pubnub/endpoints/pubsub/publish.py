@@ -34,6 +34,13 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._use_post = bool(use_post)
         return self
 
+    def use_compression(self, compress=True):
+        self._use_compression = bool(compress)
+        return self
+
+    def is_compressable(self):
+        return True
+
     def should_store(self, should_store):
         self._should_store = bool(should_store)
         return self

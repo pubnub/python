@@ -1,5 +1,5 @@
 name: python
-version: 6.1.0
+version: 6.2.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-6.1.0
+            package-name: pubnub-6.2.0
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -97,8 +97,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-6.1.0
-            location: https://github.com/pubnub/python/releases/download/v6.1.0/pubnub-6.1.0.tar.gz
+            package-name: pubnub-6.2.0
+            location: https://github.com/pubnub/python/releases/download/v6.2.0/pubnub-6.2.0.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,11 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
+  - date: 2022-03-21
+    version: v6.2.0
+    changes:
+      - type: feature
+        text: "Add methods to change use compression option on chosen endpoints."
   - date: 2022-03-01
     version: v6.1.0
     changes:

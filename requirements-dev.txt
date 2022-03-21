@@ -8,4 +8,4 @@ aiohttp
 requests
 cbor2
 behave
--e  git://github.com/pubnub/vcrpy.git@aiotthp_redirect_enabled#egg=vcrpy
+-e git+https://github.com/pubnub/vcrpy.git@aiotthp_redirect_enabled#egg=vcrpy

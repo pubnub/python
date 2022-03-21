@@ -1,3 +1,9 @@
+## v6.2.0
+March 21 2022
+
+#### Added
+- Add methods to change use compression option on chosen endpoints.
+
 ## v6.1.0
 March 01 2022
 

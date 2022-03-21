@@ -29,6 +29,7 @@ class Endpoint(object):
         self.pubnub = pubnub
         self._cancellation_event = None
         self._sort_params = False
+        self._use_compression = self.pubnub.config.should_compress
 
     def cancellation_event(self, event):
         self._cancellation_event = event
@@ -88,9 +89,12 @@ class Endpoint(object):
     def use_base_path(self):
         return True
 
+    def is_compressable(self):
+        return False
+
     def request_headers(self):
         headers = {}
-        if self.pubnub.config.should_compress:
+        if self.__compress_request():
             headers["Content-Encoding"] = "gzip"
         if self.http_method() == HttpMethod.POST:
             headers["Content-type"] = "application/json"
@@ -108,7 +112,7 @@ class Endpoint(object):
 
     def options(self):
         data = self.build_data()
-        if data and self.pubnub.config.should_compress:
+        if data and self.__compress_request():
             data = zlib.compress(data.encode('utf-8'), level=2)
         return RequestOptions(
             path=self.build_path(),
@@ -284,3 +288,6 @@ class Endpoint(object):
         exception.status = status
 
         return exception
+
+    def __compress_request(self):
+        return (self.is_compressable() and self._use_compression)

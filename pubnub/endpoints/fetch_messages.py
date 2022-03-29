@@ -91,7 +91,7 @@ class FetchMessages(Endpoint):
         if self._include_message_type is not None:
             params['include_message_type'] = "true" if self._include_message_type else "false"
 
-        if self.include_message_actions and self.include_uuid is not None:
+        if self.include_message_actions and self._include_uuid is not None:
             params['include_uuid'] = "true" if self._include_uuid else "false"
 
         return params
@@ -125,12 +125,6 @@ class FetchMessages(Endpoint):
 
         if self._include_message_actions is None:
             self._include_message_actions = False
-
-        if self._include_message_type is None:
-            self._include_message_type = False
-
-        if self._include_uuid is None:
-            self._include_uuid = False
 
         if not self._include_message_actions:
             if len(self._channels) == 1:

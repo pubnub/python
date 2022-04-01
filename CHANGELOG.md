@@ -1,3 +1,9 @@
+## v6.3.0
+April 01 2022
+
+#### Added
+- Add methods to include additional fields in fetch_messages.
+
 ## v6.2.0
 March 21 2022
 

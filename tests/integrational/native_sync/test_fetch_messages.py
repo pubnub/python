@@ -6,6 +6,7 @@ from pubnub.pubnub import PubNub
 from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep_native
 
+
 COUNT = 120
 
 
@@ -86,3 +87,65 @@ class TestFetchMessages:
         assert envelope is not None
         assert isinstance(envelope.result, PNFetchMessagesResult)
         assert len(envelope.result.channels[ch]) == 25
+
+    @use_cassette_and_stub_time_sleep_native(
+        'tests/integrational/fixtures/native_sync/fetch_messages/include_meta.yaml',
+        filter_query_parameters=['uuid', 'pnsdk', 'l_pub'])
+    def test_fetch_messages_actions_include_meta(self):
+        ch = "fetch-messages-actions-meta-1"
+        pubnub = PubNub(pnconf_copy())
+        pubnub.config.uuid = "fetch-messages-uuid"
+
+        pubnub.publish().channel(ch).message("hey-meta").meta({"is-this": "krusty-krab"}).sync()
+        pubnub.publish().channel(ch).message("hey-meta").meta({"this-is": "patrick"}).sync()
+
+        envelope = pubnub.fetch_messages().channels(ch).include_message_actions(True).include_meta(True).sync()
+
+        assert envelope is not None
+        assert isinstance(envelope.result, PNFetchMessagesResult)
+        history = envelope.result.channels[ch]
+        assert len(history) == 2
+        assert history[0].meta == {"is-this": "krusty-krab"}
+        assert history[1].meta == {'this-is': 'patrick'}
+
+    @use_cassette_and_stub_time_sleep_native(
+        'tests/integrational/fixtures/native_sync/fetch_messages/include_uuid.yaml',
+        filter_query_parameters=['uuid', 'pnsdk', 'l_pub'])
+    def test_fetch_messages_actions_include_uuid(self):
+        ch = "fetch-messages-actions-uuid"
+        pubnub = PubNub(pnconf_copy())
+        uuid1 = "fetch-messages-uuid-1"
+        uuid2 = "fetch-messages-uuid-2"
+
+        pubnub.config.uuid = uuid1
+        pubnub.publish().channel(ch).message("hey-uuid-1").sync()
+        pubnub.config.uuid = uuid2
+        pubnub.publish().channel(ch).message("hey-uuid-2").sync()
+        time.sleep(1)
+        envelope = pubnub.fetch_messages().channels(ch).include_message_actions(True).include_uuid(True).sync()
+
+        assert envelope is not None
+        assert isinstance(envelope.result, PNFetchMessagesResult)
+        history = envelope.result.channels[ch]
+        assert len(history) == 2
+        assert history[0].uuid == uuid1
+        assert history[1].uuid == uuid2
+
+    @use_cassette_and_stub_time_sleep_native(
+        'tests/integrational/fixtures/native_sync/fetch_messages/include_message_type.yaml',
+        filter_query_parameters=['uuid', 'pnsdk', 'l_pub'])
+    def test_fetch_messages_actions_include_message_type(self):
+        ch = "fetch-messages-types"
+        pubnub = PubNub(pnconf_copy())
+
+        pubnub.config.uuid = "fetch-message-types"
+
+        pubnub.publish().channel(ch).message("hey-type").sync()
+        time.sleep(1)
+        envelope = pubnub.fetch_messages().channels(ch).include_message_actions(True).include_message_type(True).sync()
+
+        assert envelope is not None
+        assert isinstance(envelope.result, PNFetchMessagesResult)
+        history = envelope.result.channels[ch]
+        assert len(history) == 1
+        assert history[0].message_type == '1'

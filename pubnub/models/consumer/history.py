@@ -73,6 +73,9 @@ class PNFetchMessagesResult(object):
                 if 'meta' in item:
                     message.meta = item['meta']
 
+                if 'uuid' in item:
+                    message.uuid = item['uuid']
+
                 if include_message_actions:
                     if 'actions' in item:
                         message.actions = item['actions']
@@ -89,11 +92,12 @@ class PNFetchMessagesResult(object):
 
 
 class PNFetchMessageItem(object):
-    def __init__(self, message, timetoken, meta=None, actions=None):
+    def __init__(self, message, timetoken, uuid=None, meta=None, actions=None):
         self.message = message
         self.meta = meta
         self.timetoken = timetoken
         self.actions = actions
+        self.uuid = uuid
 
     def __str__(self):
         return "Fetch message item with tt: %s and content: %s" % (self.timetoken, self.message)

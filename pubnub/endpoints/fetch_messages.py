@@ -30,6 +30,7 @@ class FetchMessages(Endpoint):
         self._end = None
         self._count = None
         self._include_meta = None
+        self._include_uuid = None
         self._include_message_actions = None
 
     def channels(self, channels):
@@ -59,6 +60,11 @@ class FetchMessages(Endpoint):
         self._include_meta = include_meta
         return self
 
+    def include_uuid(self, include_uuid):
+        assert isinstance(include_uuid, bool)
+        self._include_uuid = include_uuid
+        return self
+
     def include_message_actions(self, include_message_actions):
         assert isinstance(include_message_actions, bool)
         self._include_message_actions = include_message_actions
@@ -75,6 +81,10 @@ class FetchMessages(Endpoint):
 
         if self._include_meta is not None:
             params['include_meta'] = "true" if self._include_meta else "false"
+
+        if self._include_uuid is not None:
+            params['include_uuid'] = "true" if self._include_uuid else "false"
+
 
         return params
 
@@ -104,6 +114,9 @@ class FetchMessages(Endpoint):
 
         if self._include_meta is None:
             self._include_meta = False
+        
+        if self._include_uuid is None:
+            self._include_uuid = False
 
         if self._include_message_actions is None:
             self._include_message_actions = False

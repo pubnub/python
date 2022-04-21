@@ -73,9 +73,9 @@ class ObjectsEndpoint(Endpoint):
 
             if self._page:
                 if isinstance(self._page, Next):
-                    params["start"] = self._page.hash()
+                    params["start"] = self._page.hash
                 elif isinstance(self._page, Previous):
-                    params["end"] = self._page.hash()
+                    params["end"] = self._page.hash
                 else:
                     raise ValueError()
 

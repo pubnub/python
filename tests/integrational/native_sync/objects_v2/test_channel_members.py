@@ -5,8 +5,9 @@ from pubnub.endpoints.objects_v2.members.manage_channel_members import ManageCha
 from pubnub.endpoints.objects_v2.members.remove_channel_members import RemoveChannelMembers
 from pubnub.endpoints.objects_v2.members.set_channel_members import SetChannelMembers
 from pubnub.models.consumer.common import PNStatus
-from pubnub.models.consumer.objects_v2.channel_members import PNUUID, PNSetChannelMembersResult, \
+from pubnub.models.consumer.objects_v2.channel_members import PNUUID, JustUUID, PNSetChannelMembersResult, \
     PNGetChannelMembersResult, PNRemoveChannelMembersResult, PNManageChannelMembersResult
+from pubnub.models.consumer.objects_v2.page import PNPage
 from pubnub.pubnub import PubNub
 from pubnub.structures import Envelope
 from tests.helper import pnconf_copy
@@ -130,6 +131,45 @@ class TestObjectsV2ChannelMembers:
         assert len([e for e in data if e['uuid']['id'] == some_uuid or e['uuid']['id'] == some_uuid_with_custom]) == 2
         assert len([e for e in data if e['uuid']['custom'] == custom_1]) != 0
         assert len([e for e in data if e['custom'] == custom_2]) != 0
+
+    @pn_vcr.use_cassette(
+        'tests/integrational/fixtures/native_sync/objects_v2/channel_members/get_channel_members_with_pagination.yaml',
+        filter_query_parameters=['uuid', 'pnsdk'])
+    def test_get_channel_members_with_pagination(self):
+        pn = _pubnub()
+
+        pn.set_channel_members().channel(TestObjectsV2ChannelMembers._some_channel_id) \
+            .uuids([JustUUID(f'test-fix-118-{x}') for x in range(15)]) \
+            .sync()
+
+        get_channel_members_result_page_1 = pn.get_channel_members()\
+            .channel(TestObjectsV2ChannelMembers._some_channel_id)\
+            .limit(10) \
+            .sync()
+
+        assert isinstance(get_channel_members_result_page_1, Envelope)
+        assert isinstance(get_channel_members_result_page_1.result, PNGetChannelMembersResult)
+        assert isinstance(get_channel_members_result_page_1.status, PNStatus)
+        assert isinstance(get_channel_members_result_page_1.result.next, PNPage)
+
+        assert not get_channel_members_result_page_1.status.is_error()
+        data = get_channel_members_result_page_1.result.data
+        assert len(data) == 10
+
+        get_channel_members_result_page_2 = pn.get_channel_members() \
+            .channel(TestObjectsV2ChannelMembers._some_channel_id) \
+            .limit(10) \
+            .page(get_channel_members_result_page_1.result.next) \
+            .sync()
+
+        assert isinstance(get_channel_members_result_page_2, Envelope)
+        assert isinstance(get_channel_members_result_page_2.result, PNGetChannelMembersResult)
+        assert isinstance(get_channel_members_result_page_2.status, PNStatus)
+        assert isinstance(get_channel_members_result_page_2.result.next, PNPage)
+
+        assert not get_channel_members_result_page_2.status.is_error()
+        data = get_channel_members_result_page_2.result.data
+        assert len(data) == 5
 
     def test_remove_channel_members_endpoint_available(self):
         pn = _pubnub()

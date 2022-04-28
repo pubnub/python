@@ -1,0 +1,106 @@
+interactions:
+- request:
+    body: '{"set": [{"uuid": {"id": "test-fix-118-0"}}, {"uuid": {"id": "test-fix-118-1"}},
+      {"uuid": {"id": "test-fix-118-2"}}, {"uuid": {"id": "test-fix-118-3"}}, {"uuid":
+      {"id": "test-fix-118-4"}}, {"uuid": {"id": "test-fix-118-5"}}, {"uuid": {"id":
+      "test-fix-118-6"}}, {"uuid": {"id": "test-fix-118-7"}}, {"uuid": {"id": "test-fix-118-8"}},
+      {"uuid": {"id": "test-fix-118-9"}}, {"uuid": {"id": "test-fix-118-10"}}, {"uuid":
+      {"id": "test-fix-118-11"}}, {"uuid": {"id": "test-fix-118-12"}}, {"uuid": {"id":
+      "test-fix-118-13"}}, {"uuid": {"id": "test-fix-118-14"}}], "delete": []}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '568'
+      User-Agent:
+      - PubNub-Python/6.3.0
+    method: PATCH
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannelid/uuids
+  response:
+    body:
+      string: '{"status":200,"data":[{"uuid":{"id":"test-fix-118-0"},"updated":"2022-04-21T10:05:14.580127Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-1"},"updated":"2022-04-21T10:05:14.58336Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-10"},"updated":"2022-04-21T10:05:14.605349Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-11"},"updated":"2022-04-21T10:05:14.608585Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-12"},"updated":"2022-04-21T10:05:14.597527Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-13"},"updated":"2022-04-21T10:05:14.576398Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-14"},"updated":"2022-04-21T10:05:14.611731Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-2"},"updated":"2022-04-21T10:05:14.586304Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-3"},"updated":"2022-04-21T10:05:14.58986Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-4"},"updated":"2022-04-21T10:05:14.593492Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-5"},"updated":"2022-04-21T10:05:14.567831Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-6"},"updated":"2022-04-21T10:05:14.572508Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-7"},"updated":"2022-04-21T10:05:14.601774Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-8"},"updated":"2022-04-21T10:05:14.615379Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-9"},"updated":"2022-04-21T10:05:14.618906Z","eTag":"AY39mJKK//C0VA"}],"next":"MTU"}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1494'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 21 Apr 2022 10:31:13 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.3.0
+    method: GET
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannelid/uuids?limit=10
+  response:
+    body:
+      string: '{"status":200,"data":[{"uuid":{"id":"test-fix-118-0"},"updated":"2022-04-21T10:05:14.580127Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-1"},"updated":"2022-04-21T10:05:14.58336Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-10"},"updated":"2022-04-21T10:05:14.605349Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-11"},"updated":"2022-04-21T10:05:14.608585Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-12"},"updated":"2022-04-21T10:05:14.597527Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-13"},"updated":"2022-04-21T10:05:14.576398Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-14"},"updated":"2022-04-21T10:05:14.611731Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-2"},"updated":"2022-04-21T10:05:14.586304Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-3"},"updated":"2022-04-21T10:05:14.58986Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-4"},"updated":"2022-04-21T10:05:14.593492Z","eTag":"AY39mJKK//C0VA"}],"next":"MTA"}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1009'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 21 Apr 2022 10:31:13 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.3.0
+    method: GET
+    uri: https://ps.pndsn.com/v2/objects/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channels/somechannelid/uuids?limit=10&start=MTA
+  response:
+    body:
+      string: '{"status":200,"data":[{"uuid":{"id":"test-fix-118-5"},"updated":"2022-04-21T10:05:14.567831Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-6"},"updated":"2022-04-21T10:05:14.572508Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-7"},"updated":"2022-04-21T10:05:14.601774Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-8"},"updated":"2022-04-21T10:05:14.615379Z","eTag":"AY39mJKK//C0VA"},{"uuid":{"id":"test-fix-118-9"},"updated":"2022-04-21T10:05:14.618906Z","eTag":"AY39mJKK//C0VA"}],"next":"MTU","prev":"MTA"}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Origin:
+      - '*'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '534'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 21 Apr 2022 10:31:13 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

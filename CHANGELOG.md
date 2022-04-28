@@ -1,3 +1,9 @@
+## v6.3.1
+April 27 2022
+
+#### Fixed
+- This issue was mentioned in issue #118 and replaces PR #119 to match our PR policy. Fixed the following issues reported by [@tjazsilovsek](https://github.com/tjazsilovsek) and [@tjazsilovsek](https://github.com/tjazsilovsek): [#118](https://github.com/pubnub/python/issues/118) and [#119](https://github.com/pubnub/python/issues/119).
+
 ## v6.3.0
 April 01 2022
 

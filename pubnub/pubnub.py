@@ -5,6 +5,8 @@ import threading
 from threading import Event
 from queue import Queue, Empty
 
+from pubnub.models.consumer.plugin import HookPoint, PluginList
+
 from . import utils
 from .request_handlers.base import BaseRequestHandler
 from .request_handlers.requests_handler import RequestsRequestHandler
@@ -26,10 +28,10 @@ logger = logging.getLogger("pubnub")
 class PubNub(PubNubCore):
     """PubNub Python API"""
 
-    def __init__(self, config):
+    def __init__(self, config, plugins=[]):
         assert isinstance(config, PNConfiguration)
-
-        PubNubCore.__init__(self, config)
+        core_plugins = filter(lambda plugin: plugin.hook_point == HookPoint.PubNubCore, plugins)
+        PubNubCore.__init__(self, config, plugins=core_plugins)
         self._request_handler = RequestsRequestHandler(self)
 
         if self.config.enable_subscribe:

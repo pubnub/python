@@ -72,8 +72,9 @@ class PubNubCore:
     MAX_SEQUENCE = 65535
 
     __metaclass__ = ABCMeta
+    _plugins = []
 
-    def __init__(self, config):
+    def __init__(self, config, plugins=[]):
         self.config = config
         self.config.validate()
         self.headers = {
@@ -85,6 +86,8 @@ class PubNubCore:
         self._telemetry_manager = TelemetryManager()
         self._base_path_manager = BasePathManager(config)
         self._token_manager = TokenManager()
+        for plugin in plugins:
+            self.__dict__[plugin.name] = plugin.method
 
     @property
     def base_origin(self):

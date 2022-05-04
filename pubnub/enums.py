@@ -105,6 +105,27 @@ class PNOperationType(object):
     PNRemoveMembershipsOperation = 67
     PNManageMembershipsOperation = 68
 
+    PNCreateSpaceOperation = 69
+    PNUpdateSpaceOperation = 70
+    PNFetchSpaceOperation = 71
+    PNFetchSpacesOperation = 72
+    PNRemoveSpaceOperation = 73
+
+    PNCreateUserOperation = 74
+    PNUpdateUserOperation = 75
+    PNFetchUserOperation = 76
+    PNFetchUsersOperation = 77
+    PNRemoveUserOperation = 78
+
+    PNAddUserSpacesOperation = 79
+    PNAddSpaceUsersOperation = 80
+    PNUpdateUserSpacesOperation = 81
+    PNUpdateSpaceUsersOperation = 82
+    PNRemoveUserSpacesOperation = 81
+    PNRemoveSpaceUsersOperation = 82
+    PNFetchUserMembershipsOperation = 85
+    PNFetchSpaceMembershipsOperation = 86
+
 
 class PNHeartbeatNotificationOptions(object):
     NONE = 1

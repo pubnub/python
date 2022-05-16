@@ -1,3 +1,9 @@
+## v6.3.2
+May 16 2022
+
+#### Fixed
+- Fix issue with signing objects requests containing filter.
+
 ## v6.3.1
 April 27 2022
 

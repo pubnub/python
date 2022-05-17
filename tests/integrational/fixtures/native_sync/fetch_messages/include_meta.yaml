@@ -1,0 +1,113 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.2.0
+    method: GET
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-meta-1/0/%22hey-meta%22?meta=%7B%22is-this%22%3A+%22krusty-krab%22%7D&seqn=1
+  response:
+    body:
+      string: '[1,"Sent","16485817254069189"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 29 Mar 2022 19:22:05 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.2.0
+    method: GET
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-meta-1/0/%22hey-meta%22?meta=%7B%22this-is%22%3A+%22patrick%22%7D&seqn=2
+  response:
+    body:
+      string: '[1,"Sent","16485817254397299"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 29 Mar 2022 19:22:05 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.2.0
+    method: GET
+    uri: https://ps.pndsn.com/v3/history-with-actions/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/fetch-messages-actions-meta-1?include_meta=true&max=25
+  response:
+    body:
+      string: '{"status": 200, "channels": {"fetch-messages-actions-meta-1": [{"message":
+        "hey-meta", "timetoken": "16485817079213403", "meta": {"is-this": "krusty-krab"}},
+        {"message": "hey-meta", "timetoken": "16485817079522020", "meta": {"this-is":
+        "patrick"}}]}, "error_message": "", "error": false}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '287'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 29 Mar 2022 19:22:05 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

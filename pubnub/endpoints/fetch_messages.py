@@ -31,6 +31,8 @@ class FetchMessages(Endpoint):
         self._count = None
         self._include_meta = None
         self._include_message_actions = None
+        self._include_message_type = None
+        self._include_uuid = None
 
     def channels(self, channels):
         utils.extend_list(self._channels, channels)
@@ -64,6 +66,16 @@ class FetchMessages(Endpoint):
         self._include_message_actions = include_message_actions
         return self
 
+    def include_message_type(self, include_message_type):
+        assert isinstance(include_message_type, bool)
+        self._include_message_type = include_message_type
+        return self
+
+    def include_uuid(self, include_uuid):
+        assert isinstance(include_uuid, bool)
+        self._include_uuid = include_uuid
+        return self
+
     def custom_params(self):
         params = {'max': int(self._count)}
 
@@ -75,6 +87,12 @@ class FetchMessages(Endpoint):
 
         if self._include_meta is not None:
             params['include_meta'] = "true" if self._include_meta else "false"
+
+        if self._include_message_type is not None:
+            params['include_message_type'] = "true" if self._include_message_type else "false"
+
+        if self.include_message_actions and self._include_uuid is not None:
+            params['include_uuid'] = "true" if self._include_uuid else "false"
 
         return params
 

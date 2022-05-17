@@ -1,0 +1,78 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.2.0
+    method: GET
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-types/0/%22hey-type%22?seqn=1
+  response:
+    body:
+      string: '[1,"Sent","16485850413471824"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 29 Mar 2022 20:17:21 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.2.0
+    method: GET
+    uri: https://ps.pndsn.com/v3/history-with-actions/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/fetch-messages-types?include_message_type=true&include_meta=false&max=25
+  response:
+    body:
+      string: '{"status": 200, "channels": {"fetch-messages-types": [{"message": "hey-type",
+        "timetoken": "16485843895487893", "message_type": "1"}]}, "error_message":
+        "", "error": false}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '335'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 29 Mar 2022 20:17:22 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

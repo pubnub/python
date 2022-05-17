@@ -1,3 +1,27 @@
+## v6.3.2
+May 16 2022
+
+#### Fixed
+- Fix issue with signing objects requests containing filter.
+
+## v6.3.1
+April 27 2022
+
+#### Fixed
+- This issue was mentioned in issue #118 and replaces PR #119 to match our PR policy. Fixed the following issues reported by [@tjazsilovsek](https://github.com/tjazsilovsek) and [@tjazsilovsek](https://github.com/tjazsilovsek): [#118](https://github.com/pubnub/python/issues/118) and [#119](https://github.com/pubnub/python/issues/119).
+
+## v6.3.0
+April 01 2022
+
+#### Added
+- Add methods to include additional fields in fetch_messages.
+
+## v6.2.0
+March 21 2022
+
+#### Added
+- Add methods to change use compression option on chosen endpoints.
+
 ## v6.1.0
 March 01 2022
 

@@ -30,6 +30,13 @@ class Fire(Endpoint):
         self._use_post = bool(use_post)
         return self
 
+    def is_compressable(self):
+        return True
+
+    def use_compression(self, compress=True):
+        self._use_compression = bool(compress)
+        return self
+
     def meta(self, meta):
         self._meta = meta
         return self

@@ -1,6 +1,6 @@
 # PubNub Python SDK
 
-[![Build Status](https://travis-ci.org/pubnub/python.svg?branch=master)](https://travis-ci.org/pubnub/python)
+[![Build Status](https://app.travis-ci.com/pubnub/python.svg?branch=master)](https://app.travis-ci.com/pubnub/python)
 [![PyPI](https://img.shields.io/pypi/v/pubnub.svg)](https://pypi.python.org/pypi/pubnub/)
 [![PyPI](https://img.shields.io/pypi/pyversions/pubnub.svg)](https://pypi.python.org/pypi/pubnub/)
 [![Docs](https://img.shields.io/badge/docs-online-blue.svg)](https://www.pubnub.com/docs/python/pubnub-python-sdk-v4)

@@ -24,6 +24,7 @@ class Endpoint(object):
     SERVER_RESPONSE_BAD_REQUEST = 400
 
     __metaclass__ = ABCMeta
+    _path = None
 
     def __init__(self, pubnub):
         self.pubnub = pubnub
@@ -110,12 +111,17 @@ class Endpoint(object):
     def encoded_params(self):
         return {}
 
+    def get_path(self):
+        if not self._path:
+            self._path = self.build_path()
+        return self._path
+
     def options(self):
         data = self.build_data()
         if data and self.__compress_request():
             data = zlib.compress(data.encode('utf-8'), level=2)
         return RequestOptions(
-            path=self.build_path(),
+            path=self.get_path(),
             params_callback=self.build_params_callback(),
             method=self.http_method(),
             request_timeout=self.request_timeout(),

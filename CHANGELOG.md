@@ -1,3 +1,9 @@
+## v6.3.3
+May 23 2022
+
+#### Fixed
+- Error was caused when using random initialization vector. Request path was encrypted two times, once to prepare signage and second one when sending the request.
+
 ## v6.3.2
 May 16 2022
 

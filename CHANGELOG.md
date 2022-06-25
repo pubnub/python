@@ -1,3 +1,10 @@
+## v6.3.4
+June 25 2022
+
+#### Fixed
+- Fixed error which happened when random initialization vector has been used. Request path was encrypted two times, once to prepare signage and second one when sending the request.
+- Fixed exception while receiving empty `message` field in `FileMessageResult`.
+
 ## v6.3.2
 May 16 2022
 

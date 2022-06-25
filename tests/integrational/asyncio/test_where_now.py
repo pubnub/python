@@ -81,7 +81,8 @@ async def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     await pubnub.stop()
 
 
-@pytest.mark.asyncio
+# @pytest.mark.asyncio
+@pytest.mark.skip(reason="Needs to be reworked to use VCR")
 async def test_where_now_super_admin_call(event_loop):
     pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
 

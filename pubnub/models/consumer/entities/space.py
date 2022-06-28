@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from typing import Optional
 from pubnub.models.consumer.entities.result import PNEntityPageableResult, PNEntityResult
 
@@ -28,7 +27,6 @@ class PNSpaceResult(PNEntityResult):
         return "Space %s event with data: %s" % (self.event, self.data)
 
 
-@dataclass
 class Space:
     space_id: str
     custom: Optional[dict]

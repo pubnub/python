@@ -556,9 +556,9 @@ class PubNubCore:
     def add_memberships(
         self,
         user_id: str = None,
-        users: list[User] = None,
+        users: list = None,
         space_id: str = None,
-        spaces: list[Space] = None,
+        spaces: list = None,
         sync=None
     ):
         if user_id and space_id:
@@ -578,9 +578,9 @@ class PubNubCore:
     def update_memberships(
         self,
         user_id: str = None,
-        users: list[User] = None,
+        users: list = None,
         space_id: str = None,
-        spaces: list[Space] = None,
+        spaces: list = None,
         sync=None
     ):
         if user_id and space_id:

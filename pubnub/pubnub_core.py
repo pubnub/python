@@ -17,11 +17,9 @@ from pubnub.endpoints.entities.user.fetch_user import FetchUser
 from pubnub.endpoints.entities.user.fetch_users import FetchUsers
 from pubnub.errors import PNERR_MISUSE_OF_USER_AND_SPACE, PNERR_USER_SPACE_PAIRS_MISSING
 from pubnub.exceptions import PubNubException
-from pubnub.features import feature_flag, pn_enable_entities
+from pubnub.features import feature_flag
 
 from abc import ABCMeta, abstractmethod
-from pubnub.models.consumer.entities.space import Space
-from pubnub.models.consumer.entities.user import User
 
 from .endpoints.objects_v2.uuid.set_uuid import SetUuid
 from .endpoints.objects_v2.channel.get_all_channels import GetAllChannels
@@ -342,7 +340,7 @@ class PubNubCore:
             raise Exception("Subscription manager is not enabled for this instance")
 
     """ Entities code -- all of methods bellow should be decorated with pubnub.features.feature_flag """
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def create_space(self, space_id=None, name=None, description=None, custom=None, type=None, status=None, sync=None):
         space = CreateSpace(self)
 
@@ -369,7 +367,7 @@ class PubNubCore:
 
         return space
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def update_space(self, space_id=None, name=None, description=None, custom=None, type=None, status=None, sync=None):
         space = UpdateSpace(self)
 
@@ -396,7 +394,7 @@ class PubNubCore:
 
         return space
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def remove_space(self, space_id=None, sync=None):
         remove_space = RemoveSpace(self)
 
@@ -408,7 +406,7 @@ class PubNubCore:
 
         return remove_space
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def fetch_space(self, space_id=None, include_custom=None, sync=None):
         space = FetchSpace(self)
 
@@ -422,7 +420,7 @@ class PubNubCore:
             return space.sync()
         return space
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def fetch_spaces(self, limit=None, page=None, filter=None, sort=None, include_total_count=None, include_custom=None,
                      sync=None):
 
@@ -450,7 +448,7 @@ class PubNubCore:
             return spaces.sync()
         return spaces
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def create_user(self, user_id=None, name=None, email=None, custom=None, type=None, status=None, sync=None):
         user = CreateUser(self)
         if user_id is not None:
@@ -475,7 +473,7 @@ class PubNubCore:
             return user.sync()
         return user
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def update_user(self, user_id=None, name=None, email=None, custom=None, type=None, status=None, sync=None):
         user = UpdateUser(self)
         if user_id is not None:
@@ -500,7 +498,7 @@ class PubNubCore:
             return user.sync()
         return user
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def remove_user(self, user_id=None, sync=None):
         user = RemoveUser(self)
         if user_id is not None:
@@ -510,7 +508,7 @@ class PubNubCore:
             return user.sync()
         return user
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def fetch_user(self, user_id=None, include_custom=None, sync=None):
         user = FetchUser(self)
 
@@ -524,7 +522,7 @@ class PubNubCore:
             return user.sync()
         return user
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def fetch_users(self, limit=None, page=None, filter=None, sort=None, include_total_count=None, include_custom=None,
                     sync=None):
         users = FetchUsers(self)
@@ -552,7 +550,7 @@ class PubNubCore:
         return users
 
     # poeksperymentowac z varargsami?
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def add_memberships(
         self,
         user_id: str = None,
@@ -574,7 +572,7 @@ class PubNubCore:
             return membership.sync()
         return membership
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def update_memberships(
         self,
         user_id: str = None,
@@ -599,10 +597,10 @@ class PubNubCore:
     def remove_memberships(self, **kwargs):
         if len(kwargs) == 0:
             return RemoveMemberships(self)
-        elif not pn_enable_entities:
+        elif not 'PN_ENABLE_ENTITIES':
             raise PubNubException(errormsg='This feature is not enabled')
 
-        if kwargs['user_id'] and kwargs['space_id']:
+        if 'user_id' in kwargs.keys() and 'space_id' in kwargs.keys():
             raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
 
         if kwargs['user_id'] and kwargs['spaces']:
@@ -616,7 +614,7 @@ class PubNubCore:
             return membership.sync()
         return membership
 
-    @feature_flag(pn_enable_entities)
+    @feature_flag('PN_ENABLE_ENTITIES')
     def fetch_memberships(self, user_id: str = None, space_id: str = None, limit=None, page=None, filter=None,
                           sort=None, include_total_count=None, include_custom=None, sync=None):
         if user_id and space_id:

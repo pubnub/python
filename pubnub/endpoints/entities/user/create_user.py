@@ -1,10 +1,9 @@
-from pubnub import utils
-from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, UserEndpoint,\
-    IncludeCustomEndpoint, CustomAwareEndpoint
-
+from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, UserEndpoint, IncludeCustomEndpoint, \
+    CustomAwareEndpoint
 from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod
 from pubnub.models.consumer.entities.user import PNCreateUserResult
+from pubnub.utils import write_value_as_string
 
 
 class CreateUser(EntitiesEndpoint, UserEndpoint, IncludeCustomEndpoint, CustomAwareEndpoint):
@@ -58,7 +57,7 @@ class CreateUser(EntitiesEndpoint, UserEndpoint, IncludeCustomEndpoint, CustomAw
             "profileUrl": self._profile_url,
             "custom": self._custom
         }
-        return utils.write_value_as_string(payload)
+        return write_value_as_string(payload)
 
     def validate_specific_params(self):
         self._validate_user_id()

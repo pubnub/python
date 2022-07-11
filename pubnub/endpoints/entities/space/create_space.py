@@ -1,9 +1,9 @@
-from pubnub import utils
+from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, SpaceEndpoint, IncludeCustomEndpoint, \
+    CustomAwareEndpoint
 from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod
 from pubnub.models.consumer.entities.space import PNCreateSpaceResult
-from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, SpaceEndpoint, IncludeCustomEndpoint, \
-    CustomAwareEndpoint
+from pubnub.utils import write_value_as_string
 
 
 class CreateSpace(EntitiesEndpoint, SpaceEndpoint, IncludeCustomEndpoint, CustomAwareEndpoint):
@@ -55,7 +55,7 @@ class CreateSpace(EntitiesEndpoint, SpaceEndpoint, IncludeCustomEndpoint, Custom
         if self._type:
             payload['type'] = self._type
 
-        return utils.write_value_as_string(payload)
+        return write_value_as_string(payload)
 
     def create_response(self, envelope):
         return PNCreateSpaceResult(envelope)

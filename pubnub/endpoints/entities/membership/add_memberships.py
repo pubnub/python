@@ -4,7 +4,6 @@ from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, SpaceEndpoint, 
 from pubnub.enums import PNOperationType, HttpMethod
 from pubnub.errors import PNERR_INVALID_SPACE, PNERR_INVALID_USER, PNERR_USER_ID_MISSING, PNERR_SPACE_MISSING
 from pubnub.exceptions import PubNubException
-
 from pubnub.models.consumer.entities.membership import PNMembershipsResult
 from pubnub.models.consumer.entities.space import Space
 from pubnub.models.consumer.entities.user import User
@@ -21,12 +20,10 @@ class AddSpaceMembers(EntitiesEndpoint, SpaceEndpoint, UsersEndpoint):
     def validate_specific_params(self):
         if self._space_id is None or len(self._space_id) == 0:
             raise PubNubException(pn_error=PNERR_SPACE_MISSING)
-        if type(self._users) is list:
-            if not all(isinstance(user, User) for user in self._users):
-                raise PubNubException(pn_error=PNERR_INVALID_USER)
-        elif type(self._users) is User:
-            self._users = [self._users]
-        else:
+
+        self._users = list(self._users)
+
+        if not all(isinstance(user, User) for user in self._users):
             raise PubNubException(pn_error=PNERR_INVALID_USER)
 
     def build_path(self):
@@ -66,12 +63,9 @@ class AddUserSpaces(EntitiesEndpoint, UserEndpoint, SpacesEndpoint):
         if self._user_id is None or len(self._user_id) == 0:
             raise PubNubException(pn_error=PNERR_USER_ID_MISSING)
 
-        if type(self._spaces) is list:
-            if not all(isinstance(space, Space) for space in self._spaces):
-                raise PubNubException(pn_error=PNERR_INVALID_SPACE)
-        elif type(self._spaces) is Space:
-            self._spaces = [self._spaces]
-        else:
+        self._spaces = list(self._spaces)
+
+        if not all(isinstance(space, Space) for space in self._spaces):
             raise PubNubException(pn_error=PNERR_INVALID_SPACE)
 
     def build_path(self):

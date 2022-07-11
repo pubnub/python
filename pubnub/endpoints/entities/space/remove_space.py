@@ -1,6 +1,6 @@
+from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, SpaceEndpoint
 from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod
-from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, SpaceEndpoint
 from pubnub.models.consumer.entities.space import PNRemoveSpaceResult
 
 

@@ -2,7 +2,6 @@ import os
 
 from pubnub.models.consumer.entities.space import Space
 from pubnub.models.consumer.entities.user import User
-
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 
@@ -13,7 +12,6 @@ pnconfig.publish_key = os.getenv('PUB_KEY')
 pnconfig.secret_key = os.getenv('SEC_KEY')
 pnconfig.user_id = "my_uuid"
 
-pnconfig.ssl = False
 pnconfig.non_subscribe_request_timeout = 60
 pnconfig.connect_timeout = 14
 pnconfig.reconnect_policy
@@ -75,7 +73,7 @@ print(f"add_memberships (user_id): {membership.result.__dict__}")
 memberships = pubnub.fetch_memberships(user_id=user_id, include_custom=True, sync=True)
 print(f"fetch_memberships (user_id): {memberships.result.__dict__}")
 
-print(" ")
+print("-------")
 
 membership = pubnub.update_memberships(user_id=user_id, spaces=Space(space_id=space_id, custom={"c": "d"}), sync=True)
 print(f"add_memberships (user_id): {membership.result.__dict__}")
@@ -83,15 +81,17 @@ print(f"add_memberships (user_id): {membership.result.__dict__}")
 memberships = pubnub.fetch_memberships(user_id=user_id, include_custom=True, sync=True)
 print(f"fetch_memberships (user_id): {memberships.result.__dict__}")
 
-print(" ")
+print("-------")
 
-membership = pubnub.add_memberships(user_id=user_id, spaces=[Space(space_id='2'), Space(space_id='3')], sync=True)
+membership = pubnub.add_memberships(
+    user_id=user_id, spaces=[Space(space_id='some_2nd_space_id'), Space(space_id='some_3rd_space_id')], sync=True
+)
 print(f"add_memberships (user_id): {membership.result.__dict__}")
 
 memberships = pubnub.fetch_memberships(user_id=user_id, include_custom=True, sync=True)
 print(f"fetch_memberships (user_id): {memberships.result.__dict__}")
 
-print(" ")
+print("-------")
 
 membership = pubnub.remove_memberships(user_id=user_id, spaces=Space(space_id=space_id), sync=True)
 print(f"remove_memberships (user_id): {membership.result.__dict__}")

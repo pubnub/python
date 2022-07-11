@@ -21,6 +21,16 @@ class CreateUser(EntitiesEndpoint, UserEndpoint, IncludeCustomEndpoint, CustomAw
         self._external_id = None
         self._profile_url = None
 
+    def user_status(self, user_status):
+        self._status = user_status
+        self._include_status = True
+        return self
+
+    def user_type(self, user_type):
+        self._type = user_type
+        self._include_type = True
+        return self
+
     def set_name(self, name):
         self._name = str(name)
         return self

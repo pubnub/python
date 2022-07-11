@@ -341,38 +341,10 @@ class PubNubCore:
 
     """ Entities code -- all of methods bellow should be decorated with pubnub.features.feature_flag """
     @feature_flag('PN_ENABLE_ENTITIES')
-    def create_space(self, space_id=None, name=None, description=None, custom=None, type=None, status=None, sync=None):
-        space = CreateSpace(self)
-
-        if space_id is not None:
-            space.space_id(space_id)
-
-        if name is not None:
-            space.set_name(name)
-
-        if description is not None:
-            space.description(description)
-
-        if custom is not None:
-            space.custom(custom)
-
-        if status is not None:
-            space.status(status)
-
-        if type is not None:
-            space.type(type)
-
-        if sync:
-            return space.sync()
-
-        return space
-
-    @feature_flag('PN_ENABLE_ENTITIES')
-    def update_space(self, space_id=None, name=None, description=None, custom=None, type=None, status=None, sync=None):
-        space = UpdateSpace(self)
-
-        if space_id is not None:
-            space.space_id(space_id)
+    def create_space(
+        self, space_id, name=None, description=None, custom=None, space_type=None, space_status=None, sync=None
+    ):
+        space = CreateSpace(self).space_id(space_id)
 
         if name is not None:
             space.set_name(name)
@@ -383,11 +355,11 @@ class PubNubCore:
         if custom is not None:
             space.custom(custom)
 
-        if status is not None:
-            space.status(status)
+        if space_status is not None:
+            space.space_status(space_status)
 
-        if type is not None:
-            space.type(type)
+        if space_type is not None:
+            space.space_type(space_type)
 
         if sync:
             return space.sync()
@@ -395,11 +367,34 @@ class PubNubCore:
         return space
 
     @feature_flag('PN_ENABLE_ENTITIES')
-    def remove_space(self, space_id=None, sync=None):
-        remove_space = RemoveSpace(self)
+    def update_space(
+        self, space_id, name=None, description=None, custom=None, space_type=None, space_status=None, sync=None
+    ):
+        space = UpdateSpace(self).space_id(space_id)
 
-        if space_id is not None:
-            remove_space.space_id(space_id)
+        if name is not None:
+            space.set_name(name)
+
+        if description is not None:
+            space.description(description)
+
+        if custom is not None:
+            space.custom(custom)
+
+        if space_status is not None:
+            space.space_status(space_status)
+
+        if space_type is not None:
+            space.space_type(space_type)
+
+        if sync:
+            return space.sync()
+
+        return space
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def remove_space(self, space_id, sync=None):
+        remove_space = RemoveSpace(self).space_id(space_id)
 
         if sync:
             return remove_space.sync()
@@ -407,11 +402,8 @@ class PubNubCore:
         return remove_space
 
     @feature_flag('PN_ENABLE_ENTITIES')
-    def fetch_space(self, space_id=None, include_custom=None, sync=None):
-        space = FetchSpace(self)
-
-        if space_id is not None:
-            space.space_id(space_id)
+    def fetch_space(self, space_id, include_custom=None, sync=None):
+        space = FetchSpace(self).space_id(space_id)
 
         if include_custom is not None:
             space.include_custom(include_custom)
@@ -449,10 +441,8 @@ class PubNubCore:
         return spaces
 
     @feature_flag('PN_ENABLE_ENTITIES')
-    def create_user(self, user_id=None, name=None, email=None, custom=None, type=None, status=None, sync=None):
-        user = CreateUser(self)
-        if user_id is not None:
-            user.user_id(user_id)
+    def create_user(self, user_id, name=None, email=None, custom=None, user_type=None, user_status=None, sync=None):
+        user = CreateUser(self).user_id(user_id)
 
         if name is not None:
             user.set_name(name)
@@ -463,21 +453,19 @@ class PubNubCore:
         if custom is not None:
             user.custom(custom)
 
-        if status is not None:
-            user.status(status)
+        if user_status is not None:
+            user.user_status(user_status)
 
-        if type is not None:
-            user.type(type)
+        if user_type is not None:
+            user.user_type(user_type)
 
         if sync:
             return user.sync()
         return user
 
     @feature_flag('PN_ENABLE_ENTITIES')
-    def update_user(self, user_id=None, name=None, email=None, custom=None, type=None, status=None, sync=None):
-        user = UpdateUser(self)
-        if user_id is not None:
-            user.user_id(user_id)
+    def update_user(self, user_id, name=None, email=None, custom=None, user_type=None, user_status=None, sync=None):
+        user = UpdateUser(self).user_id(user_id)
 
         if name is not None:
             user.set_name(name)
@@ -488,32 +476,27 @@ class PubNubCore:
         if custom is not None:
             user.custom(custom)
 
-        if status is not None:
-            user.status(status)
+        if user_status is not None:
+            user.user_status(user_status)
 
-        if type is not None:
-            user.type(type)
-
-        if sync:
-            return user.sync()
-        return user
-
-    @feature_flag('PN_ENABLE_ENTITIES')
-    def remove_user(self, user_id=None, sync=None):
-        user = RemoveUser(self)
-        if user_id is not None:
-            user.user_id(user_id)
+        if user_type is not None:
+            user.user_type(user_type)
 
         if sync:
             return user.sync()
         return user
 
     @feature_flag('PN_ENABLE_ENTITIES')
-    def fetch_user(self, user_id=None, include_custom=None, sync=None):
-        user = FetchUser(self)
+    def remove_user(self, user_id, sync=None):
+        user = RemoveUser(self).user_id(user_id)
 
-        if user_id is not None:
-            user.user_id(user_id)
+        if sync:
+            return user.sync()
+        return user
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def fetch_user(self, user_id, include_custom=None, sync=None):
+        user = FetchUser(self).user_id(user_id)
 
         if include_custom is not None:
             user.include_custom(include_custom)
@@ -549,7 +532,6 @@ class PubNubCore:
             return users.sync()
         return users
 
-    # poeksperymentowac z varargsami?
     @feature_flag('PN_ENABLE_ENTITIES')
     def add_memberships(
         self,
@@ -597,8 +579,6 @@ class PubNubCore:
     def remove_memberships(self, **kwargs):
         if len(kwargs) == 0:
             return RemoveMemberships(self)
-        elif not 'PN_ENABLE_ENTITIES':
-            raise PubNubException(errormsg='This feature is not enabled')
 
         if 'user_id' in kwargs.keys() and 'space_id' in kwargs.keys():
             raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))

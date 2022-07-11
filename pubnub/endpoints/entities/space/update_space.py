@@ -20,13 +20,13 @@ class UpdateSpace(EntitiesEndpoint, SpaceEndpoint, IncludeCustomEndpoint, Custom
         self._status = None
         self._type = None
 
-    def status(self, status):
-        self._status = status
+    def space_status(self, space_status):
+        self._status = space_status
         self._include_status = True
         return self
 
-    def type(self, type):
-        self._type = type
+    def space_type(self, space_type):
+        self._type = space_type
         self._include_type = True
         return self
 

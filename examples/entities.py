@@ -29,6 +29,8 @@ create_space = pubnub.create_space(
     name=f'Space ID {space_id}',
     description=f'This space ID is {space_id} and is made for demo purpose only',
     custom={"created_by": "me"},
+    space_status='Primary',
+    space_type='COM',
     sync=True
 )
 
@@ -46,9 +48,8 @@ print(f"update space result: {update_space.result.__dict__}")
 fetch_space = pubnub.fetch_space(space_id=space_id, include_custom=True, sync=True)
 print(f"fetch space result: {fetch_space.result.__dict__}")
 
-space_id = space_id + '2'
-create_space = pubnub.create_space() \
-    .space_id(space_id) \
+space_id2 = space_id + '2'
+create_space = pubnub.create_space(space_id2) \
     .set_name(f'Space ID {space_id}') \
     .description(f'This space ID is {space_id} and is made for demo purpose only') \
     .custom({
@@ -60,7 +61,7 @@ all_spaces = pubnub.fetch_spaces(include_custom=True, include_total_count=True).
 
 print(f"fetch spaces result: {all_spaces.result.__dict__}")
 
-rm_space = pubnub.remove_space().space_id(space_id).sync()
+rm_space = pubnub.remove_space(space_id2).sync()
 print(f"remove space result: {rm_space.result.__dict__}")
 
 user = pubnub.create_user(user_id=user_id, name='Jason', email='Jason@Voorhe.es', sync=True)

@@ -2,7 +2,7 @@ from os import getenv
 from pubnub.exceptions import PubNubException
 
 flags = {
-    'PN_ENABLE_ENTITIES': False
+    'PN_ENABLE_ENTITIES': getenv('PN_ENABLE_ENTITIES', False)
 }
 
 
@@ -14,7 +14,7 @@ def feature_flag(flag):
         if flag not in flags.keys():
             raise PubNubException(errormsg='Flag not supported')
 
-        if not flags[flag] and not getenv(flag):
+        if not flags[flag]:
             return not_implemented
         return method
     return inner

@@ -22,9 +22,8 @@ class AddSpaceMembers(EntitiesEndpoint, SpaceEndpoint, UsersEndpoint):
         if self._space_id is None or len(self._space_id) == 0:
             raise PubNubException(pn_error=PNERR_SPACE_MISSING)
         if type(self._users) is list:
-            for user in self._users:
-                if type(user) is not User:
-                    raise PubNubException(pn_error=PNERR_INVALID_USER)
+            if not all(isinstance(user, User) for user in self._users):
+                raise PubNubException(pn_error=PNERR_INVALID_USER)
         elif type(self._users) is User:
             self._users = [self._users]
         else:
@@ -34,9 +33,7 @@ class AddSpaceMembers(EntitiesEndpoint, SpaceEndpoint, UsersEndpoint):
         return AddSpaceMembers.MEMBERSHIP_PATH % (self.pubnub.config.subscribe_key, self.pubnub.uuid)
 
     def build_data(self):
-        users = []
-        for user in self._users:
-            users.append(user.to_payload_dict())
+        users = [user.to_payload_dict() for user in self._users]
 
         payload = {
             "set": users,
@@ -70,9 +67,8 @@ class AddUserSpaces(EntitiesEndpoint, UserEndpoint, SpacesEndpoint):
             raise PubNubException(pn_error=PNERR_USER_ID_MISSING)
 
         if type(self._spaces) is list:
-            for space in self._spaces:
-                if type(space) is not Space:
-                    raise PubNubException(pn_error=PNERR_INVALID_SPACE)
+            if not all(isinstance(space, Space) for space in self._spaces):
+                raise PubNubException(pn_error=PNERR_INVALID_SPACE)
         elif type(self._spaces) is Space:
             self._spaces = [self._spaces]
         else:
@@ -82,9 +78,7 @@ class AddUserSpaces(EntitiesEndpoint, UserEndpoint, SpacesEndpoint):
         return AddUserSpaces.MEMBERSHIP_PATH % (self.pubnub.config.subscribe_key, self._user_id)
 
     def build_data(self):
-        spaces = []
-        for space in self._spaces:
-            spaces.append(space.to_payload_dict())
+        spaces = [space.to_payload_dict() for space in self._spaces]
 
         payload = {
             "set": spaces,

@@ -32,6 +32,18 @@ class GrantToken(Endpoint):
         self._authorized_uuid = uuid
         return self
 
+    def authorized_user(self, user):
+        self._authorized_uuid = user
+        return self
+
+    def spaces(self, spaces):
+        self._channels = spaces
+        return self
+
+    def users(self, users):
+        self._uuids = users
+        return self
+
     def channels(self, channels):
         self._channels = channels
         return self
@@ -58,7 +70,7 @@ class GrantToken(Endpoint):
         utils.parse_resources(self._groups, "groups", resources, patterns)
         utils.parse_resources(self._uuids, "uuids", resources, patterns)
         utils.parse_resources(self._uuids, "users", resources, patterns)
-        utils.parse_resources(self._uuids, "spaces", resources, patterns)
+        utils.parse_resources(self._channels, "spaces", resources, patterns)
 
         permissions['resources'] = resources
         permissions['patterns'] = patterns

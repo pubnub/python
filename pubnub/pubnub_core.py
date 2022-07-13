@@ -1,5 +1,23 @@
 import logging
 import time
+from pubnub.endpoints.entities.membership.add_memberships import AddSpaceMembers, AddUserSpaces
+from pubnub.endpoints.entities.membership.update_memberships import UpdateSpaceMembers, UpdateUserSpaces
+from pubnub.endpoints.entities.membership.fetch_memberships import FetchSpaceMemberships, FetchUserMemberships
+from pubnub.endpoints.entities.membership.remove_memberships import RemoveSpaceMembers, RemoveUserSpaces
+
+from pubnub.endpoints.entities.space.update_space import UpdateSpace
+from pubnub.endpoints.entities.user.create_user import CreateUser
+from pubnub.endpoints.entities.space.remove_space import RemoveSpace
+from pubnub.endpoints.entities.space.fetch_spaces import FetchSpaces
+from pubnub.endpoints.entities.space.fetch_space import FetchSpace
+from pubnub.endpoints.entities.space.create_space import CreateSpace
+from pubnub.endpoints.entities.user.remove_user import RemoveUser
+from pubnub.endpoints.entities.user.update_user import UpdateUser
+from pubnub.endpoints.entities.user.fetch_user import FetchUser
+from pubnub.endpoints.entities.user.fetch_users import FetchUsers
+from pubnub.errors import PNERR_MISUSE_OF_USER_AND_SPACE, PNERR_USER_SPACE_PAIRS_MISSING
+from pubnub.exceptions import PubNubException
+from pubnub.features import feature_flag
 
 from abc import ABCMeta, abstractmethod
 
@@ -65,13 +83,14 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "6.3.3"
+    SDK_VERSION = "6.4.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
     MAX_SEQUENCE = 65535
 
     __metaclass__ = ABCMeta
+    _plugins = []
 
     def __init__(self, config):
         self.config = config
@@ -243,9 +262,6 @@ class PubNubCore:
     def get_memberships(self):
         return GetMemberships(self)
 
-    def remove_memberships(self):
-        return RemoveMemberships(self)
-
     def manage_memberships(self):
         return ManageMemberships(self)
 
@@ -322,3 +338,293 @@ class PubNubCore:
     def _validate_subscribe_manager_enabled(self):
         if self._subscription_manager is None:
             raise Exception("Subscription manager is not enabled for this instance")
+
+    """ Entities code -- all of methods bellow should be decorated with pubnub.features.feature_flag """
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def create_space(
+        self, space_id, name=None, description=None, custom=None, space_type=None, space_status=None, sync=None
+    ):
+        space = CreateSpace(self).space_id(space_id)
+
+        if name is not None:
+            space.set_name(name)
+
+        if description is not None:
+            space.description(description)
+
+        if custom is not None:
+            space.custom(custom)
+
+        if space_status is not None:
+            space.space_status(space_status)
+
+        if space_type is not None:
+            space.space_type(space_type)
+
+        if sync:
+            return space.sync()
+
+        return space
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def update_space(
+        self, space_id, name=None, description=None, custom=None, space_type=None, space_status=None, sync=None
+    ):
+        space = UpdateSpace(self).space_id(space_id)
+
+        if name is not None:
+            space.set_name(name)
+
+        if description is not None:
+            space.description(description)
+
+        if custom is not None:
+            space.custom(custom)
+
+        if space_status is not None:
+            space.space_status(space_status)
+
+        if space_type is not None:
+            space.space_type(space_type)
+
+        if sync:
+            return space.sync()
+
+        return space
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def remove_space(self, space_id, sync=None):
+        remove_space = RemoveSpace(self).space_id(space_id)
+
+        if sync:
+            return remove_space.sync()
+
+        return remove_space
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def fetch_space(self, space_id, include_custom=None, sync=None):
+        space = FetchSpace(self).space_id(space_id)
+
+        if include_custom is not None:
+            space.include_custom(include_custom)
+
+        if sync:
+            return space.sync()
+        return space
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def fetch_spaces(self, limit=None, page=None, filter=None, sort=None, include_total_count=None, include_custom=None,
+                     sync=None):
+
+        spaces = FetchSpaces(self)
+
+        if limit is not None:
+            spaces.limit(limit)
+
+        if page is not None:
+            spaces.page(page)
+
+        if filter is not None:
+            spaces.filter(filter)
+
+        if sort is not None:
+            spaces.sort(sort)
+
+        if include_total_count is not None:
+            spaces.include_total_count(include_total_count)
+
+        if include_custom is not None:
+            spaces.include_custom(include_custom)
+
+        if sync:
+            return spaces.sync()
+        return spaces
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def create_user(self, user_id, name=None, email=None, custom=None, user_type=None, user_status=None, sync=None):
+        user = CreateUser(self).user_id(user_id)
+
+        if name is not None:
+            user.set_name(name)
+
+        if email is not None:
+            user.email(email)
+
+        if custom is not None:
+            user.custom(custom)
+
+        if user_status is not None:
+            user.user_status(user_status)
+
+        if user_type is not None:
+            user.user_type(user_type)
+
+        if sync:
+            return user.sync()
+        return user
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def update_user(self, user_id, name=None, email=None, custom=None, user_type=None, user_status=None, sync=None):
+        user = UpdateUser(self).user_id(user_id)
+
+        if name is not None:
+            user.set_name(name)
+
+        if email is not None:
+            user.email(email)
+
+        if custom is not None:
+            user.custom(custom)
+
+        if user_status is not None:
+            user.user_status(user_status)
+
+        if user_type is not None:
+            user.user_type(user_type)
+
+        if sync:
+            return user.sync()
+        return user
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def remove_user(self, user_id, sync=None):
+        user = RemoveUser(self).user_id(user_id)
+
+        if sync:
+            return user.sync()
+        return user
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def fetch_user(self, user_id, include_custom=None, sync=None):
+        user = FetchUser(self).user_id(user_id)
+
+        if include_custom is not None:
+            user.include_custom(include_custom)
+
+        if sync:
+            return user.sync()
+        return user
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def fetch_users(self, limit=None, page=None, filter=None, sort=None, include_total_count=None, include_custom=None,
+                    sync=None):
+        users = FetchUsers(self)
+
+        if limit is not None:
+            users.limit(limit)
+
+        if page is not None:
+            users.page(page)
+
+        if filter is not None:
+            users.filter(filter)
+
+        if sort is not None:
+            users.sort(sort)
+
+        if include_total_count is not None:
+            users.include_total_count(include_total_count)
+
+        if include_custom is not None:
+            users.include_custom(include_custom)
+
+        if sync:
+            return users.sync()
+        return users
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def add_memberships(
+        self,
+        user_id: str = None,
+        users: list = None,
+        space_id: str = None,
+        spaces: list = None,
+        sync=None
+    ):
+        if user_id and space_id:
+            raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
+        if user_id and spaces:
+            membership = AddUserSpaces(self).user_id(user_id).spaces(spaces)
+        elif space_id and users:
+            membership = AddSpaceMembers(self).space_id(space_id).users(users)
+        else:
+            raise(PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
+
+        if sync:
+            return membership.sync()
+        return membership
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def update_memberships(
+        self,
+        user_id: str = None,
+        users: list = None,
+        space_id: str = None,
+        spaces: list = None,
+        sync=None
+    ):
+        if user_id and space_id:
+            raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
+        if user_id and spaces:
+            membership = UpdateUserSpaces(self).user_id(user_id).spaces(spaces)
+        elif space_id and users:
+            membership = UpdateSpaceMembers(self).space_id(space_id).users(users)
+        else:
+            raise(PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
+
+        if sync:
+            return membership.sync()
+        return membership
+
+    def remove_memberships(self, **kwargs):
+        if len(kwargs) == 0:
+            return RemoveMemberships(self)
+
+        if 'user_id' in kwargs.keys() and 'space_id' in kwargs.keys():
+            raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
+
+        if kwargs['user_id'] and kwargs['spaces']:
+            membership = RemoveUserSpaces(self).user_id(kwargs['user_id']).spaces(kwargs['spaces'])
+        elif kwargs['space_id'] and kwargs['users']:
+            membership = RemoveSpaceMembers(self).space_id(kwargs['space_id']).users(kwargs['users'])
+        else:
+            raise(PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
+
+        if kwargs['sync']:
+            return membership.sync()
+        return membership
+
+    @feature_flag('PN_ENABLE_ENTITIES')
+    def fetch_memberships(self, user_id: str = None, space_id: str = None, limit=None, page=None, filter=None,
+                          sort=None, include_total_count=None, include_custom=None, sync=None):
+        if user_id and space_id:
+            raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
+
+        if user_id:
+            memberships = FetchUserMemberships(self).user_id(user_id)
+        elif space_id:
+            memberships = FetchSpaceMemberships(self).space_id(space_id)
+        else:
+            raise(PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
+
+        if limit:
+            memberships.limit(limit)
+
+        if page:
+            memberships.page(page)
+
+        if filter:
+            memberships.filter(filter)
+
+        if sort:
+            memberships.sort(sort)
+
+        if include_total_count:
+            memberships.include_total_count(include_total_count)
+
+        if include_custom:
+            memberships.include_custom(include_custom)
+
+        if sync:
+            return memberships.sync()
+        return memberships

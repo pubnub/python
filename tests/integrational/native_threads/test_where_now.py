@@ -20,6 +20,7 @@ class TestPubNubState(unittest.TestCase):
         self.status = status
         self.event.set()
 
+    @unittest.skip("Needs rework to use VCR playback")
     def test_single_channel(self):
         pubnub = PubNub(pnconf_sub_copy())
         ch = helper.gen_channel("wherenow-asyncio-channel")

@@ -106,3 +106,12 @@ class PNConfiguration(object):
     def uuid(self, uuid):
         PNConfiguration.validate_not_empty_string(uuid)
         self._uuid = uuid
+
+    @property
+    def user_id(self):
+        return self._uuid
+
+    @user_id.setter
+    def user_id(self, user_id):
+        PNConfiguration.validate_not_empty_string(user_id)
+        self._uuid = user_id

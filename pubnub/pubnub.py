@@ -4,7 +4,6 @@ import threading
 
 from threading import Event
 from queue import Queue, Empty
-
 from . import utils
 from .request_handlers.base import BaseRequestHandler
 from .request_handlers.requests_handler import RequestsRequestHandler
@@ -28,7 +27,6 @@ class PubNub(PubNubCore):
 
     def __init__(self, config):
         assert isinstance(config, PNConfiguration)
-
         PubNubCore.__init__(self, config)
         self._request_handler = RequestsRequestHandler(self)
 

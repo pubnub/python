@@ -47,3 +47,13 @@ PNERR_PUSH_TOPIC_MISSING = "Push notification topic is missing. Required only if
 PNERR_FILE_OBJECT_MISSING = "File object is missing."
 PNERR_FILE_NAME_MISSING = "File name is missing."
 PNERR_FILE_ID_MISSING = "File id is missing."
+PNERR_SPACE_MISSING = "Space missing"
+PNERR_SPACES_MISSING = "Spaces missing"
+
+PNERR_USER_ID_MISSING = "user_id missing or not a string"
+PNERR_USER_SPACE_PAIRS_MISSING = "User/Space pair is missing"
+PNERR_MISUSE_OF_USER_AND_USERS = "user_id and users should not be used together"
+PNERR_MISUSE_OF_SPACE_AND_SPACES = "space_id and spaces should not be used together"
+PNERR_MISUSE_OF_USER_AND_SPACE = "user_id and space_id should not be used together"
+PNERR_INVALID_USER = "Provided user is not valid instance of User"
+PNERR_INVALID_SPACE = "Provided space is not valid instance of Space"

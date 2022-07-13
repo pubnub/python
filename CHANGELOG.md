@@ -1,3 +1,9 @@
+## v6.4.0
+July 13 2022
+
+#### Added
+- Spaces Users and Membership endpoint implementation. This functionality is hidden behind a feature flag. By default it is disabled. To enable it there should be an environment variable named `PN_ENABLE_ENTITIES` set to `True`.
+
 ## v6.3.3
 June 25 2022
 

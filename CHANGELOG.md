@@ -1,3 +1,9 @@
+## v6.4.1
+July 14 2022
+
+#### Fixed
+- This addresses the issue #130 - a problem with importing module.
+
 ## v6.4.0
 July 13 2022
 

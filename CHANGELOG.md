@@ -1,3 +1,9 @@
+## v6.5.0
+July 27 2022
+
+#### Added
+- Grant token now supports Users and Spaces.
+
 ## v6.4.1
 July 14 2022
 

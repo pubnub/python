@@ -39,7 +39,7 @@ class User:
 
     def to_payload_dict(self):
         result = {
-            "channel": {
+            "uuid": {
                 "id": str(self.user_id)
             }
         }

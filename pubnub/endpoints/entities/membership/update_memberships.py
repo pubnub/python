@@ -1,19 +1,20 @@
 from pubnub import utils
-from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, SpaceEndpoint, SpacesEndpoint, UserEndpoint, \
-    UsersEndpoint
+from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, IncludeCustomEndpoint, SpaceEndpoint, SpacesEndpoint, \
+    UserEndpoint, UsersEndpoint
 from pubnub.enums import PNOperationType, HttpMethod
 from pubnub.errors import PNERR_INVALID_SPACE, PNERR_INVALID_USER, PNERR_USER_ID_MISSING, PNERR_SPACE_MISSING
 from pubnub.exceptions import PubNubException
-from pubnub.models.consumer.entities.membership import PNMembershipsResult
+from pubnub.models.consumer.entities.membership import PNMembershipsResult, PNSpaceMembershipsResult
 from pubnub.models.consumer.entities.space import Space
 from pubnub.models.consumer.entities.user import User
 
 
-class UpdateSpaceMembers(EntitiesEndpoint, SpaceEndpoint, UsersEndpoint):
-    MEMBERSHIP_PATH = "/v2/objects/%s/uuids/%s/channels"
+class UpdateSpaceMembers(EntitiesEndpoint, SpaceEndpoint, UsersEndpoint, IncludeCustomEndpoint):
+    MEMBERSHIP_PATH = "/v2/objects/%s/channels/%s/uuids"
 
     def __init__(self, pubnub):
         EntitiesEndpoint.__init__(self, pubnub)
+        IncludeCustomEndpoint.__init__(self)
         SpaceEndpoint.__init__(self)
         UsersEndpoint.__init__(self)
 
@@ -27,7 +28,7 @@ class UpdateSpaceMembers(EntitiesEndpoint, SpaceEndpoint, UsersEndpoint):
             raise PubNubException(pn_error=PNERR_INVALID_USER)
 
     def build_path(self):
-        return UpdateSpaceMembers.MEMBERSHIP_PATH % (self.pubnub.config.subscribe_key, self.pubnub.uuid)
+        return UpdateSpaceMembers.MEMBERSHIP_PATH % (self.pubnub.config.subscribe_key, self._space_id)
 
     def build_data(self):
         users = [user.to_payload_dict() for user in self._users]
@@ -39,7 +40,7 @@ class UpdateSpaceMembers(EntitiesEndpoint, SpaceEndpoint, UsersEndpoint):
         return utils.write_value_as_string(payload)
 
     def create_response(self, envelope):
-        return PNMembershipsResult(envelope)
+        return PNSpaceMembershipsResult(envelope)
 
     def operation_type(self):
         return PNOperationType.PNUpdateSpaceUsersOperation

@@ -21,7 +21,7 @@ def test_change_uuid():
     pnconf.uuid = 'new-uuid'
     envelope = pn.signal().channel(chan).message('test').sync()
 
-    assert(isinstance(envelope, Envelope))
+    assert isinstance(envelope, Envelope)
     assert not envelope.status.is_error()
     assert envelope.result.timetoken == '15640049765289377'
     assert isinstance(envelope.result, PNSignalResult)

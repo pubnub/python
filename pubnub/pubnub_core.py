@@ -83,7 +83,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "6.5.0"
+    SDK_VERSION = "6.5.1"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -542,13 +542,13 @@ class PubNubCore:
         sync=None
     ):
         if user_id and space_id:
-            raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
+            raise (PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
         if user_id and spaces:
             membership = AddUserSpaces(self).user_id(user_id).spaces(spaces)
         elif space_id and users:
             membership = AddSpaceMembers(self).space_id(space_id).users(users)
         else:
-            raise(PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
+            raise (PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
 
         if sync:
             return membership.sync()
@@ -564,13 +564,13 @@ class PubNubCore:
         sync=None
     ):
         if user_id and space_id:
-            raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
+            raise (PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
         if user_id and spaces:
             membership = UpdateUserSpaces(self).user_id(user_id).spaces(spaces)
         elif space_id and users:
             membership = UpdateSpaceMembers(self).space_id(space_id).users(users)
         else:
-            raise(PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
+            raise (PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
 
         if sync:
             return membership.sync()
@@ -581,14 +581,14 @@ class PubNubCore:
             return RemoveMemberships(self)
 
         if 'user_id' in kwargs.keys() and 'space_id' in kwargs.keys():
-            raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
+            raise (PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
 
         if kwargs['user_id'] and kwargs['spaces']:
             membership = RemoveUserSpaces(self).user_id(kwargs['user_id']).spaces(kwargs['spaces'])
         elif kwargs['space_id'] and kwargs['users']:
             membership = RemoveSpaceMembers(self).space_id(kwargs['space_id']).users(kwargs['users'])
         else:
-            raise(PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
+            raise (PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
 
         if kwargs['sync']:
             return membership.sync()
@@ -598,14 +598,14 @@ class PubNubCore:
     def fetch_memberships(self, user_id: str = None, space_id: str = None, limit=None, page=None, filter=None,
                           sort=None, include_total_count=None, include_custom=None, sync=None):
         if user_id and space_id:
-            raise(PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
+            raise (PubNubException(pn_error=PNERR_MISUSE_OF_USER_AND_SPACE))
 
         if user_id:
             memberships = FetchUserMemberships(self).user_id(user_id)
         elif space_id:
             memberships = FetchSpaceMemberships(self).space_id(space_id)
         else:
-            raise(PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
+            raise (PubNubException(pn_error=PNERR_USER_SPACE_PAIRS_MISSING))
 
         if limit:
             memberships.limit(limit)

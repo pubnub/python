@@ -19,7 +19,7 @@ async def test_single_channel(event_loop):
     chan = 'unique_sync'
     envelope = await pn.fire().channel(chan).message('bla').future()
 
-    assert(isinstance(envelope, AsyncioEnvelope))
+    assert isinstance(envelope, AsyncioEnvelope)
     assert not envelope.status.is_error()
     assert isinstance(envelope.result, PNFireResult)
     assert isinstance(envelope.status, PNStatus)

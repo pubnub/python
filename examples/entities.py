@@ -15,12 +15,12 @@ pnconfig.user_id = "my_uuid"
 pnconfig.non_subscribe_request_timeout = 60
 pnconfig.connect_timeout = 14
 pnconfig.reconnect_policy
-print(pnconfig.subscribe_key)
 
 pubnub = PubNub(pnconfig)
 
 space_id = 'blah'
 user_id = 'jason-id'
+user_id_2 = 'freddy-id'
 
 create_space = pubnub.create_space(
     space_id=space_id,
@@ -67,7 +67,7 @@ user = pubnub.create_user(user_id=user_id, name='Jason', email='Jason@Voorhe.es'
 users = pubnub.fetch_user(user_id=user_id, sync=True)
 print(f"fetch_user: {users.result.__dict__}")
 
-membership = pubnub.add_memberships(user_id=user_id, spaces=Space(space_id=space_id, custom={"a": "b"}), sync=True)
+membership = pubnub.add_memberships(user_id=user_id, spaces=[Space(space_id=space_id, custom={"a": "b"})], sync=True)
 print(f"add_memberships (user_id): {membership.result.__dict__}")
 
 memberships = pubnub.fetch_memberships(user_id=user_id, include_custom=True, sync=True)
@@ -75,7 +75,7 @@ print(f"fetch_memberships (user_id): {memberships.result.__dict__}")
 
 print("-------")
 
-membership = pubnub.update_memberships(user_id=user_id, spaces=Space(space_id=space_id, custom={"c": "d"}), sync=True)
+membership = pubnub.update_memberships(user_id=user_id, spaces=[Space(space_id=space_id, custom={"c": "d"})], sync=True)
 print(f"add_memberships (user_id): {membership.result.__dict__}")
 
 memberships = pubnub.fetch_memberships(user_id=user_id, include_custom=True, sync=True)
@@ -93,7 +93,7 @@ print(f"fetch_memberships (user_id): {memberships.result.__dict__}")
 
 print("-------")
 
-membership = pubnub.remove_memberships(user_id=user_id, spaces=Space(space_id=space_id), sync=True)
+membership = pubnub.remove_memberships(user_id=user_id, spaces=[Space(space_id=space_id)], sync=True)
 print(f"remove_memberships (user_id): {membership.result.__dict__}")
 
 memberships = pubnub.fetch_memberships(user_id=user_id, include_custom=True, sync=True)
@@ -101,8 +101,20 @@ print(f"fetch_memberships (user_id): {memberships.result.__dict__}")
 
 print("-------")
 
-membership = pubnub.add_memberships(space_id=space_id, users=[User(user_id=user_id, custom={"1": "2"})], sync=True)
+membership = pubnub.add_memberships(
+    space_id=space_id,
+    users=[User(user_id=user_id, custom={"Kikiki": "Mamama"})],
+    sync=True
+)
 print(f"add_memberships (space_id): {membership.result.__dict__}")
+
+membership = pubnub.update_memberships(space_id=space_id, users=[
+    User(user_id=user_id_2, custom={"1-2": "Freddy's comming"}),
+    User(user_id='ghostface', custom={"question": "Favourite scary movie?"})
+], sync=True)
+print(f"update_memberships (space_id): {membership.result.__dict__}")
+
+print("-------")
 
 memberships = pubnub.fetch_memberships(space_id=space_id, include_custom=True, sync=True)
 print(f"fetch_memberships (space_id): {memberships.result.__dict__}")

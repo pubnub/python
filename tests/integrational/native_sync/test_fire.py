@@ -14,7 +14,7 @@ def test_single_channel():
     chan = 'unique_sync'
     envelope = pn.fire().channel(chan).message('bla').sync()
 
-    assert(isinstance(envelope, Envelope))
+    assert isinstance(envelope, Envelope)
     assert not envelope.status.is_error()
     assert isinstance(envelope.result, PNFireResult)
     assert isinstance(envelope.status, PNStatus)

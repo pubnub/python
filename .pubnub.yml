@@ -1,5 +1,5 @@
 name: python
-version: 6.5.0
+version: 6.5.1
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-6.5.0
+            package-name: pubnub-6.5.1
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -97,8 +97,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-6.5.0
-            location: https://github.com/pubnub/python/releases/download/v6.5.0/pubnub-6.5.0.tar.gz
+            package-name: pubnub-6.5.1
+            location: https://github.com/pubnub/python/releases/download/v6.5.1/pubnub-6.5.1.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,11 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
+  - date: 2022-08-02
+    version: v6.5.1
+    changes:
+      - type: bug
+        text: "Fix bugs in Spaces Membership endpoints."
   - date: 2022-07-27
     version: v6.5.0
     changes:

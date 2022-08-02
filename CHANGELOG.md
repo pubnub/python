@@ -1,3 +1,9 @@
+## v6.5.1
+August 02 2022
+
+#### Fixed
+- Fix bugs in Spaces Membership endpoints.
+
 ## v6.5.0
 July 27 2022
 

@@ -66,7 +66,10 @@ target/
 # pyenv
 .python-version
 
+# Development Environment
 .idea
+.vscode
+.DS_Store
 
 # Twisted
 _trial_temp

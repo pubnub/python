@@ -1,3 +1,10 @@
+## 7.0.0
+August 23 2022
+
+#### Modified
+- Update build process to include python v3.10-dev and remove v3.6.
+- Fix of randomly failing tests of `where_now feature`.
+
 ## v6.5.1
 August 02 2022
 

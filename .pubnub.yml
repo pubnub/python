@@ -24,10 +24,10 @@ sdks:
               supported-operating-systems:
                 Linux:
                   runtime-version:
-                    - Python 3.6
                     - Python 3.7
                     - Python 3.8
                     - Python 3.9
+                    - Python 3.10
                   minimum-os-version:
                     - Ubuntu 12.04
                   maximum-os-version:
@@ -35,31 +35,31 @@ sdks:
                   target-architecture:
                     - x86
                     - x86-64
-                  macOS:
-                    runtime-version:
-                      - Python 3.6
-                      - Python 3.7
-                      - Python 3.8
-                      - Python 3.9
-                    minimum-os-version:
-                      - macOS 10.12
-                    maximum-os-version:
-                      - macOS 11.0.1
-                    target-architecture:
-                      - x86-64
-                  Windows:
-                    runtime-version:
-                      - Python 3.6
-                      - Python 3.7
-                      - Python 3.8
-                      - Python 3.9
-                    minimum-os-version:
-                      - Windows Vista Ultimate
-                    maximum-os-version:
-                      - Windows 10 Home
-                    target-architecture:
-                      - x86
-                      - x86-64
+                macOS:
+                  runtime-version:
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                    - Python 3.10
+                  minimum-os-version:
+                    - macOS 10.12
+                  maximum-os-version:
+                    - macOS 11.0.1
+                  target-architecture:
+                    - x86-64
+                Windows:
+                  runtime-version:
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                    - Python 3.10
+                  minimum-os-version:
+                    - Windows Vista Ultimate
+                  maximum-os-version:
+                    - Windows 10 Home
+                  target-architecture:
+                    - x86
+                    - x86-64
             requires:
               - name: requests
                 min-version: "2.4"
@@ -103,10 +103,10 @@ sdks:
               supported-operating-systems:
                 Linux:
                   runtime-version:
-                    - Python 3.6
                     - Python 3.7
                     - Python 3.8
                     - Python 3.9
+                    - Python 3.10
                   minimum-os-version:
                     - Ubuntu 12.04
                   maximum-os-version:
@@ -114,31 +114,31 @@ sdks:
                   target-architecture:
                     - x86
                     - x86-64
-                  macOS:
-                    runtime-version:
-                      - Python 3.6
-                      - Python 3.7
-                      - Python 3.8
-                      - Python 3.9
-                    minimum-os-version:
-                      - macOS 10.12
-                    maximum-os-version:
-                      - macOS 11.0.1
-                    target-architecture:
-                      - x86-64
-                  Windows:
-                    runtime-version:
-                      - Python 3.6
-                      - Python 3.7
-                      - Python 3.8
-                      - Python 3.9
-                    minimum-os-version:
-                      - Windows Vista Ultimate
-                    maximum-os-version:
-                      - Windows 10 Home
-                    target-architecture:
-                      - x86
-                      - x86-64
+                macOS:
+                  runtime-version:
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                    - Python 3.10
+                  minimum-os-version:
+                    - macOS 10.12
+                  maximum-os-version:
+                    - macOS 11.0.1
+                  target-architecture:
+                    - x86-64
+                Windows:
+                  runtime-version:
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                    - Python 3.10
+                  minimum-os-version:
+                    - Windows Vista Ultimate
+                  maximum-os-version:
+                    - Windows 10 Home
+                  target-architecture:
+                    - x86
+                    - x86-64
             requires:
               -
                 name: requests

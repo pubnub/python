@@ -1,22 +1,22 @@
 # Developers manual
 
 ## Supported Python versions
-We support Python 3.6, 3.7, 3.8, 3.9
+We support Python 3.7, 3.8, 3.9, 3.10
 
 ## Supported platforms
 We maintain and test our SDK using Travis.CI and Ubuntu.
-Windows/MacOS/BSD platforms support was verified only once, after SDK v4.0 release. We did not test the newer releases with these platforms. 
+Windows/MacOS/BSD platforms support was verified only once, after SDK v4.0 release. We did not test the newer releases with these platforms.
 
 ## Event Loop Frameworks
 ### Native (`threading`)
 Native implementation concerns using `requests` library (https://github.com/requests/requests), a wrapper for a lower level urllib3 (https://github.com/shazow/urllib3).
 urllib2 is not supported, there is an outline of request handler for it (which doesn't work, just the outline) can be found at (https://github.com/pubnub/python/blob/master/pubnub/request_handlers/urllib2_handler.py).
-All listed Python versions are supported. 
+All listed Python versions are supported.
 
 #### sync
 Synchronous calls can be invoked by using `sync()` call. This will return Envelope object https://github.com/pubnub/python/blob/037a6829c341471c2c78a7a429f02dec671fd791/pubnub/structures.py#L79-L82 which wraps both Result and Status. All exceptions are triggered natively using `raise Exception` syntax. The idea was to use 2 types of final execution methods like in Asyncio/Tornado. These fixes are postponed until next major release (v5.0.0):
 - `result()` should return just Response and natively raise an exception if there is one
-- `sync()` should return Envelope(as is now), but do not raise any exceptions 
+- `sync()` should return Envelope(as is now), but do not raise any exceptions
 The work on it has been started in branch 'fix-errors-handling', but as were mentioned above, was postponed.
 
 #### async

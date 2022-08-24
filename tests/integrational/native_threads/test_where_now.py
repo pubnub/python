@@ -1,12 +1,11 @@
 import unittest
 import logging
-import time
 import pubnub
 import threading
 
 from pubnub.pubnub import PubNub, SubscribeListener, NonSubscribeListener
-from tests import helper
-from tests.helper import pnconf_sub_copy
+from tests.integrational.vcr_helper import pn_vcr
+from tests.helper import mocked_config_copy
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -20,21 +19,21 @@ class TestPubNubState(unittest.TestCase):
         self.status = status
         self.event.set()
 
-    @unittest.skip("Needs rework to use VCR playback")
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/where_now/single_channel.yaml',
+                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
+                         allow_playback_repeats=True)
     def test_single_channel(self):
-        pubnub = PubNub(pnconf_sub_copy())
-        ch = helper.gen_channel("wherenow-asyncio-channel")
-        uuid = helper.gen_channel("wherenow-asyncio-uuid")
+        print('test_single_channel')
+        pubnub = PubNub(mocked_config_copy())
+        ch = "wherenow-asyncio-channel"
+        uuid = "wherenow-asyncio-uuid"
         pubnub.config.uuid = uuid
 
         subscribe_listener = SubscribeListener()
         where_now_listener = NonSubscribeListener()
         pubnub.add_listener(subscribe_listener)
         pubnub.subscribe().channels(ch).execute()
-
         subscribe_listener.wait_for_connect()
-
-        time.sleep(2)
 
         pubnub.where_now() \
             .uuid(uuid) \
@@ -54,10 +53,11 @@ class TestPubNubState(unittest.TestCase):
 
         pubnub.stop()
 
-    @unittest.skip("Test fails for unknown reason")
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/where_now/multiple_channels.yaml',
+                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
+                         allow_playback_repeats=True)
     def test_multiple_channels(self):
-
-        pubnub = PubNub(pnconf_sub_copy())
+        pubnub = PubNub(mocked_config_copy())
         ch1 = "state-native-sync-ch-1"
         ch2 = "state-native-sync-ch-2"
         pubnub.config.uuid = "state-native-sync-uuid"
@@ -69,8 +69,6 @@ class TestPubNubState(unittest.TestCase):
         pubnub.subscribe().channels([ch1, ch2]).execute()
 
         subscribe_listener.wait_for_connect()
-
-        time.sleep(2)
 
         pubnub.where_now() \
             .uuid(uuid) \

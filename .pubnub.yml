@@ -1,5 +1,5 @@
 name: python
-version: 6.5.1
+version: 7.0.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,16 +18,16 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-6.5.1
+            package-name: pubnub-7.0.0
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
                 Linux:
                   runtime-version:
-                    - Python 3.6
                     - Python 3.7
                     - Python 3.8
                     - Python 3.9
+                    - Python 3.10
                   minimum-os-version:
                     - Ubuntu 12.04
                   maximum-os-version:
@@ -35,31 +35,31 @@ sdks:
                   target-architecture:
                     - x86
                     - x86-64
-                  macOS:
-                    runtime-version:
-                      - Python 3.6
-                      - Python 3.7
-                      - Python 3.8
-                      - Python 3.9
-                    minimum-os-version:
-                      - macOS 10.12
-                    maximum-os-version:
-                      - macOS 11.0.1
-                    target-architecture:
-                      - x86-64
-                  Windows:
-                    runtime-version:
-                      - Python 3.6
-                      - Python 3.7
-                      - Python 3.8
-                      - Python 3.9
-                    minimum-os-version:
-                      - Windows Vista Ultimate
-                    maximum-os-version:
-                      - Windows 10 Home
-                    target-architecture:
-                      - x86
-                      - x86-64
+                macOS:
+                  runtime-version:
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                    - Python 3.10
+                  minimum-os-version:
+                    - macOS 10.12
+                  maximum-os-version:
+                    - macOS 11.0.1
+                  target-architecture:
+                    - x86-64
+                Windows:
+                  runtime-version:
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                    - Python 3.10
+                  minimum-os-version:
+                    - Windows Vista Ultimate
+                  maximum-os-version:
+                    - Windows 10 Home
+                  target-architecture:
+                    - x86
+                    - x86-64
             requires:
               - name: requests
                 min-version: "2.4"
@@ -97,16 +97,16 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-6.5.1
-            location: https://github.com/pubnub/python/releases/download/v6.5.1/pubnub-6.5.1.tar.gz
+            package-name: pubnub-7.0.0
+            location: https://github.com/pubnub/python/releases/download/7.0.0/pubnub-7.0.0.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
                   runtime-version:
-                    - Python 3.6
                     - Python 3.7
                     - Python 3.8
                     - Python 3.9
+                    - Python 3.10
                   minimum-os-version:
                     - Ubuntu 12.04
                   maximum-os-version:
@@ -114,31 +114,31 @@ sdks:
                   target-architecture:
                     - x86
                     - x86-64
-                  macOS:
-                    runtime-version:
-                      - Python 3.6
-                      - Python 3.7
-                      - Python 3.8
-                      - Python 3.9
-                    minimum-os-version:
-                      - macOS 10.12
-                    maximum-os-version:
-                      - macOS 11.0.1
-                    target-architecture:
-                      - x86-64
-                  Windows:
-                    runtime-version:
-                      - Python 3.6
-                      - Python 3.7
-                      - Python 3.8
-                      - Python 3.9
-                    minimum-os-version:
-                      - Windows Vista Ultimate
-                    maximum-os-version:
-                      - Windows 10 Home
-                    target-architecture:
-                      - x86
-                      - x86-64
+                macOS:
+                  runtime-version:
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                    - Python 3.10
+                  minimum-os-version:
+                    - macOS 10.12
+                  maximum-os-version:
+                    - macOS 11.0.1
+                  target-architecture:
+                    - x86-64
+                Windows:
+                  runtime-version:
+                    - Python 3.7
+                    - Python 3.8
+                    - Python 3.9
+                    - Python 3.10
+                  minimum-os-version:
+                    - Windows Vista Ultimate
+                  maximum-os-version:
+                    - Windows 10 Home
+                  target-architecture:
+                    - x86
+                    - x86-64
             requires:
               -
                 name: requests
@@ -169,6 +169,13 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
+  - date: 2022-08-23
+    version: 7.0.0
+    changes:
+      - type: improvement
+        text: "Update build process to include python v3.10-dev and remove v3.6."
+      - type: improvement
+        text: "Fix of randomly failing tests of `where_now feature`."
   - date: 2022-08-02
     version: v6.5.1
     changes:

@@ -10,6 +10,10 @@ class PNUpdateSpaceResult(PNEntityResult):
     _description = "Update Space: %s"
 
 
+class PNUpsertSpaceResult(PNEntityResult):
+    _description = "Upsert Space: %s"
+
+
 class PNFetchSpaceResult(PNEntityResult):
     _description = "Fetch Space: %s"
 

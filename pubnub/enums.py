@@ -6,17 +6,13 @@ class HttpMethod(object):
     POST = 2
     DELETE = 3
     PATCH = 4
+    PUT = 5
+
+    mapping = {1: 'GET', 2: 'POST', 3: 'DELETE', 4: 'PATCH', 5: 'PUT'}
 
     @classmethod
     def string(cls, method):
-        if method == cls.GET:
-            return "GET"
-        elif method == cls.POST:
-            return "POST"
-        elif method == cls.DELETE:
-            return "DELETE"
-        elif method == cls.PATCH:
-            return "PATCH"
+        return cls.mapping.get(method, False)
 
 
 class PNStatusCategory(object):
@@ -125,6 +121,9 @@ class PNOperationType(object):
     PNRemoveSpaceUsersOperation = 82
     PNFetchUserMembershipsOperation = 85
     PNFetchSpaceMembershipsOperation = 86
+
+    PNUpsertSpaceOperation = 87
+    PNUpsertUserOperation = 88
 
 
 class PNHeartbeatNotificationOptions(object):

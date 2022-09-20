@@ -1,0 +1,120 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: DELETE
+    uri: https://test.ps.pn/v3/objects/sub-c-test/users/StevenPaulJobs
+  response:
+    body:
+      string: '{"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 08 Sep 2022 16:19:27 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"name": "Steven Paul Jobs", "email": "steve-j@user.id", "externalId":
+      "None", "profileUrl": "None", "custom": {"dob": "1955-02-24"}, "status": "guru",
+      "type": "entrepreneur"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '175'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: PATCH
+    uri: https://test.ps.pn/v3/objects/sub-c-test/users/StevenPaulJobs
+  response:
+    body:
+      string: '{"error":{"message":"Requested resource does not exists.","source":"metadata"},"status":404}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '92'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 08 Sep 2022 16:19:27 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: DELETE
+    uri: https://test.ps.pn/v3/objects/sub-c-test/users/StevenPaulJobs
+  response:
+    body:
+      string: '{"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Thu, 08 Sep 2022 16:19:28 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+version: 1

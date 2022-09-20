@@ -243,7 +243,7 @@ class RequestsRequestHandler(BaseRequestHandler):
             "allow_redirects": e_options.allow_redirects
         }
 
-        if e_options.is_post() or e_options.is_patch():
+        if e_options.is_post() or e_options.is_patch() or e_options.is_put():
             args["data"] = e_options.data
             args["files"] = e_options.files
             logger.debug("%s %s %s" % (

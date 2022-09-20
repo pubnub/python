@@ -1,0 +1,83 @@
+interactions:
+- request:
+    body: '{"name": "Ada Lovelace", "email": "ada.lovelace@user.id", "externalId":
+      "x1x2x3", "profileUrl": "https://eee.ee/eeee/e/ee.e", "custom": {"dob": "12/10/1815"},
+      "status": "legend", "type": "programmer"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '200'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: POST
+    uri: https://test.ps.pn/v3/objects/sub-c-test/users/AdaLovelace
+  response:
+    body:
+      string: '{"data":{"custom":{"dob":"12/10/1815"},"email":"ada.lovelace@user.id","externalId":"x1x2x3","id":"AdaLovelace","name":"Ada
+        Lovelace","profileUrl":"https://eee.ee/eeee/e/ee.e","status":"legend","type":"programmer"},"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '227'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 06 Sep 2022 14:49:02 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: DELETE
+    uri: https://test.ps.pn/v3/objects/sub-c-test/users/AdaLovelace
+  response:
+    body:
+      string: '{"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 06 Sep 2022 14:49:03 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+version: 1

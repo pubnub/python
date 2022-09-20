@@ -3,7 +3,7 @@ from pubnub.models.consumer.objects_v2.page import PNPageable
 
 class PNEntityResult(object):
     def __init__(self, result):
-        self.data = result["data"]
+        self.data = result["data"] if "data" in result else None
         self.status = result["status"]
 
     def __str__(self):

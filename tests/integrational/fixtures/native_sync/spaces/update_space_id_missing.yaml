@@ -1,0 +1,82 @@
+interactions:
+- request:
+    body: '{"name": "Trekkies Fan Space", "description": "Live Long and Prosper",
+      "custom": {"Leader": "Cpt. James ''Jim'' Tiberius Kirk"}, "status": "fanclub",
+      "type": "nerdy"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '164'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: PATCH
+    uri: https://test.ps.pn/v3/objects/sub-c-test/spaces/Trekkie?uuid=uuid-mock
+  response:
+    body:
+      string: '{"error":{"message":"Requested resource does not exists.","source":"metadata"},"status":404}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '92'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 16 Sep 2022 13:22:05 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 404
+      message: Not Found
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: DELETE
+    uri: https://test.ps.pn/v3/objects/sub-c-test/spaces/Trekkie?uuid=uuid-mock
+  response:
+    body:
+      string: '{"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 16 Sep 2022 13:22:05 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+version: 1

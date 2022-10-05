@@ -1,3 +1,9 @@
+## 7.0.1
+October 05 2022
+
+#### Fixed
+- Remove deprecation warning of Event.is_set and Thread.deamon.
+
 ## 7.0.0
 August 23 2022
 

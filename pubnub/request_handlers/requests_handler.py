@@ -51,7 +51,7 @@ class RequestsRequestHandler(BaseRequestHandler):
         def callback_to_invoke_in_separate_thread():
             try:
                 envelope = self._build_envelope(platform_options, endpoint_call_options)
-                if cancellation_event is not None and cancellation_event.isSet():
+                if cancellation_event is not None and cancellation_event.is_set():
                     # Since there are no way to affect on ongoing request it's response will
                     # be just ignored on cancel call
                     return
@@ -94,7 +94,7 @@ class RequestsRequestHandler(BaseRequestHandler):
             target=client.run,
             name="Thread-%s-%d" % (operation_name, ++RequestsRequestHandler.ENDPOINT_THREAD_COUNTER)
         )
-        thread.setDaemon(self.pubnub.config.daemon)
+        thread.daemon = self.pubnub.config.daemon
         thread.start()
 
         call_obj.thread = thread

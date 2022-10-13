@@ -10,10 +10,6 @@ def before_scenario(context, feature):
             response = requests.get(MOCK_SERVER_URL + CONTRACT_INIT_ENDPOINT + contract_name)
             assert response
 
-            response_json = response.json()
-            assert response_json["expectations"]["pending"]
-            assert not response_json["expectations"]["failed"]
-
 
 def after_scenario(context, feature):
     for tag in feature.tags:
@@ -22,5 +18,6 @@ def after_scenario(context, feature):
             assert response
 
             response_json = response.json()
+
             assert not response_json["expectations"]["failed"]
             assert not response_json["expectations"]["pending"]

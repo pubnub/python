@@ -9,15 +9,20 @@ from pubnub.models.consumer.pubsub import PNPublishResult, PNMessageResult
 from pubnub.pubnub import PubNub, SubscribeListener, NonSubscribeListener
 from tests import helper
 from tests.helper import pnconf_sub_copy
+from tests.integrational.vcr_helper import pn_vcr
 
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
 class TestPubNubSubscription(unittest.TestCase):
+
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/subscribe/subscribe_unsubscribe.yaml',
+                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
+                         allow_playback_repeats=True)
     def test_subscribe_unsubscribe(self):
         pubnub = PubNub(pnconf_sub_copy())
-        ch = helper.gen_channel("test-subscribe-sub-unsub")
+        ch = "test-subscribe-sub-unsub"
 
         try:
             listener = SubscribeListener()
@@ -44,7 +49,6 @@ class TestPubNubSubscription(unittest.TestCase):
         finally:
             pubnub.stop()
 
-    @unittest.skip("Test fails for unknown reason")
     def test_subscribe_pub_unsubscribe(self):
         ch = helper.gen_channel("test-subscribe-sub-pub-unsub")
         pubnub = PubNub(pnconf_sub_copy())
@@ -81,7 +85,6 @@ class TestPubNubSubscription(unittest.TestCase):
         finally:
             pubnub.stop()
 
-    @unittest.skip("Test fails for unknown reason")
     def test_join_leave(self):
         ch = helper.gen_channel("test-subscribe-join-leave")
 
@@ -129,9 +132,12 @@ class TestPubNubSubscription(unittest.TestCase):
             pubnub.stop()
             pubnub_listener.stop()
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/subscribe/cg_subscribe_unsubscribe.yaml',
+                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
+                         allow_playback_repeats=True)
     def test_cg_subscribe_unsubscribe(self):
-        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+        ch = "test-subscribe-unsubscribe-channel"
+        gr = "test-subscribe-unsubscribe-group"
 
         pubnub = PubNub(pnconf_sub_copy())
         callback_messages = SubscribeListener()
@@ -144,8 +150,6 @@ class TestPubNubSubscription(unittest.TestCase):
         result = cg_operation.await_result()
         assert isinstance(result, PNChannelGroupsAddChannelResult)
         cg_operation.reset()
-
-        time.sleep(1)
 
         pubnub.add_listener(callback_messages)
         pubnub.subscribe().channel_groups(gr).execute()
@@ -163,9 +167,12 @@ class TestPubNubSubscription(unittest.TestCase):
 
         pubnub.stop()
 
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/subscribe/subscribe_cg_publish_unsubscribe.yaml',
+                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
+                         allow_playback_repeats=True)
     def test_subscribe_cg_publish_unsubscribe(self):
-        ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
-        gr = helper.gen_channel("test-subscribe-unsubscribe-group")
+        ch = "test-subscribe-unsubscribe-channel"
+        gr = "test-subscribe-unsubscribe-group"
         message = "hey"
 
         pubnub = PubNub(pnconf_sub_copy())
@@ -178,8 +185,6 @@ class TestPubNubSubscription(unittest.TestCase):
             .pn_async(non_subscribe_listener.callback)
         result = non_subscribe_listener.await_result_and_reset()
         assert isinstance(result, PNChannelGroupsAddChannelResult)
-
-        time.sleep(1)
 
         pubnub.add_listener(callback_messages)
         pubnub.subscribe().channel_groups(gr).execute()
@@ -202,7 +207,6 @@ class TestPubNubSubscription(unittest.TestCase):
 
         pubnub.stop()
 
-    @unittest.skip("Test fails for unknown reason")
     def test_subscribe_cg_join_leave(self):
         ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
         gr = helper.gen_channel("test-subscribe-unsubscribe-group")
@@ -220,7 +224,6 @@ class TestPubNubSubscription(unittest.TestCase):
 
         time.sleep(1)
 
-        callback_messages = SubscribeListener()
         callback_presence = SubscribeListener()
 
         pubnub_listener.add_listener(callback_presence)
@@ -233,26 +236,13 @@ class TestPubNubSubscription(unittest.TestCase):
         assert prs_envelope.channel == ch
         assert prs_envelope.subscription == gr
 
-        pubnub.add_listener(callback_messages)
-        pubnub.subscribe().channel_groups(gr).execute()
-
-        prs_envelope = callback_presence.wait_for_presence_on(ch)
-
-        assert prs_envelope.event == 'join'
-        assert prs_envelope.uuid == pubnub.uuid
-        assert prs_envelope.channel == ch
-        assert prs_envelope.subscription == gr
-
-        pubnub.unsubscribe().channel_groups(gr).execute()
+        pubnub_listener.unsubscribe().channel_groups(gr).execute()
         prs_envelope = callback_presence.wait_for_presence_on(ch)
 
         assert prs_envelope.event == 'leave'
         assert prs_envelope.uuid == pubnub.uuid
         assert prs_envelope.channel == ch
         assert prs_envelope.subscription == gr
-
-        pubnub_listener.unsubscribe().channel_groups(gr).execute()
-        callback_presence.wait_for_disconnect()
 
         pubnub.remove_channel_from_channel_group() \
             .channel_group(gr) \

@@ -1,0 +1,192 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-unsubscribe-group?add=test-subscribe-unsubscribe-channel&uuid=uuid-mock
+  response:
+    body:
+      string: '{"status": 200, "message": "OK", "service": "channel-registry", "error":
+        false}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '79'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:43:11 GMT
+      Server:
+      - Pubnub Storage
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-unsubscribe-group&tt=0&uuid=uuid-mock
+  response:
+    body:
+      string: '{"t":{"t":"16608517922168462","r":42},"m":[]}'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:43:12 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-unsubscribe-group&tt=16608517922168462&uuid=uuid-mock
+  response:
+    body:
+      string: '{"t":{"t":"16608517922168562","r":42},"m":[]}'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:43:12 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/,/leave?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock
+  response:
+    body:
+      string: '{"status": 200, "message": "OK", "action": "leave", "service": "Presence"}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Methods:
+      - OPTIONS, GET, POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '74'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:43:12 GMT
+      Server:
+      - Pubnub Presence
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-unsubscribe-group?remove=test-subscribe-unsubscribe-channel&uuid=uuid-mock
+  response:
+    body:
+      string: '{"status": 200, "message": "OK", "service": "channel-registry", "error":
+        false}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '79'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:43:12 GMT
+      Server:
+      - Pubnub Storage
+    status:
+      code: 200
+      message: OK
+version: 1

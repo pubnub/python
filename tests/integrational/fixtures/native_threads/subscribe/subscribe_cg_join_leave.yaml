@@ -1,0 +1,152 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-unsubscribe-group-RBZNX7AZ?add=test-subscribe-unsubscribe-channel-YQ5TOJJH&uuid=uuid-mock
+  response:
+    body:
+      string: '{"status": 200, "message": "OK", "service": "channel-registry", "error":
+        false}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '79'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:39:37 GMT
+      Server:
+      - Pubnub Storage
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-unsubscribe-group-RBZNX7AZ%2Ctest-subscribe-unsubscribe-group-RBZNX7AZ-pnpres&uuid=uuid-mock
+  response:
+    body:
+      string: '{"t":{"t":"16608551810753396","r":43},"m":[]}'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:39:41 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-unsubscribe-group-RBZNX7AZ%2Ctest-subscribe-unsubscribe-group-RBZNX7AZ-pnpres&uuid=uuid-mock
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA5SQTU/DMAyG/4vPtdSvdKM3OKEdQCAOMIRQ4qYsG02jJjmgqv8ddzANIZhAkRLr
+        jV/7sUcIUI/zBVlVpUshsmVe8qnKHBIYoC6LKYEO6scRJGfNagt1moD7i3HHFh8VEhZFK0QqcszO
+        UoVZpitUrSJMc63zppFq0WquTWwI2gdkl6fBKI3RHmPaSGv1Kz7ciLvr1eoSnXWD9myMM46zz5KC
+        6S1X2fbGss5SjKZhYX6w62n3oQbTcR/Z8RzH0ff5PVF00tIb/+wF4+cm2pI+KJ8c/4MF3iSD8CK/
+        Mf4A+AvdVzSupk4DvAx9dHh7sb66X5yvD7uanqZ3AAAA//8DAP1EXCL3AQAA
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:39:42 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-unsubscribe-group-RBZNX7AZ&uuid=uuid-mock
+  response:
+    body:
+      string: '{"t":{"t":"16608551865138591","r":43},"m":[]}'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:39:46 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -1,6 +1,5 @@
 import logging
 import asyncio
-import unittest
 
 import pytest
 from pubnub.enums import PNOperationType, PNStatusCategory
@@ -11,6 +10,7 @@ import pubnub as pn
 
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.helper import pnconf_pam_copy
+from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -47,9 +47,13 @@ class ReconnectedListener(SubscribeCallback):
                 self.reconnected_event.set()
 
 
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/subscription/access_denied_unsubscribe_operation.yaml',
+    filter_query_parameters=['pnsdk', 'l_cg', 'l_pres'],
+    match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
+)
 @pytest.mark.asyncio
-@unittest.skip("fails for unknown reason")
-def test_access_denied_unsubscribe_operation(event_loop):
+async def test_access_denied_unsubscribe_operation(event_loop):
     channel = "not-permitted-channel"
     pnconf = pnconf_pam_copy()
     pnconf.secret_key = None
@@ -61,23 +65,6 @@ def test_access_denied_unsubscribe_operation(event_loop):
     pubnub.add_listener(callback)
 
     pubnub.subscribe().channels(channel).execute()
-    yield from callback.access_denied_event.wait()
+    await callback.access_denied_event.wait()
 
-    yield from pubnub.stop()
-
-#
-# @pytest.mark.asyncio
-# async def test_reconnected_unsubscribe_operation(event_loop):
-#     channel = "not-permitted-channel"
-#     pnconf = pnconf_pam_copy()
-#     pnconf.enable_subscribe = True
-#
-#     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
-#
-#     callback = ReconnectedListener()
-#     pubnub.add_listener(callback)
-#
-#     pubnub.subscribe().channels(channel).execute()
-#     yield from callback.reconnected_event.wait()
-#
-#     yield from pubnub.stop()
+    await pubnub.stop()

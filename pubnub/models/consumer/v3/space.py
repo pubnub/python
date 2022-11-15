@@ -41,7 +41,7 @@ class Space(PNResource):
         return self
 
     def update(self):
-        self._get = True
+        self._update = True
         return self
 
     def join(self):

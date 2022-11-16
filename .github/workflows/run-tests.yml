@@ -17,7 +17,7 @@ jobs:
       - name: Setup Python 3.7
         uses: actions/setup-python@v4
         with:
-          python-version: 3.7.13
+          python-version: '3.7.13'
       - name: Build and run tests for Python 3.7
         run: |
           ./scripts/install.sh
@@ -25,7 +25,7 @@ jobs:
       - name: Setup Python 3.8
         uses: actions/setup-python@v4
         with:
-          python-version: 3.8.13
+          python-version: '3.8.13'
       - name: Build and run tests for Python 3.8
         run: |
           ./scripts/install.sh
@@ -33,7 +33,7 @@ jobs:
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9.13
+          python-version: '3.9.13'
       - name: Build and run tests for Python 3.9
         run: |
           ./scripts/install.sh
@@ -41,7 +41,7 @@ jobs:
       - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: 3.10-dev
+          python-version: '3.10-dev'
       - name: Build and run tests for Python 3.10
         run: |
           ./scripts/install.sh
@@ -62,9 +62,9 @@ jobs:
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
         with:
-          python-version: 3.9.13
+          python-version: '3.9.13'
       - name: Run mock server action
-        uses: .github/.release/actions/actions/mock-server
+        uses: ./.github/.release/actions/actions/mock-server
         with:
           token: ${{ secrets.GH_TOKEN }}
       - name: Install Python dependencies and run acceptance tests

@@ -17,6 +17,6 @@ jobs:
             token: ${{ secrets.GH_TOKEN }}
             path: .github/.release/actions
         - name: "Run '.pubnub.yml' file validation"
-          uses: .github/.release/actions/actions/validators/pubnub-yml
+          uses: ./.github/.release/actions/actions/validators/pubnub-yml
           with:
             token: ${{ secrets.GH_TOKEN }}

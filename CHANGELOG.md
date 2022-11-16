@@ -1,3 +1,77 @@
+## 7.0.1
+October 05 2022
+
+#### Fixed
+- Remove deprecation warning of Event.is_set and Thread.deamon.
+
+## 7.0.0
+August 23 2022
+
+#### Modified
+- Update build process to include python v3.10-dev and remove v3.6.
+- Fix of randomly failing tests of `where_now feature`.
+
+## v6.5.1
+August 02 2022
+
+#### Fixed
+- Fix bugs in Spaces Membership endpoints.
+
+## v6.5.0
+July 27 2022
+
+#### Added
+- Grant token now supports Users and Spaces.
+
+## v6.4.1
+July 14 2022
+
+#### Fixed
+- This addresses the issue #130 - a problem with importing module.
+
+## v6.4.0
+July 13 2022
+
+#### Added
+- Spaces Users and Membership endpoint implementation. This functionality is hidden behind a feature flag. By default it is disabled. To enable it there should be an environment variable named `PN_ENABLE_ENTITIES` set to `True`.
+
+## v6.3.3
+June 25 2022
+
+#### Fixed
+- Fixed error which happened when random initialization vector has been used. Request path was encrypted two times, once to prepare signage and second one when sending the request.
+- Fixed exception while receiving empty `message` field in `FileMessageResult`.
+
+## v6.3.2
+May 16 2022
+
+#### Fixed
+- Fix issue with signing objects requests containing filter.
+
+## v6.3.1
+April 27 2022
+
+#### Fixed
+- This issue was mentioned in issue #118 and replaces PR #119 to match our PR policy. Fixed the following issues reported by [@tjazsilovsek](https://github.com/tjazsilovsek) and [@tjazsilovsek](https://github.com/tjazsilovsek): [#118](https://github.com/pubnub/python/issues/118) and [#119](https://github.com/pubnub/python/issues/119).
+
+## v6.3.0
+April 01 2022
+
+#### Added
+- Add methods to include additional fields in fetch_messages.
+
+## v6.2.0
+March 21 2022
+
+#### Added
+- Add methods to change use compression option on chosen endpoints.
+
+## v6.1.0
+March 01 2022
+
+#### Added
+- Add config option to set Content-Encoding to 'gzip'.
+
 ## v6.0.1
 February 01 2022
 

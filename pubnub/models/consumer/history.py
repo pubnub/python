@@ -70,6 +70,11 @@ class PNFetchMessagesResult(object):
             channels[key] = []
             for item in entry:
                 message = PNFetchMessageItem(item['message'], item['timetoken'])
+                if 'uuid' in item:
+                    message.uuid = item['uuid']
+                if 'message_type' in item:
+                    message.message_type = item['message_type']
+
                 if 'meta' in item:
                     message.meta = item['meta']
 

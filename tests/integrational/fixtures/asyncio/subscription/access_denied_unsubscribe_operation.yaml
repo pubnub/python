@@ -1,0 +1,40 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python-Asyncio/7.0.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/not-permitted-channel/0?tt=0&uuid=uuid-mock
+  response:
+    body:
+      string: '{"message":"Forbidden","payload":{"channels":["not-permitted-channel"]},"error":true,"service":"Access
+        Manager","status":403}
+
+        '
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Date:
+      - Wed, 02 Nov 2022 12:09:28 GMT
+      Server:
+      - openresty
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 403
+      message: Forbidden
+    url: https://ps.pndsn.com/v2/subscribe/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/not-permitted-channel/0?tt=0&pnsdk=PubNub-Python-Asyncio%2F7.0.1&uuid=uuid-mock
+version: 1

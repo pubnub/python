@@ -1,6 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 import logging
+import zlib
 
 from pubnub import utils
 from pubnub.enums import PNStatusCategory, HttpMethod
@@ -23,11 +24,13 @@ class Endpoint(object):
     SERVER_RESPONSE_BAD_REQUEST = 400
 
     __metaclass__ = ABCMeta
+    _path = None
 
     def __init__(self, pubnub):
         self.pubnub = pubnub
         self._cancellation_event = None
         self._sort_params = False
+        self._use_compression = self.pubnub.config.should_compress
 
     def cancellation_event(self, event):
         self._cancellation_event = event
@@ -87,11 +90,17 @@ class Endpoint(object):
     def use_base_path(self):
         return True
 
+    def is_compressable(self):
+        return False
+
     def request_headers(self):
+        headers = {}
+        if self.__compress_request():
+            headers["Content-Encoding"] = "gzip"
         if self.http_method() == HttpMethod.POST:
-            return {"Content-type": "application/json"}
-        else:
-            return {}
+            headers["Content-type"] = "application/json"
+
+        return headers
 
     def build_file_upload_request(self):
         return
@@ -102,9 +111,17 @@ class Endpoint(object):
     def encoded_params(self):
         return {}
 
+    def get_path(self):
+        if not self._path:
+            self._path = self.build_path()
+        return self._path
+
     def options(self):
+        data = self.build_data()
+        if data and self.__compress_request():
+            data = zlib.compress(data.encode('utf-8'), level=2)
         return RequestOptions(
-            path=self.build_path(),
+            path=self.get_path(),
             params_callback=self.build_params_callback(),
             method=self.http_method(),
             request_timeout=self.request_timeout(),
@@ -113,7 +130,7 @@ class Endpoint(object):
             create_status=self.create_status,
             create_exception=self.create_exception,
             operation_type=self.operation_type(),
-            data=self.build_data(),
+            data=data,
             files=self.build_file_upload_request(),
             sort_arguments=self._sort_params,
             allow_redirects=self.allow_redirects(),
@@ -277,3 +294,6 @@ class Endpoint(object):
         exception.status = status
 
         return exception
+
+    def __compress_request(self):
+        return (self.is_compressable() and self._use_compression)

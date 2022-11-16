@@ -1,0 +1,46 @@
+interactions:
+- request:
+    body: '{"ttl": 60, "permissions": {"resources": {"channels": {"some_channel_id":
+      3}, "groups": {}, "uuids": {}, "users": {}, "spaces": {"some_channel_id": 3}},
+      "patterns": {"channels": {"some_*": 3}, "groups": {}, "uuids": {}, "users":
+      {}, "spaces": {"some_*": 3}}, "meta": {}, "uuid": "some_uuid"}}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '292'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/6.4.1
+    method: POST
+    uri: https://ps.pndsn.com/v3/pam/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/grant
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAA/3WQT2+CMADFv8rSs4dS1GwkHmSFurGRwDKqXJZa/gQEKrSgYvzuw7lk08Tje/m9
+        d/gdQcQUA8YRlLGULI2BAT5azocARkCJTVwNTW3ZaL6xISnfElW6OFr4kuA95mXQbz/9nBG7FfSp
+        XyOtWCJXrOikDek+YdTDHooO3DEx1838LqMHPa9NK1oG2/DMEhv+/YaXzUHcfP3rr/fWmgZwxX4z
+        KS6cHmiM+pijoqLPuOF5NyV44nTOzsvqafmyyPjj+FX7onnq5K7ujlOhhbBLdrMZOI2AjJsu42c/
+        8x89D++sGnw1gyapmGolMBCEp28eF9ZaUQEAAA==
+    headers:
+      Connection:
+      - keep-alive
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Date:
+      - Tue, 26 Jul 2022 09:39:47 GMT
+      Transfer-Encoding:
+      - chunked
+      cache-control:
+      - no-cache, no-store, must-revalidate
+      content-encoding:
+      - gzip
+    status:
+      code: 200
+      message: OK
+version: 1

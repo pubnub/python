@@ -1,0 +1,183 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-sub-pub-unsub/0?tt=0&uuid=uuid-mock
+  response:
+    body:
+      string: '{"t":{"t":"16608492808101711","r":43},"m":[]}'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:11:02 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-sub-pub-unsub/0?tt=16608498661343013&uuid=uuid-mock
+  response:
+    body:
+      string: '{"t":{"t":"16608498661343013","r":43},"m":[]}'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:11:02 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-sub-pub-unsub/0/%22hey%22?uuid=uuid-mock
+  response:
+    body:
+      string: '[1,"Sent","16608498661343013"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:11:06 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-sub-pub-unsub/0?tt=16608492808101711&uuid=uuid-mock
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4SMSw6DMBBD7+J1RsokkEKuUnVBfipCtKghiwpx9w4n6GJGtmW/Azv8cT2wc3ro
+        xsE5tp3VbKHwge/sqbDC3w9M0jKSFnitMItrbU60vuMiaYVnhe0fjgW3yLS2QJGsLX2ve0M86kDM
+        2VEoIZI2OZuUpnArWdhRBnuuO8mqxs8c8qVok2svUVJJUnnmL87H+QMAAP//AwAtdSH/1QAAAA==
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:11:06 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-sub-pub-unsub/leave?uuid=uuid-mock
+  response:
+    body:
+      string: '{"status": 200, "message": "OK", "action": "leave", "service": "Presence"}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Methods:
+      - OPTIONS, GET, POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '74'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 19:11:09 GMT
+      Server:
+      - Pubnub Presence
+    status:
+      code: 200
+      message: OK
+version: 1

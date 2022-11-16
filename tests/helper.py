@@ -32,6 +32,7 @@ PAM_TOKEN_WITH_PUBLISH_ENABLED = (
 
 crypto_configuration = PNConfiguration()
 crypto = PubNubCryptodome(crypto_configuration)
+crypto.subscribe_request_timeout = 10
 
 DEFAULT_TEST_CIPHER_KEY = "testKey"
 
@@ -47,6 +48,7 @@ sub_key_pam = "sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f"
 sec_key_pam = "sec-c-MGFkMjQxYjMtNTUxZC00YzE3LWFiZGYtNzUwMjdjNmM3NDhk"
 
 pnconf = PNConfiguration()
+pnconf.subscribe_request_timeout = 10
 pnconf.publish_key = pub_key
 pnconf.subscribe_key = sub_key
 pnconf.enable_subscribe = False
@@ -54,11 +56,13 @@ pnconf.uuid = uuid_mock
 
 pnconf_sub = PNConfiguration()
 pnconf_sub.publish_key = pub_key
+pnconf_sub.subscribe_request_timeout = 10
 pnconf_sub.subscribe_key = sub_key
 pnconf_sub.uuid = uuid_mock
 
 pnconf_enc = PNConfiguration()
 pnconf_enc.publish_key = pub_key
+pnconf_enc.subscribe_request_timeout = 10
 pnconf_enc.subscribe_key = sub_key
 pnconf_enc.cipher_key = "testKey"
 pnconf_enc.enable_subscribe = False
@@ -66,12 +70,14 @@ pnconf_enc.uuid = uuid_mock
 
 pnconf_enc_sub = PNConfiguration()
 pnconf_enc_sub.publish_key = pub_key
+pnconf_enc_sub.subscribe_request_timeout = 10
 pnconf_enc_sub.subscribe_key = sub_key
 pnconf_enc_sub.cipher_key = "testKey"
 pnconf_enc_sub.uuid = uuid_mock
 
 pnconf_pam = PNConfiguration()
 pnconf_pam.publish_key = pub_key_pam
+pnconf_pam.subscribe_request_timeout = 10
 pnconf_pam.subscribe_key = sub_key_pam
 pnconf_pam.secret_key = sec_key_pam
 pnconf_pam.enable_subscribe = False
@@ -80,39 +86,46 @@ pnconf_pam.uuid = uuid_mock
 
 pnconf_pam_stub = PNConfiguration()
 pnconf_pam_stub.publish_key = "pub-stub"
+pnconf_pam_stub.subscribe_request_timeout = 10
 pnconf_pam_stub.subscribe_key = "sub-c-stub"
 pnconf_pam_stub.secret_key = "sec-c-stub"
 pnconf_pam_stub.uuid = uuid_mock
 
 pnconf_ssl = PNConfiguration()
 pnconf_ssl.publish_key = pub_key
+pnconf_ssl.subscribe_request_timeout = 10
 pnconf_ssl.subscribe_key = sub_key
 pnconf_ssl.ssl = True
 pnconf_ssl.uuid = uuid_mock
 
 message_count_config = PNConfiguration()
 message_count_config.publish_key = 'demo-36'
+message_count_config.subscribe_request_timeout = 10
 message_count_config.subscribe_key = 'demo-36'
 message_count_config.origin = 'balancer1g.bronze.aws-pdx-1.ps.pn'
 message_count_config.uuid = uuid_mock
 
 pnconf_demo = PNConfiguration()
 pnconf_demo.publish_key = 'demo'
+pnconf_demo.subscribe_request_timeout = 10
 pnconf_demo.subscribe_key = 'demo'
 pnconf_demo.uuid = uuid_mock
 
 file_upload_config = PNConfiguration()
 file_upload_config.publish_key = pub_key_mock
+file_upload_config.subscribe_request_timeout = 10
 file_upload_config.subscribe_key = sub_key_mock
 file_upload_config.uuid = uuid_mock
 
 mocked_config = PNConfiguration()
 mocked_config.publish_key = pub_key_mock
+mocked_config.subscribe_request_timeout = 10
 mocked_config.subscribe_key = sub_key_mock
 mocked_config.uuid = uuid_mock
 
 hardcoded_iv_config = PNConfiguration()
 hardcoded_iv_config.use_random_initialization_vector = False
+hardcoded_iv_config.subscribe_request_timeout = 10
 
 
 def hardcoded_iv_config_copy():

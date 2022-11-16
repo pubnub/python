@@ -32,6 +32,13 @@ class ObjectsEndpoint(Endpoint):
     def validate_specific_params(self):
         pass
 
+    def encoded_params(self):
+        params = {}
+        if isinstance(self, ListEndpoint):
+            if self._filter:
+                params["filter"] = utils.url_encode(str(self._filter))
+        return params
+
     def custom_params(self):
         params = {}
         inclusions = []
@@ -56,7 +63,7 @@ class ObjectsEndpoint(Endpoint):
 
         if isinstance(self, ListEndpoint):
             if self._filter:
-                params["filter"] = utils.url_encode(str(self._filter))
+                params["filter"] = str(self._filter)
 
             if self._limit:
                 params["limit"] = int(self._limit)
@@ -73,9 +80,9 @@ class ObjectsEndpoint(Endpoint):
 
             if self._page:
                 if isinstance(self._page, Next):
-                    params["start"] = self._page.hash()
+                    params["start"] = self._page.hash
                 elif isinstance(self._page, Previous):
-                    params["end"] = self._page.hash()
+                    params["end"] = self._page.hash
                 else:
                     raise ValueError()
 

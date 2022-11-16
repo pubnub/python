@@ -23,7 +23,7 @@ def test_single_channel(pn):
     time = envelope.result.timetoken - 10
     envelope = pn.message_counts().channel(chan).channel_timetokens([time]).sync()
 
-    assert(isinstance(envelope, Envelope))
+    assert isinstance(envelope, Envelope)
     assert not envelope.status.is_error()
     assert envelope.result.channels[chan] == 1
     assert isinstance(envelope.result, PNMessageCountResult)
@@ -40,7 +40,7 @@ def test_multiple_channels(pn):
     time = envelope.result.timetoken - 10
     envelope = pn.message_counts().channel(chans).channel_timetokens([time, time]).sync()
 
-    assert(isinstance(envelope, Envelope))
+    assert isinstance(envelope, Envelope)
     assert not envelope.status.is_error()
     assert envelope.result.channels[chan_1] == 1
     assert envelope.result.channels[chan_2] == 0

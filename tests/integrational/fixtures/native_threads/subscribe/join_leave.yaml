@@ -1,0 +1,233 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-join-leave-0OP6GGYF,test-subscribe-join-leave-0OP6GGYF-pnpres/0?tt=0&uuid=listener
+  response:
+    body:
+      string: '{"t":{"t":"16608558412820335","r":43},"m":[]}'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:50:41 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-join-leave-0OP6GGYF,test-subscribe-join-leave-0OP6GGYF-pnpres/16608558460928103?tt=0&uuid=listener
+  response:
+    body:
+      string: '{"t":{"t":"16608558412820335","r":43},"m":[ {"event": "leave", "uuid": "messenger", "timestamp": 1660855845, "occupancy": 1, "state": None, "join": None, "leave": None, "timeout": None, "subscription": None, "channel": "test-subscribe-join-leave-0OP6GGYF", "timetoken": 16608558460928103, "user_metadata": None}]}'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '45'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:50:41 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-join-leave-0OP6GGYF,test-subscribe-join-leave-0OP6GGYF-pnpres/0?tt=16608558412820335&uuid=listener
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yQwWqEMBCG32XODsRo3NUH6B7b67KUksSRpqsxmFgo4rt33LK0tBS8ePj8/5kv
+        s0CCZtk+kFeVOCp1LKVSZX2QNWQwQVMWawYDNJcFNKck0w4akUHYU7xyJc4GLRZFp5RQEvNaGMxz
+        qtB0xqKQRLJttTl0xLMtFxLFhNyKdnKG8G10HnvS74Ti8ak6nc4PGHyYKHJ+3iyCf9E2udFzeUsz
+        ZzTPrmXQu5jI0/QFkxt4uh7Y/vvBt/ho7Ry0tx/85wZc3HaQt3Qn9lV7T/0uReCz8Xq+2i+zv1r/
+        OP0U4mFm19r7Zdbn9RMAAP//AwA8U0So3AEAAA==
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:50:42 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-join-leave-0OP6GGYF,test-subscribe-join-leave-0OP6GGYF-pnpres/0?tt=16608558425549729&uuid=listener
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yQwUrEMBCG32XOHUjSTbb2AdyjXpdFJEmnGt2mpUkFKX13pxVRRKGXHD7+f+bL
+        zJChntcHpDGi0ro66NIchZQVFDBCfSiXAjqoLzNYTimmLdSigGFP8ZUraXLosSxbrYVWKG+EQynJ
+        oGudR6GIVNNYd2yJZ3suZEoZuZX8GBzhSx8iXsm+EYq7e3M6nW9xiMNIifPTajHER+tz6COX1zRz
+        RtMUGgYdpUTxicZPmgODbDvW//7xlu+9nwYb/TvUagMhrUsoeuLsRvyzjZGuuxyB78b7+Wy/1P7w
+        +kfqpxFPc7v2ft1meVg+AAAA//8DAFO+mCXeAQAA
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:50:45 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-join-leave-0OP6GGYF/leave?uuid=messenger
+  response:
+    body:
+      string: '{"status": 200, "message": "OK", "action": "leave", "service": "Presence"}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Methods:
+      - OPTIONS, GET, POST
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '74'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:50:45 GMT
+      Server:
+      - Pubnub Presence
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-join-leave-0OP6GGYF,test-subscribe-join-leave-0OP6GGYF-pnpres/0?tt=16608558453670118&uuid=listener
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA4yQQUvEMBCF/8ucO5C2m9jtD3CPehURSdKpZt2moUkEKf3vTisrIgq95PDmvZkv
+        b4YE7bw+UColGimbgxLHqilFDQVM0B7qpYAB2scZNLsqVntoRQFhT/CNIzEbtFjXvZRCVlgehcGy
+        JIWmNxZFRVR1nTY3PfFuy4FEMSGnop2cITyPzuOF9DuhuLtXp9PDLQYfJorszytF8M/aJjd6Dm9G
+        HrCWs+tYGShG8i80fanJsZD0wPzfX5abf7Q2B+3tB082wcX1CnlLV8W+au/psgsSuDi+z739ZvsD
+        7B+qn0i8zuw6fG1neVo+AQAA//8DAAq2ErngAQAA
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 18 Aug 2022 20:50:46 GMT
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 200
+      message: OK
+version: 1

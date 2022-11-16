@@ -166,7 +166,7 @@ def datetime_now():
 def sign_request(endpoint, pn, custom_params, method, body):
     custom_params['timestamp'] = str(pn.timestamp())
 
-    request_url = endpoint.build_path()
+    request_url = endpoint.get_path()
 
     encoded_query_string = prepare_pam_arguments(custom_params)
 

@@ -1,0 +1,113 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.2.0
+    method: GET
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-uuid/0/%22hey-uuid-1%22?seqn=1
+  response:
+    body:
+      string: '[1,"Sent","16485843882209571"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 29 Mar 2022 20:06:28 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.2.0
+    method: GET
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-uuid/0/%22hey-uuid-2%22?seqn=2
+  response:
+    body:
+      string: '[1,"Sent","16485843882539012"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 29 Mar 2022 20:06:28 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.2.0
+    method: GET
+    uri: https://ps.pndsn.com/v3/history-with-actions/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/fetch-messages-actions-uuid?include_meta=false&include_uuid=true&max=25
+  response:
+    body:
+      string: '{"status": 200, "channels": {"fetch-messages-actions-uuid": [{"message":
+        "hey-meta-1", "timetoken": "16485839292889892", "uuid": "fetch-messages-uuid-1"},
+        {"message": "hey-meta-2", "timetoken": "16485839293220109", "uuid": "fetch-messages-uuid-2"}]},
+        "error_message": "", "error": false}'
+    headers:
+      Accept-Ranges:
+      - bytes
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - GET, POST, DELETE, OPTIONS
+      Access-Control-Allow-Origin:
+      - '*'
+      Age:
+      - '0'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '475'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 29 Mar 2022 20:06:29 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

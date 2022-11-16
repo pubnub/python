@@ -61,6 +61,13 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
     def http_method(self):
         return HttpMethod.POST
 
+    def use_compression(self, compress=True):
+        self._use_compression = bool(compress)
+        return self
+
+    def is_compressable(self):
+        return True
+
     def custom_params(self):
         return {}
 

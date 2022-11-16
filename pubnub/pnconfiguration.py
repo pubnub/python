@@ -29,6 +29,7 @@ class PNConfiguration(object):
         self.daemon = False
         self.use_random_initialization_vector = True
         self.suppress_leave_events = False
+        self.should_compress = False
 
         self.heartbeat_default_values = True
         self._presence_timeout = PNConfiguration.DEFAULT_PRESENCE_TIMEOUT
@@ -105,3 +106,12 @@ class PNConfiguration(object):
     def uuid(self, uuid):
         PNConfiguration.validate_not_empty_string(uuid)
         self._uuid = uuid
+
+    @property
+    def user_id(self):
+        return self._uuid
+
+    @user_id.setter
+    def user_id(self, user_id):
+        PNConfiguration.validate_not_empty_string(user_id)
+        self._uuid = user_id

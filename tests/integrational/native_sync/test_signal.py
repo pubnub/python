@@ -14,7 +14,7 @@ def test_single_channel():
     envelope = pn.signal().channel(chan).message('test').sync()
 
     assert isinstance(envelope, Envelope)
-    assert envelope.status.is_error()
+    assert not envelope.status.is_error()
     assert envelope.result.timetoken == '15640049765289377'
     assert isinstance(envelope.result, PNSignalResult)
     assert isinstance(envelope.status, PNStatus)

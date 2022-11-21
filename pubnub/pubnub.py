@@ -214,7 +214,7 @@ class NativeSubscriptionManager(SubscriptionManager):
 
         def heartbeat_callback(raw_result, status):
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
-            if status.is_error:
+            if status.is_error():
                 if heartbeat_verbosity in (PNHeartbeatNotificationOptions.ALL, PNHeartbeatNotificationOptions.FAILURES):
                     self._listener_manager.announce_status(status)
             else:

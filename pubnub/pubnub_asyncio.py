@@ -503,7 +503,7 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             envelope = await heartbeat_call
 
             heartbeat_verbosity = self._pubnub.config.heartbeat_notification_options
-            if envelope.status.is_error:
+            if envelope.status.is_error():
                 if heartbeat_verbosity in (PNHeartbeatNotificationOptions.ALL, PNHeartbeatNotificationOptions.FAILURES):
                     self._listener_manager.announce_status(envelope.status)
             else:

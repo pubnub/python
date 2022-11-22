@@ -20,4 +20,4 @@ class PNStatus:
         self.affected_groups = None
 
     def is_error(self):
-        return True if self.error else False
+        return bool(self.error)

@@ -15,7 +15,7 @@ jobs:
       release: ${{ steps.check.outputs.ready }}
     steps:
       - name: Checkout actions
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: pubnub/client-engineering-deployment-tools
           ref: v1
@@ -33,12 +33,12 @@ jobs:
     if: ${{ needs.check-release.outputs.release == 'true' }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           # This should be the same as the one specified for on.pull_request.branches
           ref: master
       - name: Checkout actions
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: pubnub/client-engineering-deployment-tools
           ref: v1
@@ -56,3 +56,8 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           jira-api-key: ${{ secrets.JIRA_API_KEY }}
           last-service: true
+      - name: Upload test reports
+        uses: ./.github/.release/actions/actions/test-reports/upload
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          acceptance-tests-workflow: Tests

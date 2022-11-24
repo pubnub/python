@@ -1,3 +1,11 @@
+## 7.0.2
+November 24 2022
+
+#### Fixed
+- This change fixes typo in consumer models user and space resulting in setting invalid flags for the request.
+- This change fixes error in calling and returning value of `status.is_error()` method.
+- This change adds additional informations to PyPi package. Informations include URLs to source code and documentation, required python version (at least 3.7) and updates a list of supported python versions (removed 3.6 and added 3.10). Fixed the following issues reported by [@Saluev](https://github.com/Saluev), [@natekspencer](https://github.com/natekspencer) and [@andriyor](https://github.com/andriyor): [#145](https://github.com/pubnub/python/issues/145), [#102](https://github.com/pubnub/python/issues/102) and [#115](https://github.com/pubnub/python/issues/115).
+
 ## 7.0.1
 October 05 2022
 

@@ -1,0 +1,84 @@
+name: Tests
+
+on:
+  push:
+  workflow_dispatch:
+
+
+jobs:
+  tests:
+    name: Integration and Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Setup Python 3.7
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.7.13'
+      - name: Build and run tests for Python 3.7
+        run: |
+          ./scripts/install.sh
+          python scripts/run-tests.py
+      - name: Setup Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8.13'
+      - name: Build and run tests for Python 3.8
+        run: |
+          ./scripts/install.sh
+          python scripts/run-tests.py
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9.13'
+      - name: Build and run tests for Python 3.9
+        run: |
+          ./scripts/install.sh
+          python scripts/run-tests.py
+      - name: Setup Python 3.10
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10-dev'
+      - name: Build and run tests for Python 3.10
+        run: |
+          ./scripts/install.sh
+          python scripts/run-tests.py
+  acceptance:
+    name: Acceptance tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v3
+      - name: Checkout mock-server action
+        uses: actions/checkout@v3
+        with:
+          repository: pubnub/client-engineering-deployment-tools
+          ref: v1
+          token: ${{ secrets.GH_TOKEN }}
+          path: .github/.release/actions
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9.13'
+      - name: Run mock server action
+        uses: ./.github/.release/actions/actions/mock-server
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+      - name: Install Python dependencies and run acceptance tests
+        run: |
+            cp sdk-specifications/features/access/authorization-failure-reporting.feature tests/acceptance/pam
+            cp sdk-specifications/features/access/grant-token.feature tests/acceptance/pam
+            cp sdk-specifications/features/access/revoke-token.feature tests/acceptance/pam
+
+            sudo pip3 install -r requirements-dev.txt
+            behave --junit tests/acceptance/pam
+      - name: Expose acceptance tests reports
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: acceptance-test-reports
+          path: ./reports
+          retention-days: 7

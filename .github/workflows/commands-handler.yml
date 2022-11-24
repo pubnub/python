@@ -4,6 +4,7 @@ on:
   issue_comment:
     types: [created]
 
+
 jobs:
   process:
     name: Process command
@@ -11,9 +12,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
       - name: Checkout release actions
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: pubnub/client-engineering-deployment-tools
           ref: v1

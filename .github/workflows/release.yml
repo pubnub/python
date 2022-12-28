@@ -56,7 +56,7 @@ jobs:
           token: ${{ secrets.GH_TOKEN }}
           jira-api-key: ${{ secrets.JIRA_API_KEY }}
           last-service: true
-      - name: Upload acceptance tests reports
+      - name: Upload test reports
         uses: ./.github/.release/actions/actions/test-reports/upload
         with:
           token: ${{ secrets.GH_TOKEN }}

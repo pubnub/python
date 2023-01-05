@@ -17,6 +17,7 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._channel = None
         self._message = None
         self._should_store = None
+        self._ttl = 0
         self._use_post = None
         self._meta = None
         self._replicate = None
@@ -43,6 +44,10 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
 
     def should_store(self, should_store):
         self._should_store = bool(should_store)
+        return self
+
+    def ttl(self, ttl: int):
+        self._ttl = ttl
         return self
 
     def meta(self, meta):
@@ -78,6 +83,9 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
                 params["store"] = "1"
             else:
                 params["store"] = "0"
+
+        if self._ttl:
+            params['ttl'] = self._ttl
 
         # REVIEW: should auth key be assigned here?
         if self.pubnub.config.auth_key is not None:

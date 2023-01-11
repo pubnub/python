@@ -68,6 +68,14 @@ pnconf_enc.cipher_key = "testKey"
 pnconf_enc.enable_subscribe = False
 pnconf_enc.uuid = uuid_mock
 
+pnconf_enc_demo = PNConfiguration()
+pnconf_enc_demo.publish_key = "demo"
+pnconf_enc_demo.subscribe_request_timeout = 10
+pnconf_enc_demo.subscribe_key = "demo"
+pnconf_enc_demo.cipher_key = "testKey"
+pnconf_enc_demo.enable_subscribe = False
+pnconf_enc_demo.uuid = uuid_mock
+
 pnconf_enc_sub = PNConfiguration()
 pnconf_enc_sub.publish_key = pub_key
 pnconf_enc_sub.subscribe_request_timeout = 10
@@ -146,6 +154,10 @@ def pnconf_copy():
 
 def pnconf_enc_copy():
     return copy(pnconf_enc)
+
+
+def pnconf_enc_demo_copy():
+    return copy(pnconf_enc_demo)
 
 
 def pnconf_sub_copy():

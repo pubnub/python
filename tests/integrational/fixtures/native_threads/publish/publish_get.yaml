@@ -1,0 +1,172 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: GET
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0/%22hi%22?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572545021726"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:34 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: GET
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0/5?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572546539954"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:34 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: GET
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0/true?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572548078291"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:34 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: GET
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0/%5B%22hi%22%2C%20%22hi2%22%2C%20%22hi3%22%5D?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572549572061"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:34 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: GET
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0/%7B%22name%22%3A%20%22Alex%22%2C%20%22online%22%3A%20true%7D?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572551068612"]'
+    headers:
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:35 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

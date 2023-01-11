@@ -1,0 +1,192 @@
+interactions:
+- request:
+    body: '"hi"'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: POST
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572552730131"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:35 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '5'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '1'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: POST
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572554166236"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:35 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: 'true'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '4'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: POST
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572555745542"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:35 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '["hi", "hi2", "hi3"]'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '20'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: POST
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572557393409"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:35 GMT
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"name": "Alex", "online": true}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '32'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: POST
+    uri: https://ps.pndsn.com/publish/demo/demo/0/ch1/0?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16733572558960507"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Tue, 10 Jan 2023 13:27:35 GMT
+    status:
+      code: 200
+      message: OK
+version: 1

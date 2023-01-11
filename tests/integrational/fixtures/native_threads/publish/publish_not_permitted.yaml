@@ -1,0 +1,45 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/7.0.2
+    method: GET
+    uri: https://ps.pndsn.com/publish/demo/demo/0/not_permitted_channel/0/%22correct%20message%22?ttl=0
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAAy3NMQrCQBBG4d5TyF9vIWi1nU06TyASJruDWUhmw8xEkJC7ZwXrB9/bMLMZvRkR
+        XdWh5MyCgIW+U6WMuCGNJMKTIT4h1fuFdS7unPt/wWsPYNWqiK4rBxjrp6SfeU+p+ecHSXtog83J
+        12bdLtf9dABSfPeLfgAAAA==
+    headers:
+      Access-Control-Allow-Headers:
+      - Origin, X-Requested-With, Content-Type, Accept
+      Access-Control-Allow-Methods:
+      - GET
+      Access-Control-Allow-Origin:
+      - '*'
+      Cache-Control:
+      - no-cache, no-store, must-revalidate
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - text/javascript; charset=UTF-8
+      Date:
+      - Wed, 11 Jan 2023 08:50:39 GMT
+      Server:
+      - openresty
+      Transfer-Encoding:
+      - chunked
+    status:
+      code: 403
+      message: Forbidden
+version: 1

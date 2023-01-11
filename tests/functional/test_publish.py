@@ -40,6 +40,7 @@ class TestPublish(unittest.TestCase):
         self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
+            'ttl': 0,
         })
 
     def test_pub_list_message(self):
@@ -56,6 +57,7 @@ class TestPublish(unittest.TestCase):
         self.assertEqual(self.pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
+            'ttl': 0,
         })
 
     def test_pub_with_meta(self):
@@ -74,9 +76,10 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'meta': '%5B%22m1%22%2C%20%22m2%22%5D',
+            'ttl': 0,
         })
 
-    def test_pub_store(self):
+    def test_pub_store_indefinitely(self):
         self.pubnub.uuid = "UUID_PublishUnitTest"
 
         message = ["hi", "hi2", "hi3"]
@@ -91,6 +94,25 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'store': '1',
+            'ttl': 0,
+        })
+
+    def test_pub_store_with_ttl(self):
+        self.pubnub.uuid = "UUID_PublishUnitTest"
+
+        message = ["hi", "hi2", "hi3"]
+        encoded_message = url_encode(message)
+
+        self.pub.channel("ch1").message(message).should_store(True).ttl(1337)
+
+        self.assertEqual(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+
+        self.assertEqual(self.pub.build_params_callback()({}), {
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid,
+            'store': '1',
+            'ttl': 1337,
         })
 
     def test_pub_do_not_store(self):
@@ -108,6 +130,7 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'store': '0',
+            'ttl': 0,
         })
 
     def test_pub_with_auth(self):
@@ -135,6 +158,7 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': pubnub.uuid,
             'auth': conf.auth_key,
+            'ttl': 0,
         })
 
     def test_pub_encrypted_list_message(self):
@@ -164,4 +188,5 @@ class TestPublish(unittest.TestCase):
         self.assertEqual(pub.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': pubnub.uuid,
+            'ttl': 0,
         })

@@ -207,6 +207,10 @@ def pnconf_env_copy():
     return copy(pnconf_env)
 
 
+def pnconf_enc_env_copy():
+    return copy(pnconf_enc_env)
+
+
 def pnconf_pam_env_copy():
     return copy(pnconf_pam_env)
 

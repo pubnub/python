@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/ch1/0/%22hi%22?norep=true&ptto=16057799474000000&seqn=1&ttl=0",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.0.2"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Date": [
+                        "Thu, 12 Jan 2023 17:04:19 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16735430594175088\"]"
+                }
+            }
+        }
+    ]
+}

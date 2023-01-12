@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/ch1/0?seqn=1&ttl=0",
+                "body": "true",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.0.2"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "4"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 12 Jan 2023 16:32:53 GMT"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16735411737493716\"]"
+                }
+            }
+        }
+    ]
+}

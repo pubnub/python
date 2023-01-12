@@ -1,0 +1,126 @@
+interactions:
+- request:
+    body: '"a25pZ2h0c29mbmkxMjM0NclhU9jqi+5cNMXFiry5TPU="'
+    headers:
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python-Asyncio/7.0.2
+    method: POST
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16735566125034223"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 12 Jan 2023 20:50:12 GMT
+    status:
+      code: 200
+      message: OK
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?ttl=0&seqn=1&pnsdk=PubNub-Python-Asyncio%2F7.0.2&uuid=uuid-mock
+- request:
+    body: '"a25pZ2h0c29mbmkxMjM0NQ66CzLYXFOKoI1a9G0s0hA="'
+    headers:
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python-Asyncio/7.0.2
+    method: POST
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16735566125038953"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 12 Jan 2023 20:50:12 GMT
+    status:
+      code: 200
+      message: OK
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?ttl=0&seqn=3&pnsdk=PubNub-Python-Asyncio%2F7.0.2&uuid=uuid-mock
+- request:
+    body: '"a25pZ2h0c29mbmkxMjM0NdOBbiWd7zGph7bFEv5GX+mTa3M0vVg2xcyYg7CW45mG"'
+    headers:
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python-Asyncio/7.0.2
+    method: POST
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16735566125057392"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 12 Jan 2023 20:50:12 GMT
+    status:
+      code: 200
+      message: OK
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?ttl=0&seqn=4&pnsdk=PubNub-Python-Asyncio%2F7.0.2&uuid=uuid-mock
+- request:
+    body: '"a25pZ2h0c29mbmkxMjM0NS/B7ZYYL/8ZE/NEGBapOF0="'
+    headers:
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python-Asyncio/7.0.2
+    method: POST
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?ttl=0
+  response:
+    body:
+      string: '[1,"Sent","16735566125066599"]'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Methods:
+      - POST
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '30'
+      Content-Type:
+      - text/javascript; charset="UTF-8"
+      Date:
+      - Thu, 12 Jan 2023 20:50:12 GMT
+    status:
+      code: 200
+      message: OK
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0?ttl=0&seqn=2&pnsdk=PubNub-Python-Asyncio%2F7.0.2&uuid=uuid-mock
+version: 1

@@ -5,7 +5,7 @@ import pubnub
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_env, pnconf_enc_env, pnconf_demo_copy, pnconf_file_copy
+from tests.helper import pnconf_env, pnconf_enc_env, pnconf_demo_copy
 from tests.integrational.vcr_helper import pn_vcr
 from unittest.mock import patch
 
@@ -86,7 +86,7 @@ class TestPubNubPublish(unittest.TestCase):
 
     @patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345")
     @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_encrypted_string_get.json',
-                        filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_publish_encrypted_string_get(self, crypto_mock):
         try:
             env = PubNub(pnconf_enc_env).publish() \
@@ -263,7 +263,7 @@ class TestPubNubPublish(unittest.TestCase):
             pass
 
         try:
-            PubNub(pnconf).publish() \
+            PubNub(pnconf_env).publish() \
                 .channel("ch1") \
                 .message(func) \
                 .sync()

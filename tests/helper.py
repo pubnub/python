@@ -1,3 +1,4 @@
+import os
 import threading
 import string
 import random
@@ -135,6 +136,32 @@ hardcoded_iv_config = PNConfiguration()
 hardcoded_iv_config.use_random_initialization_vector = False
 hardcoded_iv_config.subscribe_request_timeout = 10
 
+# configuration with keys from PN_KEY_* (enabled all except PAM, PUSH and FUNCTIONS)
+pnconf_env = PNConfiguration()
+pnconf_env.publish_key = os.environ.get('PN_KEY_PUBLISH')
+pnconf_env.subscribe_request_timeout = 10
+pnconf_env.subscribe_key = os.environ.get('PN_KEY_SUBSCRIBE')
+pnconf_env.enable_subscribe = False
+pnconf_env.uuid = uuid_mock
+
+# configuration with keys from PN_KEY_* (enabled all except PAM, PUSH and FUNCTIONS) and encryption enabled
+pnconf_enc_env = PNConfiguration()
+pnconf_enc_env.publish_key = os.environ.get('PN_KEY_PUBLISH')
+pnconf_enc_env.subscribe_request_timeout = 10
+pnconf_enc_env.subscribe_key = os.environ.get('PN_KEY_SUBSCRIBE')
+pnconf_enc_env.cipher_key = "testKey"
+pnconf_enc_env.enable_subscribe = False
+pnconf_enc_env.uuid = uuid_mock
+
+# configuration with keys from PN_KEY_PAM_* (enabled with all including PAM except PUSH and FUNCTIONS)
+pnconf_pam_env = PNConfiguration()
+pnconf_pam_env.publish_key = os.environ.get('PN_KEY_PAM_PUBLISH')
+pnconf_pam_env.subscribe_request_timeout = 10
+pnconf_pam_env.subscribe_key = os.environ.get('PN_KEY_PAM_SUBSCRIBE')
+pnconf_pam_env.secret_key = os.environ.get('PN_KEY_PAM_SECRET')
+pnconf_pam_env.enable_subscribe = False
+pnconf_pam_env.uuid = uuid_mock
+
 
 def hardcoded_iv_config_copy():
     return copy(hardcoded_iv_config)
@@ -174,6 +201,14 @@ def pnconf_pam_copy():
 
 def pnconf_pam_stub_copy():
     return deepcopy(pnconf_pam_stub)
+
+
+def pnconf_env_copy():
+    return copy(pnconf_env)
+
+
+def pnconf_pam_env_copy():
+    return copy(pnconf_pam_env)
 
 
 def pnconf_pam_acceptance_copy():

@@ -6,6 +6,7 @@ from unittest.mock import patch
 from functools import wraps
 
 from tests.helper import url_decode
+from tests.integrational.vcr_serializer import PNJsonSerializer
 
 vcr_dir = os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__)))))
 
@@ -16,7 +17,7 @@ def remove_request_body(request):
 
 
 pn_vcr = vcr.VCR(
-    cassette_library_dir=vcr_dir
+    cassette_library_dir=vcr_dir, record_mode=vcr.record_mode.RecordMode.ONCE
 )
 
 pn_vcr_with_empty_body_request = vcr.VCR(
@@ -194,6 +195,7 @@ pn_vcr.register_matcher('object_in_body', object_in_body_matcher)
 pn_vcr.register_matcher('check_the_difference', check_the_difference_matcher)
 pn_vcr.register_matcher('string_list_in_path', string_list_in_path_matcher)
 pn_vcr.register_matcher('string_list_in_query', string_list_in_query_matcher)
+pn_vcr.register_serializer('pn_json', PNJsonSerializer())
 
 
 def use_cassette_and_stub_time_sleep_native(cassette_name, **kwargs):

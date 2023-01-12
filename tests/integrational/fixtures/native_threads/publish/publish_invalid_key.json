@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/publish/fake/demo/0/ch1/0/%22hey%22?ttl=0",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.0.2"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 400,
+                    "message": "INVALID"
+                },
+                "headers": {
+                    "Content-Length": [
+                        "37"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Date": [
+                        "Thu, 12 Jan 2023 20:40:48 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ]
+                },
+                "body": {
+                    "string": "[0,\"Invalid Key\",\"16735560487006108\"]"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,67 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/not_permitted_channel/0/%22correct%20message%22?ttl=0",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.0.2"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 403,
+                    "message": "Forbidden"
+                },
+                "headers": {
+                    "Access-Control-Allow-Headers": [
+                        "Origin, X-Requested-With, Content-Type, Accept"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Server": [
+                        "openresty"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Date": [
+                        "Thu, 12 Jan 2023 20:40:48 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ]
+                },
+                "body": {
+                    "binary": "H4sIAAAAAAAAAy3NMQrCQBBG4d5TyF9vIWi1nU06TyASJruDWUhmw8xEkJC7ZwXrB9/bMLMZvRkRXdWh5MyCgIW+U6WMuCGNJMKTIT4h1fuFdS7unPt/wWsPYNWqiK4rBxjrp6SfeU+p+ecHSXtog83J12bdLtf9dABSfPeLfgAAAA=="
+                }
+            }
+        }
+    ]
+}

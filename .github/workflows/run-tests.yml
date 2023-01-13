@@ -9,6 +9,13 @@ concurrency:
 defaults:
   run:
     shell: bash
+env:
+  PN_KEY_PUBLISH: ${{ secrets.PN_KEY_PUBLISH }}
+  PN_KEY_SUBSCRIBE: ${{ secrets.PN_KEY_SUBSCRIBE }}
+  PN_KEY_SECRET: ${{ secrets.PN_KEY_SECRET }}
+  PN_KEY_PAM_PUBLISH: ${{ secrets.PN_KEY_PAM_PUBLISH }}
+  PN_KEY_PAM_SUBSCRIBE: ${{ secrets.PN_KEY_PAM_SUBSCRIBE }}
+  PN_KEY_PAM_SECRET: ${{ secrets.PN_KEY_PAM_SECRET }}
 
 jobs:
   tests:

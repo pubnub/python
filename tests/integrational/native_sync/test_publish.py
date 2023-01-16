@@ -341,3 +341,33 @@ class TestPubNubPublish(unittest.TestCase):
             .sync()
 
         assert envelope
+
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_ttl_0.yaml',
+                         filter_query_parameters=['uuid', 'pnsdk'])
+    def test_publish_ttl_0(self):
+        try:
+            env = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message("hi") \
+                .ttl(0) \
+                .sync()
+
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)
+
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_ttl_100.yaml',
+                         filter_query_parameters=['uuid', 'pnsdk'])
+    def test_publish_ttl_100(self):
+        try:
+            env = PubNub(pnconf).publish() \
+                .channel("ch1") \
+                .message("hi") \
+                .ttl(100) \
+                .sync()
+
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
+        except PubNubException as e:
+            self.fail(e)

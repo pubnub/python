@@ -1,5 +1,5 @@
 name: python
-version: 7.0.2
+version: 7.1.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-7.0.2
+            package-name: pubnub-7.1.0
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -97,8 +97,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-7.0.2
-            location: https://github.com/pubnub/python/releases/download/7.0.2/pubnub-7.0.2.tar.gz
+            package-name: pubnub-7.1.0
+            location: https://github.com/pubnub/python/releases/download/7.1.0/pubnub-7.1.0.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,11 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
+  - date: 2023-01-17
+    version: 7.1.0
+    changes:
+      - type: feature
+        text: "Add optional TTL parameter for publish endpoint."
   - date: 2022-11-24
     version: 7.0.2
     changes:

@@ -1,3 +1,9 @@
+## 7.1.0
+January 17 2023
+
+#### Added
+- Add optional TTL parameter for publish endpoint.
+
 ## 7.0.2
 November 24 2022
 

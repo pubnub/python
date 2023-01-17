@@ -21,6 +21,7 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._meta = None
         self._replicate = None
         self._ptto = None
+        self._ttl = None
 
     def channel(self, channel):
         self._channel = str(channel)
@@ -49,6 +50,10 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._meta = meta
         return self
 
+    def ttl(self, ttl):
+        self._ttl = ttl
+        return self
+
     def build_data(self):
         if self._use_post is True:
             cipher = self.pubnub.config.cipher_key
@@ -69,6 +74,9 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
 
     def custom_params(self):
         params = TimeTokenOverrideMixin.custom_params(self)
+
+        if self._ttl:
+            params['ttl'] = self._ttl
 
         if self._meta:
             params['meta'] = utils.write_value_as_string(self._meta)

@@ -11,6 +11,8 @@ class Signal(Endpoint):
         Endpoint.__init__(self, pubnub)
         self._channel = None
         self._message = None
+        self._space = None
+        self._message_type = None
 
     def channel(self, channel):
         self._channel = str(channel)
@@ -18,6 +20,14 @@ class Signal(Endpoint):
 
     def message(self, message):
         self._message = message
+        return self
+
+    def space(self, space):
+        self._space = str(space)
+        return self
+
+    def message_type(self, message_type):
+        self._message_type = message_type
         return self
 
     def build_path(self):
@@ -29,7 +39,15 @@ class Signal(Endpoint):
         )
 
     def custom_params(self):
-        return {}
+        params = {}
+
+        if self._message_type is not None:
+            params['type'] = str(self._message_type)
+
+        if self._space is not None:
+            params['space-id'] = str(self._space)
+
+        return params
 
     def http_method(self):
         return HttpMethod.GET

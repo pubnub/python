@@ -373,8 +373,6 @@ class TestPubNubPublish(unittest.TestCase):
         except PubNubException as e:
             self.fail(e)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_user_message_type.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
     def test_publish_user_message_type(self):
         with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_user_message_type.yaml',
                                  filter_query_parameters=['uuid', 'pnsdk']) as cassette:

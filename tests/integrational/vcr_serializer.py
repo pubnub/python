@@ -44,6 +44,6 @@ class PNSerializer:
             interaction = self.replace_placeholders(interaction)
             if 'binary' in interaction['response']['body'].keys():
                 interaction['response']['body']['string'] = b64decode(interaction['response']['body']['binary'])
-                del(interaction['response']['body']['binary'])
+                del interaction['response']['body']['binary']
             cassette_dict['interactions'][index] == interaction
         return cassette_dict

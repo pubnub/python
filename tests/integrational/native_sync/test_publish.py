@@ -376,30 +376,23 @@ class TestPubNubPublish(unittest.TestCase):
     def test_publish_user_message_type(self):
         with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_user_message_type.yaml',
                                  filter_query_parameters=['uuid', 'pnsdk']) as cassette:
-            try:
-                env = PubNub(pnconf).publish().channel("ch1").message("hi").message_type('test_message').sync()
-                assert isinstance(env.result, PNPublishResult)
-                assert env.result.timetoken > 1
-                assert len(cassette) == 1
-                uri = urlparse(cassette.requests[0].uri)
-                query = parse_qs(uri.query)
-                assert 'type' in query.keys()
-                assert query['type'] == ['test_message']
-            except PubNubException as e:
-                self.fail(e)
+            env = PubNub(pnconf).publish().channel("ch1").message("hi").message_type('test_message').sync()
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
+            assert len(cassette) == 1
+            uri = urlparse(cassette.requests[0].uri)
+            query = parse_qs(uri.query)
+            assert 'type' in query.keys()
+            assert query['type'] == ['test_message']
 
     def test_publish_space_id(self):
         with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_space_id.yaml',
                                  filter_query_parameters=['uuid', 'pnsdk']) as cassette:
-            try:
-                env = PubNub(pnconf).publish().channel('ch1').space('sp1').message("hi").sync()
-
-                assert isinstance(env.result, PNPublishResult)
-                assert env.result.timetoken > 1
-                assert len(cassette) == 1
-                uri = urlparse(cassette.requests[0].uri)
-                query = parse_qs(uri.query)
-                assert 'space-id' in query.keys()
-                assert query['space-id'] == ['sp1']
-            except PubNubException as e:
-                self.fail(e)
+            env = PubNub(pnconf).publish().channel('ch1').space('sp1').message("hi").sync()
+            assert isinstance(env.result, PNPublishResult)
+            assert env.result.timetoken > 1
+            assert len(cassette) == 1
+            uri = urlparse(cassette.requests[0].uri)
+            query = parse_qs(uri.query)
+            assert 'space-id' in query.keys()
+            assert query['space-id'] == ['sp1']

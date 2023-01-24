@@ -172,6 +172,8 @@ class SubscribeMessageWorker(object):
                     channel=channel,
                     subscription=subscription_match,
                     timetoken=publish_meta_data.publish_timetoken,
-                    publisher=publisher
+                    publisher=publisher,
+                    message_type=message.message_type,
+                    space_id=message.space_id
                 )
                 self._listener_manager.announce_message(pn_message_result)

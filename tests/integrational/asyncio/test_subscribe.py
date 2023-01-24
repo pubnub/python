@@ -5,6 +5,7 @@ import pubnub as pn
 
 from unittest.mock import patch
 from pubnub.models.consumer.pubsub import PNMessageResult
+from pubnub.models.consumer.message_type import PNMessageType
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, SubscribeListener
 from tests.helper import pnconf_sub_copy, pnconf_enc_sub_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper, VCR599Listener, VCR599ReconnectionManager
@@ -382,3 +383,119 @@ async def test_unsubscribe_all(event_loop, sleeper=asyncio.sleep):
     assert envelope.status.original_response['status'] == 200
 
     await pubnub.stop()
+
+
+@get_sleeper('tests/integrational/fixtures/asyncio/subscription/publish_space_id.yaml')
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/subscription/publish_space_id.yaml',
+    filter_query_parameters=['pnsdk', 'l_cg', 'l_pres'],
+    match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
+)
+@pytest.mark.asyncio
+async def test_subscribe_publish_space_id(event_loop, sleeper=asyncio.sleep):
+    pubnub_sub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub_pub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+
+    patch_pubnub(pubnub_sub)
+    patch_pubnub(pubnub_pub)
+
+    pubnub_sub.config.uuid = 'test-subscribe-asyncio-uuid-sub'
+    pubnub_pub.config.uuid = 'test-subscribe-asyncio-uuid-pub'
+
+    callback = VCR599Listener(1)
+    channel = "test-subscribe-asyncio-ch"
+    message = "hey"
+    space_id = "HelloSpace"
+    pubnub_sub.add_listener(callback)
+    pubnub_sub.subscribe().channels(channel).execute()
+
+    await callback.wait_for_connect()
+
+    publish_future = asyncio.ensure_future(
+        pubnub_pub.publish().channel(channel).message(message).space_id(space_id).future()
+    )
+    subscribe_message_future = asyncio.ensure_future(callback.wait_for_message_on(channel))
+
+    await asyncio.wait([
+        publish_future,
+        subscribe_message_future
+    ])
+
+    publish_envelope = publish_future.result()
+    subscribe_envelope = subscribe_message_future.result()
+
+    assert isinstance(subscribe_envelope, PNMessageResult)
+    assert subscribe_envelope.channel == channel
+    assert subscribe_envelope.subscription is None
+    assert subscribe_envelope.message == message
+    assert subscribe_envelope.space_id == space_id
+    assert subscribe_envelope.timetoken > 0
+
+    assert isinstance(publish_envelope, AsyncioEnvelope)
+    assert publish_envelope.result.timetoken > 0
+    assert publish_envelope.status.original_response[0] == 1
+
+    pubnub_sub.unsubscribe().channels(channel).execute()
+    # await callback.wait_for_disconnect()
+
+    pubnub_pub.stop()
+    pubnub_sub.stop()
+
+
+@get_sleeper('tests/integrational/fixtures/asyncio/subscription/publish_message_type.yaml')
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/subscription/publish_message_type.yaml',
+    filter_query_parameters=['pnsdk', 'l_cg', 'l_pres'],
+    match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
+)
+@pytest.mark.asyncio
+async def test_subscribe_publish_message_type(event_loop, sleeper=asyncio.sleep):
+    pubnub_sub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub_pub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+
+    patch_pubnub(pubnub_sub)
+    patch_pubnub(pubnub_pub)
+
+    pubnub_sub.config.uuid = 'test-subscribe-asyncio-uuid-sub'
+    pubnub_pub.config.uuid = 'test-subscribe-asyncio-uuid-pub'
+
+    callback = VCR599Listener(1)
+    channel = "test-subscribe-asyncio-ch"
+    message = "hey"
+    message_type = "MyOwnCustomMessageType"
+    pubnub_sub.add_listener(callback)
+    pubnub_sub.subscribe().channels(channel).execute()
+
+    await callback.wait_for_connect()
+
+    publish_future = asyncio.ensure_future(
+        pubnub_pub.publish().channel(channel).message(message).message_type(message_type).future()
+    )
+    subscribe_message_future = asyncio.ensure_future(callback.wait_for_message_on(channel))
+
+    await asyncio.wait([
+        publish_future,
+        subscribe_message_future
+    ])
+
+    publish_envelope = publish_future.result()
+    subscribe_envelope = subscribe_message_future.result()
+
+    assert isinstance(subscribe_envelope, PNMessageResult)
+    assert subscribe_envelope.channel == channel
+    assert subscribe_envelope.subscription is None
+    assert subscribe_envelope.message == message
+
+    assert isinstance(subscribe_envelope.type, PNMessageType)
+    assert str(subscribe_envelope.type) == message_type
+    assert subscribe_envelope.timetoken > 0
+
+    assert isinstance(publish_envelope, AsyncioEnvelope)
+    assert publish_envelope.result.timetoken > 0
+    assert publish_envelope.status.original_response[0] == 1
+
+    pubnub_sub.unsubscribe().channels(channel).execute()
+    # await callback.wait_for_disconnect()
+
+    pubnub_pub.stop()
+    pubnub_sub.stop()

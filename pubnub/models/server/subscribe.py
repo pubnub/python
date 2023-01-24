@@ -1,3 +1,6 @@
+from pubnub.models.consumer.message_type import PNMessageType
+
+
 class SubscribeEnvelope:
     def __init__(self, messages=None, metadata=None):
         assert isinstance(messages, (list, None))
@@ -30,6 +33,8 @@ class SubscribeMessage:
         self.publish_metadata = None
         self.only_channel_subscription = False
         self.type = 0
+        self.message_type = None
+        self.space_id = None
 
     @classmethod
     def from_json(cls, json_input):
@@ -49,6 +54,16 @@ class SubscribeMessage:
         message.publish_metadata = PublishMetadata.from_json(json_input['p'])
         if 'e' in json_input:
             message.type = json_input['e']
+
+        if 'si' in json_input:
+            message.space_id = json_input['si']
+
+        if 'mt' in json_input:
+            if 'e' in json_input:
+                message.message_type = PNMessageType.from_response(json_input['mt'], json_input['e'])
+            else:
+                message.message_type = PNMessageType(json_input['mt'])
+
         return message
 
 

@@ -15,7 +15,7 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
     def __init__(self, pubnub):
         super(Publish, self).__init__(pubnub)
         self._channel = None
-        self._space = None
+        self._space_id = None
         self._message = None
         self._message_type = None
         self._should_store = None
@@ -29,8 +29,8 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._channel = str(channel)
         return self
 
-    def space(self, space):
-        self._space = str(space)
+    def space_id(self, space_id):
+        self._space_id = str(space_id)
         return self
 
     def message(self, message):
@@ -104,8 +104,8 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         if self._message_type is not None:
             params['type'] = str(self._message_type)
 
-        if self._space is not None:
-            params['space-id'] = str(self._space)
+        if self._space_id is not None:
+            params['space-id'] = str(self._space_id)
 
         return params
 

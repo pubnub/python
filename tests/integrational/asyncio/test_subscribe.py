@@ -54,8 +54,8 @@ async def test_subscribe_publish_unsubscribe(event_loop):
     pubnub_sub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
     pubnub_pub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
-    patch_pubnub(pubnub_sub)
-    patch_pubnub(pubnub_pub)
+    await patch_pubnub(pubnub_sub)
+    await patch_pubnub(pubnub_pub)
 
     pubnub_sub.config.uuid = 'test-subscribe-asyncio-uuid-sub'
     pubnub_pub.config.uuid = 'test-subscribe-asyncio-uuid-pub'
@@ -92,8 +92,8 @@ async def test_subscribe_publish_unsubscribe(event_loop):
     pubnub_sub.unsubscribe().channels(channel).execute()
     # await callback.wait_for_disconnect()
 
-    pubnub_pub.stop()
-    pubnub_sub.stop()
+    await pubnub_pub.stop()
+    await pubnub_sub.stop()
 
 
 @pn_vcr.use_cassette(
@@ -150,8 +150,8 @@ async def test_join_leave(event_loop):
     pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
     pubnub_listener = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
-    patch_pubnub(pubnub)
-    patch_pubnub(pubnub_listener)
+    await patch_pubnub(pubnub)
+    await patch_pubnub(pubnub_listener)
 
     pubnub.config.uuid = "test-subscribe-asyncio-messenger"
     pubnub_listener.config.uuid = "test-subscribe-asyncio-listener"
@@ -191,7 +191,7 @@ async def test_join_leave(event_loop):
     await callback_presence.wait_for_disconnect()
 
     await pubnub.stop()
-    pubnub_listener.stop()
+    await pubnub_listener.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml')
@@ -331,7 +331,7 @@ async def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     assert envelope.status.original_response['status'] == 200
 
     await pubnub.stop()
-    pubnub_listener.stop()
+    await pubnub_listener.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/unsubscribe_all.yaml')

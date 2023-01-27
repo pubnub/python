@@ -44,7 +44,7 @@ class PubNubAsyncio(PubNubCore):
         self._connector = aiohttp.TCPConnector(verify_ssl=True)
         self._session = aiohttp.ClientSession(
             loop=self.event_loop,
-            conn_timeout=self.config.connect_timeout,
+            timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
             connector=self._connector
         )
 
@@ -62,7 +62,7 @@ class PubNubAsyncio(PubNubCore):
 
         self._session = aiohttp.ClientSession(
             loop=self.event_loop,
-            conn_timeout=self.config.connect_timeout,
+            timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
             connector=self._connector
         )
 

@@ -44,7 +44,7 @@ async def test_timeout_event_on_broken_heartbeat(event_loop):
     pubnub.add_listener(callback_messages)
     pubnub.subscribe().channels(ch).execute()
 
-    useless_connect_future = callback_messages.wait_for_connect()
+    useless_connect_future = asyncio.ensure_future(callback_messages.wait_for_connect())
     presence_future = asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
 
     # - assert join event

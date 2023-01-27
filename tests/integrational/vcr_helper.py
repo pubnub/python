@@ -6,6 +6,7 @@ from unittest.mock import patch
 from functools import wraps
 
 from tests.helper import url_decode
+from tests.integrational.vcr_serializer import PNSerializer
 
 vcr_dir = os.path.dirname(os.path.dirname((os.path.dirname(os.path.abspath(__file__)))))
 
@@ -194,6 +195,7 @@ pn_vcr.register_matcher('object_in_body', object_in_body_matcher)
 pn_vcr.register_matcher('check_the_difference', check_the_difference_matcher)
 pn_vcr.register_matcher('string_list_in_path', string_list_in_path_matcher)
 pn_vcr.register_matcher('string_list_in_query', string_list_in_query_matcher)
+pn_vcr.register_serializer('pn_json', PNSerializer())
 
 
 def use_cassette_and_stub_time_sleep_native(cassette_name, **kwargs):

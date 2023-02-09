@@ -11,6 +11,7 @@ from tests.helper import pnconf_sub_copy, pnconf_enc_sub_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper, VCR599Listener, VCR599ReconnectionManager
 from tests.integrational.vcr_helper import pn_vcr
 
+
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
@@ -396,8 +397,8 @@ async def test_subscribe_publish_space_id(event_loop, sleeper=asyncio.sleep):
     pubnub_sub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
     pubnub_pub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
-    patch_pubnub(pubnub_sub)
-    patch_pubnub(pubnub_pub)
+    await patch_pubnub(pubnub_sub)
+    await patch_pubnub(pubnub_pub)
 
     pubnub_sub.config.uuid = 'test-subscribe-asyncio-uuid-sub'
     pubnub_pub.config.uuid = 'test-subscribe-asyncio-uuid-pub'
@@ -438,8 +439,8 @@ async def test_subscribe_publish_space_id(event_loop, sleeper=asyncio.sleep):
     pubnub_sub.unsubscribe().channels(channel).execute()
     # await callback.wait_for_disconnect()
 
-    pubnub_pub.stop()
-    pubnub_sub.stop()
+    await pubnub_pub.stop()
+    await pubnub_sub.stop()
 
 
 @get_sleeper('tests/integrational/fixtures/asyncio/subscription/publish_message_type.yaml')
@@ -453,8 +454,8 @@ async def test_subscribe_publish_message_type(event_loop, sleeper=asyncio.sleep)
     pubnub_sub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
     pubnub_pub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
 
-    patch_pubnub(pubnub_sub)
-    patch_pubnub(pubnub_pub)
+    await patch_pubnub(pubnub_sub)
+    await patch_pubnub(pubnub_pub)
 
     pubnub_sub.config.uuid = 'test-subscribe-asyncio-uuid-sub'
     pubnub_pub.config.uuid = 'test-subscribe-asyncio-uuid-pub'
@@ -497,5 +498,5 @@ async def test_subscribe_publish_message_type(event_loop, sleeper=asyncio.sleep)
     pubnub_sub.unsubscribe().channels(channel).execute()
     # await callback.wait_for_disconnect()
 
-    pubnub_pub.stop()
-    pubnub_sub.stop()
+    await pubnub_pub.stop()
+    await pubnub_sub.stop()

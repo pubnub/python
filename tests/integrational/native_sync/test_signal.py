@@ -38,7 +38,7 @@ def test_signal_with_user_message_type():
 def test_signal_with_space_id():
     with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/signal/with_space_id.yaml',
                              filter_query_parameters=['uuid', 'pnsdk']) as cassette:
-        envelope = PubNub(pnconf_demo_copy()).signal().channel('ch1').space('sp1').sync()
+        envelope = PubNub(pnconf_demo_copy()).signal().channel('ch1').space_id('sp1').sync()
 
         assert isinstance(envelope, Envelope)
         assert int(envelope.result.timetoken) > 1

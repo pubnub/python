@@ -5,6 +5,8 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
+from pubnub.models.consumer.message_type import PNMessageType
+from typing import Union
 
 
 class Publish(Endpoint, TimeTokenOverrideMixin):
@@ -37,7 +39,7 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._message = message
         return self
 
-    def message_type(self, message_type):
+    def message_type(self, message_type: Union[PNMessageType, str]):
         self._message_type = message_type
         return self
 

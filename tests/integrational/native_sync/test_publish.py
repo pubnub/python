@@ -388,7 +388,7 @@ class TestPubNubPublish(unittest.TestCase):
     def test_publish_space_id(self):
         with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_space_id.yaml',
                                  filter_query_parameters=['uuid', 'pnsdk']) as cassette:
-            env = PubNub(pnconf).publish().channel('ch1').space('sp1').message("hi").sync()
+            env = PubNub(pnconf).publish().channel('ch1').space_id('sp1').message("hi").sync()
             assert isinstance(env.result, PNPublishResult)
             assert env.result.timetoken > 1
             assert len(cassette) == 1

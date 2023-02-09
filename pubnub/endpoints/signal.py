@@ -2,6 +2,8 @@ from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.signal import PNSignalResult
+from pubnub.models.consumer.message_type import PNMessageType
+from typing import Union
 
 
 class Signal(Endpoint):
@@ -22,11 +24,11 @@ class Signal(Endpoint):
         self._message = message
         return self
 
-    def space(self, space):
+    def space_id(self, space):
         self._space = str(space)
         return self
 
-    def message_type(self, message_type):
+    def message_type(self, message_type: Union[PNMessageType, str]):
         self._message_type = message_type
         return self
 

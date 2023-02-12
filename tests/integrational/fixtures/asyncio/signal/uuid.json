@@ -1,0 +1,95 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?uuid=uuid-mock",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Sun, 12 Feb 2023 14:18:49 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16762115292457183\"]"
+                },
+                "url": "https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=uuid-mock"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?uuid=new-uuid",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Sun, 12 Feb 2023 14:18:49 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16762115292824504\"]"
+                },
+                "url": "https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=new-uuid&l_sig=0.14435696601867676"
+            }
+        }
+    ]
+}

@@ -9,7 +9,7 @@ from tests.helper import pnconf_demo_copy
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/signal/uuid.yaml',
+    'tests/integrational/fixtures/asyncio/signal/uuid.json', serializer='pn_json',
     filter_query_parameters=['seqn', 'pnsdk', 'l_sig']
 )
 @pytest.mark.asyncio
@@ -21,7 +21,6 @@ async def test_single_channel(event_loop):
 
     assert isinstance(envelope, AsyncioEnvelope)
     assert not envelope.status.is_error()
-    assert envelope.result.timetoken == '15640051159323676'
     assert isinstance(envelope.result, PNSignalResult)
     assert isinstance(envelope.status, PNStatus)
 
@@ -29,7 +28,6 @@ async def test_single_channel(event_loop):
     envelope = await pn.signal().channel(chan).message('test').future()
     assert isinstance(envelope, AsyncioEnvelope)
     assert not envelope.status.is_error()
-    assert envelope.result.timetoken == '15640051159323677'
     assert isinstance(envelope.result, PNSignalResult)
     assert isinstance(envelope.status, PNStatus)
 

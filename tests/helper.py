@@ -37,16 +37,16 @@ crypto.subscribe_request_timeout = 10
 
 DEFAULT_TEST_CIPHER_KEY = "testKey"
 
-pub_key = "pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52"
-sub_key = "sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe"
+pub_key = os.environ.get('PN_KEY_PUBLISH')
+sub_key = os.environ.get('PN_KEY_SUBSCRIBE')
 
 pub_key_mock = "pub-c-mock-key"
 sub_key_mock = "sub-c-mock-key"
 uuid_mock = "uuid-mock"
 
-pub_key_pam = "pub-c-98863562-19a6-4760-bf0b-d537d1f5c582"
-sub_key_pam = "sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f"
-sec_key_pam = "sec-c-MGFkMjQxYjMtNTUxZC00YzE3LWFiZGYtNzUwMjdjNmM3NDhk"
+pub_key_pam = os.environ.get('PN_KEY_PAM_PUBLISH')
+sub_key_pam = os.environ.get('PN_KEY_PAM_SUBSCRIBE')
+sec_key_pam = os.environ.get('PN_KEY_PAM_SECRET')
 
 pnconf = PNConfiguration()
 pnconf.subscribe_request_timeout = 10
@@ -113,9 +113,9 @@ pnconf_demo.subscribe_key = 'demo'
 pnconf_demo.uuid = uuid_mock
 
 file_upload_config = PNConfiguration()
-file_upload_config.publish_key = pub_key_mock
+file_upload_config.publish_key = os.environ.get('PN_KEY_PUBLISH')
 file_upload_config.subscribe_request_timeout = 10
-file_upload_config.subscribe_key = sub_key_mock
+file_upload_config.subscribe_key = os.environ.get('PN_KEY_SUBSCRIBE')
 file_upload_config.uuid = uuid_mock
 
 mocked_config = PNConfiguration()

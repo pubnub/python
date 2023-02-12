@@ -1,5 +1,8 @@
 import os
+import pickle
 import re
+
+from aiohttp.formdata import FormData
 from base64 import b64decode, b64encode
 from vcr.serializers.jsonserializer import serialize, deserialize
 
@@ -22,26 +25,29 @@ class PNSerializer:
 
     def serialize(self, cassette_dict):
         for index, interaction in enumerate(cassette_dict['interactions']):
-            # for serializing binary body
+
+            # for serializing form_data in request body
+            if type(interaction['request']['body']) is FormData:
+                ascii_body = b64encode(pickle.dumps(interaction['response']['body'])).decode('ascii')
+                interaction['request']['body'] = {'binary': ascii_body}
+
+            # for serializing binary response body
             if type(interaction['response']['body']['string']) is bytes:
                 ascii_body = b64encode(interaction['response']['body']['string']).decode('ascii')
                 interaction['response']['body'] = {'binary': ascii_body}
 
-            interaction['request']['uri'] = self.replace_keys(interaction['request']['uri'])
             cassette_dict['interactions'][index] == interaction
-        return serialize(cassette_dict)
+        return self.replace_keys(serialize(cassette_dict))
 
-    def replace_placeholders(self, interaction_dict):
+    def replace_placeholders(self, string):
         for key in self.envs.keys():
-            interaction_dict['request']['uri'] = re.sub(f'{{{key}}}',
-                                                        self.envs[key],
-                                                        interaction_dict['request']['uri'])
-        return interaction_dict
+            string = re.sub(f'{{{key}}}', self.envs[key], string)
+        return string
 
     def deserialize(self, cassette_string):
+        cassette_string = self.replace_placeholders(cassette_string)
         cassette_dict = deserialize(cassette_string)
         for index, interaction in enumerate(cassette_dict['interactions']):
-            interaction = self.replace_placeholders(interaction)
             if 'binary' in interaction['response']['body'].keys():
                 interaction['response']['body']['string'] = b64decode(interaction['response']['body']['binary'])
                 del interaction['response']['body']['binary']

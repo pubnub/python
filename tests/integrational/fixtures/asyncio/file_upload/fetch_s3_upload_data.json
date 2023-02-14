@@ -1,0 +1,47 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
+                "body": "{\"name\": \"king_arthur.txt\"}",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ],
+                    "Content-type": [
+                        "application/json"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Sun, 12 Feb 2023 14:17:57 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "1989"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":{\"id\":\"361ed8a2-0728-4781-b82b-679d51e65aad\",\"name\":\"king_arthur.txt\"},\"file_upload_request\":{\"url\":\"https://pubnub-mnemosyne-files-eu-central-1-prd.s3.eu-central-1.amazonaws.com/\",\"method\":\"POST\",\"expiration_date\":\"2023-02-12T14:18:57Z\",\"form_fields\":[{\"key\":\"tagging\",\"value\":\"\\u003cTagging\\u003e\\u003cTagSet\\u003e\\u003cTag\\u003e\\u003cKey\\u003eObjectTTLInDays\\u003c/Key\\u003e\\u003cValue\\u003e1\\u003c/Value\\u003e\\u003c/Tag\\u003e\\u003c/TagSet\\u003e\\u003c/Tagging\\u003e\"},{\"key\":\"key\",\"value\":\"{PN_KEY_SUBSCRIBE}/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/361ed8a2-0728-4781-b82b-679d51e65aad/king_arthur.txt\"},{\"key\":\"Content-Type\",\"value\":\"text/plain; charset=utf-8\"},{\"key\":\"X-Amz-Credential\",\"value\":\"AKIAY7AU6GQDV5LCPVEX/20230212/eu-central-1/s3/aws4_request\"},{\"key\":\"X-Amz-Security-Token\",\"value\":\"\"},{\"key\":\"X-Amz-Algorithm\",\"value\":\"AWS4-HMAC-SHA256\"},{\"key\":\"X-Amz-Date\",\"value\":\"20230212T141857Z\"},{\"key\":\"Policy\",\"value\":\"CnsKCSJleHBpcmF0aW9uIjogIjIwMjMtMDItMTJUMTQ6MTg6NTdaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtODhiOWRiYWItMjBmMS00OGQ0LThkZjMtOWJmYWJiMDBjMGI0LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvMzYxZWQ4YTItMDcyOC00NzgxLWI4MmItNjc5ZDUxZTY1YWFkL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRFY1TENQVkVYLzIwMjMwMjEyL2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMzAyMTJUMTQxODU3WiIgfQoJXQp9Cg==\"},{\"key\":\"X-Amz-Signature\",\"value\":\"968c03357bacc57279107215ce2296e75ff00ac676572b4dee552c4aa6a0341d\"}]}}"
+                },
+                "url": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url?pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=uuid-mock"
+            }
+        }
+    ]
+}

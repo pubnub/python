@@ -1,0 +1,101 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/0?tt=0&uuid=test-here-now-asyncio-uuid1",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Mon, 13 Feb 2023 10:00:17 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "45"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"16762824176270479\",\"r\":43},\"m\":[]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-here-now-asyncio-ch1,test-here-now-asyncio-ch2/0?tt=0&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-here-now-asyncio-uuid1"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}?uuid=test-here-now-asyncio-uuid1",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 402,
+                    "message": "Payment Required"
+                },
+                "headers": {
+                    "Date": [
+                        "Mon, 13 Feb 2023 10:00:22 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "165"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "OPTIONS, GET, POST"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Presence"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 402, \"error\": 1, \"message\": \"This feature is not turned on for this account. Contact support@pubnub.com to activate this feature.\", \"service\": \"Presence\"}"
+                },
+                "url": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}?pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-here-now-asyncio-uuid1"
+            }
+        }
+    ]
+}

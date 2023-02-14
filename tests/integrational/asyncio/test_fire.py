@@ -8,7 +8,7 @@ from pubnub.models.consumer.common import PNStatus
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/fire_get.yaml',
+    'tests/integrational/fixtures/asyncio/publish/fire_get.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio

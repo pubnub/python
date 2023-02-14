@@ -8,9 +8,9 @@ from tests.integrational.vcr_asyncio_sleeper import get_sleeper, VCR599Listener
 from tests.integrational.vcr_helper import pn_vcr
 
 
-@get_sleeper('tests/integrational/fixtures/asyncio/here_now/single_channel.yaml')
+@get_sleeper('tests/integrational/fixtures/asyncio/here_now/single_channel.json')
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/here_now/single_channel.yaml',
+    'tests/integrational/fixtures/asyncio/here_now/single_channel.json', serializer='pn_json',
     filter_query_parameters=['tr', 'uuid', 'pnsdk', 'l_pres', 'tt']
 )
 @pytest.mark.asyncio
@@ -55,9 +55,9 @@ async def test_single_channel(event_loop, sleeper=asyncio.sleep):
     await pubnub.stop()
 
 
-@get_sleeper('tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml')
+@get_sleeper('tests/integrational/fixtures/asyncio/here_now/multiple_channels.json')
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/here_now/multiple_channels.yaml',
+    'tests/integrational/fixtures/asyncio/here_now/multiple_channels.json', serializer='pn_json',
     filter_query_parameters=['pnsdk', 'l_pres'],
     match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query']
 )
@@ -105,8 +105,9 @@ async def test_multiple_channels(event_loop, sleeper=asyncio.sleep):
     await pubnub.stop()
 
 
-@get_sleeper('tests/integrational/fixtures/asyncio/here_now/global.yaml')
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/global.yaml',
+@pytest.mark.skip('HereNow is disabled by default - need to update key through support')
+@get_sleeper('tests/integrational/fixtures/asyncio/here_now/global.json')
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/here_now/global.json', serializer='pn_json',
                      filter_query_parameters=['pnsdk', 'l_pres'],
                      match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'query'],
                      match_on_kwargs={

@@ -1,0 +1,44 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Sun, 12 Feb 2023 14:17:55 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":[{\"name\":\"king_arthur.txt\",\"id\":\"0a6089e4-dbe1-4940-9565-52897c34bcee\",\"size\":19,\"created\":\"2023-02-12T13:03:48Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"102ac632-d5ab-457a-97a2-ec69932b7619\",\"size\":48,\"created\":\"2023-02-12T12:59:44Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"11944f42-4b24-4e9f-9165-083de0ff974e\",\"size\":19,\"created\":\"2023-02-12T13:03:51Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"23d2f385-6f68-4e98-b0b5-d5d1d48c5133\",\"size\":19,\"created\":\"2023-02-12T13:03:50Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"23fed7d5-f202-4551-8900-24774cfda066\",\"size\":19,\"created\":\"2023-02-12T13:03:53Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"390cd52b-2b3e-479a-9a25-c6c4769605a3\",\"size\":19,\"created\":\"2023-02-12T13:03:49Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"3cc26ca7-921a-4feb-8615-306a2a232e30\",\"size\":19,\"created\":\"2023-02-12T13:03:55Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"452bbdfb-ae19-4fd7-9836-9b6c49370e05\",\"size\":19,\"created\":\"2023-02-12T13:03:54Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"4e7e4581-e988-40e6-a3bf-755585a3e790\",\"size\":48,\"created\":\"2023-02-12T14:05:38Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"525e23c6-b264-4d7a-8224-ba63bac1f280\",\"size\":19,\"created\":\"2023-02-12T13:03:47Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"569eb1a4-b360-4634-9b96-4b8f2ad832c0\",\"size\":19,\"created\":\"2023-02-12T13:03:53Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"5960ad4a-e23d-4f62-b84c-28bc54493820\",\"size\":19,\"created\":\"2023-02-12T13:03:54Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"5a72672d-b562-4ed7-9cc7-20a32a35fdda\",\"size\":19,\"created\":\"2023-02-12T12:59:46Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"5a8e3f0b-d826-4c3b-aaf4-0edaee18e919\",\"size\":19,\"created\":\"2023-02-12T13:03:47Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"67ebbb56-6972-4213-9efc-cae758f8fad7\",\"size\":19,\"created\":\"2023-02-12T13:03:51Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"683e9c2d-c21d-4749-ab16-b5b0b860cdfe\",\"size\":19,\"created\":\"2023-02-12T13:03:48Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"6caa7df7-fb1a-4c75-afd8-4d7d843aff7f\",\"size\":19,\"created\":\"2023-02-12T13:03:48Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"6f7a5a52-eb67-460f-97c8-3793559e9797\",\"size\":19,\"created\":\"2023-02-12T13:03:57Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"734aa10a-7ca8-48e1-a1e1-8e1f2230b4c0\",\"size\":19,\"created\":\"2023-02-12T13:03:52Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"772373ba-3ba8-4823-b4bf-102f5e08edbf\",\"size\":48,\"created\":\"2023-02-12T13:03:56Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"7badf86c-35ab-472d-ae31-1fecfc8b8d5e\",\"size\":19,\"created\":\"2023-02-12T12:59:42Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"84be7925-b8a5-435f-8417-928eb4e5a061\",\"size\":19,\"created\":\"2023-02-12T11:22:06Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"8d94a4e6-e50e-46a4-bdaa-b58e85700685\",\"size\":19,\"created\":\"2023-02-12T13:03:50Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"9465e150-a925-4e4c-8d00-cf38b75dd57c\",\"size\":19,\"created\":\"2023-02-12T13:03:51Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"959a4e4f-7e67-4081-b386-2ed0ced841b8\",\"size\":19,\"created\":\"2023-02-12T13:03:52Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"ae870964-1fa9-41af-b88f-566bd5b20939\",\"size\":19,\"created\":\"2023-02-12T13:03:50Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"bfc5da8d-2667-4394-af17-f276f148ec54\",\"size\":19,\"created\":\"2023-02-12T13:03:52Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"c8376978-9f74-466d-9e8b-d024bc9d45ea\",\"size\":19,\"created\":\"2023-02-12T13:03:51Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"cda9f98c-6696-41c6-a539-b034d8dc46b2\",\"size\":19,\"created\":\"2023-02-12T13:03:47Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"d1ce1e03-8343-46ce-bee1-f465acbef429\",\"size\":19,\"created\":\"2023-02-12T14:05:38Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"d588cbbb-c36d-45eb-a150-67688c140b73\",\"size\":19,\"created\":\"2023-02-12T13:03:49Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"da82c5e9-e358-458c-9e2e-6cb7c68169a9\",\"size\":19,\"created\":\"2023-02-12T13:03:48Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"e5a34eea-ea54-49ef-8188-3a3972f848fa\",\"size\":19,\"created\":\"2023-02-12T14:05:37Z\"}],\"next\":null,\"count\":33}"
+                },
+                "url": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files?pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=uuid-mock"
+            }
+        }
+    ]
+}

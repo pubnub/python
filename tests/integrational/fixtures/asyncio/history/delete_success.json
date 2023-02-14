@@ -1,0 +1,59 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "DELETE",
+                "uri": "https://ps.pndsn.com/v3/history/sub-key/{PN_KEY_SUBSCRIBE}/channel/my-ch?end=456&start=123",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Sun, 12 Feb 2023 15:01:37 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "52"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Storage"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 200, \"error\": false, \"error_message\": \"\"}"
+                },
+                "url": "https://ps.pndsn.com/v3/history/sub-key/{PN_KEY_SUBSCRIBE}/channel/my-ch?start=123&end=456&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=uuid-mock"
+            }
+        }
+    ]
+}

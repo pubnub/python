@@ -33,7 +33,7 @@ async def send_file(pubnub, file_for_upload, cipher_key=None):
 
 
 @pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/delete_file.yaml",
+    "tests/integrational/fixtures/asyncio/file_upload/delete_file.json", serializer='pn_json',
     filter_query_parameters=['uuid', 'l_file', 'pnsdk']
 )
 @pytest.mark.asyncio
@@ -53,10 +53,8 @@ async def test_delete_file(event_loop, file_for_upload):
 
 
 @pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/list_files.yaml",
+    "tests/integrational/fixtures/asyncio/file_upload/list_files.json", serializer='pn_json',
     filter_query_parameters=['uuid', 'l_file', 'pnsdk']
-
-
 )
 @pytest.mark.asyncio
 async def test_list_files(event_loop):
@@ -64,12 +62,12 @@ async def test_list_files(event_loop):
     envelope = await pubnub.list_files().channel(CHANNEL).future()
 
     assert isinstance(envelope.result, PNGetFilesResult)
-    assert envelope.result.count == 23
+    assert envelope.result.count == 33
     await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_file.yaml",
+    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_file.json", serializer='pn_json',
     filter_query_parameters=['uuid', 'l_file', 'pnsdk']
 )
 @pytest.mark.asyncio
@@ -86,7 +84,7 @@ async def test_send_and_download_file(event_loop, file_for_upload):
 
 
 @pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file.yaml",
+    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file.json", serializer='pn_json',
     filter_query_parameters=['uuid', 'l_file', 'pnsdk']
 )
 @pytest.mark.asyncio
@@ -108,7 +106,7 @@ async def test_send_and_download_file_encrypted(event_loop, file_for_upload, fil
 
 
 @pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/get_file_url.yaml",
+    "tests/integrational/fixtures/asyncio/file_upload/get_file_url.json", serializer='pn_json',
     filter_query_parameters=['uuid', 'l_file', 'pnsdk']
 )
 @pytest.mark.asyncio
@@ -125,7 +123,7 @@ async def test_get_file_url(event_loop, file_for_upload):
 
 
 @pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/fetch_s3_upload_data.yaml",
+    "tests/integrational/fixtures/asyncio/file_upload/fetch_s3_upload_data.json", serializer='pn_json',
     filter_query_parameters=['uuid', 'l_file', 'pnsdk']
 )
 @pytest.mark.asyncio
@@ -140,7 +138,7 @@ async def test_fetch_file_upload_s3_data_with_result_invocation(event_loop, file
 
 
 @pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/publish_file_message_encrypted.yaml",
+    "tests/integrational/fixtures/asyncio/file_upload/publish_file_message_encrypted.json", serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio

@@ -1,4 +1,6 @@
 from pubnub.models.consumer.message_type import PNMessageType
+
+
 class PNHistoryResult(object):
     def __init__(self, messages, start_timetoken, end_timetoken):
         self.messages = messages
@@ -65,7 +67,7 @@ class PNFetchMessagesResult(object):
 
     @classmethod
     def from_json(cls, json_input, include_message_actions=False, include_message_type=False, include_space_id=False,
-                start_timetoken=None, end_timetoken=None):
+                  start_timetoken=None, end_timetoken=None):
         channels = {}
 
         for key, entry in json_input['channels'].items():

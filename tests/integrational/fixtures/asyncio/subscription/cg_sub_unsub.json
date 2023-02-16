@@ -1,0 +1,212 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-asyncio-group?add=test-subscribe-asyncio-channel",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:05 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "79"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Storage"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 200, \"message\": \"OK\", \"service\": \"channel-registry\", \"error\": false}"
+                },
+                "url": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-asyncio-group?add=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=uuid-mock"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-group&tt=0",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:08 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "45"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"16765811939707197\",\"r\":42},\"m\":[]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-group&tt=0&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=uuid-mock&l_cg=0.14452385902404785"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/,/leave?channel-group=test-subscribe-asyncio-group",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:09 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "74"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "OPTIONS, GET, POST"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Presence"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 200, \"message\": \"OK\", \"action\": \"leave\", \"service\": \"Presence\"}"
+                },
+                "url": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/,/leave?channel-group=test-subscribe-asyncio-group&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=uuid-mock&l_cg=0.14452385902404785"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-asyncio-group?remove=test-subscribe-asyncio-channel",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:09 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "79"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Storage"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 200, \"message\": \"OK\", \"service\": \"channel-registry\", \"error\": false}"
+                },
+                "url": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-asyncio-group?remove=test-subscribe-asyncio-channel&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=uuid-mock&l_cg=0.14452385902404785&l_pres=0.20583200454711914"
+            }
+        }
+    ]
+}

@@ -1,0 +1,455 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-asyncio-join-leave-cg-group?add=test-subscribe-asyncio-join-leave-cg-channel&uuid=test-subscribe-asyncio-messenger",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:10 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "79"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Storage"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 200, \"message\": \"OK\", \"service\": \"channel-registry\", \"error\": false}"
+                },
+                "url": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-asyncio-join-leave-cg-group?add=test-subscribe-asyncio-join-leave-cg-channel&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-messenger"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group%2Ctest-subscribe-asyncio-join-leave-cg-group-pnpres&tt=0&uuid=test-subscribe-asyncio-listener",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:11 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "45"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"16765820517289586\",\"r\":42},\"m\":[]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group,test-subscribe-asyncio-join-leave-cg-group-pnpres&tt=0&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-listener"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group%2Ctest-subscribe-asyncio-join-leave-cg-group-pnpres&tr=42&tt=16765820517289586&uuid=test-subscribe-asyncio-listener",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:15 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"16765820553092088\",\"r\":42},\"m\":[{\"a\":\"5\",\"f\":0,\"p\":{\"t\":\"16765820553092088\",\"r\":42},\"k\":\"{PN_KEY_SUBSCRIBE}\",\"c\":\"test-subscribe-asyncio-join-leave-cg-channel-pnpres\",\"u\":{\"pn_action\":\"join\",\"pn_uuid\":\"test-subscribe-asyncio-listener\",\"pn_timestamp\":1676582055,\"pn_occupancy\":1,\"pn_ispresence\":1,\"pn_channel\":\"test-subscribe-asyncio-join-leave-cg-channel\"},\"d\":{\"action\":\"join\",\"uuid\":\"test-subscribe-asyncio-listener\",\"timestamp\":1676582055,\"occupancy\":1},\"b\":\"test-subscribe-asyncio-join-leave-cg-group-pnpres\"}]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group,test-subscribe-asyncio-join-leave-cg-group-pnpres&tt=16765820517289586&tr=42&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-listener"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group&tt=0&uuid=test-subscribe-asyncio-messenger",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:15 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "45"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"16765820552860411\",\"r\":42},\"m\":[]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group&tt=0&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.1459050178527832"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group%2Ctest-subscribe-asyncio-join-leave-cg-group-pnpres&tr=42&tt=16765820553092088&uuid=test-subscribe-asyncio-listener",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:16 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"16765820567808755\",\"r\":42},\"m\":[{\"a\":\"5\",\"f\":0,\"p\":{\"t\":\"16765820567808755\",\"r\":42},\"k\":\"{PN_KEY_SUBSCRIBE}\",\"c\":\"test-subscribe-asyncio-join-leave-cg-channel-pnpres\",\"u\":{\"pn_action\":\"join\",\"pn_uuid\":\"test-subscribe-asyncio-messenger\",\"pn_timestamp\":1676582056,\"pn_occupancy\":2,\"pn_ispresence\":1,\"pn_channel\":\"test-subscribe-asyncio-join-leave-cg-channel\"},\"d\":{\"action\":\"join\",\"uuid\":\"test-subscribe-asyncio-messenger\",\"timestamp\":1676582056,\"occupancy\":2},\"b\":\"test-subscribe-asyncio-join-leave-cg-group-pnpres\"}]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group,test-subscribe-asyncio-join-leave-cg-group-pnpres&tt=16765820553092088&tr=42&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-listener"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/,/leave?channel-group=test-subscribe-asyncio-join-leave-cg-group&uuid=test-subscribe-asyncio-messenger",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:17 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "74"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "OPTIONS, GET, POST"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Presence"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 200, \"message\": \"OK\", \"action\": \"leave\", \"service\": \"Presence\"}"
+                },
+                "url": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/,/leave?channel-group=test-subscribe-asyncio-join-leave-cg-group&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.1459050178527832"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group%2Ctest-subscribe-asyncio-join-leave-cg-group-pnpres&tr=42&tt=16765820567808755&uuid=test-subscribe-asyncio-listener",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:18 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"16765820584423306\",\"r\":42},\"m\":[{\"a\":\"5\",\"f\":0,\"p\":{\"t\":\"16765820584423306\",\"r\":42},\"k\":\"{PN_KEY_SUBSCRIBE}\",\"c\":\"test-subscribe-asyncio-join-leave-cg-channel-pnpres\",\"u\":{\"pn_action\":\"leave\",\"pn_uuid\":\"test-subscribe-asyncio-messenger\",\"pn_timestamp\":1676582058,\"pn_occupancy\":1,\"pn_ispresence\":1,\"pn_channel\":\"test-subscribe-asyncio-join-leave-cg-channel\"},\"d\":{\"action\":\"leave\",\"uuid\":\"test-subscribe-asyncio-messenger\",\"timestamp\":1676582058,\"occupancy\":1},\"b\":\"test-subscribe-asyncio-join-leave-cg-group-pnpres\"}]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group,test-subscribe-asyncio-join-leave-cg-group-pnpres&tt=16765820567808755&tr=42&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-listener"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/,/leave?channel-group=test-subscribe-asyncio-join-leave-cg-group&uuid=test-subscribe-asyncio-listener",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:18 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "74"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "OPTIONS, GET, POST"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Presence"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 200, \"message\": \"OK\", \"action\": \"leave\", \"service\": \"Presence\"}"
+                },
+                "url": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/,/leave?channel-group=test-subscribe-asyncio-join-leave-cg-group&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-listener"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-asyncio-join-leave-cg-group?remove=test-subscribe-asyncio-join-leave-cg-channel&uuid=test-subscribe-asyncio-messenger",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:18 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "79"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Storage"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 200, \"message\": \"OK\", \"service\": \"channel-registry\", \"error\": false}"
+                },
+                "url": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-asyncio-join-leave-cg-group?remove=test-subscribe-asyncio-join-leave-cg-channel&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.1459050178527832&l_pres=0.2386610507965088"
+            }
+        }
+    ]
+}

@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/signal/demo/demo/0/ch1/0/null?type=test_signal",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/ch1/0/%22hi%22?seqn=1&type=test_message",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -27,30 +27,30 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "Connection": [
-                        "keep-alive"
-                    ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
+                    "Access-Control-Allow-Methods": [
+                        "GET"
                     ],
                     "Content-Length": [
                         "30"
                     ],
-                    "Access-Control-Allow-Methods": [
-                        "GET"
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:16:49 GMT"
                     ],
                     "Cache-Control": [
                         "no-cache"
                     ],
-                    "Content-Type": [
-                        "text/javascript; charset=\"UTF-8\""
-                    ],
-                    "Date": [
-                        "Thu, 16 Feb 2023 21:14:54 GMT"
+                    "Connection": [
+                        "keep-alive"
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"16765820948668731\"]"
+                    "string": "[1,\"Sent\",\"16765822098672882\"]"
                 }
             }
         }

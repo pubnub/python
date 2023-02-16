@@ -19,7 +19,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Thu, 16 Feb 2023 20:57:21 GMT"
+                        "Thu, 16 Feb 2023 21:14:20 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -41,15 +41,15 @@
                     ]
                 },
                 "body": {
-                    "string": "{\"t\":{\"t\":\"16765809007582204\",\"r\":41},\"m\":[]}"
+                    "string": "{\"t\":{\"t\":\"16765820605731634\",\"r\":42},\"m\":[]}"
                 },
-                "url": "https://ps.pndsn.com/v2/subscribe/sub-c-88b9dbab-20f1-48d4-8df3-9bfabb00c0b4/test-subscribe-asyncio-ch/0?tt=0&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-uuid-sub"
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tt=0&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-uuid-sub"
             }
         },
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test-subscribe-asyncio-ch/0/%22hey%22?seqn=1&uuid=test-subscribe-asyncio-uuid-pub",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test-subscribe-asyncio-ch/0/%22hey%22?seqn=1&type=MyOwnCustomMessageType&uuid=test-subscribe-asyncio-uuid-pub",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -64,7 +64,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Thu, 16 Feb 2023 20:57:21 GMT"
+                        "Thu, 16 Feb 2023 21:14:20 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -86,15 +86,15 @@
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"16765810415170321\"]"
+                    "string": "[1,\"Sent\",\"16765820608545117\"]"
                 },
-                "url": "https://ps.pndsn.com/publish/pub-c-23eccf23-a43d-4621-8cb2-6950ed309b93/sub-c-88b9dbab-20f1-48d4-8df3-9bfabb00c0b4/0/test-subscribe-asyncio-ch/0/%22hey%22?seqn=1&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-uuid-pub"
+                "url": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test-subscribe-asyncio-ch/0/%22hey%22?type=MyOwnCustomMessageType&seqn=1&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-uuid-pub"
             }
         },
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tr=41&tt=16765809007582204&uuid=test-subscribe-asyncio-uuid-sub",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tr=42&tt=16765820605731634&uuid=test-subscribe-asyncio-uuid-sub",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -109,7 +109,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Thu, 16 Feb 2023 20:57:21 GMT"
+                        "Thu, 16 Feb 2023 21:14:20 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -134,9 +134,9 @@
                     ]
                 },
                 "body": {
-                    "string": "{\"t\":{\"t\":\"16765810415170321\",\"r\":41},\"m\":[{\"a\":\"5\",\"f\":0,\"i\":\"test-subscribe-asyncio-uuid-pub\",\"s\":1,\"p\":{\"t\":\"16765810415170321\",\"r\":41},\"k\":\"sub-c-88b9dbab-20f1-48d4-8df3-9bfabb00c0b4\",\"c\":\"test-subscribe-asyncio-ch\",\"d\":\"hey\"}]}"
+                    "string": "{\"t\":{\"t\":\"16765820608545117\",\"r\":42},\"m\":[{\"a\":\"5\",\"f\":0,\"i\":\"test-subscribe-asyncio-uuid-pub\",\"s\":1,\"p\":{\"t\":\"16765820608545117\",\"r\":42},\"k\":\"{PN_KEY_SUBSCRIBE}\",\"c\":\"test-subscribe-asyncio-ch\",\"d\":\"hey\",\"mt\":\"MyOwnCustomMessageType\"}]}"
                 },
-                "url": "https://ps.pndsn.com/v2/subscribe/sub-c-88b9dbab-20f1-48d4-8df3-9bfabb00c0b4/test-subscribe-asyncio-ch/0?tt=16765809007582204&tr=41&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-uuid-sub"
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tt=16765820605731634&tr=42&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-uuid-sub"
             }
         }
     ]

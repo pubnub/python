@@ -4,20 +4,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/signal/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/unique_sync/0/%22test%22",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tt=0",
                 "body": null,
                 "headers": {
                     "User-Agent": [
-                        "PubNub-Python/7.0.2"
-                    ],
-                    "Accept-Encoding": [
-                        "gzip, deflate"
-                    ],
-                    "Accept": [
-                        "*/*"
-                    ],
-                    "Connection": [
-                        "keep-alive"
+                        "PubNub-Python-Asyncio/7.1.0"
                     ]
                 }
             },
@@ -27,31 +18,32 @@
                     "message": "OK"
                 },
                 "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:13:58 GMT"
+                    ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
                     ],
-                    "Cache-Control": [
-                        "no-cache"
-                    ],
-                    "Date": [
-                        "Fri, 20 Jan 2023 19:14:55 GMT"
+                    "Content-Length": [
+                        "45"
                     ],
                     "Connection": [
                         "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
                     ],
                     "Access-Control-Allow-Origin": [
                         "*"
                     ],
                     "Access-Control-Allow-Methods": [
                         "GET"
-                    ],
-                    "Content-Length": [
-                        "30"
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"16742420951247055\"]"
-                }
+                    "string": "{\"t\":{\"t\":\"16765811318085313\",\"r\":42},\"m\":[]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tt=0&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=uuid-mock"
             }
         }
     ]

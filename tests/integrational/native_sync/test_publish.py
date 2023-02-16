@@ -5,7 +5,7 @@ import pubnub
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_demo_copy, pnconf_enc, pnconf_file_copy
+from tests.helper import pnconf, pnconf_demo_copy, pnconf_enc, pnconf_file_copy, pnconf_env
 from tests.integrational.vcr_helper import pn_vcr
 from unittest.mock import patch
 from urllib.parse import urlparse, parse_qs
@@ -374,9 +374,9 @@ class TestPubNubPublish(unittest.TestCase):
             self.fail(e)
 
     def test_publish_user_message_type(self):
-        with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_user_message_type.yaml',
-                                 filter_query_parameters=['uuid', 'pnsdk']) as cassette:
-            env = PubNub(pnconf).publish().channel("ch1").message("hi").message_type('test_message').sync()
+        with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_user_message_type.json',
+                                 filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json') as cassette:
+            env = PubNub(pnconf_env).publish().channel("ch1").message("hi").message_type('test_message').sync()
             assert isinstance(env.result, PNPublishResult)
             assert env.result.timetoken > 1
             assert len(cassette) == 1
@@ -386,9 +386,9 @@ class TestPubNubPublish(unittest.TestCase):
             assert query['type'] == ['test_message']
 
     def test_publish_space_id(self):
-        with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_space_id.yaml',
-                                 filter_query_parameters=['uuid', 'pnsdk']) as cassette:
-            env = PubNub(pnconf).publish().channel('ch1').space_id('sp1').message("hi").sync()
+        with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_space_id.json',
+                                 filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json') as cassette:
+            env = PubNub(pnconf_env).publish().channel('ch1').space_id('sp1').message("hi").sync()
             assert isinstance(env.result, PNPublishResult)
             assert env.result.timetoken > 1
             assert len(cassette) == 1

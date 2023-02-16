@@ -22,8 +22,8 @@ def test_single_channel():
 
 
 def test_signal_with_user_message_type():
-    with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/signal/with_user_message_type.yaml',
-                             filter_query_parameters=['uuid', 'pnsdk']) as cassette:
+    with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/signal/with_user_message_type.json',
+                             filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json') as cassette:
         envelope = PubNub(pnconf_demo_copy()).signal().channel("ch1").message_type('test_signal').sync()
         assert isinstance(envelope, Envelope)
         assert not envelope.status.is_error()
@@ -36,8 +36,8 @@ def test_signal_with_user_message_type():
 
 
 def test_signal_with_space_id():
-    with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/signal/with_space_id.yaml',
-                             filter_query_parameters=['uuid', 'pnsdk']) as cassette:
+    with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/signal/with_space_id.json',
+                             filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json') as cassette:
         envelope = PubNub(pnconf_demo_copy()).signal().channel('ch1').space_id('sp1').sync()
 
         assert isinstance(envelope, Envelope)

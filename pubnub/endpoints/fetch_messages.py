@@ -85,7 +85,8 @@ class FetchMessages(Endpoint):
     def custom_params(self):
         params = {
             'max': int(self._count),
-            'include_message_type': "true" if self._include_message_type else "false",
+            'include_type': 'true' if self._include_message_type else 'false',
+            'include_message_type': 'true' if self._include_message_type else 'false',
         }
 
         if self._start is not None:
@@ -163,6 +164,8 @@ class FetchMessages(Endpoint):
         return PNFetchMessagesResult.from_json(
             json_input=envelope,
             include_message_actions=self._include_message_actions,
+            include_message_type=self._include_message_type,
+            include_space_id=self._include_space_id,
             start_timetoken=self._start,
             end_timetoken=self._end)
 

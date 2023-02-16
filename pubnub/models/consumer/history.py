@@ -1,3 +1,4 @@
+from pubnub.models.consumer.message_type import PNMessageType
 class PNHistoryResult(object):
     def __init__(self, messages, start_timetoken, end_timetoken):
         self.messages = messages
@@ -63,7 +64,8 @@ class PNFetchMessagesResult(object):
         return "Fetch messages result for range %d..%d" % (self.start_timetoken, self.end_timetoken)
 
     @classmethod
-    def from_json(cls, json_input, include_message_actions=False, start_timetoken=None, end_timetoken=None):
+    def from_json(cls, json_input, include_message_actions=False, include_message_type=False, include_space_id=False,
+                start_timetoken=None, end_timetoken=None):
         channels = {}
 
         for key, entry in json_input['channels'].items():
@@ -83,6 +85,14 @@ class PNFetchMessagesResult(object):
                         message.actions = item['actions']
                     else:
                         message.actions = {}
+
+                if include_message_type:
+                    message.message_type = PNMessageType.from_response(
+                        user_type=item['type'] if 'type' in item.keys() else None,
+                        internal_type=item['message_type'])
+
+                if include_space_id:
+                    message.space_id = item['space_id']
 
                 channels[key].append(message)
 

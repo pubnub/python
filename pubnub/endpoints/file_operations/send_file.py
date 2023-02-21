@@ -1,5 +1,4 @@
 from pubnub.endpoints.file_operations.file_based_endpoint import FileOperationEndpoint
-
 from pubnub.crypto import PubNubFileCrypto
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.file import PNSendFileResult
@@ -7,7 +6,8 @@ from pubnub.endpoints.file_operations.publish_file_message import PublishFileMes
 from pubnub.endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
 from pubnub.request_handlers.requests_handler import RequestsRequestHandler
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
-
+from pubnub.models.consumer.message_type import PNMessageType
+from typing import Union
 
 class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
     def __init__(self, pubnub):
@@ -23,6 +23,8 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._file_object = None
         self._replicate = None
         self._ptto = None
+        self._message_type = None
+        self._space_id = None
 
     def file_object(self, fd):
         self._file_object = fd
@@ -69,7 +71,16 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return True
 
     def custom_params(self):
-        return {}
+        import ipdb
+        ipdb.set_trace()
+        params = {}
+        if self._message_type is not None:
+            params['type'] = str(self._message_type)
+
+        if self._space_id is not None:
+            params['space-id'] = str(self._space_id)
+
+        return params
 
     def validate_params(self):
         self.validate_subscribe_key()
@@ -108,6 +119,14 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
 
     def cipher_key(self, cipher_key):
         self._cipher_key = cipher_key
+        return self
+
+    def message_type(self, message_type: Union[PNMessageType, str]):
+        self._message_type = message_type
+        return self
+
+    def space_id(self, space_id):
+        self._space_id = str(space_id)
         return self
 
     def create_response(self, envelope, data=None):

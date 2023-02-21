@@ -3,6 +3,8 @@ from pubnub.enums import HttpMethod, PNOperationType
 from pubnub import utils
 from pubnub.models.consumer.file import PNPublishFileMessageResult
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
+from pubnub.models.consumer.message_type import PNMessageType
+from typing import Union
 
 
 class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
@@ -20,6 +22,8 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._cipher_key = None
         self._replicate = None
         self._ptto = None
+        self._message_type = None
+        self._space_id = None
 
     def meta(self, meta):
         self._meta = meta
@@ -47,6 +51,14 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
 
     def file_name(self, file_name):
         self._file_name = file_name
+        return self
+
+    def message_type(self, message_type: Union[PNMessageType, str]):
+        self._message_type = message_type
+        return self
+
+    def space_id(self, space_id):
+        self._space_id = str(space_id)
         return self
 
     def _encrypt_message(self, message):
@@ -87,6 +99,12 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
             "ttl": self._ttl,
             "store": 1 if self._should_store else 0
         })
+        if self._message_type is not None:
+            params['type'] = str(self._message_type)
+
+        if self._space_id is not None:
+            params['space-id'] = str(self._space_id)
+
         return params
 
     def is_auth_required(self):

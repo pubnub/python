@@ -9,6 +9,7 @@ from pubnub.endpoints.mixins import TimeTokenOverrideMixin
 from pubnub.models.consumer.message_type import PNMessageType
 from typing import Union
 
+
 class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
     def __init__(self, pubnub):
         super(SendFileNative, self).__init__(pubnub)
@@ -71,8 +72,6 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return True
 
     def custom_params(self):
-        import ipdb
-        ipdb.set_trace()
         params = {}
         if self._message_type is not None:
             params['type'] = str(self._message_type)
@@ -158,7 +157,9 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
             ttl(self._ttl).\
             replicate(self._replicate).\
             ptto(self._ptto).\
-            cipher_key(self._cipher_key).sync()
+            cipher_key(self._cipher_key).\
+            message_type(self._message_type).\
+            space_id(self._space_id).sync()
 
         response_envelope.result.timestamp = publish_file_response.result.timestamp
         return response_envelope

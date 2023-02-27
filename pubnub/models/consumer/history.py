@@ -90,8 +90,8 @@ class PNFetchMessagesResult(object):
 
                 if include_message_type:
                     message.message_type = PNMessageType.from_response(
-                        user_type=item['type'] if 'type' in item.keys() else None,
-                        internal_type=item['message_type'])
+                        message_type=item['type'] if 'type' in item.keys() else None,
+                        pn_message_type=item['message_type'])
 
                 if include_space_id:
                     message.space_id = item['space_id']

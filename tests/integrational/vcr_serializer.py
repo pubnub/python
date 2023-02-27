@@ -11,14 +11,14 @@ class PNSerializer:
     def __init__(self) -> None:
         self.envs = {key: value for key, value in os.environ.items() if key.startswith('PN_KEY_')}
 
-    def replace_keys(self, cassette_string):
+    def replace_keys(self, uri_string):
         for pattern in self.patterns:
-            found = re.search(pattern, cassette_string)
+            found = re.search(pattern, uri_string)
             if found and found.group(0) in list(self.envs.values()):
                 key = list(self.envs.keys())[list(self.envs.values()).index(found.group(0))]
                 if key:
-                    cassette_string = re.sub(pattern, f'{{{key}}}', cassette_string)
-        return cassette_string
+                    uri_string = re.sub(pattern, f'{{{key}}}', uri_string)
+        return uri_string
 
     def serialize(self, cassette_dict):
         for index, interaction in enumerate(cassette_dict['interactions']):
@@ -27,15 +27,18 @@ class PNSerializer:
                 ascii_body = b64encode(interaction['response']['body']['string']).decode('ascii')
                 interaction['response']['body'] = {'binary': ascii_body}
 
+            interaction['request']['uri'] = self.replace_keys(interaction['request']['uri'])
             cassette_dict['interactions'][index] == interaction
-        return self.replace_keys(serialize(cassette_dict))
+        return serialize(cassette_dict)
 
-    def replace_placeholders(self, cassette_string):
+    def replace_placeholders(self, interaction_dict):
         for key in self.envs.keys():
-            cassette_string = re.sub(f'{{{key}}}', self.envs[key], cassette_string['request']['uri'])
+            interaction_dict['request']['uri'] = re.sub(f'{{{key}}}',
+                                                        self.envs[key],
+                                                        interaction_dict['request']['uri'])
+        return interaction_dict
 
     def deserialize(self, cassette_string):
-        cassette_string = self.replace_placeholders(cassette_string)
         cassette_dict = deserialize(cassette_string)
         for index, interaction in enumerate(cassette_dict['interactions']):
             interaction = self.replace_placeholders(interaction)

@@ -4,7 +4,7 @@ import pytest
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub_asyncio import PubNubAsyncio
-from tests.helper import pnconf, pnconf_copy, pnconf_pam_copy
+from tests.helper import pnconf, pnconf_copy, pnconf_pam_env_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper
 from tests.integrational.vcr_helper import pn_vcr
 
@@ -137,7 +137,7 @@ async def test_add_channel_remove_group(event_loop, sleeper=asyncio.sleep):
 
 @pytest.mark.asyncio
 async def test_super_call(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_pam_env_copy(), custom_event_loop=event_loop)
 
     ch = "channel-groups-torna|do-ch"
     gr = "channel-groups-torna|do-cg"

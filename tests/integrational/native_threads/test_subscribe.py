@@ -8,7 +8,7 @@ from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult
 from pubnub.models.consumer.pubsub import PNPublishResult, PNMessageResult
 from pubnub.pubnub import PubNub, SubscribeListener, NonSubscribeListener
 from tests import helper
-from tests.helper import pnconf_sub_copy
+from tests.helper import pnconf_sub_copy, pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 
@@ -50,8 +50,10 @@ class TestPubNubSubscription(unittest.TestCase):
             pubnub.stop()
 
     def test_subscribe_pub_unsubscribe(self):
+        conf = pnconf_env_copy()
+        conf.enable_subscribe = True
         ch = helper.gen_channel("test-subscribe-sub-pub-unsub")
-        pubnub = PubNub(pnconf_sub_copy())
+        pubnub = PubNub(conf)
         subscribe_listener = SubscribeListener()
         publish_operation = NonSubscribeListener()
         message = "hey"
@@ -87,9 +89,10 @@ class TestPubNubSubscription(unittest.TestCase):
 
     def test_join_leave(self):
         ch = helper.gen_channel("test-subscribe-join-leave")
-
-        pubnub = PubNub(pnconf_sub_copy())
-        pubnub_listener = PubNub(pnconf_sub_copy())
+        conf = pnconf_env_copy()
+        conf.enable_subscribe = True
+        pubnub = PubNub(conf)
+        pubnub_listener = PubNub(conf)
         callback_messages = SubscribeListener()
         callback_presence = SubscribeListener()
 

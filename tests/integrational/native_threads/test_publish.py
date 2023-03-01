@@ -6,7 +6,7 @@ from pubnub.enums import PNStatusCategory
 
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_enc, pnconf_pam_copy, pnconf_copy
+from tests.helper import pnconf_enc_env_copy, pnconf_pam_env_copy, pnconf_env_copy
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -31,7 +31,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         self.status = None
 
     def assert_success_publish_get(self, msg):
-        PubNub(pnconf).publish() \
+        PubNub(pnconf_env_copy()).publish() \
             .channel("ch1") \
             .message(msg) \
             .pn_async(self.callback)
@@ -39,7 +39,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         self.assert_success()
 
     def assert_success_publish_post(self, msg):
-        PubNub(pnconf).publish() \
+        PubNub(pnconf_env_copy()).publish() \
             .channel("ch1") \
             .message(msg) \
             .use_post(True) \
@@ -62,7 +62,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         self.assert_success_publish_post({"name": "Alex", "online": True})
 
     def test_publish_encrypted_list_get(self):
-        pubnub = PubNub(pnconf_enc)
+        pubnub = PubNub(pnconf_enc_env_copy())
 
         pubnub.publish() \
             .channel("ch1") \
@@ -72,7 +72,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         self.assert_success()
 
     def test_publish_encrypted_string_get(self):
-        PubNub(pnconf_enc).publish() \
+        PubNub(pnconf_enc_env_copy()).publish() \
             .channel("ch1") \
             .message("encrypted string") \
             .pn_async(self.callback)
@@ -80,7 +80,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         self.assert_success()
 
     def test_publish_encrypted_list_post(self):
-        PubNub(pnconf_enc).publish() \
+        PubNub(pnconf_enc_env_copy()).publish() \
             .channel("ch1") \
             .message(["encrypted", "list"]) \
             .use_post(True) \
@@ -89,7 +89,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         self.assert_success()
 
     def test_publish_encrypted_string_post(self):
-        PubNub(pnconf_enc).publish() \
+        PubNub(pnconf_enc_env_copy()).publish() \
             .channel("ch1") \
             .message("encrypted string") \
             .use_post(True) \
@@ -100,7 +100,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
     def test_publish_with_meta(self):
         meta = {'a': 2, 'b': 'qwer'}
 
-        PubNub(pnconf_enc).publish() \
+        PubNub(pnconf_enc_env_copy()).publish() \
             .channel("ch1") \
             .message("hey") \
             .meta(meta) \
@@ -109,7 +109,7 @@ class TestPubNubSuccessPublish(unittest.TestCase):
         self.assert_success()
 
     def test_publish_do_not_store(self):
-        PubNub(pnconf_enc).publish() \
+        PubNub(pnconf_enc_env_copy()).publish() \
             .channel("ch1") \
             .message("hey") \
             .should_store(False) \
@@ -129,7 +129,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
 
     def test_invalid_key(self):
         self.invalid_key_message = ""
-        pn_fake_key_config = pnconf_copy()
+        pn_fake_key_config = pnconf_env_copy()
         pn_fake_key_config.publish_key = "fake"
 
         PubNub(pn_fake_key_config).publish() \
@@ -147,7 +147,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         assert "Invalid Key" in str(self.status.error_data.exception)
 
     def test_missing_message(self):
-        PubNub(pnconf).publish() \
+        PubNub(pnconf_env_copy()).publish() \
             .channel("ch1") \
             .message(None) \
             .pn_async(self.callback)
@@ -159,7 +159,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         assert "Message missing" in str(self.status.error_data.exception)
 
     def test_missing_chanel(self):
-        PubNub(pnconf).publish() \
+        PubNub(pnconf_env_copy()).publish() \
             .channel("") \
             .message("hey") \
             .pn_async(self.callback)
@@ -172,7 +172,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         def method():
             pass
 
-        PubNub(pnconf).publish() \
+        PubNub(pnconf_env_copy()).publish() \
             .channel("ch1") \
             .message(method) \
             .pn_async(self.callback)
@@ -184,7 +184,7 @@ class TestPubNubErrorPublish(unittest.TestCase):
         assert "not JSON serializable" in str(self.status.error_data.exception)
 
     def test_not_permitted(self):
-        pnconf = pnconf_pam_copy()
+        pnconf = pnconf_pam_env_copy()
         pnconf.secret_key = None
 
         PubNub(pnconf).publish()\

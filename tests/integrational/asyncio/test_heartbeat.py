@@ -5,16 +5,18 @@ import pytest
 import pubnub as pn
 from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
 from tests import helper
-from tests.helper import pnconf_sub_copy
+from tests.helper import pnconf_env_copy
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
-messenger_config = pnconf_sub_copy()
+messenger_config = pnconf_env_copy()
 messenger_config.set_presence_timeout(8)
+messenger_config.enable_subscribe = True
 messenger_config.uuid = helper.gen_channel("messenger")
 
-listener_config = pnconf_sub_copy()
+listener_config = pnconf_env_copy()
+listener_config.enable_subscribe = True
 listener_config.uuid = helper.gen_channel("listener")
 
 

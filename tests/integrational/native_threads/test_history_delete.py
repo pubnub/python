@@ -2,7 +2,7 @@ import unittest
 import threading
 
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf
+from tests.helper import pnconf_env_copy
 
 
 class TestPubNubSuccessHistoryDelete(unittest.TestCase):  # pylint: disable=W0612
@@ -23,7 +23,7 @@ class TestPubNubSuccessHistoryDelete(unittest.TestCase):  # pylint: disable=W061
         self.status = None
 
     def test_success(self):
-        PubNub(pnconf).delete_messages() \
+        PubNub(pnconf_env_copy()).delete_messages() \
             .channel("my-ch") \
             .start(123) \
             .end(456) \
@@ -32,7 +32,7 @@ class TestPubNubSuccessHistoryDelete(unittest.TestCase):  # pylint: disable=W061
         self.assert_success()
 
     def test_super_call(self):
-        PubNub(pnconf).delete_messages() \
+        PubNub(pnconf_env_copy()).delete_messages() \
             .channel("my-ch- |.* $") \
             .start(123) \
             .end(456) \

@@ -77,6 +77,9 @@ _trial_temp
 # jupyter dev notebook
 PubNubTwisted.ipynb
 
+# Feature files for acceptance testing.
+tests/acceptance/*/*.feature
+
 # GitHub Actions #
 ##################
 .github/.release

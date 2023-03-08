@@ -1,5 +1,4 @@
 import time
-import unittest
 
 from pubnub.models.consumer.history import PNFetchMessagesResult
 from pubnub.models.consumer.pubsub import PNPublishResult
@@ -131,22 +130,22 @@ class TestFetchMessages:
         assert history[0].uuid == uuid1
         assert history[1].uuid == uuid2
 
-    @unittest.skip('refactor in progress')
     @use_cassette_and_stub_time_sleep_native(
         'tests/integrational/fixtures/native_sync/fetch_messages/include_message_type.json', serializer='pn_json',
         filter_query_parameters=['uuid', 'pnsdk', 'l_pub'])
     def test_fetch_messages_actions_include_message_type(self):
-        ch = "fetch-messages-types"
+        ch = "fetch-messages-message-type"
         pubnub = PubNub(pnconf_env_copy())
 
         pubnub.config.uuid = "fetch-message-types"
 
         pubnub.publish().channel(ch).message("hey-type").sync()
         time.sleep(1)
+
         envelope = pubnub.fetch_messages().channels(ch).include_message_actions(True).include_message_type(True).sync()
 
         assert envelope is not None
         assert isinstance(envelope.result, PNFetchMessagesResult)
         history = envelope.result.channels[ch]
         assert len(history) == 1
-        assert str(history[0].message_type) == '1'
+        assert str(history[0].message_type) == 'pn_message'

@@ -21,7 +21,7 @@ class PNMessageType:
         return PNMessageType(message_type).set_pn_message_type(pn_message_type)
 
     def __str__(self) -> str:
-        return self.message_type if self.message_type is not None else str(self.pn_message_type)
+        return self.message_type if self.message_type else str(self.pn_message_type)
 
     def toJSON(self) -> str:
         return str(self)

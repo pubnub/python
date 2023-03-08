@@ -73,11 +73,11 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
 
     def custom_params(self):
         params = {}
-        if self._message_type is not None:
+        if self._message_type:
             params['type'] = str(self._message_type)
 
-        if self._space_id is not None:
-            params['space-id'] = str(self._space_id)
+        if self._space_id:
+            params['space-id'] = self._space_id
 
         return params
 
@@ -125,7 +125,7 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return self
 
     def space_id(self, space_id):
-        self._space_id = str(space_id)
+        self._space_id = space_id
         return self
 
     def create_response(self, envelope, data=None):

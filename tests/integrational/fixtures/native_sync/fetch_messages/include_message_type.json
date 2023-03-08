@@ -1,0 +1,120 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/fetch-messages-message-type/0/%22hey-type%22?seqn=1",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Wed, 08 Mar 2023 14:34:08 GMT"
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16782860489406273\"]"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v3/history-with-actions/sub-key/{PN_KEY_SUBSCRIBE}/channel/fetch-messages-message-type?include_message_type=true&include_meta=false&include_type=true&max=25",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Wed, 08 Mar 2023 14:34:18 GMT"
+                    ],
+                    "Content-Length": [
+                        "192"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\": 200, \"channels\": {\"fetch-messages-message-type\": [{\"message_type\": null, \"message\": \"hey-type\", \"timetoken\": \"16782860489406273\", \"type\": \"\"}]}, \"error_message\": \"\", \"error\": false}"
+                }
+            }
+        }
+    ]
+}

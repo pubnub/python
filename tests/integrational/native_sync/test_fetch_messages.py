@@ -148,4 +148,4 @@ class TestFetchMessages:
         assert isinstance(envelope.result, PNFetchMessagesResult)
         history = envelope.result.channels[ch]
         assert len(history) == 1
-        assert str(history[0].message_type) == 'pn_message'
+        assert str(history[0].message_type) == '0'

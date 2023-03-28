@@ -3,8 +3,6 @@ from pubnub.enums import HttpMethod, PNOperationType
 from pubnub import utils
 from pubnub.models.consumer.file import PNPublishFileMessageResult
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
-from pubnub.models.consumer.message_type import PNMessageType
-from typing import Union
 
 
 class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
@@ -22,7 +20,7 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._cipher_key = None
         self._replicate = None
         self._ptto = None
-        self._message_type = None
+        self._type = None
         self._space_id = None
 
     def meta(self, meta):
@@ -53,11 +51,11 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._file_name = file_name
         return self
 
-    def message_type(self, message_type: Union[PNMessageType, str]):
-        self._message_type = message_type
+    def type(self, type: str):
+        self._type = type
         return self
 
-    def space_id(self, space_id):
+    def space_id(self, space_id: str):
         self._space_id = space_id
         return self
 
@@ -99,11 +97,11 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
             "ttl": self._ttl,
             "store": 1 if self._should_store else 0
         })
-        if self._message_type:
-            params['type'] = str(self._message_type)
+        if self._type:
+            params['type'] = self._type
 
         if self._space_id:
-            params['space-id'] = str(self._space_id)
+            params['space-id'] = self._space_id
 
         return params
 

@@ -1,6 +1,3 @@
-from pubnub.models.consumer.message_type import PNMessageType
-
-
 class PNHistoryResult(object):
     def __init__(self, messages, start_timetoken, end_timetoken):
         self.messages = messages
@@ -66,14 +63,15 @@ class PNFetchMessagesResult(object):
         return "Fetch messages result for range %d..%d" % (self.start_timetoken, self.end_timetoken)
 
     @classmethod
-    def from_json(cls, json_input, include_message_actions=False, include_message_type=False, include_space_id=False,
-                  start_timetoken=None, end_timetoken=None):
+    def from_json(cls, json_input, include_message_actions=False, include_message_type=False, include_type=False,
+                  include_space_id=False, start_timetoken=None, end_timetoken=None):
         channels = {}
 
         for key, entry in json_input['channels'].items():
             channels[key] = []
             for item in entry:
-                message = PNFetchMessageItem(item, include_message_actions, include_message_type, include_space_id)
+                message = PNFetchMessageItem(item, include_message_actions, include_message_type, include_type,
+                                             include_space_id)
                 channels[key].append(message)
 
         return PNFetchMessagesResult(
@@ -89,7 +87,7 @@ class PNFetchMessageItem(object):
     timetoken = None
     actions = None
 
-    def __init__(self, item, include_message_actions, include_message_type, include_space_id):
+    def __init__(self, item, include_message_actions, include_message_type, include_type, include_space_id):
         self.message = item['message']
         self.timetoken = item['timetoken']
 
@@ -106,9 +104,13 @@ class PNFetchMessageItem(object):
                 self.actions = {}
 
         if include_message_type:
-            self.message_type = PNMessageType.from_response(
-                message_type=item['type'] if 'type' in item.keys() else None,
-                pn_message_type=item['message_type'])
+            if 'message_type' in item:
+                self.message_type = str(item['message_type']) if item['message_type'] is not None else '0'
+            else:
+                self.message_type = None
+
+        if include_type:
+            self.type = item['type'] if 'type' in item.keys() else None
 
         if include_space_id:
             self.space_id = item['space_id']

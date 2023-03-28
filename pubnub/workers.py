@@ -174,6 +174,7 @@ class SubscribeMessageWorker(object):
                     timetoken=publish_meta_data.publish_timetoken,
                     publisher=publisher,
                     message_type=message.message_type,
+                    type=message.type,
                     space_id=message.space_id
                 )
                 self._listener_manager.announce_message(pn_message_result)

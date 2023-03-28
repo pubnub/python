@@ -31,3 +31,13 @@ def step_impl(context):
 @then('history response contains messages with space ids')
 def step_impl(context):
     assert all('space_id' in item.__dict__.keys() for item in context.messages)
+
+
+@then("history response contains messages with '{type1}' and '{type2}' types")
+def step_impl(context, type1, type2):
+    assert all(str(item.type) in [type1, type2] for item in context.messages)
+
+
+@then('history response contains messages without types')
+def step_impl(context):
+    assert all('type' not in item.__dict__.keys() for item in context.messages)

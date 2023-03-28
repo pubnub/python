@@ -6,8 +6,6 @@ from pubnub.endpoints.file_operations.publish_file_message import PublishFileMes
 from pubnub.endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
 from pubnub.request_handlers.requests_handler import RequestsRequestHandler
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
-from pubnub.models.consumer.message_type import PNMessageType
-from typing import Union
 
 
 class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
@@ -24,7 +22,7 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._file_object = None
         self._replicate = None
         self._ptto = None
-        self._message_type = None
+        self._type = None
         self._space_id = None
 
     def file_object(self, fd):
@@ -73,8 +71,8 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
 
     def custom_params(self):
         params = {}
-        if self._message_type:
-            params['type'] = str(self._message_type)
+        if self._type:
+            params['type'] = str(self._type)
 
         if self._space_id:
             params['space-id'] = self._space_id
@@ -120,11 +118,11 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._cipher_key = cipher_key
         return self
 
-    def message_type(self, message_type: Union[PNMessageType, str]):
-        self._message_type = message_type
+    def type(self, type: str):
+        self._type = type
         return self
 
-    def space_id(self, space_id):
+    def space_id(self, space_id: str):
         self._space_id = space_id
         return self
 
@@ -158,7 +156,7 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
             replicate(self._replicate).\
             ptto(self._ptto).\
             cipher_key(self._cipher_key).\
-            message_type(self._message_type).\
+            type(self._type).\
             space_id(self._space_id).sync()
 
         response_envelope.result.timestamp = publish_file_response.result.timestamp

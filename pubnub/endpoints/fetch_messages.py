@@ -32,6 +32,7 @@ class FetchMessages(Endpoint):
         self._include_meta = None
         self._include_message_actions = None
         self._include_message_type = True
+        self._include_type = True
         self._include_space_id = None
         self._include_uuid = None
 
@@ -72,6 +73,11 @@ class FetchMessages(Endpoint):
         self._include_message_type = include_message_type
         return self
 
+    def include_type(self, include_type):
+        assert isinstance(include_type, bool)
+        self._include_type = include_type
+        return self
+
     def include_uuid(self, include_uuid):
         assert isinstance(include_uuid, bool)
         self._include_uuid = include_uuid
@@ -85,7 +91,7 @@ class FetchMessages(Endpoint):
     def custom_params(self):
         params = {
             'max': int(self._count),
-            'include_type': 'true' if self._include_message_type else 'false',
+            'include_type': 'true' if self._include_type else 'false',
             'include_message_type': 'true' if self._include_message_type else 'false',
         }
 
@@ -165,6 +171,7 @@ class FetchMessages(Endpoint):
             json_input=envelope,
             include_message_actions=self._include_message_actions,
             include_message_type=self._include_message_type,
+            include_type=self._include_type,
             include_space_id=self._include_space_id,
             start_timetoken=self._start,
             end_timetoken=self._end)

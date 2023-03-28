@@ -5,8 +5,6 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
-from pubnub.models.consumer.message_type import PNMessageType
-from typing import Union
 
 
 class Publish(Endpoint, TimeTokenOverrideMixin):
@@ -31,7 +29,7 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._channel = str(channel)
         return self
 
-    def space_id(self, space_id):
+    def space_id(self, space_id: str):
         self._space_id = str(space_id)
         return self
 
@@ -39,7 +37,7 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._message = message
         return self
 
-    def message_type(self, message_type: Union[PNMessageType, str]):
+    def message_type(self, message_type: str):
         self._message_type = message_type
         return self
 
@@ -104,10 +102,10 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
             params["auth"] = utils.url_encode(self.pubnub.config.auth_key)
 
         if self._message_type is not None:
-            params['type'] = str(self._message_type)
+            params['type'] = self._message_type
 
         if self._space_id is not None:
-            params['space-id'] = str(self._space_id)
+            params['space-id'] = self._space_id
 
         return params
 

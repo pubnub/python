@@ -5,7 +5,6 @@ import pubnub as pn
 
 from unittest.mock import patch
 from pubnub.models.consumer.pubsub import PNMessageResult
-from pubnub.models.consumer.message_type import PNMessageType
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, SubscribeListener
 from tests.helper import pnconf_env_copy, pnconf_enc_env_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper, VCR599Listener, VCR599ReconnectionManager
@@ -483,7 +482,7 @@ async def test_subscribe_publish_message_type(event_loop, sleeper=asyncio.sleep)
     assert subscribe_envelope.subscription is None
     assert subscribe_envelope.message == message
 
-    assert isinstance(subscribe_envelope.type, PNMessageType)
+    assert isinstance(subscribe_envelope.type, str)
     assert str(subscribe_envelope.type) == message_type
     assert subscribe_envelope.timetoken > 0
 

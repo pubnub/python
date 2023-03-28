@@ -4,7 +4,6 @@ import unittest
 from pubnub.pubnub import PubNub
 from pubnub.exceptions import PubNubException
 from pubnub.endpoints.signal import Signal
-from pubnub.models.consumer.message_type import PNMessageType
 from pubnub.managers import TelemetryManager
 from tests.helper import url_encode, pnconf_copy, sdk_name
 from unittest.mock import MagicMock
@@ -70,24 +69,7 @@ class TestPublish(unittest.TestCase):
             'uuid': self.pubnub.uuid,
         })
 
-    def test_signal_with_pn_message_type(self):
-        message = "hi"
-        message_type = 'test_type'
-        encoded_message = url_encode(message)
-
-        self.signal.channel("ch1").message(message).message_type(PNMessageType(message_type))
-
-        self.assertEqual(self.signal.build_path(), "/signal/%s/%s/0/ch1/0/%s"
-                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
-
-        self.assertEqual(self.signal.build_params_callback()({}), {
-            'auth': 'auth',
-            'pnsdk': sdk_name,
-            'type': message_type,
-            'uuid': self.pubnub.uuid,
-        })
-
-    def test_signal_with_str_message_type(self):
+    def test_signal_with_message_type(self):
         message = "hi"
         message_type = 'test_type'
         encoded_message = url_encode(message)

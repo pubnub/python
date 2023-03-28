@@ -13,12 +13,12 @@ def step_impl(context):
     context.peer = pubnub_instance
 
 
-@when(u'I send a file with \'{space_id}\' space id and \'{message_type}\' message type')
-def step_impl(context, space_id, message_type):
+@when(u'I send a file with \'{space_id}\' space id and \'{type}\' type')
+def step_impl(context, space_id, type):
     try:
         with open('tests/acceptance/files/test.txt', 'rb') as file_object:
             envelope = context.peer.send_file().channel('test').message('test').should_store(True).ttl(200). \
-                file_name('test.txt').file_object(file_object).space_id(space_id).message_type(message_type).sync()
+                file_name('test.txt').file_object(file_object).space_id(space_id).type(type).sync()
             context.status = envelope.status
             context.result = envelope.result
     except PubNubException as error:

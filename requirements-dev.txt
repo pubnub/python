@@ -8,4 +8,5 @@ aiohttp
 requests
 cbor2
 behave
-vcrpy @ git+https://github.com/kevin1024/vcrpy.git
+vcrpy
+urllib3<2

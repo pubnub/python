@@ -5,11 +5,14 @@ from effects import PNEffect
 from typing import Union
 
 
-class PNContext:
+class PNContext(dict):
     channels: list
     groups: list
     tt: int
     handshake_count: int
+
+    def update(self, context):
+        super().update(context.__dict__)
 
 
 class PNState:
@@ -59,14 +62,16 @@ class UnsubscribedState(PNState):
         context.channels = event.channels
         context.groups = event.groups
         context.tt = 0
-        return PNTransition(state=HandshakingState, context=context)
+        self._context.update(context)
+        return PNTransition(state=HandshakingState, context=self._context)
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
         context.channels = event.channels
         context.groups = event.groups
         context.tt = event.timetoken
         context.region = event.region
-        return PNTransition(state=ReceivingState, context=context)
+        self._context.update(context)
+        return PNTransition(state=ReceivingState, context=self._context)
 
 
 class HandshakingState(PNState):
@@ -81,15 +86,16 @@ class HandshakingState(PNState):
         }
 
     def on_enter(self, context: Union[None, PNContext]):
-        super().on_enter(context)
-        return effects.HandshakeEffect(context.channels, context.groups)
+        self._context.update(context)
+        super().on_enter(self._context)
+        return effects.HandshakeEffect(self._context.channels, self._context.groups)
 
     def on_exit(self):
         super().on_exit()
         return effects.CancelHandshakeEffect()
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
-        self._context = context
+        self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
         self._context.tt = 0
@@ -99,7 +105,7 @@ class HandshakingState(PNState):
                 if context.handshake_count < HandshakingState.MAX_HANDSHAKE_RETRY_COUNT \
                 else HandshakeFailedState
         else:
-            next_state = ReceivingState
+            next_state = HandshakingState
 
         return PNTransition(
             state=next_state,
@@ -107,7 +113,7 @@ class HandshakingState(PNState):
         )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
-        self._context = context
+        self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
         self._context.tt = 0
@@ -125,14 +131,15 @@ class HandshakingState(PNState):
         )
 
     def reconnecting(self, event: events.HandshakeFailureEvent, context: PNContext) -> PNTransition:
-        self._context = context.handshake_count + 1
+        self._context.update(context)
+        self._context.handshake_count + 1
 
         if event.channels[0] == 'fail':
             next_state = HandshakeReconnectingState \
                 if self._context.handshake_count < HandshakingState.MAX_HANDSHAKE_RETRY_COUNT \
                 else HandshakeFailedState
         else:
-            next_state = ReceivingState
+            next_state = HandshakeReconnectingState
 
         return PNTransition(
             state=next_state,
@@ -140,10 +147,14 @@ class HandshakingState(PNState):
         )
 
     def disconnect(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
-        self._context = {*context, *self._context}
+        self._context.update(context)
+        self._context.channels = event.channels
+        self._context.groups = event.groups
+        self._context.tt = 0
+
         return PNTransition(
             state=HandshakeStoppedState,
-            context=context
+            context=self._context
         )
 
     def handshaking_success(self, event: events.HandshakeSuccessEvent, context: PNContext) -> PNTransition:
@@ -163,43 +174,47 @@ class HandshakeReconnectingState(PNState):
             events.SubscriptionRestoredEvent.__name__: self.restored,
             events.HandshakeReconnectFailureEvent.__name__: self.handshake_reconnect,
             events.SubscriptionChangedEvent.__name__: self.subscription_changed,
-
         }
 
     def on_enter(self, context: Union[None, PNContext]):
-        super().on_enter(context)
-        return effects.HandshakeEffect(context.channels, context.groups)
+        self._context.update(context)
+        super().on_enter(self._context)
+        return effects.HandshakeReconnectEffect(self._context.channels, self._context.groups)
 
     def on_exit(self):
         super().on_exit()
+        return effects.CancelHandshakeReconnectEffect()
 
     def disconnect(self, event: events.DisconnectEvent, context: PNContext) -> PNTransition:
-        self._context = {**self._context, **context}
+        self._context.update(context)
 
         return PNTransition(
             state=HandshakeStoppedState,
-            context=self.context,
-            effect=effects.CancelHandshakeEffect()
+            context=self._context,
+            effect=effects.CancelHandshakeReconnectEffect()
         )
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
         self._context.tt = 0
 
         if event.channels[0] == 'fail':
             next_state = HandshakeReconnectingState \
-                if self._context.handshake_count < HandshakingState.MAX_HANDSHAKE_RETRY_COUNT \
+                if context.handshake_count < HandshakingState.MAX_HANDSHAKE_RETRY_COUNT \
                 else HandshakeFailedState
         else:
-            next_state = ReceivingState
+            next_state = HandshakingState
 
         return PNTransition(
-            state=next_state
+            state=next_state,
+            context=self._context
         )
 
     def handshake_reconnect(self, event: events.HandshakeReconnectFailureEvent, context: PNContext) -> PNTransition:
-        self._context = context.handshake_count + 1
+        self._context.update(context)
+        self._context.handshake_count + 1
 
         if event.channels[0] == 'fail':
             next_state = HandshakeReconnectingState \
@@ -220,12 +235,14 @@ class HandshakeReconnectingState(PNState):
         )
 
     def restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
         return PNTransition(
             state=ReceivingState,
             context=self._context
         )
 
     def success(self, event: events.HandshakeReconnectSuccessEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
         return PNTransition(
             state=ReceivingState,
             context=self._context
@@ -243,15 +260,28 @@ class HandshakeFailedState(PNState):
         }
 
     def reconnect_retry(self, event: events.HandshakeReconnectRetryEvent, context: PNContext) -> PNTransition:
-        return PNTransition(state=HandshakeReconnectingState)
+        self._context.update(context)
+        return PNTransition(
+            state=HandshakeReconnectingState,
+            context=self._context
+        )
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
-        return PNTransition(state=HandshakingState)
+        self._context.update(context)
+        return PNTransition(
+            state=HandshakingState,
+            context=self._context
+        )
 
     def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
-        return PNTransition(state=HandshakingState)
+        self._context.update(context)
+        return PNTransition(
+            state=HandshakingState,
+            context=self._context
+        )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
         return PNTransition(
             state=ReceivingState,
             context=self._context
@@ -266,7 +296,11 @@ class HandshakeStoppedState(PNState):
         }
 
     def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
-        return PNTransition(state=HandshakeReconnectingState)
+        self._context.update(context)
+        return PNTransition(
+            state=HandshakeReconnectingState,
+            context=self._context
+        )
 
 
 class ReceivingState(PNState):
@@ -290,29 +324,97 @@ class ReceivingState(PNState):
         return effects.CancelReceiveEventsEffect()
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
-        return PNTransition(state=self.__class__, context=self._context)
+        self._context.update(context)
+        return PNTransition(
+            state=self.__class__, context=context,
+            context=self._context
+        )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
-        return PNTransition(state=self.__class__, context=self._context)
+        self._context.update(context)
+        return PNTransition(
+            state=self.__class__, context=context,
+            context=self._context
+        )
 
     def receiving_success(self, event: events.ReceiveSuccessEvent, context: PNContext) -> PNTransition:
-        return PNTransition(state=self.__class__, context=self._context)
+        self._context.update(context)
+        return PNTransition(
+            state=self.__class__, context=context,
+            context=self._context
+        )
 
     def receiving_failure(self, event: events.ReceiveFailureEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
         return PNTransition(
-            state=ReceiveReconnectingStagte
+            state=ReceiveReconnectingState,
+            context=self._context
         )
 
     def disconnect(self, event: events.DisconnectEvent, context: PNContext) -> PNTransition:
         return PNTransition(state=ReceiveStoppedState)
 
 
-class ReceiveReconnectingStagte(PNState):
+class ReceiveReconnectingState(PNState):
     def __init__(self, context: PNContext) -> None:
         super().__init__(context)
         self._transitions = {
-
+            events.ReceiveReconnectFailureEvent.__name__: self.reconnect_failure,
+            events.SubscriptionChangedEvent.__name__: self.subscription_changed,
+            events.DisconnectEvent.__name__: self.disconnect,
+            events.ReceiveReconnectGiveupEvent.__name__: self.give_up,
+            events.ReceiveReconnectSuccessEvent.__name__: self.reconnect_success,
+            events.SubscriptionRestoredEvent.__name__: self.subscription_restored,
         }
+
+    def reconnect_failure(self, event: events.ReceiveReconnectFailureEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.reconnect_count = self._context.reconnect_count + 1
+
+        return PNTransition(
+            state=ReceiveReconnectingState,
+            context=self._context
+        )
+
+    def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=ReceiveReconnectingState,
+            context=self._context
+        )
+
+    def disconnect(self, event: events.DisconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=ReceiveStoppedState,
+            context=self._context
+        )
+
+    def give_up(self, event: events.ReceiveReconnectGiveupEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=ReceiveFailedState,
+            context=self._context
+        )
+
+    def reconnect_success(self, event: events.ReceiveReconnectSuccessEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=ReceivingState,
+            context=self._context
+        )
+
+    def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=ReceiveReconnectingState,
+            context=self._context
+        )
 
 
 class ReceiveFailedState(PNState):
@@ -325,25 +427,29 @@ class ReceiveFailedState(PNState):
             events.ReconnectEvent.__name__: self.reconnect,
         }
 
-    def reconnect_retry(self, event: events.HandshakeReconnectRetryEvent, context: PNContext) -> PNTransition:
+    def reconnect_retry(self, event: events.ReceiveReconnectRetryEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
         return PNTransition(
             state=ReceivingState,
             context=self._context
         )
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
         return PNTransition(
             state=ReceivingState,
             context=self._context
         )
 
     def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
         return PNTransition(
             state=ReceivingState,
             context=self._context
         )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
         return PNTransition(
             state=ReceivingState,
             context=self._context
@@ -358,4 +464,8 @@ class ReceiveStoppedState(PNState):
         }
 
     def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
-        return PNTransition(state=ReceiveReconnectingStagte)
+        self._context.update(context)
+        return PNTransition(
+            state=ReceiveReconnectingState,
+            context=self._context
+        )

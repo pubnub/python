@@ -79,6 +79,7 @@ class ReceiveReconnectSuccessEvent(PNCursorEvent):
         PNCursorEvent.__init__(self, timetoken, region)
         self.messages = messages
 
+
 class ReceiveReconnectFailureEvent(PNFailureEvent):
     pass
 

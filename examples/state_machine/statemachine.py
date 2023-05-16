@@ -2,10 +2,10 @@ import events
 import states
 
 
-
 class StateMachine:
     _current_state: states.PNState
     _context = states.PNContext()
+
     def __init__(self, initial_state: states.PNState) -> None:
         self._current_state = initial_state(self._context)
         self._effect_queue = []
@@ -28,11 +28,8 @@ class StateMachine:
             if effect := self._current_state.on_enter(self._context):
                 self._effect_queue.append(effect)
 
-
-            # self._context = {**self._context, **transition.context}
             if transition.state:
                 self._current_state = transition.state(self._context)
-
 
         else:
             # we're ignoring events unhandled

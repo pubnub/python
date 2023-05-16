@@ -1,4 +1,5 @@
 from typing import Union
+from pubnub.exceptions import PubNubException
 
 
 class PNEffect:
@@ -33,6 +34,7 @@ class ReceiveEventsEffect(PNEffect):
 class CancelReceiveEventsEffect(PNEffect):
     pass
 
+
 class EmitEventsEffect(PNEffect):
     def __init__(self, events: Union[None, list[str]]) -> None:
         super().__init__()
@@ -40,12 +42,30 @@ class EmitEventsEffect(PNEffect):
 
 
 class ReconnectEffect(PNEffect):
-    def __init__(self, context: dict) -> None:
+    def __init__(self,
+                 channels: Union[None, list[str]],
+                 groups: Union[None, list[str]],
+                 timetoken: Union[None, str],
+                 region: Union[None, str],
+                 attempts: Union[None, int],
+                 reason: Union[None, PubNubException]
+                 ) -> None:
         super().__init__()
-        self.context = context
+        self.channels = channels
+        self.groups = groups
+        self.timetoken = timetoken
+        self.region = region
+        self.attempts = attempts
+        self.reason = reason
 
 
-class HandshakeReconnectEffect(PNEffect):
-    def __init__(self, context: dict) -> None:
-        super().__init__()
-        self.context = context
+class HandshakeReconnectEffect(ReconnectEffect):
+    pass
+
+
+class CancelHandshakeReconnectEffect(ReconnectEffect):
+    pass
+
+
+class ReceiveReconnectEffect(ReconnectEffect):
+    pass

@@ -317,11 +317,11 @@ class ReceivingState(PNState):
 
     def on_enter(self, context: Union[None, PNContext]):
         super().on_enter(context)
-        return effects.ReceiveEventsEffect(context.channels, context.groups)
+        return effects.ReceiveMessagesEffect(context.channels, context.groups)
 
     def on_exit(self):
         super().on_exit()
-        return effects.CancelReceiveEventsEffect()
+        return effects.CancelReceiveMessagesEffect()
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
@@ -366,6 +366,15 @@ class ReceiveReconnectingState(PNState):
             events.ReceiveReconnectSuccessEvent.__name__: self.reconnect_success,
             events.SubscriptionRestoredEvent.__name__: self.subscription_restored,
         }
+
+    def on_enter(self, context: Union[None, PNContext]):
+        self._context.update(context)
+        super().on_enter(self._context)
+        return effects.ReconnectEffect(self._context.channels, self._context.groups)
+
+    def on_exit(self):
+        super().on_exit()
+        return effects.CancelReconnectEffect()
 
     def reconnect_failure(self, event: events.ReceiveReconnectFailureEvent, context: PNContext) -> PNTransition:
         self._context.update(context)

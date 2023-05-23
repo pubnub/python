@@ -41,6 +41,12 @@ class EmitMessagesEffect(PNEffect):
         self.messages = messages
 
 
+class EmitStatusEffect(PNEffect):
+    def __init__(self, status: Union[None, list[str]]) -> None:
+        super().__init__()
+        self.status = status
+
+
 class HandshakeReconnectEffect(PNEffect):
     def __init__(self,
                  channels: Union[None, list[str]],
@@ -54,7 +60,7 @@ class HandshakeReconnectEffect(PNEffect):
         self.reason = reason
 
 
-class CancelHandshakeReconnectEffect(PNEffect):
+class CancelHandshakeEffect(PNEffect):
     pass
 
 

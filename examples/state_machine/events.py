@@ -34,17 +34,14 @@ class SubscriptionRestoredEvent(PNCursorEvent, PNChannelGroupsEvent):
         PNChannelGroupsEvent.__init__(self, channels, groups)
 
 
-class RestoreEvent(PNCursorEvent, PNChannelGroupsEvent):
-    def __init__(self, timetoken: str, region: int, channels: list[str], groups: list[str]) -> None:
-        PNCursorEvent.__init__(self, timetoken, region)
-        PNChannelGroupsEvent.__init__(self, channels, groups)
-
-
 class HandshakeSuccessEvent(PNCursorEvent):
-    pass
+    def __init__(self, handshake_count: int, reason: PubNubException) -> None:
+        self.handshake_count = handshake_count
+        self.reason = reason
 
 
 class HandshakeFailureEvent(PNFailureEvent):
+
     pass
 
 
@@ -84,7 +81,7 @@ class ReceiveReconnectFailureEvent(PNFailureEvent):
     pass
 
 
-class ReceiveReconnectGiveupEvent(PNEvent):
+class ReceiveReconnectGiveupEvent(PNFailureEvent):
     pass
 
 

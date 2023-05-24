@@ -7,8 +7,9 @@ class PNEvent:
 
 
 class PNFailureEvent(PNEvent):
-    def __init__(self, error: PubNubException) -> None:
-        self.error = error
+    def __init__(self, reason: PubNubException, attempt: int) -> None:
+        self.reason = reason
+        self.attempt = attempt if attempt else 0
 
 
 class PNCursorEvent(PNEvent):
@@ -35,8 +36,8 @@ class SubscriptionRestoredEvent(PNCursorEvent, PNChannelGroupsEvent):
 
 
 class HandshakeSuccessEvent(PNCursorEvent):
-    def __init__(self, handshake_count: int, reason: PubNubException) -> None:
-        self.handshake_count = handshake_count
+    def __init__(self, attempt: int, reason: PubNubException) -> None:
+        self.attempt = attempt
         self.reason = reason
 
 

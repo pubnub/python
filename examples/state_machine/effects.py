@@ -1,5 +1,6 @@
 from typing import Union
 from pubnub.exceptions import PubNubException
+from pubnub.enums import PNStatusCategory
 
 
 class PNEffect:
@@ -42,7 +43,7 @@ class EmitMessagesEffect(PNEffect):
 
 
 class EmitStatusEffect(PNEffect):
-    def __init__(self, status: Union[None, list[str]]) -> None:
+    def __init__(self, status: Union[None, PNStatusCategory]) -> None:
         super().__init__()
         self.status = status
 

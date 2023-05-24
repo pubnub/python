@@ -20,4 +20,5 @@ def run(command):
 
 
 run(tcmn)
-run(fcmn)
+# moved to separate action
+# run(fcmn)

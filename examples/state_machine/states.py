@@ -11,8 +11,8 @@ from pubnub.exceptions import PubNubException
 class PNContext(dict):
     channels: list
     groups: list
-    region: str
-    timetoken: int
+    region: int
+    timetoken: str
     attempt: int
     reason: PubNubException
 
@@ -58,6 +58,8 @@ class PNTransition:
 class UnsubscribedState(PNState):
     def __init__(self, context: PNContext) -> None:
         super().__init__(context)
+        self._context.attempt = 0
+
         self._transitions = {
             events.SubscriptionChangedEvent.__name__: self.subscription_changed,
             events.SubscriptionRestoredEvent.__name__: self.subscription_restored,
@@ -298,6 +300,8 @@ class HandshakeFailedState(PNState):
 class HandshakeStoppedState(PNState):
     def __init__(self, context: PNContext) -> None:
         super().__init__(context)
+        self._context.attempt = 0
+
         self._transitions = {
             events.ReconnectEvent.__name__: self.reconnect
         }
@@ -314,6 +318,8 @@ class HandshakeStoppedState(PNState):
 class ReceivingState(PNState):
     def __init__(self, context: PNContext) -> None:
         super().__init__(context)
+        self._context.attempt = 0
+
         self._transitions = {
             events.SubscriptionChangedEvent.__name__: self.subscription_changed,
             events.SubscriptionRestoredEvent.__name__: self.subscription_restored,
@@ -369,7 +375,6 @@ class ReceivingState(PNState):
     def receiving_failure(self, event: events.ReceiveFailureEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
         self._context.reason = event.reason
-        self._context.attempt = event.attempt
 
         return PNTransition(
             state=ReceiveReconnectingState,
@@ -525,6 +530,8 @@ class ReceiveFailedState(PNState):
 class ReceiveStoppedState(PNState):
     def __init__(self, context: PNContext) -> None:
         super().__init__(context)
+        self._context.attempt = 0
+
         self._transitions = {
             events.ReconnectEvent.__name__: self.reconnect
         }

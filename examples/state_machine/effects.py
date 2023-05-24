@@ -23,7 +23,7 @@ class ReceiveMessagesEffect(PNEffect):
                  channels: Union[None, list[str]],
                  groups: Union[None, list[str]],
                  timetoken: Union[None, str],
-                 region: Union[None, str]
+                 region: Union[None, int]
                  ) -> None:
         super().__init__()
         self.channels = channels
@@ -70,7 +70,7 @@ class ReceiveReconnectEffect(PNEffect):
                  channels: Union[None, list[str]],
                  groups: Union[None, list[str]],
                  timetoken: Union[None, str],
-                 region: Union[None, str],
+                 region: Union[None, int],
                  attempts: Union[None, int],
                  reason: Union[None, PubNubException]
                  ) -> None:

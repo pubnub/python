@@ -9,7 +9,6 @@ class PNEvent:
 class PNFailureEvent(PNEvent):
     def __init__(self, reason: PubNubException, attempt: int) -> None:
         self.reason = reason
-        self.attempt = attempt if attempt else 0
 
 
 class PNCursorEvent(PNEvent):

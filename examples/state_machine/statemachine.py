@@ -15,7 +15,8 @@ class StateMachine:
 
     def trigger(self, event: events.PNEvent) -> states.PNTransition:
         if event.get_name() in self._current_state._transitions:
-            if effect := self._current_state.on_exit():
+            effect = self._current_state.on_exit()
+            if effect:
                 self._effect_queue.append(effect)
 
             transition: states.PNTransition = self._current_state.on(event, self._context)
@@ -25,7 +26,8 @@ class StateMachine:
             if transition.effect:
                 self._effect_queue.append(transition.effect)
 
-            if effect := self._current_state.on_enter(self._context):
+            effect = self._current_state.on_enter(self._context)
+            if effect:
                 self._effect_queue.append(effect)
 
             if transition.state:

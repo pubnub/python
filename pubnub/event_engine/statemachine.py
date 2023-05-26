@@ -1,4 +1,5 @@
 from pubnub.event_engine import effects, events, states
+from pubnub.event_engine.dispatcher import Dispatcher
 
 
 class StateMachine:
@@ -12,7 +13,7 @@ class StateMachine:
         self._current_state = initial_state(self._context)
         self._listeners = {}
         self._effect_list = []
-        self._managed_effects = {}
+        self._dispatcher = Dispatcher()
 
     def get_state_name(self):
         return self._current_state.__class__.__name__
@@ -42,26 +43,9 @@ class StateMachine:
             print('unhandled event??')
 
         for effect in self._effect_list:
-            self.dispatch_effect(effect)
+            self._dispatcher.dispatch_effect(effect)
 
         return self._effect_list
-
-    def dispatch_effect(self, effect: effects.PNEffect):
-        if isinstance(effect, effects.EmitMessagesEffect):
-            pass
-
-        if isinstance(effect, effects.EmitStatusEffect):
-            pass
-
-        if isinstance(effect, effects.PNManageableEffect):
-            managed_effect = effects.ManagedEffect(effect)
-            managed_effect.run()
-            self._managed_effects[effect.__class__.__name__] = managed_effect
-
-        if isinstance(effect, effects.PNCancelEffect):
-            if effect.cancel_effect in self._managed_effects:
-                self._managed_effects[effect.cancel_effect].stop()
-                del self._managed_effects[effect.cancel_effect]
 
 
 if __name__ == "__main__":

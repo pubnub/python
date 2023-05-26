@@ -118,10 +118,18 @@ class ManagedEffect:
 
 class EmitEffect:
     pubnub: PubNub
-    effect: PNEmittableEffect
 
     def set_pn(pubnub: PubNub):
         pubnub = pubnub
 
-    def __init__(self, effect: PNEmittableEffect) -> None:
-        self.effect = effect
+    def emit(self, effect: PNEmittableEffect):
+        if isinstance(effect, EmitMessagesEffect):
+            self.emit_message(effect)
+        if isinstance(effect, EmitStatusEffect):
+            self.emit_status(effect)
+
+    def emit_message(self, effect: EmitMessagesEffect):
+        pass
+
+    def emit_status(self, effect: EmitStatusEffect):
+        pass

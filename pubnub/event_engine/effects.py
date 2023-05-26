@@ -1,4 +1,4 @@
-from typing import Union
+from typing import List, Union
 from pubnub.exceptions import PubNubException
 from pubnub.enums import PNStatusCategory
 from pubnub.pubnub import PubNub
@@ -17,7 +17,7 @@ class PNCancelEffect(PNEffect):
 
 
 class HandshakeEffect(PNManageableEffect):
-    def __init__(self, channels: Union[None, list[str]] = None, groups: Union[None, list[str]] = None) -> None:
+    def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None) -> None:
         super().__init__()
         self.channels = channels
         self.groups = groups
@@ -29,8 +29,8 @@ class CancelHandshakeEffect(PNCancelEffect):
 
 class ReceiveMessagesEffect(PNManageableEffect):
     def __init__(self,
-                 channels: Union[None, list[str]] = None,
-                 groups: Union[None, list[str]] = None,
+                 channels: Union[None, List[str]] = None,
+                 groups: Union[None, List[str]] = None,
                  timetoken: Union[None, str] = None,
                  region: Union[None, int] = None
                  ) -> None:
@@ -47,8 +47,8 @@ class CancelReceiveMessagesEffect(PNCancelEffect):
 
 class HandshakeReconnectEffect(PNManageableEffect):
     def __init__(self,
-                 channels: Union[None, list[str]] = None,
-                 groups: Union[None, list[str]] = None,
+                 channels: Union[None, List[str]] = None,
+                 groups: Union[None, List[str]] = None,
                  attempts: Union[None, int] = None,
                  reason: Union[None, PubNubException] = None
                  ) -> None:
@@ -64,8 +64,8 @@ class CancelHandshakeReconnectEffect(PNCancelEffect):
 
 class ReceiveReconnectEffect(PNManageableEffect):
     def __init__(self,
-                 channels: Union[None, list[str]] = None,
-                 groups: Union[None, list[str]] = None,
+                 channels: Union[None, List[str]] = None,
+                 groups: Union[None, List[str]] = None,
                  timetoken: Union[None, str] = None,
                  region: Union[None, int] = None,
                  attempts: Union[None, int] = None,
@@ -88,7 +88,7 @@ class PNEmittableEffect(PNEffect):
 
 
 class EmitMessagesEffect(PNEmittableEffect):
-    def __init__(self, messages: Union[None, list[str]]) -> None:
+    def __init__(self, messages: Union[None, List[str]]) -> None:
         super().__init__()
         self.messages = messages
 

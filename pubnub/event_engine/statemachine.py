@@ -1,12 +1,12 @@
 from pubnub.event_engine import effects, events, states
 from pubnub.event_engine.dispatcher import Dispatcher
+from typing import List
 
 
 class StateMachine:
     _current_state: states.PNState
     _context: states.PNContext
-    _effect_list: list[effects.PNEffect]
-    _managed_effects: dict[effects.PNEffect]
+    _effect_list: List[effects.PNEffect]
 
     def __init__(self, initial_state: states.PNState) -> None:
         self._context = states.PNContext()

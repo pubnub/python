@@ -1,7 +1,6 @@
-import events
-import effects
+from pubnub.event_engine import effects, events
+from pubnub.event_engine.effects import PNEffect
 
-from effects import PNEffect
 from typing import Union
 
 from pubnub.enums import PNStatusCategory
@@ -182,7 +181,7 @@ class HandshakeReconnectingState(PNState):
 
     def on_exit(self):
         super().on_exit()
-        return effects.CancelHandshakeEffect()
+        return effects.CancelHandshakeReconnectEffect()
 
     def disconnect(self, event: events.DisconnectEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
@@ -411,7 +410,7 @@ class ReceiveReconnectingState(PNState):
 
     def on_exit(self):
         super().on_exit()
-        return effects.CancelReconnectEffect()
+        return effects.CancelReceiveReconnectEffect()
 
     def reconnect_failure(self, event: events.ReceiveReconnectFailureEvent, context: PNContext) -> PNTransition:
         self._context.update(context)

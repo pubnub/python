@@ -1,11 +1,8 @@
-import events
-import effects
-
-from effects import PNEffect
-from typing import Union
-
 from pubnub.enums import PNStatusCategory
+from pubnub.event_engine import effects, events
+from pubnub.event_engine.effects import PNEffect
 from pubnub.exceptions import PubNubException
+from typing import List, Union
 
 
 class PNContext(dict):
@@ -25,7 +22,7 @@ class PNState:
 
     def __init__(self, context: PNContext) -> None:
         self._context = context
-        self._transitions = {}
+        self._transitions = dict
 
     def on(self, event: events.PNEvent, context: PNContext):
         return self._transitions[event.get_name()](event, context)
@@ -43,12 +40,12 @@ class PNState:
 class PNTransition:
     context: PNContext
     state: PNState
-    effect: Union[None, list[PNEffect]]
+    effect: Union[None, List[PNEffect]]
 
     def __init__(self,
                  state: PNState,
                  context: Union[None, PNContext] = None,
-                 effect: Union[None, list[PNEffect]] = None,
+                 effect: Union[None, List[PNEffect]] = None,
                  ) -> None:
         self.context = context
         self.state = state
@@ -182,7 +179,7 @@ class HandshakeReconnectingState(PNState):
 
     def on_exit(self):
         super().on_exit()
-        return effects.CancelHandshakeEffect()
+        return effects.CancelHandshakeReconnectEffect()
 
     def disconnect(self, event: events.DisconnectEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
@@ -411,7 +408,7 @@ class ReceiveReconnectingState(PNState):
 
     def on_exit(self):
         super().on_exit()
-        return effects.CancelReconnectEffect()
+        return effects.CancelReceiveReconnectEffect()
 
     def reconnect_failure(self, event: events.ReceiveReconnectFailureEvent, context: PNContext) -> PNTransition:
         self._context.update(context)

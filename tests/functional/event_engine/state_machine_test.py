@@ -1,8 +1,5 @@
-import states
-import events
-import effects
-
-from statemachine import StateMachine
+from pubnub.event_engine import effects, events, states
+from pubnub.event_engine.statemachine import StateMachine
 
 
 def test_initialize_with_state():
@@ -13,7 +10,7 @@ def test_initialize_with_state():
 def test_unsubscribe_state_trigger_sub_changed():
     machine = StateMachine(states.UnsubscribedState)
     transition_effects = machine.trigger(events.SubscriptionChangedEvent(
-        channels=['fail'], groups=[]
+        channels=['test'], groups=[]
     ))
 
     assert len(transition_effects) == 1
@@ -24,7 +21,7 @@ def test_unsubscribe_state_trigger_sub_changed():
 def test_unsubscribe_state_trigger_sub_restored():
     machine = StateMachine(states.UnsubscribedState)
     transition_effects = machine.trigger(events.SubscriptionChangedEvent(
-        channels=['fail'], groups=[]
+        channels=['test'], groups=[]
     ))
 
     assert len(transition_effects) == 1

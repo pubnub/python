@@ -1,29 +1,38 @@
-from typing import Union
+from typing import List, Union
 from pubnub.exceptions import PubNubException
 from pubnub.enums import PNStatusCategory
+from pubnub.pubnub import PubNub
 
 
 class PNEffect:
     pass
 
 
-class HandshakeEffect(PNEffect):
-    def __init__(self, channels: Union[None, list[str]], groups: Union[None, list[str]]) -> None:
+class PNManageableEffect(PNEffect):
+    pass
+
+
+class PNCancelEffect(PNEffect):
+    cancel_effect: str
+
+
+class HandshakeEffect(PNManageableEffect):
+    def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None) -> None:
         super().__init__()
         self.channels = channels
         self.groups = groups
 
 
-class CancelHandshakeEffect(PNEffect):
-    pass
+class CancelHandshakeEffect(PNCancelEffect):
+    cancel_effect = HandshakeEffect.__name__
 
 
-class ReceiveMessagesEffect(PNEffect):
+class ReceiveMessagesEffect(PNManageableEffect):
     def __init__(self,
-                 channels: Union[None, list[str]],
-                 groups: Union[None, list[str]],
-                 timetoken: Union[None, str],
-                 region: Union[None, int]
+                 channels: Union[None, List[str]] = None,
+                 groups: Union[None, List[str]] = None,
+                 timetoken: Union[None, str] = None,
+                 region: Union[None, int] = None
                  ) -> None:
         super().__init__()
         self.channels = channels
@@ -32,51 +41,95 @@ class ReceiveMessagesEffect(PNEffect):
         self.region = region
 
 
-class CancelReceiveMessagesEffect(PNEffect):
+class CancelReceiveMessagesEffect(PNCancelEffect):
+    cancel_effect = ReceiveMessagesEffect.__name__
+
+
+class HandshakeReconnectEffect(PNManageableEffect):
+    def __init__(self,
+                 channels: Union[None, List[str]] = None,
+                 groups: Union[None, List[str]] = None,
+                 attempts: Union[None, int] = None,
+                 reason: Union[None, PubNubException] = None
+                 ) -> None:
+        self.channels = channels
+        self.groups = groups
+        self.attempts = attempts
+        self.reason = reason
+
+
+class CancelHandshakeReconnectEffect(PNCancelEffect):
+    cancel_effect = HandshakeReconnectEffect.__name__
+
+
+class ReceiveReconnectEffect(PNManageableEffect):
+    def __init__(self,
+                 channels: Union[None, List[str]] = None,
+                 groups: Union[None, List[str]] = None,
+                 timetoken: Union[None, str] = None,
+                 region: Union[None, int] = None,
+                 attempts: Union[None, int] = None,
+                 reason: Union[None, PubNubException] = None
+                 ) -> None:
+        self.channels = channels
+        self.groups = groups
+        self.timetoken = timetoken
+        self.region = region
+        self.attempts = attempts
+        self.reason = reason
+
+
+class CancelReceiveReconnectEffect(PNCancelEffect):
+    cancel_effect = ReceiveReconnectEffect.__name__
+
+
+class PNEmittableEffect(PNEffect):
     pass
 
 
-class EmitMessagesEffect(PNEffect):
-    def __init__(self, messages: Union[None, list[str]]) -> None:
+class EmitMessagesEffect(PNEmittableEffect):
+    def __init__(self, messages: Union[None, List[str]]) -> None:
         super().__init__()
         self.messages = messages
 
 
-class EmitStatusEffect(PNEffect):
+class EmitStatusEffect(PNEmittableEffect):
     def __init__(self, status: Union[None, PNStatusCategory]) -> None:
         super().__init__()
         self.status = status
 
 
-class HandshakeReconnectEffect(PNEffect):
-    def __init__(self,
-                 channels: Union[None, list[str]],
-                 groups: Union[None, list[str]],
-                 attempts: Union[None, int],
-                 reason: Union[None, PubNubException]
-                 ) -> None:
-        self.channels = channels
-        self.groups = groups
-        self.attempts = attempts
-        self.reason = reason
+class ManagedEffect:
+    pubnub: PubNub
+    effect: Union[PNManageableEffect, PNCancelEffect]
+
+    def set_pn(pubnub: PubNub):
+        pubnub = pubnub
+
+    def __init__(self, effect: Union[PNManageableEffect, PNCancelEffect]) -> None:
+        self.effect = effect
+
+    def run(self):
+        pass
+
+    def stop(self):
+        pass
 
 
-class CancelHandshakeEffect(PNEffect):
-    pass
+class EmitEffect:
+    pubnub: PubNub
 
+    def set_pn(pubnub: PubNub):
+        pubnub = pubnub
 
-class ReceiveReconnectEffect(PNEffect):
-    def __init__(self,
-                 channels: Union[None, list[str]],
-                 groups: Union[None, list[str]],
-                 timetoken: Union[None, str],
-                 region: Union[None, int],
-                 attempts: Union[None, int],
-                 reason: Union[None, PubNubException]
-                 ) -> None:
-        self.channels = channels
-        self.groups = groups
-        self.timetoken = timetoken
-        self.region = region
-        self.attempts = attempts
-        self.reason = reason
+    def emit(self, effect: PNEmittableEffect):
+        if isinstance(effect, EmitMessagesEffect):
+            self.emit_message(effect)
+        if isinstance(effect, EmitStatusEffect):
+            self.emit_status(effect)
+
+    def emit_message(self, effect: EmitMessagesEffect):
+        pass
+
+    def emit_status(self, effect: EmitStatusEffect):
+        pass

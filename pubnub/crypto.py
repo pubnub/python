@@ -3,7 +3,7 @@ import json
 import random
 from base64 import decodebytes, encodebytes
 
-from .crypto_core import PubNubCrypto
+from pubnub.crypto_core import PubNubCrypto
 from Cryptodome.Cipher import AES
 from Cryptodome.Util.Padding import pad, unpad
 

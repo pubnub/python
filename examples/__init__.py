@@ -5,3 +5,4 @@ pnconf = PNConfiguration()
 pnconf.subscribe_key = "demo"
 pnconf.publish_key = "demo"
 pnconf.enable_subscribe = False
+pnconf.user_id = "user_id"

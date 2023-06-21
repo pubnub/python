@@ -14,6 +14,8 @@ from pubnub.pubnub import PubNub, NonSubscribeListener
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG, stream=sys.stdout)
 
+pnconf.enable_subscribe = True
+
 pubnub = PubNub(pnconf)
 
 

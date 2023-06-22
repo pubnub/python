@@ -41,7 +41,7 @@ class PubNubAsyncio(PubNubCore):
         self._connector = None
         self._session = None
 
-        self._connector = aiohttp.TCPConnector(verify_ssl=True)
+        self._connector = aiohttp.TCPConnector(verify_ssl=True, loop=self.event_loop)
         self._session = aiohttp.ClientSession(
             loop=self.event_loop,
             timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
@@ -49,7 +49,7 @@ class PubNubAsyncio(PubNubCore):
         )
 
         if self.config.enable_subscribe:
-            self._subscription_manager = AsyncioSubscriptionManager(self)
+            self._subscription_manager = AsyncioSubscriptionManager(self, self.event_loop)
 
         self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop, PubNubCore.MAX_SEQUENCE)
 
@@ -340,11 +340,11 @@ class AsyncioPublishSequenceManager(PublishSequenceManager):
 
 
 class AsyncioSubscriptionManager(SubscriptionManager):
-    def __init__(self, pubnub_instance):
+    def __init__(self, pubnub_instance, loop):
         subscription_manager = self
 
         self._message_worker = None
-        self._message_queue = Queue()
+        self._message_queue = Queue(loop=loop)
         self._subscription_lock = Semaphore(1)
         self._subscribe_loop_task = None
         self._heartbeat_periodic_callback = None

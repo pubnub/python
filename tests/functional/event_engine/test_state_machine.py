@@ -1,4 +1,4 @@
-from pubnub.event_engine import effects, events, states
+from pubnub.event_engine.models import effects, events, states
 from pubnub.event_engine.statemachine import StateMachine
 
 

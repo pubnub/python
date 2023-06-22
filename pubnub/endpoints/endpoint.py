@@ -13,7 +13,7 @@ from pubnub.errors import (
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pn_error_data import PNErrorData
-from ..structures import RequestOptions, ResponseInfo
+from pubnub.structures import RequestOptions, ResponseInfo
 
 logger = logging.getLogger("pubnub")
 
@@ -147,6 +147,9 @@ class Endpoint(object):
             raise envelope.status.error_data.exception
 
         return envelope
+
+    def prepare_options(self):
+        return self.pubnub.prepare_options(self.options())
 
     def pn_async(self, callback):
         try:

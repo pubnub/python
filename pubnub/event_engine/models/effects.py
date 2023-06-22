@@ -1,7 +1,6 @@
 from typing import List, Union
 from pubnub.exceptions import PubNubException
 from pubnub.enums import PNStatusCategory
-from pubnub.pubnub import PubNub
 
 
 class PNEffect:
@@ -97,39 +96,3 @@ class EmitStatusEffect(PNEmittableEffect):
     def __init__(self, status: Union[None, PNStatusCategory]) -> None:
         super().__init__()
         self.status = status
-
-
-class ManagedEffect:
-    pubnub: PubNub
-    effect: Union[PNManageableEffect, PNCancelEffect]
-
-    def set_pn(pubnub: PubNub):
-        pubnub = pubnub
-
-    def __init__(self, effect: Union[PNManageableEffect, PNCancelEffect]) -> None:
-        self.effect = effect
-
-    def run(self):
-        pass
-
-    def stop(self):
-        pass
-
-
-class EmitEffect:
-    pubnub: PubNub
-
-    def set_pn(pubnub: PubNub):
-        pubnub = pubnub
-
-    def emit(self, effect: PNEmittableEffect):
-        if isinstance(effect, EmitMessagesEffect):
-            self.emit_message(effect)
-        if isinstance(effect, EmitStatusEffect):
-            self.emit_status(effect)
-
-    def emit_message(self, effect: EmitMessagesEffect):
-        pass
-
-    def emit_status(self, effect: EmitStatusEffect):
-        pass

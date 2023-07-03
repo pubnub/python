@@ -1,0 +1,120 @@
+interactions:
+- request:
+    body: '{"name": "Trekkies Fan Space", "description": "Live Long and Prosper",
+      "custom": {"Leader": "Cpt. James ''Jim'' Tiberius Kirk"}, "status": "fanclub",
+      "type": "nerdy"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '164'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: POST
+    uri: https://test.ps.pn/v3/objects/sub-c-test/spaces/Trekkie?uuid=uuid-mock
+  response:
+    body:
+      string: '{"data":{"custom":{"Leader":"Cpt. James ''Jim'' Tiberius Kirk"},"description":"Live
+        Long and Prosper","externalId":"","id":"Trekkie","name":"Trekkies Fan Space","status":"fanclub","type":"nerdy"},"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '207'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 20 Sep 2022 09:28:14 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: GET
+    uri: https://test.ps.pn/v3/objects/sub-c-test/spaces/Trekkie?uuid=uuid-mock
+  response:
+    body:
+      string: '{"data":{"custom":{"Leader":"Cpt. James ''Jim'' Tiberius Kirk"},"description":"Live
+        Long and Prosper","externalId":"","id":"Trekkie","name":"Trekkies Fan Space","status":"fanclub","type":"nerdy"},"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '207'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 20 Sep 2022 09:28:14 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: DELETE
+    uri: https://test.ps.pn/v3/objects/sub-c-test/spaces/Trekkie?uuid=uuid-mock
+  response:
+    body:
+      string: '{"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Tue, 20 Sep 2022 09:28:14 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+version: 1

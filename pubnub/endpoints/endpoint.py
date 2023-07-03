@@ -25,6 +25,7 @@ class Endpoint(object):
 
     __metaclass__ = ABCMeta
     _path = None
+    _custom_headers = None
 
     def __init__(self, pubnub):
         self.pubnub = pubnub
@@ -99,7 +100,8 @@ class Endpoint(object):
             headers["Content-Encoding"] = "gzip"
         if self.http_method() == HttpMethod.POST:
             headers["Content-type"] = "application/json"
-
+        if self._custom_headers:
+            headers.update(self._custom_headers)
         return headers
 
     def build_file_upload_request(self):

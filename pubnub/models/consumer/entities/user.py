@@ -11,6 +11,10 @@ class PNUpdateUserResult(PNEntityResult):
     _description = "Update User: %s"
 
 
+class PNUpsertUserResult(PNEntityResult):
+    _description = "Upsert User: %s"
+
+
 class PNFetchUserResult(PNEntityResult):
     _description = "Fetch User: %s"
 

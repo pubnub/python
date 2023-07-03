@@ -15,8 +15,8 @@ class RequestOptions(object):
         assert isinstance(method, int)
         assert isinstance(request_timeout, int)
         assert isinstance(connect_timeout, int)
-        if not (method is HttpMethod.GET or method is HttpMethod.POST or method is HttpMethod.DELETE
-                or method is HttpMethod.PATCH):  # noqa
+
+        if not HttpMethod.string(method):
             raise AssertionError()
 
         self.params = None
@@ -52,6 +52,9 @@ class RequestOptions(object):
 
     def is_patch(self):
         return self._method is HttpMethod.PATCH
+
+    def is_put(self):
+        return self._method is HttpMethod.PUT
 
     def query_list(self):
         """ All query keys and values should be already encoded inside a build_params() method"""

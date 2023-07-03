@@ -1,0 +1,122 @@
+interactions:
+- request:
+    body: '{}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '2'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: POST
+    uri: https://test.ps.pn/v3/objects/sub-c-test/spaces/Trekkie?uuid=uuid-mock
+  response:
+    body:
+      string: '{"data":{"custom":null,"description":"","externalId":"","id":"Trekkie","name":"","status":"","type":""},"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '117'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 16 Sep 2022 13:22:04 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+- request:
+    body: '{"name": "Trekkies Fan Space", "description": "Live Long and Prosper",
+      "custom": {"Leader": "Cpt. James ''Jim'' Tiberius Kirk"}, "status": "fanclub",
+      "type": "nerdy"}'
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '164'
+      Content-type:
+      - application/json
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: POST
+    uri: https://test.ps.pn/v3/objects/sub-c-test/spaces/Trekkie?uuid=uuid-mock
+  response:
+    body:
+      string: '{"error":{"message":"Requested resource already exists.","source":"metadata"},"status":409}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '91'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 16 Sep 2022 13:22:04 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 409
+      message: Conflict
+- request:
+    body: null
+    headers:
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '0'
+      User-Agent:
+      - PubNub-Python/6.5.1
+    method: DELETE
+    uri: https://test.ps.pn/v3/objects/sub-c-test/spaces/Trekkie?uuid=uuid-mock
+  response:
+    body:
+      string: '{"status":200}'
+    headers:
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '14'
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 16 Sep 2022 13:22:04 GMT
+      access-control-allow-origin:
+      - '*'
+      vary:
+      - origin
+      - access-control-request-method
+      - access-control-request-headers
+    status:
+      code: 200
+      message: OK
+version: 1

@@ -20,8 +20,8 @@ class PNConfiguration(object):
         self.publish_key = None
         self.secret_key = None
         self.cipher_key = None
-        self._cipher_mode = AES.MODE_GCM
-        self._fallback_cipher_mode = AES.MODE_CBC
+        self._cipher_mode = AES.MODE_CBC
+        self._fallback_cipher_mode = None
         self.auth_key = None
         self.filter_expression = None
         self.enable_subscribe = True

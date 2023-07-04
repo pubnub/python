@@ -1,10 +1,11 @@
 import pytest
 
+from Cryptodome.Cipher import AES
 from unittest.mock import patch
 from pubnub.exceptions import PubNubException
 from pubnub.pubnub import PubNub
 from tests.integrational.vcr_helper import pn_vcr, pn_vcr_with_empty_body_request
-from tests.helper import pnconf_file_copy
+from tests.helper import pnconf_file_copy, pnconf_enc_env_copy
 from pubnub.endpoints.file_operations.publish_file_message import PublishFileMessage
 from pubnub.models.consumer.file import (
     PNSendFileResult, PNGetFilesResult, PNDownloadFileResult,
@@ -18,12 +19,15 @@ pubnub = PubNub(pnconf_file_copy())
 pubnub.config.uuid = "files_native_sync_uuid"
 
 
-def send_file(file_for_upload, cipher_key=None, pass_binary=False, timetoken_override=None):
+def send_file(file_for_upload, cipher_key=None, pass_binary=False, timetoken_override=None, pubnub_instance=None):
+    if not pubnub_instance:
+        pubnub_instance = pubnub
+
     with open(file_for_upload.strpath, "rb") as fd:
         if pass_binary:
             fd = fd.read()
 
-        send_file_endpoint = pubnub.send_file().\
+        send_file_endpoint = pubnub_instance.send_file().\
             channel(CHANNEL).\
             file_name(file_for_upload.basename).\
             message({"test_message": "test"}).\
@@ -224,3 +228,55 @@ def test_publish_file_message_with_overriding_time_token():
 )
 def test_send_file_with_timetoken_override(file_for_upload):
     send_file(file_for_upload, pass_binary=True, timetoken_override=16057799474000000)
+
+
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/send_and_download_gcm_encrypted_file.json",
+    filter_query_parameters=('pnsdk',), serializer='pn_json'
+)
+def test_send_and_download_gcm_encrypted_file(file_for_upload, file_upload_test_data):
+    config = pnconf_enc_env_copy()
+    config.cipher_mode = AES.MODE_GCM
+    config.fallback_cipher_mode = AES.MODE_CBC
+    pubnub = PubNub(config)
+
+    cipher_key = "silly_walk"
+    with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
+        envelope = send_file(file_for_upload, cipher_key=cipher_key, pubnub_instance=pubnub)
+
+        download_envelope = pubnub.download_file().\
+            channel(CHANNEL).\
+            file_id(envelope.result.file_id).\
+            file_name(envelope.result.name).\
+            cipher_key(cipher_key).sync()
+
+        assert isinstance(download_envelope.result, PNDownloadFileResult)
+        data = download_envelope.result.data
+        assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
+
+
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/send_and_download_encrypted_file_fallback_decode.json",
+    filter_query_parameters=('pnsdk',), serializer='pn_json'
+)
+def test_send_and_download_encrypted_file_fallback_decode(file_for_upload, file_upload_test_data):
+    config_cbc = pnconf_enc_env_copy()
+    pn_cbc = PubNub(config_cbc)
+    config_gcm = pnconf_enc_env_copy()
+    config_gcm.cipher_mode = AES.MODE_GCM
+    config_gcm.fallback_cipher_mode = AES.MODE_CBC
+    pn_gcm = PubNub(config_gcm)
+
+    cipher_key = "silly_walk"
+    with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
+        envelope = send_file(file_for_upload, cipher_key=cipher_key, pubnub_instance=pn_cbc)
+
+        download_envelope = pn_gcm.download_file().\
+            channel(CHANNEL).\
+            file_id(envelope.result.file_id).\
+            file_name(envelope.result.name).\
+            cipher_key(cipher_key).sync()
+
+        assert isinstance(download_envelope.result, PNDownloadFileResult)
+        data = download_envelope.result.data
+        assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")

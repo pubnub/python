@@ -95,6 +95,11 @@ class PubNubFileCrypto(PubNubCryptodome):
     def decrypt(self, key, file):
         secret = self.get_secret(key)
         initialization_vector, extracted_file = self.extract_random_iv(file, use_random_iv=True)
-        cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, initialization_vector)
+        try:
+            cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, initialization_vector)
+            result = unpad(cipher.decrypt(extracted_file), 16)
+        except ValueError:
+            cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
+            result = unpad(cipher.decrypt(extracted_file), 16)
 
-        return unpad(cipher.decrypt(extracted_file), 16)
+        return result

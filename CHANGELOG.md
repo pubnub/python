@@ -1,3 +1,9 @@
+## 7.2.0
+July 06 2023
+
+#### Added
+- Introduced option to select ciphering method for encoding messages and files. The default behavior is unchanged. More can be read [in this comment](https://github.com/pubnub/python/pull/156#issuecomment-1623307799).
+
 ## 7.1.0
 January 17 2023
 

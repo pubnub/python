@@ -1,9 +1,12 @@
-from .enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
+from Cryptodome.Cipher import AES
+from pubnub.enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
+from pubnub.exceptions import PubNubException
 
 
 class PNConfiguration(object):
     DEFAULT_PRESENCE_TIMEOUT = 300
     DEFAULT_HEARTBEAT_INTERVAL = 280
+    ALLOWED_AES_MODES = [AES.MODE_CBC, AES.MODE_GCM]
 
     def __init__(self):
         # TODO: add validation
@@ -17,6 +20,8 @@ class PNConfiguration(object):
         self.publish_key = None
         self.secret_key = None
         self.cipher_key = None
+        self._cipher_mode = AES.MODE_CBC
+        self._fallback_cipher_mode = None
         self.auth_key = None
         self.filter_expression = None
         self.enable_subscribe = True
@@ -60,6 +65,30 @@ class PNConfiguration(object):
 
     def set_presence_timeout(self, timeout):
         self.set_presence_timeout_with_custom_interval(timeout, (timeout / 2) - 1)
+
+    @property
+    def cipher_mode(self):
+        return self._cipher_mode
+
+    @cipher_mode.setter
+    def cipher_mode(self, cipher_mode):
+        if cipher_mode not in self.ALLOWED_AES_MODES:
+            raise PubNubException('Cipher mode not supported')
+        if cipher_mode is not self._cipher_mode:
+            self._cipher_mode = cipher_mode
+            self.crypto_instance = None
+
+    @property
+    def fallback_cipher_mode(self):
+        return self._fallback_cipher_mode
+
+    @fallback_cipher_mode.setter
+    def fallback_cipher_mode(self, fallback_cipher_mode):
+        if fallback_cipher_mode not in self.ALLOWED_AES_MODES:
+            raise PubNubException('Cipher mode not supported')
+        if fallback_cipher_mode is not self._fallback_cipher_mode:
+            self._fallback_cipher_mode = fallback_cipher_mode
+            self.crypto_instance = None
 
     @property
     def crypto(self):

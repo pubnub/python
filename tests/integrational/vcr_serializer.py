@@ -23,25 +23,23 @@ class PNSerializer:
     def serialize(self, cassette_dict):
         for index, interaction in enumerate(cassette_dict['interactions']):
             # for serializing binary body
+            if type(interaction['request']['body']) is bytes:
+                ascii_body = b64encode(interaction['request']['body']).decode('ascii')
+                interaction['request']['body'] = {'binary': ascii_body}
             if type(interaction['response']['body']['string']) is bytes:
                 ascii_body = b64encode(interaction['response']['body']['string']).decode('ascii')
                 interaction['response']['body'] = {'binary': ascii_body}
 
-            interaction['request']['uri'] = self.replace_keys(interaction['request']['uri'])
-            cassette_dict['interactions'][index] == interaction
-        return serialize(cassette_dict)
+        return self.replace_keys(serialize(cassette_dict))
 
-    def replace_placeholders(self, interaction_dict):
+    def replace_placeholders(self, cassette_string):
         for key in self.envs.keys():
-            interaction_dict['request']['uri'] = re.sub(f'{{{key}}}',
-                                                        self.envs[key],
-                                                        interaction_dict['request']['uri'])
-        return interaction_dict
+            cassette_string = re.sub(f'{{{key}}}', self.envs[key], cassette_string)
+        return cassette_string
 
     def deserialize(self, cassette_string):
-        cassette_dict = deserialize(cassette_string)
+        cassette_dict = deserialize(self.replace_placeholders(cassette_string))
         for index, interaction in enumerate(cassette_dict['interactions']):
-            interaction = self.replace_placeholders(interaction)
             if 'binary' in interaction['response']['body'].keys():
                 interaction['response']['body']['string'] = b64decode(interaction['response']['body']['binary'])
                 del interaction['response']['body']['binary']

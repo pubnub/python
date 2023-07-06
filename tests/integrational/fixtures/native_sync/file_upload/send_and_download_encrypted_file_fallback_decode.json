@@ -1,0 +1,299 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_native_sync_ch/generate-upload-url?uuid=uuid-mock",
+                "body": "{\"name\": \"king_arthur.txt\"}",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "27"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "1989"
+                    ],
+                    "Date": [
+                        "Tue, 04 Jul 2023 19:49:52 GMT"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":{\"id\":\"6144738d-4719-4bcb-9574-759c87ba2dda\",\"name\":\"king_arthur.txt\"},\"file_upload_request\":{\"url\":\"https://pubnub-mnemosyne-files-eu-central-1-prd.s3.eu-central-1.amazonaws.com/\",\"method\":\"POST\",\"expiration_date\":\"2023-07-04T19:50:52Z\",\"form_fields\":[{\"key\":\"tagging\",\"value\":\"\\u003cTagging\\u003e\\u003cTagSet\\u003e\\u003cTag\\u003e\\u003cKey\\u003eObjectTTLInDays\\u003c/Key\\u003e\\u003cValue\\u003e1\\u003c/Value\\u003e\\u003c/Tag\\u003e\\u003c/TagSet\\u003e\\u003c/Tagging\\u003e\"},{\"key\":\"key\",\"value\":\"{PN_KEY_SUBSCRIBE}/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/6144738d-4719-4bcb-9574-759c87ba2dda/king_arthur.txt\"},{\"key\":\"Content-Type\",\"value\":\"text/plain; charset=utf-8\"},{\"key\":\"X-Amz-Credential\",\"value\":\"AKIAY7AU6GQDV5LCPVEX/20230704/eu-central-1/s3/aws4_request\"},{\"key\":\"X-Amz-Security-Token\",\"value\":\"\"},{\"key\":\"X-Amz-Algorithm\",\"value\":\"AWS4-HMAC-SHA256\"},{\"key\":\"X-Amz-Date\",\"value\":\"20230704T195052Z\"},{\"key\":\"Policy\",\"value\":\"CnsKCSJleHBpcmF0aW9uIjogIjIwMjMtMDctMDRUMTk6NTA6NTJaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtZXUtY2VudHJhbC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtODhiOWRiYWItMjBmMS00OGQ0LThkZjMtOWJmYWJiMDBjMGI0L2YtdElBY05YSk85bTgxZldWVl9vLWZTUS12ZXVwTnJUbG9WQVVQYmVVUVEvNjE0NDczOGQtNDcxOS00YmNiLTk1NzQtNzU5Yzg3YmEyZGRhL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRFY1TENQVkVYLzIwMjMwNzA0L2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyMzA3MDRUMTk1MDUyWiIgfQoJXQp9Cg==\"},{\"key\":\"X-Amz-Signature\",\"value\":\"09f9e541b894c0f477295cd13d346f66b0b1ce5252ab18eb3f7afadc63e1896b\"}]}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://pubnub-mnemosyne-files-eu-central-1-prd.s3.eu-central-1.amazonaws.com/",
+                "body": {
+                    "binary": "LS04NTk5YTlhOGUyNzgzNjgzYjE0NmI1MTU5NTIyODhmZA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJ0YWdnaW5nIg0KDQo8VGFnZ2luZz48VGFnU2V0PjxUYWc+PEtleT5PYmplY3RUVExJbkRheXM8L0tleT48VmFsdWU+MTwvVmFsdWU+PC9UYWc+PC9UYWdTZXQ+PC9UYWdnaW5nPg0KLS04NTk5YTlhOGUyNzgzNjgzYjE0NmI1MTU5NTIyODhmZA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJrZXkiDQoNCnN1Yi1jLTg4YjlkYmFiLTIwZjEtNDhkNC04ZGYzLTliZmFiYjAwYzBiNC9mLXRJQWNOWEpPOW04MWZXVlZfby1mU1EtdmV1cE5yVGxvVkFVUGJlVVFRLzYxNDQ3MzhkLTQ3MTktNGJjYi05NTc0LTc1OWM4N2JhMmRkYS9raW5nX2FydGh1ci50eHQNCi0tODU5OWE5YThlMjc4MzY4M2IxNDZiNTE1OTUyMjg4ZmQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iQ29udGVudC1UeXBlIg0KDQp0ZXh0L3BsYWluOyBjaGFyc2V0PXV0Zi04DQotLTg1OTlhOWE4ZTI3ODM2ODNiMTQ2YjUxNTk1MjI4OGZkDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9IlgtQW16LUNyZWRlbnRpYWwiDQoNCkFLSUFZN0FVNkdRRFY1TENQVkVYLzIwMjMwNzA0L2V1LWNlbnRyYWwtMS9zMy9hd3M0X3JlcXVlc3QNCi0tODU5OWE5YThlMjc4MzY4M2IxNDZiNTE1OTUyMjg4ZmQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iWC1BbXotU2VjdXJpdHktVG9rZW4iDQoNCg0KLS04NTk5YTlhOGUyNzgzNjgzYjE0NmI1MTU5NTIyODhmZA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJYLUFtei1BbGdvcml0aG0iDQoNCkFXUzQtSE1BQy1TSEEyNTYNCi0tODU5OWE5YThlMjc4MzY4M2IxNDZiNTE1OTUyMjg4ZmQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iWC1BbXotRGF0ZSINCg0KMjAyMzA3MDRUMTk1MDUyWg0KLS04NTk5YTlhOGUyNzgzNjgzYjE0NmI1MTU5NTIyODhmZA0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJQb2xpY3kiDQoNCkNuc0tDU0psZUhCcGNtRjBhVzl1SWpvZ0lqSXdNak10TURjdE1EUlVNVGs2TlRBNk5USmFJaXdLQ1NKamIyNWthWFJwYjI1eklqb2dXd29KQ1hzaVluVmphMlYwSWpvZ0luQjFZbTUxWWkxdGJtVnRiM041Ym1VdFptbHNaWE10WlhVdFkyVnVkSEpoYkMweExYQnlaQ0o5TEFvSkNWc2laWEVpTENBaUpIUmhaMmRwYm1jaUxDQWlQRlJoWjJkcGJtYytQRlJoWjFObGRENDhWR0ZuUGp4TFpYaytUMkpxWldOMFZGUk1TVzVFWVhselBDOUxaWGsrUEZaaGJIVmxQakU4TDFaaGJIVmxQand2VkdGblBqd3ZWR0ZuVTJWMFBqd3ZWR0ZuWjJsdVp6NGlYU3dLQ1FsYkltVnhJaXdnSWlSclpYa2lMQ0FpYzNWaUxXTXRPRGhpT1dSaVlXSXRNakJtTVMwME9HUTBMVGhrWmpNdE9XSm1ZV0ppTURCak1HSTBMMll0ZEVsQlkwNVlTazg1YlRneFpsZFdWbDl2TFdaVFVTMTJaWFZ3VG5KVWJHOVdRVlZRWW1WVlVWRXZOakUwTkRjek9HUXRORGN4T1MwMFltTmlMVGsxTnpRdE56VTVZemczWW1FeVpHUmhMMnRwYm1kZllYSjBhSFZ5TG5SNGRDSmRMQW9KQ1ZzaVkyOXVkR1Z1ZEMxc1pXNW5kR2d0Y21GdVoyVWlMQ0F3TENBMU1qUXlPRGd3WFN3S0NRbGJJbk4wWVhKMGN5MTNhWFJvSWl3Z0lpUkRiMjUwWlc1MExWUjVjR1VpTENBaUlsMHNDZ2tKZXlKNExXRnRlaTFqY21Wa1pXNTBhV0ZzSWpvZ0lrRkxTVUZaTjBGVk5rZFJSRlkxVEVOUVZrVllMekl3TWpNd056QTBMMlYxTFdObGJuUnlZV3d0TVM5ek15OWhkM00wWDNKbGNYVmxjM1FpZlN3S0NRbDdJbmd0WVcxNkxYTmxZM1Z5YVhSNUxYUnZhMlZ1SWpvZ0lpSjlMQW9KQ1hzaWVDMWhiWG90WVd4bmIzSnBkR2h0SWpvZ0lrRlhVelF0U0UxQlF5MVRTRUV5TlRZaWZTd0tDUWw3SW5ndFlXMTZMV1JoZEdVaU9pQWlNakF5TXpBM01EUlVNVGsxTURVeVdpSWdmUW9KWFFwOUNnPT0NCi0tODU5OWE5YThlMjc4MzY4M2IxNDZiNTE1OTUyMjg4ZmQNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iWC1BbXotU2lnbmF0dXJlIg0KDQowOWY5ZTU0MWI4OTRjMGY0NzcyOTVjZDEzZDM0NmY2NmIwYjFjZTUyNTJhYjE4ZWIzZjdhZmFkYzYzZTE4OTZiDQotLTg1OTlhOWE4ZTI3ODM2ODNiMTQ2YjUxNTk1MjI4OGZkDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9ImZpbGUiOyBmaWxlbmFtZT0ia2luZ19hcnRodXIudHh0Ig0KDQprbmlnaHRzb2ZuaTEyMzQ1eFfV0LUcHPC0jOgZUypICeqERdBWXaUFt/q9yQ87HtENCi0tODU5OWE5YThlMjc4MzY4M2IxNDZiNTE1OTUyMjg4ZmQtLQ0K"
+                },
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "2343"
+                    ],
+                    "Content-Type": [
+                        "multipart/form-data; boundary=8599a9a8e2783683b146b515952288fd"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 204,
+                    "message": "No Content"
+                },
+                "headers": {
+                    "x-amz-expiration": [
+                        "expiry-date=\"Thu, 06 Jul 2023 00:00:00 GMT\", rule-id=\"Archive file 1 day after creation\""
+                    ],
+                    "x-amz-request-id": [
+                        "FG5BVM2Q7DVWN98W"
+                    ],
+                    "ETag": [
+                        "\"31af664ac2b86f242369f06edf9dc460\""
+                    ],
+                    "Server": [
+                        "AmazonS3"
+                    ],
+                    "Location": [
+                        "https://pubnub-mnemosyne-files-eu-central-1-prd.s3.eu-central-1.amazonaws.com/{PN_KEY_SUBSCRIBE}%2Ff-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ%2F6144738d-4719-4bcb-9574-759c87ba2dda%2Fking_arthur.txt"
+                    ],
+                    "x-amz-id-2": [
+                        "O3Aq1zRp/A/AREfBqIqd4D43wUGqk8QMTUZtm+hmUyW4it+CNzdRyYvSHsuO/kFr1JozHbWP/OQ="
+                    ],
+                    "x-amz-server-side-encryption": [
+                        "AES256"
+                    ],
+                    "Date": [
+                        "Tue, 04 Jul 2023 19:49:53 GMT"
+                    ]
+                },
+                "body": {
+                    "string": ""
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_native_sync_ch/0/%22a25pZ2h0c29mbmkxMjM0NZRrfJgUztWUV6pXv5zfmA3XciGL8ZdRVe31QyUHau4hbr1JeckbF6Xa4tpO5qF0zbp8T5zlm4YRqSNPOozSZbJK7NBLSrY1XH4sqRMmw9kqbFP0XZ1hkGhwY4A6xz5HK7NJA7AgYYcYNGHC89fuKpkY0O3GF50zbH86R6Jra3YM%22?meta=null&store=1&ttl=222&uuid=uuid-mock",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Date": [
+                        "Tue, 04 Jul 2023 19:49:52 GMT"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16885001923916260\"]"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_native_sync_ch/files/6144738d-4719-4bcb-9574-759c87ba2dda/king_arthur.txt?uuid=uuid-mock",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 307,
+                    "message": "Temporary Redirect"
+                },
+                "headers": {
+                    "Cache-Control": [
+                        "public, max-age=848, immutable"
+                    ],
+                    "Location": [
+                        "https://files-eu-central-1.pndsn.com/{PN_KEY_SUBSCRIBE}/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/6144738d-4719-4bcb-9574-759c87ba2dda/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQDV5LCPVEX%2F20230704%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20230704T190000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=eefac0ff6d196b2e9b7e630e54e2abcecb0ab9b2e954742e3e43d866e373f54e"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "0"
+                    ],
+                    "Date": [
+                        "Tue, 04 Jul 2023 19:49:52 GMT"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": ""
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://files-eu-central-1.pndsn.com/{PN_KEY_SUBSCRIBE}/f-tIAcNXJO9m81fWVV_o-fSQ-veupNrTloVAUPbeUQQ/6144738d-4719-4bcb-9574-759c87ba2dda/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQDV5LCPVEX%2F20230704%2Feu-central-1%2Fs3%2Faws4_request&X-Amz-Date=20230704T190000Z&X-Amz-Expires=3900&X-Amz-Signature=eefac0ff6d196b2e9b7e630e54e2abcecb0ab9b2e954742e3e43d866e373f54e&X-Amz-SignedHeaders=host",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "x-amz-expiration": [
+                        "expiry-date=\"Thu, 06 Jul 2023 00:00:00 GMT\", rule-id=\"Archive file 1 day after creation\""
+                    ],
+                    "x-amz-server-side-encryption": [
+                        "AES256"
+                    ],
+                    "X-Amz-Cf-Id": [
+                        "0su1Z_4V03uqmqXkurjllb3XWVKGorOUeSRzacQRIsQfEadHeyI-Sg=="
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ],
+                    "Via": [
+                        "1.1 116bbd3369f3a47b2d68a49a57fa7b40.cloudfront.net (CloudFront)"
+                    ],
+                    "ETag": [
+                        "\"31af664ac2b86f242369f06edf9dc460\""
+                    ],
+                    "Server": [
+                        "AmazonS3"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "text/plain; charset=utf-8"
+                    ],
+                    "Last-Modified": [
+                        "Tue, 04 Jul 2023 19:49:53 GMT"
+                    ],
+                    "X-Amz-Cf-Pop": [
+                        "WAW51-P3"
+                    ],
+                    "X-Cache": [
+                        "Miss from cloudfront"
+                    ],
+                    "Content-Length": [
+                        "48"
+                    ],
+                    "Date": [
+                        "Tue, 04 Jul 2023 19:49:53 GMT"
+                    ]
+                },
+                "body": {
+                    "binary": "a25pZ2h0c29mbmkxMjM0NXhX1dC1HBzwtIzoGVMqSAnqhEXQVl2lBbf6vckPOx7R"
+                }
+            }
+        }
+    ]
+}

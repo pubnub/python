@@ -3,7 +3,7 @@ import json
 import random
 from base64 import decodebytes, encodebytes
 
-from .crypto_core import PubNubCrypto
+from pubnub.crypto_core import PubNubCrypto
 from Cryptodome.Cipher import AES
 from Cryptodome.Util.Padding import pad, unpad
 
@@ -12,14 +12,19 @@ Initial16bytes = '0123456789012345'
 
 
 class PubNubCryptodome(PubNubCrypto):
+    mode = AES.MODE_CBC
+    fallback_mode = None
+
     def __init__(self, pubnub_config):
         self.pubnub_configuration = pubnub_config
+        self.mode = pubnub_config.cipher_mode
+        self.fallback_mode = pubnub_config.fallback_cipher_mode
 
     def encrypt(self, key, msg, use_random_iv=False):
         secret = self.get_secret(key)
         initialization_vector = self.get_initialization_vector(use_random_iv)
 
-        cipher = AES.new(bytes(secret[0:32], 'utf-8'), AES.MODE_CBC, bytes(initialization_vector, 'utf-8'))
+        cipher = AES.new(bytes(secret[0:32], 'utf-8'), self.mode, bytes(initialization_vector, 'utf-8'))
         encrypted_message = cipher.encrypt(self.pad(msg.encode('utf-8')))
         msg_with_iv = self.append_random_iv(encrypted_message, use_random_iv, bytes(initialization_vector, "utf-8"))
 
@@ -30,8 +35,15 @@ class PubNubCryptodome(PubNubCrypto):
 
         decoded_message = decodebytes(msg.encode("utf-8"))
         initialization_vector, extracted_message = self.extract_random_iv(decoded_message, use_random_iv)
-        cipher = AES.new(bytes(secret[0:32], "utf-8"), AES.MODE_CBC, initialization_vector)
-        plain = self.depad((cipher.decrypt(extracted_message)).decode('utf-8'))
+        cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, initialization_vector)
+        try:
+            plain = self.depad((cipher.decrypt(extracted_message)).decode('utf-8'))
+        except UnicodeDecodeError as e:
+            if not self.fallback_mode:
+                raise e
+
+            cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
+            plain = self.depad((cipher.decrypt(extracted_message)).decode('utf-8'))
 
         try:
             return json.loads(plain)
@@ -71,7 +83,7 @@ class PubNubFileCrypto(PubNubCryptodome):
     def encrypt(self, key, file):
         secret = self.get_secret(key)
         initialization_vector = self.get_initialization_vector(use_random_iv=True)
-        cipher = AES.new(bytes(secret[0:32], "utf-8"), AES.MODE_CBC, bytes(initialization_vector, 'utf-8'))
+        cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, bytes(initialization_vector, 'utf-8'))
         initialization_vector = bytes(initialization_vector, 'utf-8')
 
         return self.append_random_iv(
@@ -83,6 +95,11 @@ class PubNubFileCrypto(PubNubCryptodome):
     def decrypt(self, key, file):
         secret = self.get_secret(key)
         initialization_vector, extracted_file = self.extract_random_iv(file, use_random_iv=True)
-        cipher = AES.new(bytes(secret[0:32], "utf-8"), AES.MODE_CBC, initialization_vector)
+        try:
+            cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, initialization_vector)
+            result = unpad(cipher.decrypt(extracted_file), 16)
+        except ValueError:
+            cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
+            result = unpad(cipher.decrypt(extracted_file), 16)
 
-        return unpad(cipher.decrypt(extracted_file), 16)
+        return result

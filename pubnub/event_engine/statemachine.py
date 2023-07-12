@@ -97,5 +97,5 @@ if __name__ == "__main__":
 
     machine.add_listener(effects.EmitMessagesEffect, )
     effect = machine.trigger(events.DisconnectEvent())
-    logging.info(f'SubscriptionChangedEvent triggered with channels=[`fail`]. Current state: {machine.get_state_name()}')
+    logging.info(f'SubscriptionChangedEvent triggered with channels=[`fail`].  Curr state: {machine.get_state_name()}')
     logging.info(f'effect queue: {machine._effect_list}')

@@ -6,7 +6,6 @@ from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.pubnub import PubNub
 from pubnub.event_engine.models import effects, events
 from pubnub.models.consumer.common import PNStatus
-from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.workers import SubscribeMessageWorker
 
 
@@ -98,7 +97,6 @@ class ManagedReceiveMessagesEffect(ManagedEffect):
             self.event_engine.trigger(recieve_success)
 
 
-
 class ManagedEffectFactory:
     _managed_effects = {
         effects.HandshakeEffect.__name__: ManageHandshakeEffect,
@@ -122,7 +120,7 @@ class EmitEffect:
     def set_pn(self, pubnub: PubNub):
         self.pubnub = pubnub
         self.queue = SimpleQueue
-        self.message_worker = SubscribeMessageWorker(self.pubnub, None, None, None )
+        self.message_worker = SubscribeMessageWorker(self.pubnub, None, None, None)
 
     def emit(self, effect: effects.PNEmittableEffect):
         if isinstance(effect, effects.EmitMessagesEffect):

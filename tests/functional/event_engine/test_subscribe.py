@@ -11,6 +11,7 @@ from pubnub.event_engine.models import states
 
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
+
 @pytest.mark.asyncio
 async def test_subscribe_triggers_event():
     config = pnconf_env_copy()
@@ -18,7 +19,8 @@ async def test_subscribe_triggers_event():
 
     pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
 
-    with patch.object(SubscribeCallback, 'status') as mocked_status, patch.object(SubscribeCallback, 'message') as mocked_message:
+    with patch.object(SubscribeCallback, 'status') as mocked_status, \
+            patch.object(SubscribeCallback, 'message') as mocked_message:
         callback = SubscribeCallback()
         pubnub.add_listener(callback)
         pubnub.subscribe().channels('foo').execute()
@@ -31,6 +33,7 @@ async def test_subscribe_triggers_event():
         await asyncio.sleep(2)
         pubnub._subscription_manager.stop()
         await asyncio.sleep(0.1)
+
 
 async def delayed_publish(channel, message, delay):
     pn = PubNubAsyncio(pnconf_env_copy())

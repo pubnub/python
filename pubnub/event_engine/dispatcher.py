@@ -13,6 +13,7 @@ class Dispatcher:
 
     def set_pn(self, pubnub_instance):
         self._pubnub = pubnub_instance
+        self._effect_emitter.set_pn(pubnub_instance)
 
     def dispatch_effect(self, effect: effects.PNEffect):
         if not self._managed_effects_factory:
@@ -28,6 +29,7 @@ class Dispatcher:
             self.dispatch_cancel_effect(effect)
 
     def emit_effect(self, effect: effects.PNEffect):
+        print(f'  emiting {effect.__class__.__name__} with {effect.__dict__}')
         self._effect_emitter.emit(effect)
 
     def dispatch_managed_effect(self, effect: effects.PNEffect):

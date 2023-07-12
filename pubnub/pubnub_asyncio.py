@@ -57,13 +57,12 @@ class PubNubAsyncio(PubNubCore):
         self._telemetry_manager = AsyncioTelemetryManager()
 
     def __del__(self):
-        self.event_loop.run_until_complete(self.close_session())
-        # print('\n\nsprzątacz\n')
-        # tasks = asyncio.tasks.all_tasks(self.event_loop)
-        # print(tasks)
-        # print('^^^^ tasks')
-        # if len(tasks):
-        #     self.event_loop.run_until_complete(self.close_pending_tasks(tasks))
+        pass
+        # if self.event_loop.is_running():
+        #     tasks = asyncio.tasks.all_tasks(self.event_loop)
+        #     if len(tasks):
+        #         self.event_loop.run_until_complete(self.close_pending_tasks(tasks))
+        #     self.event_loop.run_until_complete(self._session.close())
 
     async def close_pending_tasks(self, tasks):
         await asyncio.gather(*tasks)
@@ -569,6 +568,9 @@ class EventEngineSubscriptionManager(SubscriptionManager):
 
         super().__init__(pubnub_instance)
 
+    def stop(self):
+        self.event_engine.stop()
+
     def adapt_subscribe_builder(self, subscribe_operation: SubscribeOperation):
         if not isinstance(subscribe_operation, SubscribeOperation):
             raise PubNubException('Invalid Subscribe Operation')
@@ -589,7 +591,7 @@ class EventEngineSubscriptionManager(SubscriptionManager):
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         if not isinstance(unsubscribe_operation, UnsubscribeOperation):
             raise PubNubException('Invalid Unsubscribe Operation')
-        event = events.SubscriptionChangedEvent()
+        event = events.SubscriptionChangedEvent(None, None)
         self.event_engine.trigger(event)
 
 

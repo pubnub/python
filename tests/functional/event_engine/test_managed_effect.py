@@ -22,14 +22,14 @@ def test_dispatch_stop_handshake_effect():
 
 
 def test_dispatch_run_receive_effect():
-    with patch.object(manage_effects.ManagedEffect, 'run') as mocked_run:
+    with patch.object(manage_effects.ManagedReceiveMessagesEffect, 'run') as mocked_run:
         dispatcher = Dispatcher(StateMachine(UnsubscribedState))
         dispatcher.dispatch_effect(effects.ReceiveMessagesEffect(['chan']))
         mocked_run.assert_called()
 
 
 def test_dispatch_stop_receive_effect():
-    with patch.object(manage_effects.ManagedEffect, 'stop', ) as mocked_stop:
+    with patch.object(manage_effects.ManagedReceiveMessagesEffect, 'stop', ) as mocked_stop:
         dispatcher = Dispatcher(StateMachine(UnsubscribedState))
         dispatcher.dispatch_effect(effects.ReceiveMessagesEffect(['chan']))
         dispatcher.dispatch_effect(effects.CancelReceiveMessagesEffect())

@@ -11,7 +11,6 @@ class StateMachine:
     _current_state: states.PNState
     _context: states.PNContext
     _effect_list: List[effects.PNEffect]
-    _effect_cursor: int
     _enabled: bool
     _effect_queue: SimpleQueue
 
@@ -20,7 +19,6 @@ class StateMachine:
         self._current_state = initial_state(self._context)
         self._listeners = {}
         self._effect_list = []
-        self._effect_cursor = 0
         if dispatcher_class is None:
             dispatcher_class = Dispatcher
         self._dispatcher = dispatcher_class(self)

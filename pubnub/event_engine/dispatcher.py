@@ -16,6 +16,7 @@ class Dispatcher:
         self._effect_emitter.set_pn(pubnub_instance)
 
     def dispatch_effect(self, effect: effects.PNEffect):
+        print(f'dispatching {effect.__class__.__name__} {id(effect)}')
         if not self._managed_effects_factory:
             self._managed_effects_factory = manage_effects.ManagedEffectFactory(self._pubnub, self._event_engine)
 

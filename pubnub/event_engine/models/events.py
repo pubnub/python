@@ -36,7 +36,7 @@ class SubscriptionRestoredEvent(PNCursorEvent, PNChannelGroupsEvent):
 
 
 class HandshakeSuccessEvent(PNCursorEvent):
-    def __init__(self, timetoken: str, region: int | None = None) -> None:
+    def __init__(self, timetoken: str, region: Optional[int] = None) -> None:
         super().__init__(timetoken, region)
 
 

@@ -3,10 +3,11 @@ import asyncio
 from queue import SimpleQueue
 from typing import Union
 from pubnub.endpoints.pubsub.subscribe import Subscribe
+from pubnub.models.consumer.pubsub import PNMessageResult
+from pubnub.models.server.subscribe import SubscribeMessage
 from pubnub.pubnub import PubNub
 from pubnub.event_engine.models import effects, events
 from pubnub.models.consumer.common import PNStatus
-from pubnub.workers import SubscribeMessageWorker
 
 
 class ManagedEffect:
@@ -92,7 +93,6 @@ class ManagedReceiveMessagesEffect(ManagedEffect):
             timetoken = cursor['t']
             region = cursor['r']
             messages = response.result['m']
-            print(response.result)
             recieve_success = events.ReceiveSuccessEvent(timetoken, region=region, messages=messages)
             self.event_engine.trigger(recieve_success)
 
@@ -120,7 +120,6 @@ class EmitEffect:
     def set_pn(self, pubnub: PubNub):
         self.pubnub = pubnub
         self.queue = SimpleQueue
-        self.message_worker = SubscribeMessageWorker(self.pubnub, None, None, None)
 
     def emit(self, effect: effects.PNEmittableEffect):
         if isinstance(effect, effects.EmitMessagesEffect):
@@ -129,7 +128,18 @@ class EmitEffect:
             self.emit_status(effect)
 
     def emit_message(self, effect: effects.EmitMessagesEffect):
-        self.pubnub._subscription_manager._listener_manager.announce_message('foo')
+        for message in effect.messages:
+            subscribe_message = SubscribeMessage().from_json(message)
+            pn_message_result = PNMessageResult(
+                message=subscribe_message.payload,
+                subscription=subscribe_message.subscription_match,
+                channel=subscribe_message.channel,
+                timetoken=int(message['p']['t']),
+                user_metadata=subscribe_message.publish_metadata,
+                publisher=subscribe_message.issuing_client_id
+            )
+            pn_message_result = 'fo'
+            self.pubnub._subscription_manager._listener_manager.announce_message(pn_message_result)
 
     def emit_status(self, effect: effects.EmitStatusEffect):
         pn_status = PNStatus()

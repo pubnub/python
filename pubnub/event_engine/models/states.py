@@ -329,7 +329,6 @@ class ReceivingState(PNState):
 
     def on_enter(self, context: Union[None, PNContext]):
         super().on_enter(context)
-        print(self._context)
         return effects.ReceiveMessagesEffect(context.channels, context.groups, timetoken=self._context.timetoken,
                                              region=self._context.region)
 

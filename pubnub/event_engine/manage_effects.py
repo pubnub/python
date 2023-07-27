@@ -138,7 +138,6 @@ class EmitEffect:
                 user_metadata=subscribe_message.publish_metadata,
                 publisher=subscribe_message.issuing_client_id
             )
-            pn_message_result = 'fo'
             self.pubnub._subscription_manager._listener_manager.announce_message(pn_message_result)
 
     def emit_status(self, effect: effects.EmitStatusEffect):

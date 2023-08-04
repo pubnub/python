@@ -35,11 +35,12 @@ class TestCallback(SubscribeCallback):
 @pytest.mark.asyncio
 @patch.object(TestCallback, 'status_called')
 @patch.object(TestCallback, 'message_called')
-async def test_subscribe_triggers_event(mocked_status, mocked_message):
+async def test_subscribe(mocked_status, mocked_message):
+    loop = asyncio.get_event_loop()
     config = pnconf_env_copy()
     config.enable_subscribe = True
     callback = TestCallback()
-    pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
+    pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager, custom_event_loop=loop)
     pubnub.add_listener(callback)
     pubnub.subscribe().channels('foo').execute()
     await delayed_publish('foo', 'test', 1)
@@ -50,10 +51,38 @@ async def test_subscribe_triggers_event(mocked_status, mocked_message):
     pubnub.unsubscribe_all()
     await asyncio.sleep(1)
     pubnub._subscription_manager.stop()
-    await asyncio.sleep(0.1)
+
+    try:
+        await asyncio.gather(*asyncio.tasks.all_tasks())
+    except asyncio.CancelledError:
+        pass
+    await asyncio.sleep(0)
+    await pubnub.close_session()
 
 
 async def delayed_publish(channel, message, delay):
     pn = PubNubAsyncio(pnconf_env_copy())
     await asyncio.sleep(delay)
     await pn.publish().channel(channel).message(message).future()
+
+
+@pytest.mark.asyncio
+@patch.object(TestCallback, 'status_called')
+async def test_handshaking(mocked_status):
+    config = pnconf_env_copy()
+    config.enable_subscribe = True
+    callback = TestCallback()
+    pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
+    pubnub.add_listener(callback)
+    pubnub.subscribe().channels('foo').execute()
+    await asyncio.sleep(1)
+    assert pubnub._subscription_manager.event_engine.get_state_name() == states.ReceivingState.__name__
+    mocked_status.assert_called()
+    pubnub._subscription_manager.stop()
+    await asyncio.sleep(2)
+
+    try:
+        await asyncio.gather(*asyncio.tasks.all_tasks())
+    except asyncio.CancelledError:
+        pass
+    await pubnub.close_session()

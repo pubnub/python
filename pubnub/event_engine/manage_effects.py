@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from queue import SimpleQueue
 from typing import Union
@@ -14,6 +15,7 @@ class ManagedEffect:
     pubnub: PubNub = None
     event_engine = None
     effect: Union[effects.PNManageableEffect, effects.PNCancelEffect]
+    stop_event = None
 
     def set_pn(self, pubnub: PubNub):
         self.pubnub = pubnub
@@ -31,7 +33,15 @@ class ManagedEffect:
         pass
 
     def stop(self):
-        pass
+        logging.debug(f'stop called on {self.__class__.__name__}')
+        if self.stop_event:
+            logging.debug(f'stop_event({id(self.stop_event)}).set() called on {self.__class__.__name__}')
+            self.stop_event.set()
+
+    def get_new_stop_event(self):
+        event = asyncio.Event()
+        logging.debug(f'creating new stop_event({id(event)}) for {self.__class__.__name__}')
+        return event
 
 
 class ManageHandshakeEffect(ManagedEffect):
@@ -39,20 +49,20 @@ class ManageHandshakeEffect(ManagedEffect):
         channels = self.effect.channels
         groups = self.effect.groups
         if hasattr(self.pubnub, 'event_loop'):
+            self.stop_event = self.get_new_stop_event()
+
             loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
             if loop.is_running():
-                loop.create_task(self.handshake_async(channels, groups))
+                loop.create_task(self.handshake_async(channels, groups, self.stop_event))
             else:
-                loop.run_until_complete(self.handshake_async(channels, groups))
+                loop.run_until_complete(self.handshake_async(channels, groups, self.stop_event))
         else:
             # TODO:  the synchronous way
             pass
 
-    def stop(self):
-        pass
-
-    async def handshake_async(self, channels, groups):
-        handshake = await Subscribe(self.pubnub).channels(channels).channel_groups(groups).future()
+    async def handshake_async(self, channels, groups, stop_event):
+        request = Subscribe(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
+        handshake = await request.future()
         if not handshake.status.error:
             cursor = handshake.result['t']
             timetoken = cursor['t']
@@ -71,30 +81,39 @@ class ManagedReceiveMessagesEffect(ManagedEffect):
         region = self.effect.region
 
         if hasattr(self.pubnub, 'event_loop'):
+            self.stop_event = self.get_new_stop_event()
             loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
-            coro = self.receive_messages_async(channels, groups, timetoken, region)
             if loop.is_running():
-                loop.create_task(coro)
+                loop.create_task(self.receive_messages_async(channels, groups, timetoken, region))
             else:
-                loop.run_until_complete(coro)
+                loop.run_until_complete(self.receive_messages_async(channels, groups, timetoken, region))
         else:
             # TODO:  the synchronous way
             pass
 
-    def stop(self):
-        pass
-
     async def receive_messages_async(self, channels, groups, timetoken, region):
-        response = await Subscribe(self.pubnub).channels(channels).channel_groups(groups).timetoken(timetoken) \
-            .region(region).future()
+        subscribe = Subscribe(self.pubnub)
+        if channels:
+            subscribe.channels(channels)
+        if groups:
+            subscribe.channel_groups(groups)
+        if timetoken:
+            subscribe.timetoken(timetoken)
+        if region:
+            subscribe.region(region)
 
-        if not response.status.error:
-            cursor = response.result['t']
-            timetoken = cursor['t']
-            region = cursor['r']
-            messages = response.result['m']
-            recieve_success = events.ReceiveSuccessEvent(timetoken, region=region, messages=messages)
-            self.event_engine.trigger(recieve_success)
+        subscribe.cancellation_event(self.stop_event)
+        response = await subscribe.future()
+
+        if response and response.result:
+            if not response.status.error:
+                cursor = response.result['t']
+                timetoken = cursor['t']
+                region = cursor['r']
+                messages = response.result['m']
+                recieve_success = events.ReceiveSuccessEvent(timetoken, region=region, messages=messages)
+                self.event_engine.trigger(recieve_success)
+        self.stop_event.set()
 
 
 class ManagedEffectFactory:

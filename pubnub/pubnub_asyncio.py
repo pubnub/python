@@ -57,11 +57,11 @@ class PubNubAsyncio(PubNubCore):
         self._telemetry_manager = AsyncioTelemetryManager()
 
     def __del__(self):
+        pass
         if self.event_loop.is_running():
             self.event_loop.create_task(self.close_session())
 
-    async def close_pending_tasks(self):
-        tasks = filter(lambda task: not task.cancelled(), asyncio.tasks.all_tasks())
+    async def close_pending_tasks(self, tasks):
         await asyncio.gather(*tasks)
         await asyncio.sleep(0.1)
 
@@ -72,16 +72,8 @@ class PubNubAsyncio(PubNubCore):
             connector=self._connector
         )
 
-    async def get_session(self):
-        if self._session is None or self._session.closed:
-            self._session = aiohttp.ClientSession(
-                loop=self.event_loop,
-                timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
-                connector=self._connector
-            )
-
     async def close_session(self):
-        if self._session is not None and not self._session.closed:
+        if self._session is not None:
             await self._session.close()
 
     async def set_connector(self, cn):
@@ -197,7 +189,8 @@ class PubNubAsyncio(PubNubCore):
             request_headers = self.headers
 
         try:
-            await self.get_session()
+            if not self._session:
+                await self.create_session()
             start_timestamp = time.time()
             response = await asyncio.wait_for(
                 self._session.request(
@@ -209,9 +202,7 @@ class PubNubAsyncio(PubNubCore):
                 ),
                 options.request_timeout
             )
-        except asyncio.CancelledError:
-            pass
-        except (asyncio.TimeoutError):
+        except (asyncio.TimeoutError, asyncio.CancelledError):
             raise
         except Exception as e:
             logger.error("session.request exception: %s" % str(e))

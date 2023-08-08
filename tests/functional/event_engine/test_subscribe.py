@@ -1,4 +1,5 @@
 import asyncio
+import busypie
 import logging
 import pytest
 import sys
@@ -15,49 +16,60 @@ logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
 
 class TestCallback(SubscribeCallback):
-    def status(self, pubnub, status: PNStatus):
-        assert status.error is False
-        assert status.category is PNStatusCategory.PNConnectedCategory
-        self.status_called()
-
-    def message(self, pubnub, message):
-        assert message.channel == 'foo'
-        assert message.message == 'test'
-        self.message_called()
+    _status_called = False
+    _message_called = False
 
     def status_called(self):
-        pass
+        return self._status_called
 
     def message_called(self):
+        return self._message_called
+
+    def status(self, pubnub, status: PNStatus):
+        self._status_called = True
+        assert status.error is False
+        assert status.category is PNStatusCategory.PNConnectedCategory
+        logging.warning('calling status_callback()')
+        self.status_callback()
+
+    def message(self, pubnub, message):
+        self._message_called = True
+        assert message.channel == 'foo'
+        assert message.message == 'test'
+        logging.warning('calling message_callback()')
+        self.message_callback()
+
+    def status_callback(self):
+        pass
+
+    def message_callback(self):
         pass
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip
-@patch.object(TestCallback, 'status_called')
-@patch.object(TestCallback, 'message_called')
-async def test_subscribe(mocked_status, mocked_message):
+async def test_subscribe():
     loop = asyncio.get_event_loop()
     config = pnconf_env_copy()
     config.enable_subscribe = True
     callback = TestCallback()
-    pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager, custom_event_loop=loop)
-    pubnub.add_listener(callback)
-    pubnub.subscribe().channels('foo').execute()
-    await delayed_publish('foo', 'test', 1)
-    await asyncio.sleep(5)
-    assert pubnub._subscription_manager.event_engine.get_state_name() == states.ReceivingState.__name__
-    # mocked_status.assert_called()
-    # mocked_message.assert_called()
-    pubnub.unsubscribe_all()
-    await asyncio.sleep(1)
-    pubnub._subscription_manager.stop()
+    with patch.object(TestCallback, 'status_callback') as status_callback, \
+         patch.object(TestCallback, 'message_callback') as message_callback:
+        pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager, custom_event_loop=loop)
+        pubnub.add_listener(callback)
+        pubnub.subscribe().channels('foo').execute()
+        await delayed_publish('foo', 'test', 1)
+        await busypie.wait().at_most(10).poll_delay(2).poll_interval(1).until_async(lambda: callback.message_called)
+        assert pubnub._subscription_manager.event_engine.get_state_name() == states.ReceivingState.__name__
+
+        status_callback.assert_called()
+        message_callback.assert_called()
+        pubnub.unsubscribe_all()
+        pubnub._subscription_manager.stop()
 
     try:
         await asyncio.gather(*asyncio.tasks.all_tasks())
     except asyncio.CancelledError:
         pass
-    await asyncio.sleep(0)
     await pubnub.close_session()
 
 
@@ -68,21 +80,18 @@ async def delayed_publish(channel, message, delay):
 
 
 @pytest.mark.asyncio
-@pytest.mark.skip
-@patch.object(TestCallback, 'status_called')
-async def test_handshaking(mocked_status):
+async def test_handshaking():
     config = pnconf_env_copy()
     config.enable_subscribe = True
     callback = TestCallback()
-    pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
-    pubnub.add_listener(callback)
-    pubnub.subscribe().channels('foo').execute()
-    await asyncio.sleep(1)
-    assert pubnub._subscription_manager.event_engine.get_state_name() == states.ReceivingState.__name__
-    # mocked_status.assert_called()
-    pubnub._subscription_manager.stop()
-    await asyncio.sleep(2)
-
+    with patch.object(TestCallback, 'status_callback') as status_callback:
+        pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
+        pubnub.add_listener(callback)
+        pubnub.subscribe().channels('foo').execute()
+        await busypie.wait().at_most(10).poll_delay(2).poll_interval(1).until_async(lambda: callback.status_called)
+        assert pubnub._subscription_manager.event_engine.get_state_name() == states.ReceivingState.__name__
+        status_callback.assert_called()
+        pubnub._subscription_manager.stop()
     try:
         await asyncio.gather(*asyncio.tasks.all_tasks())
     except asyncio.CancelledError:

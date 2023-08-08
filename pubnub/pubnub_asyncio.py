@@ -8,19 +8,22 @@ import urllib
 
 from asyncio import Event, Queue, Semaphore
 from yarl import URL
+from pubnub.event_engine.models import events, states
 
 from pubnub.models.consumer.common import PNStatus
-from .endpoints.presence.heartbeat import Heartbeat
-from .endpoints.presence.leave import Leave
-from .endpoints.pubsub.subscribe import Subscribe
-from .pubnub_core import PubNubCore
-from .workers import SubscribeMessageWorker
-from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
-from . import utils
-from .structures import ResponseInfo, RequestOptions
-from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
-from .callbacks import SubscribeCallback, ReconnectionCallback
-from .errors import (
+from pubnub.dtos import SubscribeOperation, UnsubscribeOperation
+from pubnub.event_engine.statemachine import StateMachine
+from pubnub.endpoints.presence.heartbeat import Heartbeat
+from pubnub.endpoints.presence.leave import Leave
+from pubnub.endpoints.pubsub.subscribe import Subscribe
+from pubnub.pubnub_core import PubNubCore
+from pubnub.workers import SubscribeMessageWorker
+from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
+from pubnub import utils
+from pubnub.structures import ResponseInfo, RequestOptions
+from pubnub.enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
+from pubnub.callbacks import SubscribeCallback, ReconnectionCallback
+from pubnub.errors import (
     PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED,
     PNERR_REQUEST_CANCELLED, PNERR_CLIENT_TIMEOUT
 )
@@ -34,26 +37,47 @@ class PubNubAsyncio(PubNubCore):
     PubNub Python SDK for asyncio framework
     """
 
-    def __init__(self, config, custom_event_loop=None):
+    def __init__(self, config, custom_event_loop=None, subscription_manager=None):
         super(PubNubAsyncio, self).__init__(config)
         self.event_loop = custom_event_loop or asyncio.get_event_loop()
 
         self._connector = None
         self._session = None
 
-        self._connector = aiohttp.TCPConnector(verify_ssl=True)
+        self._connector = aiohttp.TCPConnector(verify_ssl=True, loop=self.event_loop)
+
+        if not subscription_manager:
+            subscription_manager = AsyncioSubscriptionManager
+
+        if self.config.enable_subscribe:
+            self._subscription_manager = subscription_manager(self)
+
+        self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop, PubNubCore.MAX_SEQUENCE)
+
+        self._telemetry_manager = AsyncioTelemetryManager()
+
+    def __del__(self):
+        pass
+        # if self.event_loop.is_running():
+        #     tasks = asyncio.tasks.all_tasks(self.event_loop)
+        #     if len(tasks):
+        #         self.event_loop.run_until_complete(self.close_pending_tasks(tasks))
+        #     self.event_loop.run_until_complete(self._session.close())
+
+    async def close_pending_tasks(self, tasks):
+        await asyncio.gather(*tasks)
+        await asyncio.sleep(0.1)
+
+    async def create_session(self):
         self._session = aiohttp.ClientSession(
             loop=self.event_loop,
             timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
             connector=self._connector
         )
 
-        if self.config.enable_subscribe:
-            self._subscription_manager = AsyncioSubscriptionManager(self)
-
-        self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop, PubNubCore.MAX_SEQUENCE)
-
-        self._telemetry_manager = AsyncioTelemetryManager()
+    async def close_session(self):
+        if self._session is not None:
+            await self._session.close()
 
     async def set_connector(self, cn):
         await self._session.close()
@@ -67,7 +91,7 @@ class PubNubAsyncio(PubNubCore):
         )
 
     async def stop(self):
-        await self._session.close()
+        await self.close_session()
         if self._subscription_manager:
             self._subscription_manager.stop()
 
@@ -168,6 +192,8 @@ class PubNubAsyncio(PubNubCore):
             request_headers = self.headers
 
         try:
+            if not self._session:
+                await self.create_session()
             start_timestamp = time.time()
             response = await asyncio.wait_for(
                 self._session.request(
@@ -529,6 +555,44 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             .channel_groups(unsubscribe_operation.channel_groups).future()
 
         self._listener_manager.announce_status(envelope.status)
+
+
+class EventEngineSubscriptionManager(SubscriptionManager):
+    event_engine: StateMachine
+    loop: asyncio.AbstractEventLoop
+
+    def __init__(self, pubnub_instance):
+        self.event_engine = StateMachine(states.UnsubscribedState)
+        self.event_engine.get_dispatcher().set_pn(pubnub_instance)
+        self.loop = asyncio.new_event_loop()
+
+        super().__init__(pubnub_instance)
+
+    def stop(self):
+        self.event_engine.stop()
+
+    def adapt_subscribe_builder(self, subscribe_operation: SubscribeOperation):
+        if not isinstance(subscribe_operation, SubscribeOperation):
+            raise PubNubException('Invalid Subscribe Operation')
+
+        if subscribe_operation.timetoken:
+            subscription_event = events.SubscriptionRestoredEvent(
+                channels=subscribe_operation.channels,
+                groups=subscribe_operation.channel_groups,
+                timetoken=subscribe_operation.timetoken
+            )
+        else:
+            subscription_event = events.SubscriptionChangedEvent(
+                channels=subscribe_operation.channels,
+                groups=subscribe_operation.channel_groups
+            )
+        self.event_engine.trigger(subscription_event)
+
+    def adapt_unsubscribe_builder(self, unsubscribe_operation):
+        if not isinstance(unsubscribe_operation, UnsubscribeOperation):
+            raise PubNubException('Invalid Unsubscribe Operation')
+        event = events.SubscriptionChangedEvent(None, None)
+        self.event_engine.trigger(event)
 
 
 class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):

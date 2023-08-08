@@ -1,6 +1,7 @@
 from pubnub.enums import PNStatusCategory
-from pubnub.event_engine import effects, events
-from pubnub.event_engine.effects import PNEffect
+from pubnub.event_engine.models import effects
+from pubnub.event_engine.models.effects import PNEffect
+from pubnub.event_engine.models import events
 from pubnub.exceptions import PubNubException
 from typing import List, Union
 
@@ -328,7 +329,9 @@ class ReceivingState(PNState):
 
     def on_enter(self, context: Union[None, PNContext]):
         super().on_enter(context)
-        return effects.ReceiveMessagesEffect(context.channels, context.groups)
+        print(self._context)
+        return effects.ReceiveMessagesEffect(context.channels, context.groups, timetoken=self._context.timetoken,
+                                             region=self._context.region)
 
     def on_exit(self):
         super().on_exit()
@@ -385,6 +388,13 @@ class ReceivingState(PNState):
             state=ReceiveStoppedState,
             context=self._context,
             effect=effects.EmitStatusEffect(PNStatusCategory.PNDisconnectedCategory)
+        )
+
+    def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        return PNTransition(
+            state=ReceivingState,
+            context=self._context
         )
 
 

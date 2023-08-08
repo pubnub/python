@@ -1,5 +1,5 @@
 from pubnub.exceptions import PubNubException
-from typing import List
+from typing import List, Optional
 
 
 class PNEvent:
@@ -13,7 +13,7 @@ class PNFailureEvent(PNEvent):
 
 
 class PNCursorEvent(PNEvent):
-    def __init__(self, timetoken: str, region: int) -> None:
+    def __init__(self, timetoken: str, region: Optional[int] = None) -> None:
         self.timetoken = timetoken
         self.region = region
 
@@ -30,19 +30,17 @@ class SubscriptionChangedEvent(PNChannelGroupsEvent):
 
 
 class SubscriptionRestoredEvent(PNCursorEvent, PNChannelGroupsEvent):
-    def __init__(self, timetoken: str, region: int, channels: List[str], groups: List[str]) -> None:
+    def __init__(self, timetoken: str, channels: List[str], groups: List[str], region: Optional[int] = None) -> None:
         PNCursorEvent.__init__(self, timetoken, region)
         PNChannelGroupsEvent.__init__(self, channels, groups)
 
 
 class HandshakeSuccessEvent(PNCursorEvent):
-    def __init__(self, attempt: int, reason: PubNubException) -> None:
-        self.attempt = attempt
-        self.reason = reason
+    def __init__(self, timetoken: str, region: Optional[int] = None) -> None:
+        super().__init__(timetoken, region)
 
 
 class HandshakeFailureEvent(PNFailureEvent):
-
     pass
 
 
@@ -63,7 +61,7 @@ class HandshakeReconnectRetryEvent(PNEvent):
 
 
 class ReceiveSuccessEvent(PNCursorEvent):
-    def __init__(self, timetoken: str, region: int, messages: list) -> None:
+    def __init__(self, timetoken: str, messages: list, region: Optional[int] = None) -> None:
         PNCursorEvent.__init__(self, timetoken, region)
         self.messages = messages
 
@@ -73,7 +71,7 @@ class ReceiveFailureEvent(PNFailureEvent):
 
 
 class ReceiveReconnectSuccessEvent(PNCursorEvent):
-    def __init__(self, timetoken: str, region: int, messages: list) -> None:
+    def __init__(self, timetoken: str, messages: list, region: Optional[int] = None) -> None:
         PNCursorEvent.__init__(self, timetoken, region)
         self.messages = messages
 

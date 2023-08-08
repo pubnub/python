@@ -5,7 +5,9 @@ on: [push]
 jobs:
   lint:
     name: Lint project
-    runs-on: ubuntu-latest
+    runs-on:
+      group: Default Larger Runners
+      labels: ubuntu-latest-m
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -22,7 +24,9 @@ jobs:
         uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   pubnub-yml:
     name: "Validate .pubnub.yml"
-    runs-on: ubuntu-latest
+    runs-on:
+      group: Default Larger Runners
+      labels: ubuntu-latest-m
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -42,7 +46,9 @@ jobs:
         uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   all-validations:
     name: Validations
-    runs-on: ubuntu-latest
+    runs-on:
+      group: Default Larger Runners
+      labels: ubuntu-latest-m
     needs: [pubnub-yml, lint]
     steps:
       - name: Validations summary

@@ -9,7 +9,7 @@ from requests.adapters import HTTPAdapter
 
 from pubnub import utils
 from pubnub.enums import PNStatusCategory
-from pubnub.errors import PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR, PNERR_TOO_MANY_REDIRECTS_ERROR,\
+from pubnub.errors import PNERR_CLIENT_ERROR, PNERR_UNKNOWN_ERROR, PNERR_TOO_MANY_REDIRECTS_ERROR, \
     PNERR_CLIENT_TIMEOUT, PNERR_HTTP_ERROR, PNERR_CONNECTION_ERROR
 from pubnub.errors import PNERR_SERVER_ERROR
 from pubnub.exceptions import PubNubException

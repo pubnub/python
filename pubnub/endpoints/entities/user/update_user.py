@@ -1,4 +1,4 @@
-from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, UserEndpoint,\
+from pubnub.endpoints.entities.endpoint import EntitiesEndpoint, UserEndpoint, \
     IncludeCustomEndpoint, CustomAwareEndpoint
 from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod

@@ -34,13 +34,13 @@ class StateMachine:
         return self._dispatcher
 
     def trigger(self, event: events.PNEvent) -> states.PNTransition:
-        logging.info(f'Triggered {event.__class__.__name__} on {self._current_state.__class__.__name__}')
+        logging.debug(f'Triggered {event.__class__.__name__} on {self._current_state.__class__.__name__}')
         if not self._enabled:
             return False
         if event.get_name() in self._current_state._transitions:
             self._effect_list.clear()
             effect = self._current_state.on_exit()
-            logging.info(f'On exit effect: {effect.__class__.__name__}')
+            logging.debug(f'On exit effect: {effect.__class__.__name__}')
 
             if effect:
                 self._effect_list.append(effect)
@@ -52,29 +52,29 @@ class StateMachine:
             self._context = transition.context
             if transition.effect:
                 if isinstance(transition.effect, list):
-                    logging.info('unpacking list')
+                    logging.debug('unpacking list')
                     for effect in transition.effect:
-                        logging.info(f'Transition effect: {effect.__class__.__name__}')
+                        logging.debug(f'Transition effect: {effect.__class__.__name__}')
                         self._effect_list.append(effect)
                 else:
-                    logging.info(f'Transition effect: {transition.effect.__class__.__name__}')
+                    logging.debug(f'Transition effect: {transition.effect.__class__.__name__}')
                     self._effect_list.append(transition.effect)
 
             effect = self._current_state.on_enter(self._context)
             if effect:
-                logging.info(f'On enter effect: {effect.__class__.__name__}')
+                logging.debug(f'On enter effect: {effect.__class__.__name__}')
                 self._effect_list.append(effect)
 
         else:
             self.stop()
             # we're ignoring events unhandled
-            logging.info(f'unhandled event?? {event.__class__.__name__} in {self._current_state.__class__.__name__}')
+            logging.debug(f'unhandled event?? {event.__class__.__name__} in {self._current_state.__class__.__name__}')
 
         self.dispatch_effects()
 
     def dispatch_effects(self):
         for effect in self._effect_list:
-            logging.info(f'dispatching {effect.__class__.__name__} {id(effect)}')
+            logging.debug(f'dispatching {effect.__class__.__name__} {id(effect)}')
             self._dispatcher.dispatch_effect(effect)
 
         self._effect_list.clear()
@@ -86,14 +86,14 @@ class StateMachine:
 """ TODO: Remove before prodction """
 if __name__ == "__main__":
     machine = StateMachine(states.UnsubscribedState)
-    logging.info(f'machine initialized. Current state: {machine.get_state_name()}')
+    logging.debug(f'machine initialized. Current state: {machine.get_state_name()}')
     effect = machine.trigger(events.SubscriptionChangedEvent(
         channels=['fail'], groups=[]
     ))
 
-    machine.add_listener(effects.PNEffect, lambda x: logging.info(f'Catch All Logger: {effect.__dict__}'))
+    machine.add_listener(effects.PNEffect, lambda x: logging.debug(f'Catch All Logger: {effect.__dict__}'))
 
     machine.add_listener(effects.EmitMessagesEffect, )
     effect = machine.trigger(events.DisconnectEvent())
-    logging.info(f'SubscriptionChangedEvent triggered with channels=[`fail`].  Curr state: {machine.get_state_name()}')
-    logging.info(f'effect queue: {machine._effect_list}')
+    logging.debug(f'SubscriptionChangedEvent triggered with channels=[`fail`].  Curr state: {machine.get_state_name()}')
+    logging.debug(f'effect queue: {machine._effect_list}')

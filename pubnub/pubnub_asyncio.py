@@ -58,11 +58,8 @@ class PubNubAsyncio(PubNubCore):
 
     def __del__(self):
         pass
-        # if self.event_loop.is_running():
-        #     tasks = asyncio.tasks.all_tasks(self.event_loop)
-        #     if len(tasks):
-        #         self.event_loop.run_until_complete(self.close_pending_tasks(tasks))
-        #     self.event_loop.run_until_complete(self._session.close())
+        if self.event_loop.is_running():
+            self.event_loop.create_task(self.close_session())
 
     async def close_pending_tasks(self, tasks):
         await asyncio.gather(*tasks)

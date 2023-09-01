@@ -1,9 +1,11 @@
 import asyncio
 import logging
+import math
 
 from queue import SimpleQueue
 from typing import Union
 from pubnub.endpoints.pubsub.subscribe import Subscribe
+from pubnub.enums import PNReconnectionPolicy
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.models.server.subscribe import SubscribeMessage
 from pubnub.pubnub import PubNub
@@ -63,7 +65,12 @@ class ManageHandshakeEffect(ManagedEffect):
     async def handshake_async(self, channels, groups, stop_event):
         request = Subscribe(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
         handshake = await request.future()
-        if not handshake.status.error:
+
+        if handshake.status.error:
+            logging.warning(f'Handshake failed: {handshake.status.error_data.__dict__}')
+            handshake_failure = events.HandshakeFailureEvent(handshake.status.error_data, 1)
+            self.event_engine.trigger(handshake_failure)
+        else:
             cursor = handshake.result['t']
             timetoken = cursor['t']
             region = cursor['r']
@@ -116,10 +123,84 @@ class ManagedReceiveMessagesEffect(ManagedEffect):
         self.stop_event.set()
 
 
+class ManagedHandshakeReconnectEffect(ManagedEffect):
+    effect: effects.HandshakeReconnectEffect
+    reconnection_policy: PNReconnectionPolicy
+
+    def __init__(self, pubnub_instance, event_engine_instance,
+                 effect: Union[effects.PNManageableEffect, effects.PNCancelEffect]) -> None:
+        super().__init__(pubnub_instance, event_engine_instance, effect)
+        self.reconnection_policy = pubnub_instance.config.reconnect_policy
+        self.interval = pubnub_instance.config.RECONNECTION_INTERVAL
+        self.min_backoff = pubnub_instance.config.RECONNECTION_MIN_EXPONENTIAL_BACKOFF
+        self.max_backoff = pubnub_instance.config.RECONNECTION_MAX_EXPONENTIAL_BACKOFF
+
+    def calculate_reconnection_delay(self, attempt):
+        if not attempt:
+            attempt = 1
+        if self.reconnection_policy is PNReconnectionPolicy.LINEAR:
+            delay = self.interval
+
+        elif self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
+            delay = int(math.pow(2, attempt - 5 * math.floor((attempt - 1) / 5)) - 1)
+        return delay
+
+    def run(self):
+        if self.reconnection_policy is PNReconnectionPolicy.NONE:
+            self.event_engine.trigger(events.HandshakeReconnectGiveupEvent(
+                reason=self.effect.reason,
+                attempt=self.effect.attempts
+            ))
+        else:
+            attempt = self.effect.attempts
+            delay = self.calculate_reconnection_delay(attempt)
+            logging.warning(f'will reconnect in {delay}s')
+            if hasattr(self.pubnub, 'event_loop'):
+                loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
+                if loop.is_running():
+                    self.delayed_reconnect_coro = loop.create_task(self.delayed_reconnect_async(delay, attempt))
+                else:
+                    self.delayed_reconnect_coro = loop.run_until_complete(self.delayed_reconnect_async(delay, attempt))
+            else:
+                # TODO:  the synchronous way
+                pass
+
+    async def delayed_reconnect_async(self, delay, attempt):
+        self.stop_event = self.get_new_stop_event()
+        await asyncio.sleep(delay)
+
+        request = Subscribe(self.pubnub).channels(self.effect.channels).channel_groups(self.effect.groups) \
+            .cancellation_event(self.stop_event)
+        handshake = await request.future()
+
+        if handshake.status.error:
+            logging.warning(f'Handshake failed: {handshake.status.error_data.__dict__}')
+            handshake_failure = events.HandshakeReconnectFailureEvent(handshake.status.error_data, attempt)
+            self.event_engine.trigger(handshake_failure)
+        else:
+            cursor = handshake.result['t']
+            timetoken = cursor['t']
+            region = cursor['r']
+            handshake_success = events.HandshakeReconnectSuccessEvent(timetoken, region)
+            self.event_engine.trigger(handshake_success)
+
+    def stop(self):
+        logging.debug(f'stop called on {self.__class__.__name__}')
+        if self.stop_event:
+            logging.debug(f'stop_event({id(self.stop_event)}).set() called on {self.__class__.__name__}')
+            self.stop_event.set()
+            if self.delayed_reconnect_coro:
+                try:
+                    self.delayed_reconnect_coro.cancel()
+                except asyncio.exceptions.CancelledError:
+                    pass
+
+
 class ManagedEffectFactory:
     _managed_effects = {
         effects.HandshakeEffect.__name__: ManageHandshakeEffect,
         effects.ReceiveMessagesEffect.__name__: ManagedReceiveMessagesEffect,
+        effects.HandshakeReconnectEffect.__name__: ManagedHandshakeReconnectEffect,
     }
 
     def __init__(self, pubnub_instance, event_engine_instance) -> None:

@@ -198,6 +198,14 @@ def pnconf_pam_acceptance_copy():
     return pam_config
 
 
+def pnconf_env_acceptance_copy():
+    config = copy(pnconf_env)
+    config.origin = "localhost:8090"
+    config.ssl = False
+    config.enable_subscribe = True
+    return config
+
+
 def pnconf_ssl_copy():
     return copy(pnconf_ssl)
 

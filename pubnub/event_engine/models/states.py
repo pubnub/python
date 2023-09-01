@@ -176,7 +176,10 @@ class HandshakeReconnectingState(PNState):
     def on_enter(self, context: Union[None, PNContext]):
         self._context.update(context)
         super().on_enter(self._context)
-        return effects.HandshakeReconnectEffect(self._context.channels, self._context.groups)
+        return effects.HandshakeReconnectEffect(self._context.channels,
+                                                self._context.groups,
+                                                attempts=self._context.attempt,
+                                                reason=self._context.reason)
 
     def on_exit(self):
         super().on_exit()
@@ -249,19 +252,10 @@ class HandshakeFailedState(PNState):
     def __init__(self, context: PNContext) -> None:
         super().__init__(context)
         self._transitions = {
-            events.HandshakeReconnectRetryEvent.__name__: self.reconnect_retry,
             events.SubscriptionChangedEvent.__name__: self.subscription_changed,
             events.ReconnectEvent.__name__: self.reconnect,
             events.SubscriptionRestoredEvent.__name__: self.subscription_restored,
         }
-
-    def reconnect_retry(self, event: events.HandshakeReconnectRetryEvent, context: PNContext) -> PNTransition:
-        self._context.update(context)
-
-        return PNTransition(
-            state=HandshakeReconnectingState,
-            context=self._context
-        )
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
         self._context.update(context)

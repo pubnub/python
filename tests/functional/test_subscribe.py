@@ -1,10 +1,6 @@
 import unittest
 
-try:
-    from mock import MagicMock
-except ImportError:
-    from unittest.mock import MagicMock
-
+from unittest.mock import MagicMock
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name

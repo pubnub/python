@@ -44,24 +44,7 @@ class CancelReceiveMessagesEffect(PNCancelEffect):
     cancel_effect = ReceiveMessagesEffect.__name__
 
 
-class HandshakeReconnectEffect(PNManageableEffect):
-    def __init__(self,
-                 channels: Union[None, List[str]] = None,
-                 groups: Union[None, List[str]] = None,
-                 attempts: Union[None, int] = None,
-                 reason: Union[None, PubNubException] = None
-                 ) -> None:
-        self.channels = channels
-        self.groups = groups
-        self.attempts = attempts
-        self.reason = reason
-
-
-class CancelHandshakeReconnectEffect(PNCancelEffect):
-    cancel_effect = HandshakeReconnectEffect.__name__
-
-
-class ReceiveReconnectEffect(PNManageableEffect):
+class ReconnectEffect(PNManageableEffect):
     def __init__(self,
                  channels: Union[None, List[str]] = None,
                  groups: Union[None, List[str]] = None,
@@ -72,10 +55,22 @@ class ReceiveReconnectEffect(PNManageableEffect):
                  ) -> None:
         self.channels = channels
         self.groups = groups
-        self.timetoken = timetoken
-        self.region = region
         self.attempts = attempts
         self.reason = reason
+        self.timetoken = timetoken
+        self.region = region
+
+
+class HandshakeReconnectEffect(ReconnectEffect):
+    pass
+
+
+class CancelHandshakeReconnectEffect(PNCancelEffect):
+    cancel_effect = HandshakeReconnectEffect.__name__
+
+
+class ReceiveReconnectEffect(ReconnectEffect):
+    pass
 
 
 class CancelReceiveReconnectEffect(PNCancelEffect):

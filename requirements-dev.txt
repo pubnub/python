@@ -10,3 +10,4 @@ cbor2
 behave
 vcrpy
 urllib3<2
+busypie

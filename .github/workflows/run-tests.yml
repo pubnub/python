@@ -26,7 +26,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python: [3.7.13, 3.8.13, 3.9.13, 3.10.11, 3.11.3]
+        python: [3.7.17, 3.8.17, 3.9.17, 3.10.12, 3.11.4]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

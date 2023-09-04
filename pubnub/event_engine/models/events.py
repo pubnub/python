@@ -10,6 +10,8 @@ class PNEvent:
 class PNFailureEvent(PNEvent):
     def __init__(self, reason: PubNubException, attempt: int) -> None:
         self.reason = reason
+        self.attempt = attempt
+        super().__init__()
 
 
 class PNCursorEvent(PNEvent):
@@ -52,7 +54,7 @@ class HandshakeReconnectFailureEvent(PNFailureEvent):
     pass
 
 
-class HandshakeReconnectGiveupEvent(PNEvent):
+class HandshakeReconnectGiveupEvent(PNFailureEvent):
     pass
 
 

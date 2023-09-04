@@ -10,7 +10,7 @@ from tests.helper import pnconf_env_copy
 from pubnub.pubnub_asyncio import PubNubAsyncio, EventEngineSubscriptionManager, SubscribeCallback
 from pubnub.event_engine.models import states
 from pubnub.models.consumer.common import PNStatus
-from pubnub.enums import PNStatusCategory
+from pubnub.enums import PNStatusCategory, PNReconnectionPolicy
 
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
@@ -29,14 +29,14 @@ class TestCallback(SubscribeCallback):
         self._status_called = True
         assert status.error is False
         assert status.category is PNStatusCategory.PNConnectedCategory
-        logging.warning('calling status_callback()')
+        logging.debug('calling status_callback()')
         self.status_callback()
 
     def message(self, pubnub, message):
         self._message_called = True
         assert message.channel == 'foo'
         assert message.message == 'test'
-        logging.warning('calling message_callback()')
+        logging.debug('calling message_callback()')
         self.message_callback()
 
     def status_callback(self):
@@ -97,3 +97,46 @@ async def test_handshaking():
     except asyncio.CancelledError:
         pass
     await pubnub.close_session()
+
+
+@pytest.mark.asyncio
+async def test_handshake_failed_no_reconnect():
+    config = pnconf_env_copy()
+    config.publish_key = 'totally-fake-key'
+    config.subscribe_key = 'totally-fake-key'
+    config.enable_subscribe = True
+    config.reconnect_policy = PNReconnectionPolicy.NONE
+    config.maximum_reconnection_retries = 1
+    config.subscribe_request_timeout = 2
+
+    callback = TestCallback()
+    pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
+    pubnub.add_listener(callback)
+    pubnub.subscribe().channels('foo').execute()
+    await asyncio.sleep(4)
+    assert pubnub._subscription_manager.event_engine.get_state_name() == states.HandshakeFailedState.__name__
+    pubnub._subscription_manager.stop()
+    await pubnub.close_session()
+
+
+@pytest.mark.asyncio
+async def test_handshake_failed_reconnect():
+    config = pnconf_env_copy()
+    config.publish_key = 'totally-fake-key'
+    config.subscribe_key = 'totally-fake-key'
+    config.enable_subscribe = True
+    config.reconnect_policy = PNReconnectionPolicy.EXPONENTIAL
+    config.maximum_reconnection_retries = 5
+    config.subscribe_request_timeout = 2
+
+    callback = TestCallback()
+
+    pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
+    pubnub.add_listener(callback)
+    pubnub.subscribe().channels('foo').execute()
+    await asyncio.sleep(16)
+    assert pubnub._subscription_manager.event_engine.get_state_name() == states.HandshakeReconnectingState.__name__
+    await asyncio.sleep(1)
+
+    await pubnub.close_session()
+    pubnub._subscription_manager.stop()

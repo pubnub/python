@@ -7,6 +7,9 @@ class PNConfiguration(object):
     DEFAULT_PRESENCE_TIMEOUT = 300
     DEFAULT_HEARTBEAT_INTERVAL = 280
     ALLOWED_AES_MODES = [AES.MODE_CBC, AES.MODE_GCM]
+    RECONNECTION_INTERVAL = 3
+    RECONNECTION_MIN_EXPONENTIAL_BACKOFF = 1
+    RECONNECTION_MAX_EXPONENTIAL_BACKOFF = 32
 
     def __init__(self):
         # TODO: add validation
@@ -31,6 +34,7 @@ class PNConfiguration(object):
         self.enable_presence_heartbeat = False
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.NONE
+        self.maximum_reconnection_retries = -1  # -1 means unlimited/ 0 means no retries
         self.daemon = False
         self.use_random_initialization_vector = True
         self.suppress_leave_events = False

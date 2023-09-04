@@ -1,7 +1,6 @@
 import logging
 
 from typing import List, Optional
-from queue import SimpleQueue
 
 from pubnub.event_engine.models import effects, events, states
 from pubnub.event_engine.dispatcher import Dispatcher
@@ -12,7 +11,6 @@ class StateMachine:
     _context: states.PNContext
     _effect_list: List[effects.PNEffect]
     _enabled: bool
-    _effect_queue: SimpleQueue
 
     def __init__(self, initial_state: states.PNState, dispatcher_class: Optional[Dispatcher] = None) -> None:
         self._context = states.PNContext()
@@ -34,8 +32,9 @@ class StateMachine:
         return self._dispatcher
 
     def trigger(self, event: events.PNEvent) -> states.PNTransition:
-        logging.debug(f'Triggered {event.__class__.__name__} on {self._current_state.__class__.__name__}')
+        logging.debug(f'Triggered {event.__class__.__name__}({event.__dict__}) on {self.get_state_name()}')
         if not self._enabled:
+            logging.error('EventEngine is not enabled')
             return False
         if event.get_name() in self._current_state._transitions:
             self._effect_list.clear()
@@ -66,9 +65,9 @@ class StateMachine:
                 self._effect_list.append(effect)
 
         else:
-            self.stop()
             # we're ignoring events unhandled
             logging.debug(f'unhandled event?? {event.__class__.__name__} in {self._current_state.__class__.__name__}')
+            self.stop()
 
         self.dispatch_effects()
 

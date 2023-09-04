@@ -1,6 +1,7 @@
 from Cryptodome.Cipher import AES
 from pubnub.enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
 from pubnub.exceptions import PubNubException
+from pubnub.crypto import PubNubCrypto
 
 
 class PNConfiguration(object):
@@ -43,6 +44,8 @@ class PNConfiguration(object):
         self.heartbeat_default_values = True
         self._presence_timeout = PNConfiguration.DEFAULT_PRESENCE_TIMEOUT
         self._heartbeat_interval = PNConfiguration.DEFAULT_HEARTBEAT_INTERVAL
+        self.crypto_engine = None
+        self.file_crypto_engine = None
 
     def validate(self):
         PNConfiguration.validate_not_empty_string(self.uuid)
@@ -102,15 +105,20 @@ class PNConfiguration(object):
         return self.crypto_instance
 
     def _init_cryptodome(self):
-        from .crypto import PubNubCryptodome
-        self.crypto_instance = PubNubCryptodome(self)
+        if not self.crypto_engine:
+            from pubnub.crypto import PubNubCryptodome
+            self.crypto_engine = PubNubCryptodome
+        self.crypto_instance = self.crypto_engine(self)
 
     def _init_file_crypto(self):
         from .crypto import PubNubFileCrypto
-        self.file_crypto_instance = PubNubFileCrypto(self)
+        if not self.file_crypto_engine:
+            from pubnub.crypto import PubNubFileCrypto
+            self.file_crypto_engine = PubNubFileCrypto
+        self.file_crypto_instance = self.file_crypto_engine(self)
 
     @property
-    def file_crypto(self):
+    def file_crypto(self) -> PubNubCrypto:
         if not self.file_crypto_instance:
             self._init_file_crypto()
 

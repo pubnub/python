@@ -1,6 +1,7 @@
 from pubnub.pubnub import PubNub
-from pubnub.crypto import PubNubCryptodome
-from tests.helper import pnconf_file_copy, hardcoded_iv_config_copy
+from pubnub.crypto import PubNubCryptodome, PubNubCrypto
+from tests.helper import pnconf_file_copy, hardcoded_iv_config_copy, pnconf_env_copy
+
 
 crypto = PubNubCryptodome(pnconf_file_copy())
 crypto_hardcoded_iv = PubNubCryptodome(hardcoded_iv_config_copy())
@@ -62,3 +63,19 @@ class TestPubNubFileCrypto:
 
         decrypted_file = pubnub.decrypt(KEY, encrypted_file)
         assert file_upload_test_data["FILE_CONTENT"] == decrypted_file.decode("utf-8")
+
+
+class TestPubNubCryptoInterface:
+    def test_get_default_crypto(self):
+        config = pnconf_env_copy()
+        assert isinstance(config.crypto, PubNubCrypto)
+        assert isinstance(config.crypto, PubNubCryptodome)
+
+    def test_get_custom_crypto(self):
+        class CustomCrypto(PubNubCrypto):
+            pass
+
+        config = pnconf_env_copy()
+        config.crypto_engine = CustomCrypto
+        assert isinstance(config.crypto, PubNubCrypto)
+        assert isinstance(config.crypto, CustomCrypto)

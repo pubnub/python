@@ -16,7 +16,7 @@ class PubNubCryptodome(PubNubCrypto):
     fallback_mode = None
 
     def __init__(self, pubnub_config):
-        self.pubnub_configuration = pubnub_config
+        super().__init__(pubnub_config)
         self.mode = pubnub_config.cipher_mode
         self.fallback_mode = pubnub_config.fallback_cipher_mode
 

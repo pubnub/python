@@ -44,8 +44,8 @@ class PNConfiguration(object):
         self.heartbeat_default_values = True
         self._presence_timeout = PNConfiguration.DEFAULT_PRESENCE_TIMEOUT
         self._heartbeat_interval = PNConfiguration.DEFAULT_HEARTBEAT_INTERVAL
-        self.crypto_engine = None
-        self.file_crypto_engine = None
+        self.cryptor = None
+        self.file_cryptor = None
 
     def validate(self):
         PNConfiguration.validate_not_empty_string(self.uuid)
@@ -105,17 +105,17 @@ class PNConfiguration(object):
         return self.crypto_instance
 
     def _init_cryptodome(self):
-        if not self.crypto_engine:
+        if not self.cryptor:
             from pubnub.crypto import PubNubCryptodome
-            self.crypto_engine = PubNubCryptodome
-        self.crypto_instance = self.crypto_engine(self)
+            self.cryptor = PubNubCryptodome
+        self.crypto_instance = self.cryptor(self)
 
     def _init_file_crypto(self):
         from .crypto import PubNubFileCrypto
-        if not self.file_crypto_engine:
+        if not self.file_cryptor:
             from pubnub.crypto import PubNubFileCrypto
-            self.file_crypto_engine = PubNubFileCrypto
-        self.file_crypto_instance = self.file_crypto_engine(self)
+            self.file_cryptor = PubNubFileCrypto
+        self.file_crypto_instance = self.file_cryptor(self)
 
     @property
     def file_crypto(self) -> PubNubCrypto:

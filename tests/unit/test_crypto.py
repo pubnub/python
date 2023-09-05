@@ -72,10 +72,10 @@ class TestPubNubCryptoInterface:
         assert isinstance(config.crypto, PubNubCryptodome)
 
     def test_get_custom_crypto(self):
-        class CustomCrypto(PubNubCrypto):
+        class CustomCryptor(PubNubCrypto):
             pass
 
         config = pnconf_env_copy()
-        config.crypto_engine = CustomCrypto
+        config.cryptor = CustomCryptor
         assert isinstance(config.crypto, PubNubCrypto)
-        assert isinstance(config.crypto, CustomCrypto)
+        assert isinstance(config.crypto, CustomCryptor)

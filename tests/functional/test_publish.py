@@ -2,12 +2,11 @@ import copy
 import unittest
 
 
-from unittest.mock import MagicMock
-
 from pubnub.endpoints.pubsub.publish import Publish
+from pubnub.managers import TelemetryManager
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name, url_encode
-from pubnub.managers import TelemetryManager
+from unittest.mock import MagicMock
 
 
 class TestPublish(unittest.TestCase):
@@ -91,6 +90,38 @@ class TestPublish(unittest.TestCase):
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
             'store': '1',
+        })
+
+    def test_pub_with_space_id(self):
+        message = "hi"
+        space_id = "test_space"
+        encoded_message = url_encode(message)
+
+        self.pub.channel("ch1").message(message).space_id(space_id)
+
+        self.assertEqual(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+
+        self.assertEqual(self.pub.build_params_callback()({}), {
+            'space-id': space_id,
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid,
+        })
+
+    def test_pub_with_message_type(self):
+        message = "hi"
+        message_type = 'test_type'
+        encoded_message = url_encode(message)
+
+        self.pub.channel("ch1").message(message).message_type(message_type)
+
+        self.assertEqual(self.pub.build_path(), "/publish/%s/%s/0/ch1/0/%s"
+                         % (pnconf.publish_key, pnconf.subscribe_key, encoded_message))
+
+        self.assertEqual(self.pub.build_params_callback()({}), {
+            'type': message_type,
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid,
         })
 
     def test_pub_do_not_store(self):

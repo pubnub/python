@@ -15,7 +15,9 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
     def __init__(self, pubnub):
         super(Publish, self).__init__(pubnub)
         self._channel = None
+        self._space_id = None
         self._message = None
+        self._message_type = None
         self._should_store = None
         self._use_post = None
         self._meta = None
@@ -27,8 +29,16 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._channel = str(channel)
         return self
 
+    def space_id(self, space_id: str):
+        self._space_id = str(space_id)
+        return self
+
     def message(self, message):
         self._message = message
+        return self
+
+    def message_type(self, message_type: str):
+        self._message_type = message_type
         return self
 
     def use_post(self, use_post):
@@ -90,6 +100,12 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         # REVIEW: should auth key be assigned here?
         if self.pubnub.config.auth_key is not None:
             params["auth"] = utils.url_encode(self.pubnub.config.auth_key)
+
+        if self._message_type is not None:
+            params['type'] = self._message_type
+
+        if self._space_id is not None:
+            params['space-id'] = self._space_id
 
         return params
 

@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/signal/demo/demo/0/ch1/0/null?space-id=sp1",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:55 GMT"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16765820950334052\"]"
+                }
+            }
+        }
+    ]
+}

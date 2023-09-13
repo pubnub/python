@@ -133,7 +133,7 @@ pnconf_env = PNConfiguration()
 pnconf_env.publish_key = os.environ.get('PN_KEY_PUBLISH')
 pnconf_env.subscribe_request_timeout = 10
 pnconf_env.subscribe_key = os.environ.get('PN_KEY_SUBSCRIBE')
-pnconf_env.enable_subscribe = False
+pnconf_env.enable_subscribe = True
 pnconf_env.uuid = uuid_mock
 
 # configuration with keys from PN_KEY_* (enabled all except PAM, PUSH and FUNCTIONS) and encryption enabled
@@ -142,7 +142,7 @@ pnconf_enc_env.publish_key = os.environ.get('PN_KEY_PUBLISH')
 pnconf_enc_env.subscribe_request_timeout = 10
 pnconf_enc_env.subscribe_key = os.environ.get('PN_KEY_SUBSCRIBE')
 pnconf_enc_env.cipher_key = "testKey"
-pnconf_enc_env.enable_subscribe = False
+pnconf_enc_env.enable_subscribe = True
 pnconf_enc_env.uuid = uuid_mock
 
 # configuration with keys from PN_KEY_PAM_* (enabled with all including PAM except PUSH and FUNCTIONS)

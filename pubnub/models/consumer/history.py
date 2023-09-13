@@ -63,27 +63,15 @@ class PNFetchMessagesResult(object):
         return "Fetch messages result for range %d..%d" % (self.start_timetoken, self.end_timetoken)
 
     @classmethod
-    def from_json(cls, json_input, include_message_actions=False, start_timetoken=None, end_timetoken=None):
+    def from_json(cls, json_input, include_message_actions=False, include_message_type=False, include_type=False,
+                  include_space_id=False, start_timetoken=None, end_timetoken=None):
         channels = {}
 
         for key, entry in json_input['channels'].items():
             channels[key] = []
             for item in entry:
-                message = PNFetchMessageItem(item['message'], item['timetoken'])
-                if 'uuid' in item:
-                    message.uuid = item['uuid']
-                if 'message_type' in item:
-                    message.message_type = item['message_type']
-
-                if 'meta' in item:
-                    message.meta = item['meta']
-
-                if include_message_actions:
-                    if 'actions' in item:
-                        message.actions = item['actions']
-                    else:
-                        message.actions = {}
-
+                message = PNFetchMessageItem(item, include_message_actions, include_message_type, include_type,
+                                             include_space_id)
                 channels[key].append(message)
 
         return PNFetchMessagesResult(
@@ -94,11 +82,38 @@ class PNFetchMessagesResult(object):
 
 
 class PNFetchMessageItem(object):
-    def __init__(self, message, timetoken, meta=None, actions=None):
-        self.message = message
-        self.meta = meta
-        self.timetoken = timetoken
-        self.actions = actions
+    message = None
+    meta = None
+    timetoken = None
+    actions = None
+
+    def __init__(self, item, include_message_actions, include_message_type, include_type, include_space_id):
+        self.message = item['message']
+        self.timetoken = item['timetoken']
+
+        if 'uuid' in item:
+            self.uuid = item['uuid']
+
+        if 'meta' in item:
+            self.meta = item['meta']
+
+        if include_message_actions:
+            if 'actions' in item:
+                self.actions = item['actions']
+            else:
+                self.actions = {}
+
+        if include_message_type:
+            if 'message_type' in item:
+                self.message_type = str(item['message_type']) if item['message_type'] is not None else '0'
+            else:
+                self.message_type = None
+
+        if include_type:
+            self.type = item['type'] if 'type' in item.keys() else None
+
+        if include_space_id:
+            self.space_id = item['space_id']
 
     def __str__(self):
         return "Fetch message item with tt: %s and content: %s" % (self.timetoken, self.message)

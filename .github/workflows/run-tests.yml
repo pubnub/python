@@ -78,9 +78,13 @@ jobs:
             cp sdk-specifications/features/access/authorization-failure-reporting.feature tests/acceptance/pam
             cp sdk-specifications/features/access/grant-token.feature tests/acceptance/pam
             cp sdk-specifications/features/access/revoke-token.feature tests/acceptance/pam
+            cp sdk-specifications/features/files/file-upload-to-space.feature tests/acceptance/files
+            cp sdk-specifications/features/history/history-vsp.feature tests/acceptance/history
 
             sudo pip3 install -r requirements-dev.txt
             behave --junit tests/acceptance/pam
+            behave --junit tests/acceptance/files
+            behave --junit tests/acceptance/history
       - name: Expose acceptance tests reports
         uses: actions/upload-artifact@v3
         if: always()

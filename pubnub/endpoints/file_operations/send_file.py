@@ -1,5 +1,4 @@
 from pubnub.endpoints.file_operations.file_based_endpoint import FileOperationEndpoint
-
 from pubnub.crypto import PubNubFileCrypto
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.file import PNSendFileResult
@@ -23,6 +22,8 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._file_object = None
         self._replicate = None
         self._ptto = None
+        self._type = None
+        self._space_id = None
 
     def file_object(self, fd):
         self._file_object = fd
@@ -69,7 +70,14 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return True
 
     def custom_params(self):
-        return {}
+        params = {}
+        if self._type:
+            params['type'] = str(self._type)
+
+        if self._space_id:
+            params['space-id'] = self._space_id
+
+        return params
 
     def validate_params(self):
         self.validate_subscribe_key()
@@ -110,6 +118,14 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._cipher_key = cipher_key
         return self
 
+    def type(self, type: str):
+        self._type = type
+        return self
+
+    def space_id(self, space_id: str):
+        self._space_id = space_id
+        return self
+
     def create_response(self, envelope, data=None):
         return PNSendFileResult(envelope, self._file_upload_envelope)
 
@@ -139,7 +155,9 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
             ttl(self._ttl).\
             replicate(self._replicate).\
             ptto(self._ptto).\
-            cipher_key(self._cipher_key).sync()
+            cipher_key(self._cipher_key).\
+            type(self._type).\
+            space_id(self._space_id).sync()
 
         response_envelope.result.timestamp = publish_file_response.result.timestamp
         return response_envelope

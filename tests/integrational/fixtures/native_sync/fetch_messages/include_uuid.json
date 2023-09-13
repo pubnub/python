@@ -1,0 +1,173 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/fetch-messages-actions-uuid/0/%22hey-uuid-1%22?seqn=1",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Date": [
+                        "Wed, 08 Mar 2023 09:46:02 GMT"
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16782687621997385\"]"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/fetch-messages-actions-uuid/0/%22hey-uuid-2%22?seqn=2",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Date": [
+                        "Wed, 08 Mar 2023 09:46:02 GMT"
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16782687622453988\"]"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v3/history-with-actions/sub-key/{PN_KEY_SUBSCRIBE}/channel/fetch-messages-actions-uuid?include_message_type=true&include_meta=false&include_type=true&include_uuid=true&max=25",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.1.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Age": [
+                        "0"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Wed, 08 Mar 2023 09:46:03 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "binary": "H4sIAAAAAAAAA5SPTQqDMBCFryKzNqCxauxVSpFgxyqNUcxkIeLdO7EuShel3Q3fG97PCo40eQfnSCZJHEHTaWvRBLBCi9R0YkDn9B2d0A31o3XC+/7G+mWFQ6ppmZCJ9cawx0EZQIfL/i5SYIH6AWl8oA1SWpRKFqosZFpVZaby/eNlBOE+Yj5bBMx2W8wFf8+XX/LlKc8qpf7Jl7BduQHgPI9z/TY4mOyQJ7baONyeAAAA//8DANaM4J5jAQAA"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,143 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tt=0&uuid=test-subscribe-asyncio-uuid-sub",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:20 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "45"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"16765820391704607\",\"r\":42},\"m\":[]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tt=0&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-uuid-sub"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test-subscribe-asyncio-ch/0/%22hey%22?seqn=1&space-id=HelloSpace&uuid=test-subscribe-asyncio-uuid-pub",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:20 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"16765820605731634\"]"
+                },
+                "url": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test-subscribe-asyncio-ch/0/%22hey%22?space-id=HelloSpace&seqn=1&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-uuid-pub"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tr=42&tt=16765820391704607&uuid=test-subscribe-asyncio-uuid-sub",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/7.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 16 Feb 2023 21:14:20 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"16765820605731634\",\"r\":42},\"m\":[{\"a\":\"5\",\"f\":0,\"i\":\"test-subscribe-asyncio-uuid-pub\",\"s\":1,\"p\":{\"t\":\"16765820605731634\",\"r\":42},\"k\":\"{PN_KEY_SUBSCRIBE}\",\"c\":\"test-subscribe-asyncio-ch\",\"d\":\"hey\",\"si\":\"HelloSpace\"}]}"
+                },
+                "url": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-asyncio-ch/0?tt=16765820391704607&tr=42&pnsdk=PubNub-Python-Asyncio%2F7.1.0&uuid=test-subscribe-asyncio-uuid-sub"
+            }
+        }
+    ]
+}

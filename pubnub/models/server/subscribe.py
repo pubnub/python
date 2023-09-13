@@ -30,6 +30,8 @@ class SubscribeMessage:
         self.publish_metadata = None
         self.only_channel_subscription = False
         self.type = 0
+        self.message_type = None
+        self.space_id = None
 
     @classmethod
     def from_json(cls, json_input):
@@ -49,6 +51,18 @@ class SubscribeMessage:
         message.publish_metadata = PublishMetadata.from_json(json_input['p'])
         if 'e' in json_input:
             message.type = json_input['e']
+
+        if 'si' in json_input:
+            message.space_id = json_input['si']
+
+        # customers message type set during publish
+        if 'mt' in json_input:
+            message.type = json_input['mt']
+
+        # internal message type (None|0 = message, 1 = file, etc)
+        if 'e' in json_input:
+            message.message_type = json_input['mt']
+
         return message
 
 

@@ -1,5 +1,8 @@
 from pubnub.pubnub import PubNub
-from pubnub.crypto import PubNubCryptodome, PubNubCrypto
+from pubnub.pnconfiguration import PNConfiguration
+from pubnub.crypto import PubNubCryptodome, PubNubCrypto, AesCbcCryptoModule, PubNubCryptoModule
+from pubnub.crypto_core import PubNubAesCbcCryptor, PubNubLegacyCryptor
+from pubnub.exceptions import PubNubException
 from tests.helper import pnconf_file_copy, hardcoded_iv_config_copy, pnconf_env_copy
 
 
@@ -79,3 +82,109 @@ class TestPubNubCryptoInterface:
         config.cryptor = CustomCryptor
         assert isinstance(config.crypto, PubNubCrypto)
         assert isinstance(config.crypto, CustomCryptor)
+
+
+class TestPubNubCryptoModule:
+    cipher_key = 'myCipherKey'
+
+    def test_header_encoder(self):
+        crypto = AesCbcCryptoModule('myCipherKey', True)
+        header = crypto.encode_header()
+        assert b'PNED\x01ACRH\x00' == header
+
+        cryptor_data = b'\x21'
+        header = crypto.encode_header(cryptor_ver=1, cryptor_data=cryptor_data)
+        assert b'PNED\x01ACRH\x01' + cryptor_data == header
+
+        cryptor_data = b'\x21' * 255
+        header = crypto.encode_header(cryptor_data=cryptor_data)
+        assert b'PNED\x01ACRH\xff\x00\xff' + cryptor_data == header
+
+        try:
+            header = crypto.encode_header(cryptor_data=(' ' * 65536).encode())
+        except PubNubException as e:
+            assert e.__str__() == 'None: Cryptor data is too long'
+
+    def test_header_decoder(self):
+        crypto = AesCbcCryptoModule('myCipherKey', True)
+        header = crypto.decode_header(b'PNED\x01ACRH\x00')
+        assert header['cryptor_ver'] == 1
+        assert header['cryptor_id'] == 'ACRH'
+        assert header['cryptor_data'] == b''
+
+        cryptor_data = b'\x21'
+        header = crypto.decode_header(b'PNED\x01ACRH\x01' + cryptor_data)
+        assert header['cryptor_data'] == cryptor_data
+
+        cryptor_data = b'\x21' * 254
+        header = crypto.decode_header(b'PNED\x01ACRH\xfe' + cryptor_data)
+        assert header['cryptor_data'] == cryptor_data
+
+        cryptor_data = b'\x21' * 255
+        header = crypto.decode_header(b'PNED\x01ACRH\xff\x00\xff' + cryptor_data)
+        assert header['cryptor_data'] == cryptor_data
+
+    def test_aes_cbc_crypto_module(self):
+        crypto = AesCbcCryptoModule('myCipherKey', True)
+        test_message = 'Hello world encrypted with aesCbcModule'
+        encrypted_message = crypto.encrypt(test_message)
+        decrypted_message = crypto.decrypt(encrypted_message)
+        assert decrypted_message == test_message
+
+    def test_decrypt(self):
+        crypto = AesCbcCryptoModule('myCipherKey', True)
+        msg = 'UE5FRAFBQ1JIEKzlyoyC/jB1hrjCPY7zm+X2f7skPd0LBocV74cRYdrkRQ2BPKeA22gX/98pMqvcZtFB6TCGp3Zf1M8F730nlfk='
+        decrypted = crypto.decrypt(msg)
+        assert decrypted == 'Hello world encrypted with aesCbcModule'
+
+        msg = 'T3J9iXI87PG9YY/lhuwmGRZsJgA5y8sFLtUpdFmNgrU1IAitgAkVok6YP7lacBiVhBJSJw39lXCHOLxl2d98Bg=='
+        decrypted = crypto.decrypt(msg)
+        assert decrypted == 'Hello world encrypted with legacyModuleRandomIv'
+
+        crypto = AesCbcCryptoModule('myCipherKey', False)
+        msg = 'OtYBNABjeAZ9X4A91FQLFBo4th8et/pIAsiafUSw2+L8iWqJlte8x/eCL5cyjzQa'
+        decrypted = crypto.decrypt(msg)
+        assert decrypted == 'Hello world encrypted with legacyModuleStaticIv'
+
+    def test_encrypt_decrypt_aes(self):
+        class MockCryptor(PubNubAesCbcCryptor):
+            def get_initialization_vector(self) -> str:
+                return b'\x00' * 16
+
+        cryptor = MockCryptor('myCipherKey')
+        crypto = PubNubCryptoModule({cryptor.CRYPTOR_ID: cryptor}, cryptor)
+
+        encrypted = 'UE5FRAFBQ1JIEAAAAAAAAAAAAAAAAAAAAABbjKTFb0xLzByXntZkq2G7lHIGg5ZdQd73GwVG6o3ftw=='
+        message = 'We are the knights who say NI!'
+
+        assert crypto.encrypt(message) == encrypted
+
+    def test_encrypt_module_decrypt_legacy_static_iv(self):
+        cryptor = PubNubLegacyCryptor(self.cipher_key, False)
+        crypto = PubNubCryptoModule({cryptor.CRYPTOR_ID: cryptor}, cryptor)
+        original_message = 'We are the knights who say NI!'
+        encrypted = crypto.encrypt(original_message)
+
+        # decrypt with legacy crypto
+        config = PNConfiguration()
+        config.cipher_key = self.cipher_key
+        config.use_random_initialization_vector = False
+        crypto = PubNubCryptodome(config)
+        decrypted = crypto.decrypt(self.cipher_key, encrypted)
+
+        assert decrypted == original_message
+
+    def test_encrypt_module_decrypt_legacy_random_iv(self):
+        cryptor = PubNubLegacyCryptor(self.cipher_key, True)
+        crypto = PubNubCryptoModule({cryptor.CRYPTOR_ID: cryptor}, cryptor)
+        original_message = 'We are the knights who say NI!'
+        encrypted = crypto.encrypt(original_message)
+
+        # decrypt with legacy crypto
+        config = PNConfiguration()
+        config.cipher_key = self.cipher_key
+        config.use_random_initialization_vector = True
+        crypto = PubNubCryptodome(config)
+        decrypted = crypto.decrypt(self.cipher_key, encrypted)
+
+        assert decrypted == original_message

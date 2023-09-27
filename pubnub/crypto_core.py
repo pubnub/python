@@ -4,7 +4,6 @@ import random
 
 from abc import abstractmethod
 from Cryptodome.Cipher import AES
-from typing import TypedDict
 
 
 class PubNubCrypto:
@@ -20,7 +19,7 @@ class PubNubCrypto:
         pass
 
 
-class CryptoHeader(TypedDict):
+class CryptoHeader(dict):
     sentinel: str
     cryptor_ver: int
     cryptor_id: str
@@ -28,7 +27,7 @@ class CryptoHeader(TypedDict):
     length: any
 
 
-class CryptorPayload(TypedDict):
+class CryptorPayload(dict):
     data: bytes
     cryptor_data: bytes
 

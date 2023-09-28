@@ -1,6 +1,7 @@
 import hashlib
 import json
 import random
+import os
 
 from abc import abstractmethod
 from Cryptodome.Cipher import AES
@@ -131,7 +132,7 @@ class PubNubAesCbcCryptor(PubNubCryptor):
         self.cipher_key = cipher_key
 
     def get_initialization_vector(self) -> bytes:
-        return random.randbytes(16)
+        return os.urandom(16)
 
     def get_secret(self, key) -> str:
         return hashlib.sha256(key.encode("utf-8")).digest()

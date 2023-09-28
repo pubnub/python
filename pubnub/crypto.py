@@ -209,7 +209,7 @@ class PubNubCryptoModule(PubNubCrypto):
         cryptor_id = self._validate_cryptor_id(cryptor_id)
         cryptor_ver = cryptor_ver or self.CRYPTOR_VERSION
         sentinel = b'PNED'
-        version = cryptor_ver.to_bytes()
+        version = cryptor_ver.to_bytes(1, byteorder='big')
         crid = bytes(cryptor_id, 'utf-8')
 
         if cryptor_data:
@@ -220,9 +220,9 @@ class PubNubCryptoModule(PubNubCrypto):
             cryptor_data_len = 0
 
         if cryptor_data_len < 255:
-            crlen = cryptor_data_len.to_bytes(1)
+            crlen = cryptor_data_len.to_bytes(1, byteorder='big')
         else:
-            crlen = b'\xff' + cryptor_data_len.to_bytes(2)
+            crlen = b'\xff' + cryptor_data_len.to_bytes(2, byteorder='big')
         return sentinel + version + crid + crlen + crd
 
     def decode_header(self, header: bytes) -> Union[None, CryptoHeader]:

@@ -1,6 +1,7 @@
 from base64 import b64decode
 from behave import when
 from tests.acceptance.encryption.environment import PNContext, get_crypto_module, get_asset_path
+from pubnub.exceptions import PubNubException
 
 
 @when("I decrypt '{filename}' file")
@@ -11,7 +12,7 @@ def step_impl(context: PNContext, filename):
             file_bytes = file_handle.read()
             crypto.decrypt_file(file_bytes)
             context.outcome = 'success'
-        except Exception as e:
+        except PubNubException as e:
             context.outcome = str(e).replace('None: ', '')
 
 
@@ -36,5 +37,5 @@ def step_impl(context: PNContext, filename, file_mode):
             file_bytes = file_handle.read()
             context.decrypted_file = crypto.decrypt_file(file_bytes)
             context.outcome = 'success'
-        except Exception as e:
+        except PubNubException as e:
             context.outcome = str(e).replace('None: ', '')

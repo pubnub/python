@@ -93,7 +93,7 @@ class TestPubNubCryptoModule:
         assert b'PNED\x01ACRH\x00' == header
 
         cryptor_data = b'\x21'
-        header = crypto.encode_header(cryptor_ver=1, cryptor_data=cryptor_data)
+        header = crypto.encode_header(cryptor_data=cryptor_data)
         assert b'PNED\x01ACRH\x01' + cryptor_data == header
 
         cryptor_data = b'\x21' * 255
@@ -108,7 +108,7 @@ class TestPubNubCryptoModule:
     def test_header_decoder(self):
         crypto = AesCbcCryptoModule('myCipherKey', True)
         header = crypto.decode_header(b'PNED\x01ACRH\x00')
-        assert header['cryptor_ver'] == 1
+        assert header['header_ver'] == 1
         assert header['cryptor_id'] == 'ACRH'
         assert header['cryptor_data'] == b''
 
@@ -188,3 +188,20 @@ class TestPubNubCryptoModule:
         decrypted = crypto.decrypt(self.cipher_key, encrypted)
 
         assert decrypted == original_message
+
+    def test_php_encrypted_crosscheck(self):
+        crypto = AesCbcCryptoModule(self.cipher_key, False)
+        phpmess = "KGc+SNJD7mIveY+KNIL/L9ZzAjC0dCJCju+HXRwSW2k="
+        decrypted = crypto.decrypt(phpmess)
+        assert decrypted == 'PHP can backwards Legacy static'
+
+        crypto = AesCbcCryptoModule(self.cipher_key, True)
+        phpmess = "PXjHv0L05kgj0mqIE9s7n4LDPrLtjnfamMoHyiMoL0R1uzSMsYp7dDfqEWrnoaqS"
+        decrypted = crypto.decrypt(phpmess)
+        assert decrypted == 'PHP can backwards Legacy random'
+
+        crypto = AesCbcCryptoModule(self.cipher_key, True)
+        phpmess = "UE5FRAFBQ1JIEHvl3cY3RYsHnbKm6VR51XG/Y7HodnkumKHxo+mrsxbIjZvFpVuILQ0oZysVwjNsDNMKiMfZteoJ8P1/" \
+            "mvPmbuQKLErBzS2l7vEohCwbmAJODPR2yNhJGB8989reTZ7Y7Q=="
+        decrypted = crypto.decrypt(phpmess)
+        assert decrypted == 'PHP can into space with headers and aes cbc and other shiny stuff'

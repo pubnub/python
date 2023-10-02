@@ -1,10 +1,11 @@
 import hashlib
 import json
 import random
-import os
+import secrets
 
 from abc import abstractmethod
 from Cryptodome.Cipher import AES
+from Cryptodome.Util.Padding import pad, unpad
 
 
 class PubNubCrypto:
@@ -22,7 +23,7 @@ class PubNubCrypto:
 
 class CryptoHeader(dict):
     sentinel: str
-    cryptor_ver: int
+    header_ver: int = 1
     cryptor_id: str
     cryptor_data: any
     length: any
@@ -35,7 +36,6 @@ class CryptorPayload(dict):
 
 class PubNubCryptor:
     CRYPTOR_ID: str
-    CRYPTOR_VERSION: int = 1
 
     @abstractmethod
     def encrypt(self, data: bytes) -> CryptorPayload:
@@ -125,39 +125,33 @@ class PubNubLegacyCryptor(PubNubCryptor):
 
 class PubNubAesCbcCryptor(PubNubCryptor):
     CRYPTOR_ID = 'ACRH'
-    CRYPTOR_VERSION: int = 1
     mode = AES.MODE_CBC
 
     def __init__(self, cipher_key):
         self.cipher_key = cipher_key
 
     def get_initialization_vector(self) -> bytes:
-        return os.urandom(16)
+        return secrets.token_bytes(16)
 
     def get_secret(self, key) -> str:
         return hashlib.sha256(key.encode("utf-8")).digest()
-
-    def pad(self, msg: bytes, block_size=AES.block_size) -> bytes:
-        padding = block_size - (len(msg) % block_size)
-        return msg + bytes(chr(padding) * padding, 'utf-8')
-
-    def depad(self, msg: bytes) -> bytes:
-        return msg[:-msg[-1]]
 
     def encrypt(self, data: bytes, key=None) -> CryptorPayload:
         key = key or self.cipher_key
         secret = self.get_secret(key)
         iv = self.get_initialization_vector()
         cipher = AES.new(secret, mode=self.mode, iv=iv)
-        encrypted = cipher.encrypt(self.pad(data))
+        encrypted = cipher.encrypt(pad(data, AES.block_size))
         return CryptorPayload(data=encrypted, cryptor_data=iv)
 
     def decrypt(self, payload: CryptorPayload, key=None, binary_mode: bool = False):
         key = key or self.cipher_key
         secret = self.get_secret(key)
         iv = payload['cryptor_data']
+
         cipher = AES.new(secret, mode=self.mode, iv=iv)
+
         if binary_mode:
-            return self.depad(cipher.decrypt(payload['data']))
+            return unpad(cipher.decrypt(payload['data']), AES.block_size)
         else:
-            return self.depad(cipher.decrypt(payload['data'])).decode()
+            return unpad(cipher.decrypt(payload['data']), AES.block_size).decode()

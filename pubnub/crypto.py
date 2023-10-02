@@ -112,25 +112,12 @@ class PubNubFileCrypto(PubNubCryptodome):
 
 class PubNubCryptoModule(PubNubCrypto):
     FALLBACK_CRYPTOR_ID: str = '0000'
-    CRYPTOR_VERSION: str = 1
     cryptor_map = {}
     default_cryptor_id: str
 
     def __init__(self, cryptor_map: Dict[str, PubNubCryptor], default_cryptor: PubNubCryptor):
         self.cryptor_map = cryptor_map
         self.default_cryptor_id = default_cryptor.CRYPTOR_ID
-
-    def register_cryptor(self, cryptor_id, cryptor_instance):
-        if len(cryptor_id) != 4:
-            raise PubNubException('Malformed cryptor_id.')
-
-        if cryptor_id in self.cryptor_map.keys():
-            raise PubNubException('Cryptor_id already in use')
-
-        if not isinstance(cryptor_instance, PubNubCrypto):
-            raise PubNubException('Invalid cryptor instance')
-
-        self.cryptor_map[cryptor_id] = cryptor_instance
 
     def _validate_cryptor_id(self, cryptor_id: str) -> str:
         cryptor_id = cryptor_id or self.default_cryptor_id
@@ -155,18 +142,12 @@ class PubNubCryptoModule(PubNubCrypto):
     def decrypt(self, input):
         data = b64decode(input)
         header = self.decode_header(data)
-
         if header:
             cryptor_id = header['cryptor_id']
-            cryptor_version = header['cryptor_ver']
             payload = CryptorPayload(data=data[header['length']:], cryptor_data=header['cryptor_data'])
         if not header:
             cryptor_id = self.FALLBACK_CRYPTOR_ID
-            cryptor_version = self.CRYPTOR_VERSION
             payload = CryptorPayload(data=data)
-
-        if cryptor_id not in self.cryptor_map.keys() or cryptor_version > self.CRYPTOR_VERSION:
-            raise PubNubException('unknown cryptor error')
 
         message = self._get_cryptor(cryptor_id).decrypt(payload)
         try:
@@ -189,27 +170,25 @@ class PubNubCryptoModule(PubNubCrypto):
         header = self.decode_header(file_data)
         if header:
             cryptor_id = header['cryptor_id']
-            cryptor_version = header['cryptor_ver']
             payload = CryptorPayload(data=file_data[header['length']:], cryptor_data=header['cryptor_data'])
         else:
             cryptor_id = self.FALLBACK_CRYPTOR_ID
-            cryptor_version = self.CRYPTOR_VERSION
             payload = CryptorPayload(data=file_data)
 
-        if cryptor_id not in self.cryptor_map.keys() or cryptor_version > self.CRYPTOR_VERSION:
+        if cryptor_id not in self.cryptor_map.keys():
             raise PubNubException('unknown cryptor error')
 
         return self._get_cryptor(cryptor_id).decrypt(payload, binary_mode=True)
 
-    def encode_header(self, cryptor_ver=None, cryptor_id: str = None, cryptor_data: any = None) -> str:
+    def encode_header(self, cryptor_id: str = None, cryptor_data: any = None) -> str:
         if cryptor_id == self.FALLBACK_CRYPTOR_ID:
             return b''
         if cryptor_data and len(cryptor_data) > 65535:
             raise PubNubException('Cryptor data is too long')
         cryptor_id = self._validate_cryptor_id(cryptor_id)
-        cryptor_ver = cryptor_ver or self.CRYPTOR_VERSION
+
         sentinel = b'PNED'
-        version = cryptor_ver.to_bytes(1, byteorder='big')
+        version = CryptoHeader.header_ver.to_bytes(1, byteorder='big')
         crid = bytes(cryptor_id, 'utf-8')
 
         if cryptor_data:
@@ -234,7 +213,10 @@ class PubNubCryptoModule(PubNubCrypto):
             return False
 
         try:
-            cryptor_ver = header[4]
+            header_version = header[4]
+            if header_version > CryptoHeader.header_ver:
+                raise PubNubException('unknown cryptor error')
+
             cryptor_id = header[5:9].decode()
             crlen = header[9]
             if crlen < 255:
@@ -245,9 +227,9 @@ class PubNubCryptoModule(PubNubCrypto):
                 cryptor_data = header[12:12 + crlen]
                 hlen = 12 + crlen
 
-            return CryptoHeader(sentinel=sentinel, cryptor_ver=cryptor_ver, cryptor_id=cryptor_id,
+            return CryptoHeader(sentinel=sentinel, header_ver=header_version, cryptor_id=cryptor_id,
                                 cryptor_data=cryptor_data, length=hlen)
-        except Exception:
+        except IndexError:
             raise PubNubException('decryption error')
 
 

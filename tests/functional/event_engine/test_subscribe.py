@@ -126,15 +126,15 @@ async def test_handshake_failed_reconnect():
     config.subscribe_key = 'totally-fake-key'
     config.enable_subscribe = True
     config.reconnect_policy = PNReconnectionPolicy.EXPONENTIAL
-    config.maximum_reconnection_retries = 5
-    config.subscribe_request_timeout = 2
+    config.maximum_reconnection_retries = 2
+    config.subscribe_request_timeout = 1
 
     callback = TestCallback()
 
     pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
     pubnub.add_listener(callback)
     pubnub.subscribe().channels('foo').execute()
-    await asyncio.sleep(16)
+    await asyncio.sleep(7)
     assert pubnub._subscription_manager.event_engine.get_state_name() == states.HandshakeReconnectingState.__name__
     await asyncio.sleep(1)
 

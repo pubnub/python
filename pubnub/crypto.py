@@ -159,7 +159,7 @@ class PubNubCryptoModule(PubNubCrypto):
         cryptor_id = self._validate_cryptor_id(cryptor_id)
         crypto_payload = self.cryptor_map[cryptor_id].encrypt(file_data)
         header = self.encode_header(cryptor_id=cryptor_id, cryptor_data=crypto_payload['cryptor_data'])
-        return b64encode(header + crypto_payload['data']).decode()
+        return header + crypto_payload['data']
 
     def _get_cryptor(self, cryptor_id):
         if not cryptor_id or cryptor_id not in self.cryptor_map:
@@ -234,18 +234,20 @@ class PubNubCryptoModule(PubNubCrypto):
 
 
 class LegacyCryptoModule(PubNubCryptoModule):
-    def __init__(self, cipher_key, use_random_iv) -> None:
+    def __init__(self, config) -> None:
         cryptor_map = {
-            PubNubLegacyCryptor.CRYPTOR_ID: PubNubLegacyCryptor(cipher_key, use_random_iv),
-            PubNubAesCbcCryptor.CRYPTOR_ID: PubNubAesCbcCryptor(),
+            PubNubLegacyCryptor.CRYPTOR_ID: PubNubLegacyCryptor(
+                config.cipher_key, config.use_random_initialization_vector),
+            PubNubAesCbcCryptor.CRYPTOR_ID: PubNubAesCbcCryptor(config.cipher_key),
         }
         super().__init__(cryptor_map, PubNubLegacyCryptor)
 
 
 class AesCbcCryptoModule(PubNubCryptoModule):
-    def __init__(self, cipher_key, use_random_iv) -> None:
+    def __init__(self, config) -> None:
         cryptor_map = {
-            PubNubLegacyCryptor.CRYPTOR_ID: PubNubLegacyCryptor(cipher_key, use_random_iv),
-            PubNubAesCbcCryptor.CRYPTOR_ID: PubNubAesCbcCryptor(cipher_key),
+            PubNubLegacyCryptor.CRYPTOR_ID: PubNubLegacyCryptor(
+                config.cipher_key, config.use_random_initialization_vector),
+            PubNubAesCbcCryptor.CRYPTOR_ID: PubNubAesCbcCryptor(config.cipher_key),
         }
         super().__init__(cryptor_map, PubNubAesCbcCryptor)

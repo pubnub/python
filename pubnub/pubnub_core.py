@@ -1,5 +1,6 @@
 import logging
 import time
+from warnings import warn
 from pubnub.endpoints.entities.membership.add_memberships import AddSpaceMembers, AddUserSpaces
 from pubnub.endpoints.entities.membership.update_memberships import UpdateSpaceMembers, UpdateUserSpaces
 from pubnub.endpoints.entities.membership.fetch_memberships import FetchSpaceMemberships, FetchUserMemberships
@@ -120,6 +121,10 @@ class PubNubCore:
     @property
     def uuid(self):
         return self.config.uuid
+
+    @property
+    def crypto(self):
+        return self.config.crypto_module
 
     def add_listener(self, listener):
         self._validate_subscribe_manager_enabled()
@@ -326,9 +331,11 @@ class PubNubCore:
         return PublishFileMessage(self)
 
     def decrypt(self, cipher_key, file):
+        warn('Deprecated: Usage of decrypt with cipher key will be removed. Use PubNub.crypto.decrypt instead')
         return self.config.file_crypto.decrypt(cipher_key, file)
 
     def encrypt(self, cipher_key, file):
+        warn('Deprecated: Usage of encrypt with cipher key will be removed. Use PubNub.crypto.encrypt instead')
         return self.config.file_crypto.encrypt(cipher_key, file)
 
     @staticmethod

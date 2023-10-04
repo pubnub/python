@@ -7,6 +7,7 @@ from pubnub.endpoints.file_operations.publish_file_message import PublishFileMes
 from pubnub.endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
 from pubnub.request_handlers.requests_handler import RequestsRequestHandler
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
+from warnings import warn
 
 
 class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
@@ -107,6 +108,7 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return self
 
     def cipher_key(self, cipher_key):
+        warn('Deprecated: Usage of local cipher_keys is discouraged. Use pnconfiguration.cipher_key instead')
         self._cipher_key = cipher_key
         return self
 

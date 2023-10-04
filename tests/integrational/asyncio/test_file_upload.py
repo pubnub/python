@@ -3,7 +3,7 @@ import pytest
 from unittest.mock import patch
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.integrational.vcr_helper import pn_vcr
-from tests.helper import pnconf_file_copy
+from tests.helper import pnconf_file_copy, pnconf_enc_env_copy
 from pubnub.endpoints.file_operations.publish_file_message import PublishFileMessage
 from pubnub.models.consumer.file import (
     PNSendFileResult, PNGetFilesResult, PNDownloadFileResult,
@@ -86,12 +86,12 @@ async def test_send_and_download_file(event_loop, file_for_upload):
 
 
 @pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file.yaml",
-    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
+    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file_cipher_key.json",
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk'], serializer='pn_json'
 )
 @pytest.mark.asyncio
-async def test_send_and_download_file_encrypted(event_loop, file_for_upload, file_upload_test_data):
-    pubnub = PubNubAsyncio(pnconf_file_copy(), custom_event_loop=event_loop)
+async def test_send_and_download_file_encrypted_cipher_key(event_loop, file_for_upload, file_upload_test_data):
+    pubnub = PubNubAsyncio(pnconf_enc_env_copy(), custom_event_loop=event_loop)
 
     with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
         envelope = await send_file(pubnub, file_for_upload, cipher_key="test")
@@ -100,6 +100,27 @@ async def test_send_and_download_file_encrypted(event_loop, file_for_upload, fil
             file_id(envelope.result.file_id).\
             file_name(envelope.result.name).\
             cipher_key("test").\
+            future()
+
+        assert isinstance(download_envelope.result, PNDownloadFileResult)
+        assert download_envelope.result.data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
+        await pubnub.stop()
+
+
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file_crypto_module.json",
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk'], serializer='pn_json'
+)
+@pytest.mark.asyncio
+async def test_send_and_download_encrypted_file_crypto_module(event_loop, file_for_upload, file_upload_test_data):
+    pubnub = PubNubAsyncio(pnconf_enc_env_copy(), custom_event_loop=event_loop)
+
+    with patch("pubnub.crypto_core.PubNubLegacyCryptor.get_initialization_vector", return_value=b"knightsofni12345"):
+        envelope = await send_file(pubnub, file_for_upload)
+        download_envelope = await pubnub.download_file().\
+            channel(CHANNEL).\
+            file_id(envelope.result.file_id).\
+            file_name(envelope.result.name).\
             future()
 
         assert isinstance(download_envelope.result, PNDownloadFileResult)

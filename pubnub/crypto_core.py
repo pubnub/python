@@ -6,6 +6,7 @@ import secrets
 from abc import abstractmethod
 from Cryptodome.Cipher import AES
 from Cryptodome.Util.Padding import pad, unpad
+from pubnub.exceptions import PubNubException
 
 
 class PubNubCrypto:
@@ -51,6 +52,8 @@ class PubNubLegacyCryptor(PubNubCryptor):
     Initial16bytes = b'0123456789012345'
 
     def __init__(self, cipher_key, use_random_iv=False, cipher_mode=AES.MODE_CBC, fallback_cipher_mode=None):
+        if not cipher_key:
+            raise PubNubException('No cipher_key passed')
         self.cipher_key = cipher_key
         self.use_random_iv = use_random_iv
         self.mode = cipher_mode
@@ -62,7 +65,6 @@ class PubNubLegacyCryptor(PubNubCryptor):
 
         secret = self.get_secret(key)
         initialization_vector = self.get_initialization_vector(use_random_iv)
-
         cipher = AES.new(bytes(secret[0:32], 'utf-8'), self.mode, initialization_vector)
         encrypted_message = cipher.encrypt(self.pad(msg))
         msg_with_iv = self.append_random_iv(encrypted_message, use_random_iv, initialization_vector)
@@ -98,6 +100,8 @@ class PubNubLegacyCryptor(PubNubCryptor):
             return message
 
     def extract_random_iv(self, message, use_random_iv):
+        if not isinstance(message, bytes):
+            message = bytes(message, 'utf-8')
         if use_random_iv:
             return message[0:16], message[16:]
         else:

@@ -4,6 +4,7 @@ from pubnub.crypto import PubNubFileCrypto
 from pubnub.models.consumer.file import PNDownloadFileResult
 from pubnub.request_handlers.requests_handler import RequestsRequestHandler
 from pubnub.endpoints.file_operations.get_file_url import GetFileDownloadUrl
+from warnings import warn
 
 
 class DownloadFileNative(FileOperationEndpoint):
@@ -16,6 +17,7 @@ class DownloadFileNative(FileOperationEndpoint):
         self._cipher_key = None
 
     def cipher_key(self, cipher_key):
+        warn('Deprecated: Usage of local cipher_keys is discouraged. Use pnconfiguration.cipher_key instead')
         self._cipher_key = cipher_key
         return self
 
@@ -40,10 +42,10 @@ class DownloadFileNative(FileOperationEndpoint):
         return self
 
     def decrypt_payload(self, data):
-        return PubNubFileCrypto(self._pubnub.config).decrypt(
-            self._cipher_key or self._pubnub.config.cipher_key,
-            data
-        )
+        if self._cipher_key:
+            return PubNubFileCrypto(self._pubnub.config).decrypt(self._cipher_key, data)
+        else:
+            return self._pubnub.crypto.decrypt_file(data)
 
     def validate_params(self):
         self.validate_subscribe_key()

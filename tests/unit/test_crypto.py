@@ -60,11 +60,13 @@ class TestPubNubCryptodome:
 
 class TestPubNubFileCrypto:
     def test_encrypt_and_decrypt_file(self, file_for_upload, file_upload_test_data):
-        pubnub = PubNub(pnconf_file_copy())
+        config = pnconf_file_copy()
+        config.cipher_key = 'myCipherKey'
+        pubnub = PubNub(config)
         with open(file_for_upload.strpath, "rb") as fd:
-            encrypted_file = pubnub.encrypt(KEY, fd.read())
 
-        decrypted_file = pubnub.decrypt(KEY, encrypted_file)
+            encrypted_file = pubnub.crypto.encrypt_file(fd.read())
+            decrypted_file = pubnub.crypto.decrypt_file(encrypted_file)
         assert file_upload_test_data["FILE_CONTENT"] == decrypted_file.decode("utf-8")
 
 
@@ -87,8 +89,14 @@ class TestPubNubCryptoInterface:
 class TestPubNubCryptoModule:
     cipher_key = 'myCipherKey'
 
+    def config(self, cipherKey, use_random_iv):
+        conf = pnconf_env_copy()
+        conf.cipher_key = cipherKey
+        conf.use_random_initialization_vector = use_random_iv
+        return conf
+
     def test_header_encoder(self):
-        crypto = AesCbcCryptoModule('myCipherKey', True)
+        crypto = AesCbcCryptoModule(self.config('myCipherKey', True))
         header = crypto.encode_header()
         assert b'PNED\x01ACRH\x00' == header
 
@@ -106,7 +114,7 @@ class TestPubNubCryptoModule:
             assert e.__str__() == 'None: Cryptor data is too long'
 
     def test_header_decoder(self):
-        crypto = AesCbcCryptoModule('myCipherKey', True)
+        crypto = AesCbcCryptoModule(self.config('myCipherKey', True))
         header = crypto.decode_header(b'PNED\x01ACRH\x00')
         assert header['header_ver'] == 1
         assert header['cryptor_id'] == 'ACRH'
@@ -125,14 +133,14 @@ class TestPubNubCryptoModule:
         assert header['cryptor_data'] == cryptor_data
 
     def test_aes_cbc_crypto_module(self):
-        crypto = AesCbcCryptoModule('myCipherKey', True)
+        crypto = AesCbcCryptoModule(self.config('myCipherKey', True))
         test_message = 'Hello world encrypted with aesCbcModule'
         encrypted_message = crypto.encrypt(test_message)
         decrypted_message = crypto.decrypt(encrypted_message)
         assert decrypted_message == test_message
 
     def test_decrypt(self):
-        crypto = AesCbcCryptoModule('myCipherKey', True)
+        crypto = AesCbcCryptoModule(self.config('myCipherKey', True))
         msg = 'UE5FRAFBQ1JIEKzlyoyC/jB1hrjCPY7zm+X2f7skPd0LBocV74cRYdrkRQ2BPKeA22gX/98pMqvcZtFB6TCGp3Zf1M8F730nlfk='
         decrypted = crypto.decrypt(msg)
         assert decrypted == 'Hello world encrypted with aesCbcModule'
@@ -141,7 +149,7 @@ class TestPubNubCryptoModule:
         decrypted = crypto.decrypt(msg)
         assert decrypted == 'Hello world encrypted with legacyModuleRandomIv'
 
-        crypto = AesCbcCryptoModule('myCipherKey', False)
+        crypto = AesCbcCryptoModule(self.config('myCipherKey', False))
         msg = 'OtYBNABjeAZ9X4A91FQLFBo4th8et/pIAsiafUSw2+L8iWqJlte8x/eCL5cyjzQa'
         decrypted = crypto.decrypt(msg)
         assert decrypted == 'Hello world encrypted with legacyModuleStaticIv'
@@ -190,17 +198,17 @@ class TestPubNubCryptoModule:
         assert decrypted == original_message
 
     def test_php_encrypted_crosscheck(self):
-        crypto = AesCbcCryptoModule(self.cipher_key, False)
+        crypto = AesCbcCryptoModule(self.config(self.cipher_key, False))
         phpmess = "KGc+SNJD7mIveY+KNIL/L9ZzAjC0dCJCju+HXRwSW2k="
         decrypted = crypto.decrypt(phpmess)
         assert decrypted == 'PHP can backwards Legacy static'
 
-        crypto = AesCbcCryptoModule(self.cipher_key, True)
+        crypto = AesCbcCryptoModule(self.config(self.cipher_key, True))
         phpmess = "PXjHv0L05kgj0mqIE9s7n4LDPrLtjnfamMoHyiMoL0R1uzSMsYp7dDfqEWrnoaqS"
         decrypted = crypto.decrypt(phpmess)
         assert decrypted == 'PHP can backwards Legacy random'
 
-        crypto = AesCbcCryptoModule(self.cipher_key, True)
+        crypto = AesCbcCryptoModule(self.config(self.cipher_key, True))
         phpmess = "UE5FRAFBQ1JIEHvl3cY3RYsHnbKm6VR51XG/Y7HodnkumKHxo+mrsxbIjZvFpVuILQ0oZysVwjNsDNMKiMfZteoJ8P1/" \
             "mvPmbuQKLErBzS2l7vEohCwbmAJODPR2yNhJGB8989reTZ7Y7Q=="
         decrypted = crypto.decrypt(phpmess)

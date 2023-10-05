@@ -13,7 +13,7 @@ def step_impl(context: PNContext):
     config = PNConfiguration()
     config.cipher_key = context.cipher_key
     config.use_random_initialization_vector = context.use_random_iv
-    decrypted_legacy = config.file_crypto.decrypt(context.cipher_key, context.encrypted_file)
+    decrypted_legacy = config.file_crypto.decrypt(context.cipher_key, context.encrypted_file, context.use_random_iv)
     assert decrypted_legacy == context.decrypted_file
     assert context.outcome == 'success'
 

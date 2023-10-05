@@ -85,9 +85,10 @@ class PubNubCryptodome(PubNubCrypto):
 
 
 class PubNubFileCrypto(PubNubCryptodome):
-    def encrypt(self, key, file):
+    def encrypt(self, key, file, use_random_iv=True):
+
         secret = self.get_secret(key)
-        initialization_vector = self.get_initialization_vector(use_random_iv=True)
+        initialization_vector = self.get_initialization_vector(use_random_iv)
         cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, bytes(initialization_vector, 'utf-8'))
         initialization_vector = bytes(initialization_vector, 'utf-8')
 
@@ -97,9 +98,9 @@ class PubNubFileCrypto(PubNubCryptodome):
             initialization_vector=initialization_vector
         )
 
-    def decrypt(self, key, file):
+    def decrypt(self, key, file, use_random_iv=True):
         secret = self.get_secret(key)
-        initialization_vector, extracted_file = self.extract_random_iv(file, use_random_iv=True)
+        initialization_vector, extracted_file = self.extract_random_iv(file, use_random_iv)
         try:
             cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, initialization_vector)
             result = unpad(cipher.decrypt(extracted_file), 16)

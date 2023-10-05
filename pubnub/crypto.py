@@ -131,16 +131,23 @@ class PubNubCryptoModule(PubNubCrypto):
             raise PubNubException('unknown cryptor error')
         return cryptor_id
 
+    def _get_cryptor(self, cryptor_id):
+        if not cryptor_id or cryptor_id not in self.cryptor_map:
+            raise PubNubException('unknown cryptor error')
+        return self.cryptor_map[cryptor_id]
+
     # encrypt string
     def encrypt(self, message: str, cryptor_id: str = None) -> str:
+        if not len(message):
+            raise PubNubException('encryption error')
         cryptor_id = self._validate_cryptor_id(cryptor_id)
         data = message.encode('utf-8')
         crypto_payload = self.cryptor_map[cryptor_id].encrypt(data)
         header = self.encode_header(cryptor_id=cryptor_id, cryptor_data=crypto_payload['cryptor_data'])
         return b64encode(header + crypto_payload['data']).decode()
 
-    def decrypt(self, input):
-        data = b64decode(input)
+    def decrypt(self, message):
+        data = b64decode(message)
         header = self.decode_header(data)
         if header:
             cryptor_id = header['cryptor_id']
@@ -149,6 +156,12 @@ class PubNubCryptoModule(PubNubCrypto):
             cryptor_id = self.FALLBACK_CRYPTOR_ID
             payload = CryptorPayload(data=data)
 
+        if not len(payload['data']):
+            raise PubNubException('decryption error')
+
+        if cryptor_id not in self.cryptor_map.keys():
+            raise PubNubException('unknown cryptor error')
+
         message = self._get_cryptor(cryptor_id).decrypt(payload)
         try:
             return json.loads(message)
@@ -156,15 +169,12 @@ class PubNubCryptoModule(PubNubCrypto):
             return message
 
     def encrypt_file(self, file_data, cryptor_id: str = None):
+        if not len(file_data):
+            raise PubNubException('encryption error')
         cryptor_id = self._validate_cryptor_id(cryptor_id)
         crypto_payload = self.cryptor_map[cryptor_id].encrypt(file_data)
         header = self.encode_header(cryptor_id=cryptor_id, cryptor_data=crypto_payload['cryptor_data'])
         return header + crypto_payload['data']
-
-    def _get_cryptor(self, cryptor_id):
-        if not cryptor_id or cryptor_id not in self.cryptor_map:
-            raise PubNubException('unknown cryptor error')
-        return self.cryptor_map[cryptor_id]
 
     def decrypt_file(self, file_data):
         header = self.decode_header(file_data)
@@ -174,6 +184,9 @@ class PubNubCryptoModule(PubNubCrypto):
         else:
             cryptor_id = self.FALLBACK_CRYPTOR_ID
             payload = CryptorPayload(data=file_data)
+
+        if not len(payload['data']):
+            raise PubNubException('decryption error')
 
         if cryptor_id not in self.cryptor_map.keys():
             raise PubNubException('unknown cryptor error')

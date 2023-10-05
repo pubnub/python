@@ -39,11 +39,11 @@ class PubNubCryptor:
     CRYPTOR_ID: str
 
     @abstractmethod
-    def encrypt(self, data: bytes) -> CryptorPayload:
+    def encrypt(self, data: bytes, **kwargs) -> CryptorPayload:
         pass
 
     @abstractmethod
-    def decrypt(self, payload: CryptorPayload, binary_mode: bool = False) -> bytes:
+    def decrypt(self, payload: CryptorPayload, binary_mode: bool = False, **kwargs) -> bytes:
         pass
 
 
@@ -59,7 +59,7 @@ class PubNubLegacyCryptor(PubNubCryptor):
         self.mode = cipher_mode
         self.fallback_mode = fallback_cipher_mode
 
-    def encrypt(self, msg, *, key=None, use_random_iv=None):
+    def encrypt(self, msg, key=None, use_random_iv=None, **kwargs) -> CryptorPayload:
         key = key or self.cipher_key
         use_random_iv = use_random_iv or self.use_random_iv
 
@@ -70,12 +70,14 @@ class PubNubLegacyCryptor(PubNubCryptor):
         msg_with_iv = self.append_random_iv(encrypted_message, use_random_iv, initialization_vector)
         return CryptorPayload(data=msg_with_iv, cryptor_data=initialization_vector)
 
-    def decrypt(self, payload: CryptorPayload, key=None, use_random_iv=False, binary_mode: bool = False):
+    def decrypt(self, payload: CryptorPayload, key=None, use_random_iv=False, binary_mode: bool = False, **kwargs):
         key = key or self.cipher_key
         use_random_iv = use_random_iv or self.use_random_iv
         secret = self.get_secret(key)
         msg = payload['data']
         initialization_vector, extracted_message = self.extract_random_iv(msg, use_random_iv)
+        if not len(extracted_message):
+            raise PubNubException('decryption error')
         cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, initialization_vector)
         if binary_mode:
             return self.depad(cipher.decrypt(extracted_message), binary_mode)
@@ -140,7 +142,7 @@ class PubNubAesCbcCryptor(PubNubCryptor):
     def get_secret(self, key) -> str:
         return hashlib.sha256(key.encode("utf-8")).digest()
 
-    def encrypt(self, data: bytes, key=None) -> CryptorPayload:
+    def encrypt(self, data: bytes, key=None, **kwargs) -> CryptorPayload:
         key = key or self.cipher_key
         secret = self.get_secret(key)
         iv = self.get_initialization_vector()
@@ -148,7 +150,7 @@ class PubNubAesCbcCryptor(PubNubCryptor):
         encrypted = cipher.encrypt(pad(data, AES.block_size))
         return CryptorPayload(data=encrypted, cryptor_data=iv)
 
-    def decrypt(self, payload: CryptorPayload, key=None, binary_mode: bool = False):
+    def decrypt(self, payload: CryptorPayload, key=None, binary_mode: bool = False, **kwargs):
         key = key or self.cipher_key
         secret = self.get_secret(key)
         iv = payload['cryptor_data']

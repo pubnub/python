@@ -1,7 +1,7 @@
 from Cryptodome.Cipher import AES
 from pubnub.enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
 from pubnub.exceptions import PubNubException
-from pubnub.crypto import PubNubCrypto, LegacyCryptoModule
+from pubnub.crypto import PubNubCrypto, LegacyCryptoModule, PubNubCryptoModule
 
 
 class PNConfiguration(object):
@@ -133,7 +133,7 @@ class PNConfiguration(object):
         return self._crypto_module
 
     @crypto_module.setter
-    def crypto_module(self, crypto_module: PubNubCrypto):
+    def crypto_module(self, crypto_module: PubNubCryptoModule):
         self._crypto_module = crypto_module
 
     @property

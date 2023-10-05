@@ -236,8 +236,10 @@ class PubNubCryptoModule(PubNubCrypto):
 class LegacyCryptoModule(PubNubCryptoModule):
     def __init__(self, config) -> None:
         cryptor_map = {
-            PubNubLegacyCryptor.CRYPTOR_ID: PubNubLegacyCryptor(
-                config.cipher_key, config.use_random_initialization_vector),
+            PubNubLegacyCryptor.CRYPTOR_ID: PubNubLegacyCryptor(config.cipher_key,
+                                                                config.use_random_initialization_vector,
+                                                                config.cipher_mode,
+                                                                config.fallback_cipher_mode),
             PubNubAesCbcCryptor.CRYPTOR_ID: PubNubAesCbcCryptor(config.cipher_key),
         }
         super().__init__(cryptor_map, PubNubLegacyCryptor)
@@ -246,8 +248,10 @@ class LegacyCryptoModule(PubNubCryptoModule):
 class AesCbcCryptoModule(PubNubCryptoModule):
     def __init__(self, config) -> None:
         cryptor_map = {
-            PubNubLegacyCryptor.CRYPTOR_ID: PubNubLegacyCryptor(
-                config.cipher_key, config.use_random_initialization_vector),
+            PubNubLegacyCryptor.CRYPTOR_ID: PubNubLegacyCryptor(config.cipher_key,
+                                                                config.use_random_initialization_vector,
+                                                                config.cipher_mode,
+                                                                config.fallback_cipher_mode),
             PubNubAesCbcCryptor.CRYPTOR_ID: PubNubAesCbcCryptor(config.cipher_key),
         }
         super().__init__(cryptor_map, PubNubAesCbcCryptor)

@@ -19,6 +19,7 @@ from pubnub.endpoints.entities.user.fetch_users import FetchUsers
 from pubnub.errors import PNERR_MISUSE_OF_USER_AND_SPACE, PNERR_USER_SPACE_PAIRS_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.features import feature_flag
+from pubnub.crypto import PubNubCryptoModule
 
 from abc import ABCMeta, abstractmethod
 
@@ -123,7 +124,7 @@ class PubNubCore:
         return self.config.uuid
 
     @property
-    def crypto(self):
+    def crypto(self) -> PubNubCryptoModule:
         return self.config.crypto_module
 
     def add_listener(self, listener):

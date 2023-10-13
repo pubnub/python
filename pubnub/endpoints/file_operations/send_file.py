@@ -106,8 +106,9 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return self
 
     def cipher_key(self, cipher_key):
-        warn('Deprecated: Usage of local cipher_keys is discouraged. Use pnconfiguration.cipher_key instead')
-        self._cipher_key = cipher_key
+        if cipher_key:
+            warn('Deprecated: Usage of local cipher_keys is discouraged. Use pnconfiguration.cipher_key instead')
+            self._cipher_key = cipher_key
         return self
 
     def create_response(self, envelope, data=None):

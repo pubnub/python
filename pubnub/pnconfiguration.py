@@ -1,7 +1,7 @@
 from Cryptodome.Cipher import AES
 from pubnub.enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
 from pubnub.exceptions import PubNubException
-from pubnub.crypto import PubNubCrypto
+from pubnub.crypto import PubNubCrypto, LegacyCryptoModule, PubNubCryptoModule
 
 
 class PNConfiguration(object):
@@ -11,6 +11,7 @@ class PNConfiguration(object):
     RECONNECTION_INTERVAL = 3
     RECONNECTION_MIN_EXPONENTIAL_BACKOFF = 1
     RECONNECTION_MAX_EXPONENTIAL_BACKOFF = 32
+    DEFAULT_CRYPTO_MODULE = LegacyCryptoModule
 
     def __init__(self):
         # TODO: add validation
@@ -46,6 +47,7 @@ class PNConfiguration(object):
         self._heartbeat_interval = PNConfiguration.DEFAULT_HEARTBEAT_INTERVAL
         self.cryptor = None
         self.file_cryptor = None
+        self._crypto_module = None
 
     def validate(self):
         PNConfiguration.validate_not_empty_string(self.uuid)
@@ -123,6 +125,16 @@ class PNConfiguration(object):
             self._init_file_crypto()
 
         return self.file_crypto_instance
+
+    @property
+    def crypto_module(self):
+        if not self._crypto_module:
+            self._crypto_module = self.DEFAULT_CRYPTO_MODULE(self)
+        return self._crypto_module
+
+    @crypto_module.setter
+    def crypto_module(self, crypto_module: PubNubCryptoModule):
+        self._crypto_module = crypto_module
 
     @property
     def port(self):

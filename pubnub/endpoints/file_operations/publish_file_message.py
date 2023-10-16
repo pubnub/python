@@ -3,6 +3,8 @@ from pubnub.enums import HttpMethod, PNOperationType
 from pubnub import utils
 from pubnub.models.consumer.file import PNPublishFileMessageResult
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
+from pubnub.crypto import PubNubCryptodome
+from warnings import warn
 
 
 class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
@@ -30,7 +32,9 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
         return self
 
     def cipher_key(self, cipher_key):
-        self._cipher_key = cipher_key
+        if cipher_key:
+            warn('Deprecated: Usage of local cipher_keys is discouraged. Use pnconfiguration.cipher_key instead')
+            self._cipher_key = cipher_key
         return self
 
     def message(self, message):
@@ -50,11 +54,10 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
         return self
 
     def _encrypt_message(self, message):
-        if self._cipher_key or self._pubnub.config.cipher_key:
-            return self._pubnub.config.crypto.encrypt(
-                self._cipher_key or self._pubnub.config.cipher_key,
-                utils.write_value_as_string(message)
-            )
+        if self._cipher_key:
+            return PubNubCryptodome(self._pubnub.config).encrypt(self._cipher_key, utils.write_value_as_string(message))
+        elif self._pubnub.config.cipher_key:
+            return self._pubnub.crypto.encrypt(utils.write_value_as_string(message))
         else:
             return message
 

@@ -7,6 +7,7 @@ from pubnub.endpoints.file_operations.publish_file_message import PublishFileMes
 from pubnub.endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
 from pubnub.request_handlers.requests_handler import RequestsRequestHandler
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
+from warnings import warn
 
 
 class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
@@ -35,16 +36,14 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return self._file_upload_envelope.result.data["url"]
 
     def encrypt_payload(self):
-        if self._cipher_key or self._pubnub.config.cipher_key:
-            try:
-                payload = self._file_object.read()
-            except AttributeError:
-                payload = self._file_object
-
-            return PubNubFileCrypto(self._pubnub.config).encrypt(
-                self._cipher_key or self._pubnub.config.cipher_key,
-                payload
-            )
+        try:
+            payload = self._file_object.read()
+        except AttributeError:
+            payload = self._file_object
+        if self._cipher_key:
+            return PubNubFileCrypto(self._pubnub.config).encrypt(self._cipher_key, payload)
+        elif self._pubnub.config.cipher_key:
+            return self._pubnub.crypto.encrypt_file(payload)
         else:
             return self._file_object
 
@@ -107,7 +106,9 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return self
 
     def cipher_key(self, cipher_key):
-        self._cipher_key = cipher_key
+        if cipher_key:
+            warn('Deprecated: Usage of local cipher_keys is discouraged. Use pnconfiguration.cipher_key instead')
+            self._cipher_key = cipher_key
         return self
 
     def create_response(self, envelope, data=None):

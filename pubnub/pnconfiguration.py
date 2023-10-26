@@ -93,7 +93,7 @@ class PNConfiguration(object):
 
     @fallback_cipher_mode.setter
     def fallback_cipher_mode(self, fallback_cipher_mode):
-        if fallback_cipher_mode not in self.ALLOWED_AES_MODES:
+        if fallback_cipher_mode and fallback_cipher_mode not in self.ALLOWED_AES_MODES:
             raise PubNubException('Cipher mode not supported')
         if fallback_cipher_mode is not self._fallback_cipher_mode:
             self._fallback_cipher_mode = fallback_cipher_mode

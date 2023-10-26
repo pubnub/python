@@ -2,13 +2,15 @@ from Cryptodome.Cipher import AES
 from os import getenv
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
+from pubnub.crypto import PubNubCryptoModule
+from pubnub.crypto_core import PubNubAesCbcCryptor
 from time import sleep
 
 channel = 'cipher_algorithm_experiment'
 
 
 def PNFactory(cipher_mode=AES.MODE_GCM, fallback_cipher_mode=AES.MODE_CBC) -> PubNub:
-    config = config = PNConfiguration()
+    config = PNConfiguration()
     config.publish_key = getenv('PN_KEY_PUBLISH')
     config.subscribe_key = getenv('PN_KEY_SUBSCRIBE')
     config.secret_key = getenv('PN_KEY_SECRET')
@@ -45,3 +47,15 @@ try:
     print([message.entry for message in messages.result.messages])
 except UnicodeDecodeError:
     print('Unable to decode - Exception has been thrown')
+
+#  partial encrypt/decrypt example
+config = PNConfiguration()
+config.publish_key = getenv('PN_KEY_PUBLISH')
+config.subscribe_key = getenv('PN_KEY_SUBSCRIBE')
+config.user_id = 'experiment'
+pubnub = PubNub(config)  # pubnub instance without encryption
+pubnub.crypto = PubNubCryptoModule({
+    PubNubAesCbcCryptor.CRYPTOR_ID: PubNubAesCbcCryptor('myCipherKey')
+}, PubNubAesCbcCryptor)
+encrypted = pubnub.crypto.encrypt('My Secret Text')  # encrypted wih AES cryptor and `myCipherKey` cipher key
+decrypted = pubnub.crypto.decrypt(encrypted)

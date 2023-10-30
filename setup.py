@@ -12,7 +12,7 @@ setup(
         'Documentation': 'https://www.pubnub.com/docs/sdks/python',
     },
     packages=find_packages(exclude=("examples*", 'tests*')),
-    license='MIT',
+    license='PubNub Software Development Kit License',
     classifiers=(
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
@@ -22,7 +22,7 @@ setup(
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
         'Programming Language :: Python :: Implementation :: CPython',
-        'License :: OSI Approved :: MIT License',
+        'License :: Other/Proprietary License',
         'Operating System :: OS Independent',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Software Development :: Libraries :: Python Modules',

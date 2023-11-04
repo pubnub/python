@@ -9,7 +9,7 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.history import PNHistoryResult
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_pam_copy
+from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_pam_env_copy
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep_native
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
@@ -79,7 +79,7 @@ class TestPubNubHistory(unittest.TestCase):
                                              filter_query_parameters=['uuid', 'pnsdk'])
     def test_not_permitted(self):
         ch = "history-native-sync-ch"
-        pubnub = PubNub(pnconf_pam_copy())
+        pubnub = PubNub(pnconf_pam_env_copy())
         pubnub.config.uuid = "history-native-sync-uuid"
 
         with pytest.raises(PubNubException):
@@ -87,7 +87,7 @@ class TestPubNubHistory(unittest.TestCase):
 
     def test_super_call_with_channel_only(self):
         ch = "history-native-sync-ch"
-        pubnub = PubNub(pnconf_pam_copy())
+        pubnub = PubNub(pnconf_pam_env_copy())
         pubnub.config.uuid = "history-native-sync-uuid"
 
         envelope = pubnub.history().channel(ch).sync()
@@ -97,7 +97,7 @@ class TestPubNubHistory(unittest.TestCase):
 
     def test_super_call_with_all_params(self):
         ch = "history-native-sync-ch"
-        pubnub = PubNub(pnconf_pam_copy())
+        pubnub = PubNub(pnconf_pam_env_copy())
         pubnub.config.uuid = "history-native-sync-uuid"
 
         envelope = pubnub.history().channel(ch).count(2).include_timetoken(True).reverse(True).start(1).end(2).sync()

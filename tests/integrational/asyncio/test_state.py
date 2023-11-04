@@ -5,7 +5,7 @@ import pubnub as pn
 
 from pubnub.models.consumer.presence import PNSetStateResult, PNGetStateResult
 from pubnub.pubnub_asyncio import PubNubAsyncio
-from tests.helper import pnconf, pnconf_copy, pnconf_sub_copy, pnconf_pam_copy
+from tests.helper import pnconf, pnconf_copy, pnconf_sub_copy, pnconf_pam_env_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper, VCR599Listener
 from tests.integrational.vcr_helper import pn_vcr
 
@@ -118,7 +118,7 @@ async def test_multiple_channels(event_loop):
 
 @pytest.mark.asyncio
 async def test_state_super_admin_call(event_loop):
-    pnconf = pnconf_pam_copy()
+    pnconf = pnconf_pam_env_copy()
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
     ch1 = 'test-state-asyncio-ch1'
     ch2 = 'test-state-asyncio-ch2'

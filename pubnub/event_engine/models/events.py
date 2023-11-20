@@ -8,9 +8,10 @@ class PNEvent:
 
 
 class PNFailureEvent(PNEvent):
-    def __init__(self, reason: PubNubException, attempt: int) -> None:
+    def __init__(self, reason: PubNubException, attempt: int, timetoken: int = 0) -> None:
         self.reason = reason
         self.attempt = attempt
+        self.timetoken = timetoken
         super().__init__()
 
 

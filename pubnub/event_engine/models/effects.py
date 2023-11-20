@@ -16,10 +16,12 @@ class PNCancelEffect(PNEffect):
 
 
 class HandshakeEffect(PNManageableEffect):
-    def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None) -> None:
+    def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None,
+                 timetoken: Union[None, int] = None) -> None:
         super().__init__()
         self.channels = channels
         self.groups = groups
+        self.timetoken = timetoken
 
 
 class CancelHandshakeEffect(PNCancelEffect):

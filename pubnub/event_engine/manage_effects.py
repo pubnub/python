@@ -50,29 +50,35 @@ class ManageHandshakeEffect(ManagedEffect):
     def run(self):
         channels = self.effect.channels
         groups = self.effect.groups
+        timetoken = self.effect.timetoken or 0
+        print(timetoken, end=f'\n\n\n')
+
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
 
             loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
             if loop.is_running():
-                loop.create_task(self.handshake_async(channels, groups, self.stop_event))
+                loop.create_task(self.handshake_async(channels=channels, groups=groups, timetoken=timetoken,
+                                                      stop_event=self.stop_event))
             else:
-                loop.run_until_complete(self.handshake_async(channels, groups, self.stop_event))
+                loop.run_until_complete(self.handshake_async(channels=channels, groups=groups, timetoken=timetoken,
+                                                             stop_event=self.stop_event))
         else:
             # TODO:  the synchronous way
             pass
 
-    async def handshake_async(self, channels, groups, stop_event):
+    async def handshake_async(self, channels, groups, stop_event, timetoken: int = 0):
         request = Subscribe(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
+        request.timetoken(0)
         handshake = await request.future()
 
         if handshake.status.error:
             logging.warning(f'Handshake failed: {handshake.status.error_data.__dict__}')
-            handshake_failure = events.HandshakeFailureEvent(handshake.status.error_data, 1)
+            handshake_failure = events.HandshakeFailureEvent(handshake.status.error_data, 1, timetoken=timetoken)
             self.event_engine.trigger(handshake_failure)
         else:
             cursor = handshake.result['t']
-            timetoken = cursor['t']
+            timetoken = timetoken if timetoken > 0 else cursor['t']
             region = cursor['r']
             handshake_success = events.HandshakeSuccessEvent(timetoken, region)
             self.event_engine.trigger(handshake_success)
@@ -134,6 +140,7 @@ class ManagedReconnectEffect(ManagedEffect):
                  effect: Union[effects.PNManageableEffect, effects.PNCancelEffect]) -> None:
         super().__init__(pubnub_instance, event_engine_instance, effect)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
+        self.max_retry_attempts = pubnub_instance.config.maximum_reconnection_retries
         self.interval = pubnub_instance.config.RECONNECTION_INTERVAL
         self.min_backoff = pubnub_instance.config.RECONNECTION_MIN_EXPONENTIAL_BACKOFF
         self.max_backoff = pubnub_instance.config.RECONNECTION_MAX_EXPONENTIAL_BACKOFF
@@ -149,7 +156,7 @@ class ManagedReconnectEffect(ManagedEffect):
         return delay
 
     def run(self):
-        if self.reconnection_policy is PNReconnectionPolicy.NONE:
+        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.effect.attempts >= self.max_retry_attempts:
             self.event_engine.trigger(self.give_up_event(
                 reason=self.effect.reason,
                 attempt=self.effect.attempts
@@ -169,11 +176,13 @@ class ManagedReconnectEffect(ManagedEffect):
                 pass
 
     async def delayed_reconnect_async(self, delay, attempt):
+        timetoken = self.effect.timetoken or 0
+        print(timetoken, end=f'\n\n\n')
         self.stop_event = self.get_new_stop_event()
         await asyncio.sleep(delay)
 
         request = Subscribe(self.pubnub).channels(self.effect.channels).channel_groups(self.effect.groups) \
-            .cancellation_event(self.stop_event)
+            .timetoken(timetoken).cancellation_event(self.stop_event)
 
         if self.effect.timetoken:
             request.timetoken(self.effect.timetoken)
@@ -188,7 +197,7 @@ class ManagedReconnectEffect(ManagedEffect):
             self.event_engine.trigger(reconnect_failure)
         else:
             cursor = reconnect.result['t']
-            timetoken = cursor['t']
+            timetoken = timetoken if timetoken > 0 else cursor['t']
             region = cursor['r']
             reconnect_success = self.success_event(timetoken, region)
             self.event_engine.trigger(reconnect_success)

@@ -82,7 +82,7 @@ class UnsubscribedState(PNState):
         self._context.region = event.region
 
         return PNTransition(
-            state=ReceivingState,
+            state=HandshakingState,
             context=self._context
         )
 
@@ -101,7 +101,7 @@ class HandshakingState(PNState):
     def on_enter(self, context: Union[None, PNContext]):
         self._context.update(context)
         super().on_enter(self._context)
-        return effects.HandshakeEffect(self._context.channels, self._context.groups)
+        return effects.HandshakeEffect(self._context.channels, self._context.groups, self._context.timetoken or 0)
 
     def on_exit(self):
         super().on_exit()
@@ -122,8 +122,9 @@ class HandshakingState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
-        self._context.timetoken = event.timetoken
         self._context.region = event.region
+        if self._context.timetoken == 0:
+            self._context.timetoken = event.timetoken
 
         return PNTransition(
             state=ReceivingState,
@@ -134,6 +135,8 @@ class HandshakingState(PNState):
         self._context.update(context)
         self._context.attempt = event.attempt
         self._context.reason = event.reason
+        if self._context.timetoken == 0:
+            self._context.timetoken = event.timetoken
 
         return PNTransition(
             state=HandshakeReconnectingState,
@@ -153,6 +156,7 @@ class HandshakingState(PNState):
         self._context.update(context)
         self._context.timetoken = event.timetoken
         self._context.region = event.region
+        self._context.attempt = 0
 
         return PNTransition(
             state=ReceivingState,
@@ -361,8 +365,7 @@ class ReceivingState(PNState):
         return PNTransition(
             state=self.__class__,
             context=self._context,
-            effect=[effects.EmitMessagesEffect(messages=event.messages),
-                    effects.EmitStatusEffect(PNStatusCategory.PNConnectedCategory)],
+            effect=effects.EmitMessagesEffect(messages=event.messages),
         )
 
     def receiving_failure(self, event: events.ReceiveFailureEvent, context: PNContext) -> PNTransition:

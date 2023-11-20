@@ -11,6 +11,8 @@ class StateMachine:
     _context: states.PNContext
     _effect_list: List[effects.PNEffect]
     _enabled: bool
+    _log: list
+    _max_log_size: int = 25
 
     def __init__(self, initial_state: states.PNState, dispatcher_class: Optional[Dispatcher] = None) -> None:
         self._context = states.PNContext()
@@ -21,6 +23,7 @@ class StateMachine:
             dispatcher_class = Dispatcher
         self._dispatcher = dispatcher_class(self)
         self._enabled = True
+        self._log = []
 
     def get_state_name(self):
         return self._current_state.__class__.__name__
@@ -32,16 +35,18 @@ class StateMachine:
         return self._dispatcher
 
     def trigger(self, event: events.PNEvent) -> states.PNTransition:
-        logging.debug(f'Triggered {event.__class__.__name__}({event.__dict__}) on {self.get_state_name()}')
+        self._log_event(event)
+        print(f'Triggered {event.__class__.__name__}({event.__dict__}) on {self.get_state_name()}')
+        logging.warning(f'Triggered {event.__class__.__name__}({event.__dict__}) on {self.get_state_name()}')
         if not self._enabled:
             logging.error('EventEngine is not enabled')
             return False
         if event.get_name() in self._current_state._transitions:
             self._effect_list.clear()
             effect = self._current_state.on_exit()
-            logging.debug(f'On exit effect: {effect.__class__.__name__}')
-
             if effect:
+                logging.debug(f'On exit effect: {effect.__class__.__name__}')
+                self._log_effect(effect)
                 self._effect_list.append(effect)
 
             transition: states.PNTransition = self._current_state.on(event, self._context)
@@ -54,14 +59,17 @@ class StateMachine:
                     logging.debug('unpacking list')
                     for effect in transition.effect:
                         logging.debug(f'Transition effect: {effect.__class__.__name__}')
+                        self._log_effect(effect)
                         self._effect_list.append(effect)
                 else:
                     logging.debug(f'Transition effect: {transition.effect.__class__.__name__}')
+                    self._log_effect(transition.effect)
                     self._effect_list.append(transition.effect)
 
             effect = self._current_state.on_enter(self._context)
             if effect:
                 logging.debug(f'On enter effect: {effect.__class__.__name__}')
+                self._log_effect(effect)
                 self._effect_list.append(effect)
 
         else:
@@ -81,18 +89,16 @@ class StateMachine:
     def stop(self):
         self._enabled = False
 
+    def get_logs(self):
+        return self._log
 
-""" TODO: Remove before prodction """
-if __name__ == "__main__":
-    machine = StateMachine(states.UnsubscribedState)
-    logging.debug(f'machine initialized. Current state: {machine.get_state_name()}')
-    effect = machine.trigger(events.SubscriptionChangedEvent(
-        channels=['fail'], groups=[]
-    ))
+    def _log_event(self, event: events.PNEvent):
+        self._log.append(('event', event.__class__.__name__))
+        if len(self._log) >= self._max_log_size:
+            self._log.pop(0)
 
-    machine.add_listener(effects.PNEffect, lambda x: logging.debug(f'Catch All Logger: {effect.__dict__}'))
+    def _log_effect(self, effect: effects.PNEffect):
+        self._log.append(('invocation', effect.__class__.__name__))
+        if len(self._log) >= self._max_log_size:
+            self._log.pop(0)
 
-    machine.add_listener(effects.EmitMessagesEffect, )
-    effect = machine.trigger(events.DisconnectEvent())
-    logging.debug(f'SubscriptionChangedEvent triggered with channels=[`fail`].  Curr state: {machine.get_state_name()}')
-    logging.debug(f'effect queue: {machine._effect_list}')

@@ -1,3 +1,6 @@
+import binascii
+
+
 class PNHistoryResult(object):
     def __init__(self, messages, start_timetoken, end_timetoken):
         self.messages = messages
@@ -44,12 +47,16 @@ class PNHistoryItemResult(object):
         self.meta = meta
         self.entry = entry
         self.crypto = crypto
+        self.error = None
 
     def __str__(self):
         return "History item with tt: %s and content: %s" % (self.timetoken, self.entry)
 
     def decrypt(self, cipher_key):
-        self.entry = self.crypto.decrypt(cipher_key, self.entry)
+        try:
+            self.entry = self.crypto.decrypt(cipher_key, self.entry)
+        except binascii.Error as e:
+            self.error = e
 
 
 class PNFetchMessagesResult(object):

@@ -1,3 +1,4 @@
+import binascii
 import logging
 import time
 import unittest
@@ -9,7 +10,7 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.history import PNHistoryResult
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_pam_copy
+from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_enc_env_copy, pnconf_env_copy, pnconf_pam_copy
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep_native
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
@@ -104,3 +105,30 @@ class TestPubNubHistory(unittest.TestCase):
         assert isinstance(envelope.result, PNHistoryResult)
 
         assert not envelope.status.is_error()
+
+
+class TestHistoryCrypto(unittest.TestCase):
+    @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/unencrypted.json',
+                                             serializer='pn_json', filter_query_parameters=['uuid', 'pnsdk'])
+    def test_unencrypted(self):
+        ch = "test_unencrypted"
+        pubnub = PubNub(pnconf_env_copy())
+        pubnub.config.uuid = "history-native-sync-uuid"
+        pubnub.delete_messages().channel(ch).sync()
+        envelope = pubnub.publish().channel(ch).message("Lorem Ipsum").sync()
+        assert isinstance(envelope.result, PNPublishResult)
+        assert envelope.result.timetoken > 0
+
+        time.sleep(2)
+
+        pubnub_enc = PubNub(pnconf_enc_env_copy())
+        pubnub_enc.config.uuid = "history-native-sync-uuid"
+        envelope = pubnub_enc.history().channel(ch).sync()
+
+        assert isinstance(envelope.result, PNHistoryResult)
+        assert envelope.result.start_timetoken > 0
+        assert envelope.result.end_timetoken > 0
+        assert len(envelope.result.messages) == 1
+
+        assert envelope.result.messages[0].entry == 'Lorem Ipsum'
+        assert isinstance(envelope.result.messages[0].error, binascii.Error)

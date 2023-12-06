@@ -1,5 +1,6 @@
 import logging
 
+from asyncio import Event as AsyncioEvent
 from typing import List, Optional
 
 from pubnub.event_engine.models import effects, events, states
@@ -11,8 +12,6 @@ class StateMachine:
     _context: states.PNContext
     _effect_list: List[effects.PNEffect]
     _enabled: bool
-    _log: list
-    _max_log_size: int = 25
 
     def __init__(self, initial_state: states.PNState, dispatcher_class: Optional[Dispatcher] = None) -> None:
         self._context = states.PNContext()
@@ -23,7 +22,11 @@ class StateMachine:
             dispatcher_class = Dispatcher
         self._dispatcher = dispatcher_class(self)
         self._enabled = True
-        self._log = []
+        self.logger = logging.getLogger("pubnub")
+
+    def __del__(self):
+        self.logger.debug('Shutting down StateMachine')
+        self._enabled = False
 
     def get_state_name(self):
         return self._current_state.__class__.__name__
@@ -35,70 +38,55 @@ class StateMachine:
         return self._dispatcher
 
     def trigger(self, event: events.PNEvent) -> states.PNTransition:
-        self._log_event(event)
-        print(f'Triggered {event.__class__.__name__}({event.__dict__}) on {self.get_state_name()}')
-        logging.warning(f'Triggered {event.__class__.__name__}({event.__dict__}) on {self.get_state_name()}')
+        self.logger.debug(f'Triggered event: {event.__class__.__name__}({event.__dict__}) on {self.get_state_name()}')
+
         if not self._enabled:
-            logging.error('EventEngine is not enabled')
+            self.logger.error('EventEngine is not enabled')
             return False
+
         if event.get_name() in self._current_state._transitions:
             self._effect_list.clear()
             effect = self._current_state.on_exit()
+
             if effect:
-                logging.debug(f'On exit effect: {effect.__class__.__name__}')
-                self._log_effect(effect)
+                self.logger.debug(f'Invoke effect: {effect.__class__.__name__} {effect.__dict__}')
                 self._effect_list.append(effect)
 
             transition: states.PNTransition = self._current_state.on(event, self._context)
-
             self._current_state = transition.state(self._current_state.get_context())
-
             self._context = transition.context
+
             if transition.effect:
                 if isinstance(transition.effect, list):
-                    logging.debug('unpacking list')
+                    self.logger.debug('unpacking list')
                     for effect in transition.effect:
-                        logging.debug(f'Transition effect: {effect.__class__.__name__}')
-                        self._log_effect(effect)
+                        self.logger.debug(f'Invoke effect: {effect.__class__.__name__}')
                         self._effect_list.append(effect)
                 else:
-                    logging.debug(f'Transition effect: {transition.effect.__class__.__name__}')
-                    self._log_effect(transition.effect)
+                    self.logger.debug(f'Invoke effect: {transition.effect.__class__.__name__}{effect.__dict__}')
                     self._effect_list.append(transition.effect)
 
             effect = self._current_state.on_enter(self._context)
+
             if effect:
-                logging.debug(f'On enter effect: {effect.__class__.__name__}')
-                self._log_effect(effect)
+                self.logger.debug(f'Invoke effect: {effect.__class__.__name__} StateMachine ({id(self)})')
                 self._effect_list.append(effect)
 
         else:
-            # we're ignoring events unhandled
-            logging.debug(f'unhandled event?? {event.__class__.__name__} in {self._current_state.__class__.__name__}')
+            message = f'Unhandled event: {event.__class__.__name__} in {self._current_state.__class__.__name__}'
+            self.logger.warning(message)
             self.stop()
 
         self.dispatch_effects()
 
     def dispatch_effects(self):
         for effect in self._effect_list:
-            logging.debug(f'dispatching {effect.__class__.__name__} {id(effect)}')
+            self._current_stop_event = AsyncioEvent()
+            self.logger.debug(f'dispatching {effect.__class__.__name__} {id(effect)}')
             self._dispatcher.dispatch_effect(effect)
 
         self._effect_list.clear()
 
     def stop(self):
         self._enabled = False
-
-    def get_logs(self):
-        return self._log
-
-    def _log_event(self, event: events.PNEvent):
-        self._log.append(('event', event.__class__.__name__))
-        if len(self._log) >= self._max_log_size:
-            self._log.pop(0)
-
-    def _log_effect(self, effect: effects.PNEffect):
-        self._log.append(('invocation', effect.__class__.__name__))
-        if len(self._log) >= self._max_log_size:
-            self._log.pop(0)
-
+        self._current_stop_event.set()

@@ -16,7 +16,7 @@ class PNFailureEvent(PNEvent):
 
 
 class PNCursorEvent(PNEvent):
-    def __init__(self, timetoken: str, region: Optional[int] = None) -> None:
+    def __init__(self, timetoken: str, region: Optional[int] = None, **kwargs) -> None:
         self.timetoken = timetoken
         self.region = region
 
@@ -39,7 +39,7 @@ class SubscriptionRestoredEvent(PNCursorEvent, PNChannelGroupsEvent):
 
 
 class HandshakeSuccessEvent(PNCursorEvent):
-    def __init__(self, timetoken: str, region: Optional[int] = None) -> None:
+    def __init__(self, timetoken: str, region: Optional[int] = None, **kwargs) -> None:
         super().__init__(timetoken, region)
 
 

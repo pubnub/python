@@ -12,6 +12,7 @@ class FakeConfig:
     RECONNECTION_INTERVAL = 1
     RECONNECTION_MIN_EXPONENTIAL_BACKOFF = 1
     RECONNECTION_MAX_EXPONENTIAL_BACKOFF = 32
+    maximum_reconnection_retries = 3
 
 
 class FakePN:
@@ -67,15 +68,17 @@ def test_dispatch_stop_handshake_reconnect_effect():
 
 
 def test_dispatch_run_receive_reconnect_effect():
-    with patch.object(manage_effects.ManagedEffect, 'run') as mocked_run:
+    with patch.object(manage_effects.ManagedReceiveReconnectEffect, 'run') as mocked_run:
         dispatcher = Dispatcher(StateMachine(UnsubscribedState))
+        dispatcher.set_pn(FakePN())
         dispatcher.dispatch_effect(effects.ReceiveReconnectEffect(['chan']))
         mocked_run.assert_called()
 
 
 def test_dispatch_stop_receive_reconnect_effect():
-    with patch.object(manage_effects.ManagedEffect, 'stop') as mocked_stop:
+    with patch.object(manage_effects.ManagedReceiveReconnectEffect, 'stop') as mocked_stop:
         dispatcher = Dispatcher(StateMachine(UnsubscribedState))
+        dispatcher.set_pn(FakePN())
         dispatcher.dispatch_effect(effects.ReceiveReconnectEffect(['chan']))
         dispatcher.dispatch_effect(effects.CancelReceiveReconnectEffect())
         mocked_stop.assert_called()

@@ -6,6 +6,7 @@ from typing import Optional, Union
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.enums import PNReconnectionPolicy
 from pubnub.exceptions import PubNubException
+from pubnub.models.consumer.pn_error_data import PNErrorData
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.models.server.subscribe import SubscribeMessage
 from pubnub.pubnub import PubNub
@@ -117,6 +118,13 @@ class ManagedReceiveMessagesEffect(ManagedEffect):
 
         subscribe.cancellation_event(self.stop_event)
         response = await subscribe.future()
+
+        if response.status is None and response.result is None:
+
+            error = PubNubException("Empty response")
+            response.status = PNStatus()
+            response.status.error = True
+            response.status.error_data = PNErrorData(str(error), error)
 
         if response.status.error:
             self.logger.warning(f'Recieve messages failed: {response.status.error_data.__dict__}')

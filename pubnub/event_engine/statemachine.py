@@ -1,6 +1,5 @@
 import logging
 
-from asyncio import Event as AsyncioEvent
 from typing import List, Optional
 
 from pubnub.event_engine.models import effects, events, states
@@ -81,7 +80,6 @@ class StateMachine:
 
     def dispatch_effects(self):
         for effect in self._effect_list:
-            self._current_stop_event = AsyncioEvent()
             self.logger.debug(f'dispatching {effect.__class__.__name__} {id(effect)}')
             self._dispatcher.dispatch_effect(effect)
 
@@ -89,4 +87,3 @@ class StateMachine:
 
     def stop(self):
         self._enabled = False
-        self._current_stop_event.set()

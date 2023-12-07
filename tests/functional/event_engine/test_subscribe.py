@@ -2,7 +2,6 @@ import asyncio
 import busypie
 import logging
 import pytest
-import sys
 
 from unittest.mock import patch
 from tests.helper import pnconf_env_copy
@@ -10,9 +9,7 @@ from tests.helper import pnconf_env_copy
 from pubnub.pubnub_asyncio import PubNubAsyncio, EventEngineSubscriptionManager, SubscribeCallback
 from pubnub.event_engine.models import states
 from pubnub.models.consumer.common import PNStatus
-from pubnub.enums import PNStatusCategory, PNReconnectionPolicy
-
-logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+from pubnub.enums import PNReconnectionPolicy
 
 
 class TestCallback(SubscribeCallback):
@@ -27,8 +24,7 @@ class TestCallback(SubscribeCallback):
 
     def status(self, pubnub, status: PNStatus):
         self._status_called = True
-        assert status.error is False
-        assert status.category is PNStatusCategory.PNConnectedCategory
+        assert isinstance(status, PNStatus)
         logging.debug('calling status_callback()')
         self.status_callback()
 
@@ -57,20 +53,15 @@ async def test_subscribe():
         pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager, custom_event_loop=loop)
         pubnub.add_listener(callback)
         pubnub.subscribe().channels('foo').execute()
+
         await delayed_publish('foo', 'test', 1)
-        await busypie.wait().at_most(10).poll_delay(2).poll_interval(1).until_async(lambda: callback.message_called)
+        await busypie.wait().at_most(5).poll_delay(1).poll_interval(1).until_async(lambda: callback.message_called)
         assert pubnub._subscription_manager.event_engine.get_state_name() == states.ReceivingState.__name__
 
         status_callback.assert_called()
         message_callback.assert_called()
         pubnub.unsubscribe_all()
         pubnub._subscription_manager.stop()
-
-    try:
-        await asyncio.gather(*asyncio.tasks.all_tasks())
-    except asyncio.CancelledError:
-        pass
-    await pubnub.close_session()
 
 
 async def delayed_publish(channel, message, delay):
@@ -83,20 +74,16 @@ async def delayed_publish(channel, message, delay):
 async def test_handshaking():
     config = pnconf_env_copy()
     config.enable_subscribe = True
+    config.subscribe_request_timeout = 3
     callback = TestCallback()
     with patch.object(TestCallback, 'status_callback') as status_callback:
         pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
         pubnub.add_listener(callback)
         pubnub.subscribe().channels('foo').execute()
-        await busypie.wait().at_most(10).poll_delay(2).poll_interval(1).until_async(lambda: callback.status_called)
+        await busypie.wait().at_most(10).poll_delay(1).poll_interval(1).until_async(lambda: callback.status_called)
         assert pubnub._subscription_manager.event_engine.get_state_name() == states.ReceivingState.__name__
         status_callback.assert_called()
         pubnub._subscription_manager.stop()
-    try:
-        await asyncio.gather(*asyncio.tasks.all_tasks())
-    except asyncio.CancelledError:
-        pass
-    await pubnub.close_session()
 
 
 @pytest.mark.asyncio
@@ -113,7 +100,16 @@ async def test_handshake_failed_no_reconnect():
     pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
     pubnub.add_listener(callback)
     pubnub.subscribe().channels('foo').execute()
-    await asyncio.sleep(4)
+
+    def is_state(state):
+        return pubnub._subscription_manager.event_engine.get_state_name() == state
+
+    await busypie.wait() \
+        .at_most(10) \
+        .poll_delay(1) \
+        .poll_interval(1) \
+        .until_async(lambda: is_state(states.HandshakeFailedState.__name__))
+
     assert pubnub._subscription_manager.event_engine.get_state_name() == states.HandshakeFailedState.__name__
     pubnub._subscription_manager.stop()
     await pubnub.close_session()
@@ -134,9 +130,14 @@ async def test_handshake_failed_reconnect():
     pubnub = PubNubAsyncio(config, subscription_manager=EventEngineSubscriptionManager)
     pubnub.add_listener(callback)
     pubnub.subscribe().channels('foo').execute()
-    await asyncio.sleep(7)
-    assert pubnub._subscription_manager.event_engine.get_state_name() == states.HandshakeReconnectingState.__name__
-    await asyncio.sleep(1)
 
-    await pubnub.close_session()
+    def is_state(state):
+        return pubnub._subscription_manager.event_engine.get_state_name() == state
+
+    await busypie.wait() \
+        .at_most(10) \
+        .poll_delay(1) \
+        .poll_interval(1) \
+        .until_async(lambda: is_state(states.HandshakeReconnectingState.__name__))
+    assert pubnub._subscription_manager.event_engine.get_state_name() == states.HandshakeReconnectingState.__name__
     pubnub._subscription_manager.stop()

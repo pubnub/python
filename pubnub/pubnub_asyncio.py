@@ -57,7 +57,6 @@ class PubNubAsyncio(PubNubCore):
         self._telemetry_manager = AsyncioTelemetryManager()
 
     def __del__(self):
-        pass
         if self.event_loop.is_running():
             self.event_loop.create_task(self.close_session())
 

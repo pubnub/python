@@ -8,14 +8,15 @@ class PNEvent:
 
 
 class PNFailureEvent(PNEvent):
-    def __init__(self, reason: PubNubException, attempt: int) -> None:
+    def __init__(self, reason: PubNubException, attempt: int, timetoken: int = 0) -> None:
         self.reason = reason
         self.attempt = attempt
+        self.timetoken = timetoken
         super().__init__()
 
 
 class PNCursorEvent(PNEvent):
-    def __init__(self, timetoken: str, region: Optional[int] = None) -> None:
+    def __init__(self, timetoken: str, region: Optional[int] = None, **kwargs) -> None:
         self.timetoken = timetoken
         self.region = region
 
@@ -38,7 +39,7 @@ class SubscriptionRestoredEvent(PNCursorEvent, PNChannelGroupsEvent):
 
 
 class HandshakeSuccessEvent(PNCursorEvent):
-    def __init__(self, timetoken: str, region: Optional[int] = None) -> None:
+    def __init__(self, timetoken: str, region: Optional[int] = None, **kwargs) -> None:
         super().__init__(timetoken, region)
 
 

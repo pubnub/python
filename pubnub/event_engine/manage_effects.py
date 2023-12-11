@@ -6,7 +6,6 @@ from typing import Optional, Union
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.enums import PNReconnectionPolicy
 from pubnub.exceptions import PubNubException
-from pubnub.models.consumer.pn_error_data import PNErrorData
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.models.server.subscribe import SubscribeMessage
 from pubnub.pubnub import PubNub
@@ -53,17 +52,16 @@ class ManageHandshakeEffect(ManagedEffect):
     def run(self):
         channels = self.effect.channels
         groups = self.effect.groups
-        timetoken = self.effect.timetoken or 0
+        tt = self.effect.timetoken or 0
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
 
             loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
+            coro = self.handshake_async(channels=channels, groups=groups, timetoken=tt, stop_event=self.stop_event)
             if loop.is_running():
-                loop.create_task(self.handshake_async(channels=channels, groups=groups, timetoken=timetoken,
-                                                      stop_event=self.stop_event))
+                loop.create_task(coro)
             else:
-                loop.run_until_complete(self.handshake_async(channels=channels, groups=groups, timetoken=timetoken,
-                                                             stop_event=self.stop_event))
+                loop.run_until_complete(coro)
         else:
             # TODO:  the synchronous way
             pass
@@ -97,10 +95,11 @@ class ManagedReceiveMessagesEffect(ManagedEffect):
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
             loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
+            coro = self.receive_messages_async(channels, groups, timetoken, region)
             if loop.is_running():
-                loop.create_task(self.receive_messages_async(channels, groups, timetoken, region))
+                loop.create_task(coro)
             else:
-                loop.run_until_complete(self.receive_messages_async(channels, groups, timetoken, region))
+                loop.run_until_complete(coro)
         else:
             # TODO:  the synchronous way
             pass
@@ -120,13 +119,10 @@ class ManagedReceiveMessagesEffect(ManagedEffect):
         response = await subscribe.future()
 
         if response.status is None and response.result is None:
-
-            error = PubNubException("Empty response")
-            response.status = PNStatus()
-            response.status.error = True
-            response.status.error_data = PNErrorData(str(error), error)
-
-        if response.status.error:
+            self.logger.warning('Recieve messages failed: Empty response')
+            recieve_failure = events.ReceiveFailureEvent('Empty response', 1, timetoken=timetoken)
+            self.event_engine.trigger(recieve_failure)
+        elif response.status.error:
             self.logger.warning(f'Recieve messages failed: {response.status.error_data.__dict__}')
             recieve_failure = events.ReceiveFailureEvent(response.status.error_data, 1, timetoken=timetoken)
             self.event_engine.trigger(recieve_failure)
@@ -182,10 +178,11 @@ class ManagedReconnectEffect(ManagedEffect):
             self.logger.warning(f'will reconnect in {delay}s')
             if hasattr(self.pubnub, 'event_loop'):
                 loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
+                coro = self.delayed_reconnect_async(delay, attempts)
                 if loop.is_running():
-                    self.delayed_reconnect_coro = loop.create_task(self.delayed_reconnect_async(delay, attempts))
+                    self.delayed_reconnect_coro = loop.create_task(coro)
                 else:
-                    self.delayed_reconnect_coro = loop.run_until_complete(self.delayed_reconnect_async(delay, attempts))
+                    self.delayed_reconnect_coro = loop.run_until_complete(coro)
             else:
                 # TODO:  the synchronous way
                 pass

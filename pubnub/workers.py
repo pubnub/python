@@ -52,22 +52,23 @@ class SubscribeMessageWorker(object):
 
     def _process_message(self, message_input):
         if self._pubnub.config.cipher_key is None:
-            return message_input
+            return message_input, None
         else:
             try:
                 return self._pubnub.config.crypto.decrypt(
                     self._pubnub.config.cipher_key,
                     message_input
-                )
+                ), None
             except Exception as exception:
                 logger.warning("could not decrypt message: \"%s\", due to error %s" % (message_input, str(exception)))
+
                 pn_status = PNStatus()
                 pn_status.category = PNStatusCategory.PNDecryptionErrorCategory
                 pn_status.error_data = PNErrorData(str(exception), exception)
                 pn_status.error = True
                 pn_status.operation = PNOperationType.PNSubscribeOperation
                 self._listener_manager.announce_status(pn_status)
-                return message_input
+                return message_input, exception
 
     def _process_incoming_payload(self, message):
         assert isinstance(message, SubscribeMessage)
@@ -125,7 +126,7 @@ class SubscribeMessageWorker(object):
                 )
                 self._listener_manager.announce_membership(membership_result)
         elif message.type == SubscribeMessageWorker.TYPE_FILE_MESSAGE:
-            extracted_message = self._process_message(message.payload)
+            extracted_message, _ = self._process_message(message.payload)
             download_url = self._get_url_for_file_event_message(channel, extracted_message)
 
             pn_file_result = PNFileMessageResult(
@@ -142,7 +143,7 @@ class SubscribeMessageWorker(object):
             self._listener_manager.announce_file_message(pn_file_result)
 
         else:
-            extracted_message = self._process_message(message.payload)
+            extracted_message, error = self._process_message(message.payload)
             publisher = message.issuing_client_id
 
             if extracted_message is None:
@@ -172,6 +173,7 @@ class SubscribeMessageWorker(object):
                     channel=channel,
                     subscription=subscription_match,
                     timetoken=publish_meta_data.publish_timetoken,
-                    publisher=publisher
+                    publisher=publisher,
+                    error=error
                 )
                 self._listener_manager.announce_message(pn_message_result)

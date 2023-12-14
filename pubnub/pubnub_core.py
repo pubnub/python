@@ -85,7 +85,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "7.3.0"
+    SDK_VERSION = "7.3.2"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -93,6 +93,7 @@ class PubNubCore:
 
     __metaclass__ = ABCMeta
     _plugins = []
+    __crypto = None
 
     def __init__(self, config):
         self.config = config
@@ -125,7 +126,11 @@ class PubNubCore:
 
     @property
     def crypto(self) -> PubNubCryptoModule:
-        return self.config.crypto_module
+        return self.__crypto if self.__crypto else self.config.crypto_module
+
+    @crypto.setter
+    def crypto(self, crypto: PubNubCryptoModule):
+        self.__crypto = crypto
 
     def add_listener(self, listener):
         self._validate_subscribe_manager_enabled()

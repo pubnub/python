@@ -1,3 +1,15 @@
+## v7.3.2
+November 27 2023
+
+#### Fixed
+- Gracefully handle decrypting an unencrypted method. If a decryption error occurs when trying to decrypt plain text, the plain text message will be returned and an error field will be set in the response. This works for both history and subscription messages.
+
+## v7.3.1
+October 30 2023
+
+#### Fixed
+- Changed license type from MIT to PubNub Software Development Kit License.
+
 ## v7.3.0
 October 16 2023
 

@@ -20,9 +20,7 @@ env:
 jobs:
   tests:
     name: Integration and Unit tests
-    runs-on:
-      group: Default Larger Runners
-      labels: ubuntu-latest-m
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
@@ -52,9 +50,7 @@ jobs:
         uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   acceptance-tests:
     name: Acceptance tests
-    runs-on:
-      group: Default Larger Runners
-      labels: ubuntu-latest-m
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout project
         uses: actions/checkout@v3
@@ -68,23 +64,25 @@ jobs:
       - name: Setup Python 3.9
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9.13'
+          python-version: "3.9.13"
       - name: Run mock server action
         uses: ./.github/.release/actions/actions/mock-server
         with:
           token: ${{ secrets.GH_TOKEN }}
       - name: Install Python dependencies and run acceptance tests
         run: |
-            cp sdk-specifications/features/access/authorization-failure-reporting.feature tests/acceptance/pam
-            cp sdk-specifications/features/access/grant-token.feature tests/acceptance/pam
-            cp sdk-specifications/features/access/revoke-token.feature tests/acceptance/pam
-            cp sdk-specifications/features/encryption/cryptor-module.feature tests/acceptance/encryption
-            mkdir tests/acceptance/encryption/assets/
-            cp sdk-specifications/features/encryption/assets/* tests/acceptance/encryption/assets/
+          cp sdk-specifications/features/access/authorization-failure-reporting.feature tests/acceptance/pam
+          cp sdk-specifications/features/access/grant-token.feature tests/acceptance/pam
+          cp sdk-specifications/features/access/revoke-token.feature tests/acceptance/pam
+          cp sdk-specifications/features/encryption/cryptor-module.feature tests/acceptance/encryption
+          mkdir tests/acceptance/encryption/assets/
+          cp sdk-specifications/features/encryption/assets/* tests/acceptance/encryption/assets/
+          cp sdk-specifications/features/subscribe/event-engine/happy-path.feature tests/acceptance/subscribe/happy-path.feature
 
-            sudo pip3 install -r requirements-dev.txt
-            behave --junit tests/acceptance/pam
-            behave --junit tests/acceptance/encryption/cryptor-module.feature -t=~na=python -k
+          sudo pip3 install -r requirements-dev.txt
+          behave --junit tests/acceptance/pam
+          behave --junit tests/acceptance/encryption/cryptor-module.feature -t=~na=python -k
+          behave --junit tests/acceptance/subscribe
       - name: Expose acceptance tests reports
         uses: actions/upload-artifact@v3
         if: always()
@@ -97,9 +95,7 @@ jobs:
         uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   all-tests:
     name: Tests
-    runs-on:
-      group: Default Larger Runners
-      labels: ubuntu-latest-m
+    runs-on: ubuntu-latest
     needs: [tests, acceptance-tests]
     steps:
       - name: Tests summary

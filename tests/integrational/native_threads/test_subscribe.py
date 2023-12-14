@@ -1,3 +1,4 @@
+import binascii
 import logging
 import unittest
 import time
@@ -8,7 +9,7 @@ from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult
 from pubnub.models.consumer.pubsub import PNPublishResult, PNMessageResult
 from pubnub.pubnub import PubNub, SubscribeListener, NonSubscribeListener
 from tests import helper
-from tests.helper import pnconf_sub_copy
+from tests.helper import pnconf_enc_env_copy, pnconf_env_copy, pnconf_sub_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 
@@ -253,3 +254,49 @@ class TestPubNubSubscription(unittest.TestCase):
 
         pubnub.stop()
         pubnub_listener.stop()
+
+    def test_subscribe_pub_unencrypted_unsubscribe(self):
+        ch = helper.gen_channel("test-subscribe-sub-pub-unsub")
+
+        config_plain = pnconf_env_copy()
+        config_plain.enable_subscribe = True
+        pubnub_plain = PubNub(config_plain)
+
+        config = pnconf_enc_env_copy()
+        config.enable_subscribe = True
+        pubnub = PubNub(config)
+
+        subscribe_listener = SubscribeListener()
+        publish_operation = NonSubscribeListener()
+        message = "hey"
+
+        try:
+            pubnub.add_listener(subscribe_listener)
+
+            pubnub.subscribe().channels(ch).execute()
+            subscribe_listener.wait_for_connect()
+
+            pubnub_plain.publish().channel(ch).message(message).pn_async(publish_operation.callback)
+
+            if publish_operation.pn_await() is False:
+                self.fail("Publish operation timeout")
+
+            publish_result = publish_operation.result
+            assert isinstance(publish_result, PNPublishResult)
+            assert publish_result.timetoken > 0
+
+            result = subscribe_listener.wait_for_message_on(ch)
+            assert isinstance(result, PNMessageResult)
+            assert result.channel == ch
+            assert result.subscription is None
+            assert result.timetoken > 0
+            assert result.message == message
+            assert result.error is not None
+            assert isinstance(result.error, binascii.Error)
+
+            pubnub.unsubscribe().channels(ch).execute()
+            subscribe_listener.wait_for_disconnect()
+        except PubNubException as e:
+            self.fail(e)
+        finally:
+            pubnub.stop()

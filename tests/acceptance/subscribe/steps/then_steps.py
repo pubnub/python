@@ -68,3 +68,47 @@ async def step_impl(context: PNContext):
     assert isinstance(status, PNStatus)
     assert status.category == PNStatusCategory.PNDisconnectedCategory
     await context.pubnub.stop()
+
+
+"""
+Presence engine step definitions
+"""
+
+
+@then(u'I wait {wait_time} seconds')
+@async_run_until_complete
+async def step_impl(context: PNContext, wait_time: str):
+    await busypie.wait() \
+        .at_most(int(wait_time)) \
+        .poll_delay(1) \
+        .poll_interval(1)
+
+
+@then(u'I observe the following Events and Invocations of the Presence EE')
+@async_run_until_complete
+async def step_impl(context):
+    pass
+
+
+@then(u'I wait for getting Presence joined events')
+@async_run_until_complete
+async def step_impl(context: PNContext):
+    pass
+
+
+@then(u'I receive an error in my heartbeat response')
+@async_run_until_complete
+async def step_impl(context):
+    pass
+
+
+@then(u'I leave {channel1} and {channel2} channels with presence')
+@async_run_until_complete
+async def step_impl(context):
+    pass
+
+
+@then(u'I don\'t observe any Events and Invocations of the Presence EE')
+@async_run_until_complete
+async def step_impl(context):
+    pass

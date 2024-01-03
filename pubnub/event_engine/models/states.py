@@ -550,3 +550,343 @@ class ReceiveStoppedState(PNState):
             state=ReceiveReconnectingState,
             context=self._context
         )
+
+
+"""
+Presence states
+"""
+
+
+class HeartbeatInactiveState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+
+        self._transitions = {
+            events.HeartbeatJoinedEvent.__name__: self.joined
+        }
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+
+class HeartbeatStoppedState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+
+        self._transitions = {
+            events.HeartbeatReconnectEvent.__name__: self.reconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all,
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left
+        }
+
+    def reconnect(self, event: events.HeartbeatReconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context
+        )
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context
+        )
+
+
+class HeartbeatFailedState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+
+        self._transitions = {
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left,
+            events.HeartbeatReconnectEvent.__name__: self.reconnect,
+            events.HeartbeatDisconnectEvent.__name__: self.disconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all
+        }
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def reconnect(self, event: events.HeartbeatReconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def disconnect(self, event: events.HeartbeatDisconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+
+class HeartbeatingState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+        self._transitions = {
+            events.HeartbeatFailureEvent.__name__: self.failure,
+            events.HeartbeatDisconnectEvent.__name__: self.disconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all,
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left,
+            events.HeartbeatSuccessEvent.__name__: self.success
+        }
+
+    def on_enter(self, context: Union[None, PNContext]):
+        self._context.update(context)
+        super().on_enter(self._context)
+        return effects.HeartbeatEffect(channels=self._context.channels, groups=self._context.groups)
+
+    def failure(self, event: events.HeartbeatFailureEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatReconnectingState,
+            context=self._context
+        )
+
+    def disconnect(self, event: events.HeartbeatDisconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def success(self, event: events.HeartbeatSuccessEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatCooldownState,
+            context=self._context
+        )
+
+
+class HeartbeatCooldownState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+        self._transitions = {
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left,
+            events.HeartbeatTimesUpEvent.__name__: self.times_up,
+            events.HeartbeatDisconnectEvent.__name__: self.disconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all,
+
+        }
+
+    def on_enter(self, context: PNContext):
+        self._context.update(context)
+        super().on_enter(self._context)
+        return effects.HeartbeatWaitEffect(self._context)
+
+    def on_exit(self, context: PNContext):
+        self._context.update(context)
+        super().on_exit(self._context)
+        return effects.HeartbeatCancelWaitEffect(self._context)
+
+    def disconnect(self, event: events.HeartbeatDisconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def times_up(self, event: events.HeartbeatTimesUpEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+
+class HeartbeatReconnectingState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+        self._transitions = {
+            events.HeartbeatFailureEvent.__name__: self.failure,
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left,
+            events.HeartbeatSuccessEvent.__name__: self.success,
+            events.HeartbeatGiveUpEvent.__name__: self.give_up,
+            events.HeartbeatDisconnectEvent.__name__: self.disconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all
+        }
+
+    def on_enter(self, context: PNContext):
+        self._context.update(context)
+        super().on_enter(self._context)
+        return effects.HeartbeatDelayedEffect(self._context)
+
+    def on_exit(self, context: PNContext):
+        self._context.update(context)
+        super().on_exit(self._context)
+        return effects.HeartbeatCancelDelayedEffect(self._context)
+
+    def failure(self, event: events.HeartbeatFailureEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatReconnectingState,
+            context=self._context
+        )
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def success(self, event: events.HeartbeatSuccessEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatCooldownState,
+            context=self._context
+        )
+
+    def give_up(self, event: events.HeartbeatGiveUpEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatFailedState,
+            context=self._context
+        )
+
+    def disconnect(self, event: events.HeartbeatDisconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context,
+            effect=effects.HeartbeatLeaveEffect()
+        )

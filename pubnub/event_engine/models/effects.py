@@ -93,3 +93,38 @@ class EmitStatusEffect(PNEmittableEffect):
     def __init__(self, status: Union[None, PNStatusCategory]) -> None:
         super().__init__()
         self.status = status
+
+
+"""
+    Presence Effects
+"""
+
+
+class HeartbeatEffect(PNManageableEffect):
+    def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None) -> None:
+        super().__init__()
+        self.channels = channels
+        self.groups = groups
+
+
+class HeartbeatWaitEffect(PNManageableEffect):
+    def __init__(self, time) -> None:
+        super().__init__()
+
+
+class HeartbeatCancelWaitEffect(PNCancelEffect):
+    cancel_effect = HeartbeatWaitEffect.__name__
+
+
+class HeartbeatLeaveEffect(PNManageableEffect):
+    def __init__(self) -> None:
+        super().__init__()
+
+
+class HeartbeatDelayedEffect(PNManageableEffect):
+    def __init__(self) -> None:
+        super().__init__()
+
+
+class HeartbeatCancelDelayedEffect(PNCancelEffect):
+    cancel_effect = HeartbeatDelayedEffect.__name__

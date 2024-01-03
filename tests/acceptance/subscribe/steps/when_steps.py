@@ -14,3 +14,18 @@ def step_impl(context: PNContext, timetoken: str): # noqa F811
     callback = AcceptanceCallback()
     context.pubnub.add_listener(callback)
     context.pubnub.subscribe().channels('foo').with_timetoken(int(timetoken)).execute()
+
+
+"""
+Presence engine step definitions
+"""
+
+
+@when(u'I join {channel1}, {channel2}, {channel3} channels')
+def step_impl(context, channel1, channel2, channel3):
+    context.pubnub.subscribe().channels([channel1, channel2, channel3]).execute()
+
+
+@when(u'I join {channel1}, {channel2}, {channel3} channels with presence')
+def step_impl(context, channel1, channel2, channel3):
+    context.pubnub.subscribe().channels([channel1, channel2, channel3]).with_presence().execute()

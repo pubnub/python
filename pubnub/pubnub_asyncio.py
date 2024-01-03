@@ -558,8 +558,8 @@ class EventEngineSubscriptionManager(SubscriptionManager):
     loop: asyncio.AbstractEventLoop
 
     def __init__(self, pubnub_instance):
-        self.event_engine = StateMachine(states.UnsubscribedState)
-        self.presence_engine = StateMachine(states.HeartbeatInactiveState)
+        self.event_engine = StateMachine(states.UnsubscribedState, name="subscribe")
+        self.presence_engine = StateMachine(states.HeartbeatInactiveState, name="presence")
         self.event_engine.get_dispatcher().set_pn(pubnub_instance)
         self.loop = asyncio.new_event_loop()
 
@@ -584,7 +584,10 @@ class EventEngineSubscriptionManager(SubscriptionManager):
                 groups=subscribe_operation.channel_groups
             )
         self.event_engine.trigger(subscription_event)
-        self.presence_engine.trigger(events.HeartbeatJoinedEvent())
+        self.presence_engine.trigger(events.HeartbeatJoinedEvent(
+            channels=subscribe_operation.channels,
+            groups=subscribe_operation.channel_groups
+        ))
 
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         if not isinstance(unsubscribe_operation, UnsubscribeOperation):

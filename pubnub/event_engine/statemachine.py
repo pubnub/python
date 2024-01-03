@@ -12,7 +12,8 @@ class StateMachine:
     _effect_list: List[effects.PNEffect]
     _enabled: bool
 
-    def __init__(self, initial_state: states.PNState, dispatcher_class: Optional[Dispatcher] = None) -> None:
+    def __init__(self, initial_state: states.PNState, dispatcher_class: Optional[Dispatcher] = None,
+                 name: str = None) -> None:
         self._context = states.PNContext()
         self._current_state = initial_state(self._context)
         self._listeners = {}
@@ -21,7 +22,7 @@ class StateMachine:
             dispatcher_class = Dispatcher
         self._dispatcher = dispatcher_class(self)
         self._enabled = True
-        self.logger = logging.getLogger("pubnub")
+        self.logger = logging.getLogger("pubnub" if not name else f"pubnub.{name}")
 
     def __del__(self):
         self.logger.debug('Shutting down StateMachine')
@@ -48,7 +49,7 @@ class StateMachine:
             effect = self._current_state.on_exit()
 
             if effect:
-                self.logger.debug(f'Invoke effect: {effect.__class__.__name__} {effect.__dict__}')
+                self.logger.debug(f'Invoke effect: {effect.__class__.__name__}')
                 self._effect_list.append(effect)
 
             transition: states.PNTransition = self._current_state.on(event, self._context)
@@ -62,7 +63,7 @@ class StateMachine:
                         self.logger.debug(f'Invoke effect: {effect.__class__.__name__}')
                         self._effect_list.append(effect)
                 else:
-                    self.logger.debug(f'Invoke effect: {transition.effect.__class__.__name__}{effect.__dict__}')
+                    self.logger.debug(f'Invoke effect: {transition.effect.__class__.__name__}')
                     self._effect_list.append(transition.effect)
 
             effect = self._current_state.on_enter(self._context)

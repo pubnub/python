@@ -115,7 +115,7 @@ class HeartbeatReconnectEvent(PNChannelGroupsEvent, PNFailureEvent):
         PNFailureEvent.__init__(self, reason, attempt, timetoken)
 
 
-class HeartbeatLeftAllEvent(PNChannelGroupsEvent):
+class HeartbeatLeftAllEvent(PNEvent):
     pass
 
 

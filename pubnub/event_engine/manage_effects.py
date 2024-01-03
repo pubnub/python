@@ -3,6 +3,7 @@ import logging
 import math
 
 from typing import Optional, Union
+from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.enums import PNReconnectionPolicy
 from pubnub.exceptions import PubNubException
@@ -313,3 +314,61 @@ class EmitEffect:
         pn_status.category = effect.status
         pn_status.error = False
         self.pubnub._subscription_manager._listener_manager.announce_status(pn_status)
+
+
+class ManageHeartbeatEffect(ManagedEffect):
+    def run(self):
+        channels = self.effect.channels
+        groups = self.effect.groups
+        if hasattr(self.pubnub, 'event_loop'):
+            self.stop_event = self.get_new_stop_event()
+
+            loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
+            coro = self.heartbeat(channels=channels, groups=groups, stop_event=self.stop_event)
+            if loop.is_running():
+                loop.create_task(coro)
+            else:
+                loop.run_until_complete(coro)
+
+    async def heartbeat(self, channels, groups, stop_event):
+        request = Heartbeat(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
+        heartbeat = await request.future()
+
+        if heartbeat.status.error:
+            self.logger.warning(f'Heartbeat failed: {heartbeat.status.error_data.__dict__}')
+            self.event_engine.trigger(events.HeartbeatFailureEvent(heartbeat.status.error_data, 1))
+        else:
+            self.event_engine.trigger(events.HeartbeatSuccessEvent(channels=channels, groups=groups))
+
+
+class ManageHeartbeatWaitEffect(ManagedEffect):
+    def __init__(self, pubnub_instance, event_engine_instance,
+                 effect: Union[effects.PNManageableEffect, effects.PNCancelEffect]) -> None:
+        super().__init__(pubnub_instance, event_engine_instance, effect)
+        self.heartbeat_interval = pubnub_instance.config.heartbeat_interval
+
+    def run(self):
+        if hasattr(self.pubnub, 'event_loop'):
+            self.stop_event = self.get_new_stop_event()
+            loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
+            coro = self.heartbeat_wait(self.heartbeat_interval, stop_event=self.stop_event)
+            if loop.is_running():
+                loop.create_task(coro)
+            else:
+                loop.run_until_complete(coro)
+
+    async def heartbeat(self, wait_time: int, stop_event):
+        try:
+            await asyncio.sleep(wait_time)
+            self.event_engine.trigger(events.HeartbeatTimesUpEvent(channels=self.effect.channels,
+                                                                   groups=self.effect.groups))
+        except asyncio.CancelledError:
+            pass
+
+
+class ManageHeartbeatLeaveEffect(ManagedEffect):
+    pass
+
+
+class ManageHeartbeatDelayedHeartbeatEffect(ManagedEffect):
+    pass

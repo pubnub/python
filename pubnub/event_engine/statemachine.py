@@ -22,6 +22,7 @@ class StateMachine:
             dispatcher_class = Dispatcher
         self._dispatcher = dispatcher_class(self)
         self._enabled = True
+        self._name = name
         self.logger = logging.getLogger("pubnub" if not name else f"pubnub.{name}")
 
     def __del__(self):
@@ -88,3 +89,7 @@ class StateMachine:
 
     def stop(self):
         self._enabled = False
+
+    @property
+    def name(self):
+        return self._name

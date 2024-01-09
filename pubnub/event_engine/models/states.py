@@ -566,6 +566,8 @@ class HeartbeatInactiveState(PNState):
         }
 
     def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.channels = event.channels
+        self._context.groups = event.groups
         self._context.update(context)
 
         return PNTransition(
@@ -644,7 +646,7 @@ class HeartbeatFailedState(PNState):
         return PNTransition(
             state=HeartbeatingState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def reconnect(self, event: events.HeartbeatReconnectEvent, context: PNContext) -> PNTransition:
@@ -661,7 +663,7 @@ class HeartbeatFailedState(PNState):
         return PNTransition(
             state=HeartbeatStoppedState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
@@ -670,7 +672,7 @@ class HeartbeatFailedState(PNState):
         return PNTransition(
             state=HeartbeatInactiveState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
 
@@ -705,7 +707,7 @@ class HeartbeatingState(PNState):
         return PNTransition(
             state=HeartbeatStoppedState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
@@ -714,7 +716,7 @@ class HeartbeatingState(PNState):
         return PNTransition(
             state=HeartbeatInactiveState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
@@ -731,7 +733,7 @@ class HeartbeatingState(PNState):
         return PNTransition(
             state=HeartbeatingState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def success(self, event: events.HeartbeatSuccessEvent, context: PNContext) -> PNTransition:
@@ -760,10 +762,9 @@ class HeartbeatCooldownState(PNState):
         super().on_enter(self._context)
         return effects.HeartbeatWaitEffect(self._context)
 
-    def on_exit(self, context: PNContext):
-        self._context.update(context)
-        super().on_exit(self._context)
-        return effects.HeartbeatCancelWaitEffect(self._context)
+    def on_exit(self):
+        super().on_exit()
+        return effects.HeartbeatCancelWaitEffect()
 
     def disconnect(self, event: events.HeartbeatDisconnectEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
@@ -771,7 +772,7 @@ class HeartbeatCooldownState(PNState):
         return PNTransition(
             state=HeartbeatStoppedState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
@@ -780,7 +781,7 @@ class HeartbeatCooldownState(PNState):
         return PNTransition(
             state=HeartbeatInactiveState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
@@ -797,7 +798,7 @@ class HeartbeatCooldownState(PNState):
         return PNTransition(
             state=HeartbeatingState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def times_up(self, event: events.HeartbeatTimesUpEvent, context: PNContext) -> PNTransition:
@@ -827,10 +828,9 @@ class HeartbeatReconnectingState(PNState):
         super().on_enter(self._context)
         return effects.HeartbeatDelayedEffect(self._context)
 
-    def on_exit(self, context: PNContext):
-        self._context.update(context)
-        super().on_exit(self._context)
-        return effects.HeartbeatCancelDelayedEffect(self._context)
+    def on_exit(self):
+        super().on_exit()
+        return effects.HeartbeatCancelDelayedEffect()
 
     def failure(self, event: events.HeartbeatFailureEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
@@ -854,7 +854,7 @@ class HeartbeatReconnectingState(PNState):
         return PNTransition(
             state=HeartbeatingState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def success(self, event: events.HeartbeatSuccessEvent, context: PNContext) -> PNTransition:
@@ -879,7 +879,7 @@ class HeartbeatReconnectingState(PNState):
         return PNTransition(
             state=HeartbeatStoppedState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
@@ -888,5 +888,5 @@ class HeartbeatReconnectingState(PNState):
         return PNTransition(
             state=HeartbeatInactiveState,
             context=self._context,
-            effect=effects.HeartbeatLeaveEffect()
+            effect=effects.HeartbeatLeaveEffect(channels=self._context.channels, groups=self._context.groups)
         )

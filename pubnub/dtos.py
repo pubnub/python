@@ -10,6 +10,12 @@ class SubscribeOperation(object):
         self.presence_enabled = presence_enabled
         self.timetoken = timetoken
 
+    @property
+    def channels_with_pressence(self):
+        if not self.presence_enabled:
+            return self.channels
+        return [*self.channels] + [ch + '-pnpres' for ch in self.channels]
+
 
 class UnsubscribeOperation(object):
     def __init__(self, channels=None, channel_groups=None):

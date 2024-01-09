@@ -62,6 +62,7 @@ async def test_subscribe():
         message_callback.assert_called()
         pubnub.unsubscribe_all()
         pubnub._subscription_manager.stop()
+        await pubnub.stop()
 
 
 async def delayed_publish(channel, message, delay):
@@ -84,6 +85,7 @@ async def test_handshaking():
         assert pubnub._subscription_manager.event_engine.get_state_name() == states.ReceivingState.__name__
         status_callback.assert_called()
         pubnub._subscription_manager.stop()
+        await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -112,7 +114,7 @@ async def test_handshake_failed_no_reconnect():
 
     assert pubnub._subscription_manager.event_engine.get_state_name() == states.HandshakeFailedState.__name__
     pubnub._subscription_manager.stop()
-    await pubnub.close_session()
+    await pubnub.stop()
 
 
 @pytest.mark.asyncio
@@ -141,3 +143,4 @@ async def test_handshake_failed_reconnect():
         .until_async(lambda: is_state(states.HandshakeReconnectingState.__name__))
     assert pubnub._subscription_manager.event_engine.get_state_name() == states.HandshakeReconnectingState.__name__
     pubnub._subscription_manager.stop()
+    await pubnub.stop()

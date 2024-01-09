@@ -1,10 +1,16 @@
+import pytest
+import asyncio
+
 from unittest.mock import patch
 from pubnub.enums import PNReconnectionPolicy
 from pubnub.event_engine import manage_effects
 from pubnub.event_engine.models import effects
 from pubnub.event_engine.dispatcher import Dispatcher
+from pubnub.event_engine.models import states
 from pubnub.event_engine.models.states import UnsubscribedState
 from pubnub.event_engine.statemachine import StateMachine
+from pubnub.pubnub_asyncio import PubNubAsyncio
+from tests.helper import pnconf_env_copy
 
 
 class FakeConfig:
@@ -82,3 +88,15 @@ def test_dispatch_stop_receive_reconnect_effect():
         dispatcher.dispatch_effect(effects.ReceiveReconnectEffect(['chan']))
         dispatcher.dispatch_effect(effects.CancelReceiveReconnectEffect())
         mocked_stop.assert_called()
+
+
+@pytest.mark.asyncio
+async def test_cancel_effect():
+    pubnub = PubNubAsyncio(pnconf_env_copy())
+    event_engine = StateMachine(states.HeartbeatInactiveState, name="presence")
+    managed_effects_factory = manage_effects.ManagedEffectFactory(pubnub, event_engine)
+    managed_wait_effect = managed_effects_factory.create(effect=effects.HeartbeatWaitEffect(10))
+    managed_wait_effect.run()
+    await asyncio.sleep(1)
+    managed_wait_effect.stop()
+    await pubnub.stop()

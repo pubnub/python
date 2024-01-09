@@ -43,16 +43,11 @@ async def step_impl(context):
         lambda line: line.startswith('Triggered event') or line.startswith('Invoke effect'),
         context.log_stream.getvalue().splitlines()
     ))]
-    try:
-        for index, expected in enumerate(context.table):
-            logged_type, logged_name = normalized_log[index]
-            expected_type, expected_name = expected
-            assert expected_type == logged_type, f'on line {index + 1} => {expected_type} != {logged_type}'
-            assert expected_name == logged_name, f'on line {index + 1} => {expected_name} != {logged_name}'
-    except Exception as e:
-        import ipdb
-        ipdb.set_trace()
-        raise e
+    for index, expected in enumerate(context.table):
+        logged_type, logged_name = normalized_log[index]
+        expected_type, expected_name = expected
+        assert expected_type == logged_type, f'on line {index + 1} => {expected_type} != {logged_type}'
+        assert expected_name == logged_name, f'on line {index + 1} => {expected_name} != {logged_name}'
 
 
 @then("I receive an error in my subscribe response")
@@ -75,25 +70,52 @@ Presence engine step definitions
 """
 
 
-@then(u'I wait {wait_time} seconds')
+@then("I wait '{wait_time}' seconds")
 @async_run_until_complete
 async def step_impl(context: PNContext, wait_time: str):
     await busypie.wait() \
         .at_most(int(wait_time)) \
         .poll_delay(1) \
-        .poll_interval(1)
+        .poll_interval(1) \
+        .until_async(lambda: True)
 
 
 @then(u'I observe the following Events and Invocations of the Presence EE')
 @async_run_until_complete
 async def step_impl(context):
-    pass
+    def parse_log_line(line: str):
+        line_type = 'event' if line.startswith('Triggered event') else 'invocation'
+        m = re.search('([A-Za-z])+(Event|Effect)', line)
+        name = m.group(0).replace('Effect', '').replace('Event', '')
+        name = name.replace('Effect', '').replace('Event', '')
+        name = re.sub(r'([A-Z])', r'_\1', name).upper().lstrip('_')
+        name = name.replace('HEARTBEAT_JOIN', 'JOIN').replace('HEARTBEAT_WAIT', 'WAIT')
+        return (line_type, name)
+
+    normalized_log = [parse_log_line(log_line) for log_line in list(filter(
+        lambda line: line.startswith('Triggered event') or line.startswith('Invoke effect'),
+        context.log_stream.getvalue().splitlines()
+    ))]
+
+    try:
+        for index, expected in enumerate(context.table):
+            logged_type, logged_name = normalized_log[index]
+            expected_type, expected_name = expected
+            assert expected_type == logged_type, f'on line {index + 1} => {expected_type} != {logged_type}'
+            assert expected_name == logged_name, f'on line {index + 1} => {expected_name} != {logged_name}'
+    except Exception:
+        import ipdb
+        ipdb.set_trace()
 
 
 @then(u'I wait for getting Presence joined events')
 @async_run_until_complete
 async def step_impl(context: PNContext):
-    pass
+    await busypie.wait() \
+        .at_most(15) \
+        .poll_delay(3) \
+        .poll_interval(1) \
+        .until_async(lambda: True)
 
 
 @then(u'I receive an error in my heartbeat response')

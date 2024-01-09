@@ -109,6 +109,7 @@ class HeartbeatEffect(PNManageableEffect):
 
 class HeartbeatWaitEffect(PNManageableEffect):
     def __init__(self, time) -> None:
+        self.wait_time = time
         super().__init__()
 
 
@@ -117,13 +118,14 @@ class HeartbeatCancelWaitEffect(PNCancelEffect):
 
 
 class HeartbeatLeaveEffect(PNManageableEffect):
-    def __init__(self) -> None:
+    def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None) -> None:
         super().__init__()
+        self.channels = channels
+        self.groups = groups
 
 
 class HeartbeatDelayedEffect(PNManageableEffect):
-    def __init__(self) -> None:
-        super().__init__()
+    pass
 
 
 class HeartbeatCancelDelayedEffect(PNCancelEffect):

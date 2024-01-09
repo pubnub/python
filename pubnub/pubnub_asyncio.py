@@ -56,10 +56,6 @@ class PubNubAsyncio(PubNubCore):
 
         self._telemetry_manager = AsyncioTelemetryManager()
 
-    def __del__(self):
-        if self.event_loop.is_running():
-            self.event_loop.create_task(self.close_session())
-
     async def close_pending_tasks(self, tasks):
         await asyncio.gather(*tasks)
         await asyncio.sleep(0.1)
@@ -90,6 +86,7 @@ class PubNubAsyncio(PubNubCore):
         await self.close_session()
         if self._subscription_manager:
             self._subscription_manager.stop()
+        await self.close_session()
 
     def sdk_platform(self):
         return "-Asyncio"
@@ -559,8 +556,9 @@ class EventEngineSubscriptionManager(SubscriptionManager):
 
     def __init__(self, pubnub_instance):
         self.event_engine = StateMachine(states.UnsubscribedState, name="subscribe")
-        # self.presence_engine = StateMachine(states.HeartbeatInactiveState, name="presence")
+        self.presence_engine = StateMachine(states.HeartbeatInactiveState, name="presence")
         self.event_engine.get_dispatcher().set_pn(pubnub_instance)
+        self.presence_engine.get_dispatcher().set_pn(pubnub_instance)
         self.loop = asyncio.new_event_loop()
 
         super().__init__(pubnub_instance)
@@ -574,27 +572,27 @@ class EventEngineSubscriptionManager(SubscriptionManager):
 
         if subscribe_operation.timetoken:
             subscription_event = events.SubscriptionRestoredEvent(
-                channels=subscribe_operation.channels,
+                channels=subscribe_operation.channels_with_pressence,
                 groups=subscribe_operation.channel_groups,
                 timetoken=subscribe_operation.timetoken
             )
         else:
             subscription_event = events.SubscriptionChangedEvent(
-                channels=subscribe_operation.channels,
+                channels=subscribe_operation.channels_with_pressence,
                 groups=subscribe_operation.channel_groups
             )
         self.event_engine.trigger(subscription_event)
-        # self.presence_engine.trigger(events.HeartbeatJoinedEvent(
-        #     channels=subscribe_operation.channels,
-        #     groups=subscribe_operation.channel_groups
-        # ))
+        self.presence_engine.trigger(events.HeartbeatJoinedEvent(
+            channels=subscribe_operation.channels,
+            groups=subscribe_operation.channel_groups
+        ))
 
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         if not isinstance(unsubscribe_operation, UnsubscribeOperation):
             raise PubNubException('Invalid Unsubscribe Operation')
         event = events.SubscriptionChangedEvent(None, None)
         self.event_engine.trigger(event)
-        # self.presence_engine.trigger(events.HeartbeatLeftAllEvent())
+        self.presence_engine.trigger(events.HeartbeatLeftAllEvent())
 
 
 class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):

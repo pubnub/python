@@ -582,17 +582,18 @@ class EventEngineSubscriptionManager(SubscriptionManager):
                 groups=subscribe_operation.channel_groups
             )
         self.event_engine.trigger(subscription_event)
-        self.presence_engine.trigger(events.HeartbeatJoinedEvent(
-            channels=subscribe_operation.channels,
-            groups=subscribe_operation.channel_groups
-        ))
+        if subscribe_operation.presence_enabled:
+            self.presence_engine.trigger(events.HeartbeatJoinedEvent(
+                channels=subscribe_operation.channels,
+                groups=subscribe_operation.channel_groups
+            ))
 
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         if not isinstance(unsubscribe_operation, UnsubscribeOperation):
             raise PubNubException('Invalid Unsubscribe Operation')
         event = events.SubscriptionChangedEvent(None, None)
         self.event_engine.trigger(event)
-        self.presence_engine.trigger(events.HeartbeatLeftAllEvent())
+        # self.presence_engine.trigger(events.HeartbeatLeftAllEvent())
 
 
 class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):

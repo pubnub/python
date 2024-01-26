@@ -75,6 +75,9 @@ class Subscribe(Endpoint):
         if not self.pubnub.config.heartbeat_default_values:
             params['heartbeat'] = self.pubnub.config.presence_timeout
 
+        if hasattr(self.pubnub, '_subscription_manager'):
+            params.update(self.pubnub._subscription_manager.get_custom_params())
+
         return params
 
     def create_response(self, envelope):

@@ -117,7 +117,9 @@ class HeartbeatLeftAllEvent(PNEvent):
 
 
 class HeartbeatLeftEvent(PNChannelGroupsEvent):
-    pass
+    def __init__(self, channels: List[str], groups: List[str], suppress_leave: bool = False) -> None:
+        PNChannelGroupsEvent.__init__(self, channels, groups)
+        self.suppress_leave = suppress_leave
 
 
 class HeartbeatDisconnectEvent(PNChannelGroupsEvent):
@@ -135,11 +137,8 @@ class HeartbeatFailureEvent(PNChannelGroupsEvent, PNFailureEvent):
         PNFailureEvent.__init__(self, reason, attempt, timetoken)
 
 
-class HeartbeatTimesUpEvent(PNChannelGroupsEvent, PNFailureEvent):
-    def __init__(self, channels: List[str], groups: List[str], reason: PubNubException, attempt: int,
-                 timetoken: int = 0) -> None:
-        PNChannelGroupsEvent.__init__(self, channels, groups)
-        PNFailureEvent.__init__(self, reason, attempt, timetoken)
+class HeartbeatTimesUpEvent(PNEvent):
+    pass
 
 
 class HeartbeatGiveUpEvent(PNChannelGroupsEvent, PNFailureEvent):

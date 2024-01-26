@@ -118,14 +118,25 @@ class HeartbeatCancelWaitEffect(PNCancelEffect):
 
 
 class HeartbeatLeaveEffect(PNManageableEffect):
-    def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None) -> None:
+    def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None,
+                 suppress_leave: bool = False) -> None:
         super().__init__()
         self.channels = channels
         self.groups = groups
+        self.suppress_leave = suppress_leave
 
 
 class HeartbeatDelayedEffect(PNManageableEffect):
-    pass
+    def __init__(self,
+                 channels: Union[None, List[str]] = None,
+                 groups: Union[None, List[str]] = None,
+                 attempts: Union[None, int] = None,
+                 reason: Union[None, PubNubException] = None):
+        super().__init__()
+        self.channels = channels
+        self.groups = groups
+        self.attempts = attempts
+        self.reason = reason
 
 
 class HeartbeatCancelDelayedEffect(PNCancelEffect):

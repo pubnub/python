@@ -38,6 +38,12 @@ Presence engine step definitions
 
 @given("the demo keyset with Presence EE enabled")
 def step_impl(context: PNContext):
+    context.log_stream_pubnub = StringIO()
+    logger = logging.getLogger('pubnub')
+    logger.setLevel(logging.DEBUG)
+    logger.handlers = []
+    logger.addHandler(logging.StreamHandler(context.log_stream_pubnub))
+
     context.log_stream = StringIO()
     logger = logging.getLogger('pubnub').getChild('presence')
     logger.setLevel(logging.DEBUG)
@@ -47,7 +53,9 @@ def step_impl(context: PNContext):
     context.pn_config = pnconf_env_acceptance_copy()
     context.pn_config.enable_subscribe = True
     context.pn_config.enable_presence_heartbeat = True
-    context.pn_config.reconnect_policy = PNReconnectionPolicy.NONE
+    context.pn_config.reconnect_policy = PNReconnectionPolicy.LINEAR
+    context.pn_config.subscribe_request_timeout = 10
+    context.pn_config.set_presence_timeout(3)
     context.pubnub = PubNubAsyncio(context.pn_config, subscription_manager=EventEngineSubscriptionManager)
 
     context.callback = AcceptanceCallback()

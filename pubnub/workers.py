@@ -1,48 +1,38 @@
 import logging
 
 from abc import abstractmethod
+from typing import Union
 
-from .enums import PNStatusCategory, PNOperationType
-from .models.consumer.common import PNStatus
-from .models.consumer.objects_v2.channel import PNChannelMetadataResult
-from .models.consumer.objects_v2.memberships import PNMembershipResult
-from .models.consumer.objects_v2.uuid import PNUUIDMetadataResult
-from .models.consumer.pn_error_data import PNErrorData
-from .utils import strip_right
-from .models.consumer.pubsub import (
+from pubnub.enums import PNStatusCategory, PNOperationType
+from pubnub.managers import ListenerManager
+from pubnub.models.consumer.common import PNStatus
+from pubnub.models.consumer.objects_v2.channel import PNChannelMetadataResult
+from pubnub.models.consumer.objects_v2.memberships import PNMembershipResult
+from pubnub.models.consumer.objects_v2.uuid import PNUUIDMetadataResult
+from pubnub.models.consumer.pn_error_data import PNErrorData
+from pubnub.utils import strip_right
+from pubnub.models.consumer.pubsub import (
     PNPresenceEventResult, PNMessageResult, PNSignalMessageResult, PNMessageActionResult, PNFileMessageResult
 )
-from .models.server.subscribe import SubscribeMessage, PresenceEnvelope
-from .endpoints.file_operations.get_file_url import GetFileDownloadUrl
+from pubnub.models.server.subscribe import SubscribeMessage, PresenceEnvelope
+from pubnub.endpoints.file_operations.get_file_url import GetFileDownloadUrl
 
 
 logger = logging.getLogger("pubnub")
 
 
-class SubscribeMessageWorker(object):
+class BaseMessageWorker:
+    # _pubnub: PubNub
+    _listener_manager: Union[ListenerManager, None] = None
+
     TYPE_MESSAGE = 0
     TYPE_SIGNAL = 1
     TYPE_OBJECT = 2
     TYPE_MESSAGE_ACTION = 3
     TYPE_FILE_MESSAGE = 4
 
-    def __init__(self, pubnub_instance, listener_manager_instance, queue_instance, event):
-        # assert isinstance(pubnub_instnace, PubNubCore)
-        # assert isinstance(listener_manager_instance, ListenerManager)
-        # assert isinstance(queue_instance, utils.Queue)
-
+    def __init__(self, pubnub_instance) -> None:
         self._pubnub = pubnub_instance
-        self._listener_manager = listener_manager_instance
-        self._queue = queue_instance
-        self._is_running = None
-        self._event = event
-
-    def run(self):
-        self._take_message()
-
-    @abstractmethod
-    def _take_message(self):
-        pass
 
     def _get_url_for_file_event_message(self, channel, extracted_message):
         return GetFileDownloadUrl(self._pubnub)\
@@ -55,10 +45,7 @@ class SubscribeMessageWorker(object):
             return message_input, None
         else:
             try:
-                return self._pubnub.config.crypto.decrypt(
-                    self._pubnub.config.cipher_key,
-                    message_input
-                ), None
+                return self._pubnub.crypto.decrypt(message_input), None
             except Exception as exception:
                 logger.warning("could not decrypt message: \"%s\", due to error %s" % (message_input, str(exception)))
 
@@ -67,10 +54,41 @@ class SubscribeMessageWorker(object):
                 pn_status.error_data = PNErrorData(str(exception), exception)
                 pn_status.error = True
                 pn_status.operation = PNOperationType.PNSubscribeOperation
-                self._listener_manager.announce_status(pn_status)
+                self.announce(pn_status)
                 return message_input, exception
 
-    def _process_incoming_payload(self, message):
+    def announce(self, result):
+        if not self._listener_manager:
+            return
+
+        if isinstance(result, PNStatus):
+            self._listener_manager.announce_status(result)
+
+        elif isinstance(result, PNPresenceEventResult):
+            self._listener_manager.announce_presence(result)
+
+        elif isinstance(result, PNChannelMetadataResult):
+            self._listener_manager.announce_channel(result)
+
+        elif isinstance(result, PNUUIDMetadataResult):
+            self._listener_manager.announce_uuid(result)
+
+        elif isinstance(result, PNMembershipResult):
+            self._listener_manager.announce_membership(result)
+
+        elif isinstance(result, PNFileMessageResult):
+            self._listener_manager.announce_file_message(result)
+
+        elif isinstance(result, PNSignalMessageResult):
+            self._listener_manager.announce_signal(result)
+
+        elif isinstance(result, PNMessageActionResult):
+            self._listener_manager.announce_message_action(result)
+
+        elif isinstance(result, PNMessageResult):
+            self._listener_manager.announce_message(result)
+
+    def _process_incoming_payload(self, message: SubscribeMessage):
         assert isinstance(message, SubscribeMessage)
 
         channel = message.channel
@@ -105,26 +123,35 @@ class SubscribeMessageWorker(object):
                 leave=message.payload.get('leave', None),
                 timeout=message.payload.get('timeout', None)
             )
-            self._listener_manager.announce_presence(pn_presence_event_result)
+
+            self.announce(pn_presence_event_result)
+            return pn_presence_event_result
+
         elif message.type == SubscribeMessageWorker.TYPE_OBJECT:
             if message.payload['type'] == 'channel':
                 channel_result = PNChannelMetadataResult(
                     event=message.payload['event'],
                     data=message.payload['data']
                 )
-                self._listener_manager.announce_channel(channel_result)
+                self.announce(channel_result)
+                return channel_result
+
             elif message.payload['type'] == 'uuid':
                 uuid_result = PNUUIDMetadataResult(
                     event=message.payload['event'],
                     data=message.payload['data']
                 )
-                self._listener_manager.announce_uuid(uuid_result)
+                self.announce(uuid_result)
+                return uuid_result
+
             elif message.payload['type'] == 'membership':
                 membership_result = PNMembershipResult(
                     event=message.payload['event'],
                     data=message.payload['data']
                 )
-                self._listener_manager.announce_membership(membership_result)
+                self.announce(membership_result)
+                return membership_result
+
         elif message.type == SubscribeMessageWorker.TYPE_FILE_MESSAGE:
             extracted_message, _ = self._process_message(message.payload)
             download_url = self._get_url_for_file_event_message(channel, extracted_message)
@@ -139,8 +166,8 @@ class SubscribeMessageWorker(object):
                 file_id=extracted_message["file"]["id"],
                 file_name=extracted_message["file"]["name"]
             )
-
-            self._listener_manager.announce_file_message(pn_file_result)
+            self.announce(pn_file_result)
+            return pn_file_result
 
         else:
             extracted_message, error = self._process_message(message.payload)
@@ -157,7 +184,8 @@ class SubscribeMessageWorker(object):
                     timetoken=publish_meta_data.publish_timetoken,
                     publisher=publisher
                 )
-                self._listener_manager.announce_signal(pn_signal_result)
+                self.announce(pn_signal_result)
+                return pn_signal_result
 
             elif message.type == SubscribeMessageWorker.TYPE_MESSAGE_ACTION:
                 message_action = extracted_message['data']
@@ -176,4 +204,24 @@ class SubscribeMessageWorker(object):
                     publisher=publisher,
                     error=error
                 )
-                self._listener_manager.announce_message(pn_message_result)
+                self.announce(pn_message_result)
+                return pn_message_result
+
+
+class SubscribeMessageWorker(BaseMessageWorker):
+    def __init__(self, pubnub_instance, listener_manager_instance, queue_instance, event):
+        # assert isinstance(pubnub_instnace, PubNubCore)
+        # assert isinstance(listener_manager_instance, ListenerManager)
+        # assert isinstance(queue_instance, utils.Queue)
+        super().__init__(pubnub_instance)
+        self._listener_manager = listener_manager_instance
+        self._queue = queue_instance
+        self._is_running = None
+        self._event = event
+
+    def run(self):
+        self._take_message()
+
+    @abstractmethod
+    def _take_message(self):
+        pass

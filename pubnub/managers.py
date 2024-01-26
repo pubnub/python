@@ -365,6 +365,9 @@ class SubscriptionManager:
     def _register_heartbeat_timer(self):
         self._stop_heartbeat_timer()
 
+    def get_custom_params(self):
+        return {}
+
 
 class TelemetryManager:
     TIMESTAMP_DIVIDER = 1000

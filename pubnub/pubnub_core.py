@@ -92,7 +92,6 @@ class PubNubCore:
     MAX_SEQUENCE = 65535
 
     __metaclass__ = ABCMeta
-    _plugins = []
     __crypto = None
 
     def __init__(self, config):

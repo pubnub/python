@@ -12,15 +12,11 @@ from tests.acceptance.subscribe.environment import PNContext
 @then("I receive the message in my subscribe response")
 @async_run_until_complete
 async def step_impl(context: PNContext):
-    try:
-        await busypie.wait() \
-            .at_most(15) \
-            .poll_delay(1) \
-            .poll_interval(1) \
-            .until_async(lambda: context.callback.message_result)
-    except Exception:
-        import ipdb
-        ipdb.set_trace()
+    await busypie.wait() \
+        .at_most(15) \
+        .poll_delay(1) \
+        .poll_interval(1) \
+        .until_async(lambda: context.callback.message_result)
 
     response = context.callback.message_result
     assert isinstance(response, PNMessageResult)
@@ -75,8 +71,8 @@ Presence engine step definitions
 async def step_impl(context: PNContext, wait_time: str):
     await busypie.wait() \
         .at_most(int(wait_time)) \
-        .poll_delay(1) \
-        .poll_interval(1) \
+        .poll_delay(int(wait_time)) \
+        .poll_interval(int(wait_time)) \
         .until_async(lambda: True)
 
 
@@ -89,7 +85,8 @@ async def step_impl(context):
         name = m.group(0).replace('Effect', '').replace('Event', '')
         name = name.replace('Effect', '').replace('Event', '')
         name = re.sub(r'([A-Z])', r'_\1', name).upper().lstrip('_')
-        name = name.replace('HEARTBEAT_JOIN', 'JOIN').replace('HEARTBEAT_WAIT', 'WAIT')
+        if name.endswith('JOINED') or name.endswith('LEFT') or name.endswith('WAIT'):
+            name = name.replace('HEARTBEAT_', '')
         return (line_type, name)
 
     normalized_log = [parse_log_line(log_line) for log_line in list(filter(
@@ -97,15 +94,11 @@ async def step_impl(context):
         context.log_stream.getvalue().splitlines()
     ))]
 
-    try:
-        for index, expected in enumerate(context.table):
-            logged_type, logged_name = normalized_log[index]
-            expected_type, expected_name = expected
-            assert expected_type == logged_type, f'on line {index + 1} => {expected_type} != {logged_type}'
-            assert expected_name == logged_name, f'on line {index + 1} => {expected_name} != {logged_name}'
-    except Exception:
-        import ipdb
-        ipdb.set_trace()
+    for index, expected in enumerate(context.table):
+        logged_type, logged_name = normalized_log[index]
+        expected_type, expected_name = expected
+        assert expected_type == logged_type, f'on line {index + 1} => {expected_type} != {logged_type}'
+        assert expected_name == logged_name, f'on line {index + 1} => {expected_name} != {logged_name}'
 
 
 @then(u'I wait for getting Presence joined events')
@@ -113,9 +106,9 @@ async def step_impl(context):
 async def step_impl(context: PNContext):
     await busypie.wait() \
         .at_most(15) \
-        .poll_delay(3) \
+        .poll_delay(1) \
         .poll_interval(1) \
-        .until_async(lambda: True)
+        .until_async(lambda: context.callback.presence_result)
 
 
 @then(u'I receive an error in my heartbeat response')
@@ -124,10 +117,10 @@ async def step_impl(context):
     pass
 
 
-@then(u'I leave {channel1} and {channel2} channels with presence')
+@then("I leave '{channel1}' and '{channel2}' channels with presence")
 @async_run_until_complete
-async def step_impl(context):
-    pass
+async def step_impl(context, channel1, channel2):
+    context.pubnub.unsubscribe().channels([channel1, channel2]).execute()
 
 
 @then(u'I don\'t observe any Events and Invocations of the Presence EE')

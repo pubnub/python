@@ -39,6 +39,7 @@ class StateMachine:
         return self._dispatcher
 
     def trigger(self, event: events.PNEvent) -> states.PNTransition:
+        self.logger.debug(f'Current State: {self.get_state_name()}')
         self.logger.debug(f'Triggered event: {event.__class__.__name__}({event.__dict__}) on {self.get_state_name()}')
 
         if not self._enabled:
@@ -70,7 +71,7 @@ class StateMachine:
             effect = self._current_state.on_enter(self._context)
 
             if effect:
-                self.logger.debug(f'Invoke effect: {effect.__class__.__name__} StateMachine ({id(self)})')
+                self.logger.debug(f'Invoke effect: {effect.__class__.__name__}')
                 self._effect_list.append(effect)
 
         else:
@@ -82,7 +83,7 @@ class StateMachine:
 
     def dispatch_effects(self):
         for effect in self._effect_list:
-            self.logger.debug(f'dispatching {effect.__class__.__name__} {id(effect)}')
+            self.logger.debug(f'Dispatching {effect.__class__.__name__} {id(effect)}')
             self._dispatcher.dispatch_effect(effect)
 
         self._effect_list.clear()

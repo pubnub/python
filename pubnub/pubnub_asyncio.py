@@ -16,6 +16,7 @@ from pubnub.event_engine.statemachine import StateMachine
 from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.presence.leave import Leave
 from pubnub.endpoints.pubsub.subscribe import Subscribe
+from pubnub.features import feature_enabled
 from pubnub.pubnub_core import PubNubCore
 from pubnub.workers import SubscribeMessageWorker
 from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
@@ -47,7 +48,9 @@ class PubNubAsyncio(PubNubCore):
         self._connector = aiohttp.TCPConnector(verify_ssl=True, loop=self.event_loop)
 
         if not subscription_manager:
-            subscription_manager = AsyncioSubscriptionManager
+            subscription_manager = (
+                EventEngineSubscriptionManager if feature_enabled('PN_ENABLE_EVENT_ENGINE')
+                else AsyncioSubscriptionManager)
 
         if self.config.enable_subscribe:
             self._subscription_manager = subscription_manager(self)
@@ -593,7 +596,14 @@ class EventEngineSubscriptionManager(SubscriptionManager):
             raise PubNubException('Invalid Unsubscribe Operation')
         event = events.SubscriptionChangedEvent(None, None)
         self.event_engine.trigger(event)
-        # self.presence_engine.trigger(events.HeartbeatLeftAllEvent())
+        self.presence_engine.trigger(event=events.HeartbeatLeftEvent(
+            channels=unsubscribe_operation.channels,
+            groups=unsubscribe_operation.channel_groups,
+            suppress_leave=self._pubnub.config.suppress_leave_events
+        ))
+
+    def get_custom_params(self):
+        return {'ee': 1}
 
 
 class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):

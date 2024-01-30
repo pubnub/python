@@ -126,7 +126,7 @@ class HeartbeatLeaveEffect(PNManageableEffect):
         self.suppress_leave = suppress_leave
 
 
-class HeartbeatDelayedEffect(PNManageableEffect):
+class HeartbeatDelayedHeartbeatEffect(PNManageableEffect):
     def __init__(self,
                  channels: Union[None, List[str]] = None,
                  groups: Union[None, List[str]] = None,
@@ -139,5 +139,5 @@ class HeartbeatDelayedEffect(PNManageableEffect):
         self.reason = reason
 
 
-class HeartbeatCancelDelayedEffect(PNCancelEffect):
-    cancel_effect = HeartbeatDelayedEffect.__name__
+class HeartbeatCancelDelayedHeartbeatEffect(PNCancelEffect):
+    cancel_effect = HeartbeatDelayedHeartbeatEffect.__name__

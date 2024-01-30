@@ -890,12 +890,12 @@ class HeartbeatReconnectingState(PNState):
     def on_enter(self, context: PNContext):
         self._context.update(context)
         super().on_enter(self._context)
-        return effects.HeartbeatDelayedEffect(channels=self._context.channels, groups=self._context.groups,
-                                              attempts=1, reason=None)
+        return effects.HeartbeatDelayedHeartbeatEffect(channels=self._context.channels, groups=self._context.groups,
+                                                       attempts=1, reason=None)
 
     def on_exit(self):
         super().on_exit()
-        return effects.HeartbeatCancelDelayedEffect()
+        return effects.HeartbeatCancelDelayedHeartbeatEffect()
 
     def failure(self, event: events.HeartbeatFailureEvent, context: PNContext) -> PNTransition:
         self._context.update(context)

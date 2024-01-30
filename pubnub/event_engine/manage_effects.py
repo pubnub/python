@@ -426,7 +426,7 @@ class ManagedEffectFactory:
         effects.ReceiveReconnectEffect.__name__: ManagedReceiveReconnectEffect,
         effects.HeartbeatEffect.__name__: ManagedHeartbeatEffect,
         effects.HeartbeatWaitEffect.__name__: ManagedHeartbeatWaitEffect,
-        effects.HeartbeatDelayedEffect.__name__: ManagedHeartbeatDelayedEffect,
+        effects.HeartbeatDelayedHeartbeatEffect.__name__: ManagedHeartbeatDelayedEffect,
         effects.HeartbeatLeaveEffect.__name__: ManagedHeartbeatLeaveEffect,
     }
 

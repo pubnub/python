@@ -83,9 +83,10 @@ async def step_impl(context):
         line_type = 'event' if line.startswith('Triggered event') else 'invocation'
         m = re.search('([A-Za-z])+(Event|Effect)', line)
         name = m.group(0).replace('Effect', '').replace('Event', '')
-        name = name.replace('Effect', '').replace('Event', '')
+        name = name.replace('Effect', '').replace('Event', '').replace('GiveUp', 'Giveup')
         name = re.sub(r'([A-Z])', r'_\1', name).upper().lstrip('_')
-        if name not in ['HEARTBEAT', 'HEARTBEAT_FAILURE', 'HEARTBEAT_SUCCESS']:
+
+        if name not in ['HEARTBEAT', 'HEARTBEAT_FAILURE', 'HEARTBEAT_SUCCESS', 'HEARTBEAT_GIVEUP']:
             name = name.replace('HEARTBEAT_', '')
         return (line_type, name)
 
@@ -116,8 +117,11 @@ async def step_impl(context: PNContext):
 
 @then(u'I receive an error in my heartbeat response')
 @async_run_until_complete
-async def step_impl(context):
-    pass
+async def step_impl(ctx):
+    await busypie.wait() \
+        .at_most(20) \
+        .poll_delay(3) \
+        .until_async(lambda: 'HeartbeatGiveUpEvent' in ctx.log_stream.getvalue())
 
 
 @then("I leave '{channel1}' and '{channel2}' channels with presence")

@@ -57,6 +57,14 @@ class ManagedEffect:
         self.logger.debug(f'creating new stop_event({id(event)}) for {self.__class__.__name__}')
         return event
 
+    def calculate_reconnection_delay(self, attempts):
+        if self.reconnection_policy is PNReconnectionPolicy.LINEAR:
+            delay = self.interval
+
+        elif self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
+            delay = int(math.pow(2, attempts - 5 * math.floor((attempts - 1) / 5)) - 1)
+        return delay
+
 
 class ManageHandshakeEffect(ManagedEffect):
     def run(self):
@@ -164,14 +172,6 @@ class ManagedReconnectEffect(ManagedEffect):
     def success(self, timetoken: str, region: Optional[int] = None, **kwargs):
         self.logger.error(f"Success called on Unspecific event. TT:{timetoken}, Reg: {region}, KWARGS: {kwargs.keys()}")
         raise PubNubException('Unspecified Effect')
-
-    def calculate_reconnection_delay(self, attempts):
-        if self.reconnection_policy is PNReconnectionPolicy.LINEAR:
-            delay = self.interval
-
-        elif self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            delay = int(math.pow(2, attempts - 5 * math.floor((attempts - 1) / 5)) - 1)
-        return delay
 
     def run(self):
         if self.reconnection_policy is PNReconnectionPolicy.NONE or self.effect.attempts > self.max_retry_attempts:
@@ -343,24 +343,25 @@ class ManagedHeartbeatDelayedEffect(ManagedEffect):
         self.min_backoff = pubnub_instance.config.RECONNECTION_MIN_EXPONENTIAL_BACKOFF
         self.max_backoff = pubnub_instance.config.RECONNECTION_MAX_EXPONENTIAL_BACKOFF
 
-    def calculate_reconnection_delay(self, attempts):
-        if self.reconnection_policy is PNReconnectionPolicy.LINEAR:
-            delay = self.interval
-
-        elif self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            delay = int(math.pow(2, attempts - 5 * math.floor((attempts - 1) / 5)) - 1)
-        return delay
-
     def run(self):
-        channels = self.effect.channels
-        groups = self.effect.groups
+        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.effect.attempts > self.max_retry_attempts:
+            self.event_engine.trigger(events.HeartbeatGiveUpEvent(channels=self.effect.channels,
+                                                                  groups=self.effect.groups,
+                                                                  reason=self.effect.reason,
+                                                                  attempt=self.effect.attempts))
+
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
-            self.run_async(self.heartbeat(channels=channels, groups=groups, attempt=1, stop_event=self.stop_event))
+            self.run_async(self.heartbeat(channels=self.effect.channels, groups=self.effect.groups,
+                                          attempt=self.effect.attempts, stop_event=self.stop_event))
 
     async def heartbeat(self, channels, groups, attempt, stop_event):
+        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.effect.attempts > self.max_retry_attempts:
+            self.event_engine.trigger(events.HeartbeatGiveUpEvent(reason=self.effect.reason,
+                                                                  attempt=self.effect.attempts))
         request = Heartbeat(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
         delay = self.calculate_reconnection_delay(attempt)
+        self.logger.warning(f'Will retry to Heartbeat in {delay}s')
         await asyncio.sleep(delay)
 
         response = await request.future()
@@ -368,12 +369,12 @@ class ManagedHeartbeatDelayedEffect(ManagedEffect):
             self.logger.warning(f'Heartbeat failed: {str(response)}')
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
                                                                    reason=response.status.error_data,
-                                                                   attempt=attempt + 1))
+                                                                   attempt=attempt))
         elif response.status.error:
             self.logger.warning(f'Heartbeat failed: {response.status.error_data.__dict__}')
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
                                                                    reason=response.status.error_data,
-                                                                   attempt=attempt + 1))
+                                                                   attempt=attempt))
         else:
             self.event_engine.trigger(events.HeartbeatSuccessEvent(channels=channels, groups=groups))
 

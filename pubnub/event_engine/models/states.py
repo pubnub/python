@@ -721,6 +721,8 @@ class HeartbeatingState(PNState):
 
     def failure(self, event: events.HeartbeatFailureEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
+        self._context.attempt = event.attempt
+        self._context.reason = event.reason
 
         return PNTransition(
             state=HeartbeatReconnectingState,
@@ -783,6 +785,7 @@ class HeartbeatingState(PNState):
 
     def success(self, event: events.HeartbeatSuccessEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
+        self._context.attempt = 0
 
         return PNTransition(
             state=HeartbeatCooldownState,
@@ -890,8 +893,9 @@ class HeartbeatReconnectingState(PNState):
     def on_enter(self, context: PNContext):
         self._context.update(context)
         super().on_enter(self._context)
+
         return effects.HeartbeatDelayedHeartbeatEffect(channels=self._context.channels, groups=self._context.groups,
-                                                       attempts=1, reason=None)
+                                                       attempts=self._context.attempt, reason=None)
 
     def on_exit(self):
         super().on_exit()
@@ -899,6 +903,8 @@ class HeartbeatReconnectingState(PNState):
 
     def failure(self, event: events.HeartbeatFailureEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
+        self._context.attempt = event.attempt + 1
+        self._context.reason = event.reason
 
         return PNTransition(
             state=HeartbeatReconnectingState,
@@ -933,6 +939,7 @@ class HeartbeatReconnectingState(PNState):
 
     def success(self, event: events.HeartbeatSuccessEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
+        self._context.attempt = 0
 
         return PNTransition(
             state=HeartbeatCooldownState,
@@ -941,6 +948,8 @@ class HeartbeatReconnectingState(PNState):
 
     def give_up(self, event: events.HeartbeatGiveUpEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
+        self._context.attempt = event.attempt
+        self._context.reason = event.reason
 
         return PNTransition(
             state=HeartbeatFailedState,

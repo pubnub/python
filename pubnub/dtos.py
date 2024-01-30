@@ -16,6 +16,12 @@ class SubscribeOperation(object):
             return self.channels
         return [*self.channels] + [ch + '-pnpres' for ch in self.channels]
 
+    @property
+    def groups_with_pressence(self):
+        if not self.presence_enabled:
+            return self.channel_groups
+        return [*self.channel_groups] + [ch + '-pnpres' for ch in self.channel_groups]
+
 
 class UnsubscribeOperation(object):
     def __init__(self, channels=None, channel_groups=None):

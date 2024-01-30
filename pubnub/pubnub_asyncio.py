@@ -576,13 +576,13 @@ class EventEngineSubscriptionManager(SubscriptionManager):
         if subscribe_operation.timetoken:
             subscription_event = events.SubscriptionRestoredEvent(
                 channels=subscribe_operation.channels_with_pressence,
-                groups=subscribe_operation.channel_groups,
+                groups=subscribe_operation.groups_with_pressence,
                 timetoken=subscribe_operation.timetoken
             )
         else:
             subscription_event = events.SubscriptionChangedEvent(
                 channels=subscribe_operation.channels_with_pressence,
-                groups=subscribe_operation.channel_groups
+                groups=subscribe_operation.groups_with_pressence
             )
         self.event_engine.trigger(subscription_event)
         if subscribe_operation.presence_enabled:

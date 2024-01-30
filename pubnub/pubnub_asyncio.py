@@ -86,7 +86,6 @@ class PubNubAsyncio(PubNubCore):
         )
 
     async def stop(self):
-        await self.close_session()
         if self._subscription_manager:
             self._subscription_manager.stop()
         await self.close_session()

@@ -357,7 +357,9 @@ class ManagedHeartbeatDelayedEffect(ManagedEffect):
 
     async def heartbeat(self, channels, groups, attempt, stop_event):
         if self.reconnection_policy is PNReconnectionPolicy.NONE or self.effect.attempts > self.max_retry_attempts:
-            self.event_engine.trigger(events.HeartbeatGiveUpEvent(reason=self.effect.reason,
+            self.event_engine.trigger(events.HeartbeatGiveUpEvent(channels=self.effect.channels,
+                                                                  groups=self.effect.groups,
+                                                                  reason=self.effect.reason,
                                                                   attempt=self.effect.attempts))
         request = Heartbeat(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
         delay = self.calculate_reconnection_delay(attempt)

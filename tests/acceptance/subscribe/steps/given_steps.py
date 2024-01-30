@@ -19,6 +19,7 @@ def step_impl(context: PNContext):
     context.pn_config = pnconf_env_acceptance_copy()
     context.pn_config.enable_subscribe = True
     context.pn_config.reconnect_policy = PNReconnectionPolicy.NONE
+    context.pn_config.set_presence_timeout(0)
     context.pubnub = PubNubAsyncio(context.pn_config, subscription_manager=EventEngineSubscriptionManager)
 
     context.callback = AcceptanceCallback()

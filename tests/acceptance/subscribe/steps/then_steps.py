@@ -85,7 +85,7 @@ async def step_impl(context):
         name = m.group(0).replace('Effect', '').replace('Event', '')
         name = name.replace('Effect', '').replace('Event', '')
         name = re.sub(r'([A-Z])', r'_\1', name).upper().lstrip('_')
-        if name.endswith('JOINED') or name.endswith('LEFT') or name.endswith('WAIT'):
+        if name not in ['HEARTBEAT', 'HEARTBEAT_FAILURE', 'HEARTBEAT_SUCCESS']:
             name = name.replace('HEARTBEAT_', '')
         return (line_type, name)
 
@@ -93,6 +93,9 @@ async def step_impl(context):
         lambda line: line.startswith('Triggered event') or line.startswith('Invoke effect'),
         context.log_stream.getvalue().splitlines()
     ))]
+
+    assert len(normalized_log) >= len(list(context.table)), f'Log lenght mismatch!' \
+        f'Expected {len(list(context.table))}, but got {len(normalized_log)}:\n {normalized_log}'
 
     for index, expected in enumerate(context.table):
         logged_type, logged_name = normalized_log[index]
@@ -126,4 +129,4 @@ async def step_impl(context, channel1, channel2):
 @then(u'I don\'t observe any Events and Invocations of the Presence EE')
 @async_run_until_complete
 async def step_impl(context):
-    pass
+    assert len(context.log_stream.getvalue().splitlines()) == 0

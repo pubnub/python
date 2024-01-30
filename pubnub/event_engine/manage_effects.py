@@ -38,8 +38,12 @@ class ManagedEffect:
     def run(self):
         pass
 
-    def run_async(self):
-        pass
+    def run_async(self, coro):
+        loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
+        if loop.is_running():
+            self.task = loop.create_task(coro)
+        else:
+            self.task = loop.run_until_complete(coro)
 
     def stop(self):
         if self.stop_event:
@@ -61,16 +65,10 @@ class ManageHandshakeEffect(ManagedEffect):
         tt = self.effect.timetoken or 0
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
-
-            loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
-            coro = self.handshake_async(channels=channels, groups=groups, timetoken=tt, stop_event=self.stop_event)
-            if loop.is_running():
-                self.task = loop.create_task(coro)
-            else:
-                self.task = loop.run_until_complete(coro)
-        else:
-            # TODO:  the synchronous way
-            pass
+            self.run_async(self.handshake_async(channels=channels,
+                                                groups=groups,
+                                                timetoken=tt,
+                                                stop_event=self.stop_event))
 
     async def handshake_async(self, channels, groups, stop_event, timetoken: int = 0):
         request = Subscribe(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
@@ -108,15 +106,7 @@ class ManagedReceiveMessagesEffect(ManagedEffect):
 
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
-            loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
-            coro = self.receive_messages_async(channels, groups, timetoken, region)
-            if loop.is_running():
-                self.task = loop.create_task(coro)
-            else:
-                self.task = loop.run_until_complete(coro)
-        else:
-            # TODO:  the synchronous way
-            pass
+            self.run_async(self.receive_messages_async(channels, groups, timetoken, region))
 
     async def receive_messages_async(self, channels, groups, timetoken, region):
         request = Subscribe(self.pubnub)
@@ -191,15 +181,7 @@ class ManagedReconnectEffect(ManagedEffect):
             delay = self.calculate_reconnection_delay(attempts)
             self.logger.warning(f'will reconnect in {delay}s')
             if hasattr(self.pubnub, 'event_loop'):
-                loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
-                coro = self.delayed_reconnect_async(delay, attempts)
-                if loop.is_running():
-                    self.task = loop.create_task(coro)
-                else:
-                    self.task = loop.run_until_complete(coro)
-            else:
-                # TODO:  the synchronous way
-                pass
+                self.run_async(self.delayed_reconnect_async(delay, attempts))
 
     async def delayed_reconnect_async(self, delay, attempt):
         self.stop_event = self.get_new_stop_event()
@@ -294,13 +276,7 @@ class ManagedHeartbeatEffect(ManagedEffect):
         groups = self.effect.groups
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
-
-            loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
-            coro = self.heartbeat(channels=channels, groups=groups, stop_event=self.stop_event)
-            if loop.is_running():
-                self.task = loop.create_task(coro)
-            else:
-                self.task = loop.run_until_complete(coro)
+            self.run_async(self.heartbeat(channels=channels, groups=groups, stop_event=self.stop_event))
 
     async def heartbeat(self, channels, groups, stop_event):
         request = Heartbeat(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
@@ -331,12 +307,7 @@ class ManagedHeartbeatWaitEffect(ManagedEffect):
     def run(self):
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
-            loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
-            coroutine = self.heartbeat_wait(self.heartbeat_interval, stop_event=self.stop_event)
-            if loop.is_running():
-                self.task = loop.create_task(coroutine)
-            else:
-                self.task = loop.run_until_complete(coroutine)
+            self.run_async(self.heartbeat_wait(self.heartbeat_interval, stop_event=self.stop_event))
 
     async def heartbeat_wait(self, wait_time: int, stop_event):
         try:
@@ -352,12 +323,7 @@ class ManagedHeartbeatLeaveEffect(ManagedEffect):
         groups = self.effect.groups
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
-            loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
-            coro = self.leave(channels=channels, groups=groups, stop_event=self.stop_event)
-            if loop.is_running():
-                self.task = loop.create_task(coro)
-            else:
-                self.task = loop.run_until_complete(coro)
+            self.run_async(self.leave(channels=channels, groups=groups, stop_event=self.stop_event))
 
     async def leave(self, channels, groups, stop_event):
         leave_request = Leave(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
@@ -390,13 +356,7 @@ class ManagedHeartbeatDelayedEffect(ManagedEffect):
         groups = self.effect.groups
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
-
-            loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
-            coro = self.heartbeat(channels=channels, groups=groups, attempt=1, stop_event=self.stop_event)
-            if loop.is_running():
-                self.task = loop.create_task(coro)
-            else:
-                self.task = loop.run_until_complete(coro)
+            self.run_async(self.heartbeat(channels=channels, groups=groups, attempt=1, stop_event=self.stop_event))
 
     async def heartbeat(self, channels, groups, attempt, stop_event):
         request = Heartbeat(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)

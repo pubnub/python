@@ -585,7 +585,7 @@ class EventEngineSubscriptionManager(SubscriptionManager):
                 groups=subscribe_operation.groups_with_pressence
             )
         self.event_engine.trigger(subscription_event)
-        if subscribe_operation.presence_enabled:
+        if self._pubnub.config._heartbeat_interval > 0:
             self.presence_engine.trigger(events.HeartbeatJoinedEvent(
                 channels=subscribe_operation.channels,
                 groups=subscribe_operation.channel_groups

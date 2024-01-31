@@ -43,6 +43,7 @@ def before_scenario(context: Context, feature):
 def after_scenario(context: Context, feature):
     loop = asyncio.get_event_loop()
     loop.run_until_complete(context.pubnub.stop())
+    loop.run_until_complete(asyncio.sleep(0.1))
 
     for tag in feature.tags:
         if "contract" in tag:

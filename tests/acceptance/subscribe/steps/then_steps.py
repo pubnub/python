@@ -29,9 +29,9 @@ async def step_impl(ctx: PNContext):
 async def step_impl(ctx):
     def parse_log_line(line: str):
         line_type = 'event' if line.startswith('Triggered event') else 'invocation'
-        m = re.search('([A-Za-z])+(Event|Effect)', line)
-        name = m.group(0).replace('Effect', '').replace('Event', '')
-        name = name.replace('Effect', '').replace('Event', '')
+        m = re.search('([A-Za-z])+(Event|Invocation)', line)
+        name = m.group(0).replace('Invocation', '').replace('Event', '')
+        name = name.replace('Invocation', '').replace('Event', '')
         name = re.sub(r'([A-Z])', r'_\1', name).upper().lstrip('_')
         return (line_type, name)
 
@@ -81,9 +81,9 @@ async def step_impl(ctx: PNContext, wait_time: str):
 async def step_impl(ctx):
     def parse_log_line(line: str):
         line_type = 'event' if line.startswith('Triggered event') else 'invocation'
-        m = re.search('([A-Za-z])+(Event|Effect)', line)
-        name = m.group(0).replace('Effect', '').replace('Event', '')
-        name = name.replace('Effect', '').replace('Event', '').replace('GiveUp', 'Giveup')
+        m = re.search('([A-Za-z])+(Event|Invocation)', line)
+        name = m.group(0).replace('Invocation', '').replace('Event', '')
+        name = name.replace('Invocation', '').replace('Event', '').replace('GiveUp', 'Giveup')
         name = re.sub(r'([A-Z])', r'_\1', name).upper().lstrip('_')
 
         if name not in ['HEARTBEAT', 'HEARTBEAT_FAILURE', 'HEARTBEAT_SUCCESS', 'HEARTBEAT_GIVEUP']:

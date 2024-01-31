@@ -567,6 +567,7 @@ class EventEngineSubscriptionManager(SubscriptionManager):
 
     def stop(self):
         self.event_engine.stop()
+        self.presence_engine.stop()
 
     def adapt_subscribe_builder(self, subscribe_operation: SubscribeOperation):
         if not isinstance(subscribe_operation, SubscribeOperation):

@@ -2,14 +2,14 @@ import logging
 
 from typing import List, Optional
 
-from pubnub.event_engine.models import effects, events, states
+from pubnub.event_engine.models import events, invocations, states
 from pubnub.event_engine.dispatcher import Dispatcher
 
 
 class StateMachine:
     _current_state: states.PNState
     _context: states.PNContext
-    _effect_list: List[effects.PNEffect]
+    _invocations: List[invocations.PNInvocation]
     _enabled: bool
 
     def __init__(self, initial_state: states.PNState, dispatcher_class: Optional[Dispatcher] = None,
@@ -17,7 +17,7 @@ class StateMachine:
         self._context = states.PNContext()
         self._current_state = initial_state(self._context)
         self._listeners = {}
-        self._effect_list = []
+        self._invocations = []
         if dispatcher_class is None:
             dispatcher_class = Dispatcher
         self._dispatcher = dispatcher_class(self)
@@ -47,46 +47,44 @@ class StateMachine:
             return False
 
         if event.get_name() in self._current_state._transitions:
-            self._effect_list.clear()
-            effect = self._current_state.on_exit()
+            self._invocations.clear()
+            invocation = self._current_state.on_exit()
 
-            if effect:
-                self.logger.debug(f'Invoke effect: {effect.__class__.__name__}')
-                self._effect_list.append(effect)
+            if invocation:
+                self.logger.debug(f'Invoke effect: {invocation.__class__.__name__}')
+                self._invocations.append(invocation)
 
             transition: states.PNTransition = self._current_state.on(event, self._context)
             self._current_state = transition.state(self._current_state.get_context())
             self._context = transition.context
 
-            if transition.effect:
-                if isinstance(transition.effect, list):
+            if transition.invocation:
+                if isinstance(transition.invocation, list):
                     self.logger.debug('unpacking list')
-                    for effect in transition.effect:
-                        self.logger.debug(f'Invoke effect: {effect.__class__.__name__}')
-                        self._effect_list.append(effect)
+                    for invocation in transition.invocation:
+                        self.logger.debug(f'Invoke effect: {invocation.__class__.__name__}')
+                        self._invocations.append(invocation)
                 else:
-                    self.logger.debug(f'Invoke effect: {transition.effect.__class__.__name__}')
-                    self._effect_list.append(transition.effect)
+                    self.logger.debug(f'Invoke effect: {transition.invocation.__class__.__name__}')
+                    self._invocations.append(transition.invocation)
 
-            effect = self._current_state.on_enter(self._context)
+            invocation = self._current_state.on_enter(self._context)
 
-            if effect:
-                self.logger.debug(f'Invoke effect: {effect.__class__.__name__}')
-                self._effect_list.append(effect)
+            if invocation:
+                self.logger.debug(f'Invoke effect: {invocation.__class__.__name__}')
+                self._invocations.append(invocation)
 
         else:
-            message = f'Unhandled event: {event.__class__.__name__} in {self._current_state.__class__.__name__}'
-            self.logger.warning(message)
-            self.stop()
+            self.logger.warning(f'Unhandled event: {event.get_name()} in {self.get_state_name()}')
 
         self.dispatch_effects()
 
     def dispatch_effects(self):
-        for effect in self._effect_list:
-            self.logger.debug(f'Dispatching {effect.__class__.__name__} {id(effect)}')
-            self._dispatcher.dispatch_effect(effect)
+        for invocation in self._invocations:
+            self.logger.debug(f'Dispatching {invocation.__class__.__name__} {id(invocation)}')
+            self._dispatcher.dispatch_effect(invocation)
 
-        self._effect_list.clear()
+        self._invocations.clear()
 
     def stop(self):
         self._enabled = False

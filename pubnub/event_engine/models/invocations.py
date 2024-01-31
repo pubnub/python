@@ -3,19 +3,19 @@ from pubnub.exceptions import PubNubException
 from pubnub.enums import PNStatusCategory
 
 
-class PNEffect:
+class PNInvocation:
     pass
 
 
-class PNManageableEffect(PNEffect):
+class PNManageableInvocation(PNInvocation):
     pass
 
 
-class PNCancelEffect(PNEffect):
+class PNCancelInvocation(PNInvocation):
     cancel_effect: str
 
 
-class HandshakeEffect(PNManageableEffect):
+class HandshakeInvocation(PNManageableInvocation):
     def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None,
                  timetoken: Union[None, int] = None) -> None:
         super().__init__()
@@ -24,11 +24,11 @@ class HandshakeEffect(PNManageableEffect):
         self.timetoken = timetoken
 
 
-class CancelHandshakeEffect(PNCancelEffect):
-    cancel_effect = HandshakeEffect.__name__
+class CancelHandshakeInvocation(PNCancelInvocation):
+    cancel_effect = HandshakeInvocation.__name__
 
 
-class ReceiveMessagesEffect(PNManageableEffect):
+class ReceiveMessagesInvocation(PNManageableInvocation):
     def __init__(self,
                  channels: Union[None, List[str]] = None,
                  groups: Union[None, List[str]] = None,
@@ -42,11 +42,11 @@ class ReceiveMessagesEffect(PNManageableEffect):
         self.region = region
 
 
-class CancelReceiveMessagesEffect(PNCancelEffect):
-    cancel_effect = ReceiveMessagesEffect.__name__
+class CancelReceiveMessagesInvocation(PNCancelInvocation):
+    cancel_effect = ReceiveMessagesInvocation.__name__
 
 
-class ReconnectEffect(PNManageableEffect):
+class ReconnectInvocation(PNManageableInvocation):
     def __init__(self,
                  channels: Union[None, List[str]] = None,
                  groups: Union[None, List[str]] = None,
@@ -63,33 +63,33 @@ class ReconnectEffect(PNManageableEffect):
         self.region = region
 
 
-class HandshakeReconnectEffect(ReconnectEffect):
+class HandshakeReconnectInvocation(ReconnectInvocation):
     pass
 
 
-class CancelHandshakeReconnectEffect(PNCancelEffect):
-    cancel_effect = HandshakeReconnectEffect.__name__
+class CancelHandshakeReconnectInvocation(PNCancelInvocation):
+    cancel_effect = HandshakeReconnectInvocation.__name__
 
 
-class ReceiveReconnectEffect(ReconnectEffect):
+class ReceiveReconnectInvocation(ReconnectInvocation):
     pass
 
 
-class CancelReceiveReconnectEffect(PNCancelEffect):
-    cancel_effect = ReceiveReconnectEffect.__name__
+class CancelReceiveReconnectInvocation(PNCancelInvocation):
+    cancel_effect = ReceiveReconnectInvocation.__name__
 
 
-class PNEmittableEffect(PNEffect):
+class PNEmittableInvocation(PNInvocation):
     pass
 
 
-class EmitMessagesEffect(PNEmittableEffect):
+class EmitMessagesInvocation(PNEmittableInvocation):
     def __init__(self, messages: Union[None, List[str]]) -> None:
         super().__init__()
         self.messages = messages
 
 
-class EmitStatusEffect(PNEmittableEffect):
+class EmitStatusInvocation(PNEmittableInvocation):
     def __init__(self, status: Union[None, PNStatusCategory]) -> None:
         super().__init__()
         self.status = status
@@ -100,24 +100,24 @@ class EmitStatusEffect(PNEmittableEffect):
 """
 
 
-class HeartbeatEffect(PNManageableEffect):
+class HeartbeatInvocation(PNManageableInvocation):
     def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None) -> None:
         super().__init__()
         self.channels = channels
         self.groups = groups
 
 
-class HeartbeatWaitEffect(PNManageableEffect):
+class HeartbeatWaitInvocation(PNManageableInvocation):
     def __init__(self, time) -> None:
         self.wait_time = time
         super().__init__()
 
 
-class HeartbeatCancelWaitEffect(PNCancelEffect):
-    cancel_effect = HeartbeatWaitEffect.__name__
+class HeartbeatCancelWaitInvocation(PNCancelInvocation):
+    cancel_effect = HeartbeatWaitInvocation.__name__
 
 
-class HeartbeatLeaveEffect(PNManageableEffect):
+class HeartbeatLeaveInvocation(PNManageableInvocation):
     def __init__(self, channels: Union[None, List[str]] = None, groups: Union[None, List[str]] = None,
                  suppress_leave: bool = False) -> None:
         super().__init__()
@@ -126,7 +126,7 @@ class HeartbeatLeaveEffect(PNManageableEffect):
         self.suppress_leave = suppress_leave
 
 
-class HeartbeatDelayedHeartbeatEffect(PNManageableEffect):
+class HeartbeatDelayedHeartbeatInvocation(PNManageableInvocation):
     def __init__(self,
                  channels: Union[None, List[str]] = None,
                  groups: Union[None, List[str]] = None,
@@ -139,5 +139,5 @@ class HeartbeatDelayedHeartbeatEffect(PNManageableEffect):
         self.reason = reason
 
 
-class HeartbeatCancelDelayedHeartbeatEffect(PNCancelEffect):
-    cancel_effect = HeartbeatDelayedHeartbeatEffect.__name__
+class HeartbeatCancelDelayedHeartbeatInvocation(PNCancelInvocation):
+    cancel_effect = HeartbeatDelayedHeartbeatInvocation.__name__

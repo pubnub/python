@@ -11,15 +11,15 @@ from pubnub.exceptions import PubNubException
 from pubnub.features import feature_enabled
 from pubnub.models.server.subscribe import SubscribeMessage
 from pubnub.pubnub import PubNub
-from pubnub.event_engine.models import effects, events
+from pubnub.event_engine.models import events, invocations
 from pubnub.models.consumer.common import PNStatus
 from pubnub.workers import BaseMessageWorker
 
 
-class ManagedEffect:
+class Effect:
     pubnub: PubNub = None
     event_engine = None
-    effect: Union[effects.PNManageableEffect, effects.PNCancelEffect]
+    invocation: Union[invocations.PNManageableInvocation, invocations.PNCancelInvocation]
     stop_event = None
     logger: logging.Logger
     task: asyncio.Task
@@ -28,8 +28,8 @@ class ManagedEffect:
         self.pubnub = pubnub
 
     def __init__(self, pubnub_instance, event_engine_instance,
-                 effect: Union[effects.PNManageableEffect, effects.PNCancelEffect]) -> None:
-        self.effect = effect
+                 invocation: Union[invocations.PNManageableInvocation, invocations.PNCancelInvocation]) -> None:
+        self.invocation = invocation
         self.event_engine = event_engine_instance
         self.pubnub = pubnub_instance
 
@@ -66,11 +66,11 @@ class ManagedEffect:
         return delay
 
 
-class ManageHandshakeEffect(ManagedEffect):
+class HandshakeEffect(Effect):
     def run(self):
-        channels = self.effect.channels
-        groups = self.effect.groups
-        tt = self.effect.timetoken or 0
+        channels = self.invocation.channels
+        groups = self.invocation.groups
+        tt = self.invocation.timetoken or 0
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
             self.run_async(self.handshake_async(channels=channels,
@@ -103,14 +103,14 @@ class ManageHandshakeEffect(ManagedEffect):
             self.event_engine.trigger(handshake_success)
 
 
-class ManagedReceiveMessagesEffect(ManagedEffect):
-    effect: effects.ReceiveMessagesEffect
+class ReceiveMessagesEffect(Effect):
+    invocation: invocations.ReceiveMessagesInvocation
 
     def run(self):
-        channels = self.effect.channels
-        groups = self.effect.groups
-        timetoken = self.effect.timetoken
-        region = self.effect.region
+        channels = self.invocation.channels
+        groups = self.invocation.groups
+        timetoken = self.invocation.timetoken
+        region = self.invocation.region
 
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
@@ -148,13 +148,13 @@ class ManagedReceiveMessagesEffect(ManagedEffect):
         self.stop_event.set()
 
 
-class ManagedReconnectEffect(ManagedEffect):
-    effect: effects.ReconnectEffect
+class ReconnectEffect(Effect):
+    invocation: invocations.ReconnectInvocation
     reconnection_policy: PNReconnectionPolicy
 
     def __init__(self, pubnub_instance, event_engine_instance,
-                 effect: Union[effects.PNManageableEffect, effects.PNCancelEffect]) -> None:
-        super().__init__(pubnub_instance, event_engine_instance, effect)
+                 invocation: Union[invocations.PNManageableInvocation, invocations.PNCancelInvocation]) -> None:
+        super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
         self.max_retry_attempts = pubnub_instance.config.maximum_reconnection_retries
         self.interval = pubnub_instance.config.RECONNECTION_INTERVAL
@@ -163,21 +163,21 @@ class ManagedReconnectEffect(ManagedEffect):
 
     def give_up(self, reason: PubNubException, attempt: int, timetoken: int = 0):
         self.logger.error(f"GiveUp called on Unspecific event. Reason: {reason}, Attempt: {attempt} TT:{timetoken}")
-        raise PubNubException('Unspecified Effect')
+        raise PubNubException('Unspecified Invocation')
 
     def failure(self, reason: PubNubException, attempt: int, timetoken: int = 0):
         self.logger.error(f"Failure called on Unspecific event. Reason: {reason}, Attempt: {attempt} TT:{timetoken}")
-        raise PubNubException('Unspecified Effect')
+        raise PubNubException('Unspecified Invocation')
 
     def success(self, timetoken: str, region: Optional[int] = None, **kwargs):
         self.logger.error(f"Success called on Unspecific event. TT:{timetoken}, Reg: {region}, KWARGS: {kwargs.keys()}")
-        raise PubNubException('Unspecified Effect')
+        raise PubNubException('Unspecified Invocation')
 
     def run(self):
-        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.effect.attempts > self.max_retry_attempts:
-            self.give_up(reason=self.effect.reason, attempt=self.effect.attempts)
+        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.invocation.attempts > self.max_retry_attempts:
+            self.give_up(reason=self.invocation.reason, attempt=self.invocation.attempts)
         else:
-            attempts = self.effect.attempts
+            attempts = self.invocation.attempts
             delay = self.calculate_reconnection_delay(attempts)
             self.logger.warning(f'will reconnect in {delay}s')
             if hasattr(self.pubnub, 'event_loop'):
@@ -189,13 +189,13 @@ class ManagedReconnectEffect(ManagedEffect):
 
         request = Subscribe(self.pubnub).timetoken(self.get_timetoken()).cancellation_event(self.stop_event)
 
-        if self.effect.channels:
-            request.channels(self.effect.channels)
-        if self.effect.groups:
-            request.channel_groups(self.effect.groups)
+        if self.invocation.channels:
+            request.channels(self.invocation.channels)
+        if self.invocation.groups:
+            request.channel_groups(self.invocation.groups)
 
-        if self.effect.region:
-            request.region(self.effect.region)
+        if self.invocation.region:
+            request.region(self.invocation.region)
 
         if feature_enabled('PN_MAINTAIN_PRESENCE_STATE'):
             # subscribe.set_state(self._context.states)  # stub for state handling
@@ -212,7 +212,7 @@ class ManagedReconnectEffect(ManagedEffect):
             self.failure(response.status.error_data, attempt, self.get_timetoken())
         else:
             cursor = response.result['t']
-            timetoken = int(self.effect.timetoken) if self.effect.timetoken else cursor['t']
+            timetoken = int(self.invocation.timetoken) if self.invocation.timetoken else cursor['t']
             region = cursor['r']
             messages = response.result['m']
             self.success(timetoken=timetoken, region=region, messages=messages)
@@ -229,7 +229,7 @@ class ManagedReconnectEffect(ManagedEffect):
                     pass
 
 
-class ManagedHandshakeReconnectEffect(ManagedReconnectEffect):
+class HandshakeReconnectEffect(ReconnectEffect):
     def give_up(self, reason: PubNubException, attempt: int, timetoken: int = 0):
         self.event_engine.trigger(
             events.HandshakeReconnectGiveupEvent(reason, attempt, timetoken)
@@ -249,7 +249,7 @@ class ManagedHandshakeReconnectEffect(ManagedReconnectEffect):
         return 0
 
 
-class ManagedReceiveReconnectEffect(ManagedReconnectEffect):
+class ReceiveReconnectEffect(ReconnectEffect):
     def give_up(self, reason: PubNubException, attempt: int, timetoken: int = 0):
         self.event_engine.trigger(
             events.ReceiveReconnectGiveupEvent(reason, attempt, timetoken)
@@ -267,13 +267,13 @@ class ManagedReceiveReconnectEffect(ManagedReconnectEffect):
         )
 
     def get_timetoken(self):
-        return int(self.effect.timetoken)
+        return int(self.invocation.timetoken)
 
 
-class ManagedHeartbeatEffect(ManagedEffect):
+class HeartbeatEffect(Effect):
     def run(self):
-        channels = self.effect.channels
-        groups = self.effect.groups
+        channels = self.invocation.channels
+        groups = self.invocation.groups
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
             self.run_async(self.heartbeat(channels=channels, groups=groups, stop_event=self.stop_event))
@@ -299,9 +299,9 @@ class ManagedHeartbeatEffect(ManagedEffect):
             self.event_engine.trigger(events.HeartbeatSuccessEvent(channels=channels, groups=groups))
 
 
-class ManagedHeartbeatWaitEffect(ManagedEffect):
-    def __init__(self, pubnub_instance, event_engine_instance, effect: effects.HeartbeatWaitEffect) -> None:
-        super().__init__(pubnub_instance, event_engine_instance, effect)
+class HeartbeatWaitEffect(Effect):
+    def __init__(self, pubnub_instance, event_engine_instance, invocation: invocations.HeartbeatWaitInvocation) -> None:
+        super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.heartbeat_interval = pubnub_instance.config.heartbeat_interval
 
     def run(self):
@@ -317,10 +317,10 @@ class ManagedHeartbeatWaitEffect(ManagedEffect):
             pass
 
 
-class ManagedHeartbeatLeaveEffect(ManagedEffect):
+class HeartbeatLeaveEffect(Effect):
     def run(self):
-        channels = self.effect.channels
-        groups = self.effect.groups
+        channels = self.invocation.channels
+        groups = self.invocation.groups
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
             self.run_async(self.leave(channels=channels, groups=groups, stop_event=self.stop_event))
@@ -333,10 +333,10 @@ class ManagedHeartbeatLeaveEffect(ManagedEffect):
             self.logger.warning(f'Heartbeat failed: {leave.status.error_data.__dict__}')
 
 
-class ManagedHeartbeatDelayedEffect(ManagedEffect):
+class HeartbeatDelayedEffect(Effect):
     def __init__(self, pubnub_instance, event_engine_instance,
-                 effect: Union[effects.PNManageableEffect, effects.PNCancelEffect]) -> None:
-        super().__init__(pubnub_instance, event_engine_instance, effect)
+                 invocation: Union[invocations.PNManageableInvocation, invocations.PNCancelInvocation]) -> None:
+        super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
         self.max_retry_attempts = pubnub_instance.config.maximum_reconnection_retries
         self.interval = pubnub_instance.config.RECONNECTION_INTERVAL
@@ -344,23 +344,23 @@ class ManagedHeartbeatDelayedEffect(ManagedEffect):
         self.max_backoff = pubnub_instance.config.RECONNECTION_MAX_EXPONENTIAL_BACKOFF
 
     def run(self):
-        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.effect.attempts > self.max_retry_attempts:
-            self.event_engine.trigger(events.HeartbeatGiveUpEvent(channels=self.effect.channels,
-                                                                  groups=self.effect.groups,
-                                                                  reason=self.effect.reason,
-                                                                  attempt=self.effect.attempts))
+        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.invocation.attempts > self.max_retry_attempts:
+            self.event_engine.trigger(events.HeartbeatGiveUpEvent(channels=self.invocation.channels,
+                                                                  groups=self.invocation.groups,
+                                                                  reason=self.invocation.reason,
+                                                                  attempt=self.invocation.attempts))
 
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
-            self.run_async(self.heartbeat(channels=self.effect.channels, groups=self.effect.groups,
-                                          attempt=self.effect.attempts, stop_event=self.stop_event))
+            self.run_async(self.heartbeat(channels=self.invocation.channels, groups=self.invocation.groups,
+                                          attempt=self.invocation.attempts, stop_event=self.stop_event))
 
     async def heartbeat(self, channels, groups, attempt, stop_event):
-        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.effect.attempts > self.max_retry_attempts:
-            self.event_engine.trigger(events.HeartbeatGiveUpEvent(channels=self.effect.channels,
-                                                                  groups=self.effect.groups,
-                                                                  reason=self.effect.reason,
-                                                                  attempt=self.effect.attempts))
+        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.invocation.attempts > self.max_retry_attempts:
+            self.event_engine.trigger(events.HeartbeatGiveUpEvent(channels=self.invocation.channels,
+                                                                  groups=self.invocation.groups,
+                                                                  reason=self.invocation.reason,
+                                                                  attempt=self.invocation.attempts))
         request = Heartbeat(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
         delay = self.calculate_reconnection_delay(attempt)
         self.logger.warning(f'Will retry to Heartbeat in {delay}s')
@@ -381,26 +381,26 @@ class ManagedHeartbeatDelayedEffect(ManagedEffect):
             self.event_engine.trigger(events.HeartbeatSuccessEvent(channels=channels, groups=groups))
 
 
-class ManagedEffectFactory:
-    _managed_effects = {
-        effects.HandshakeEffect.__name__: ManageHandshakeEffect,
-        effects.ReceiveMessagesEffect.__name__: ManagedReceiveMessagesEffect,
-        effects.HandshakeReconnectEffect.__name__: ManagedHandshakeReconnectEffect,
-        effects.ReceiveReconnectEffect.__name__: ManagedReceiveReconnectEffect,
-        effects.HeartbeatEffect.__name__: ManagedHeartbeatEffect,
-        effects.HeartbeatWaitEffect.__name__: ManagedHeartbeatWaitEffect,
-        effects.HeartbeatDelayedHeartbeatEffect.__name__: ManagedHeartbeatDelayedEffect,
-        effects.HeartbeatLeaveEffect.__name__: ManagedHeartbeatLeaveEffect,
+class EffectFactory:
+    _managed_invocations = {
+        invocations.HandshakeInvocation.__name__: HandshakeEffect,
+        invocations.ReceiveMessagesInvocation.__name__: ReceiveMessagesEffect,
+        invocations.HandshakeReconnectInvocation.__name__: HandshakeReconnectEffect,
+        invocations.ReceiveReconnectInvocation.__name__: ReceiveReconnectEffect,
+        invocations.HeartbeatInvocation.__name__: HeartbeatEffect,
+        invocations.HeartbeatWaitInvocation.__name__: HeartbeatWaitEffect,
+        invocations.HeartbeatDelayedHeartbeatInvocation.__name__: HeartbeatDelayedEffect,
+        invocations.HeartbeatLeaveInvocation.__name__: HeartbeatLeaveEffect,
     }
 
     def __init__(self, pubnub_instance, event_engine_instance) -> None:
         self._pubnub = pubnub_instance
         self._event_engine = event_engine_instance
 
-    def create(self, effect: ManagedEffect):
-        if effect.__class__.__name__ not in self._managed_effects:
-            raise PubNubException(errormsg=f"Unhandled managed effect: {effect.__class__.__name__}")
-        return self._managed_effects[effect.__class__.__name__](self._pubnub, self._event_engine, effect)
+    def create(self, invocation: invocations.PNInvocation) -> Effect:
+        if invocation.__class__.__name__ not in self._managed_invocations:
+            raise PubNubException(errormsg=f"Unhandled Invocation: {invocation.__class__.__name__}")
+        return self._managed_invocations[invocation.__class__.__name__](self._pubnub, self._event_engine, invocation)
 
 
 class EmitEffect:
@@ -411,20 +411,20 @@ class EmitEffect:
         self.pubnub = pubnub
         self.message_worker = BaseMessageWorker(pubnub)
 
-    def emit(self, effect: effects.PNEmittableEffect):
-        if isinstance(effect, effects.EmitMessagesEffect):
-            self.emit_message(effect)
-        if isinstance(effect, effects.EmitStatusEffect):
-            self.emit_status(effect)
+    def emit(self, invocation: invocations.PNEmittableInvocation):
+        if isinstance(invocation, invocations.EmitMessagesInvocation):
+            self.emit_message(invocation)
+        if isinstance(invocation, invocations.EmitStatusInvocation):
+            self.emit_status(invocation)
 
-    def emit_message(self, effect: effects.EmitMessagesEffect):
+    def emit_message(self, invocation: invocations.EmitMessagesInvocation):
         self.message_worker._listener_manager = self.pubnub._subscription_manager._listener_manager
-        for message in effect.messages:
+        for message in invocation.messages:
             subscribe_message = SubscribeMessage().from_json(message)
             self.message_worker._process_incoming_payload(subscribe_message)
 
-    def emit_status(self, effect: effects.EmitStatusEffect):
+    def emit_status(self, invocation: invocations.EmitStatusInvocation):
         pn_status = PNStatus()
-        pn_status.category = effect.status
+        pn_status.category = invocation.status
         pn_status.error = False
         self.pubnub._subscription_manager._listener_manager.announce_status(pn_status)

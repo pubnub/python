@@ -8,6 +8,7 @@ import urllib
 
 from asyncio import Event, Queue, Semaphore
 from yarl import URL
+from pubnub.event_engine.containers import PresenceStateContainer
 from pubnub.event_engine.models import events, states
 
 from pubnub.models.consumer.common import PNStatus
@@ -557,12 +558,15 @@ class EventEngineSubscriptionManager(SubscriptionManager):
     loop: asyncio.AbstractEventLoop
 
     def __init__(self, pubnub_instance):
-        self.event_engine = StateMachine(states.UnsubscribedState, name="subscribe")
-        self.presence_engine = StateMachine(states.HeartbeatInactiveState, name="presence")
+        self.state_container = PresenceStateContainer()
+        self.event_engine = StateMachine(states.UnsubscribedState,
+                                         name="subscribe")
+        self.presence_engine = StateMachine(states.HeartbeatInactiveState,
+                                            name="presence")
         self.event_engine.get_dispatcher().set_pn(pubnub_instance)
         self.presence_engine.get_dispatcher().set_pn(pubnub_instance)
         self.loop = asyncio.new_event_loop()
-
+        pubnub_instance.state_container = self.state_container
         super().__init__(pubnub_instance)
 
     def stop(self):
@@ -594,13 +598,19 @@ class EventEngineSubscriptionManager(SubscriptionManager):
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         if not isinstance(unsubscribe_operation, UnsubscribeOperation):
             raise PubNubException('Invalid Unsubscribe Operation')
-        event = events.SubscriptionChangedEvent(None, None)
+        event = events.SubscriptionChangedEvent(['third', 'third-pnpres'], [])
         self.event_engine.trigger(event)
         self.presence_engine.trigger(event=events.HeartbeatLeftEvent(
             channels=unsubscribe_operation.channels,
             groups=unsubscribe_operation.channel_groups,
             suppress_leave=self._pubnub.config.suppress_leave_events
         ))
+
+    def adapt_state_builder(self, state_operation):
+        self.state_container.register_state(state_operation.state,
+                                            state_operation.channels,
+                                            state_operation.channel_groups)
+        return super().adapt_state_builder(state_operation)
 
     def get_custom_params(self):
         return {'ee': 1}

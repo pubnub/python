@@ -80,9 +80,10 @@ class HandshakeEffect(Effect):
 
     async def handshake_async(self, channels, groups, stop_event, timetoken: int = 0):
         request = Subscribe(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
-        if feature_enabled('PN_MAINTAIN_PRESENCE_STATE'):
-            # request.set_state(self._context.states)  # stub for state handling
-            pass
+
+        if feature_enabled('PN_MAINTAIN_PRESENCE_STATE') and hasattr(self.pubnub, 'state_container'):
+            state_container = self.pubnub.state_container
+            request.state(state_container.get_state(channels))
 
         request.timetoken(0)
         response = await request.future()
@@ -197,9 +198,9 @@ class ReconnectEffect(Effect):
         if self.invocation.region:
             request.region(self.invocation.region)
 
-        if feature_enabled('PN_MAINTAIN_PRESENCE_STATE'):
-            # subscribe.set_state(self._context.states)  # stub for state handling
-            pass
+        if feature_enabled('PN_MAINTAIN_PRESENCE_STATE') and hasattr(self.pubnub, 'state_container'):
+            state_container = self.pubnub.state_container
+            request.state(state_container.get_state(self.invocation.channels))
 
         response = await request.future()
 
@@ -281,9 +282,9 @@ class HeartbeatEffect(Effect):
     async def heartbeat(self, channels, groups, stop_event):
         request = Heartbeat(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
 
-        if feature_enabled('PN_MAINTAIN_PRESENCE_STATE'):
-            # subscribe.set_state(self._context.states)  # stub for state handling
-            pass
+        if feature_enabled('PN_MAINTAIN_PRESENCE_STATE') and hasattr(self.pubnub, 'state_container'):
+            state_container = self.pubnub.state_container
+            request.state(state_container.get_state(self.invocation.channels))
 
         response = await request.future()
 

@@ -1,3 +1,4 @@
+import asyncio
 import re
 import busypie
 
@@ -69,11 +70,7 @@ Presence engine step definitions
 @then("I wait '{wait_time}' seconds")
 @async_run_until_complete
 async def step_impl(ctx: PNContext, wait_time: str):
-    await busypie.wait() \
-        .at_most(int(wait_time)) \
-        .poll_delay(int(wait_time)) \
-        .poll_interval(int(wait_time)) \
-        .until_async(lambda: True)
+    await asyncio.sleep(int(wait_time))
 
 
 @then(u'I observe the following Events and Invocations of the Presence EE')

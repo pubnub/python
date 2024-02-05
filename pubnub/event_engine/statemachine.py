@@ -13,7 +13,7 @@ class StateMachine:
     _enabled: bool
 
     def __init__(self, initial_state: states.PNState, dispatcher_class: Optional[Dispatcher] = None,
-                 name: str = None) -> None:
+                 name: Optional[str] = None) -> None:
         self._context = states.PNContext()
         self._current_state = initial_state(self._context)
         self._listeners = {}

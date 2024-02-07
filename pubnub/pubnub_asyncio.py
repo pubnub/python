@@ -581,12 +581,14 @@ class EventEngineSubscriptionManager(SubscriptionManager):
             subscription_event = events.SubscriptionRestoredEvent(
                 channels=subscribe_operation.channels_with_pressence,
                 groups=subscribe_operation.groups_with_pressence,
-                timetoken=subscribe_operation.timetoken
+                timetoken=subscribe_operation.timetoken,
+                with_presence=subscribe_operation.presence_enabled
             )
         else:
             subscription_event = events.SubscriptionChangedEvent(
                 channels=subscribe_operation.channels_with_pressence,
-                groups=subscribe_operation.groups_with_pressence
+                groups=subscribe_operation.groups_with_pressence,
+                with_presence=subscribe_operation.presence_enabled
             )
         self.event_engine.trigger(subscription_event)
         if self._pubnub.config._heartbeat_interval > 0:
@@ -598,8 +600,17 @@ class EventEngineSubscriptionManager(SubscriptionManager):
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         if not isinstance(unsubscribe_operation, UnsubscribeOperation):
             raise PubNubException('Invalid Unsubscribe Operation')
-        event = events.SubscriptionChangedEvent(['third', 'third-pnpres'], [])
-        self.event_engine.trigger(event)
+
+        channels = unsubscribe_operation.get_subscribed_channels(
+            self.event_engine.get_context().channels,
+            self.event_engine.get_context().with_presence)
+
+        groups = unsubscribe_operation.get_subscribed_channel_groups(
+            self.event_engine.get_context().groups,
+            self.event_engine.get_context().with_presence)
+
+        self.event_engine.trigger(events.SubscriptionChangedEvent(channels=channels, groups=groups))
+
         self.presence_engine.trigger(event=events.HeartbeatLeftEvent(
             channels=unsubscribe_operation.channels,
             groups=unsubscribe_operation.channel_groups,

@@ -42,6 +42,9 @@ class StateMachine:
         self.logger.debug(f'Current State: {self.get_state_name()}')
         self.logger.debug(f'Triggered event: {event.__class__.__name__}({event.__dict__}) on {self.get_state_name()}')
 
+        if (isinstance(event, events.SubscriptionChangedEvent)):
+            print(f"SubscriptionChangedEvent in : {self.get_state_name()}")
+
         if not self._enabled:
             self.logger.error('EventEngine is not enabled')
             return False

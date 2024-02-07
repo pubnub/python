@@ -41,7 +41,7 @@ class Effect:
     def run_async(self, coro):
         loop: asyncio.AbstractEventLoop = self.pubnub.event_loop
         if loop.is_running():
-            self.task = loop.create_task(coro)
+            self.task = loop.create_task(coro, name=self.__class__.__name__)
         else:
             self.task = loop.run_until_complete(coro)
 

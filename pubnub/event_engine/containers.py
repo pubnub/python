@@ -9,7 +9,7 @@ class PresenceStateContainer:
             self.channel_states[channel] = state
 
     def get_state(self, channels: list):
-        return {**self.get_channels_states(channels)}
+        return {channel: self.channel_states[channel] for channel in channels if channel in self.channel_states}
 
     def get_channels_states(self, channels: list):
         return {channel: self.channel_states[channel] for channel in channels if channel in self.channel_states}

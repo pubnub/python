@@ -78,6 +78,7 @@ jobs:
           mkdir tests/acceptance/encryption/assets/
           cp sdk-specifications/features/encryption/assets/* tests/acceptance/encryption/assets/
           cp sdk-specifications/features/subscribe/event-engine/happy-path.feature tests/acceptance/subscribe/happy-path.feature
+          cp sdk-specifications/features/presence/event-engine/presence-engine.feature  tests/acceptance/subscribe/presence-engine.feature
 
           sudo pip3 install -r requirements-dev.txt
           behave --junit tests/acceptance/pam

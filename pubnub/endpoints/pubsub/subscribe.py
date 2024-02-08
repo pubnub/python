@@ -18,6 +18,7 @@ class Subscribe(Endpoint):
         self._filter_expression = None
         self._timetoken = None
         self._with_presence = None
+        self._state = None
 
     def channels(self, channels):
         utils.extend_list(self._channels, channels)
@@ -42,6 +43,10 @@ class Subscribe(Endpoint):
     def region(self, region):
         self._region = region
 
+        return self
+
+    def state(self, state):
+        self._state = state
         return self
 
     def http_method(self):
@@ -74,6 +79,12 @@ class Subscribe(Endpoint):
 
         if not self.pubnub.config.heartbeat_default_values:
             params['heartbeat'] = self.pubnub.config.presence_timeout
+
+        if self._state is not None and len(self._state) > 0:
+            params['state'] = utils.url_write(self._state)
+
+        if hasattr(self.pubnub, '_subscription_manager'):
+            params.update(self.pubnub._subscription_manager.get_custom_params())
 
         return params
 

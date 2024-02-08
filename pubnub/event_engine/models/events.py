@@ -28,14 +28,17 @@ class PNChannelGroupsEvent(PNEvent):
 
 
 class SubscriptionChangedEvent(PNChannelGroupsEvent):
-    def __init__(self, channels: List[str], groups: List[str]) -> None:
+    def __init__(self, channels: List[str], groups: List[str], with_presence: Optional[bool] = None) -> None:
         PNChannelGroupsEvent.__init__(self, channels, groups)
+        self.with_presence = with_presence
 
 
 class SubscriptionRestoredEvent(PNCursorEvent, PNChannelGroupsEvent):
-    def __init__(self, timetoken: str, channels: List[str], groups: List[str], region: Optional[int] = None) -> None:
+    def __init__(self, timetoken: str, channels: List[str], groups: List[str], region: Optional[int] = None,
+                 with_presence: Optional[bool] = None) -> None:
         PNCursorEvent.__init__(self, timetoken, region)
         PNChannelGroupsEvent.__init__(self, channels, groups)
+        self.with_presence = with_presence
 
 
 class HandshakeSuccessEvent(PNCursorEvent):
@@ -97,3 +100,52 @@ class DisconnectEvent(PNEvent):
 
 class ReconnectEvent(PNEvent):
     pass
+
+
+"""
+    Presence Events
+"""
+
+
+class HeartbeatJoinedEvent(PNChannelGroupsEvent):
+    pass
+
+
+class HeartbeatReconnectEvent(PNEvent):
+    pass
+
+
+class HeartbeatLeftAllEvent(PNEvent):
+    pass
+
+
+class HeartbeatLeftEvent(PNChannelGroupsEvent):
+    def __init__(self, channels: List[str], groups: List[str], suppress_leave: bool = False) -> None:
+        PNChannelGroupsEvent.__init__(self, channels, groups)
+        self.suppress_leave = suppress_leave
+
+
+class HeartbeatDisconnectEvent(PNChannelGroupsEvent):
+    pass
+
+
+class HeartbeatSuccessEvent(PNChannelGroupsEvent):
+    pass
+
+
+class HeartbeatFailureEvent(PNChannelGroupsEvent, PNFailureEvent):
+    def __init__(self, channels: List[str], groups: List[str], reason: PubNubException, attempt: int,
+                 timetoken: int = 0) -> None:
+        PNChannelGroupsEvent.__init__(self, channels, groups)
+        PNFailureEvent.__init__(self, reason, attempt, timetoken)
+
+
+class HeartbeatTimesUpEvent(PNEvent):
+    pass
+
+
+class HeartbeatGiveUpEvent(PNChannelGroupsEvent, PNFailureEvent):
+    def __init__(self, channels: List[str], groups: List[str], reason: PubNubException, attempt: int,
+                 timetoken: int = 0) -> None:
+        PNChannelGroupsEvent.__init__(self, channels, groups)
+        PNFailureEvent.__init__(self, reason, attempt, timetoken)

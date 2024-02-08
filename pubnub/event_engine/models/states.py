@@ -1,6 +1,6 @@
 from pubnub.enums import PNStatusCategory
-from pubnub.event_engine.models import effects
-from pubnub.event_engine.models.effects import PNEffect
+from pubnub.event_engine.models import invocations
+from pubnub.event_engine.models.invocations import PNInvocation
 from pubnub.event_engine.models import events
 from pubnub.exceptions import PubNubException
 from typing import List, Union
@@ -13,6 +13,7 @@ class PNContext(dict):
     timetoken: str
     attempt: int
     reason: PubNubException
+    with_presence: bool = False
 
     def update(self, context):
         super().update(context.__dict__)
@@ -41,16 +42,16 @@ class PNState:
 class PNTransition:
     context: PNContext
     state: PNState
-    effect: Union[None, List[PNEffect]]
+    invocation: Union[None, List[PNInvocation]]
 
     def __init__(self,
                  state: PNState,
                  context: Union[None, PNContext] = None,
-                 effect: Union[None, List[PNEffect]] = None,
+                 invocation: Union[None, List[PNInvocation]] = None,
                  ) -> None:
         self.context = context
         self.state = state
-        self.effect = effect
+        self.invocation = invocation
 
 
 class UnsubscribedState(PNState):
@@ -67,6 +68,7 @@ class UnsubscribedState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = 0
 
         return PNTransition(
@@ -78,6 +80,7 @@ class UnsubscribedState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = event.timetoken
         self._context.region = event.region
 
@@ -101,16 +104,19 @@ class HandshakingState(PNState):
     def on_enter(self, context: Union[None, PNContext]):
         self._context.update(context)
         super().on_enter(self._context)
-        return effects.HandshakeEffect(self._context.channels, self._context.groups, self._context.timetoken or 0)
+        return invocations.HandshakeInvocation(self._context.channels,
+                                               self._context.groups,
+                                               self._context.timetoken or 0)
 
     def on_exit(self):
         super().on_exit()
-        return effects.CancelHandshakeEffect()
+        return invocations.CancelHandshakeInvocation()
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = 0
 
         return PNTransition(
@@ -122,6 +128,7 @@ class HandshakingState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.region = event.region
         if self._context.timetoken == 0:
             self._context.timetoken = event.timetoken
@@ -161,7 +168,7 @@ class HandshakingState(PNState):
         return PNTransition(
             state=ReceivingState,
             context=self._context,
-            effect=effects.EmitStatusEffect(PNStatusCategory.PNConnectedCategory)
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNConnectedCategory)
         )
 
 
@@ -180,15 +187,15 @@ class HandshakeReconnectingState(PNState):
     def on_enter(self, context: Union[None, PNContext]):
         self._context.update(context)
         super().on_enter(self._context)
-        return effects.HandshakeReconnectEffect(self._context.channels,
-                                                self._context.groups,
-                                                attempts=self._context.attempt,
-                                                reason=self._context.reason,
-                                                timetoken=self._context.timetoken)
+        return invocations.HandshakeReconnectInvocation(self._context.channels,
+                                                        self._context.groups,
+                                                        attempts=self._context.attempt,
+                                                        reason=self._context.reason,
+                                                        timetoken=self._context.timetoken)
 
     def on_exit(self):
         super().on_exit()
-        return effects.CancelHandshakeReconnectEffect()
+        return invocations.CancelHandshakeReconnectInvocation()
 
     def disconnect(self, event: events.DisconnectEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
@@ -202,6 +209,7 @@ class HandshakeReconnectingState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = 0
 
         return PNTransition(
@@ -227,13 +235,14 @@ class HandshakeReconnectingState(PNState):
         return PNTransition(
             state=HandshakeFailedState,
             context=self._context,
-            effect=effects.EmitStatusEffect(PNStatusCategory.PNDisconnectedCategory)
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory)
         )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = event.timetoken
         self._context.region = event.region
 
@@ -250,7 +259,7 @@ class HandshakeReconnectingState(PNState):
         return PNTransition(
             state=ReceivingState,
             context=self._context,
-            effect=effects.EmitStatusEffect(PNStatusCategory.PNConnectedCategory, )
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNConnectedCategory, )
         )
 
 
@@ -267,6 +276,7 @@ class HandshakeFailedState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = 0
 
         return PNTransition(
@@ -286,6 +296,7 @@ class HandshakeFailedState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = event.timetoken
         self._context.region = event.region
 
@@ -329,18 +340,19 @@ class ReceivingState(PNState):
 
     def on_enter(self, context: Union[None, PNContext]):
         super().on_enter(context)
-        return effects.ReceiveMessagesEffect(context.channels, context.groups, timetoken=self._context.timetoken,
-                                             region=self._context.region)
+        return invocations.ReceiveMessagesInvocation(context.channels, context.groups,
+                                                     timetoken=self._context.timetoken, region=self._context.region)
 
     def on_exit(self):
         super().on_exit()
-        return effects.CancelReceiveMessagesEffect()
+        return invocations.CancelReceiveMessagesInvocation()
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
-        self._context.timetoken = 0
+        self._context.with_presence = event.with_presence
+        # self._context.timetoken = 0  # why we don't reset timetoken here?
 
         return PNTransition(
             state=self.__class__,
@@ -351,6 +363,7 @@ class ReceivingState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = event.timetoken
         self._context.region = event.region
 
@@ -367,7 +380,7 @@ class ReceivingState(PNState):
         return PNTransition(
             state=self.__class__,
             context=self._context,
-            effect=effects.EmitMessagesEffect(messages=event.messages),
+            invocation=invocations.EmitMessagesInvocation(messages=event.messages),
         )
 
     def receiving_failure(self, event: events.ReceiveFailureEvent, context: PNContext) -> PNTransition:
@@ -386,7 +399,7 @@ class ReceivingState(PNState):
         return PNTransition(
             state=ReceiveStoppedState,
             context=self._context,
-            effect=effects.EmitStatusEffect(PNStatusCategory.PNDisconnectedCategory)
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory)
         )
 
     def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
@@ -413,12 +426,16 @@ class ReceiveReconnectingState(PNState):
     def on_enter(self, context: Union[None, PNContext]):
         self._context.update(context)
         super().on_enter(self._context)
-        return effects.ReceiveReconnectEffect(self._context.channels, self._context.groups, self._context.timetoken,
-                                              self._context.region, self._context.attempt, self._context.reason)
+        return invocations.ReceiveReconnectInvocation(self._context.channels,
+                                                      self._context.groups,
+                                                      self._context.timetoken,
+                                                      self._context.region,
+                                                      self._context.attempt,
+                                                      self._context.reason)
 
     def on_exit(self):
         super().on_exit()
-        return effects.CancelReceiveReconnectEffect()
+        return invocations.CancelReceiveReconnectInvocation()
 
     def reconnect_failure(self, event: events.ReceiveReconnectFailureEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
@@ -434,6 +451,7 @@ class ReceiveReconnectingState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = 0
 
         return PNTransition(
@@ -457,7 +475,7 @@ class ReceiveReconnectingState(PNState):
         return PNTransition(
             state=ReceiveFailedState,
             context=self._context,
-            effect=effects.EmitStatusEffect(PNStatusCategory.PNDisconnectedCategory)
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory)
         )
 
     def reconnect_success(self, event: events.ReceiveReconnectSuccessEvent, context: PNContext) -> PNTransition:
@@ -468,13 +486,14 @@ class ReceiveReconnectingState(PNState):
         return PNTransition(
             state=ReceivingState,
             context=self._context,
-            effect=effects.EmitMessagesEffect(event.messages)
+            invocation=invocations.EmitMessagesInvocation(event.messages)
         )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = event.timetoken
         self._context.region = event.region
 
@@ -506,6 +525,7 @@ class ReceiveFailedState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = 0
 
         return PNTransition(
@@ -525,6 +545,7 @@ class ReceiveFailedState(PNState):
         self._context.update(context)
         self._context.channels = event.channels
         self._context.groups = event.groups
+        self._context.with_presence = event.with_presence
         self._context.timetoken = event.timetoken
         self._context.region = event.region
 
@@ -549,4 +570,451 @@ class ReceiveStoppedState(PNState):
         return PNTransition(
             state=ReceiveReconnectingState,
             context=self._context
+        )
+
+
+"""
+Presence states
+"""
+
+
+class HeartbeatInactiveState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+
+        self._transitions = {
+            events.HeartbeatJoinedEvent.__name__: self.joined
+        }
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.channels = event.channels
+        self._context.groups = event.groups
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+
+class HeartbeatStoppedState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+
+        self._transitions = {
+            events.HeartbeatReconnectEvent.__name__: self.reconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all,
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left
+        }
+
+    def reconnect(self, event: events.HeartbeatReconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.channels = []
+        self._context.groups = []
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context
+        )
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        for channel in event.channels:
+            self._context.channels.remove(channel)
+
+        for group in event.groups:
+            self._context.groups.remove(group)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context
+        )
+
+
+class HeartbeatFailedState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+
+        self._transitions = {
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left,
+            events.HeartbeatReconnectEvent.__name__: self.reconnect,
+            events.HeartbeatDisconnectEvent.__name__: self.disconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all
+        }
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        for channel in event.channels:
+            self._context.channels.remove(channel)
+
+        for group in event.groups:
+            self._context.groups.remove(group)
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def reconnect(self, event: events.HeartbeatReconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def disconnect(self, event: events.HeartbeatDisconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.channels = []
+        self._context.groups = []
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context,
+            invocation=invocation
+        )
+
+
+class HeartbeatingState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+        self._transitions = {
+            events.HeartbeatFailureEvent.__name__: self.failure,
+            events.HeartbeatDisconnectEvent.__name__: self.disconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all,
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left,
+            events.HeartbeatSuccessEvent.__name__: self.success
+        }
+
+    def on_enter(self, context: Union[None, PNContext]):
+        self._context.update(context)
+        super().on_enter(self._context)
+        return invocations.HeartbeatInvocation(channels=self._context.channels, groups=self._context.groups)
+
+    def failure(self, event: events.HeartbeatFailureEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.attempt = event.attempt
+        self._context.reason = event.reason
+
+        return PNTransition(
+            state=HeartbeatReconnectingState,
+            context=self._context
+        )
+
+    def disconnect(self, event: events.HeartbeatDisconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.channels = []
+        self._context.groups = []
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        for channel in event.channels:
+            self._context.channels.remove(channel)
+
+        for group in event.groups:
+            self._context.groups.remove(group)
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def success(self, event: events.HeartbeatSuccessEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.attempt = 0
+
+        return PNTransition(
+            state=HeartbeatCooldownState,
+            context=self._context
+        )
+
+
+class HeartbeatCooldownState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+        self._transitions = {
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left,
+            events.HeartbeatTimesUpEvent.__name__: self.times_up,
+            events.HeartbeatDisconnectEvent.__name__: self.disconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all,
+
+        }
+
+    def on_enter(self, context: PNContext):
+        self._context.update(context)
+        super().on_enter(self._context)
+        return invocations.HeartbeatWaitInvocation(self._context)
+
+    def on_exit(self):
+        super().on_exit()
+        return invocations.HeartbeatCancelWaitInvocation()
+
+    def disconnect(self, event: events.HeartbeatDisconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.channels = []
+        self._context.groups = []
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        for channel in event.channels:
+            self._context.channels.remove(channel)
+
+        for group in event.groups:
+            self._context.groups.remove(group)
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def times_up(self, event: events.HeartbeatTimesUpEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+
+class HeartbeatReconnectingState(PNState):
+    def __init__(self, context: PNContext) -> None:
+        super().__init__(context)
+        self._transitions = {
+            events.HeartbeatFailureEvent.__name__: self.failure,
+            events.HeartbeatJoinedEvent.__name__: self.joined,
+            events.HeartbeatLeftEvent.__name__: self.left,
+            events.HeartbeatSuccessEvent.__name__: self.success,
+            events.HeartbeatGiveUpEvent.__name__: self.give_up,
+            events.HeartbeatDisconnectEvent.__name__: self.disconnect,
+            events.HeartbeatLeftAllEvent.__name__: self.left_all
+        }
+
+    def on_enter(self, context: PNContext):
+        self._context.update(context)
+        super().on_enter(self._context)
+
+        return invocations.HeartbeatDelayedHeartbeatInvocation(channels=self._context.channels,
+                                                               groups=self._context.groups,
+                                                               attempts=self._context.attempt,
+                                                               reason=None)
+
+    def on_exit(self):
+        super().on_exit()
+        return invocations.HeartbeatCancelDelayedHeartbeatInvocation()
+
+    def failure(self, event: events.HeartbeatFailureEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.attempt = event.attempt + 1
+        self._context.reason = event.reason
+
+        return PNTransition(
+            state=HeartbeatReconnectingState,
+            context=self._context
+        )
+
+    def joined(self, event: events.HeartbeatJoinedEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context
+        )
+
+    def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        for channel in event.channels:
+            self._context.channels.remove(channel)
+
+        for group in event.groups:
+            self._context.groups.remove(group)
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatingState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def success(self, event: events.HeartbeatSuccessEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.attempt = 0
+
+        return PNTransition(
+            state=HeartbeatCooldownState,
+            context=self._context
+        )
+
+    def give_up(self, event: events.HeartbeatGiveUpEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.attempt = event.attempt
+        self._context.reason = event.reason
+
+        return PNTransition(
+            state=HeartbeatFailedState,
+            context=self._context
+        )
+
+    def disconnect(self, event: events.HeartbeatDisconnectEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatStoppedState,
+            context=self._context,
+            invocation=invocation
+        )
+
+    def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.channels = []
+        self._context.groups = []
+
+        invocation = None
+        if not event.suppress_leave:
+            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
+                                                              groups=event.groups)
+
+        return PNTransition(
+            state=HeartbeatInactiveState,
+            context=self._context,
+            invocation=invocation
         )

@@ -1,3 +1,4 @@
+import asyncio
 import requests
 
 from behave.runner import Context
@@ -40,7 +41,10 @@ def before_scenario(context: Context, feature):
 
 
 def after_scenario(context: Context, feature):
-    context.pubnub.unsubscribe_all()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(context.pubnub.stop())
+    loop.run_until_complete(asyncio.sleep(0.1))
+
     for tag in feature.tags:
         if "contract" in tag:
             response = requests.get(MOCK_SERVER_URL + CONTRACT_EXPECT_ENDPOINT)
@@ -48,5 +52,5 @@ def after_scenario(context: Context, feature):
 
             response_json = response.json()
 
-            assert not response_json["expectations"]["failed"]
-            assert not response_json["expectations"]["pending"]
+            assert not response_json["expectations"]["failed"], str(response_json["expectations"]["failed"])
+            assert not response_json["expectations"]["pending"], str(response_json["expectations"]["pending"])

@@ -36,6 +36,9 @@ class Leave(Endpoint):
         if len(self._groups) > 0:
             params['channel-group'] = utils.join_items(self._groups)
 
+        if hasattr(self.pubnub, '_subscription_manager'):
+            params.update(self.pubnub._subscription_manager.get_custom_params())
+
         return params
 
     def build_path(self):

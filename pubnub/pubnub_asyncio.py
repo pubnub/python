@@ -8,6 +8,7 @@ import urllib
 
 from asyncio import Event, Queue, Semaphore
 from yarl import URL
+from pubnub.event_engine.containers import PresenceStateContainer
 from pubnub.event_engine.models import events, states
 
 from pubnub.models.consumer.common import PNStatus
@@ -16,6 +17,7 @@ from pubnub.event_engine.statemachine import StateMachine
 from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.presence.leave import Leave
 from pubnub.endpoints.pubsub.subscribe import Subscribe
+from pubnub.features import feature_enabled
 from pubnub.pubnub_core import PubNubCore
 from pubnub.workers import SubscribeMessageWorker
 from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
@@ -47,7 +49,9 @@ class PubNubAsyncio(PubNubCore):
         self._connector = aiohttp.TCPConnector(verify_ssl=True, loop=self.event_loop)
 
         if not subscription_manager:
-            subscription_manager = AsyncioSubscriptionManager
+            subscription_manager = (
+                EventEngineSubscriptionManager if feature_enabled('PN_ENABLE_EVENT_ENGINE')
+                else AsyncioSubscriptionManager)
 
         if self.config.enable_subscribe:
             self._subscription_manager = subscription_manager(self)
@@ -55,10 +59,6 @@ class PubNubAsyncio(PubNubCore):
         self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop, PubNubCore.MAX_SEQUENCE)
 
         self._telemetry_manager = AsyncioTelemetryManager()
-
-    def __del__(self):
-        if self.event_loop.is_running():
-            self.event_loop.create_task(self.close_session())
 
     async def close_pending_tasks(self, tasks):
         await asyncio.gather(*tasks)
@@ -87,9 +87,9 @@ class PubNubAsyncio(PubNubCore):
         )
 
     async def stop(self):
-        await self.close_session()
         if self._subscription_manager:
             self._subscription_manager.stop()
+        await self.close_session()
 
     def sdk_platform(self):
         return "-Asyncio"
@@ -558,14 +558,20 @@ class EventEngineSubscriptionManager(SubscriptionManager):
     loop: asyncio.AbstractEventLoop
 
     def __init__(self, pubnub_instance):
-        self.event_engine = StateMachine(states.UnsubscribedState)
+        self.state_container = PresenceStateContainer()
+        self.event_engine = StateMachine(states.UnsubscribedState,
+                                         name="subscribe")
+        self.presence_engine = StateMachine(states.HeartbeatInactiveState,
+                                            name="presence")
         self.event_engine.get_dispatcher().set_pn(pubnub_instance)
+        self.presence_engine.get_dispatcher().set_pn(pubnub_instance)
         self.loop = asyncio.new_event_loop()
-
+        pubnub_instance.state_container = self.state_container
         super().__init__(pubnub_instance)
 
     def stop(self):
         self.event_engine.stop()
+        self.presence_engine.stop()
 
     def adapt_subscribe_builder(self, subscribe_operation: SubscribeOperation):
         if not isinstance(subscribe_operation, SubscribeOperation):
@@ -573,22 +579,52 @@ class EventEngineSubscriptionManager(SubscriptionManager):
 
         if subscribe_operation.timetoken:
             subscription_event = events.SubscriptionRestoredEvent(
-                channels=subscribe_operation.channels,
-                groups=subscribe_operation.channel_groups,
-                timetoken=subscribe_operation.timetoken
+                channels=subscribe_operation.channels_with_pressence,
+                groups=subscribe_operation.groups_with_pressence,
+                timetoken=subscribe_operation.timetoken,
+                with_presence=subscribe_operation.presence_enabled
             )
         else:
             subscription_event = events.SubscriptionChangedEvent(
-                channels=subscribe_operation.channels,
-                groups=subscribe_operation.channel_groups
+                channels=subscribe_operation.channels_with_pressence,
+                groups=subscribe_operation.groups_with_pressence,
+                with_presence=subscribe_operation.presence_enabled
             )
         self.event_engine.trigger(subscription_event)
+        if self._pubnub.config._heartbeat_interval > 0:
+            self.presence_engine.trigger(events.HeartbeatJoinedEvent(
+                channels=subscribe_operation.channels,
+                groups=subscribe_operation.channel_groups
+            ))
 
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         if not isinstance(unsubscribe_operation, UnsubscribeOperation):
             raise PubNubException('Invalid Unsubscribe Operation')
-        event = events.SubscriptionChangedEvent(None, None)
-        self.event_engine.trigger(event)
+
+        channels = unsubscribe_operation.get_subscribed_channels(
+            self.event_engine.get_context().channels,
+            self.event_engine.get_context().with_presence)
+
+        groups = unsubscribe_operation.get_subscribed_channel_groups(
+            self.event_engine.get_context().groups,
+            self.event_engine.get_context().with_presence)
+
+        self.event_engine.trigger(events.SubscriptionChangedEvent(channels=channels, groups=groups))
+
+        self.presence_engine.trigger(event=events.HeartbeatLeftEvent(
+            channels=unsubscribe_operation.channels,
+            groups=unsubscribe_operation.channel_groups,
+            suppress_leave=self._pubnub.config.suppress_leave_events
+        ))
+
+    def adapt_state_builder(self, state_operation):
+        self.state_container.register_state(state_operation.state,
+                                            state_operation.channels,
+                                            state_operation.channel_groups)
+        return super().adapt_state_builder(state_operation)
+
+    def get_custom_params(self):
+        return {'ee': 1}
 
 
 class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):

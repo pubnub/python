@@ -52,6 +52,9 @@ class Heartbeat(Endpoint):
         if self._state is not None and len(self._state) > 0:
             params['state'] = utils.url_write(self._state)
 
+        if hasattr(self.pubnub, '_subscription_manager'):
+            params.update(self.pubnub._subscription_manager.get_custom_params())
+
         return params
 
     def create_response(self, envelope):

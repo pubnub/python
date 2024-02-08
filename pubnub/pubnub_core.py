@@ -85,14 +85,13 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "7.3.2"
+    SDK_VERSION = "7.4.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
     MAX_SEQUENCE = 65535
 
     __metaclass__ = ABCMeta
-    _plugins = []
     __crypto = None
 
     def __init__(self, config):

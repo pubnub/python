@@ -1,3 +1,9 @@
+## v7.4.0
+February 08 2024
+
+#### Added
+- Optional Event Engine for Subscribe Loop.
+
 ## v7.3.2
 November 27 2023
 

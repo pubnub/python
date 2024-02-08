@@ -7,8 +7,8 @@ from pubnub.pubnub_asyncio import EventEngineSubscriptionManager, PubNubAsyncio
 from pubnub.pnconfiguration import PNConfiguration
 
 parser = argparse.ArgumentParser(description="Chat with others using PubNub")
-parser.add_argument("name", help="Your name")
-parser.add_argument("channel", help="The channel you want to join")
+parser.add_argument("-n", metavar="name", help="Your name", default=None, required=False)
+parser.add_argument("-c", metavar="channel", help="The channel you want to join", default=None, required=False)
 args = parser.parse_args()
 
 
@@ -17,11 +17,13 @@ class ExampleCallback(SubscribeCallback):
         print(f"{message.publisher}> {message.message}\n")
 
     def presence(self, pubnub, presence):
-        print(f"{presence.event} {presence.uuid}\n")
+        print(f"-- {presence.uuid} {'joined' if presence.event == 'join' else 'left'} \n")
 
     def status(self, pubnub, status):
-        # print(status.__dict__)
-        pass
+        if status.is_error():
+            print(f"! Error: {status.error_data}")
+        else:
+            print(f"* Status: {status.category.name}")
 
 
 async def async_input():
@@ -31,8 +33,8 @@ async def async_input():
 
 
 async def main():
-    name = args.name if args.name else input("Enter your name: ")
-    channel = args.channel if args.channel else input("Enter the channel you want to join: ")
+    name = args.name if hasattr(args, "name") else input("Enter your name: ")
+    channel = args.channel if hasattr(args, "channel") else input("Enter the channel you want to join: ")
 
     print("Welcome to the chat room. Type 'exit' to leave the chat.")
 

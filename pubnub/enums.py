@@ -19,7 +19,7 @@ class HttpMethod(object):
             return "PATCH"
 
 
-class PNStatusCategory(object):
+class PNStatusCategory(Enum):
     PNUnknownCategory = 1
     PNAcknowledgmentCategory = 2
     PNAccessDeniedCategory = 3

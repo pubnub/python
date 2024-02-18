@@ -794,14 +794,18 @@ class SubscribeListener(SubscribeCallback):
 class AsyncioTelemetryManager(TelemetryManager):
     def __init__(self):
         TelemetryManager.__init__(self)
-        self._timer = AsyncioPeriodicCallback(
-            self._start_clean_up_timer,
-            self.CLEAN_UP_INTERVAL * self.CLEAN_UP_INTERVAL_MULTIPLIER,
-            asyncio.get_event_loop())
-        self._timer.start()
+        self.loop = asyncio.get_event_loop()
+        self._schedule_next_cleanup()
 
-    async def _start_clean_up_timer(self):
+    def _schedule_next_cleanup(self):
+        self._timer = self.loop.call_later(
+            self.CLEAN_UP_INTERVAL * self.CLEAN_UP_INTERVAL_MULTIPLIER / 1000,
+            self._start_clean_up_timer
+        )
+
+    def _start_clean_up_timer(self):
         self.clean_up_telemetry_data()
+        self._schedule_next_cleanup()
 
     def _stop_clean_up_timer(self):
-        self._timer.stop()
+        self._timer.cancel()

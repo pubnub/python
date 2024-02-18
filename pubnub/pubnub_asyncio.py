@@ -800,10 +800,10 @@ class AsyncioTelemetryManager(TelemetryManager):
     def _schedule_next_cleanup(self):
         self._timer = self.loop.call_later(
             self.CLEAN_UP_INTERVAL * self.CLEAN_UP_INTERVAL_MULTIPLIER / 1000,
-            self._start_clean_up_timer
+            self._clean_up_schedule_next
         )
 
-    def _start_clean_up_timer(self):
+    def _clean_up_schedule_next(self):
         self.clean_up_telemetry_data()
         self._schedule_next_cleanup()
 

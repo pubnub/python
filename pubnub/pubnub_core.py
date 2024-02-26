@@ -20,6 +20,7 @@ from pubnub.errors import PNERR_MISUSE_OF_USER_AND_SPACE, PNERR_USER_SPACE_PAIRS
 from pubnub.exceptions import PubNubException
 from pubnub.features import feature_flag
 from pubnub.crypto import PubNubCryptoModule
+from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup, PubNubChannelMetadata, PubNubUserMetadata
 
 from abc import ABCMeta, abstractmethod
 
@@ -640,3 +641,15 @@ class PubNubCore:
         if sync:
             return memberships.sync()
         return memberships
+
+    def channel(self, channel_name) -> PubNubChannel:
+        return PubNubChannel(self, channel_name)
+
+    def channel_group(self, channel_group_name) -> PubNubChannelGroup:
+        return PubNubChannelGroup(self, channel_group_name)
+
+    def channel_metadata(self, channel_name) -> PubNubChannelMetadata:
+        return PubNubChannelMetadata(self, channel_name)
+
+    def user_metadata(self, user_id) -> PubNubUserMetadata:
+        return PubNubUserMetadata(self, user_id)

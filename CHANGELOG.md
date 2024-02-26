@@ -1,3 +1,9 @@
+## v7.4.1
+February 26 2024
+
+#### Fixed
+- Fixes AsyncioTelemetryManager to avoid creating a task every second.
+
 ## v7.4.0
 February 08 2024
 

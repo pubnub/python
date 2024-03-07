@@ -1,12 +1,13 @@
 from pubnub import utils
 from pubnub.endpoints.objects_v2.objects_endpoint import ObjectsEndpoint, UuidEndpoint, \
-    IncludeCustomEndpoint, CustomAwareEndpoint
+    IncludeCustomEndpoint, CustomAwareEndpoint, IncludeStatusTypeEndpoint, StatusTypeAwareEndpoint
 from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod
 from pubnub.models.consumer.objects_v2.uuid import PNSetUUIDMetadataResult
 
 
-class SetUuid(ObjectsEndpoint, UuidEndpoint, IncludeCustomEndpoint, CustomAwareEndpoint):
+class SetUuid(ObjectsEndpoint, UuidEndpoint, IncludeCustomEndpoint, CustomAwareEndpoint, IncludeStatusTypeEndpoint,
+              StatusTypeAwareEndpoint):
     SET_UID_PATH = "/v2/objects/%s/uuids/%s"
 
     def __init__(self, pubnub):
@@ -14,6 +15,8 @@ class SetUuid(ObjectsEndpoint, UuidEndpoint, IncludeCustomEndpoint, CustomAwareE
         UuidEndpoint.__init__(self)
         IncludeCustomEndpoint.__init__(self)
         CustomAwareEndpoint.__init__(self)
+        IncludeStatusTypeEndpoint.__init__(self)
+        StatusTypeAwareEndpoint.__init__(self)
 
         self._name = None
         self._email = None
@@ -47,6 +50,7 @@ class SetUuid(ObjectsEndpoint, UuidEndpoint, IncludeCustomEndpoint, CustomAwareE
             "profileUrl": self._profile_url,
             "custom": self._custom
         }
+        payload = StatusTypeAwareEndpoint.build_data(self, payload)
         return utils.write_value_as_string(payload)
 
     def validate_specific_params(self):

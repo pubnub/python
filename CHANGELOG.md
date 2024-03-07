@@ -1,3 +1,9 @@
+## v7.4.2
+March 07 2024
+
+#### Fixed
+- Add missing status and type fields in app context. Now they are included, by default, in the response for getting channel/uuid metadata .
+
 ## v7.4.1
 February 26 2024
 

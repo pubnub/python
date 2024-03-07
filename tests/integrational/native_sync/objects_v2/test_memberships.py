@@ -9,12 +9,12 @@ from pubnub.models.consumer.objects_v2.memberships import PNChannelMembership, P
     PNGetMembershipsResult, PNRemoveMembershipsResult, PNManageMembershipsResult
 from pubnub.pubnub import PubNub
 from pubnub.structures import Envelope
-from tests.helper import pnconf_copy
+from tests.helper import pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 
 def _pubnub():
-    config = pnconf_copy()
+    config = pnconf_env_copy()
     return PubNub(config)
 
 
@@ -32,8 +32,8 @@ class TestObjectsV2Memberships:
         assert isinstance(set_memberships, SetMemberships)
         assert isinstance(set_memberships, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/set_memberships.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/set_memberships.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_set_memberships_happy_path(self):
         pn = _pubnub()
 
@@ -94,8 +94,8 @@ class TestObjectsV2Memberships:
         assert isinstance(get_memberships, GetMemberships)
         assert isinstance(get_memberships, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/get_memberships.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/get_memberships.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_get_memberships_happy_path(self):
         pn = _pubnub()
 
@@ -150,8 +150,8 @@ class TestObjectsV2Memberships:
         assert isinstance(remove_memberships, RemoveMemberships)
         assert isinstance(remove_memberships, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/remove_memberships.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/remove_memberships.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_remove_memberships_happy_path(self):
         pn = _pubnub()
 
@@ -186,8 +186,8 @@ class TestObjectsV2Memberships:
         assert isinstance(manage_memberships, ManageMemberships)
         assert isinstance(manage_memberships, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/manage_memberships.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/manage_memberships.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_manage_memberships_happy_path(self):
         pn = _pubnub()
 

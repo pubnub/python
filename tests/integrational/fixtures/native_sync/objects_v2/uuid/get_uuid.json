@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=custom%2Cstatus%2Ctype",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Length": [
+                        "286"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 08:49:07 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":{\"id\":\"someuuid\",\"name\":\"Some name\",\"externalId\":\"1234\",\"profileUrl\":\"http://example.com\",\"email\":\"test@example.com\",\"type\":null,\"status\":null,\"custom\":{\"key1\":\"val1\",\"key2\":\"val2\"},\"updated\":\"2024-03-07T08:49:07.011608Z\",\"eTag\":\"58f1aa12fc7b39025d4b159aa5289854\"}}"
+                }
+            }
+        }
+    ]
+}

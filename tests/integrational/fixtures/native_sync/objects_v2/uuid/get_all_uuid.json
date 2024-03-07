@@ -1,0 +1,55 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids?count=True&include=custom%2Cstatus%2Ctype&limit=10&sort=id%3Aasc%2Cupdated%3Adesc",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Length": [
+                        "307"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 08:49:07 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":[{\"id\":\"someuuid_with_custom\",\"name\":\"some name with custom\",\"externalId\":null,\"profileUrl\":null,\"email\":null,\"type\":null,\"status\":null,\"custom\":{\"key3\":\"val1\",\"key4\":\"val2\"},\"updated\":\"2024-03-07T08:47:38.835107Z\",\"eTag\":\"0f3067e0988bc7ded57f36d075b98eaf\"}],\"totalCount\":1,\"next\":\"MQ\"}"
+                }
+            }
+        }
+    ]
+}

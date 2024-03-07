@@ -1,0 +1,164 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=status%2Ctype",
+                "body": "{\"name\": \"some name\", \"email\": null, \"externalId\": null, \"profileUrl\": null, \"custom\": null}",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "92"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Length": [
+                        "215"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 08:49:03 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":{\"id\":\"someuuid\",\"name\":\"some name\",\"externalId\":null,\"profileUrl\":null,\"email\":null,\"type\":null,\"status\":null,\"updated\":\"2024-03-07T08:49:03.160451Z\",\"eTag\":\"4e310df3a9c5d0061a93ff0c572e9932\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid_with_custom?include=custom%2Cstatus%2Ctype",
+                "body": "{\"name\": \"some name with custom\", \"email\": null, \"externalId\": null, \"profileUrl\": null, \"custom\": {\"key3\": \"val1\", \"key4\": \"val2\"}}",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "132"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Length": [
+                        "278"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 08:49:03 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":{\"id\":\"someuuid_with_custom\",\"name\":\"some name with custom\",\"externalId\":null,\"profileUrl\":null,\"email\":null,\"type\":null,\"status\":null,\"custom\":{\"key3\":\"val1\",\"key4\":\"val2\"},\"updated\":\"2024-03-07T08:47:38.835107Z\",\"eTag\":\"0f3067e0988bc7ded57f36d075b98eaf\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids?include=custom%2Cuuid.custom",
+                "body": "{\"set\": [{\"uuid\": {\"id\": \"someuuid\"}}, {\"uuid\": {\"id\": \"someuuid_with_custom\"}, \"custom\": {\"key5\": \"val1\", \"key6\": \"val2\"}}], \"delete\": []}",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "139"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Length": [
+                        "646"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 08:49:03 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":[{\"uuid\":{\"id\":\"someuuid\",\"name\":\"some name\",\"externalId\":null,\"profileUrl\":null,\"email\":null,\"custom\":null,\"updated\":\"2024-03-07T08:49:03.160451Z\",\"eTag\":\"4e310df3a9c5d0061a93ff0c572e9932\"},\"custom\":null,\"updated\":\"2024-03-07T08:47:39.889598Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"someuuid_with_custom\",\"name\":\"some name with custom\",\"externalId\":null,\"profileUrl\":null,\"email\":null,\"custom\":{\"key3\":\"val1\",\"key4\":\"val2\"},\"updated\":\"2024-03-07T08:47:38.835107Z\",\"eTag\":\"0f3067e0988bc7ded57f36d075b98eaf\"},\"custom\":{\"key5\":\"val1\",\"key6\":\"val2\"},\"updated\":\"2024-03-07T08:49:03.56587Z\",\"eTag\":\"AaDS+bDXjNqKUA\"}],\"next\":\"Mg\"}"
+                }
+            }
+        }
+    ]
+}

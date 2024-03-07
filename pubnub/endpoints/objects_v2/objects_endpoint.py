@@ -47,6 +47,12 @@ class ObjectsEndpoint(Endpoint):
             if self._include_custom:
                 inclusions.append("custom")
 
+        if isinstance(self, IncludeStatusTypeEndpoint):
+            if self._include_status:
+                inclusions.append("status")
+            if self._include_type:
+                inclusions.append("type")
+
         if isinstance(self, UUIDIncludeEndpoint):
             if self._uuid_details_level:
                 if self._uuid_details_level == UUIDIncludeEndpoint.UUID:
@@ -100,7 +106,31 @@ class CustomAwareEndpoint:
 
     def custom(self, custom):
         self._custom = dict(custom)
+        self._include_custom = True
         return self
+
+
+class StatusTypeAwareEndpoint:
+    __metaclass__ = ABCMeta
+
+    def __init__(self):
+        self._status = None
+        self._type = None
+
+    def set_status(self, status: str):
+        self._status = status
+        return self
+
+    def set_type(self, type):
+        self._type = type
+        return self
+
+    def build_data(self, payload):
+        if self._status:
+            payload["status"] = self._status
+        if self._type:
+            payload["type"] = self._type
+        return payload
 
 
 class ChannelEndpoint:
@@ -178,6 +208,22 @@ class IncludeCustomEndpoint:
 
     def include_custom(self, include_custom):
         self._include_custom = bool(include_custom)
+        return self
+
+
+class IncludeStatusTypeEndpoint:
+    __metaclass__ = ABCMeta
+
+    def __init__(self):
+        self._include_status = True
+        self._include_type = True
+
+    def include_status(self, include_status):
+        self._include_status = bool(include_status)
+        return self
+
+    def include_type(self, include_type):
+        self._include_type = bool(include_type)
         return self
 
 

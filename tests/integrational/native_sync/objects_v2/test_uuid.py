@@ -9,7 +9,7 @@ from pubnub.models.consumer.objects_v2.uuid import PNSetUUIDMetadataResult, PNGe
     PNRemoveUUIDMetadataResult, PNGetAllUUIDMetadataResult
 from pubnub.pubnub import PubNub
 from pubnub.structures import Envelope
-from tests.helper import pnconf_copy
+from tests.helper import pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 
@@ -25,7 +25,7 @@ class TestObjectsV2UUID:
     }
 
     def test_set_uuid_endpoint_available(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
         set_uuid = pn.set_uuid_metadata()
         assert set_uuid is not None
@@ -33,16 +33,16 @@ class TestObjectsV2UUID:
         assert isinstance(set_uuid, Endpoint)
 
     def test_set_uuid_is_endpoint(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
         set_uuid = pn.set_uuid_metadata()
         assert isinstance(set_uuid, SetUuid)
         assert isinstance(set_uuid, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/uuid/set_uuid.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/uuid/set_uuid.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_set_uuid_happy_path(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
 
         set_uuid_result = pn.set_uuid_metadata() \
@@ -67,7 +67,7 @@ class TestObjectsV2UUID:
         assert data['custom'] == TestObjectsV2UUID._some_custom
 
     def test_get_uuid_endpoint_available(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
         get_uuid = pn.get_uuid_metadata()
         assert get_uuid is not None
@@ -75,16 +75,16 @@ class TestObjectsV2UUID:
         assert isinstance(get_uuid, Endpoint)
 
     def test_get_uuid_is_endpoint(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
         get_uuid = pn.get_uuid_metadata()
         assert isinstance(get_uuid, GetUuid)
         assert isinstance(get_uuid, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/uuid/get_uuid.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/uuid/get_uuid.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_get_uuid_happy_path(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
 
         get_uuid_result = pn.get_uuid_metadata() \
@@ -104,7 +104,7 @@ class TestObjectsV2UUID:
         assert data['custom'] == TestObjectsV2UUID._some_custom
 
     def test_remove_uuid_endpoint_available(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
         remove_uuid = pn.remove_uuid_metadata()
         assert remove_uuid is not None
@@ -112,16 +112,16 @@ class TestObjectsV2UUID:
         assert isinstance(remove_uuid, Endpoint)
 
     def test_remove_uuid_is_endpoint(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
         remove_uuid = pn.remove_uuid_metadata()
         assert isinstance(remove_uuid, RemoveUuid)
         assert isinstance(remove_uuid, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/uuid/remove_uuid.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/uuid/remove_uuid.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_remove_uuid_happy_path(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
 
         remove_uid_result = pn.remove_uuid_metadata() \
@@ -133,7 +133,7 @@ class TestObjectsV2UUID:
         assert isinstance(remove_uid_result.status, PNStatus)
 
     def test_get_all_uuid_endpoint_available(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
         get_all_uuid = pn.get_all_uuid_metadata()
         assert get_all_uuid is not None
@@ -141,16 +141,16 @@ class TestObjectsV2UUID:
         assert isinstance(get_all_uuid, Endpoint)
 
     def test_get_all_uuid_is_endpoint(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
         get_all_uuid = pn.get_all_uuid_metadata()
         assert isinstance(get_all_uuid, GetAllUuid)
         assert isinstance(get_all_uuid, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/uuid/get_all_uuid.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/uuid/get_all_uuid.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_get_all_uuid_happy_path(self):
-        config = pnconf_copy()
+        config = pnconf_env_copy()
         pn = PubNub(config)
 
         get_all_uuid_result = pn.get_all_uuid_metadata() \

@@ -1,0 +1,108 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=custom%2Cstatus%2Ctype",
+                "body": "{\"name\": \"Some name\", \"description\": \"Some description\", \"custom\": {\"key1\": \"val1\", \"key2\": \"val2\"}}",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "100"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Length": [
+                        "243"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 08:49:02 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":{\"id\":\"somechannelid\",\"name\":\"Some name\",\"description\":\"Some description\",\"type\":null,\"status\":null,\"custom\":{\"key1\":\"val1\",\"key2\":\"val2\"},\"updated\":\"2024-03-07T08:49:02.768895Z\",\"eTag\":\"02c6f5b485d41252a921200b102d2eba\"}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels?count=True&include=custom%2Cstatus%2Ctype&limit=10&sort=id%3Aasc%2Cupdated%3Adesc",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Length": [
+                        "682"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 08:49:02 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":[{\"id\":\"somechannel\",\"name\":\"some name\",\"description\":null,\"type\":null,\"status\":null,\"custom\":null,\"updated\":\"2024-03-07T08:46:53.26682Z\",\"eTag\":\"23e310250a16a047c79a0581d3721bb8\"},{\"id\":\"somechannelid\",\"name\":\"Some name\",\"description\":\"Some description\",\"type\":null,\"status\":null,\"custom\":{\"key1\":\"val1\",\"key2\":\"val2\"},\"updated\":\"2024-03-07T08:49:02.768895Z\",\"eTag\":\"02c6f5b485d41252a921200b102d2eba\"},{\"id\":\"somechannel_with_custom\",\"name\":\"some name with custom\",\"description\":null,\"type\":null,\"status\":null,\"custom\":{\"key3\":\"val1\",\"key4\":\"val2\"},\"updated\":\"2024-03-07T08:46:53.467344Z\",\"eTag\":\"0e480702d320e937f400f55aa25d798c\"}],\"totalCount\":3,\"next\":\"Mw\"}"
+                }
+            }
+        }
+    ]
+}

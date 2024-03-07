@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids?include=custom%2Cuuid.custom",
+                "body": "{\"set\": [{\"uuid\": {\"id\": \"someuuid\"}}], \"delete\": [{\"uuid\": {\"id\": \"someuuid_with_custom\"}}]}",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "93"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Content-Length": [
+                        "1973"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 08:49:05 GMT"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":[{\"uuid\":{\"id\":\"someuuid\",\"name\":\"some name\",\"externalId\":null,\"profileUrl\":null,\"email\":null,\"custom\":null,\"updated\":\"2024-03-07T08:49:03.160451Z\",\"eTag\":\"4e310df3a9c5d0061a93ff0c572e9932\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:05.020764Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-0\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.188608Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-1\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.158265Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-10\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.17135Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-11\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.178519Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-12\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.217123Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-13\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.184258Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-14\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.241892Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-2\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.194158Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-3\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.22214Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-4\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.199295Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-5\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.228786Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-6\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.235126Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-7\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.207036Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-8\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.212662Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-9\"},\"custom\":null,\"updated\":\"2024-03-07T08:49:04.164916Z\",\"eTag\":\"AZO/t53al7m8fw\"}],\"next\":\"MTY\"}"
+                }
+            }
+        }
+    ]
+}

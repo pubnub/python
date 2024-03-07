@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/metadata_channel?include=custom%2Cstatus%2Ctype",
+                "body": "{\"name\": \"name\", \"description\": \"This is a description\", \"custom\": {\"foo\": \"bar\"}, \"status\": \"Testing\", \"type\": \"test\"}",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "119"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Wed, 06 Mar 2024 20:43:37 GMT"
+                    ],
+                    "Content-Length": [
+                        "237"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":{\"id\":\"metadata_channel\",\"name\":\"name\",\"description\":\"This is a description\",\"type\":\"test\",\"status\":\"Testing\",\"custom\":{\"foo\":\"bar\"},\"updated\":\"2024-03-06T20:43:37.715484Z\",\"eTag\":\"d392f5ad1048cc8980f549c104b9b958\"}}"
+                }
+            }
+        }
+    ]
+}

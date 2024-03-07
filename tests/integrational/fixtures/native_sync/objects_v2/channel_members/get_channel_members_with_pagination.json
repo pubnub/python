@@ -1,0 +1,158 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids",
+                "body": "{\"set\": [{\"uuid\": {\"id\": \"test-fix-118-0\"}}, {\"uuid\": {\"id\": \"test-fix-118-1\"}}, {\"uuid\": {\"id\": \"test-fix-118-2\"}}, {\"uuid\": {\"id\": \"test-fix-118-3\"}}, {\"uuid\": {\"id\": \"test-fix-118-4\"}}, {\"uuid\": {\"id\": \"test-fix-118-5\"}}, {\"uuid\": {\"id\": \"test-fix-118-6\"}}, {\"uuid\": {\"id\": \"test-fix-118-7\"}}, {\"uuid\": {\"id\": \"test-fix-118-8\"}}, {\"uuid\": {\"id\": \"test-fix-118-9\"}}, {\"uuid\": {\"id\": \"test-fix-118-10\"}}, {\"uuid\": {\"id\": \"test-fix-118-11\"}}, {\"uuid\": {\"id\": \"test-fix-118-12\"}}, {\"uuid\": {\"id\": \"test-fix-118-13\"}}, {\"uuid\": {\"id\": \"test-fix-118-14\"}}], \"delete\": []}",
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Content-Length": [
+                        "568"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 10:45:17 GMT"
+                    ],
+                    "Content-Length": [
+                        "1494"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":[{\"uuid\":{\"id\":\"test-fix-118-0\"},\"updated\":\"2024-03-07T08:49:04.188608Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-1\"},\"updated\":\"2024-03-07T08:49:04.158265Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-10\"},\"updated\":\"2024-03-07T08:49:04.17135Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-11\"},\"updated\":\"2024-03-07T08:49:04.178519Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-12\"},\"updated\":\"2024-03-07T08:49:04.217123Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-13\"},\"updated\":\"2024-03-07T08:49:04.184258Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-14\"},\"updated\":\"2024-03-07T08:49:04.241892Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-2\"},\"updated\":\"2024-03-07T08:49:04.194158Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-3\"},\"updated\":\"2024-03-07T08:49:04.22214Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-4\"},\"updated\":\"2024-03-07T08:49:04.199295Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-5\"},\"updated\":\"2024-03-07T08:49:04.228786Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-6\"},\"updated\":\"2024-03-07T08:49:04.235126Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-7\"},\"updated\":\"2024-03-07T08:49:04.207036Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-8\"},\"updated\":\"2024-03-07T08:49:04.212662Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-9\"},\"updated\":\"2024-03-07T08:49:04.164916Z\",\"eTag\":\"AZO/t53al7m8fw\"}],\"next\":\"MTU\"}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids?limit=10",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 10:45:18 GMT"
+                    ],
+                    "Content-Length": [
+                        "1009"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":[{\"uuid\":{\"id\":\"test-fix-118-0\"},\"updated\":\"2024-03-07T08:49:04.188608Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-1\"},\"updated\":\"2024-03-07T08:49:04.158265Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-10\"},\"updated\":\"2024-03-07T08:49:04.17135Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-11\"},\"updated\":\"2024-03-07T08:49:04.178519Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-12\"},\"updated\":\"2024-03-07T08:49:04.217123Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-13\"},\"updated\":\"2024-03-07T08:49:04.184258Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-14\"},\"updated\":\"2024-03-07T08:49:04.241892Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-2\"},\"updated\":\"2024-03-07T08:49:04.194158Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-3\"},\"updated\":\"2024-03-07T08:49:04.22214Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-4\"},\"updated\":\"2024-03-07T08:49:04.199295Z\",\"eTag\":\"AZO/t53al7m8fw\"}],\"next\":\"MTA\"}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids?limit=10&start=MTA",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python/7.4.0"
+                    ],
+                    "Accept-Encoding": [
+                        "gzip, deflate"
+                    ],
+                    "Accept": [
+                        "*/*"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Date": [
+                        "Thu, 07 Mar 2024 10:45:20 GMT"
+                    ],
+                    "Content-Length": [
+                        "534"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":[{\"uuid\":{\"id\":\"test-fix-118-5\"},\"updated\":\"2024-03-07T08:49:04.228786Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-6\"},\"updated\":\"2024-03-07T08:49:04.235126Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-7\"},\"updated\":\"2024-03-07T08:49:04.207036Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-8\"},\"updated\":\"2024-03-07T08:49:04.212662Z\",\"eTag\":\"AZO/t53al7m8fw\"},{\"uuid\":{\"id\":\"test-fix-118-9\"},\"updated\":\"2024-03-07T08:49:04.164916Z\",\"eTag\":\"AZO/t53al7m8fw\"}],\"next\":\"MTU\",\"prev\":\"MTA\"}"
+                }
+            }
+        }
+    ]
+}

@@ -9,12 +9,12 @@ from pubnub.models.consumer.objects_v2.channel import PNSetChannelMetadataResult
 from pubnub.models.consumer.objects_v2.sort import PNSortKey, PNSortKeyValue
 from pubnub.pubnub import PubNub
 from pubnub.structures import Envelope
-from tests.helper import pnconf_copy
+from tests.helper import pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 
 def _pubnub():
-    config = pnconf_copy()
+    config = pnconf_env_copy()
     return PubNub(config)
 
 
@@ -40,8 +40,8 @@ class TestObjectsV2Channel:
         assert isinstance(set_channel, SetChannel)
         assert isinstance(set_channel, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/channel/set_channel.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/channel/set_channel.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_set_channel_happy_path(self):
         pn = _pubnub()
 
@@ -76,8 +76,8 @@ class TestObjectsV2Channel:
         assert isinstance(get_channel, GetChannel)
         assert isinstance(get_channel, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/channel/get_channel.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/channel/get_channel.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_get_channel_happy_path(self):
         pn = _pubnub()
 
@@ -109,8 +109,8 @@ class TestObjectsV2Channel:
         assert isinstance(remove_channel, RemoveChannel)
         assert isinstance(remove_channel, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/channel/remove_channel.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/channel/remove_channel.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_remove_channel_happy_path(self):
         pn = _pubnub()
 
@@ -136,8 +136,8 @@ class TestObjectsV2Channel:
         assert isinstance(get_all_channel, GetAllChannels)
         assert isinstance(get_all_channel, Endpoint)
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/channel/get_all_channel.yaml',
-                         filter_query_parameters=['uuid', 'pnsdk'])
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/channel/get_all_channel.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
     def test_get_all_channel_happy_path(self):
         pn = _pubnub()
 

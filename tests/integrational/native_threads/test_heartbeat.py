@@ -69,8 +69,9 @@ class TestPubNubHeartbeat(unittest.TestCase):
         callback_messages.wait_for_disconnect()
 
         # - disconnect from :ch-pnpres
-        pubnub_listener.unsubscribe().channels(ch).execute()
+        pubnub_listener.unsubscribe_all()
         callback_presence.wait_for_disconnect()
 
         pubnub.stop()
         pubnub_listener.stop()
+        time.sleep(1)

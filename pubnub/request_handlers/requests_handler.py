@@ -27,7 +27,7 @@ logger = logging.getLogger("pubnub")
 
 class RequestsRequestHandler(BaseRequestHandler):
     """ PubNub Python SDK Native requests handler based on `requests` HTTP library. """
-    ENDPOINT_THREAD_COUNTER = 0
+    ENDPOINT_THREAD_COUNTER: int = 0
 
     def __init__(self, pubnub):
         self.session = Session()
@@ -90,12 +90,13 @@ class RequestsRequestHandler(BaseRequestHandler):
     ):
         client = AsyncHTTPClient(callback_to_invoke_in_another_thread)
 
+        RequestsRequestHandler.ENDPOINT_THREAD_COUNTER += 1
+
         thread = threading.Thread(
             target=client.run,
-            name="Thread-%s-%d" % (operation_name, ++RequestsRequestHandler.ENDPOINT_THREAD_COUNTER)
-        )
-        thread.daemon = self.pubnub.config.daemon
-        thread.start()
+            name=f"Thread-{operation_name}-{RequestsRequestHandler.ENDPOINT_THREAD_COUNTER}",
+            daemon=self.pubnub.config.daemon
+        ).start()
 
         call_obj.thread = thread
         call_obj.cancellation_event = cancellation_event

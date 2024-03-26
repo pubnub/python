@@ -61,6 +61,8 @@ class PubNub(PubNubCore):
 
         if self.config.log_verbosity:
             print(endpoint_call_options)
+            tt = endpoint_call_options.params["tt"] if "tt" in endpoint_call_options.params else 0
+            print(f'\033[48;5;236m{endpoint_name=}, {endpoint_call_options.path}, TT={tt}\033[0m\n')
 
         return self._request_handler.async_request(
             endpoint_name,
@@ -162,6 +164,7 @@ class NativeSubscriptionManager(SubscriptionManager):
         self._subscribe_call = None
         self._heartbeat_periodic_callback = None
         self._reconnection_manager = NativeReconnectionManager(pubnub_instance)
+        self.events = []
 
         super(NativeSubscriptionManager, self).__init__(pubnub_instance)
         self._start_worker()
@@ -263,13 +266,13 @@ class NativeSubscriptionManager(SubscriptionManager):
         )
         self._consumer_thread = threading.Thread(
             target=consumer.run,
-            name="SubscribeMessageWorker"
-        )
-        self._consumer_thread.daemon = True
-        self._consumer_thread.start()
+            name="SubscribeMessageWorker",
+            daemon=True).start()
 
     def _start_subscribe_loop(self):
         self._stop_subscribe_loop()
+        event = threading.Event()
+        self.events.append(event)
 
         combined_channels = self._subscription_state.prepare_channel_list(True)
         combined_groups = self._subscription_state.prepare_channel_group_list(True)
@@ -308,12 +311,16 @@ class NativeSubscriptionManager(SubscriptionManager):
                 .channels(combined_channels).channel_groups(combined_groups) \
                 .timetoken(self._timetoken).region(self._region) \
                 .filter_expression(self._pubnub.config.filter_expression) \
+                .cancellation_event(event) \
                 .pn_async(callback)
         except Exception as e:
             logger.error("Subscribe request failed: %s" % e)
 
     def _stop_subscribe_loop(self):
         sc = self._subscribe_call
+        for event in self.events:
+            event.set()
+            self.events.remove(event)
 
         if sc is not None and not sc.is_executed and not sc.is_canceled:
             sc.cancel()

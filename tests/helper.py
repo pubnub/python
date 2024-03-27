@@ -155,6 +155,13 @@ pnconf_pam_env.enable_subscribe = False
 pnconf_pam_env.uuid = uuid_mock
 
 
+def copy_and_update(config, **kwargs):
+    config_copy = copy(config)
+    for key in kwargs:
+        setattr(config_copy, key, kwargs[key])
+    return config_copy
+
+
 def hardcoded_iv_config_copy():
     return copy(hardcoded_iv_config)
 
@@ -218,16 +225,16 @@ def pnconf_demo_copy():
     return copy(pnconf_demo)
 
 
-def pnconf_env_copy():
-    return copy(pnconf_env)
+def pnconf_env_copy(**kwargs):
+    return copy_and_update(pnconf_env, **kwargs)
 
 
-def pnconf_enc_env_copy():
-    return copy(pnconf_enc_env)
+def pnconf_enc_env_copy(**kwargs):
+    return copy_and_update(pnconf_enc_env, **kwargs)
 
 
-def pnconf_pam_env_copy():
-    return copy(pnconf_pam_env)
+def pnconf_pam_env_copy(**kwargs):
+    return copy_and_update(pnconf_pam_env, **kwargs)
 
 
 sdk_name = "Python-UnitTest"

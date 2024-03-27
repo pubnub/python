@@ -9,7 +9,7 @@ from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult
 from pubnub.models.consumer.pubsub import PNPublishResult, PNMessageResult
 from pubnub.pubnub import PubNub, SubscribeListener, NonSubscribeListener
 from tests import helper
-from tests.helper import pnconf_enc_env_copy, pnconf_env_copy, pnconf_sub_copy
+from tests.helper import pnconf_enc_env_copy, pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 
@@ -17,12 +17,11 @@ pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
 class TestPubNubSubscription(unittest.TestCase):
-
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/subscribe/subscribe_unsubscribe.yaml',
-                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/subscribe/subscribe_unsubscribe.json',
+                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'], serializer='pn_json',
                          allow_playback_repeats=True)
     def test_subscribe_unsubscribe(self):
-        pubnub = PubNub(pnconf_sub_copy())
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
         ch = "test-subscribe-sub-unsub"
 
         try:
@@ -51,8 +50,8 @@ class TestPubNubSubscription(unittest.TestCase):
             pubnub.stop()
 
     def test_subscribe_pub_unsubscribe(self):
-        ch = helper.gen_channel("test-subscribe-sub-pub-unsub")
-        pubnub = PubNub(pnconf_sub_copy())
+        ch = "test-subscribe-pub-unsubscribe"
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
         subscribe_listener = SubscribeListener()
         publish_operation = NonSubscribeListener()
         message = "hey"
@@ -88,9 +87,8 @@ class TestPubNubSubscription(unittest.TestCase):
 
     def test_join_leave(self):
         ch = helper.gen_channel("test-subscribe-join-leave")
-
-        pubnub = PubNub(pnconf_sub_copy())
-        pubnub_listener = PubNub(pnconf_sub_copy())
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub_listener = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
         callback_messages = SubscribeListener()
         callback_presence = SubscribeListener()
 
@@ -133,14 +131,14 @@ class TestPubNubSubscription(unittest.TestCase):
             pubnub.stop()
             pubnub_listener.stop()
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/subscribe/cg_subscribe_unsubscribe.yaml',
-                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/subscribe/cg_subscribe_unsubscribe.json',
+                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'], serializer='pn_json',
                          allow_playback_repeats=True)
     def test_cg_subscribe_unsubscribe(self):
         ch = "test-subscribe-unsubscribe-channel"
         gr = "test-subscribe-unsubscribe-group"
 
-        pubnub = PubNub(pnconf_sub_copy())
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
         callback_messages = SubscribeListener()
         cg_operation = NonSubscribeListener()
 
@@ -168,15 +166,15 @@ class TestPubNubSubscription(unittest.TestCase):
 
         pubnub.stop()
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/subscribe/subscribe_cg_publish_unsubscribe.yaml',
-                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/subscribe/subscribe_cg_publish_unsubscribe.json',
+                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'], serializer='pn_json',
                          allow_playback_repeats=True)
     def test_subscribe_cg_publish_unsubscribe(self):
         ch = "test-subscribe-unsubscribe-channel"
         gr = "test-subscribe-unsubscribe-group"
         message = "hey"
 
-        pubnub = PubNub(pnconf_sub_copy())
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
         callback_messages = SubscribeListener()
         non_subscribe_listener = NonSubscribeListener()
 
@@ -212,8 +210,8 @@ class TestPubNubSubscription(unittest.TestCase):
         ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
         gr = helper.gen_channel("test-subscribe-unsubscribe-group")
 
-        pubnub = PubNub(pnconf_sub_copy())
-        pubnub_listener = PubNub(pnconf_sub_copy())
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub_listener = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
         non_subscribe_listener = NonSubscribeListener()
 
         pubnub.add_channel_to_channel_group() \
@@ -237,8 +235,8 @@ class TestPubNubSubscription(unittest.TestCase):
         assert prs_envelope.channel == ch
         assert prs_envelope.subscription == gr
 
-        pubnub_listener.unsubscribe().channel_groups(gr).execute()
         prs_envelope = callback_presence.wait_for_presence_on(ch)
+        pubnub_listener.unsubscribe().channel_groups(gr).execute()
 
         assert prs_envelope.event == 'leave'
         assert prs_envelope.uuid == pubnub.uuid
@@ -256,15 +254,10 @@ class TestPubNubSubscription(unittest.TestCase):
         pubnub_listener.stop()
 
     def test_subscribe_pub_unencrypted_unsubscribe(self):
-        ch = helper.gen_channel("test-subscribe-sub-pub-unsub")
+        ch = helper.gen_channel("test-subscribe-pub-unencrypted-unsubscribe")
 
-        config_plain = pnconf_env_copy()
-        config_plain.enable_subscribe = True
-        pubnub_plain = PubNub(config_plain)
-
-        config = pnconf_enc_env_copy()
-        config.enable_subscribe = True
-        pubnub = PubNub(config)
+        pubnub_plain = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub = PubNub(pnconf_enc_env_copy(enable_subscribe=True, daemon=True))
 
         subscribe_listener = SubscribeListener()
         publish_operation = NonSubscribeListener()

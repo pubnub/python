@@ -36,7 +36,7 @@ class TestFileUploadThreads(unittest.TestCase):
         "tests/integrational/fixtures/native_threads/file_upload/send_file.yaml",
         filter_query_parameters=('pnsdk',)
     )
-    def test_send_file(self):
+    def send_file(self):
         fd = open(self.file_for_upload.strpath, "rb")
         pubnub.send_file().\
             channel(CHANNEL).\
@@ -72,7 +72,7 @@ class TestFileUploadThreads(unittest.TestCase):
         filter_query_parameters=('pnsdk',)
     )
     def test_send_and_download_file(self):
-        result = self.test_send_file()
+        result = self.send_file()
 
         pubnub.download_file().\
             channel(CHANNEL).\
@@ -89,7 +89,7 @@ class TestFileUploadThreads(unittest.TestCase):
         filter_query_parameters=('pnsdk',)
     )
     def test_delete_file(self):
-        result = self.test_send_file()
+        result = self.send_file()
 
         pubnub.delete_file().\
             channel(CHANNEL).\
@@ -105,7 +105,7 @@ class TestFileUploadThreads(unittest.TestCase):
         filter_query_parameters=('pnsdk',)
     )
     def test_get_file_url(self):
-        result = self.test_send_file()
+        result = self.send_file()
 
         pubnub.get_file_url().\
             channel(CHANNEL).\

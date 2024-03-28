@@ -21,6 +21,8 @@ def get_sleeper(cassette_name):
     def decorate(f):
         @wraps(f)
         async def call(*args, event_loop=None):
+            if not event_loop:
+                event_loop = asyncio.get_event_loop()
             await f(*args, sleeper=(fake_sleeper if (len(cs) > 0) else asyncio.sleep), event_loop=event_loop)
 
         return call

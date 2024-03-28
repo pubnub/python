@@ -20,7 +20,8 @@ from pubnub.errors import PNERR_MISUSE_OF_USER_AND_SPACE, PNERR_USER_SPACE_PAIRS
 from pubnub.exceptions import PubNubException
 from pubnub.features import feature_flag
 from pubnub.crypto import PubNubCryptoModule
-from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup, PubNubChannelMetadata, PubNubUserMetadata
+from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup, PubNubChannelMetadata, PubNubUserMetadata, \
+    SubscriptionSet
 
 from abc import ABCMeta, abstractmethod
 
@@ -95,6 +96,8 @@ class PubNubCore:
     __metaclass__ = ABCMeta
     __crypto = None
 
+    _subscription_set: SubscriptionSet
+
     def __init__(self, config):
         self.config = config
         self.config.validate()
@@ -107,6 +110,7 @@ class PubNubCore:
         self._telemetry_manager = TelemetryManager()
         self._base_path_manager = BasePathManager(config)
         self._token_manager = TokenManager()
+        self._subscription_set = SubscriptionSet(self)
 
     @property
     def base_origin(self):
@@ -642,14 +646,14 @@ class PubNubCore:
             return memberships.sync()
         return memberships
 
-    def channel(self, channel_name) -> PubNubChannel:
-        return PubNubChannel(self, channel_name)
+    def channel(self, channel_names) -> PubNubChannel:
+        return PubNubChannel(self, channel_names)
 
-    def channel_group(self, channel_group_name) -> PubNubChannelGroup:
-        return PubNubChannelGroup(self, channel_group_name)
+    def channel_group(self, channel_group_names) -> PubNubChannelGroup:
+        return PubNubChannelGroup(self, channel_group_names)
 
-    def channel_metadata(self, channel_name) -> PubNubChannelMetadata:
-        return PubNubChannelMetadata(self, channel_name)
+    def channel_metadata(self, channel_names) -> PubNubChannelMetadata:
+        return PubNubChannelMetadata(self, channel_names)
 
-    def user_metadata(self, user_id) -> PubNubUserMetadata:
-        return PubNubUserMetadata(self, user_id)
+    def user_metadata(self, user_ids) -> PubNubUserMetadata:
+        return PubNubUserMetadata(self, user_ids)

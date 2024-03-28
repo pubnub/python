@@ -179,7 +179,7 @@ class PubNubAsyncio(PubNubCore):
             url = utils.build_url(scheme="", origin="", path=options.path, params=options.query_string)
 
         url = URL(url, encoded=True)
-
+        print(f'\033[48;5;236mEndpoint Subscribe async, {url}\033[0m\n')
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 
         if options.request_headers:
@@ -566,6 +566,7 @@ class EventEngineSubscriptionManager(SubscriptionManager):
         self.event_engine.get_dispatcher().set_pn(pubnub_instance)
         self.presence_engine.get_dispatcher().set_pn(pubnub_instance)
         self.loop = asyncio.new_event_loop()
+        self._heartbeat_periodic_callback = None
         pubnub_instance.state_container = self.state_container
         super().__init__(pubnub_instance)
 

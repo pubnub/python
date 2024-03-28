@@ -1,3 +1,9 @@
+## v7.4.3
+March 28 2024
+
+#### Fixed
+- Fixes in the thread based subscription managers causing to duplicate subscription calls.
+
 ## v7.4.2
 March 07 2024
 

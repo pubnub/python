@@ -58,11 +58,11 @@ class Effect:
         return event
 
     def calculate_reconnection_delay(self, attempts):
-        if self.reconnection_policy is PNReconnectionPolicy.LINEAR:
+        if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
+            delay = int(math.pow(2, attempts - 5 * math.floor((attempts - 1) / 5)) - 1)
+        else:
             delay = self.interval
 
-        elif self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            delay = int(math.pow(2, attempts - 5 * math.floor((attempts - 1) / 5)) - 1)
         return delay
 
 

@@ -5,22 +5,21 @@ import pytest
 import pubnub as pn
 from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
 from tests import helper
-from tests.helper import pnconf_sub_copy
+from tests.helper import pnconf_env_copy
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
-
-
-messenger_config = pnconf_sub_copy()
-messenger_config.set_presence_timeout(8)
-messenger_config.uuid = helper.gen_channel("messenger")
-
-listener_config = pnconf_sub_copy()
-listener_config.uuid = helper.gen_channel("listener")
 
 
 @pytest.mark.asyncio
 async def test_timeout_event_on_broken_heartbeat(event_loop):
     ch = helper.gen_channel("heartbeat-test")
+
+    messenger_config = pnconf_env_copy(uuid=helper.gen_channel('messenger'), enable_subscribe=True,
+                                       suppress_leave_events=True)
+    messenger_config.set_presence_timeout(8)
+
+    listener_config = pnconf_env_copy(uuid=helper.gen_channel('messenger'), enable_subscribe=True,
+                                      suppress_leave_events=True)
 
     pubnub = PubNubAsyncio(messenger_config, custom_event_loop=event_loop)
     pubnub_listener = PubNubAsyncio(listener_config, custom_event_loop=event_loop)

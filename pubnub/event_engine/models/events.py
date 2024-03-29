@@ -116,7 +116,8 @@ class HeartbeatReconnectEvent(PNEvent):
 
 
 class HeartbeatLeftAllEvent(PNEvent):
-    pass
+    def __init__(self, suppress_leave: bool = False) -> None:
+        self.suppress_leave = suppress_leave
 
 
 class HeartbeatLeftEvent(PNChannelGroupsEvent):

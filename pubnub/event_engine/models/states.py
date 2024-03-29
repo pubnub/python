@@ -711,13 +711,12 @@ class HeartbeatFailedState(PNState):
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
-        self._context.channels = []
-        self._context.groups = []
-
         invocation = None
         if not event.suppress_leave:
-            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
-                                                              groups=event.groups)
+            invocation = invocations.HeartbeatLeaveInvocation(channels=self._context.channels,
+                                                              groups=self._context.groups)
+        self._context.channels = []
+        self._context.groups = []
 
         return PNTransition(
             state=HeartbeatInactiveState,
@@ -769,13 +768,12 @@ class HeartbeatingState(PNState):
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
-        self._context.channels = []
-        self._context.groups = []
-
         invocation = None
         if not event.suppress_leave:
-            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
-                                                              groups=event.groups)
+            invocation = invocations.HeartbeatLeaveInvocation(channels=self._context.channels,
+                                                              groups=self._context.groups)
+        self._context.channels = []
+        self._context.groups = []
 
         return PNTransition(
             state=HeartbeatInactiveState,
@@ -857,13 +855,12 @@ class HeartbeatCooldownState(PNState):
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
-        self._context.channels = []
-        self._context.groups = []
-
         invocation = None
         if not event.suppress_leave:
-            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
-                                                              groups=event.groups)
+            invocation = invocations.HeartbeatLeaveInvocation(channels=self._context.channels,
+                                                              groups=self._context.groups)
+        self._context.channels = []
+        self._context.groups = []
 
         return PNTransition(
             state=HeartbeatInactiveState,
@@ -1005,13 +1002,12 @@ class HeartbeatReconnectingState(PNState):
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
-        self._context.channels = []
-        self._context.groups = []
-
         invocation = None
         if not event.suppress_leave:
-            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
-                                                              groups=event.groups)
+            invocation = invocations.HeartbeatLeaveInvocation(channels=self._context.channels,
+                                                              groups=self._context.groups)
+        self._context.channels = []
+        self._context.groups = []
 
         return PNTransition(
             state=HeartbeatInactiveState,

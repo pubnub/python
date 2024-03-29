@@ -626,6 +626,17 @@ class EventEngineSubscriptionManager(SubscriptionManager):
     def get_custom_params(self):
         return {'ee': 1}
 
+    def get_subscribed_channels(self):
+        return self.event_engine.get_context().channels
+
+    def get_subscribed_channel_groups(self):
+        return self.event_engine.get_context().groups
+
+    def _stop_heartbeat_timer(self):
+        self.presence_engine.trigger(events.HeartbeatLeftAllEvent(
+            suppress_leave=self._pubnub.config.suppress_leave_events))
+        self.presence_engine.stop()
+
 
 class AsyncioSubscribeMessageWorker(SubscribeMessageWorker):
     async def run(self):

@@ -21,7 +21,7 @@ class TestPubNubSubscription(unittest.TestCase):
                          filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'], serializer='pn_json',
                          allow_playback_repeats=True)
     def test_subscribe_unsubscribe(self):
-        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, suppress_leave_events=True))
         ch = "test-subscribe-sub-unsub"
 
         try:

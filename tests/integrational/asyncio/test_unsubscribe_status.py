@@ -26,9 +26,12 @@ class AccessDeniedListener(SubscribeCallback):
         pass
 
     def status(self, pubnub, status):
-        if status.operation == PNOperationType.PNUnsubscribeOperation:
-            if status.category == PNStatusCategory.PNAccessDeniedCategory:
-                self.access_denied_event.set()
+        disconnected = PNStatusCategory.PNDisconnectedCategory
+        denied = status.operation == PNOperationType.PNUnsubscribeOperation and \
+            status.category == PNStatusCategory.PNAccessDeniedCategory
+
+        if disconnected or denied:
+            self.access_denied_event.set()
 
 
 class ReconnectedListener(SubscribeCallback):
@@ -42,9 +45,12 @@ class ReconnectedListener(SubscribeCallback):
         pass
 
     def status(self, pubnub, status):
-        if status.operation == PNOperationType.PNUnsubscribeOperation:
-            if status.category == PNStatusCategory.PNReconnectedCategory:
-                self.reconnected_event.set()
+        disconnected = PNStatusCategory.PNDisconnectedCategory
+        denied = status.operation == PNOperationType.PNUnsubscribeOperation and \
+            status.category == PNStatusCategory.PNAccessDeniedCategory
+
+        if disconnected or denied:
+            self.access_denied_event.set()
 
 
 # @pn_vcr.use_cassette(

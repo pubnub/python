@@ -249,7 +249,7 @@ class HandshakeReconnectingState(PNState):
         self._context.reason = event.reason
         status_invocation = None
 
-        if event.reason.status:
+        if isinstance(event, Exception) and 'status' in event.reason:
             status_invocation = invocations.EmitStatusInvocation(status=event.reason.status.category,
                                                                  operation=PNOperationType.PNUnsubscribeOperation)
         else:

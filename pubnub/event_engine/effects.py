@@ -88,9 +88,9 @@ class HandshakeEffect(Effect):
         request.timetoken(0)
         response = await request.future()
 
-        if isinstance(response, PubNubException):
+        if isinstance(response, Exception):
             self.logger.warning(f'Handshake failed: {str(response)}')
-            handshake_failure = events.HandshakeFailureEvent(str(response), 1, timetoken=timetoken)
+            handshake_failure = events.HandshakeFailureEvent(response, 1, timetoken=timetoken)
             self.event_engine.trigger(handshake_failure)
         elif response.status.error:
             self.logger.warning(f'Handshake failed: {response.status.error_data.__dict__}')

@@ -247,11 +247,18 @@ class HandshakeReconnectingState(PNState):
         self._context.update(context)
         self._context.attempt = event.attempt
         self._context.reason = event.reason
+        status_invocation = None
+
+        if event.reason.status:
+            status_invocation = invocations.EmitStatusInvocation(status=event.reason.status.category,
+                                                                 operation=PNOperationType.PNUnsubscribeOperation)
+        else:
+            status_invocation = invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory)
 
         return PNTransition(
             state=HandshakeFailedState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory)
+            invocation=status_invocation
         )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:

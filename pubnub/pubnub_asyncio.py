@@ -591,7 +591,7 @@ class EventEngineSubscriptionManager(SubscriptionManager):
                 with_presence=subscribe_operation.presence_enabled
             )
         self.event_engine.trigger(subscription_event)
-        if self._pubnub.config._heartbeat_interval > 0:
+        if self._pubnub.config.enable_presence_heartbeat and self._pubnub.config._heartbeat_interval > 0:
             self.presence_engine.trigger(events.HeartbeatJoinedEvent(
                 channels=subscribe_operation.channels,
                 groups=subscribe_operation.channel_groups
@@ -609,19 +609,27 @@ class EventEngineSubscriptionManager(SubscriptionManager):
             self.event_engine.get_context().groups,
             self.event_engine.get_context().with_presence)
 
-        self.event_engine.trigger(events.SubscriptionChangedEvent(channels=channels, groups=groups))
+        if channels or groups:
+            self.event_engine.trigger(events.SubscriptionChangedEvent(channels=channels, groups=groups))
+        else:
+            self.event_engine.trigger(events.UnsubscribeAllEvent())
 
-        self.presence_engine.trigger(event=events.HeartbeatLeftEvent(
-            channels=unsubscribe_operation.channels,
-            groups=unsubscribe_operation.channel_groups,
-            suppress_leave=self._pubnub.config.suppress_leave_events
-        ))
+        if self._pubnub.config.enable_presence_heartbeat and self._pubnub.config._heartbeat_interval > 0:
+            self.presence_engine.trigger(event=events.HeartbeatLeftEvent(
+                channels=unsubscribe_operation.channels,
+                groups=unsubscribe_operation.channel_groups,
+                suppress_leave=self._pubnub.config.suppress_leave_events
+            ))
 
     def adapt_state_builder(self, state_operation):
         self.state_container.register_state(state_operation.state,
-                                            state_operation.channels,
-                                            state_operation.channel_groups)
+                                            state_operation.channels)
         return super().adapt_state_builder(state_operation)
+
+    def unsubscribe_all(self):
+        self.adapt_unsubscribe_builder(UnsubscribeOperation(
+            channels=self.get_subscribed_channels(),
+            channel_groups=self.get_subscribed_channel_groups()))
 
     def get_custom_params(self):
         return {'ee': 1}
@@ -734,6 +742,7 @@ class SubscribeListener(SubscribeCallback):
         self.error_queue = Queue()
 
     def status(self, pubnub, status):
+        # DEBUG print(f"\033[92m\n\nstatus:\n{status.__dict__}\n\n\033[0m")
         if utils.is_subscribed_event(status) and not self.connected_event.is_set():
             self.connected_event.set()
         elif utils.is_unsubscribed_event(status) and not self.disconnected_event.is_set():

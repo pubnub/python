@@ -102,6 +102,10 @@ class ReconnectEvent(PNEvent):
     pass
 
 
+class UnsubscribeAllEvent(PNEvent):
+    pass
+
+
 """
     Presence Events
 """

@@ -292,7 +292,7 @@ class HeartbeatEffect(Effect):
             self.logger.warning(f'Heartbeat failed: {str(response)}')
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
                                                                    reason=response.status.error_data, attempt=1))
-        elif response.status.error:
+        elif response.status and response.status.error:
             self.logger.warning(f'Heartbeat failed: {response.status.error_data.__dict__}')
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
                                                                    reason=response.status.error_data, attempt=1))
@@ -427,5 +427,6 @@ class EmitEffect:
     def emit_status(self, invocation: invocations.EmitStatusInvocation):
         pn_status = PNStatus()
         pn_status.category = invocation.status
+        pn_status.operation = invocation.operation
         pn_status.error = False
         self.pubnub._subscription_manager._listener_manager.announce_status(pn_status)

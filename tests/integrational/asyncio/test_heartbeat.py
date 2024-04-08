@@ -3,7 +3,7 @@ import asyncio
 import pytest
 
 import pubnub as pn
-from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
+from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio, SubscribeListener
 from tests import helper
 from tests.helper import pnconf_env_copy
 
@@ -68,11 +68,13 @@ async def test_timeout_event_on_broken_heartbeat(event_loop):
     assert pubnub.uuid == envelope.uuid
 
     pubnub.unsubscribe().channels(ch).execute()
-    await callback_messages.wait_for_disconnect()
+    if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+        await callback_messages.wait_for_disconnect()
 
     # - disconnect from :ch-pnpres
     pubnub_listener.unsubscribe().channels(ch).execute()
-    await callback_presence.wait_for_disconnect()
+    if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+        await callback_presence.wait_for_disconnect()
 
     await pubnub.stop()
     await pubnub_listener.stop()

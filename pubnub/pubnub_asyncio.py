@@ -742,7 +742,6 @@ class SubscribeListener(SubscribeCallback):
         self.error_queue = Queue()
 
     def status(self, pubnub, status):
-        # DEBUG print(f"\033[92m\n\nstatus:\n{status.__dict__}\n\n\033[0m")
         if utils.is_subscribed_event(status) and not self.connected_event.is_set():
             self.connected_event.set()
         elif utils.is_unsubscribed_event(status) and not self.disconnected_event.is_set():

@@ -3,7 +3,7 @@ import pytest
 
 from pubnub.models.consumer.presence import PNHereNowResult
 from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio
-from tests.helper import pnconf_demo_copy, pnconf_env_copy
+from tests.helper import pnconf_demo_copy, pnconf_sub_copy
 from tests.integrational.vcr_asyncio_sleeper import VCR599Listener
 # from tests.integrational.vcr_helper import pn_vcr
 
@@ -14,7 +14,10 @@ from tests.integrational.vcr_asyncio_sleeper import VCR599Listener
 # )
 @pytest.mark.asyncio
 async def test_single_channel():
-    pubnub = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid='test-here-now-asyncio-uuid1'))
+    config = pnconf_sub_copy()
+    config.uuuid = 'test-here-now-asyncio-uuid1'
+    pubnub = PubNubAsyncio(config)
+
     ch = "test-here-now-asyncio-ch"
 
     callback = VCR599Listener(1)
@@ -61,7 +64,9 @@ async def test_single_channel():
 # )
 @pytest.mark.asyncio
 async def test_multiple_channels():
-    pubnub = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid='test-here-now-asyncio-uuid1'))
+    config = pnconf_sub_copy()
+    config.uuuid = 'test-here-now-asyncio-uuid1'
+    pubnub = PubNubAsyncio(config)
 
     ch1 = "test-here-now-asyncio-ch1"
     ch2 = "test-here-now-asyncio-ch2"
@@ -114,7 +119,9 @@ async def test_multiple_channels():
 @pytest.mark.asyncio
 @pytest.mark.skip(reason='this feature is not enabled by default')
 async def test_global():
-    pubnub = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid='test-here-now-asyncio-uuid1'))
+    config = pnconf_sub_copy()
+    config.uuuid = 'test-here-now-asyncio-uuid1'
+    pubnub = PubNubAsyncio(config)
 
     ch1 = "test-here-now-asyncio-ch1"
     ch2 = "test-here-now-asyncio-ch2"

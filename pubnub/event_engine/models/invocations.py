@@ -1,6 +1,6 @@
 from typing import List, Union
 from pubnub.exceptions import PubNubException
-from pubnub.enums import PNStatusCategory
+from pubnub.enums import PNOperationType, PNStatusCategory
 
 
 class PNInvocation:
@@ -90,9 +90,10 @@ class EmitMessagesInvocation(PNEmittableInvocation):
 
 
 class EmitStatusInvocation(PNEmittableInvocation):
-    def __init__(self, status: Union[None, PNStatusCategory]) -> None:
+    def __init__(self, status: Union[None, PNStatusCategory], operation: Union[None, PNOperationType] = None) -> None:
         super().__init__()
         self.status = status
+        self.operation = operation
 
 
 """

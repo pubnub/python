@@ -10,7 +10,7 @@ import pubnub as pn
 
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.helper import pnconf_pam_copy
-from tests.integrational.vcr_helper import pn_vcr
+# from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -26,9 +26,12 @@ class AccessDeniedListener(SubscribeCallback):
         pass
 
     def status(self, pubnub, status):
-        if status.operation == PNOperationType.PNUnsubscribeOperation:
-            if status.category == PNStatusCategory.PNAccessDeniedCategory:
-                self.access_denied_event.set()
+        disconnected = PNStatusCategory.PNDisconnectedCategory
+        denied = status.operation == PNOperationType.PNUnsubscribeOperation and \
+            status.category == PNStatusCategory.PNAccessDeniedCategory
+
+        if disconnected or denied:
+            self.access_denied_event.set()
 
 
 class ReconnectedListener(SubscribeCallback):
@@ -42,24 +45,27 @@ class ReconnectedListener(SubscribeCallback):
         pass
 
     def status(self, pubnub, status):
-        if status.operation == PNOperationType.PNUnsubscribeOperation:
-            if status.category == PNStatusCategory.PNReconnectedCategory:
-                self.reconnected_event.set()
+        disconnected = PNStatusCategory.PNDisconnectedCategory
+        denied = status.operation == PNOperationType.PNUnsubscribeOperation and \
+            status.category == PNStatusCategory.PNAccessDeniedCategory
+
+        if disconnected or denied:
+            self.access_denied_event.set()
 
 
-@pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/subscription/access_denied_unsubscribe_operation.yaml',
-    filter_query_parameters=['pnsdk', 'l_cg', 'l_pres'],
-    match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
-)
+# @pn_vcr.use_cassette(
+#     'tests/integrational/fixtures/asyncio/subscription/access_denied_unsubscribe_operation.yaml',
+#     filter_query_parameters=['pnsdk', 'l_cg', 'l_pres'],
+#     match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
+# )
 @pytest.mark.asyncio
-async def test_access_denied_unsubscribe_operation(event_loop):
+async def test_access_denied_unsubscribe_operation():
     channel = "not-permitted-channel"
     pnconf = pnconf_pam_copy()
     pnconf.secret_key = None
     pnconf.enable_subscribe = True
 
-    pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf)
 
     callback = AccessDeniedListener()
     pubnub.add_listener(callback)

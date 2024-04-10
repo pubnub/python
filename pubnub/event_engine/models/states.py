@@ -1,4 +1,4 @@
-from pubnub.enums import PNStatusCategory
+from pubnub.enums import PNOperationType, PNStatusCategory
 from pubnub.event_engine.models import invocations
 from pubnub.event_engine.models.invocations import PNInvocation
 from pubnub.event_engine.models import events
@@ -99,6 +99,7 @@ class HandshakingState(PNState):
             events.HandshakeSuccessEvent.__name__: self.handshaking_success,
             events.SubscriptionRestoredEvent.__name__: self.subscription_restored,
             events.SubscriptionChangedEvent.__name__: self.subscription_changed,
+            events.UnsubscribeAllEvent.__name__: self.unsubscribe_all,
         }
 
     def on_enter(self, context: Union[None, PNContext]):
@@ -171,6 +172,21 @@ class HandshakingState(PNState):
             invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNConnectedCategory)
         )
 
+    def unsubscribe_all(self, event: events.UnsubscribeAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.timetoken = 0
+        self._context.region = None
+        self._context.attempt = 0
+        self._context.channels = []
+        self._context.groups = []
+
+        return PNTransition(
+            state=UnsubscribedState,
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                        operation=PNOperationType.PNUnsubscribeOperation)
+        )
+
 
 class HandshakeReconnectingState(PNState):
     def __init__(self, context: PNContext) -> None:
@@ -231,11 +247,18 @@ class HandshakeReconnectingState(PNState):
         self._context.update(context)
         self._context.attempt = event.attempt
         self._context.reason = event.reason
+        status_invocation = None
+
+        if isinstance(event, Exception) and 'status' in event.reason:
+            status_invocation = invocations.EmitStatusInvocation(status=event.reason.status.category,
+                                                                 operation=PNOperationType.PNUnsubscribeOperation)
+        else:
+            status_invocation = invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory)
 
         return PNTransition(
             state=HandshakeFailedState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory)
+            invocation=status_invocation
         )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
@@ -270,6 +293,7 @@ class HandshakeFailedState(PNState):
             events.SubscriptionChangedEvent.__name__: self.subscription_changed,
             events.ReconnectEvent.__name__: self.reconnect,
             events.SubscriptionRestoredEvent.__name__: self.subscription_restored,
+            events.UnsubscribeAllEvent.__name__: self.unsubscribe_all,
         }
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
@@ -305,6 +329,21 @@ class HandshakeFailedState(PNState):
             context=self._context
         )
 
+    def unsubscribe_all(self, event: events.UnsubscribeAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.timetoken = 0
+        self._context.region = None
+        self._context.attempt = 0
+        self._context.channels = []
+        self._context.groups = []
+
+        return PNTransition(
+            state=UnsubscribedState,
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                        operation=PNOperationType.PNUnsubscribeOperation)
+        )
+
 
 class HandshakeStoppedState(PNState):
     def __init__(self, context: PNContext) -> None:
@@ -312,7 +351,8 @@ class HandshakeStoppedState(PNState):
         self._context.attempt = 0
 
         self._transitions = {
-            events.ReconnectEvent.__name__: self.reconnect
+            events.ReconnectEvent.__name__: self.reconnect,
+            events.UnsubscribeAllEvent.__name__: self.unsubscribe_all,
         }
 
     def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
@@ -321,6 +361,21 @@ class HandshakeStoppedState(PNState):
         return PNTransition(
             state=HandshakeReconnectingState,
             context=self._context
+        )
+
+    def unsubscribe_all(self, event: events.UnsubscribeAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.timetoken = 0
+        self._context.region = None
+        self._context.attempt = 0
+        self._context.channels = []
+        self._context.groups = []
+
+        return PNTransition(
+            state=UnsubscribedState,
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                        operation=PNOperationType.PNUnsubscribeOperation)
         )
 
 
@@ -336,6 +391,7 @@ class ReceivingState(PNState):
             events.ReceiveFailureEvent.__name__: self.receiving_failure,
             events.DisconnectEvent.__name__: self.disconnect,
             events.ReconnectEvent.__name__: self.reconnect,
+            events.UnsubscribeAllEvent.__name__: self.unsubscribe_all,
         }
 
     def on_enter(self, context: Union[None, PNContext]):
@@ -408,6 +464,21 @@ class ReceivingState(PNState):
         return PNTransition(
             state=ReceivingState,
             context=self._context
+        )
+
+    def unsubscribe_all(self, event: events.UnsubscribeAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.timetoken = 0
+        self._context.region = None
+        self._context.attempt = 0
+        self._context.channels = []
+        self._context.groups = []
+
+        return PNTransition(
+            state=UnsubscribedState,
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                        operation=PNOperationType.PNUnsubscribeOperation)
         )
 
 
@@ -511,6 +582,7 @@ class ReceiveFailedState(PNState):
             events.SubscriptionChangedEvent.__name__: self.subscription_changed,
             events.SubscriptionRestoredEvent.__name__: self.subscription_restored,
             events.ReconnectEvent.__name__: self.reconnect,
+            events.UnsubscribeAllEvent.__name__: self.unsubscribe_all,
         }
 
     def reconnect_retry(self, event: events.ReceiveReconnectRetryEvent, context: PNContext) -> PNTransition:
@@ -554,6 +626,21 @@ class ReceiveFailedState(PNState):
             context=self._context
         )
 
+    def unsubscribe_all(self, event: events.UnsubscribeAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.timetoken = 0
+        self._context.region = None
+        self._context.attempt = 0
+        self._context.channels = []
+        self._context.groups = []
+
+        return PNTransition(
+            state=UnsubscribedState,
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                        operation=PNOperationType.PNUnsubscribeOperation)
+        )
+
 
 class ReceiveStoppedState(PNState):
     def __init__(self, context: PNContext) -> None:
@@ -561,7 +648,8 @@ class ReceiveStoppedState(PNState):
         self._context.attempt = 0
 
         self._transitions = {
-            events.ReconnectEvent.__name__: self.reconnect
+            events.ReconnectEvent.__name__: self.reconnect,
+            events.UnsubscribeAllEvent.__name__: self.unsubscribe_all,
         }
 
     def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
@@ -570,6 +658,21 @@ class ReceiveStoppedState(PNState):
         return PNTransition(
             state=ReceiveReconnectingState,
             context=self._context
+        )
+
+    def unsubscribe_all(self, event: events.UnsubscribeAllEvent, context: PNContext) -> PNTransition:
+        self._context.update(context)
+        self._context.timetoken = 0
+        self._context.region = None
+        self._context.attempt = 0
+        self._context.channels = []
+        self._context.groups = []
+
+        return PNTransition(
+            state=UnsubscribedState,
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                        operation=PNOperationType.PNUnsubscribeOperation)
         )
 
 
@@ -711,13 +814,12 @@ class HeartbeatFailedState(PNState):
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
-        self._context.channels = []
-        self._context.groups = []
-
         invocation = None
         if not event.suppress_leave:
-            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
-                                                              groups=event.groups)
+            invocation = invocations.HeartbeatLeaveInvocation(channels=self._context.channels,
+                                                              groups=self._context.groups)
+        self._context.channels = []
+        self._context.groups = []
 
         return PNTransition(
             state=HeartbeatInactiveState,
@@ -769,13 +871,12 @@ class HeartbeatingState(PNState):
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
-        self._context.channels = []
-        self._context.groups = []
-
         invocation = None
         if not event.suppress_leave:
-            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
-                                                              groups=event.groups)
+            invocation = invocations.HeartbeatLeaveInvocation(channels=self._context.channels,
+                                                              groups=self._context.groups)
+        self._context.channels = []
+        self._context.groups = []
 
         return PNTransition(
             state=HeartbeatInactiveState,
@@ -857,13 +958,12 @@ class HeartbeatCooldownState(PNState):
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
-        self._context.channels = []
-        self._context.groups = []
-
         invocation = None
         if not event.suppress_leave:
-            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
-                                                              groups=event.groups)
+            invocation = invocations.HeartbeatLeaveInvocation(channels=self._context.channels,
+                                                              groups=self._context.groups)
+        self._context.channels = []
+        self._context.groups = []
 
         return PNTransition(
             state=HeartbeatInactiveState,
@@ -1005,13 +1105,12 @@ class HeartbeatReconnectingState(PNState):
 
     def left_all(self, event: events.HeartbeatLeftAllEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
-        self._context.channels = []
-        self._context.groups = []
-
         invocation = None
         if not event.suppress_leave:
-            invocation = invocations.HeartbeatLeaveInvocation(channels=event.channels,
-                                                              groups=event.groups)
+            invocation = invocations.HeartbeatLeaveInvocation(channels=self._context.channels,
+                                                              groups=self._context.groups)
+        self._context.channels = []
+        self._context.groups = []
 
         return PNTransition(
             state=HeartbeatInactiveState,

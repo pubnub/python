@@ -58,11 +58,11 @@ class Effect:
         return event
 
     def calculate_reconnection_delay(self, attempts):
-        if self.reconnection_policy is PNReconnectionPolicy.LINEAR:
+        if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
+            delay = int(math.pow(2, attempts - 5 * math.floor((attempts - 1) / 5)) - 1)
+        else:
             delay = self.interval
 
-        elif self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            delay = int(math.pow(2, attempts - 5 * math.floor((attempts - 1) / 5)) - 1)
         return delay
 
 
@@ -88,9 +88,9 @@ class HandshakeEffect(Effect):
         request.timetoken(0)
         response = await request.future()
 
-        if isinstance(response, PubNubException):
+        if isinstance(response, Exception):
             self.logger.warning(f'Handshake failed: {str(response)}')
-            handshake_failure = events.HandshakeFailureEvent(str(response), 1, timetoken=timetoken)
+            handshake_failure = events.HandshakeFailureEvent(response, 1, timetoken=timetoken)
             self.event_engine.trigger(handshake_failure)
         elif response.status.error:
             self.logger.warning(f'Handshake failed: {response.status.error_data.__dict__}')
@@ -292,7 +292,7 @@ class HeartbeatEffect(Effect):
             self.logger.warning(f'Heartbeat failed: {str(response)}')
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
                                                                    reason=response.status.error_data, attempt=1))
-        elif response.status.error:
+        elif response.status and response.status.error:
             self.logger.warning(f'Heartbeat failed: {response.status.error_data.__dict__}')
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
                                                                    reason=response.status.error_data, attempt=1))
@@ -427,5 +427,6 @@ class EmitEffect:
     def emit_status(self, invocation: invocations.EmitStatusInvocation):
         pn_status = PNStatus()
         pn_status.category = invocation.status
+        pn_status.operation = invocation.operation
         pn_status.error = False
         self.pubnub._subscription_manager._listener_manager.announce_status(pn_status)

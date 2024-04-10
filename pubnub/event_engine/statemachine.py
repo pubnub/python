@@ -81,7 +81,7 @@ class StateMachine:
 
     def dispatch_effects(self):
         for invocation in self._invocations:
-            self.logger.debug(f'Dispatching {invocation.__class__.__name__} {id(invocation)}')
+            self.logger.debug(f'Dispatching {invocation.__class__.__name__} {invocation.__dict__} {id(invocation)}')
             self._dispatcher.dispatch_effect(invocation)
 
         self._invocations.clear()

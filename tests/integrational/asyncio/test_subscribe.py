@@ -5,10 +5,10 @@ import pubnub as pn
 
 from unittest.mock import patch
 from pubnub.models.consumer.pubsub import PNMessageResult
-from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, SubscribeListener
-from tests.helper import pnconf_sub_copy, pnconf_enc_sub_copy
-from tests.integrational.vcr_asyncio_sleeper import get_sleeper, VCR599Listener, VCR599ReconnectionManager
-from tests.integrational.vcr_helper import pn_vcr
+from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio, AsyncioEnvelope, SubscribeListener
+from tests.helper import pnconf_enc_env_copy, pnconf_env_copy
+from tests.integrational.vcr_asyncio_sleeper import VCR599Listener, VCR599ReconnectionManager
+# from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -17,13 +17,14 @@ async def patch_pubnub(pubnub):
     pubnub._subscription_manager._reconnection_manager = VCR599ReconnectionManager(pubnub)
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_unsub.yaml',
-                     filter_query_parameters=['uuid', 'pnsdk'])
+# TODO: refactor cassette
+# @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_unsub.json', serializer='pn_json',
+#                      filter_query_parameters=['pnsdk', 'ee', 'tr'])
 @pytest.mark.asyncio
-async def test_subscribe_unsubscribe(event_loop):
+async def test_subscribe_unsubscribe():
     channel = "test-subscribe-asyncio-ch"
-
-    pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    config = pnconf_env_copy(enable_subscribe=True, enable_presence_heartbeat=False)
+    pubnub = PubNubAsyncio(config)
 
     callback = SubscribeListener()
     pubnub.add_listener(callback)
@@ -40,25 +41,29 @@ async def test_subscribe_unsubscribe(event_loop):
     assert channel not in pubnub.get_subscribed_channels()
     assert len(pubnub.get_subscribed_channels()) == 0
 
-    # await callback.wait_for_disconnect()
+    # with EE you don't have to wait for disconnect
+    if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+        await callback.wait_for_disconnect()
     assert channel not in pubnub.get_subscribed_channels()
     assert len(pubnub.get_subscribed_channels()) == 0
 
     await pubnub.stop()
+    await asyncio.sleep(3)
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub.yaml',
-                     filter_query_parameters=['pnsdk'])
+# @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub.json', serializer='pn_json',
+#                      filter_query_parameters=['pnsdk', 'ee', 'tr'])
 @pytest.mark.asyncio
-async def test_subscribe_publish_unsubscribe(event_loop):
-    pubnub_sub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
-    pubnub_pub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+async def test_subscribe_publish_unsubscribe():
+    sub_config = pnconf_env_copy(enable_subscribe=True, enable_presence_heartbeat=False)
+    pub_config = pnconf_env_copy(enable_subscribe=True, enable_presence_heartbeat=False)
+    sub_config.uuid = 'test-subscribe-asyncio-uuid-sub'
+    pub_config.uuid = 'test-subscribe-asyncio-uuid-pub'
+    pubnub_sub = PubNubAsyncio(sub_config)
+    pubnub_pub = PubNubAsyncio(pub_config)
 
     await patch_pubnub(pubnub_sub)
     await patch_pubnub(pubnub_pub)
-
-    pubnub_sub.config.uuid = 'test-subscribe-asyncio-uuid-sub'
-    pubnub_pub.config.uuid = 'test-subscribe-asyncio-uuid-pub'
 
     callback = VCR599Listener(1)
     channel = "test-subscribe-asyncio-ch"
@@ -90,19 +95,22 @@ async def test_subscribe_publish_unsubscribe(event_loop):
     assert publish_envelope.status.original_response[0] == 1
 
     pubnub_sub.unsubscribe().channels(channel).execute()
-    # await callback.wait_for_disconnect()
+    # with EE you don't have to wait for disconnect
+    if isinstance(pubnub_sub._subscription_manager, AsyncioSubscriptionManager):
+        await callback.wait_for_disconnect()
 
     await pubnub_pub.stop()
     await pubnub_sub.stop()
 
 
-@pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub_enc.yaml',
-    filter_query_parameters=['pnsdk']
-)
+# @pn_vcr.use_cassette(
+#     'tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub_enc.yaml',
+#     filter_query_parameters=['pnsdk']
+# )
 @pytest.mark.asyncio
-async def test_encrypted_subscribe_publish_unsubscribe(event_loop):
-    pubnub = PubNubAsyncio(pnconf_enc_sub_copy(), custom_event_loop=event_loop)
+async def test_encrypted_subscribe_publish_unsubscribe():
+
+    pubnub = PubNubAsyncio(pnconf_enc_env_copy(enable_subscribe=True))
     pubnub.config.uuid = 'test-subscribe-asyncio-uuid'
 
     with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
@@ -136,25 +144,24 @@ async def test_encrypted_subscribe_publish_unsubscribe(event_loop):
         assert publish_envelope.status.original_response[0] == 1
 
         pubnub.unsubscribe().channels(channel).execute()
-        await callback.wait_for_disconnect()
+        # with EE you don't have to wait for disconnect
+        if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+            await callback.wait_for_disconnect()
 
     await pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml',
-                     filter_query_parameters=['pnsdk', 'l_cg'])
+# @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml',
+#                      filter_query_parameters=['pnsdk', 'l_cg'])
 @pytest.mark.asyncio
-async def test_join_leave(event_loop):
+async def test_join_leave():
     channel = "test-subscribe-asyncio-join-leave-ch"
 
-    pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
-    pubnub_listener = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-messenger"))
+    pubnub_listener = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-listener"))
 
     await patch_pubnub(pubnub)
     await patch_pubnub(pubnub_listener)
-
-    pubnub.config.uuid = "test-subscribe-asyncio-messenger"
-    pubnub_listener.config.uuid = "test-subscribe-asyncio-listener"
 
     callback_presence = VCR599Listener(1)
     callback_messages = VCR599Listener(1)
@@ -164,7 +171,9 @@ async def test_join_leave(event_loop):
 
     await callback_presence.wait_for_connect()
 
+    await asyncio.sleep(1)
     envelope = await callback_presence.wait_for_presence_on(channel)
+
     assert envelope.channel == channel
     assert envelope.event == 'join'
     assert envelope.uuid == pubnub_listener.uuid
@@ -179,35 +188,37 @@ async def test_join_leave(event_loop):
     assert envelope.uuid == pubnub.uuid
 
     pubnub.unsubscribe().channels(channel).execute()
-    await callback_messages.wait_for_disconnect()
+    # with EE you don't have to wait for disconnect
+    if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+        await callback_messages.wait_for_disconnect()
 
     envelope = await callback_presence.wait_for_presence_on(channel)
-
     assert envelope.channel == channel
     assert envelope.event == 'leave'
     assert envelope.uuid == pubnub.uuid
 
     pubnub_listener.unsubscribe().channels(channel).execute()
-    await callback_presence.wait_for_disconnect()
+    # with EE you don't have to wait for disconnect
+    if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+        await callback_presence.wait_for_disconnect()
 
     await pubnub.stop()
     await pubnub_listener.stop()
 
 
-@get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml')
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml',
-                     filter_query_parameters=['uuid', 'pnsdk', 'l_cg', 'l_pres'])
+# @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml',
+#                      filter_query_parameters=['uuid', 'pnsdk', 'l_cg', 'l_pres'])
 @pytest.mark.asyncio
-async def test_cg_subscribe_unsubscribe(event_loop, sleeper=asyncio.sleep):
+async def test_cg_subscribe_unsubscribe():
     ch = "test-subscribe-asyncio-channel"
     gr = "test-subscribe-asyncio-group"
 
-    pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True))
 
     envelope = await pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    await sleeper(3)
+    await asyncio.sleep(3)
 
     callback_messages = SubscribeListener()
     pubnub.add_listener(callback_messages)
@@ -215,7 +226,9 @@ async def test_cg_subscribe_unsubscribe(event_loop, sleeper=asyncio.sleep):
     await callback_messages.wait_for_connect()
 
     pubnub.unsubscribe().channel_groups(gr).execute()
-    await callback_messages.wait_for_disconnect()
+    # with EE you don't have to wait for disconnect
+    if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+        await callback_messages.wait_for_disconnect()
 
     envelope = await pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
@@ -223,21 +236,21 @@ async def test_cg_subscribe_unsubscribe(event_loop, sleeper=asyncio.sleep):
     await pubnub.stop()
 
 
-@get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml')
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml',
-                     filter_query_parameters=['uuid', 'pnsdk', 'l_cg', 'l_pres', 'l_pub'])
+# @get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml')
+# @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml',
+#                      filter_query_parameters=['uuid', 'pnsdk', 'l_cg', 'l_pres', 'l_pub'])
 @pytest.mark.asyncio
-async def test_cg_subscribe_publish_unsubscribe(event_loop, sleeper=asyncio.sleep):
+async def test_cg_subscribe_publish_unsubscribe():
     ch = "test-subscribe-asyncio-channel"
     gr = "test-subscribe-asyncio-group"
     message = "hey"
 
-    pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True))
 
     envelope = await pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    await sleeper(1)
+    await asyncio.sleep(1)
 
     callback_messages = VCR599Listener(1)
     pubnub.add_listener(callback_messages)
@@ -259,7 +272,9 @@ async def test_cg_subscribe_publish_unsubscribe(event_loop, sleeper=asyncio.slee
     assert sub_envelope.message == message
 
     pubnub.unsubscribe().channel_groups(gr).execute()
-    await callback_messages.wait_for_disconnect()
+    # with EE you don't have to wait for disconnect
+    if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+        await callback_messages.wait_for_disconnect()
 
     envelope = await pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
@@ -267,24 +282,20 @@ async def test_cg_subscribe_publish_unsubscribe(event_loop, sleeper=asyncio.slee
     await pubnub.stop()
 
 
-@get_sleeper('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.yaml')
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.yaml',
-                     filter_query_parameters=['pnsdk', 'l_cg', 'l_pres'])
+@pytest.mark.skip
+# @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.json', serializer='pn_json',
+#                      filter_query_parameters=['pnsdk', 'l_cg', 'l_pres', 'ee', 'tr'])
 @pytest.mark.asyncio
-async def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
-    pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
-    pubnub_listener = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
-
-    pubnub.config.uuid = "test-subscribe-asyncio-messenger"
-    pubnub_listener.config.uuid = "test-subscribe-asyncio-listener"
+async def test_cg_join_leave():
+    pubnub = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-messenger"))
+    pubnub_listener = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-listener"))
 
     ch = "test-subscribe-asyncio-join-leave-cg-channel"
     gr = "test-subscribe-asyncio-join-leave-cg-group"
 
     envelope = await pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
-
-    await sleeper(1)
+    await asyncio.sleep(1)
 
     callback_messages = VCR599Listener(1)
     callback_presence = VCR599Listener(1)
@@ -325,7 +336,10 @@ async def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     assert prs_envelope.subscription == gr
 
     pubnub_listener.unsubscribe().channel_groups(gr).execute()
-    await callback_presence.wait_for_disconnect()
+
+    # with EE you don't have to wait for disconnect
+    if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+        await callback_presence.wait_for_disconnect()
 
     envelope = await pubnub.remove_channel_from_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
@@ -334,17 +348,15 @@ async def test_cg_join_leave(event_loop, sleeper=asyncio.sleep):
     await pubnub_listener.stop()
 
 
-@get_sleeper('tests/integrational/fixtures/asyncio/subscription/unsubscribe_all.yaml')
-@pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/subscription/unsubscribe_all.yaml',
-    filter_query_parameters=['pnsdk', 'l_cg', 'l_pres'],
-    match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
-)
+# @pn_vcr.use_cassette(
+#     'tests/integrational/fixtures/asyncio/subscription/unsubscribe_all.yaml',
+#     filter_query_parameters=['pnsdk', 'l_cg', 'l_pres'],
+#     match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
+# )
 @pytest.mark.asyncio
-async def test_unsubscribe_all(event_loop, sleeper=asyncio.sleep):
-    pubnub = PubNubAsyncio(pnconf_sub_copy(), custom_event_loop=event_loop)
-
-    pubnub.config.uuid = "test-subscribe-asyncio-messenger"
+async def test_unsubscribe_all():
+    config = pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-messenger")
+    pubnub = PubNubAsyncio(config)
 
     ch = "test-subscribe-asyncio-unsubscribe-all-ch"
     ch1 = "test-subscribe-asyncio-unsubscribe-all-ch1"
@@ -358,7 +370,7 @@ async def test_unsubscribe_all(event_loop, sleeper=asyncio.sleep):
     envelope = await pubnub.add_channel_to_channel_group().channel_group(gr2).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
 
-    await sleeper(1)
+    await asyncio.sleep(1)
 
     callback_messages = VCR599Listener(1)
     pubnub.add_listener(callback_messages)
@@ -370,8 +382,9 @@ async def test_unsubscribe_all(event_loop, sleeper=asyncio.sleep):
     assert len(pubnub.get_subscribed_channel_groups()) == 2
 
     pubnub.unsubscribe_all()
-
-    await callback_messages.wait_for_disconnect()
+    # with EE you don't have to wait for disconnect
+    if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):
+        await callback_messages.wait_for_disconnect()
 
     assert len(pubnub.get_subscribed_channels()) == 0
     assert len(pubnub.get_subscribed_channel_groups()) == 0

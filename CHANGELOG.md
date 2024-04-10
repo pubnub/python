@@ -1,3 +1,9 @@
+## v7.4.4
+April 10 2024
+
+#### Fixed
+- Fix compatibility issues between EventEngine and Asyncio subscription manager.
+
 ## v7.4.3
 March 28 2024
 

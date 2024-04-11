@@ -191,8 +191,8 @@ class BaseMessageWorker:
                 message_action = extracted_message['data']
                 if 'uuid' not in message_action:
                     message_action['uuid'] = publisher
-
-                message_action_result = PNMessageActionResult(message_action)
+                message_action_result = PNMessageActionResult(message_action, subscription=subscription_match,
+                                                              channel=channel)
                 self._listener_manager.announce_message_action(message_action_result)
 
             else:

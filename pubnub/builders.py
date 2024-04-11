@@ -1,13 +1,12 @@
 from abc import ABCMeta, abstractmethod
-from .dtos import SubscribeOperation, UnsubscribeOperation
 from . import utils
 
 
 class PubSubBuilder(object):
     __metaclass__ = ABCMeta
 
-    def __init__(self, subscription_manager):
-        self._subscription_manager = subscription_manager
+    def __init__(self, pubnub_instance):
+        self._pubnub = pubnub_instance
         self._channel_subscriptions = []
         self._channel_group_subscriptions = []
 
@@ -28,8 +27,8 @@ class PubSubBuilder(object):
 
 
 class SubscribeBuilder(PubSubBuilder):
-    def __init__(self, subscription_manager):
-        super(SubscribeBuilder, self).__init__(subscription_manager)
+    def __init__(self, pubnub_instance):
+        super(SubscribeBuilder, self).__init__(pubnub_instance)
         self._presence_enabled = False
         self._timetoken = 0
 
@@ -48,21 +47,15 @@ class SubscribeBuilder(PubSubBuilder):
         return self._channel_group_subscriptions
 
     def execute(self):
-        subscribe_operation = SubscribeOperation(
-            channels=self._channel_subscriptions,
-            channel_groups=self._channel_group_subscriptions,
-            timetoken=self._timetoken,
-            presence_enabled=self._presence_enabled
-        )
-
-        self._subscription_manager.adapt_subscribe_builder(subscribe_operation)
+        if self._channel_subscriptions:
+            channels_subscription = self._pubnub.channel(self._channel_subscriptions).subscription()
+            channels_subscription.subscribe(with_presence=self._presence_enabled, timetoken=self._timetoken)
+        if self._channel_group_subscriptions:
+            groups_subscription = self._pubnub.channel_group(self._channel_group_subscriptions).subscription()
+            groups_subscription.subscribe(with_presence=self._presence_enabled, timetoken=self._timetoken)
 
 
 class UnsubscribeBuilder(PubSubBuilder):
     def execute(self):
-        unsubscribe_operation = UnsubscribeOperation(
-            channels=self._channel_subscriptions,
-            channel_groups=self._channel_group_subscriptions
-        )
-
-        self._subscription_manager.adapt_unsubscribe_builder(unsubscribe_operation)
+        self._pubnub._subscription_set.unsubscribe(channels=self._channel_subscriptions,
+                                                   groups=self._channel_group_subscriptions)

@@ -169,22 +169,22 @@ class PubNubCore:
         return RemoveChannelGroup(self)
 
     def subscribe(self):
-        return SubscribeBuilder(self._subscription_manager)
+        return SubscribeBuilder(self)
 
     def unsubscribe(self):
-        return UnsubscribeBuilder(self._subscription_manager)
+        return UnsubscribeBuilder(self)
 
     def unsubscribe_all(self):
-        return self._subscription_manager.unsubscribe_all()
+        return self._subscription_set.unsubscribe_all()
 
     def reconnect(self):
-        return self._subscription_manager.reconnect()
+        return self._subscription_set.reconnect()
 
     def heartbeat(self):
         return Heartbeat(self)
 
     def set_state(self):
-        return SetState(self, self._subscription_manager)
+        return SetState(self, self._subscription_set)
 
     def get_state(self):
         return GetState(self)

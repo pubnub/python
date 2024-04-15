@@ -17,7 +17,6 @@ from pubnub.event_engine.statemachine import StateMachine
 from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.presence.leave import Leave
 from pubnub.endpoints.pubsub.subscribe import Subscribe
-from pubnub.features import feature_enabled
 from pubnub.pubnub_core import PubNubCore
 from pubnub.workers import SubscribeMessageWorker
 from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
@@ -49,9 +48,7 @@ class PubNubAsyncio(PubNubCore):
         self._connector = aiohttp.TCPConnector(verify_ssl=True, loop=self.event_loop)
 
         if not subscription_manager:
-            subscription_manager = (
-                EventEngineSubscriptionManager if feature_enabled('PN_ENABLE_EVENT_ENGINE')
-                else AsyncioSubscriptionManager)
+            subscription_manager = EventEngineSubscriptionManager
 
         if self.config.enable_subscribe:
             self._subscription_manager = subscription_manager(self)

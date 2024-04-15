@@ -21,7 +21,7 @@ from pubnub.exceptions import PubNubException
 from pubnub.features import feature_flag
 from pubnub.crypto import PubNubCryptoModule
 from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup, PubNubChannelMetadata, PubNubUserMetadata, \
-    SubscriptionSet
+    PNSubscriptionRegistry, PubNubSubscriptionSet
 
 from abc import ABCMeta, abstractmethod
 
@@ -96,7 +96,7 @@ class PubNubCore:
     __metaclass__ = ABCMeta
     __crypto = None
 
-    _subscription_set: SubscriptionSet
+    _subscription_registry: PNSubscriptionRegistry
 
     def __init__(self, config):
         self.config = config
@@ -110,7 +110,7 @@ class PubNubCore:
         self._telemetry_manager = TelemetryManager()
         self._base_path_manager = BasePathManager(config)
         self._token_manager = TokenManager()
-        self._subscription_set = SubscriptionSet(self)
+        self._subscription_registry = PNSubscriptionRegistry(self)
 
     @property
     def base_origin(self):
@@ -175,16 +175,16 @@ class PubNubCore:
         return UnsubscribeBuilder(self)
 
     def unsubscribe_all(self):
-        return self._subscription_set.unsubscribe_all()
+        return self._subscription_registry.unsubscribe_all()
 
     def reconnect(self):
-        return self._subscription_set.reconnect()
+        return self._subscription_registry.reconnect()
 
     def heartbeat(self):
         return Heartbeat(self)
 
     def set_state(self):
-        return SetState(self, self._subscription_set)
+        return SetState(self, self._subscription_registry)
 
     def get_state(self):
         return GetState(self)
@@ -657,3 +657,6 @@ class PubNubCore:
 
     def user_metadata(self, user_ids) -> PubNubUserMetadata:
         return PubNubUserMetadata(self, user_ids)
+
+    def subscription_set(self, channel_names, channel_group_names) -> PubNubSubscriptionSet:
+        return PubNubSubscriptionSet(self)

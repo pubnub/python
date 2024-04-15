@@ -57,5 +57,5 @@ class SubscribeBuilder(PubSubBuilder):
 
 class UnsubscribeBuilder(PubSubBuilder):
     def execute(self):
-        self._pubnub._subscription_set.unsubscribe(channels=self._channel_subscriptions,
-                                                   groups=self._channel_group_subscriptions)
+        self._pubnub._subscription_registry.unsubscribe(channels=self._channel_subscriptions,
+                                                        groups=self._channel_group_subscriptions)

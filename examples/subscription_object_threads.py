@@ -112,12 +112,12 @@ print("We don't see any presence event since we don't have it enabled yet")
 print('Creating second channel object for "test" and "test.2"')
 test2 = pubnub.channel([f'{channel}', f'{channel}.2'])
 print('Creating second subscription object for channels "test" and "test.2"')
-t2_subscription = test2.subscription()
+t2_subscription = test2.subscription(with_presence=True)
 t2_subscription.on_message = on_message('listener_2')
 t2_subscription.on_presence = on_presence('listener_2')
 t2_subscription.on_status = on_status('listener_2')
 t2_subscription.on_signal = on_signal('listener_2')
-t2_subscription.subscribe(with_presence=True)
+t2_subscription.subscribe()
 
 print('Now we\'re subscribed to "test" with two listeners. one with presence and one without')
 print('So we should see presence events only for listener "test2" for channels "test" and "test2"')
@@ -227,8 +227,8 @@ time.sleep(2)
 #  Unsubscribing
 
 
-pubnub.unsubscribe_all()
-print('We now should be unsubscribed from all channels')
+# pubnub.unsubscribe_all()
+# print('We now should be unsubscribed from all channels')
 
 print('Exiting')
 pubnub.stop()

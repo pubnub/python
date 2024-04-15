@@ -18,11 +18,13 @@ class PNSubscribable:
     def __init__(self, pubnub_instance) -> None:
         self.pubnub = pubnub_instance
 
-    def subscription(self):
-        return Subscription(self.pubnub, self.subscription_names, self.subscription_type)
+    def subscription(self, *, timetoken: Optional[int] = None, region: Optional[str] = None,
+                     with_presence: Optional[bool] = None):
+        return PubNubSubscription(self.pubnub, self.subscription_names, self.subscription_type, timetoken, region,
+                                  with_presence)
 
 
-class EventEmitter:
+class PNEventEmitter:
     on_message: callable
     on_signal: callable
     on_presence: callable
@@ -64,40 +66,55 @@ class EventEmitter:
             self.on_signal(signal)
 
 
-class SubscribeCapable:
-    def subscribe(self, timetoken: Optional[int] = None, region: Optional[str] = None):
-        self.timetoken = timetoken
-        self.region = region
+class PNSubscribeCapable:
+    def subscribe(self):
+        if self.with_presence:
+            if hasattr(self, 'subscription_names'):
+                self.subscription_names += [f'{channel}-pnpres' for channel in self.subscription_names]
+
+            if hasattr(self, 'channels'):
+                self.channels += [f'{channel}-pnpres' for channel in self.channels]
+
+            if hasattr(self, 'channel_groups'):
+                self.channel_groups += [f'{channel_group}-pnpres' for channel_group in self.channel_groups]
+
+        self.subscription_registry.add(self)
 
     def unsubscribe(self):
-        pass
+        self.subscription_registry.remove(self)
 
 
-class Subscription(EventEmitter, SubscribeCapable):
-    def __init__(self,
-                 pubnub_instance,
-                 subscription_names: List[str],
-                 subscription_type: PNSubscriptionType) -> None:
+class PubNubSubscription(PNEventEmitter, PNSubscribeCapable):
+    def __init__(self, pubnub_instance, subscription_names: List[str], subscription_type: PNSubscriptionType,
+                 timetoken: Optional[int] = None, region: Optional[str] = None, with_presence: bool = False) -> None:
 
-        self.subscription_set = pubnub_instance._subscription_set
+        self.subscription_registry = pubnub_instance._subscription_registry
         self.subscription_manager = pubnub_instance._subscription_manager
         self.subscription = None
         self.subscription_names = subscription_names
         self.subscription_type = subscription_type
-        self.with_presence = False
-
-    def subscribe(self, timetoken: Optional[int] = None, region: Optional[str] = None, with_presence: bool = False):
-        super().subscribe(timetoken, region)
+        self.timetoken = timetoken
+        self.region = region
         self.with_presence = with_presence
-        if with_presence:
-            self.subscription_names += [f'{channel}-pnpres' for channel in self.subscription_names]
-        self.subscription_set.add(self)
-
-    def unsubscribe(self):
-        self.subscription_set.remove(self)
 
     def add_listener(self, listener):
-        self.subscription_set.add_listener(listener)
+        self.subscription_registry.add_listener(listener)
+
+
+class PubNubSubscriptionSet(PNEventEmitter, PNSubscribeCapable):
+    def __init__(self, pubnub_instance,
+                 channels: Optional[List[str]] = None,
+                 channel_groups: Optional[List[str]] = None,
+                 timetoken: Optional[int] = None,
+                 region: Optional[str] = None,
+                 with_presence: Optional[bool] = None) -> None:
+        self.subscription_registry = pubnub_instance._subscription_registry
+        self.subscription_manager = pubnub_instance._subscription_manager
+        self.channels = channels
+        self.channel_groups = channel_groups
+        self.timetoken = timetoken
+        self.region = region
+        self.with_presence = with_presence
 
 
 class PubNubChannel(PNSubscribable):
@@ -130,36 +147,51 @@ class PubNubUserMetadata(PNSubscribable):
         self.subscription_names = user_ids if isinstance(user_ids, list) else [user_ids]
 
 
-class SubscriptionSet:
+class PNSubscriptionRegistry:
     def __init__(self, pubnub_instance):
         self.listener_set = False
         self.pubnub = pubnub_instance
         self.global_listeners = []
         self.channels = {}
         self.channel_groups = {}
-        self.subscription_set_callback = None
+        self.subscription_registry_callback = None
         self.with_presence = False
 
     def add(self, subscription: PNSubscribable) -> list:
-        if not self.subscription_set_callback:
-            self.subscription_set_callback = SubscriptionSetCallback(self)
-            self.pubnub.add_listener(self.subscription_set_callback)
+        if not self.subscription_registry_callback:
+            self.subscription_registry_callback = PNSubscriptionRegistryCallback(self)
+            self.pubnub.add_listener(self.subscription_registry_callback)
 
         channel_list = []
-        if subscription.subscription_type == PNSubscriptionType.CHANNEL:
+        if isinstance(subscription, PubNubSubscriptionSet):
+            for channel in subscription.channels:
+                if channel not in self.channels:
+                    self.channels[channel] = [subscription]
+                    channel_list.append(channel)
+                else:
+                    self.channels[channel].append(subscription)
+            for channel_group in subscription.channel_groups:
+                if channel_group not in self.channel_groups:
+                    self.channel_groups[channel_group] = [subscription]
+                    channel_list.append(channel_group)
+                else:
+                    self.channel_groups[channel_group].append(subscription)
+        elif subscription.subscription_type == PNSubscriptionType.CHANNEL:
             for channel in subscription.subscription_names:
                 if channel not in self.channels:
                     self.channels[channel] = [subscription]
                     channel_list.append(channel)
                 else:
                     self.channels[channel].append(subscription)
-        else:
+        elif subscription.subscription_type == PNSubscriptionType.CHANNEL_GROUP:
             for channel_group in subscription.subscription_names:
                 if channel_group not in self.channel_groups:
                     self.channel_groups[channel_group] = [subscription]
                     channel_list.append(channel_group)
                 else:
                     self.channel_groups[channel_group].append(subscription)
+        else:
+            raise NotImplementedError('Unknown Subscription type')
 
         tt = self.pubnub._subscription_manager._timetoken
         if channel_list:
@@ -173,7 +205,7 @@ class SubscriptionSet:
 
         return channel_list
 
-    def remove(self, subscription: Subscription) -> list:
+    def remove(self, subscription: PubNubSubscription) -> list:
         channel_list = []
         group_list = []
 
@@ -258,28 +290,28 @@ class SubscriptionSet:
         self.pubnub._subscription_manager.adapt_unsubscribe_builder(unsubscribe_operation)
 
 
-class SubscriptionSetCallback(SubscribeCallback):
-    def __init__(self, subscription_set: SubscriptionSet) -> None:
-        self.subscription_set = subscription_set
+class PNSubscriptionRegistryCallback(SubscribeCallback):
+    def __init__(self, subscription_registry: PNSubscriptionRegistry) -> None:
+        self.subscription_registry = subscription_registry
         super().__init__()
 
     def status(self, _, status):
         pass
 
     def presence(self, _, presence):
-        for listener in self.subscription_set.get_all_listeners():
+        for listener in self.subscription_registry.get_all_listeners():
             listener.presence(presence)
 
     def message(self, _, message):
-        for listener in self.subscription_set.get_all_listeners():
+        for listener in self.subscription_registry.get_all_listeners():
             listener.message(message)
 
     def signal(self, _, signal):
-        for listener in self.subscription_set.get_all_listeners():
+        for listener in self.subscription_registry.get_all_listeners():
             listener.signal(signal)
 
     def channel(self, _, channel):
-        for listener in self.subscription_set.get_all_listeners():
+        for listener in self.subscription_registry.get_all_listeners():
             listener.channel
 
     def uuid(self, pubnub, uuid):
@@ -289,7 +321,7 @@ class SubscriptionSetCallback(SubscribeCallback):
         print(f'membership: \n {membership.__dict__}\n')
 
     def message_action(self, _, message_action):
-        for listener in self.subscription_set.get_all_listeners():
+        for listener in self.subscription_registry.get_all_listeners():
             listener.message_action(message_action)
 
     def file(self, _, file_message):

@@ -184,7 +184,7 @@ class PubNubCore:
         return Heartbeat(self)
 
     def set_state(self):
-        return SetState(self, self._subscription_registry)
+        return SetState(self, self._subscription_manager)
 
     def get_state(self):
         return GetState(self)
@@ -646,17 +646,19 @@ class PubNubCore:
             return memberships.sync()
         return memberships
 
-    def channel(self, channel_names) -> PubNubChannel:
-        return PubNubChannel(self, channel_names)
+    def channel(self, channel) -> PubNubChannel:
+        return PubNubChannel(self, channel)
 
-    def channel_group(self, channel_group_names) -> PubNubChannelGroup:
-        return PubNubChannelGroup(self, channel_group_names)
+    def channel_group(self, channel_group) -> PubNubChannelGroup:
+        return PubNubChannelGroup(self, channel_group)
 
-    def channel_metadata(self, channel_names) -> PubNubChannelMetadata:
-        return PubNubChannelMetadata(self, channel_names)
+    def channel_metadata(self, channel) -> PubNubChannelMetadata:
+        return PubNubChannelMetadata(self, channel)
 
-    def user_metadata(self, user_ids) -> PubNubUserMetadata:
-        return PubNubUserMetadata(self, user_ids)
+    def user_metadata(self, user_id) -> PubNubUserMetadata:
+        return PubNubUserMetadata(self, user_id)
 
     def subscription_set(self, channel_names, channel_group_names) -> PubNubSubscriptionSet:
+        if not channel_names and not channel_group_names:
+            raise PubNubException('At least one channel or channel group is required')
         return PubNubSubscriptionSet(self)

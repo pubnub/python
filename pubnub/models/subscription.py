@@ -85,8 +85,12 @@ class PNSubscribeCapable:
 
 
 class PubNubSubscription(PNEventEmitter, PNSubscribeCapable):
-    def __init__(self, pubnub_instance, subscription_names: List[str], subscription_type: PNSubscriptionType,
-                 timetoken: Optional[int] = None, region: Optional[str] = None, with_presence: bool = False) -> None:
+    def __init__(self, pubnub_instance,
+                 subscription_names: List[str],
+                 subscription_type: PNSubscriptionType,
+                 timetoken: Optional[int] = None,
+                 region: Optional[str] = None,
+                 with_presence: bool = False) -> None:
 
         self.subscription_registry = pubnub_instance._subscription_registry
         self.subscription_manager = pubnub_instance._subscription_manager
@@ -118,33 +122,33 @@ class PubNubSubscriptionSet(PNEventEmitter, PNSubscribeCapable):
 
 
 class PubNubChannel(PNSubscribable):
-    def __init__(self, pubnub_instance, channel_names: Union[str, List[str]]) -> None:
+    def __init__(self, pubnub_instance, channel: Union[str, List[str]]) -> None:
         super().__init__(pubnub_instance)
         self.subscription_type = PNSubscriptionType.CHANNEL
-        self.subscription_names = channel_names if isinstance(channel_names, list) else [channel_names]
+        self.subscription_names = channel if isinstance(channel, list) else [channel]
 
 
 class PubNubChannelGroup(PNSubscribable):
-    def __init__(self, pubnub_instance, channel_group_names: Union[str, List[str]]) -> None:
+    def __init__(self, pubnub_instance, channel_group: Union[str, List[str]]) -> None:
         super().__init__(pubnub_instance)
         self.subscription_type = PNSubscriptionType.CHANNEL_GROUP
-        self.subscription_names = channel_group_names
-        self.subscription_names = channel_group_names if isinstance(channel_group_names, list) \
-            else [channel_group_names]
+        self.subscription_names = channel_group
+        self.subscription_names = channel_group if isinstance(channel_group, list) \
+            else [channel_group]
 
 
 class PubNubChannelMetadata(PNSubscribable):
-    def __init__(self, pubnub_instance, channel_names: Union[str, List[str]]) -> None:
+    def __init__(self, pubnub_instance, channel: Union[str, List[str]]) -> None:
         super().__init__(pubnub_instance)
         self.subscription_type = PNSubscriptionType.CHANNEL
-        self.subscription_names = channel_names if isinstance(channel_names, list) else [channel_names]
+        self.subscription_names = channel if isinstance(channel, list) else [channel]
 
 
 class PubNubUserMetadata(PNSubscribable):
-    def __init__(self, pubnub_instance, user_ids: Union[str, List[str]]) -> None:
+    def __init__(self, pubnub_instance, user_id: Union[str, List[str]]) -> None:
         super().__init__(pubnub_instance)
         self.subscription_types = PNSubscriptionType.CHANNEL
-        self.subscription_names = user_ids if isinstance(user_ids, list) else [user_ids]
+        self.subscription_names = user_id if isinstance(user_id, list) else [user_id]
 
 
 class PNSubscriptionRegistry:
@@ -265,8 +269,8 @@ class PNSubscriptionRegistry:
 
     def unsubscribe_all(self):
         unsubscribe_operation = UnsubscribeOperation(
-            channels=self.channels,
-            channel_groups=self.channel_groups
+            channels=list(self.channels.keys()),
+            channel_groups=list(self.channel_groups.keys())
         )
         self.pubnub._subscription_manager.adapt_unsubscribe_builder(unsubscribe_operation)
         self.channels = []

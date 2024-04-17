@@ -591,7 +591,7 @@ class EventEngineSubscriptionManager(SubscriptionManager):
         if self._pubnub.config.enable_presence_heartbeat and self._pubnub.config._heartbeat_interval > 0:
             self.presence_engine.trigger(events.HeartbeatJoinedEvent(
                 channels=subscribe_operation.channels,
-                groups=subscribe_operation.channel_groups
+                groups=subscribe_operation.channel_groups,
             ))
 
     def adapt_unsubscribe_builder(self, unsubscribe_operation):

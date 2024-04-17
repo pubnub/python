@@ -8,6 +8,7 @@ from pubnub.dtos import SubscribeOperation, UnsubscribeOperation
 class PNSubscriptionType(Enum):
     CHANNEL: str = "channel"
     CHANNEL_GROUP: str = "channel_group"
+    SUBSCRIPTION_SET: str = "subscription_set"
 
 
 class PNSubscribable:
@@ -43,8 +44,13 @@ class PNEventEmitter:
                 [message.channel == subscription or wildcard_match(message.channel, subscription)
                     for subscription in self.subscription_names]
             )
-        else:
+        elif self.subscription_type == PNSubscriptionType.CHANNEL_GROUP:
             return message.subscription in self.subscription_names
+        else:
+            return any(
+                [message.channel == subscription or wildcard_match(message.channel, subscription)
+                    for subscription in (self.channels + self.channel_groups)]
+            )
 
     def presence(self, presence):
         if not hasattr(self, 'on_presence') or not self.with_presence:
@@ -68,16 +74,6 @@ class PNEventEmitter:
 
 class PNSubscribeCapable:
     def subscribe(self):
-        if self.with_presence:
-            if hasattr(self, 'subscription_names'):
-                self.subscription_names += [f'{channel}-pnpres' for channel in self.subscription_names]
-
-            if hasattr(self, 'channels'):
-                self.channels += [f'{channel}-pnpres' for channel in self.channels]
-
-            if hasattr(self, 'channel_groups'):
-                self.channel_groups += [f'{channel_group}-pnpres' for channel_group in self.channel_groups]
-
         self.subscription_registry.add(self)
 
     def unsubscribe(self):
@@ -112,6 +108,7 @@ class PubNubSubscriptionSet(PNEventEmitter, PNSubscribeCapable):
                  timetoken: Optional[int] = None,
                  region: Optional[str] = None,
                  with_presence: Optional[bool] = None) -> None:
+        self.subscription_type = PNSubscriptionType.SUBSCRIPTION_SET
         self.subscription_registry = pubnub_instance._subscription_registry
         self.subscription_manager = pubnub_instance._subscription_manager
         self.channels = channels
@@ -160,12 +157,14 @@ class PNSubscriptionRegistry:
         self.channel_groups = {}
         self.subscription_registry_callback = None
         self.with_presence = False
+        self.subscriptions = []
 
     def add(self, subscription: PNSubscribable) -> list:
         if not self.subscription_registry_callback:
             self.subscription_registry_callback = PNSubscriptionRegistryCallback(self)
             self.pubnub.add_listener(self.subscription_registry_callback)
 
+        self.subscriptions.append(subscription)
         channel_list = []
         if isinstance(subscription, PubNubSubscriptionSet):
             for channel in subscription.channels:
@@ -198,12 +197,15 @@ class PNSubscriptionRegistry:
             raise NotImplementedError('Unknown Subscription type')
 
         tt = self.pubnub._subscription_manager._timetoken
+        if subscription.timetoken:
+            tt = max(subscription.timetoken, self.pubnub._subscription_manager._timetoken)
+
         if channel_list:
             subscribe_operation = SubscribeOperation(
                 channels=self.get_subscribed_channels(),
                 channel_groups=self.get_subscribed_channel_groups(),
                 timetoken=tt,
-                presence_enabled=False
+                presence_enabled=any(sub.with_presence for sub in self.subscriptions)
             )
             self.pubnub._subscription_manager.adapt_subscribe_builder(subscribe_operation)
 
@@ -279,12 +281,12 @@ class PNSubscriptionRegistry:
     def unsubscribe(self, channels=None, groups=None):
         for channel in channels:
             del self.channels[channel]
-            if self.channels[f'{channel}-pnpres']:
+            if f'{channel}-pnpres' in self.channels:
                 del self.channels[f'{channel}-pnpres']
 
         for group in groups:
             del self.channel_groups[group]
-            if self.channel_groups[f'{group}-pnpres']:
+            if f'{group}-pnpres' in self.channel_groups:
                 del self.channel_groups[f'{group}-pnpres']
 
         unsubscribe_operation = UnsubscribeOperation(

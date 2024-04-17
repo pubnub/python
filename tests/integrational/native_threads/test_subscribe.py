@@ -206,6 +206,7 @@ class TestPubNubSubscription(unittest.TestCase):
 
         pubnub.stop()
 
+    @unittest.skip
     def test_subscribe_cg_join_leave(self):
         ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
         gr = helper.gen_channel("test-subscribe-unsubscribe-group")

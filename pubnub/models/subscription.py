@@ -156,7 +156,7 @@ class PNSubscriptionRegistry:
         self.channels = {}
         self.channel_groups = {}
         self.subscription_registry_callback = None
-        self.with_presence = False
+        self.with_presence = None
         self.subscriptions = []
 
     def add(self, subscription: PNSubscribable) -> list:
@@ -165,6 +165,8 @@ class PNSubscriptionRegistry:
             self.pubnub.add_listener(self.subscription_registry_callback)
 
         self.subscriptions.append(subscription)
+        self.with_presence = any(sub.with_presence for sub in self.subscriptions)
+
         channel_list = []
         if isinstance(subscription, PubNubSubscriptionSet):
             for channel in subscription.channels:
@@ -205,7 +207,7 @@ class PNSubscriptionRegistry:
                 channels=self.get_subscribed_channels(),
                 channel_groups=self.get_subscribed_channel_groups(),
                 timetoken=tt,
-                presence_enabled=any(sub.with_presence for sub in self.subscriptions)
+                presence_enabled=self.with_presence,
             )
             self.pubnub._subscription_manager.adapt_subscribe_builder(subscribe_operation)
 
@@ -214,6 +216,8 @@ class PNSubscriptionRegistry:
     def remove(self, subscription: PubNubSubscription) -> list:
         channel_list = []
         group_list = []
+        self.subscriptions.remove(subscription)
+        self.with_presence = any(sub.with_presence for sub in self.subscriptions)
 
         if subscription.subscription_type == PNSubscriptionType.CHANNEL:
             for channel in subscription.subscription_names:

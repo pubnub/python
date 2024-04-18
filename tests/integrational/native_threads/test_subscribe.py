@@ -1,7 +1,6 @@
 import binascii
 import logging
 import unittest
-import time
 import pubnub as pn
 
 from pubnub.exceptions import PubNubException
@@ -206,50 +205,59 @@ class TestPubNubSubscription(unittest.TestCase):
 
         pubnub.stop()
 
-    @unittest.skip
     def test_subscribe_cg_join_leave(self):
         ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
         gr = helper.gen_channel("test-subscribe-unsubscribe-group")
-
         pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
         pubnub_listener = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
-        non_subscribe_listener = NonSubscribeListener()
-
-        pubnub.add_channel_to_channel_group() \
-            .channel_group(gr) \
-            .channels(ch) \
-            .pn_async(non_subscribe_listener.callback)
-        result = non_subscribe_listener.await_result_and_reset()
-        assert isinstance(result, PNChannelGroupsAddChannelResult)
-
-        time.sleep(1)
-
+        callback_messages = SubscribeListener()
         callback_presence = SubscribeListener()
 
+        result = pubnub.add_channel_to_channel_group() \
+            .channel_group(gr) \
+            .channels(ch) \
+            .sync()
+
+        assert isinstance(result.result, PNChannelGroupsAddChannelResult)
+
+        pubnub.config.uuid = helper.gen_channel("messenger")
+        pubnub_listener.config.uuid = helper.gen_channel("listener")
+
+        pubnub.add_listener(callback_messages)
         pubnub_listener.add_listener(callback_presence)
+
         pubnub_listener.subscribe().channel_groups(gr).with_presence().execute()
         callback_presence.wait_for_connect()
 
-        prs_envelope = callback_presence.wait_for_presence_on(ch)
-        assert prs_envelope.event == 'join'
-        assert prs_envelope.uuid == pubnub_listener.uuid
-        assert prs_envelope.channel == ch
-        assert prs_envelope.subscription == gr
+        envelope = callback_presence.wait_for_presence_on(ch)
+        assert envelope.channel == ch
+        assert envelope.event == 'join'
+        assert envelope.uuid == pubnub_listener.uuid
 
-        prs_envelope = callback_presence.wait_for_presence_on(ch)
+        pubnub.subscribe().channel_groups(gr).execute()
+        callback_messages.wait_for_connect()
+
+        envelope = callback_presence.wait_for_presence_on(ch)
+        assert envelope.channel == ch
+        assert envelope.event == 'join'
+        assert envelope.uuid == pubnub.uuid
+
+        pubnub.unsubscribe().channel_groups(gr).execute()
+        callback_messages.wait_for_disconnect()
+
+        envelope = callback_presence.wait_for_presence_on(ch)
+        assert envelope.channel == ch
+        assert envelope.event == 'leave'
+        assert envelope.uuid == pubnub.uuid
+
         pubnub_listener.unsubscribe().channel_groups(gr).execute()
+        callback_presence.wait_for_disconnect()
 
-        assert prs_envelope.event == 'leave'
-        assert prs_envelope.uuid == pubnub.uuid
-        assert prs_envelope.channel == ch
-        assert prs_envelope.subscription == gr
-
-        pubnub.remove_channel_from_channel_group() \
+        result = pubnub.remove_channel_from_channel_group() \
             .channel_group(gr) \
             .channels(ch) \
-            .pn_async(non_subscribe_listener.callback)
-        result = non_subscribe_listener.await_result_and_reset()
-        assert isinstance(result, PNChannelGroupsRemoveChannelResult)
+            .sync()
+        assert isinstance(result.result, PNChannelGroupsRemoveChannelResult)
 
         pubnub.stop()
         pubnub_listener.stop()

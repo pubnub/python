@@ -6,9 +6,9 @@ import pubnub as pn
 from unittest.mock import patch
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio, AsyncioEnvelope, SubscribeListener
-from tests.helper import pnconf_enc_env_copy, pnconf_env_copy
+from tests.helper import pnconf_enc_env_copy, pnconf_env_copy, pnconf_sub_copy
 from tests.integrational.vcr_asyncio_sleeper import VCR599Listener, VCR599ReconnectionManager
-# from tests.integrational.vcr_helper import pn_vcr
+from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -21,7 +21,6 @@ async def patch_pubnub(pubnub):
 # @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_unsub.json', serializer='pn_json',
 #                      filter_query_parameters=['pnsdk', 'ee', 'tr'])
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_subscribe_unsubscribe():
     channel = "test-subscribe-asyncio-ch"
     config = pnconf_env_copy(enable_subscribe=True, enable_presence_heartbeat=False)
@@ -55,7 +54,6 @@ async def test_subscribe_unsubscribe():
 # @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/sub_pub_unsub.json', serializer='pn_json',
 #                      filter_query_parameters=['pnsdk', 'ee', 'tr'])
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_subscribe_publish_unsubscribe():
     sub_config = pnconf_env_copy(enable_subscribe=True, enable_presence_heartbeat=False)
     pub_config = pnconf_env_copy(enable_subscribe=True, enable_presence_heartbeat=False)
@@ -110,7 +108,6 @@ async def test_subscribe_publish_unsubscribe():
 #     filter_query_parameters=['pnsdk']
 # )
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_encrypted_subscribe_publish_unsubscribe():
 
     pubnub = PubNubAsyncio(pnconf_enc_env_copy(enable_subscribe=True))
@@ -154,15 +151,18 @@ async def test_encrypted_subscribe_publish_unsubscribe():
     await pubnub.stop()
 
 
-# @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml',
-#                      filter_query_parameters=['pnsdk', 'l_cg'])
+@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml',
+                     filter_query_parameters=['pnsdk', 'l_cg', 'ee'])
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_join_leave():
     channel = "test-subscribe-asyncio-join-leave-ch"
+    pubnub_config = pnconf_sub_copy()
+    pubnub_config.uuid = "test-subscribe-asyncio-messenger"
+    pubnub = PubNubAsyncio(pubnub_config)
 
-    pubnub = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-messenger"))
-    pubnub_listener = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-listener"))
+    listener_config = pnconf_sub_copy()
+    listener_config.uuid = "test-subscribe-asyncio-listener"
+    pubnub_listener = PubNubAsyncio(listener_config)
 
     await patch_pubnub(pubnub)
     await patch_pubnub(pubnub_listener)
@@ -213,7 +213,6 @@ async def test_join_leave():
 # @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_unsub.yaml',
 #                      filter_query_parameters=['uuid', 'pnsdk', 'l_cg', 'l_pres'])
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_cg_subscribe_unsubscribe():
     ch = "test-subscribe-asyncio-channel"
     gr = "test-subscribe-asyncio-group"
@@ -245,7 +244,6 @@ async def test_cg_subscribe_unsubscribe():
 # @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_sub_pub_unsub.yaml',
 #                      filter_query_parameters=['uuid', 'pnsdk', 'l_cg', 'l_pres', 'l_pub'])
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_cg_subscribe_publish_unsubscribe():
     ch = "test-subscribe-asyncio-channel"
     gr = "test-subscribe-asyncio-group"
@@ -288,7 +286,6 @@ async def test_cg_subscribe_publish_unsubscribe():
     await pubnub.stop()
 
 
-@pytest.mark.skip
 # @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.json', serializer='pn_json',
 #                      filter_query_parameters=['pnsdk', 'l_cg', 'l_pres', 'ee', 'tr'])
 @pytest.mark.asyncio
@@ -361,7 +358,6 @@ async def test_cg_join_leave():
 #     match_on=['method', 'scheme', 'host', 'port', 'string_list_in_path', 'string_list_in_query'],
 # )
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_unsubscribe_all():
     config = pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-messenger")
     pubnub = PubNubAsyncio(config)

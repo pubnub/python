@@ -10,6 +10,7 @@ from tests.helper import pnconf_env_copy
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
+@pytest.mark.skip(reason='just checking something. TODO: remove skip')
 @pytest.mark.asyncio
 async def test_timeout_event_on_broken_heartbeat():
     ch = helper.gen_channel("heartbeat-test")

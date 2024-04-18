@@ -6,9 +6,9 @@ import pubnub as pn
 from unittest.mock import patch
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio, AsyncioEnvelope, SubscribeListener
-from tests.helper import pnconf_enc_env_copy, pnconf_env_copy, pnconf_sub_copy
+from tests.helper import gen_channel, pnconf_enc_env_copy, pnconf_env_copy, pnconf_sub_copy
 from tests.integrational.vcr_asyncio_sleeper import VCR599Listener, VCR599ReconnectionManager
-from tests.integrational.vcr_helper import pn_vcr
+# from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -151,11 +151,11 @@ async def test_encrypted_subscribe_publish_unsubscribe():
     await pubnub.stop()
 
 
-@pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml',
-                     filter_query_parameters=['pnsdk', 'l_cg', 'ee'])
+# @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/join_leave.yaml',
+#                      filter_query_parameters=['pnsdk', 'l_cg', 'ee'])
 @pytest.mark.asyncio
 async def test_join_leave():
-    channel = "test-subscribe-asyncio-join-leave-ch"
+    channel = gen_channel("test-subscribe-asyncio-join-leave-ch")
     pubnub_config = pnconf_sub_copy()
     pubnub_config.uuid = "test-subscribe-asyncio-messenger"
     pubnub = PubNubAsyncio(pubnub_config)
@@ -167,8 +167,8 @@ async def test_join_leave():
     await patch_pubnub(pubnub)
     await patch_pubnub(pubnub_listener)
 
-    callback_presence = VCR599Listener(1)
-    callback_messages = VCR599Listener(1)
+    callback_presence = SubscribeListener()
+    callback_messages = SubscribeListener()
 
     pubnub_listener.add_listener(callback_presence)
     pubnub_listener.subscribe().channels(channel).with_presence().execute()
@@ -289,20 +289,24 @@ async def test_cg_subscribe_publish_unsubscribe():
 # @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.json', serializer='pn_json',
 #                      filter_query_parameters=['pnsdk', 'l_cg', 'l_pres', 'ee', 'tr'])
 @pytest.mark.asyncio
-@pytest.mark.skip
 async def test_cg_join_leave():
-    pubnub = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-messenger"))
-    pubnub_listener = PubNubAsyncio(pnconf_env_copy(enable_subscribe=True, uuid="test-subscribe-asyncio-listener"))
+    config = pnconf_sub_copy()
+    config.uuid = "test-subscribe-asyncio-messenger"
+    pubnub = PubNubAsyncio(config)
 
-    ch = "test-subscribe-asyncio-join-leave-cg-channel"
-    gr = "test-subscribe-asyncio-join-leave-cg-group"
+    config_listener = pnconf_sub_copy()
+    config_listener.uuid = "test-subscribe-asyncio-listener"
+    pubnub_listener = PubNubAsyncio(config_listener)
+
+    ch = gen_channel("test-subscribe-asyncio-join-leave-cg-channel")
+    gr = gen_channel("test-subscribe-asyncio-join-leave-cg-group")
 
     envelope = await pubnub.add_channel_to_channel_group().channel_group(gr).channels(ch).future()
     assert envelope.status.original_response['status'] == 200
     await asyncio.sleep(1)
 
-    callback_messages = VCR599Listener(1)
-    callback_presence = VCR599Listener(1)
+    callback_messages = SubscribeListener()
+    callback_presence = SubscribeListener()
 
     pubnub_listener.add_listener(callback_presence)
     pubnub_listener.subscribe().channel_groups(gr).with_presence().execute()

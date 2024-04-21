@@ -47,9 +47,9 @@ class SubscribeBuilder(PubSubBuilder):
         return self._channel_group_subscriptions
 
     def execute(self):
-        subscription = self._pubnub.subscription_set(self.channel_subscriptions(), self.channel_group_subscriptions(),
-                                                     with_presence=self._presence_enabled, timetoken=self._timetoken)
-        subscription.subscribe()
+        subscription = self._pubnub.subscription_set(self.channel_subscriptions(), self.channel_group_subscriptions())
+
+        subscription.subscribe(with_presence=self._presence_enabled, timetoken=self._timetoken)
 
 
 class UnsubscribeBuilder(PubSubBuilder):

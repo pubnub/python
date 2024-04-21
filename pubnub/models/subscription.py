@@ -19,10 +19,8 @@ class PNSubscribable:
     def __init__(self, pubnub_instance) -> None:
         self.pubnub = pubnub_instance
 
-    def subscription(self, *, timetoken: Optional[int] = None, region: Optional[str] = None,
-                     with_presence: Optional[bool] = None):
-        return PubNubSubscription(self.pubnub, self.subscription_names, self.subscription_type, timetoken, region,
-                                  with_presence)
+    def subscription(self):
+        return PubNubSubscription(self.pubnub, self.subscription_names, self.subscription_type)
 
 
 class PNEventEmitter:
@@ -73,7 +71,11 @@ class PNEventEmitter:
 
 
 class PNSubscribeCapable:
-    def subscribe(self):
+    def subscribe(self, timetoken: Optional[int] = None, region: Optional[str] = None,
+                  with_presence: Optional[bool] = None):
+        self.timetoken = timetoken
+        self.region = region
+        self.with_presence = with_presence
         self.subscription_registry.add(self)
 
     def unsubscribe(self):
@@ -83,19 +85,13 @@ class PNSubscribeCapable:
 class PubNubSubscription(PNEventEmitter, PNSubscribeCapable):
     def __init__(self, pubnub_instance,
                  subscription_names: List[str],
-                 subscription_type: PNSubscriptionType,
-                 timetoken: Optional[int] = None,
-                 region: Optional[str] = None,
-                 with_presence: bool = False) -> None:
+                 subscription_type: PNSubscriptionType) -> None:
 
         self.subscription_registry = pubnub_instance._subscription_registry
         self.subscription_manager = pubnub_instance._subscription_manager
         self.subscription = None
         self.subscription_names = subscription_names
         self.subscription_type = subscription_type
-        self.timetoken = timetoken
-        self.region = region
-        self.with_presence = with_presence
 
     def add_listener(self, listener):
         self.subscription_registry.add_listener(listener)
@@ -104,18 +100,12 @@ class PubNubSubscription(PNEventEmitter, PNSubscribeCapable):
 class PubNubSubscriptionSet(PNEventEmitter, PNSubscribeCapable):
     def __init__(self, pubnub_instance,
                  channels: Optional[List[str]] = None,
-                 channel_groups: Optional[List[str]] = None,
-                 timetoken: Optional[int] = None,
-                 region: Optional[str] = None,
-                 with_presence: Optional[bool] = None) -> None:
+                 channel_groups: Optional[List[str]] = None) -> None:
         self.subscription_type = PNSubscriptionType.SUBSCRIPTION_SET
         self.subscription_registry = pubnub_instance._subscription_registry
         self.subscription_manager = pubnub_instance._subscription_manager
         self.channels = channels
         self.channel_groups = channel_groups
-        self.timetoken = timetoken
-        self.region = region
-        self.with_presence = with_presence
 
 
 class PubNubChannel(PNSubscribable):

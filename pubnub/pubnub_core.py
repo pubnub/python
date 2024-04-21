@@ -663,5 +663,4 @@ class PubNubCore:
         if not channels and not channel_groups:
             raise PubNubException('At least one channel or channel group is required')
 
-        return PubNubSubscriptionSet(self, channels=channels, channel_groups=channel_groups, timetoken=timetoken,
-                                     region=region, with_presence=with_presence)
+        return PubNubSubscriptionSet(self, channels=channels, channel_groups=channel_groups)

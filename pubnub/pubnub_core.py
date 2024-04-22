@@ -658,9 +658,5 @@ class PubNubCore:
     def user_metadata(self, user_id) -> PubNubUserMetadata:
         return PubNubUserMetadata(self, user_id)
 
-    def subscription_set(self, channels=None, channel_groups=None, timetoken=None, region=None,
-                         with_presence=None) -> PubNubSubscriptionSet:
-        if not channels and not channel_groups:
-            raise PubNubException('At least one channel or channel group is required')
-
-        return PubNubSubscriptionSet(self, channels=channels, channel_groups=channel_groups)
+    def subscription_set(self, subscriptions: list) -> PubNubSubscriptionSet:
+        return PubNubSubscriptionSet(self, subscriptions)

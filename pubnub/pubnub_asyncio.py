@@ -590,21 +590,17 @@ class EventEngineSubscriptionManager(SubscriptionManager):
         self.event_engine.trigger(subscription_event)
         if self._pubnub.config.enable_presence_heartbeat and self._pubnub.config._heartbeat_interval > 0:
             self.presence_engine.trigger(events.HeartbeatJoinedEvent(
-                channels=subscribe_operation.channels,
-                groups=subscribe_operation.channel_groups,
+                channels=subscribe_operation.channels_without_presence,
+                groups=subscribe_operation.channel_groups_without_presence
             ))
 
     def adapt_unsubscribe_builder(self, unsubscribe_operation):
         if not isinstance(unsubscribe_operation, UnsubscribeOperation):
             raise PubNubException('Invalid Unsubscribe Operation')
 
-        channels = unsubscribe_operation.get_subscribed_channels(
-            self.event_engine.get_context().channels,
-            self.event_engine.get_context().with_presence)
+        channels = unsubscribe_operation.get_subscribed_channels(self.event_engine.get_context().channels)
 
-        groups = unsubscribe_operation.get_subscribed_channel_groups(
-            self.event_engine.get_context().groups,
-            self.event_engine.get_context().with_presence)
+        groups = unsubscribe_operation.get_subscribed_channel_groups(self.event_engine.get_context().groups)
 
         if channels or groups:
             self.event_engine.trigger(events.SubscriptionChangedEvent(channels=channels, groups=groups))
@@ -613,8 +609,8 @@ class EventEngineSubscriptionManager(SubscriptionManager):
 
         if self._pubnub.config.enable_presence_heartbeat and self._pubnub.config._heartbeat_interval > 0:
             self.presence_engine.trigger(event=events.HeartbeatLeftEvent(
-                channels=unsubscribe_operation.channels,
-                groups=unsubscribe_operation.channel_groups,
+                channels=unsubscribe_operation.channels_without_presence,
+                groups=unsubscribe_operation.channel_groups_without_presence,
                 suppress_leave=self._pubnub.config.suppress_leave_events
             ))
 

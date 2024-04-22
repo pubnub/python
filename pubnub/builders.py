@@ -1,4 +1,6 @@
 from abc import ABCMeta, abstractmethod
+
+from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup
 from . import utils
 
 
@@ -41,15 +43,17 @@ class SubscribeBuilder(PubSubBuilder):
         return self
 
     def channel_subscriptions(self):
-        return self._channel_subscriptions
+        return [PubNubChannel(self._pubnub, channel).subscription(self._presence_enabled)
+                for channel in self._channel_subscriptions]
 
     def channel_group_subscriptions(self):
-        return self._channel_group_subscriptions
+        return [PubNubChannelGroup(self._pubnub, group).subscription(self._presence_enabled)
+                for group in self._channel_group_subscriptions]
 
     def execute(self):
-        subscription = self._pubnub.subscription_set(self.channel_subscriptions(), self.channel_group_subscriptions())
+        subscription = self._pubnub.subscription_set(self.channel_subscriptions() + self.channel_group_subscriptions())
 
-        subscription.subscribe(with_presence=self._presence_enabled, timetoken=self._timetoken)
+        subscription.subscribe(timetoken=self._timetoken)
 
 
 class UnsubscribeBuilder(PubSubBuilder):

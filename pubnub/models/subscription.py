@@ -38,10 +38,7 @@ class PNEventEmitter:
             return subscription.endswith('.*') and name.startswith(subscription.strip('*'))
 
         if self._type == PNSubscriptionType.CHANNEL:
-            return any(
-                [message.channel == subscription or wildcard_match(message.channel, subscription)
-                    for subscription in self.name]
-            )
+            return message.channel == self.name or wildcard_match(message.channel, self.name)
         elif self._type == PNSubscriptionType.CHANNEL_GROUP:
             return message.subscription in self.name
         else:

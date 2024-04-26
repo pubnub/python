@@ -8,7 +8,6 @@ from pubnub.dtos import SubscribeOperation, UnsubscribeOperation
 class PNSubscriptionType(Enum):
     CHANNEL: str = "channel"
     CHANNEL_GROUP: str = "channel_group"
-    SUBSCRIPTION_SET: str = "subscription_set"
 
 
 class PNSubscribable:
@@ -99,8 +98,6 @@ class PubNubSubscription(PNEventEmitter, PNSubscribeCapable):
 
 
 class PubNubSubscriptionSet(PNEventEmitter, PNSubscribeCapable):
-    _type = PNSubscriptionType.SUBSCRIPTION_SET
-
     def __init__(self, pubnub_instance, subscriptions: List[PubNubSubscription]) -> None:
         self.subscription_registry = pubnub_instance._subscription_registry
         self.subscription_manager = pubnub_instance._subscription_manager

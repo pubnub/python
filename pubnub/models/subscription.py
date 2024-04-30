@@ -40,7 +40,7 @@ class PNEventEmitter:
         if self._type == PNSubscriptionType.CHANNEL:
             return message.channel == self.name or wildcard_match(message.channel, self.name)
         else:
-            return message.subscription in self.name
+            return message.subscription == self.name
 
     def presence(self, presence):
         if not hasattr(self, 'on_presence') or not self.with_presence:
@@ -90,10 +90,99 @@ class PubNubSubscription(PNEventEmitter, PNSubscribeCapable):
 
 
 class PubNubSubscriptionSet(PNEventEmitter, PNSubscribeCapable):
+    __on_message: callable
+    __on_signal: callable
+    __on_presence: callable
+    __on_channel_metadata: callable
+    __on_user_metadata: callable
+    __on_message_action: callable
+    __on_membership: callable
+    __on_file: callable
+
     def __init__(self, pubnub_instance, subscriptions: List[PubNubSubscription]) -> None:
         self.subscription_registry = pubnub_instance._subscription_registry
         self.subscription_manager = pubnub_instance._subscription_manager
         self.subscriptions = subscriptions
+
+    @property
+    def on_message(self):
+        return self.__on_message
+
+    @on_message.setter
+    def on_message(self, callback):
+        self.__on_message = callback
+        for subscription in self.subscriptions:
+            subscription.on_message = callback
+
+    @property
+    def on_signal(self):
+        return self.__on_signal
+
+    @on_signal.setter
+    def on_signal(self, callback):
+        self.__on_signal = callback
+        for subscription in self.subscriptions:
+            subscription.on_signal = callback
+
+    @property
+    def on_presence(self):
+        return self.__on_presence
+
+    @on_presence.setter
+    def on_presence(self, callback):
+        self.__on_presence = callback
+        for subscription in self.subscriptions:
+            subscription.on_presence = callback
+
+    @property
+    def on_channel_metadata(self):
+        return self.__on_channel_metadata
+
+    @on_channel_metadata.setter
+    def on_channel_metadata(self, callback):
+        self.__on_channel_metadata = callback
+        for subscription in self.subscriptions:
+            subscription.on_channel_metadata = callback
+
+    @property
+    def on_user_metadata(self):
+        return self.__on_user_metadata
+
+    @on_user_metadata.setter
+    def on_user_metadata(self, callback):
+        self.__on_user_metadata = callback
+        for subscription in self.subscriptions:
+            subscription.on_user_metadata = callback
+
+    @property
+    def on_message_action(self):
+        return self.__on_message_action
+
+    @on_message_action.setter
+    def on_message_action(self, callback):
+        self.__on_message_action = callback
+        for subscription in self.subscriptions:
+            subscription.on_message_action = callback
+
+    @property
+    def on_membership(self):
+        return self.__on_membership
+
+    @on_membership.setter
+    def on_membership(self, callback):
+        self.__on_membership = callback
+        for subscription in self.subscriptions:
+            subscription.on_membership = callback
+
+    @property
+    def on_file(self):
+        return self.__on_file
+
+    @on_file.setter
+    def on_file(self, callback):
+        self.__on_file = callback
+        for subscription in self.subscriptions:
+            subscription.on_file = callback
 
 
 class PubNubChannel(PNSubscribable):
@@ -148,7 +237,7 @@ class PNSubscriptionRegistry:
                 subscription_list[name] = [subscription]
                 names_added.append(name)
             else:
-                subscription_list.append(name)
+                subscription_list[name].append(subscription)
         return names_added
 
     def __remove_subscription(self, subscription: PubNubSubscription):
@@ -305,17 +394,20 @@ class PNSubscriptionRegistryCallback(SubscribeCallback):
 
     def channel(self, _, channel):
         for listener in self.subscription_registry.get_all_listeners():
-            listener.channel
+            listener.channel(channel)
 
     def uuid(self, pubnub, uuid):
-        print(f'uuid: \n {uuid.__dict__}\n')
+        for listener in self.subscription_registry.get_all_listeners():
+            listener.uuid(uuid)
 
     def membership(self, _, membership):
-        print(f'membership: \n {membership.__dict__}\n')
+        for listener in self.subscription_registry.get_all_listeners():
+            listener.membership(membership)
 
     def message_action(self, _, message_action):
         for listener in self.subscription_registry.get_all_listeners():
             listener.message_action(message_action)
 
     def file(self, _, file_message):
-        print(f'file_message: \n {file_message.__dict__}\n')
+        for listener in self.subscription_registry.get_all_listeners():
+            listener.file_message(file_message)

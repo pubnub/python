@@ -93,7 +93,7 @@ pubnub.add_listener(PrintListener())
 print('Creating channel object for "test"')
 test1 = pubnub.channel(f'{channel}')
 print('Creating subscription object for "test"')
-t1_subscription = test1.subscription(with_presence=False)
+t1_subscription = test1.subscription()
 t1_subscription.on_message = on_message('listener_1')
 t1_subscription.on_message_action = on_message_action('listener_1')
 t1_subscription.on_presence = on_presence('listener_1')
@@ -101,69 +101,8 @@ t1_subscription.on_status = on_status('listener_1')
 t1_subscription.on_signal = on_signal('listener_1')
 
 print('We\'re not yet subscribed to channel "test". So let\'s do it now.')
-t1_subscription.subscribe()
+t1_subscription.subscribe(with_presence=True)
 print("Now we're subscribed. We should receive status: connected")
-
-time.sleep(3)
-print("We don't see any presence event since we don't have it enabled yet")
-
-print('Creating second subscription object for channel "test.2"')
-test2 = pubnub.channel(f'{channel}.2')
-print('Creating subscription object for "test"')
-t2_subscription = test1.subscription(with_presence=True)
-
-t2_subscription.on_message = on_message('listener_2')
-t2_subscription.on_presence = on_presence('listener_2')
-t2_subscription.on_status = on_status('listener_2')
-t2_subscription.on_signal = on_signal('listener_2')
-t2_subscription.subscribe()
-
-print('Now we\'re subscribed to "test" with two listeners. one with presence and one without')
-print('So we should see presence events only for listener "test2" for channel "test2"')
-time.sleep(2)
-
-# Channel test3, no presence, third channel object
-print('Creating channel object for "test.3"')
-test3 = pubnub.channel(f'{channel}.3')
-print('Creating subscription object for "test.3"')
-t3_subscription = test3.subscription()
-t3_subscription.on_message = on_message('listener_3')
-t3_subscription.on_presence = on_presence('listener_3')
-t3_subscription.on_status = on_status('listener_3')
-t3_subscription.on_signal = on_signal('listener_3')
-print('We subscribe to third channel so we should see three "connected" statuses and no new presence events')
-t3_subscription.subscribe()
-
-print('Creating wildcard object for "test.*"')
-wildcard_channel = pubnub.channel(f'{channel}.*')
-print('Creating wildcard subscription object for "test.*"')
-wildcard = wildcard_channel.subscription()
-wildcard.on_message = on_message('WILDCARD')
-wildcard.on_presence = on_presence('WILDCARD')
-wildcard.on_status = on_status('WILDCARD')
-wildcard.on_signal = on_signal('WILDCARD')
-print('We subscribe to all channels "test.*"')
-wildcard.subscribe()
-
-print('Creating Group with "test.2" and "test.3"')
-pubnub.add_channel_to_channel_group() \
-    .channels(['test']) \
-    .channel_group(group_name) \
-    .sync()
-
-print('Creating group object for "test_group"')
-group = pubnub.channel_group(f'{group_name}')
-print('Creating wildcard subscription object for "group_name"')
-group_subscription = group.subscription()
-group_subscription.on_message = on_message('group')
-group_subscription.on_presence = on_presence('group')
-group_subscription.on_status = on_status('group')
-group_subscription.on_signal = on_signal('group')
-print('We subscribe to the channel group "test_group"')
-group_subscription.subscribe()
-
-print('Now we publish messages to each channel separately')
-time.sleep(1)
 
 # Testing message delivery
 publish_result = pubnub.publish() \
@@ -172,28 +111,11 @@ publish_result = pubnub.publish() \
     .meta({'lang': 'en'}) \
     .sync()
 
-pubnub.publish() \
-    .channel(f'{channel}.2') \
-    .message('Nau mai ki te hongere "test.2" mai i PubNub Python SDK') \
-    .meta({'lang': 'mi'}) \
-    .sync()
+time.sleep(2)
 
-pubnub.publish() \
-    .channel(f'{channel}.3') \
-    .message('Bienvenido al canal "test.3" de PubNub Python SDK') \
-    .meta({'lang': 'es'}) \
-    .sync()
-
-pubnub.publish() \
-    .channel(f'{channel}.4') \
-    .message('Ciao canale "test.4" da PubNub Python SDK') \
-    .meta({'lang': 'it'}) \
-    .sync()
-
-time.sleep(1)
-
-print('Removing second subscription object for "test"')
+print('Removing subscription object for "test"')
 t1_subscription.unsubscribe()
+time.sleep(2)
 
 print('Exiting')
 pubnub.stop()

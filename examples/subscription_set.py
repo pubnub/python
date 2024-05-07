@@ -41,7 +41,7 @@ subscription_set = pubnub.subscription_set([channel_1, channel_2])
 subscription_set.on_message = on_message
 subscription_set.on_presence = on_presence
 
-set_subscription = subscription_set.subscribe(with_presence=True)
+set_subscription = subscription_set.subscribe()
 
 print("Now we're subscribed. We should receive status: connected on PrintListener")
 # Testing message delivery

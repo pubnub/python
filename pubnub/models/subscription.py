@@ -63,11 +63,9 @@ class PNEventEmitter:
 
 
 class PNSubscribeCapable:
-    def subscribe(self, timetoken: Optional[int] = None, region: Optional[str] = None,
-                  with_presence: Optional[bool] = None):
+    def subscribe(self, timetoken: Optional[int] = None, region: Optional[str] = None):
         self.timetoken = timetoken
         self.region = region
-        self.with_presence = with_presence
         self.subscription_registry.add(self)
 
     def unsubscribe(self):

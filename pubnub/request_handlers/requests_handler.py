@@ -55,7 +55,6 @@ class RequestsRequestHandler(BaseRequestHandler):
                     # Since there are no way to affect on ongoing request it's response will
                     # be just ignored on cancel call
                     return
-
                 callback(envelope)
             except PubNubException as e:
                 logger.error("Async request PubNubException. %s" % str(e))
@@ -68,6 +67,7 @@ class RequestsRequestHandler(BaseRequestHandler):
                         exception=e)))
             except Exception as e:
                 logger.error("Async request Exception. %s" % str(e))
+
                 callback(Envelope(
                     result=None,
                     status=endpoint_call_options.create_status(

@@ -1,5 +1,5 @@
 name: python
-version: 7.4.4
+version: 8.0.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-7.4.4
+            package-name: pubnub-8.0.0
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -97,8 +97,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-7.4.4
-            location: https://github.com/pubnub/python/releases/download/v7.4.4/pubnub-7.4.4.tar.gz
+            package-name: pubnub-8.0.0
+            location: https://github.com/pubnub/python/releases/download/v8.0.0/pubnub-8.0.0.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,13 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
+  - date: 2024-05-09
+    version: v8.0.0
+    changes:
+      - type: feature
+        text: "A new version of subscription and presence handling is enabled by default (enableEventEngine flag is set to true). Please consult the documentation for new PNStatus values that are emitted for subscriptions, as code changes might be required to support this change."
+      - type: feature
+        text: "Channels, ChannelGroups, ChannelMetadata and UserMetadata."
   - date: 2024-04-10
     version: v7.4.4
     changes:

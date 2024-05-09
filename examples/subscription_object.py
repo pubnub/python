@@ -93,7 +93,7 @@ pubnub.add_listener(PrintListener())
 print('Creating channel object for "test"')
 test1 = pubnub.channel(f'{channel}')
 print('Creating subscription object for "test"')
-t1_subscription = test1.subscription()
+t1_subscription = test1.subscription(with_presence=True)
 t1_subscription.on_message = on_message('listener_1')
 t1_subscription.on_message_action = on_message_action('listener_1')
 t1_subscription.on_presence = on_presence('listener_1')
@@ -101,7 +101,7 @@ t1_subscription.on_status = on_status('listener_1')
 t1_subscription.on_signal = on_signal('listener_1')
 
 print('We\'re not yet subscribed to channel "test". So let\'s do it now.')
-t1_subscription.subscribe(with_presence=True)
+t1_subscription.subscribe()
 print("Now we're subscribed. We should receive status: connected")
 
 # Testing message delivery

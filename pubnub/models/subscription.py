@@ -36,14 +36,18 @@ class PNEventEmitter:
     def is_matching_listener(self, message):
         def wildcard_match(name, subscription):
             return subscription.endswith('.*') and name.startswith(subscription.strip('*'))
-
-        if self._type == PNSubscriptionType.CHANNEL:
-            return message.channel == self.name or wildcard_match(message.channel, self.name)
+        if isinstance(self, PubNubSubscriptionSet):
+            return any([
+                message.channel == subscription_item.name or wildcard_match(message.channel, subscription_item.name)
+                for subscription_item in self.get_subscription_items()])
         else:
-            return message.subscription == self.name
+            if self._type == PNSubscriptionType.CHANNEL:
+                return message.channel == self.name or wildcard_match(message.channel, self.name)
+            else:
+                return message.subscription == self.name
 
     def presence(self, presence):
-        if not hasattr(self, 'on_presence') or not self.with_presence:
+        if not hasattr(self, 'on_presence') or not (hasattr(self, 'with_presence') and self.with_presence):
             return
 
         if self.is_matching_listener(presence) and hasattr(self, 'on_presence'):
@@ -88,99 +92,13 @@ class PubNubSubscription(PNEventEmitter, PNSubscribeCapable):
 
 
 class PubNubSubscriptionSet(PNEventEmitter, PNSubscribeCapable):
-    __on_message: callable
-    __on_signal: callable
-    __on_presence: callable
-    __on_channel_metadata: callable
-    __on_user_metadata: callable
-    __on_message_action: callable
-    __on_membership: callable
-    __on_file: callable
-
     def __init__(self, pubnub_instance, subscriptions: List[PubNubSubscription]) -> None:
         self.subscription_registry = pubnub_instance._subscription_registry
         self.subscription_manager = pubnub_instance._subscription_manager
         self.subscriptions = subscriptions
 
-    @property
-    def on_message(self):
-        return self.__on_message
-
-    @on_message.setter
-    def on_message(self, callback):
-        self.__on_message = callback
-        for subscription in self.subscriptions:
-            subscription.on_message = callback
-
-    @property
-    def on_signal(self):
-        return self.__on_signal
-
-    @on_signal.setter
-    def on_signal(self, callback):
-        self.__on_signal = callback
-        for subscription in self.subscriptions:
-            subscription.on_signal = callback
-
-    @property
-    def on_presence(self):
-        return self.__on_presence
-
-    @on_presence.setter
-    def on_presence(self, callback):
-        self.__on_presence = callback
-        for subscription in self.subscriptions:
-            subscription.on_presence = callback
-
-    @property
-    def on_channel_metadata(self):
-        return self.__on_channel_metadata
-
-    @on_channel_metadata.setter
-    def on_channel_metadata(self, callback):
-        self.__on_channel_metadata = callback
-        for subscription in self.subscriptions:
-            subscription.on_channel_metadata = callback
-
-    @property
-    def on_user_metadata(self):
-        return self.__on_user_metadata
-
-    @on_user_metadata.setter
-    def on_user_metadata(self, callback):
-        self.__on_user_metadata = callback
-        for subscription in self.subscriptions:
-            subscription.on_user_metadata = callback
-
-    @property
-    def on_message_action(self):
-        return self.__on_message_action
-
-    @on_message_action.setter
-    def on_message_action(self, callback):
-        self.__on_message_action = callback
-        for subscription in self.subscriptions:
-            subscription.on_message_action = callback
-
-    @property
-    def on_membership(self):
-        return self.__on_membership
-
-    @on_membership.setter
-    def on_membership(self, callback):
-        self.__on_membership = callback
-        for subscription in self.subscriptions:
-            subscription.on_membership = callback
-
-    @property
-    def on_file(self):
-        return self.__on_file
-
-    @on_file.setter
-    def on_file(self, callback):
-        self.__on_file = callback
-        for subscription in self.subscriptions:
-            subscription.on_file = callback
+    def get_subscription_items(self):
+        return [item for item in self.subscriptions]
 
 
 class PubNubChannel(PNSubscribable):
@@ -221,9 +139,13 @@ class PNSubscriptionRegistry:
         self.with_presence = None
         self.subscriptions = []
 
-    def __add_subscription(self, subscription: PubNubSubscription):
+    def __add_subscription(self, subscription: PubNubSubscription, subscription_set: PubNubSubscriptionSet = None):
         names_added = []
         self.subscriptions.append(subscription)
+
+        subscriptions = [subscription]
+        if subscription_set:
+            subscriptions.append(subscription_set)
 
         if subscription._type == PNSubscriptionType.CHANNEL:
             subscription_list = self.channels
@@ -232,10 +154,10 @@ class PNSubscriptionRegistry:
 
         for name in subscription.get_names_with_presence():
             if name not in subscription_list:
-                subscription_list[name] = [subscription]
+                subscription_list[name] = subscriptions
                 names_added.append(name)
             else:
-                subscription_list[name].append(subscription)
+                subscription_list[name].extend(subscriptions)
         return names_added
 
     def __remove_subscription(self, subscription: PubNubSubscription):
@@ -252,7 +174,7 @@ class PNSubscriptionRegistry:
             removed = names_removed['groups']
 
         for name in subscription.get_names_with_presence():
-            if name in subscription_list:
+            if name in subscription_list and subscription in subscription_list[name]:
                 subscription_list[name].remove(subscription)
                 if len(subscription_list[name]) == 0:
                     removed.append(name)
@@ -269,7 +191,7 @@ class PNSubscriptionRegistry:
         names_changed = []
         if isinstance(subscription, PubNubSubscriptionSet):
             for subscription_part in subscription.subscriptions:
-                names_changed.append(self.__add_subscription(subscription_part))
+                names_changed.append(self.__add_subscription(subscription_part, subscription))
         else:
             names_changed.append(self.__add_subscription(subscription))
 

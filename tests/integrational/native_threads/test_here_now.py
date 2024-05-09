@@ -2,7 +2,6 @@ import unittest
 import logging
 import time
 
-import pytest
 import pubnub
 import threading
 
@@ -22,7 +21,6 @@ class TestPubNubState(unittest.TestCase):
         self.status = status
         self.event.set()
 
-    @pytest.mark.skip(reason="Needs to be reworked to use VCR")
     def test_single_channel(self):
         pubnub = PubNub(pnconf_sub_copy())
         ch = helper.gen_channel("herenow-asyncio-channel")
@@ -58,7 +56,6 @@ class TestPubNubState(unittest.TestCase):
 
         pubnub.stop()
 
-    @pytest.mark.skip(reason="Needs to be reworked to use VCR")
     def test_multiple_channels(self):
         pubnub = PubNub(pnconf_sub_copy())
         ch1 = helper.gen_channel("here-now-native-sync-ch1")

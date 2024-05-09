@@ -84,9 +84,10 @@ class PNPresenceEventResult(object):
 
 
 class PNMessageActionResult(PNMessageAction):
-
-    def __init__(self, result):
+    def __init__(self, result, *, subscription=None, channel=None):
         super(PNMessageActionResult, self).__init__(result)
+        self.subscription = subscription
+        self.channel = channel
 
 
 class PNPublishResult(object):

@@ -982,10 +982,12 @@ class HeartbeatCooldownState(PNState):
     def left(self, event: events.HeartbeatLeftEvent, context: PNContext) -> PNTransition:
         self._context.update(context)
         for channel in event.channels:
-            self._context.channels.remove(channel)
+            if channel in self._context.channels:
+                self._context.channels.remove(channel)
 
         for group in event.groups:
-            self._context.groups.remove(group)
+            if group in self._context.groups:
+                self._context.groups.remove(group) or None
 
         invocation = None
         if not event.suppress_leave:

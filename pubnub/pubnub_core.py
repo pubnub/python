@@ -20,6 +20,8 @@ from pubnub.errors import PNERR_MISUSE_OF_USER_AND_SPACE, PNERR_USER_SPACE_PAIRS
 from pubnub.exceptions import PubNubException
 from pubnub.features import feature_flag
 from pubnub.crypto import PubNubCryptoModule
+from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup, PubNubChannelMetadata, PubNubUserMetadata, \
+    PNSubscriptionRegistry, PubNubSubscriptionSet
 
 from abc import ABCMeta, abstractmethod
 
@@ -85,7 +87,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "7.4.4"
+    SDK_VERSION = "8.0.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -93,6 +95,8 @@ class PubNubCore:
 
     __metaclass__ = ABCMeta
     __crypto = None
+
+    _subscription_registry: PNSubscriptionRegistry
 
     def __init__(self, config):
         self.config = config
@@ -106,6 +110,7 @@ class PubNubCore:
         self._telemetry_manager = TelemetryManager()
         self._base_path_manager = BasePathManager(config)
         self._token_manager = TokenManager()
+        self._subscription_registry = PNSubscriptionRegistry(self)
 
     @property
     def base_origin(self):
@@ -164,16 +169,16 @@ class PubNubCore:
         return RemoveChannelGroup(self)
 
     def subscribe(self):
-        return SubscribeBuilder(self._subscription_manager)
+        return SubscribeBuilder(self)
 
     def unsubscribe(self):
-        return UnsubscribeBuilder(self._subscription_manager)
+        return UnsubscribeBuilder(self)
 
     def unsubscribe_all(self):
-        return self._subscription_manager.unsubscribe_all()
+        return self._subscription_registry.unsubscribe_all()
 
     def reconnect(self):
-        return self._subscription_manager.reconnect()
+        return self._subscription_registry.reconnect()
 
     def heartbeat(self):
         return Heartbeat(self)
@@ -640,3 +645,18 @@ class PubNubCore:
         if sync:
             return memberships.sync()
         return memberships
+
+    def channel(self, channel) -> PubNubChannel:
+        return PubNubChannel(self, channel)
+
+    def channel_group(self, channel_group) -> PubNubChannelGroup:
+        return PubNubChannelGroup(self, channel_group)
+
+    def channel_metadata(self, channel) -> PubNubChannelMetadata:
+        return PubNubChannelMetadata(self, channel)
+
+    def user_metadata(self, user_id) -> PubNubUserMetadata:
+        return PubNubUserMetadata(self, user_id)
+
+    def subscription_set(self, subscriptions: list) -> PubNubSubscriptionSet:
+        return PubNubSubscriptionSet(self, subscriptions)

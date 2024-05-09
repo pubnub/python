@@ -356,7 +356,7 @@ class NativePeriodicCallback:
 
     def _schedule_next(self):
         self._timeout = threading.Timer(self._callback_time, self._run)
-        self._timer.daemon = True
+        self._timeout.daemon = True
         self._timeout.start()
 
 

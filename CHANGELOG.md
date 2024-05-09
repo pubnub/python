@@ -1,3 +1,10 @@
+## v8.0.0
+May 09 2024
+
+#### Added
+- A new version of subscription and presence handling is enabled by default (enableEventEngine flag is set to true). Please consult the documentation for new PNStatus values that are emitted for subscriptions, as code changes might be required to support this change.
+- Channels, ChannelGroups, ChannelMetadata and UserMetadata.
+
 ## v7.4.4
 April 10 2024
 

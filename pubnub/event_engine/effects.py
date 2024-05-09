@@ -273,8 +273,9 @@ class ReceiveReconnectEffect(ReconnectEffect):
 
 class HeartbeatEffect(Effect):
     def run(self):
-        channels = self.invocation.channels
-        groups = self.invocation.groups
+        channels = list(filter(lambda ch: not ch.endswith('-pnpres'), self.invocation.channels))
+        groups = list(filter(lambda gr: not gr.endswith('-pnpres'), self.invocation.groups))
+
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
             self.run_async(self.heartbeat(channels=channels, groups=groups, stop_event=self.stop_event))
@@ -362,6 +363,10 @@ class HeartbeatDelayedEffect(Effect):
                                                                   groups=self.invocation.groups,
                                                                   reason=self.invocation.reason,
                                                                   attempt=self.invocation.attempts))
+
+        channels = list(filter(lambda ch: not ch.endswith('-pnpres'), self.invocation.channels))
+        groups = list(filter(lambda gr: not gr.endswith('-pnpres'), self.invocation.groups))
+
         request = Heartbeat(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
         delay = self.calculate_reconnection_delay(attempt)
         self.logger.warning(f'Will retry to Heartbeat in {delay}s')

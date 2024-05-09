@@ -48,6 +48,8 @@ class SetChannel(ObjectsEndpoint, ChannelEndpoint, IncludeCustomEndpoint, Custom
         payload = {
             "name": self._name,
             "description": self._description,
+            "status": self._status,
+            "type": self._type,
             "custom": self._custom
         }
         payload = StatusTypeAwareEndpoint.build_data(self, payload)

@@ -33,7 +33,7 @@ PAM_TOKEN_WITH_PUBLISH_ENABLED = (
 
 crypto_configuration = PNConfiguration()
 crypto = PubNubCryptodome(crypto_configuration)
-crypto.subscribe_request_timeout = 10
+crypto.subscribe_request_timeout = 20
 
 DEFAULT_TEST_CIPHER_KEY = "testKey"
 
@@ -60,6 +60,8 @@ pnconf_sub.publish_key = pub_key
 pnconf_sub.subscribe_request_timeout = 10
 pnconf_sub.subscribe_key = sub_key
 pnconf_sub.uuid = uuid_mock
+pnconf_sub.enable_presence_heartbeat = True
+pnconf_sub.set_presence_timeout_with_custom_interval(30, 10)
 
 pnconf_enc = PNConfiguration()
 pnconf_enc.publish_key = pub_key

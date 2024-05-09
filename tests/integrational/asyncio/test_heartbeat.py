@@ -5,28 +5,21 @@ import pytest
 import pubnub as pn
 from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio, SubscribeListener
 from tests import helper
-from tests.helper import pnconf_sub_copy
+from tests.helper import pnconf_env_copy
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
 
 
-messenger_config = pnconf_sub_copy()
-messenger_config.set_presence_timeout(8)
-messenger_config.uuid = helper.gen_channel("messenger")
-
-listener_config = pnconf_sub_copy()
-listener_config.uuid = helper.gen_channel("listener")
-
-
 @pytest.mark.asyncio
-async def test_timeout_event_on_broken_heartbeat(event_loop):
+async def test_timeout_event_on_broken_heartbeat():
     ch = helper.gen_channel("heartbeat-test")
 
-    pubnub = PubNubAsyncio(messenger_config, custom_event_loop=event_loop)
-    pubnub_listener = PubNubAsyncio(listener_config, custom_event_loop=event_loop)
+    messenger_config = pnconf_env_copy(uuid=helper.gen_channel("messenger"), enable_subscribe=True)
+    messenger_config.set_presence_timeout(8)
+    pubnub = PubNubAsyncio(messenger_config)
 
-    pubnub.config.uuid = helper.gen_channel("messenger")
-    pubnub_listener.config.uuid = helper.gen_channel("listener")
+    listener_config = pnconf_env_copy(uuid=helper.gen_channel("listener"), enable_subscribe=True)
+    pubnub_listener = PubNubAsyncio(listener_config)
 
     # - connect to :ch-pnpres
     callback_presence = SubscribeListener()
@@ -39,7 +32,7 @@ async def test_timeout_event_on_broken_heartbeat(event_loop):
     assert 'join' == envelope.event
     assert pubnub_listener.uuid == envelope.uuid
 
-    # - connect to :ch
+    # # - connect to :ch
     callback_messages = SubscribeListener()
     pubnub.add_listener(callback_messages)
     pubnub.subscribe().channels(ch).execute()
@@ -55,12 +48,11 @@ async def test_timeout_event_on_broken_heartbeat(event_loop):
     assert ch == prs_envelope.channel
     assert 'join' == prs_envelope.event
     assert pubnub.uuid == prs_envelope.uuid
+    # - break messenger heartbeat loop
+    pubnub._subscription_manager._stop_heartbeat_timer()
 
     # wait for one heartbeat call
     await asyncio.sleep(8)
-
-    # - break messenger heartbeat loop
-    pubnub._subscription_manager._stop_heartbeat_timer()
 
     # - assert for timeout
     envelope = await callback_presence.wait_for_presence_on(ch)

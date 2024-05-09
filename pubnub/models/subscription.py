@@ -37,9 +37,8 @@ class PNEventEmitter:
         def wildcard_match(name, subscription):
             return subscription.endswith('.*') and name.startswith(subscription.strip('*'))
         if isinstance(self, PubNubSubscriptionSet):
-            return any([
-                message.channel == subscription_item.name or wildcard_match(message.channel, subscription_item.name)
-                for subscription_item in self.get_subscription_items()])
+            return any([subscription_item.is_matching_listener(message)
+                        for subscription_item in self.get_subscription_items()])
         else:
             if self._type == PNSubscriptionType.CHANNEL:
                 return message.channel == self.name or wildcard_match(message.channel, self.name)

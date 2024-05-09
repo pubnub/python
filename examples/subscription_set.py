@@ -37,6 +37,8 @@ config.daemon = True
 pubnub = PubNub(config)
 pubnub.add_listener(PrintListener())
 
+pubnub.add_channel_to_channel_group().channels(['test', 'test_in_group']).channel_group('group-test').sync()
+
 # Subscribing
 channel_1 = pubnub.channel(channel).subscription()
 
@@ -44,13 +46,17 @@ channel_2 = pubnub.channel(f'{channel}.2').subscription(with_presence=True)
 channel_x = pubnub.channel(f'{channel}.*').subscription(with_presence=True)
 channel_x.on_message = lambda message: print(f"\033[96mWildcard {message.channel}: \n{message.message}\033[0m")
 
-subscription_set = pubnub.subscription_set([channel_1, channel_2, channel_x])
+group = pubnub.channel_group('group-test').subscription()
+group.on_message = lambda message: print(f"\033[96mChannel Group {message.channel}: \n{message.message}\033[0m")
+
+subscription_set = pubnub.subscription_set([channel_1, channel_2, channel_x, group])
 subscription_set.on_message = on_message
 subscription_set.on_presence = on_presence
 
 set_subscription = subscription_set.subscribe()
 
-print("Now we're subscribed. We should receive status: connected on PrintListener")
+time.sleep(1)
+
 # Testing message delivery
 publish_result = pubnub.publish() \
     .channel(f'{channel}') \
@@ -73,8 +79,16 @@ publish_result = pubnub.publish() \
     .sync()
 time.sleep(1)
 
-print('Removing subscription object for "test"')
+time.sleep(1)
+publish_result = pubnub.publish() \
+    .channel(f'{channel}_in_group') \
+    .message('Hola desde el SDK de Python de Pubnub.') \
+    .meta({'lang': 'es'}) \
+    .sync()
+time.sleep(1)
 
+print('Removing subscription object for "test"')
+pubnub.remove_channel_from_channel_group().channels(['test']).channel_group('group-test').sync()
 time.sleep(1)
 
 subscription_set.unsubscribe()

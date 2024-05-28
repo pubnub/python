@@ -21,8 +21,7 @@ jobs:
   tests:
     name: Integration and Unit tests
     runs-on:
-      group: Default Larger Runners
-      labels: ubuntu-latest-m
+      group: Default
     strategy:
       fail-fast: true
       matrix:
@@ -54,8 +53,7 @@ jobs:
   acceptance-tests:
     name: Acceptance tests
     runs-on:
-      group: Default Larger Runners
-      labels: ubuntu-latest-m
+      group: Default
     timeout-minutes: 5
     steps:
       - name: Checkout project
@@ -102,10 +100,9 @@ jobs:
         uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   all-tests:
     name: Tests
-    runs-on:
-      group: Default Larger Runners
-      labels: ubuntu-latest-m
     needs: [tests, acceptance-tests]
+    runs-on:
+      group: Default
     steps:
       - name: Tests summary
         run: echo -e "\033[38;2;95;215;0m\033[1mAll tests successfully passed"

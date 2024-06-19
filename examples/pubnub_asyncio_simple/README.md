@@ -1,5 +1,7 @@
 # AsyncIO PubNub Subscribe Example
 
+![pubnub-asyncio-simple-example](https://gist.github.com/assets/45214/07223c2e-a5f0-453d-91b2-819fcb526ab5)
+
 ### Usage example:
 ```shell
 pip install asyncio pubnub

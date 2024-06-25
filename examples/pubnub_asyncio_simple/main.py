@@ -5,6 +5,7 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeCallback
 from pubnub.enums import PNStatusCategory
 
+
 class MySubscribeCallback(SubscribeCallback):
     def status(self, pubnub, status):
         if status.category == PNStatusCategory.PNUnexpectedDisconnectCategory:
@@ -30,8 +31,8 @@ async def main(pubnub):
         await asyncio.sleep(1)
 
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop() 
-    asyncio.set_event_loop(loop) 
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
 
     pnconfig = PNConfiguration()
     pnconfig.subscribe_key = os.getenv('PUBNUB_SUBSCRIBE_KEY') or 'demo'

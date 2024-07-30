@@ -1,3 +1,5 @@
+import warnings
+from typing import Any
 from Cryptodome.Cipher import AES
 from pubnub.enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
 from pubnub.exceptions import PubNubException
@@ -12,6 +14,7 @@ class PNConfiguration(object):
     RECONNECTION_MIN_EXPONENTIAL_BACKOFF = 1
     RECONNECTION_MAX_EXPONENTIAL_BACKOFF = 32
     DEFAULT_CRYPTO_MODULE = LegacyCryptoModule
+    _locked = False
 
     def __init__(self):
         # TODO: add validation
@@ -48,6 +51,8 @@ class PNConfiguration(object):
         self.cryptor = None
         self.file_cryptor = None
         self._crypto_module = None
+        self.disable_config_locking = False
+        self._locked = False
 
     def validate(self):
         PNConfiguration.validate_not_empty_string(self.uuid)
@@ -168,3 +173,18 @@ class PNConfiguration(object):
     def user_id(self, user_id):
         PNConfiguration.validate_not_empty_string(user_id)
         self._uuid = user_id
+
+    def lock(self):
+        self.__dict__['_locked'] = False if self.disable_config_locking else True
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        if self._locked:
+            warnings.warn(UserWarning('Configuration is locked. Any changes made won\'t have any effect'))
+            return
+        if name in ['uuid', 'user_id']:
+            PNConfiguration.validate_not_empty_string(value)
+            self.__dict__[f'_{name}'] = value
+        elif name in ['cipher_mode', 'fallback_cipher_mode', 'crypto_module']:
+            self.__dict__[f'_{name}'] = value
+        else:
+            self.__dict__[name] = value

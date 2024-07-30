@@ -1,6 +1,7 @@
 import logging
 import time
 from warnings import warn
+from copy import deepcopy
 from pubnub.endpoints.entities.membership.add_memberships import AddSpaceMembers, AddUserSpaces
 from pubnub.endpoints.entities.membership.update_memberships import UpdateSpaceMembers, UpdateUserSpaces
 from pubnub.endpoints.entities.membership.fetch_memberships import FetchSpaceMemberships, FetchUserMemberships
@@ -99,7 +100,9 @@ class PubNubCore:
     _subscription_registry: PNSubscriptionRegistry
 
     def __init__(self, config):
-        self.config = config
+        config.lock()
+        self.config = deepcopy(config)
+        self.config.lock()
         self.config.validate()
         self.headers = {
             'User-Agent': self.sdk_name

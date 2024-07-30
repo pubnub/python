@@ -54,12 +54,14 @@ pnconf.publish_key = pub_key
 pnconf.subscribe_key = sub_key
 pnconf.enable_subscribe = False
 pnconf.uuid = uuid_mock
+pnconf.disable_config_locking = True
 
 pnconf_sub = PNConfiguration()
 pnconf_sub.publish_key = pub_key
 pnconf_sub.subscribe_request_timeout = 10
 pnconf_sub.subscribe_key = sub_key
 pnconf_sub.uuid = uuid_mock
+pnconf_sub.disable_config_locking = True
 pnconf_sub.enable_presence_heartbeat = True
 pnconf_sub.set_presence_timeout_with_custom_interval(30, 10)
 
@@ -70,6 +72,7 @@ pnconf_enc.subscribe_key = sub_key
 pnconf_enc.cipher_key = "testKey"
 pnconf_enc.enable_subscribe = False
 pnconf_enc.uuid = uuid_mock
+pnconf_enc.disable_config_locking = True
 
 pnconf_enc_sub = PNConfiguration()
 pnconf_enc_sub.publish_key = pub_key
@@ -77,6 +80,7 @@ pnconf_enc_sub.subscribe_request_timeout = 10
 pnconf_enc_sub.subscribe_key = sub_key
 pnconf_enc_sub.cipher_key = "testKey"
 pnconf_enc_sub.uuid = uuid_mock
+pnconf_enc_sub.disable_config_locking = True
 
 pnconf_pam = PNConfiguration()
 pnconf_pam.publish_key = pub_key_pam
@@ -85,6 +89,7 @@ pnconf_pam.subscribe_key = sub_key_pam
 pnconf_pam.secret_key = sec_key_pam
 pnconf_pam.enable_subscribe = False
 pnconf_pam.uuid = uuid_mock
+pnconf_pam.disable_config_locking = True
 
 
 pnconf_pam_stub = PNConfiguration()
@@ -93,6 +98,7 @@ pnconf_pam_stub.subscribe_request_timeout = 10
 pnconf_pam_stub.subscribe_key = "sub-c-stub"
 pnconf_pam_stub.secret_key = "sec-c-stub"
 pnconf_pam_stub.uuid = uuid_mock
+pnconf_pam_stub.disable_config_locking = True
 
 pnconf_ssl = PNConfiguration()
 pnconf_ssl.publish_key = pub_key
@@ -100,6 +106,7 @@ pnconf_ssl.subscribe_request_timeout = 10
 pnconf_ssl.subscribe_key = sub_key
 pnconf_ssl.ssl = True
 pnconf_ssl.uuid = uuid_mock
+pnconf_ssl.disable_config_locking = True
 
 message_count_config = PNConfiguration()
 message_count_config.publish_key = 'demo-36'
@@ -107,24 +114,28 @@ message_count_config.subscribe_request_timeout = 10
 message_count_config.subscribe_key = 'demo-36'
 message_count_config.origin = 'balancer1g.bronze.aws-pdx-1.ps.pn'
 message_count_config.uuid = uuid_mock
+message_count_config.disable_config_locking = True
 
 pnconf_demo = PNConfiguration()
 pnconf_demo.publish_key = 'demo'
 pnconf_demo.subscribe_request_timeout = 10
 pnconf_demo.subscribe_key = 'demo'
 pnconf_demo.uuid = uuid_mock
+pnconf_demo.disable_config_locking = True
 
 file_upload_config = PNConfiguration()
 file_upload_config.publish_key = pub_key_mock
 file_upload_config.subscribe_request_timeout = 10
 file_upload_config.subscribe_key = sub_key_mock
 file_upload_config.uuid = uuid_mock
+file_upload_config.disable_config_locking = True
 
 mocked_config = PNConfiguration()
 mocked_config.publish_key = pub_key_mock
 mocked_config.subscribe_request_timeout = 10
 mocked_config.subscribe_key = sub_key_mock
 mocked_config.uuid = uuid_mock
+mocked_config.disable_config_locking = True
 
 hardcoded_iv_config = PNConfiguration()
 hardcoded_iv_config.use_random_initialization_vector = False
@@ -137,6 +148,7 @@ pnconf_env.subscribe_request_timeout = 10
 pnconf_env.subscribe_key = os.environ.get('PN_KEY_SUBSCRIBE')
 pnconf_env.enable_subscribe = False
 pnconf_env.uuid = uuid_mock
+pnconf_env.disable_config_locking = True
 
 # configuration with keys from PN_KEY_* (enabled all except PAM, PUSH and FUNCTIONS) and encryption enabled
 pnconf_enc_env = PNConfiguration()
@@ -146,6 +158,7 @@ pnconf_enc_env.subscribe_key = os.environ.get('PN_KEY_SUBSCRIBE')
 pnconf_enc_env.cipher_key = "testKey"
 pnconf_enc_env.enable_subscribe = False
 pnconf_enc_env.uuid = uuid_mock
+pnconf_enc_env.disable_config_locking = True
 
 # configuration with keys from PN_KEY_PAM_* (enabled with all including PAM except PUSH and FUNCTIONS)
 pnconf_pam_env = PNConfiguration()
@@ -155,6 +168,7 @@ pnconf_pam_env.subscribe_key = os.environ.get('PN_KEY_PAM_SUBSCRIBE')
 pnconf_pam_env.secret_key = os.environ.get('PN_KEY_PAM_SECRET')
 pnconf_pam_env.enable_subscribe = False
 pnconf_pam_env.uuid = uuid_mock
+pnconf_pam_env.disable_config_locking = True
 
 
 def copy_and_update(config, **kwargs):

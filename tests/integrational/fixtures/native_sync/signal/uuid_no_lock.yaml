@@ -9,12 +9,12 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - PubNub-Python/4.1.0
+      - PubNub-Python/8.0.0
     method: GET
     uri: https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?uuid=uuid-mock
   response:
     body:
-      string: '[1,"Sent","15640049765289377"]'
+      string: '[1,"Sent","17223715358009123"]'
     headers:
       Access-Control-Allow-Methods:
       - GET
@@ -29,13 +29,10 @@ interactions:
       Content-Type:
       - text/javascript; charset="UTF-8"
       Date:
-      - Wed, 24 Jul 2019 21:49:36 GMT
-      PN-MsgEntityType:
-      - '1'
+      - Tue, 30 Jul 2024 20:32:15 GMT
     status:
       code: 200
       message: OK
-
 - request:
     body: null
     headers:
@@ -46,12 +43,12 @@ interactions:
       Connection:
       - keep-alive
       User-Agent:
-      - PubNub-Python/4.1.0
+      - PubNub-Python/8.0.0
     method: GET
     uri: https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?uuid=uuid-mock
   response:
     body:
-      string: '[1,"Sent","15640049765289377"]'
+      string: '[1,"Sent","17223715359483475"]'
     headers:
       Access-Control-Allow-Methods:
       - GET
@@ -66,11 +63,8 @@ interactions:
       Content-Type:
       - text/javascript; charset="UTF-8"
       Date:
-      - Wed, 24 Jul 2019 21:49:36 GMT
-      PN-MsgEntityType:
-      - '1'
+      - Tue, 30 Jul 2024 20:32:15 GMT
     status:
       code: 200
       message: OK
-
 version: 1

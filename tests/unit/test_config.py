@@ -8,6 +8,7 @@ from pubnub.pnconfiguration import PNConfiguration
 class TestPubNubConfig:
     def test_config_copy_with_mutability_lock(self):
         config = PNConfiguration()
+        config.disable_config_locking = False
         config.publish_key = 'demo'
         config.subscribe_key = 'demo'
         config.user_id = 'demo'
@@ -30,6 +31,7 @@ class TestPubNubConfig:
     def test_config_mutability_lock(self):
         with pytest.warns(UserWarning):
             config = PNConfiguration()
+            config.disable_config_locking = False
             config.publish_key = 'demo'
             config.subscribe_key = 'demo'
             config.user_id = 'demo'
@@ -56,6 +58,7 @@ class TestPubNubConfig:
     @pytest.mark.asyncio
     async def test_asyncio_config_copy_with_mutability_lock(self):
         config = PNConfiguration()
+        config.disable_config_locking = False
         config.publish_key = 'demo'
         config.subscribe_key = 'demo'
         config.user_id = 'demo'
@@ -80,6 +83,7 @@ class TestPubNubConfig:
     async def test_asyncio_config_mutability_lock(self):
         with pytest.warns(UserWarning):
             config = PNConfiguration()
+            config.disable_config_locking = False
             config.publish_key = 'demo'
             config.subscribe_key = 'demo'
             config.user_id = 'demo'

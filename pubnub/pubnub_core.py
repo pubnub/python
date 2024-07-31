@@ -105,7 +105,6 @@ class PubNubCore:
         if not config.disable_config_locking:
             config.lock()
             self.config = deepcopy(config)
-            self.config.lock()
         else:
             self.config = config
         self.config.validate()

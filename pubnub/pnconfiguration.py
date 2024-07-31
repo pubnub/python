@@ -51,11 +51,13 @@ class PNConfiguration(object):
         self.cryptor = None
         self.file_cryptor = None
         self._crypto_module = None
-        self.disable_config_locking = False
+        self.disable_config_locking = True
         self._locked = False
 
     def validate(self):
         PNConfiguration.validate_not_empty_string(self.uuid)
+        if self.disable_config_locking:
+            warnings.warn(DeprecationWarning('Mutable config will be deprecated in the future.'))
 
     def validate_not_empty_string(value: str):
         assert value and isinstance(value, str) and value.strip() != "", "UUID missing or invalid type"

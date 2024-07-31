@@ -183,7 +183,7 @@ class PNConfiguration(object):
             return
         if name in ['uuid', 'user_id']:
             PNConfiguration.validate_not_empty_string(value)
-            self.__dict__[f'_{name}'] = value
+            self.__dict__['_uuid'] = value
         elif name in ['cipher_mode', 'fallback_cipher_mode', 'crypto_module']:
             self.__dict__[f'_{name}'] = value
         else:

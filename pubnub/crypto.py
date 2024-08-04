@@ -69,7 +69,7 @@ class PubNubCryptodome(PubNubCrypto):
 
     def get_initialization_vector(self, use_random_iv):
         if self.pubnub_configuration.use_random_initialization_vector or use_random_iv:
-            return "{0:016}".format(random.randint(0, 9999999999999999))
+            return os.urandom(16)
         else:
             return Initial16bytes
 

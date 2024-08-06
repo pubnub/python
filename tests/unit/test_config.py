@@ -107,3 +107,15 @@ class TestPubNubConfig:
 
         config.user_id = 'test'
         assert pubnub.config.user_id == 'test'
+
+    def test_config_copy(self):
+        config = PNConfiguration()
+        config.disable_config_locking = False
+        config.publish_key = 'demo'
+        config.subscribe_key = 'demo'
+        config.user_id = 'demo'
+        config.lock()
+        config_copy = config.copy()
+        assert id(config) != id(config_copy)
+        assert config._locked is True
+        assert config_copy._locked is False

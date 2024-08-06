@@ -1,5 +1,6 @@
 import warnings
 from typing import Any
+from copy import deepcopy
 from Cryptodome.Cipher import AES
 from pubnub.enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
 from pubnub.exceptions import PubNubException
@@ -178,6 +179,11 @@ class PNConfiguration(object):
 
     def lock(self):
         self.__dict__['_locked'] = False if self.disable_config_locking else True
+
+    def copy(self):
+        config_copy = deepcopy(self)
+        config_copy.__dict__['_locked'] = False
+        return config_copy
 
     def __setattr__(self, name: str, value: Any) -> None:
         if self._locked:

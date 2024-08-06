@@ -23,6 +23,7 @@ jobs:
     runs-on:
       group: Default
     strategy:
+      max-parallel: 1
       fail-fast: true
       matrix:
         python: [3.8.18, 3.9.18, 3.10.13, 3.11.6]

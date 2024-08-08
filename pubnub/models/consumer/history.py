@@ -1,4 +1,5 @@
 import binascii
+from pubnub.exceptions import PubNubException
 
 
 class PNHistoryResult(object):
@@ -61,7 +62,7 @@ class PNHistoryItemResult(object):
 
 class PNFetchMessagesResult(object):
 
-    def __init__(self, channels, start_timetoken, end_timetoken):
+    def __init__(self, channels, start_timetoken, end_timetoken, error: Exception = None):
         self.channels = channels
         self.start_timetoken = start_timetoken
         self.end_timetoken = end_timetoken
@@ -70,13 +71,23 @@ class PNFetchMessagesResult(object):
         return "Fetch messages result for range %d..%d" % (self.start_timetoken, self.end_timetoken)
 
     @classmethod
-    def from_json(cls, json_input, include_message_actions=False, start_timetoken=None, end_timetoken=None):
+    def from_json(cls, json_input, include_message_actions=False, start_timetoken=None, end_timetoken=None,
+                  crypto_module=None):
         channels = {}
 
         for key, entry in json_input['channels'].items():
             channels[key] = []
             for item in entry:
-                message = PNFetchMessageItem(item['message'], item['timetoken'])
+                try:
+                    error = None
+                    item_message = crypto_module.decrypt(item['message']) if crypto_module else item['message']
+                except Exception as decryption_error:
+                    if type(decryption_error) not in [PubNubException, binascii.Error, ValueError]:
+                        raise decryption_error
+                    item_message = item['message']
+                    error = decryption_error
+
+                message = PNFetchMessageItem(item_message, item['timetoken'], error=error)
                 if 'uuid' in item:
                     message.uuid = item['uuid']
                 if 'message_type' in item:
@@ -101,11 +112,12 @@ class PNFetchMessagesResult(object):
 
 
 class PNFetchMessageItem(object):
-    def __init__(self, message, timetoken, meta=None, actions=None):
+    def __init__(self, message, timetoken, meta=None, actions=None, error: Exception = None):
         self.message = message
         self.meta = meta
         self.timetoken = timetoken
         self.actions = actions
+        self.error = error
 
     def __str__(self):
         return "Fetch message item with tt: %s and content: %s" % (self.timetoken, self.message)

@@ -137,7 +137,10 @@ class PubNubCore:
 
     @property
     def crypto(self) -> PubNubCryptoModule:
-        return self.__crypto if self.__crypto else self.config.crypto_module
+        crypto_module = self.__crypto or self.config.crypto_module
+        if not crypto_module and self.config.cipher_key:
+            crypto_module = self.config.DEFAULT_CRYPTO_MODULE(self.config)
+        return crypto_module
 
     @crypto.setter
     def crypto(self, crypto: PubNubCryptoModule):

@@ -1,6 +1,7 @@
 import logging
 import time
 from warnings import warn
+from copy import deepcopy
 from pubnub.endpoints.entities.membership.add_memberships import AddSpaceMembers, AddUserSpaces
 from pubnub.endpoints.entities.membership.update_memberships import UpdateSpaceMembers, UpdateUserSpaces
 from pubnub.endpoints.entities.membership.fetch_memberships import FetchSpaceMemberships, FetchUserMemberships
@@ -24,6 +25,8 @@ from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup, PubNub
     PNSubscriptionRegistry, PubNubSubscriptionSet
 
 from abc import ABCMeta, abstractmethod
+
+from pubnub.pnconfiguration import PNConfiguration
 
 from .endpoints.objects_v2.uuid.set_uuid import SetUuid
 from .endpoints.objects_v2.channel.get_all_channels import GetAllChannels
@@ -98,8 +101,12 @@ class PubNubCore:
 
     _subscription_registry: PNSubscriptionRegistry
 
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, config: PNConfiguration):
+        if not config.disable_config_locking:
+            config.lock()
+            self.config = deepcopy(config)
+        else:
+            self.config = config
         self.config.validate()
         self.headers = {
             'User-Agent': self.sdk_name

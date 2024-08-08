@@ -56,11 +56,15 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
 
     def build_data(self):
         if self._use_post is True:
-            cipher = self.pubnub.config.cipher_key
-            if cipher is not None:
-                return '"' + self.pubnub.config.crypto.encrypt(cipher, utils.write_value_as_string(self._message)) + '"'
-            else:
-                return utils.write_value_as_string(self._message)
+            stringified_message = utils.write_value_as_string(self._message)
+
+            if self.pubnub.config.crypto_module:
+                stringified_message = self.pubnub.config.crypto_module.encrypt(stringified_message)
+            elif self.pubnub.config.cipher_key is not None:  # The legacy way
+                stringified_message = '"' + self.pubnub.config.crypto.encrypt(
+                    self.pubnub.config.cipher_key,
+                    stringified_message) + '"'
+            return stringified_message
         else:
             return None
 
@@ -99,11 +103,13 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
                                                 self.pubnub.config.subscribe_key,
                                                 utils.url_encode(self._channel), 0)
         else:
-            cipher = self.pubnub.config.cipher_key
             stringified_message = utils.write_value_as_string(self._message)
-
-            if cipher is not None:
-                stringified_message = '"' + self.pubnub.config.crypto.encrypt(cipher, stringified_message) + '"'
+            if self.pubnub.config.crypto_module:
+                stringified_message = '"' + self.pubnub.config.crypto_module.encrypt(stringified_message) + '"'
+            elif self.pubnub.config.cipher_key is not None:  # The legacy way
+                stringified_message = '"' + self.pubnub.config.crypto.encrypt(
+                    self.pubnub.config.cipher_key,
+                    stringified_message) + '"'
 
             stringified_message = utils.url_encode(stringified_message)
 

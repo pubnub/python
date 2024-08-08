@@ -33,6 +33,7 @@ class FetchMessages(Endpoint):
         self._include_message_actions = None
         self._include_message_type = None
         self._include_uuid = None
+        self._decrypt_messages = False
 
     def channels(self, channels):
         utils.extend_list(self._channels, channels)
@@ -74,6 +75,10 @@ class FetchMessages(Endpoint):
     def include_uuid(self, include_uuid):
         assert isinstance(include_uuid, bool)
         self._include_uuid = include_uuid
+        return self
+
+    def decrypt_messages(self, decrypt: bool = True):
+        self._decrypt_messages = decrypt
         return self
 
     def custom_params(self):
@@ -155,7 +160,8 @@ class FetchMessages(Endpoint):
             json_input=envelope,
             include_message_actions=self._include_message_actions,
             start_timetoken=self._start,
-            end_timetoken=self._end)
+            end_timetoken=self._end,
+            crypto_module=self.pubnub.crypto if self._decrypt_messages else None)
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

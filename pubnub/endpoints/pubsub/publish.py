@@ -59,7 +59,7 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
             stringified_message = utils.write_value_as_string(self._message)
 
             if self.pubnub.config.crypto_module:
-                stringified_message = self.pubnub.config.crypto_module.encrypt(stringified_message)
+                stringified_message = '"' + self.pubnub.config.crypto_module.encrypt(stringified_message) + '"'
             elif self.pubnub.config.cipher_key is not None:  # The legacy way
                 stringified_message = '"' + self.pubnub.config.crypto.encrypt(
                     self.pubnub.config.cipher_key,

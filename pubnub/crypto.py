@@ -68,7 +68,7 @@ class PubNubCryptodome(PubNubCrypto):
 
     def get_initialization_vector(self, use_random_iv):
         if self.pubnub_configuration.use_random_initialization_vector or use_random_iv:
-            return secrets.token_hex(16)[0:16]
+            return secrets.token_urlsafe(16)[:16]
         else:
             return Initial16bytes
 

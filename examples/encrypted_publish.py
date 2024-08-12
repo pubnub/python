@@ -19,3 +19,4 @@ if config.crypto_module:
     message = f'crypto_module({type(config.crypto_module)})'
 
 pubnub.publish().channel('example').message(message).sync()
+print(f'published: {message}')

@@ -1,8 +1,7 @@
 import hashlib
 import json
-import random
 import logging
-
+import secrets
 
 from base64 import decodebytes, encodebytes, b64decode, b64encode
 from Cryptodome.Cipher import AES
@@ -69,7 +68,7 @@ class PubNubCryptodome(PubNubCrypto):
 
     def get_initialization_vector(self, use_random_iv):
         if self.pubnub_configuration.use_random_initialization_vector or use_random_iv:
-            return "{0:016}".format(random.randint(0, 9999999999999999))
+            return secrets.token_urlsafe(16)[:16]
         else:
             return Initial16bytes
 

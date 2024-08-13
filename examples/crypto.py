@@ -14,7 +14,7 @@ def PNFactory(cipher_mode=AES.MODE_GCM, fallback_cipher_mode=AES.MODE_CBC) -> Pu
     config.publish_key = getenv('PN_KEY_PUBLISH')
     config.subscribe_key = getenv('PN_KEY_SUBSCRIBE')
     config.secret_key = getenv('PN_KEY_SECRET')
-    config.cipher_key = getenv('PN_KEY_CIPHER')
+    config.cipher_key = getenv('PN_KEY_CIPHER', 'my_secret_cipher_key')
     config.user_id = 'experiment'
     config.cipher_mode = cipher_mode
     config.fallback_cipher_mode = fallback_cipher_mode
@@ -57,5 +57,8 @@ pubnub = PubNub(config)  # pubnub instance without encryption
 pubnub.crypto = PubNubCryptoModule({
     PubNubAesCbcCryptor.CRYPTOR_ID: PubNubAesCbcCryptor('myCipherKey')
 }, PubNubAesCbcCryptor)
-encrypted = pubnub.crypto.encrypt('My Secret Text')  # encrypted wih AES cryptor and `myCipherKey` cipher key
+
+text_to_encrypt = 'My Secret Text'
+encrypted = pubnub.crypto.encrypt(text_to_encrypt)  # encrypted wih AES cryptor and `myCipherKey` cipher key
 decrypted = pubnub.crypto.decrypt(encrypted)
+print(f'Source: {text_to_encrypt}\nEncrypted: {encrypted}\nDecrypted: {decrypted}')

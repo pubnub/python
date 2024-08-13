@@ -1,3 +1,15 @@
+## v8.1.0
+August 13 2024
+
+#### Added
+- Option to lock PNConfiguration mutability. Note that mutable config will be deprecated in future major releases.
+
+#### Fixed
+- Fix for routing crypto module if custom one was defined.
+
+#### Modified
+- Additional Examples.
+
 ## v8.0.0
 May 09 2024
 

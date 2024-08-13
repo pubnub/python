@@ -6,11 +6,11 @@ from pubnub.pnconfiguration import PNConfiguration
 
 
 config = PNConfiguration()
-config.publish_key = os.environ.get('PN_KEY_PUBLISH')
+config.publish_key = os.environ.get('PUBLISH_KEY', 'demo')
 config.subscribe_request_timeout = 10
-config.subscribe_key = os.environ.get('PN_KEY_SUBSCRIBE')
+config.subscribe_key = os.environ.get('SUBSCRIBE_KEY', 'demo')
 config.enable_subscribe = False
-config.uuid = 'demo'
+config.uuid = 'example'
 
 channel = 'file-channel'
 pubnub = PubNubAsyncio(config)

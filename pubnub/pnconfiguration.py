@@ -136,8 +136,6 @@ class PNConfiguration(object):
 
     @property
     def crypto_module(self):
-        if not self._crypto_module:
-            self._crypto_module = self.DEFAULT_CRYPTO_MODULE(self)
         return self._crypto_module
 
     @crypto_module.setter

@@ -1,6 +1,5 @@
 import hashlib
 import json
-import random
 import secrets
 
 from abc import abstractmethod
@@ -111,7 +110,7 @@ class PubNubLegacyCryptor(PubNubCryptor):
 
     def get_initialization_vector(self, use_random_iv) -> bytes:
         if self.use_random_iv or use_random_iv:
-            return bytes("{0:016}".format(random.randint(0, 9999999999999999)), 'utf-8')
+            return secrets.token_bytes(16)
         else:
             return self.Initial16bytes
 

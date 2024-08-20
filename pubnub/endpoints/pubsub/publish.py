@@ -1,3 +1,4 @@
+from typing import Optional
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_MESSAGE_MISSING
@@ -12,45 +13,56 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
     PUBLISH_GET_PATH = "/publish/%s/%s/0/%s/%s/%s"
     PUBLISH_POST_PATH = "/publish/%s/%s/0/%s/%s"
 
-    def __init__(self, pubnub):
-        super(Publish, self).__init__(pubnub)
-        self._channel = None
-        self._message = None
-        self._should_store = None
-        self._use_post = None
-        self._meta = None
-        self._replicate = None
-        self._ptto = None
-        self._ttl = None
+    _channel: str
+    _message: any
+    _should_store: Optional[bool]
+    _use_post: Optional[bool]
+    _meta: Optional[any]
+    _replicate: Optional[bool]
+    _ptto: Optional[int]
+    _ttl: Optional[int]
 
-    def channel(self, channel):
+    def __init__(self, pubnub, channel: Optional[str] = None, message: Optional[any] = None,
+                 should_store: Optional[bool] = None, use_post: Optional[bool] = None, meta: Optional[any] = None,
+                 replicate: Optional[bool] = None, ptto: Optional[int] = None, ttl: Optional[int] = None):
+        super(Publish, self).__init__(pubnub)
+        self._channel = channel
+        self._message = message
+        self._should_store = should_store
+        self._use_post = use_post
+        self._meta = meta
+        self._replicate = replicate
+        self._ptto = ptto
+        self._ttl = ttl
+
+    def channel(self, channel: str) -> 'Publish':
         self._channel = str(channel)
         return self
 
-    def message(self, message):
+    def message(self, message: any) -> 'Publish':
         self._message = message
         return self
 
-    def use_post(self, use_post):
+    def use_post(self, use_post: bool) -> 'Publish':
         self._use_post = bool(use_post)
         return self
 
-    def use_compression(self, compress=True):
+    def use_compression(self, compress: bool = True) -> 'Publish':
         self._use_compression = bool(compress)
         return self
 
-    def is_compressable(self):
+    def is_compressable(self) -> bool:
         return True
 
-    def should_store(self, should_store):
+    def should_store(self, should_store: bool) -> 'Publish':
         self._should_store = bool(should_store)
         return self
 
-    def meta(self, meta):
+    def meta(self, meta: any) -> 'Publish':
         self._meta = meta
         return self
 
-    def ttl(self, ttl):
+    def ttl(self, ttl: int) -> 'Publish':
         self._ttl = ttl
         return self
 

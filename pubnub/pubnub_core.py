@@ -2,6 +2,7 @@ import logging
 import time
 from warnings import warn
 from copy import deepcopy
+from typing import Optional
 from pubnub.endpoints.entities.membership.add_memberships import AddSpaceMembers, AddUserSpaces
 from pubnub.endpoints.entities.membership.update_memberships import UpdateSpaceMembers, UpdateUserSpaces
 from pubnub.endpoints.entities.membership.fetch_memberships import FetchSpaceMemberships, FetchUserMemberships
@@ -205,8 +206,11 @@ class PubNubCore:
     def where_now(self):
         return WhereNow(self)
 
-    def publish(self):
-        return Publish(self)
+    def publish(self, channel: Optional[str] = None, message: Optional[any] = None, should_store: Optional[bool] = None,
+                use_post: Optional[bool] = None, meta: Optional[any] = None, replicate: Optional[bool] = None,
+                ptto: Optional[int] = None, ttl: Optional[int] = None) -> Publish:
+        return Publish(self, channel=channel, message=message, should_store=should_store, use_post=use_post, meta=meta,
+                       replicate=replicate, ptto=ptto, ttl=ttl)
 
     def grant(self):
         warn("This method will stop working on 31th December 2024. We recommend that you use grant_token() instead.",
@@ -242,8 +246,9 @@ class PubNubCore:
     def message_counts(self):
         return MessageCount(self)
 
-    def fire(self):
-        return Fire(self)
+    def fire(self, channel: Optional[str] = None, message: Optional[any] = None, use_post: Optional[bool] = None,
+             meta: Optional[any] = None) -> Fire:
+        return Fire(self, channel=channel, message=message, use_post=use_post, meta=meta)
 
     def signal(self):
         return Signal(self)

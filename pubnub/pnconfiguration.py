@@ -107,6 +107,8 @@ class PNConfiguration(object):
 
     @property
     def crypto(self):
+        if self._crypto_module:
+            return self._crypto_module
         if self.crypto_instance is None:
             self._init_cryptodome()
 

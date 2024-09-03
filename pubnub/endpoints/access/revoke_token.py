@@ -1,13 +1,20 @@
 from pubnub.enums import PNOperationType, HttpMethod
 from pubnub.endpoints.endpoint import Endpoint
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.v3.access_manager import PNRevokeTokenResult
 from pubnub import utils
+from pubnub.structures import Envelope
+
+
+class PNRevokeTokenResultEnvelope(Envelope):
+    result: PNRevokeTokenResult
+    status: PNStatus
 
 
 class RevokeToken(Endpoint):
     REVOKE_TOKEN_PATH = "/v3/pam/%s/grant/%s"
 
-    def __init__(self, pubnub, token):
+    def __init__(self, pubnub, token: str):
         Endpoint.__init__(self, pubnub)
         self.token = token
 
@@ -17,6 +24,9 @@ class RevokeToken(Endpoint):
 
     def create_response(self, envelope):
         return PNRevokeTokenResult(envelope)
+
+    def sync(self) -> PNRevokeTokenResultEnvelope:
+        return PNRevokeTokenResultEnvelope(super().sync())
 
     def is_auth_required(self):
         return False

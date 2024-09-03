@@ -1,10 +1,18 @@
+from typing import List, Union
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_CHANNEL_MISSING, PNERR_PUSH_DEVICE_MISSING, PNERROR_PUSH_TYPE_MISSING, \
     PNERR_PUSH_TOPIC_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType, PNPushType, PNPushEnvironment
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.push import PNPushAddChannelResult
 from pubnub import utils
+from pubnub.structures import Envelope
+
+
+class PNPushAddChannelResultEnvelope(Envelope):
+    result: PNPushAddChannelResult
+    status: PNStatus
 
 
 class AddChannelsToPush(Endpoint):
@@ -13,31 +21,32 @@ class AddChannelsToPush(Endpoint):
     # v2/push/sub-key/{subKey}/devices-apns2/{deviceApns2}
     ADD_PATH_APNS2 = "/v2/push/sub-key/%s/devices-apns2/%s"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, channels: Union[str, List[str]] = None, device_id: str = None,
+                 push_type: PNPushType = None, topic: str = None, environment: PNPushEnvironment = None):
         Endpoint.__init__(self, pubnub)
-        self._channels = None
-        self._device_id = None
-        self._push_type = None
-        self._topic = None
-        self._environment = None
+        self._channels = channels
+        self._device_id = device_id
+        self._push_type = push_type
+        self._topic = topic
+        self._environment = environment
 
-    def channels(self, channels):
+    def channels(self, channels: Union[str, List[str]]) -> 'AddChannelsToPush':
         self._channels = channels
         return self
 
-    def device_id(self, device_id):
+    def device_id(self, device_id: str) -> 'AddChannelsToPush':
         self._device_id = device_id
         return self
 
-    def push_type(self, push_type):
+    def push_type(self, push_type: PNPushType) -> 'AddChannelsToPush':
         self._push_type = push_type
         return self
 
-    def topic(self, topic):
+    def topic(self, topic: str) -> 'AddChannelsToPush':
         self._topic = topic
         return self
 
-    def environment(self, environment):
+    def environment(self, environment: PNPushEnvironment) -> 'AddChannelsToPush':
         self._environment = environment
         return self
 
@@ -84,8 +93,11 @@ class AddChannelsToPush(Endpoint):
             if not isinstance(self._topic, str) or len(self._topic) == 0:
                 raise PubNubException(pn_error=PNERR_PUSH_TOPIC_MISSING)
 
-    def create_response(self, envelope):
+    def create_response(self, envelope) -> PNPushAddChannelResult:
         return PNPushAddChannelResult()
+
+    def sync(self) -> PNPushAddChannelResultEnvelope:
+        return PNPushAddChannelResultEnvelope(super().sync())
 
     def is_auth_required(self):
         return True

@@ -1,3 +1,4 @@
+from typing import Optional, Union, List
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
@@ -9,43 +10,55 @@ class Subscribe(Endpoint):
     # /subscribe/<sub-key>/<channel>/<callback>/<timetoken>
     SUBSCRIBE_PATH = "/v2/subscribe/%s/%s/0"
 
-    def __init__(self, pubnub):
+    _channels: list = []
+    _groups: list = []
+
+    region: Optional[str] = None
+    filter_expression: Optional[str] = None
+    timetoken: Optional[str] = None
+    with_presence: Optional[str] = None
+    state: Optional[str] = None
+
+    def __init__(self, pubnub, channels: Union[str, List[str]] = None,
+                 groups: Union[str, List[str]] = None, region: Optional[str] = None,
+                 filter_expression: Optional[str] = None, timetoken: Optional[str] = None,
+                 with_presence: Optional[str] = None, state: Optional[str] = None):
+
         super(Subscribe, self).__init__(pubnub)
         self._channels = []
+        if channels:
+            utils.extend_list(self._channels, channels)
         self._groups = []
+        if groups:
+            utils.extend_list(self._groups, groups)
 
-        self._region = None
-        self._filter_expression = None
-        self._timetoken = None
-        self._with_presence = None
-        self._state = None
-
-    def channels(self, channels):
-        utils.extend_list(self._channels, channels)
-
-        return self
-
-    def channel_groups(self, groups):
-        utils.extend_list(self._groups, groups)
-
-        return self
-
-    def timetoken(self, timetoken):
-        self._timetoken = timetoken
-
-        return self
-
-    def filter_expression(self, expr):
-        self._filter_expression = expr
-
-        return self
-
-    def region(self, region):
         self._region = region
+        self._filter_expression = filter_expression
+        self._timetoken = timetoken
+        self._with_presence = with_presence
+        self._state = state
 
+    def channels(self, channels: Union[str, List[str]]) -> 'Subscribe':
+        utils.extend_list(self._channels, channels)
         return self
 
-    def state(self, state):
+    def channel_groups(self, groups: Union[str, List[str]]) -> 'Subscribe':
+        utils.extend_list(self._groups, groups)
+        return self
+
+    def timetoken(self, timetoken) -> 'Subscribe':
+        self._timetoken = timetoken
+        return self
+
+    def filter_expression(self, expr) -> 'Subscribe':
+        self._filter_expression = expr
+        return self
+
+    def region(self, region) -> 'Subscribe':
+        self._region = region
+        return self
+
+    def state(self, state) -> 'Subscribe':
         self._state = state
         return self
 

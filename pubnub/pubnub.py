@@ -51,7 +51,6 @@ class PubNub(PubNubCore):
 
         if self.config.log_verbosity:
             print(endpoint_call_options)
-
         return self._request_handler.sync_request(platform_options, endpoint_call_options)
 
     def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event):

@@ -4,7 +4,14 @@ from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.exceptions import PubNubException
 from pubnub.errors import PNERR_MESSAGE_MISSING
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNFireResult
+from pubnub.structures import Envelope
+
+
+class PNFireResultEnvelope(Envelope):
+    result: PNFireResult
+    status: PNStatus
 
 
 class Fire(Endpoint):
@@ -107,7 +114,7 @@ class Fire(Endpoint):
         self.validate_subscribe_key()
         self.validate_publish_key()
 
-    def create_response(self, envelope):
+    def create_response(self, envelope) -> PNFireResult:
         """
         :param envelope: an already serialized json response
         :return:
@@ -120,6 +127,9 @@ class Fire(Endpoint):
         res = PNFireResult(envelope, timetoken)
 
         return res
+
+    def sync(self) -> PNFireResultEnvelope:
+        return PNFireResultEnvelope(super().sync())
 
     def is_auth_required(self):
         return True

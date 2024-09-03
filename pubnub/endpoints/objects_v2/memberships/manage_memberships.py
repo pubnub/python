@@ -1,31 +1,48 @@
+from typing import List
 from pubnub import utils
 from pubnub.endpoints.objects_v2.objects_endpoint import ObjectsEndpoint, ListEndpoint, \
     IncludeCustomEndpoint, UuidEndpoint, ChannelIncludeEndpoint
 from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod
 
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.objects_v2.memberships import PNManageMembershipsResult
+from pubnub.models.consumer.objects_v2.page import PNPage
+from pubnub.structures import Envelope
+
+
+class PNManageMembershipsResultEnvelope(Envelope):
+    result: PNManageMembershipsResult
+    status: PNStatus
 
 
 class ManageMemberships(ObjectsEndpoint, UuidEndpoint, ListEndpoint, IncludeCustomEndpoint,
                         ChannelIncludeEndpoint):
     MANAGE_MEMBERSHIPS_PATH = "/v2/objects/%s/uuids/%s/channels"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, uuid: str = None, channel_memberships_to_set: List[str] = None,
+                 channel_memberships_to_remove: List[str] = None, include_custom: bool = False, limit: int = None,
+                 filter: str = None, include_total_count: bool = None, sort_keys: list = None, page: PNPage = None):
         ObjectsEndpoint.__init__(self, pubnub)
-        UuidEndpoint.__init__(self)
-        ListEndpoint.__init__(self)
-        IncludeCustomEndpoint.__init__(self)
+        UuidEndpoint.__init__(self, uuid=uuid)
+        ListEndpoint.__init__(self, limit=limit, filter=filter, include_total_count=include_total_count,
+                              sort_keys=sort_keys, page=page)
+        IncludeCustomEndpoint.__init__(self, include_custom=include_custom)
         ChannelIncludeEndpoint.__init__(self)
 
         self._channel_memberships_to_set = []
-        self._channel_memberships_to_remove = []
+        if channel_memberships_to_set:
+            utils.extend_list(self._channel_memberships_to_set, channel_memberships_to_set)
 
-    def set(self, channel_memberships_to_set):
+        self._channel_memberships_to_remove = []
+        if channel_memberships_to_remove:
+            utils.extend_list(self._channel_memberships_to_remove, channel_memberships_to_remove)
+
+    def set(self, channel_memberships_to_set: List[str]) -> 'ManageMemberships':
         self._channel_memberships_to_set = list(channel_memberships_to_set)
         return self
 
-    def remove(self, channel_memberships_to_remove):
+    def remove(self, channel_memberships_to_remove: List[str]) -> 'ManageMemberships':
         self._channel_memberships_to_remove = list(channel_memberships_to_remove)
         return self
 
@@ -51,8 +68,11 @@ class ManageMemberships(ObjectsEndpoint, UuidEndpoint, ListEndpoint, IncludeCust
         }
         return utils.write_value_as_string(payload)
 
-    def create_response(self, envelope):
+    def create_response(self, envelope) -> PNManageMembershipsResult:
         return PNManageMembershipsResult(envelope)
+
+    def sync(self) -> PNManageMembershipsResultEnvelope:
+        return PNManageMembershipsResultEnvelope(super().sync())
 
     def operation_type(self):
         return PNOperationType.PNManageMembershipsOperation

@@ -1,35 +1,42 @@
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.message_actions import PNGetMessageActionsResult, PNMessageAction
 from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.structures import Envelope
+
+
+class PNGetMessageActionsResultEnvelope(Envelope):
+    result: PNGetMessageActionsResult
+    status: PNStatus
 
 
 class GetMessageActions(Endpoint):
     GET_MESSAGE_ACTIONS_PATH = '/v1/message-actions/%s/channel/%s'
     MAX_LIMIT = 100
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, channel: str = None, start: str = None, end: str = None, limit: str = None):
         Endpoint.__init__(self, pubnub)
-        self._channel = None
-        self._start = None
-        self._end = None
-        self._limit = GetMessageActions.MAX_LIMIT
+        self._channel = channel
+        self._start = start
+        self._end = end
+        self._limit = limit or GetMessageActions.MAX_LIMIT
 
-    def channel(self, channel):
+    def channel(self, channel: str) -> 'GetMessageActions':
         self._channel = str(channel)
         return self
 
-    def start(self, start):
+    def start(self, start: str) -> 'GetMessageActions':
         assert isinstance(start, str)
         self._start = start
         return self
 
-    def end(self, end):
+    def end(self, end: str) -> 'GetMessageActions':
         assert isinstance(end, str)
         self._end = end
         return self
 
-    def limit(self, limit):
+    def limit(self, limit: str) -> 'GetMessageActions':
         assert isinstance(limit, str)
         self._limit = limit
         return self
@@ -71,6 +78,9 @@ class GetMessageActions(Endpoint):
             result['actions'].append(PNMessageAction(action))
 
         return PNGetMessageActionsResult(result)
+
+    def sync(self) -> PNGetMessageActionsResultEnvelope:
+        return PNGetMessageActionsResultEnvelope(super().sync())
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

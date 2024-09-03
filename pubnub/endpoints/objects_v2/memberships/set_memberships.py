@@ -1,26 +1,40 @@
+from typing import List
 from pubnub import utils
 from pubnub.endpoints.objects_v2.objects_endpoint import ObjectsEndpoint, IncludeCustomEndpoint, \
     ListEndpoint, ChannelIncludeEndpoint, UuidEndpoint
 from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.objects_v2.memberships import PNSetMembershipsResult
+from pubnub.models.consumer.objects_v2.page import PNPage
+from pubnub.structures import Envelope
+
+
+class PNSetMembershipsResultEnvelope(Envelope):
+    result: PNSetMembershipsResult
+    status: PNStatus
 
 
 class SetMemberships(ObjectsEndpoint, ListEndpoint, IncludeCustomEndpoint,
                      ChannelIncludeEndpoint, UuidEndpoint):
     SET_MEMBERSHIP_PATH = "/v2/objects/%s/uuids/%s/channels"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, uuid: str = None, channel_memberships: List[str] = None, include_custom: bool = False,
+                 limit: int = None, filter: str = None, include_total_count: bool = None, sort_keys: list = None,
+                 page: PNPage = None):
         ObjectsEndpoint.__init__(self, pubnub)
-        UuidEndpoint.__init__(self)
-        ListEndpoint.__init__(self)
-        IncludeCustomEndpoint.__init__(self)
+        UuidEndpoint.__init__(self, uuid=uuid)
+        ListEndpoint.__init__(self, limit=limit, filter=filter, include_total_count=include_total_count,
+                              sort_keys=sort_keys, page=page)
+        IncludeCustomEndpoint.__init__(self, include_custom=include_custom)
         ChannelIncludeEndpoint.__init__(self)
 
         self._channel_memberships = []
+        if channel_memberships:
+            utils.extend_list(self._channel_memberships, channel_memberships)
 
     def channel_memberships(self, channel_memberships):
-        self._channel_memberships = list(channel_memberships)
+        utils.extend_list(self._channel_memberships, channel_memberships)
         return self
 
     def validate_specific_params(self):
@@ -41,8 +55,11 @@ class SetMemberships(ObjectsEndpoint, ListEndpoint, IncludeCustomEndpoint,
         }
         return utils.write_value_as_string(payload)
 
-    def create_response(self, envelope):
+    def create_response(self, envelope) -> PNSetMembershipsResult:
         return PNSetMembershipsResult(envelope)
+
+    def sync(self) -> PNSetMembershipsResultEnvelope:
+        return PNSetMembershipsResultEnvelope(super().sync())
 
     def operation_type(self):
         return PNOperationType.PNSetMembershipsOperation

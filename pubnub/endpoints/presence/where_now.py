@@ -1,19 +1,29 @@
+from typing import Optional
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.presence import PNWhereNowResult
 from pubnub.endpoints.mixins import UUIDValidatorMixin
+from pubnub.structures import Envelope
+
+
+class PNWhereNowResultEnvelope(Envelope):
+    result: PNWhereNowResult
+    status: PNStatus
 
 
 class WhereNow(Endpoint, UUIDValidatorMixin):
     # /v2/presence/sub-key/<subscribe_key>/uuid/<uuid>
     WHERE_NOW_PATH = "/v2/presence/sub-key/%s/uuid/%s"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, uuid: Optional[str] = None):
         Endpoint.__init__(self, pubnub)
         self._uuid = pubnub.config.uuid
+        if uuid:
+            self._uuid = uuid
 
-    def uuid(self, uuid):
+    def uuid(self, uuid: str) -> 'WhereNow':
         self._uuid = uuid
         return self
 
@@ -35,6 +45,9 @@ class WhereNow(Endpoint, UUIDValidatorMixin):
 
     def create_response(self, envelope):
         return PNWhereNowResult.from_json(envelope)
+
+    def sync(self) -> PNWhereNowResultEnvelope:
+        return PNWhereNowResultEnvelope(super().sync())
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

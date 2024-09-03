@@ -8,21 +8,21 @@ from pubnub.enums import HttpMethod, PNOperationType
 class RemoveMessageAction(Endpoint):
     REMOVE_MESSAGE_ACTION_PATH = "/v1/message-actions/%s/channel/%s/message/%s/action/%s"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, channel: str = None, message_timetoken: int = None, action_timetoken: int = None):
         Endpoint.__init__(self, pubnub)
-        self._channel = None
-        self._message_timetoken = None
-        self._action_timetoken = None
+        self._channel = channel
+        self._message_timetoken = message_timetoken
+        self._action_timetoken = action_timetoken
 
-    def channel(self, channel):
+    def channel(self, channel: str) -> 'RemoveMessageAction':
         self._channel = str(channel)
         return self
 
-    def message_timetoken(self, message_timetoken):
+    def message_timetoken(self, message_timetoken: int) -> 'RemoveMessageAction':
         self._message_timetoken = message_timetoken
         return self
 
-    def action_timetoken(self, action_timetoken):
+    def action_timetoken(self, action_timetoken: int) -> 'RemoveMessageAction':
         self._action_timetoken = action_timetoken
         return self
 

@@ -1,13 +1,21 @@
 import logging
+from typing import List, Union
 
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.errors import PNERR_CHANNEL_MISSING, PNERR_HISTORY_MESSAGE_ACTIONS_MULTIPLE_CHANNELS
 from pubnub.exceptions import PubNubException
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.history import PNFetchMessagesResult
+from pubnub.structures import Envelope
 
 logger = logging.getLogger("pubnub")
+
+
+class PNFetchMessagesResultEnvelope(Envelope):
+    result: PNFetchMessagesResult
+    status: PNStatus
 
 
 class FetchMessages(Endpoint):
@@ -23,61 +31,65 @@ class FetchMessages(Endpoint):
     MAX_MESSAGES_ACTIONS = 25
     DEFAULT_MESSAGES_ACTIONS = 25
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, channels: Union[str, List[str]] = None, start: int = None, end: int = None,
+                 count: int = None, include_meta: bool = None, include_message_actions: bool = None,
+                 include_message_type: bool = None, include_uuid: bool = None, decrypt_messages: bool = False):
         Endpoint.__init__(self, pubnub)
         self._channels = []
-        self._start = None
-        self._end = None
-        self._count = None
-        self._include_meta = None
-        self._include_message_actions = None
-        self._include_message_type = None
-        self._include_uuid = None
-        self._decrypt_messages = False
+        if channels:
+            utils.extend_list(self._channels, channels)
+        self._start = start
+        self._end = end
+        self._count = count
+        self._include_meta = include_meta
+        self._include_message_actions = include_message_actions
+        self._include_message_type = include_message_type
+        self._include_uuid = include_uuid
+        self._decrypt_messages = decrypt_messages
 
-    def channels(self, channels):
+    def channels(self, channels: Union[str, List[str]]) -> 'FetchMessages':
         utils.extend_list(self._channels, channels)
         return self
 
-    def count(self, count):
+    def count(self, count: int) -> 'FetchMessages':
         assert isinstance(count, int)
         self._count = count
         return self
 
-    def maximum_per_channel(self, maximum_per_channel):
+    def maximum_per_channel(self, maximum_per_channel) -> 'FetchMessages':
         return self.count(maximum_per_channel)
 
-    def start(self, start):
+    def start(self, start: int) -> 'FetchMessages':
         assert isinstance(start, int)
         self._start = start
         return self
 
-    def end(self, end):
+    def end(self, end: int) -> 'FetchMessages':
         assert isinstance(end, int)
         self._end = end
         return self
 
-    def include_meta(self, include_meta):
+    def include_meta(self, include_meta: bool) -> 'FetchMessages':
         assert isinstance(include_meta, bool)
         self._include_meta = include_meta
         return self
 
-    def include_message_actions(self, include_message_actions):
+    def include_message_actions(self, include_message_actions: bool) -> 'FetchMessages':
         assert isinstance(include_message_actions, bool)
         self._include_message_actions = include_message_actions
         return self
 
-    def include_message_type(self, include_message_type):
+    def include_message_type(self, include_message_type: bool) -> 'FetchMessages':
         assert isinstance(include_message_type, bool)
         self._include_message_type = include_message_type
         return self
 
-    def include_uuid(self, include_uuid):
+    def include_uuid(self, include_uuid: bool) -> 'FetchMessages':
         assert isinstance(include_uuid, bool)
         self._include_uuid = include_uuid
         return self
 
-    def decrypt_messages(self, decrypt: bool = True):
+    def decrypt_messages(self, decrypt: bool = True) -> 'FetchMessages':
         self._decrypt_messages = decrypt
         return self
 
@@ -162,6 +174,9 @@ class FetchMessages(Endpoint):
             start_timetoken=self._start,
             end_timetoken=self._end,
             crypto_module=self.pubnub.crypto if self._decrypt_messages else None)
+
+    def sync(self) -> PNFetchMessagesResultEnvelope:
+        return PNFetchMessagesResultEnvelope(super().sync())
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

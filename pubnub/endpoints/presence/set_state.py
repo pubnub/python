@@ -1,32 +1,47 @@
+from typing import Dict, List, Optional, Union
 from pubnub import utils
 from pubnub.dtos import StateOperation
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_STATE_MISSING, PNERR_STATE_SETTER_FOR_GROUPS_NOT_SUPPORTED_YET
 from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.presence import PNSetStateResult
+from pubnub.structures import Envelope
+
+
+class PNSetStateResultEnvelope(Envelope):
+    result: PNSetStateResult
+    status: PNStatus
 
 
 class SetState(Endpoint):
     # /v2/presence/sub-key/<subscribe_key>/channel/<channel>/uuid/<uuid>/data?state=<state>
     SET_STATE_PATH = "/v2/presence/sub-key/%s/channel/%s/uuid/%s/data"
 
-    def __init__(self, pubnub, subscription_manager=None):
+    def __init__(self, pubnub, subscription_manager=None, channels: Union[str, List[str]] = None,
+                 channel_groups: Union[str, List[str]] = None, state: Optional[Dict[str, any]] = None):
         Endpoint.__init__(self, pubnub)
         self._subscription_manager = subscription_manager
         self._channels = []
-        self._groups = []
-        self._state = None
+        if channels:
+            utils.extend_list(self._channels, channels)
 
-    def channels(self, channels):
+        self._groups = []
+        if channel_groups:
+            utils.extend_list(self._groups, channel_groups)
+
+        self._state = state
+
+    def channels(self, channels: Union[str, List[str]]) -> 'SetState':
         utils.extend_list(self._channels, channels)
         return self
 
-    def channel_groups(self, channel_groups):
+    def channel_groups(self, channel_groups: Union[str, List[str]]) -> 'SetState':
         utils.extend_list(self._groups, channel_groups)
         return self
 
-    def state(self, state):
+    def state(self, state: Dict[str, any]) -> 'SetState':
         self._state = state
         return self
 
@@ -75,6 +90,9 @@ class SetState(Endpoint):
             return PNSetStateResult(envelope['payload'])
         else:
             return envelope
+
+    def sync(self) -> PNSetStateResultEnvelope:
+        return PNSetStateResultEnvelope(super().sync())
 
     def is_auth_required(self):
         return True

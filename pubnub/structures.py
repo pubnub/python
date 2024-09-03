@@ -91,6 +91,10 @@ class ResponseInfo(object):
 
 
 class Envelope(object):
-    def __init__(self, result, status):
-        self.result = result
-        self.status = status
+    def __init__(self, result, status=None):
+        if isinstance(result, Envelope):
+            self.result = result.result
+            self.status = result.status
+        else:
+            self.result = result
+            self.status = status

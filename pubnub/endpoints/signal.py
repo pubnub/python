@@ -1,22 +1,32 @@
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.signal import PNSignalResult
+from pubnub.structures import Envelope
+
+
+class SignalResultEnvelope(Envelope):
+    result: PNSignalResult
+    status: PNStatus
 
 
 class Signal(Endpoint):
     SIGNAL_PATH = '/signal/%s/%s/0/%s/0/%s'
 
-    def __init__(self, pubnub):
-        Endpoint.__init__(self, pubnub)
-        self._channel = None
-        self._message = None
+    _channel: str
+    _message: any
 
-    def channel(self, channel):
+    def __init__(self, pubnub, channel: str = None, message: any = None):
+        Endpoint.__init__(self, pubnub)
+        self._channel = channel
+        self._message = message
+
+    def channel(self, channel) -> 'Signal':
         self._channel = str(channel)
         return self
 
-    def message(self, message):
+    def message(self, message) -> 'Signal':
         self._message = message
         return self
 
@@ -44,6 +54,9 @@ class Signal(Endpoint):
 
     def create_response(self, result):  # pylint: disable=W0221
         return PNSignalResult(result)
+
+    def sync(self) -> SignalResultEnvelope:
+        return SignalResultEnvelope(super().sync())
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

@@ -1,6 +1,13 @@
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.time import PNTimeResponse
+from pubnub.structures import Envelope
+
+
+class PNTimeResponseEnvelope(Envelope):
+    result: PNTimeResponse
+    status: PNStatus
 
 
 class Time(Endpoint):
@@ -23,6 +30,9 @@ class Time(Endpoint):
 
     def create_response(self, envelope):
         return PNTimeResponse(envelope)
+
+    def sync(self) -> PNTimeResponseEnvelope:
+        return PNTimeResponseEnvelope(super().sync())
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

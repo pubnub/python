@@ -2,8 +2,15 @@ from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_PUSH_DEVICE_MISSING, PNERROR_PUSH_TYPE_MISSING, PNERR_PUSH_TOPIC_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType, PNPushType, PNPushEnvironment
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.push import PNPushListProvisionsResult
 from pubnub import utils
+from pubnub.structures import Envelope
+
+
+class PNPushListProvisionsResultEnvelope(Envelope):
+    result: PNPushListProvisionsResult
+    status: PNStatus
 
 
 class ListPushProvisions(Endpoint):
@@ -12,26 +19,27 @@ class ListPushProvisions(Endpoint):
     # v2/push/sub-key/{subKey}/devices-apns2/{deviceApns2}
     LIST_PATH_APNS2 = "/v2/push/sub-key/%s/devices-apns2/%s"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, device_id: str = None, push_type: PNPushType = None, topic: str = None,
+                 environment: PNPushEnvironment = None):
         Endpoint.__init__(self, pubnub)
-        self._device_id = None
-        self._push_type = None
-        self._topic = None
-        self._environment = None
+        self._device_id = device_id
+        self._push_type = push_type
+        self._topic = topic
+        self._environment = environment
 
-    def device_id(self, device_id):
+    def device_id(self, device_id: str) -> 'ListPushProvisions':
         self._device_id = device_id
         return self
 
-    def push_type(self, push_type):
+    def push_type(self, push_type: PNPushType) -> 'ListPushProvisions':
         self._push_type = push_type
         return self
 
-    def topic(self, topic):
+    def topic(self, topic: str) -> 'ListPushProvisions':
         self._topic = topic
         return self
 
-    def environment(self, environment):
+    def environment(self, environment: PNPushEnvironment) -> 'ListPushProvisions':
         self._environment = environment
         return self
 
@@ -73,11 +81,14 @@ class ListPushProvisions(Endpoint):
             if not isinstance(self._topic, str) or len(self._topic) == 0:
                 raise PubNubException(pn_error=PNERR_PUSH_TOPIC_MISSING)
 
-    def create_response(self, channels):
+    def create_response(self, channels) -> PNPushListProvisionsResult:
         if channels is not None and len(channels) > 0 and isinstance(channels, list):
             return PNPushListProvisionsResult(channels)
         else:
             return PNPushListProvisionsResult([])
+
+    def sync(self) -> PNPushListProvisionsResultEnvelope:
+        return PNPushListProvisionsResultEnvelope(super().sync())
 
     def is_auth_required(self):
         return True

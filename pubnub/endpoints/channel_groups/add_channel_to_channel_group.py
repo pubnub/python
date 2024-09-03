@@ -1,31 +1,36 @@
+from typing import List, Union
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_CHANNELS_MISSING, PNERR_GROUP_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult
+from pubnub.models.consumer.common import PNStatus
+from pubnub.structures import Envelope
+
+
+class PNChannelGroupsAddChannelResultEnvelope(Envelope):
+    result: PNChannelGroupsAddChannelResult
+    status: PNStatus
 
 
 class AddChannelToChannelGroup(Endpoint):
     # /v1/channel-registration/sub-key/<sub_key>/channel-group/<group_name>?add=ch1,ch2
     ADD_PATH = "/v1/channel-registration/sub-key/%s/channel-group/%s"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, channels: Union[str, List[str]] = None, channel_group: str = None):
         Endpoint.__init__(self, pubnub)
         self._channels = []
-        self._channel_group = None
-
-    def channels(self, channels):
-        if isinstance(channels, (list, tuple)):
-            self._channels.extend(channels)
-        else:
-            self._channels.extend(utils.split_items(channels))
-
-        return self
-
-    def channel_group(self, channel_group):
+        if channels:
+            utils.extend_list(self._channels, channels)
         self._channel_group = channel_group
 
+    def channels(self, channels) -> 'AddChannelToChannelGroup':
+        utils.extend_list(self._channels, channels)
+        return self
+
+    def channel_group(self, channel_group: str) -> 'AddChannelToChannelGroup':
+        self._channel_group = channel_group
         return self
 
     def custom_params(self):
@@ -50,8 +55,11 @@ class AddChannelToChannelGroup(Endpoint):
     def is_auth_required(self):
         return True
 
-    def create_response(self, envelope):
+    def create_response(self, envelope) -> PNChannelGroupsAddChannelResult:
         return PNChannelGroupsAddChannelResult()
+
+    def sync(self):
+        return PNChannelGroupsAddChannelResultEnvelope(super().sync())
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

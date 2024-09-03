@@ -3,9 +3,16 @@ from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_MESSAGE_MISSING
 from pubnub.exceptions import PubNubException
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
+from pubnub.structures import Envelope
+
+
+class PNPublishResultEnvelope(Envelope):
+    result: PNPublishResult
+    status: PNStatus
 
 
 class Publish(Endpoint, TimeTokenOverrideMixin):
@@ -22,9 +29,10 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
     _ptto: Optional[int]
     _ttl: Optional[int]
 
-    def __init__(self, pubnub, channel: Optional[str] = None, message: Optional[any] = None,
+    def __init__(self, pubnub, channel: str = None, message: any = None,
                  should_store: Optional[bool] = None, use_post: Optional[bool] = None, meta: Optional[any] = None,
                  replicate: Optional[bool] = None, ptto: Optional[int] = None, ttl: Optional[int] = None):
+
         super(Publish, self).__init__(pubnub)
         self._channel = channel
         self._message = message
@@ -157,6 +165,9 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         res = PNPublishResult(envelope, timetoken)
 
         return res
+
+    def sync(self) -> PNPublishResultEnvelope:
+        return PNPublishResultEnvelope(super().sync())
 
     def is_auth_required(self):
         return True

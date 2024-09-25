@@ -1,10 +1,11 @@
 import logging
 from abc import abstractmethod, ABCMeta
 
-import math
 import time
 import copy
 import base64
+import random
+
 from cbor2 import loads
 
 from . import utils
@@ -51,33 +52,21 @@ class BasePathManager(object):
 
 
 class ReconnectionManager:
-    INTERVAL = 3
-    MINEXPONENTIALBACKOFF = 1
-    MAXEXPONENTIALBACKOFF = 32
-
     def __init__(self, pubnub):
         self._pubnub = pubnub
         self._callback = None
         self._timer = None
         self._timer_interval = None
-        self._connection_errors = 1
+        self._connection_errors = 0
 
     def set_reconnection_listener(self, reconnection_callback):
         assert isinstance(reconnection_callback, ReconnectionCallback)
         self._callback = reconnection_callback
 
     def _recalculate_interval(self):
-        if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.EXPONENTIAL:
-            self._timer_interval = int(math.pow(2, self._connection_errors) - 1)
-            if self._timer_interval > self.MAXEXPONENTIALBACKOFF:
-                self._timer_interval = self.MINEXPONENTIALBACKOFF
-                self._connection_errors = 1
-                logger.debug("timerInterval > MAXEXPONENTIALBACKOFF at: %s" % utils.datetime_now())
-            elif self._timer_interval < 1:
-                self._timer_interval = self.MINEXPONENTIALBACKOFF
-            logger.debug("timerInterval = %d at: %s" % (self._timer_interval, utils.datetime_now()))
-        else:
-            self._timer_interval = self.INTERVAL
+        policy = self._pubnub.config.reconnect_policy
+        calculate = (LinearDelay.calculate if policy == PNReconnectionPolicy.LINEAR else ExponentialDelay.calculate)
+        self._timer_interval = calculate(self._connection_errors)
 
     @abstractmethod
     def start_polling(self):
@@ -87,6 +76,27 @@ class ReconnectionManager:
         if self._timer is not None:
             self._timer.stop()
             self._timer = None
+
+
+class LinearDelay:
+    INTERVAL = 2
+    MAX_RETRIES = 10
+
+    @classmethod
+    def calculate(cls, attempt: int):
+        return cls.INTERVAL + round(random.random(), 3) if attempt < cls.MAX_RETRIES else -1
+
+
+class ExponentialDelay:
+    MIN_DELAY = 2
+    MAX_RETRIES = 6
+    MIN_BACKOFF = 2
+    MAX_BACKOFF = 150
+
+    @classmethod
+    def calculate(cls, attempt: int) -> int:
+        delay = min(cls.MAX_BACKOFF, cls.MIN_DELAY * (2 ** attempt) + round(random.random(), 3))
+        return delay if attempt < cls.MAX_RETRIES else -1
 
 
 class StateManager:

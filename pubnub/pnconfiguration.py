@@ -40,7 +40,7 @@ class PNConfiguration(object):
         self.enable_presence_heartbeat = False
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.EXPONENTIAL
-        self.maximum_reconnection_retries = -1  # -1 means unlimited/ 0 means no retries
+        self.maximum_reconnection_retries = None  # -1 means unlimited/ 0 means no retries
         self.daemon = False
         self.use_random_initialization_vector = True
         self.suppress_leave_events = False

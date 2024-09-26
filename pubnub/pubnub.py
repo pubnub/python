@@ -103,7 +103,7 @@ class NativeReconnectionManager(ReconnectionManager):
 
         self._recalculate_interval()
 
-        if self._timer_interval < 0:
+        if self._timer_interval < 0 or self._retry_limit_reached():
             logger.warning("Reconnection retry limit reached. Disconnecting.")
             disconnect_status = PNStatus()
             disconnect_status.category = PNStatusCategory.PNDisconnectedCategory

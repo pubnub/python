@@ -23,10 +23,6 @@ def test_linear_policy():
         reconnection_manager._recalculate_interval()
         assert_more_or_less(reconnection_manager._timer_interval, 2)
 
-    reconnection_manager._connection_errors = 10
-    reconnection_manager._recalculate_interval()
-    assert reconnection_manager._timer_interval == -1
-
 
 def test_exponential_policy():
     config = PNConfiguration()
@@ -38,13 +34,9 @@ def test_exponential_policy():
     pubnub = PubNub(config)
     reconnection_manager = ReconnectionManager(pubnub)
 
-    expected = [2, 4, 8, 16, 32, 64]
+    expected = [2, 4, 8, 16, 32, 64, 128, 150, 150, 150]
 
-    for i in range(0, 6):
+    for i in range(0, 10):
         reconnection_manager._connection_errors = i
         reconnection_manager._recalculate_interval()
         assert_more_or_less(reconnection_manager._timer_interval, expected[i])
-
-    reconnection_manager._connection_errors = 6
-    reconnection_manager._recalculate_interval()
-    assert reconnection_manager._timer_interval == -1

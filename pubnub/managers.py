@@ -68,6 +68,18 @@ class ReconnectionManager:
         calculate = (LinearDelay.calculate if policy == PNReconnectionPolicy.LINEAR else ExponentialDelay.calculate)
         self._timer_interval = calculate(self._connection_errors)
 
+    def _retry_limit_reached(self):
+        user_limit = self._pubnub.config.maximum_reconnection_retries
+        policy = self._pubnub.config.reconnect_policy
+
+        if user_limit == 0 or policy == PNReconnectionPolicy.NONE:
+            return True
+        elif user_limit == -1:
+            return False
+        else:
+            limit = LinearDelay.MAX_RETRIES if policy == PNReconnectionPolicy.LINEAR else ExponentialDelay.MAX_RETRIES
+            return self._connection_errors > min(user_limit, limit)
+
     @abstractmethod
     def start_polling(self):
         pass
@@ -84,7 +96,7 @@ class LinearDelay:
 
     @classmethod
     def calculate(cls, attempt: int):
-        return cls.INTERVAL + round(random.random(), 3) if attempt < cls.MAX_RETRIES else -1
+        return cls.INTERVAL + round(random.random(), 3)
 
 
 class ExponentialDelay:
@@ -95,8 +107,7 @@ class ExponentialDelay:
 
     @classmethod
     def calculate(cls, attempt: int) -> int:
-        delay = min(cls.MAX_BACKOFF, cls.MIN_DELAY * (2 ** attempt) + round(random.random(), 3))
-        return delay if attempt < cls.MAX_RETRIES else -1
+        return min(cls.MAX_BACKOFF, cls.MIN_DELAY * (2 ** attempt)) + round(random.random(), 3)
 
 
 class StateManager:

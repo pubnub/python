@@ -64,6 +64,7 @@ async def test_access_denied_unsubscribe_operation():
     pnconf = pnconf_pam_copy()
     pnconf.secret_key = None
     pnconf.enable_subscribe = True
+    pnconf.reconnect_policy = pn.enums.PNReconnectionPolicy.NONE
 
     pubnub = PubNubAsyncio(pnconf)
 

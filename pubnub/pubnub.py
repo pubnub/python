@@ -101,14 +101,14 @@ class NativeReconnectionManager(ReconnectionManager):
     def _register_heartbeat_timer(self):
         self.stop_heartbeat_timer()
 
-        self._recalculate_interval()
-
-        if self._timer_interval < 0 or self._retry_limit_reached():
+        if self._retry_limit_reached():
             logger.warning("Reconnection retry limit reached. Disconnecting.")
             disconnect_status = PNStatus()
             disconnect_status.category = PNStatusCategory.PNDisconnectedCategory
             self._pubnub._subscription_manager._listener_manager.announce_status(disconnect_status)
             return
+
+        self._recalculate_interval()
 
         self._timer = threading.Timer(self._timer_interval, self._call_time)
         self._timer.daemon = True

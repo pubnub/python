@@ -43,7 +43,15 @@ def before_scenario(context: Context, feature):
 def after_scenario(context: Context, feature):
     loop = asyncio.get_event_loop()
     loop.run_until_complete(context.pubnub.stop())
-    loop.run_until_complete(asyncio.sleep(0.3))
+    # asyncio cleaning all pending tasks to eliminate any potential state changes
+    pending_tasks = asyncio.all_tasks(loop)
+    for task in pending_tasks:
+        task.cancel()
+        try:
+            loop.run_until_complete(task)
+        except asyncio.CancelledError:
+            pass
+    loop.run_until_complete(asyncio.sleep(1.5))
     del context.pubnub
 
     for tag in feature.tags:

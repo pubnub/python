@@ -76,9 +76,12 @@ class ReconnectionManager:
             return True
         elif user_limit == -1:
             return False
-        else:
-            limit = LinearDelay.MAX_RETRIES if policy == PNReconnectionPolicy.LINEAR else ExponentialDelay.MAX_RETRIES
-            return self._connection_errors > min(user_limit, limit)
+
+        policy_limit = (LinearDelay.MAX_RETRIES if policy == PNReconnectionPolicy.LINEAR
+                        else ExponentialDelay.MAX_RETRIES)
+        if user_limit is not None:
+            return self._connection_errors >= min(user_limit, policy_limit)
+        return self._connection_errors > policy_limit
 
     @abstractmethod
     def start_polling(self):

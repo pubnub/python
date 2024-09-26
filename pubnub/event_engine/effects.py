@@ -157,13 +157,13 @@ class ReconnectEffect(Effect):
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
 
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            self.max_retries = ExponentialDelay.MAX_RETRIES
+            self.max_retry_attempts = ExponentialDelay.MAX_RETRIES
         elif self.reconnection_policy is PNReconnectionPolicy.LINEAR:
-            self.max_retries = LinearDelay.MAX_RETRIES
+            self.max_retry_attempts = LinearDelay.MAX_RETRIES
         else:
-            self.max_retries = 0
+            self.max_retry_attempts = 0
         if pubnub_instance.config.maximum_reconnection_retries is not None:
-            self.max_retries = min(self.max_retries, pubnub_instance.config.maximum_reconnection_retries)
+            self.max_retry_attempts = min(self.max_retry_attempts, pubnub_instance.config.maximum_reconnection_retries)
 
     def give_up(self, reason: PubNubException, attempt: int, timetoken: int = 0):
         self.logger.error(f"GiveUp called on Unspecific event. Reason: {reason}, Attempt: {attempt} TT:{timetoken}")
@@ -178,15 +178,12 @@ class ReconnectEffect(Effect):
         raise PubNubException('Unspecified Invocation')
 
     def run(self):
-        self.logger.warning(f"Reconnect attempt {self.invocation.attempts} of {self.max_retries}")
-        if self.reconnection_policy is PNReconnectionPolicy.NONE:
+        self.logger.warning(f"Reconnect attempt {self.invocation.attempts} of {self.max_retry_attempts}")
+        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.invocation.attempts > self.max_retry_attempts:
             self.give_up(reason=self.invocation.reason, attempt=self.invocation.attempts)
         else:
             attempts = self.invocation.attempts
             delay = self.calculate_reconnection_delay(attempts)
-            if self.max_retries > 0 and attempts > self.max_retries:
-                self.give_up(reason=self.invocation.reason, attempt=self.invocation.attempts)
-                return
             self.logger.warning(f'Will reconnect in {delay}s')
             if hasattr(self.pubnub, 'event_loop'):
                 self.run_async(self.delayed_reconnect_async(delay, attempts))

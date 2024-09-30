@@ -60,7 +60,7 @@ class RemoveChannelFromChannelGroup(Endpoint):
     def create_response(self, envelope) -> PNChannelGroupsRemoveChannelResult:
         return PNChannelGroupsRemoveChannelResult()
 
-    def sync(self):
+    def sync(self) -> PNChannelGroupsRemoveChannelResultEnvelope:
         return PNChannelGroupsRemoveChannelResultEnvelope(super().sync())
 
     def request_timeout(self):

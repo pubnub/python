@@ -35,8 +35,8 @@ class GetMemberships(ObjectsEndpoint, UuidEndpoint, ListEndpoint, IncludeCustomE
     def create_response(self, envelope) -> PNGetMembershipsResult:
         return PNGetMembershipsResult(envelope)
 
-    def sync(self):
-        return super().sync()
+    def sync(self) -> PNGetMembershipsResultEnvelope:
+        return PNGetMembershipsResultEnvelope(super().sync())
 
     def operation_type(self):
         return PNOperationType.PNGetMembershipsOperation

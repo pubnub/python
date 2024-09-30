@@ -27,7 +27,7 @@ class RemoveUuid(ObjectsEndpoint, UuidEndpoint):
     def create_response(self, envelope) -> PNRemoveUUIDMetadataResult:
         return PNRemoveUUIDMetadataResult(envelope)
 
-    def sync(self):
+    def sync(self) -> PNRemoveUUIDMetadataResultEnvelope:
         return PNRemoveUUIDMetadataResultEnvelope(super().sync())
 
     def operation_type(self):

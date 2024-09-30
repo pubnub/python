@@ -58,7 +58,7 @@ class AddChannelToChannelGroup(Endpoint):
     def create_response(self, envelope) -> PNChannelGroupsAddChannelResult:
         return PNChannelGroupsAddChannelResult()
 
-    def sync(self):
+    def sync(self) -> PNChannelGroupsAddChannelResultEnvelope:
         return PNChannelGroupsAddChannelResultEnvelope(super().sync())
 
     def request_timeout(self):

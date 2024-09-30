@@ -31,6 +31,9 @@ class GetUuid(ObjectsEndpoint, UuidEndpoint, IncludeCustomEndpoint, IncludeStatu
     def create_response(self, envelope) -> PNGetUUIDMetadataResult:
         return PNGetUUIDMetadataResult(envelope)
 
+    def sync(self) -> PNGetUUIDMetadataResultEnvelope:
+        return PNGetUUIDMetadataResultEnvelope(super().sync())
+
     def operation_type(self):
         return PNOperationType.PNGetUuidMetadataOperation
 

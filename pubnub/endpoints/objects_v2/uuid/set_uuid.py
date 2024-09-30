@@ -68,7 +68,7 @@ class SetUuid(ObjectsEndpoint, UuidEndpoint, IncludeCustomEndpoint, CustomAwareE
     def create_response(self, envelope) -> PNSetUUIDMetadataResult:
         return PNSetUUIDMetadataResult(envelope)
 
-    def sync(self):
+    def sync(self) -> PNSetUUIDMetadataResultEnvelope:
         return PNSetUUIDMetadataResultEnvelope(super().sync())
 
     def operation_type(self):

@@ -124,8 +124,8 @@ class GrantToken(Endpoint):
     def create_response(self, envelope) -> PNGrantTokenResult:
         return PNGrantTokenResult.from_json(envelope['data'])
 
-    def sync(self):
-        return super().sync()
+    def sync(self) -> PNGrantTokenResultEnvelope:
+        return PNGrantTokenResultEnvelope(super().sync())
 
     def is_auth_required(self):
         return False

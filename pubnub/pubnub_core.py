@@ -209,6 +209,8 @@ class PubNubCore:
         return Publish(self)
 
     def grant(self):
+        warn("This method will stop working on 31th December 2024. We recommend that you use grant_token() instead.",
+             DeprecationWarning, stacklevel=2)
         return Grant(self)
 
     def grant_token(self):
@@ -218,6 +220,7 @@ class PubNubCore:
         return RevokeToken(self, token)
 
     def audit(self):
+        warn("This method will stop working on 31th December 2024.", DeprecationWarning, stacklevel=2)
         return Audit(self)
 
     # Push Related methods

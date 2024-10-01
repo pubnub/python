@@ -432,3 +432,27 @@ class TestPubNubSubscription(unittest.TestCase):
                 self.fail(e)
 
             assert calculate_mock.call_count == 3
+
+    def test_subscribe_retry_policy_linear_with_custom_interval(self):
+        # we don't test the actual delay calculation here, just everything around it
+        def mock_calculate(*args, **kwargs):
+            return 0.2
+
+        with patch('pubnub.managers.LinearDelay.calculate', wraps=mock_calculate) as calculate_mock:
+            ch = "test-subscribe-retry-policy-linear"
+            pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, origin='127.0.0.1',
+                                            maximum_reconnection_retries=3, reconnection_interval=1,
+                                            reconnect_policy=PNReconnectionPolicy.LINEAR))
+            listener = DisconnectListener()
+
+            try:
+                pubnub.add_listener(listener)
+                pubnub.subscribe().channels(ch).execute()
+
+                while not listener.disconnected:
+                    time.sleep(0.5)
+
+            except PubNubException as e:
+                self.fail(e)
+
+            assert calculate_mock.call_count == 0

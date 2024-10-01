@@ -554,3 +554,27 @@ async def test_subscribe_failing_reconnect_policy_exponential_with_max_retries()
                 break
             await asyncio.sleep(0.5)
         assert calculate_mock.call_count == 3
+
+
+@pytest.mark.asyncio
+async def test_subscribe_failing_reconnect_policy_linear_with_custom_interval():
+    # we don't test the actual delay calculation here, just everything around it
+    def mock_calculate(*args, **kwargs):
+        return 0.2
+
+    with patch('pubnub.managers.LinearDelay.calculate', wraps=mock_calculate) as calculate_mock:
+        config = pnconf_env_copy(enable_subscribe=True, maximum_reconnection_retries=3, reconnection_interval=1,
+                                 uuid="test-subscribe-failing-reconnect-policy-linear-with-max-retries",
+                                 reconnect_policy=PNReconnectionPolicy.LINEAR,
+                                 origin='127.0.0.1')
+        pubnub = PubNubAsyncio(config)
+
+        listener = TestCallback()
+        pubnub.add_listener(listener)
+        pubnub.subscribe().channels("my_channel_linear").execute()
+        while True:
+            if isinstance(listener.status_result, PNStatus) \
+               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+                break
+            await asyncio.sleep(0.5)
+        assert calculate_mock.call_count == 0

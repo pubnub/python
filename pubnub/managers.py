@@ -65,8 +65,13 @@ class ReconnectionManager:
 
     def _recalculate_interval(self):
         policy = self._pubnub.config.reconnect_policy
-        calculate = (LinearDelay.calculate if policy == PNReconnectionPolicy.LINEAR else ExponentialDelay.calculate)
-        self._timer_interval = calculate(self._connection_errors)
+        interval = self._pubnub.config.reconnection_interval
+        if policy == PNReconnectionPolicy.LINEAR and interval is not None:
+            self._timer_interval = interval
+        elif policy == PNReconnectionPolicy.LINEAR:
+            self._timer_interval = LinearDelay.calculate(self._connection_errors)
+        else:
+            self._timer_interval = ExponentialDelay.calculate(self._connection_errors)
 
     def _retry_limit_reached(self):
         user_limit = self._pubnub.config.maximum_reconnection_retries

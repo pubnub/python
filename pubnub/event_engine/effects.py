@@ -149,7 +149,7 @@ class ReconnectEffect(Effect):
                  invocation: Union[invocations.PNManageableInvocation, invocations.PNCancelInvocation]) -> None:
         super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
-        self.interval = pubnub_instance.config.RECONNECTION_INTERVAL
+        self.interval = pubnub_instance.config.reconnection_interval
 
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
             self.max_retry_attempts = ExponentialDelay.MAX_RETRIES
@@ -174,8 +174,10 @@ class ReconnectEffect(Effect):
     def calculate_reconnection_delay(self, attempts):
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
             delay = ExponentialDelay.calculate(attempts)
-        else:
+        elif self.interval is None:
             delay = LinearDelay.calculate(attempts)
+        else:
+            delay = self.interval
 
         return delay
 
@@ -347,13 +349,15 @@ class HeartbeatDelayedEffect(Effect):
         super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
         self.max_retry_attempts = pubnub_instance.config.maximum_reconnection_retries
-        self.interval = pubnub_instance.config.RECONNECTION_INTERVAL
+        self.interval = pubnub_instance.config.reconnection_interval
 
     def calculate_reconnection_delay(self, attempts):
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
             delay = ExponentialDelay.calculate(attempts)
-        else:
+        elif self.interval is None:
             delay = LinearDelay.calculate(attempts)
+        else:
+            delay = self.interval
 
         return delay
 

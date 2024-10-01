@@ -4,10 +4,14 @@ import pytest
 import pubnub as pn
 
 from unittest.mock import patch
+from pubnub.callbacks import SubscribeCallback
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNMessageResult
 from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio, AsyncioEnvelope, SubscribeListener
 from tests.helper import gen_channel, pnconf_enc_env_copy, pnconf_env_copy, pnconf_sub_copy
 from tests.integrational.vcr_asyncio_sleeper import VCR599Listener, VCR599ReconnectionManager
+from pubnub.enums import PNReconnectionPolicy, PNStatusCategory
+from pubnub.managers import LinearDelay, ExponentialDelay
 # from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
@@ -15,6 +19,21 @@ pn.set_stream_logger('pubnub', logging.DEBUG)
 
 async def patch_pubnub(pubnub):
     pubnub._subscription_manager._reconnection_manager = VCR599ReconnectionManager(pubnub)
+
+
+class TestCallback(SubscribeCallback):
+    message_result = None
+    status_result = None
+    presence_result = None
+
+    def status(self, pubnub, status):
+        self.status_result = status
+
+    def message(self, pubnub, message):
+        self.message_result = message
+
+    def presence(self, pubnub, presence):
+        self.presence_result = presence
 
 
 # TODO: refactor cassette
@@ -403,3 +422,159 @@ async def test_unsubscribe_all():
     assert envelope.status.original_response['status'] == 200
 
     await pubnub.stop()
+
+
+@pytest.mark.asyncio
+async def test_subscribe_failing_reconnect_policy_none():
+    config = pnconf_env_copy(enable_subscribe=True,
+                             uuid="test-subscribe-failing-reconnect-policy-none",
+                             reconnect_policy=PNReconnectionPolicy.NONE,
+                             origin='127.0.0.1')
+    pubnub = PubNubAsyncio(config)
+
+    listener = TestCallback()
+    pubnub.add_listener(listener)
+    pubnub.subscribe().channels("my_channel").execute()
+    while True:
+        if isinstance(listener.status_result, PNStatus) \
+           and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+            break
+        await asyncio.sleep(1)
+
+
+@pytest.mark.asyncio
+async def test_subscribe_failing_reconnect_policy_none():
+    config = pnconf_env_copy(enable_subscribe=True,
+                             uuid="test-subscribe-failing-reconnect-policy-none",
+                             reconnect_policy=PNReconnectionPolicy.NONE,
+                             origin='127.0.0.1')
+    pubnub = PubNubAsyncio(config)
+
+    listener = TestCallback()
+    pubnub.add_listener(listener)
+    pubnub.subscribe().channels("my_channel_none").execute()
+    while True:
+        if isinstance(listener.status_result, PNStatus) \
+           and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+            break
+        await asyncio.sleep(0.5)
+
+
+@pytest.mark.asyncio
+async def test_subscribe_failing_reconnect_policy_linear():
+    # we don't test the actual delay calculation here, just everything around it
+    def mock_calculate(*args, **kwargs):
+        return 0.2
+
+    with patch('pubnub.managers.LinearDelay.calculate', wraps=mock_calculate) as calculate_mock:
+        config = pnconf_env_copy(enable_subscribe=True,
+                                 uuid="test-subscribe-failing-reconnect-policy-linear",
+                                 reconnect_policy=PNReconnectionPolicy.LINEAR,
+                                 origin='127.0.0.1')
+        pubnub = PubNubAsyncio(config)
+
+        listener = TestCallback()
+        pubnub.add_listener(listener)
+        pubnub.subscribe().channels("my_channel_linear").execute()
+        while True:
+            if isinstance(listener.status_result, PNStatus) \
+               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+                break
+            await asyncio.sleep(0.5)
+        assert calculate_mock.call_count == LinearDelay.MAX_RETRIES
+
+
+@pytest.mark.asyncio
+async def test_subscribe_failing_reconnect_policy_exponential():
+    # we don't test the actual delay calculation here, just everything around it
+    def mock_calculate(*args, **kwargs):
+        return 0.2
+
+    with patch('pubnub.managers.ExponentialDelay.calculate', wraps=mock_calculate) as calculate_mock:
+        config = pnconf_env_copy(enable_subscribe=True,
+                                 uuid="test-subscribe-failing-reconnect-policy-exponential",
+                                 reconnect_policy=PNReconnectionPolicy.EXPONENTIAL,
+                                 origin='127.0.0.1')
+        pubnub = PubNubAsyncio(config)
+
+        listener = TestCallback()
+        pubnub.add_listener(listener)
+        pubnub.subscribe().channels("my_channel_exponential").execute()
+        while True:
+            if isinstance(listener.status_result, PNStatus) \
+               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+                break
+            await asyncio.sleep(0.5)
+        assert calculate_mock.call_count == ExponentialDelay.MAX_RETRIES
+
+
+@pytest.mark.asyncio
+async def test_subscribe_failing_reconnect_policy_linear_with_max_retries():
+    # we don't test the actual delay calculation here, just everything around it
+    def mock_calculate(*args, **kwargs):
+        return 0.2
+
+    with patch('pubnub.managers.LinearDelay.calculate', wraps=mock_calculate) as calculate_mock:
+        config = pnconf_env_copy(enable_subscribe=True, maximum_reconnection_retries=3,
+                                 uuid="test-subscribe-failing-reconnect-policy-linear-with-max-retries",
+                                 reconnect_policy=PNReconnectionPolicy.LINEAR,
+                                 origin='127.0.0.1')
+        pubnub = PubNubAsyncio(config)
+
+        listener = TestCallback()
+        pubnub.add_listener(listener)
+        pubnub.subscribe().channels("my_channel_linear").execute()
+        while True:
+            if isinstance(listener.status_result, PNStatus) \
+               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+                break
+            await asyncio.sleep(0.5)
+        assert calculate_mock.call_count == 3
+
+
+@pytest.mark.asyncio
+async def test_subscribe_failing_reconnect_policy_exponential_with_max_retries():
+    # we don't test the actual delay calculation here, just everything around it
+    def mock_calculate(*args, **kwargs):
+        return 0.2
+
+    with patch('pubnub.managers.ExponentialDelay.calculate', wraps=mock_calculate) as calculate_mock:
+        config = pnconf_env_copy(enable_subscribe=True, maximum_reconnection_retries=3,
+                                 uuid="test-subscribe-failing-reconnect-policy-exponential-with-max-retries",
+                                 reconnect_policy=PNReconnectionPolicy.EXPONENTIAL,
+                                 origin='127.0.0.1')
+        pubnub = PubNubAsyncio(config)
+
+        listener = TestCallback()
+        pubnub.add_listener(listener)
+        pubnub.subscribe().channels("my_channel_exponential").execute()
+        while True:
+            if isinstance(listener.status_result, PNStatus) \
+               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+                break
+            await asyncio.sleep(0.5)
+        assert calculate_mock.call_count == 3
+
+
+@pytest.mark.asyncio
+async def test_subscribe_failing_reconnect_policy_linear_with_custom_interval():
+    # we don't test the actual delay calculation here, just everything around it
+    def mock_calculate(*args, **kwargs):
+        return 0.2
+
+    with patch('pubnub.managers.LinearDelay.calculate', wraps=mock_calculate) as calculate_mock:
+        config = pnconf_env_copy(enable_subscribe=True, maximum_reconnection_retries=3, reconnection_interval=1,
+                                 uuid="test-subscribe-failing-reconnect-policy-linear-with-max-retries",
+                                 reconnect_policy=PNReconnectionPolicy.LINEAR,
+                                 origin='127.0.0.1')
+        pubnub = PubNubAsyncio(config)
+
+        listener = TestCallback()
+        pubnub.add_listener(listener)
+        pubnub.subscribe().channels("my_channel_linear").execute()
+        while True:
+            if isinstance(listener.status_result, PNStatus) \
+               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+                break
+            await asyncio.sleep(0.5)
+        assert calculate_mock.call_count == 0

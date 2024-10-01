@@ -1,6 +1,5 @@
 import asyncio
 import logging
-import math
 
 from typing import Optional, Union
 from pubnub.endpoints.presence.heartbeat import Heartbeat
@@ -14,6 +13,7 @@ from pubnub.pubnub import PubNub
 from pubnub.event_engine.models import events, invocations
 from pubnub.models.consumer.common import PNStatus
 from pubnub.workers import BaseMessageWorker
+from pubnub.managers import LinearDelay, ExponentialDelay
 
 
 class Effect:
@@ -56,14 +56,6 @@ class Effect:
         event = asyncio.Event()
         self.logger.debug(f'creating new stop_event({id(event)}) for {self.__class__.__name__}')
         return event
-
-    def calculate_reconnection_delay(self, attempts):
-        if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            delay = int(math.pow(2, attempts - 5 * math.floor((attempts - 1) / 5)) - 1)
-        else:
-            delay = self.interval
-
-        return delay
 
 
 class HandshakeEffect(Effect):
@@ -157,10 +149,15 @@ class ReconnectEffect(Effect):
                  invocation: Union[invocations.PNManageableInvocation, invocations.PNCancelInvocation]) -> None:
         super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
-        self.max_retry_attempts = pubnub_instance.config.maximum_reconnection_retries
-        self.interval = pubnub_instance.config.RECONNECTION_INTERVAL
-        self.min_backoff = pubnub_instance.config.RECONNECTION_MIN_EXPONENTIAL_BACKOFF
-        self.max_backoff = pubnub_instance.config.RECONNECTION_MAX_EXPONENTIAL_BACKOFF
+        self.interval = pubnub_instance.config.reconnection_interval
+
+        if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
+            self.max_retry_attempts = ExponentialDelay.MAX_RETRIES
+        elif self.reconnection_policy is PNReconnectionPolicy.LINEAR:
+            self.max_retry_attempts = LinearDelay.MAX_RETRIES
+
+        if pubnub_instance.config.maximum_reconnection_retries is not None:
+            self.max_retry_attempts = pubnub_instance.config.maximum_reconnection_retries
 
     def give_up(self, reason: PubNubException, attempt: int, timetoken: int = 0):
         self.logger.error(f"GiveUp called on Unspecific event. Reason: {reason}, Attempt: {attempt} TT:{timetoken}")
@@ -174,13 +171,23 @@ class ReconnectEffect(Effect):
         self.logger.error(f"Success called on Unspecific event. TT:{timetoken}, Reg: {region}, KWARGS: {kwargs.keys()}")
         raise PubNubException('Unspecified Invocation')
 
+    def calculate_reconnection_delay(self, attempts):
+        if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
+            delay = ExponentialDelay.calculate(attempts)
+        elif self.interval is None:
+            delay = LinearDelay.calculate(attempts)
+        else:
+            delay = self.interval
+
+        return delay
+
     def run(self):
         if self.reconnection_policy is PNReconnectionPolicy.NONE or self.invocation.attempts > self.max_retry_attempts:
             self.give_up(reason=self.invocation.reason, attempt=self.invocation.attempts)
         else:
             attempts = self.invocation.attempts
             delay = self.calculate_reconnection_delay(attempts)
-            self.logger.warning(f'will reconnect in {delay}s')
+            self.logger.warning(f'Will reconnect in {delay}s')
             if hasattr(self.pubnub, 'event_loop'):
                 self.run_async(self.delayed_reconnect_async(delay, attempts))
 
@@ -314,7 +321,8 @@ class HeartbeatWaitEffect(Effect):
     async def heartbeat_wait(self, wait_time: int, stop_event):
         try:
             await asyncio.sleep(wait_time)
-            self.event_engine.trigger(events.HeartbeatTimesUpEvent())
+            if not stop_event.is_set():
+                self.event_engine.trigger(events.HeartbeatTimesUpEvent())
         except asyncio.CancelledError:
             pass
 
@@ -341,9 +349,17 @@ class HeartbeatDelayedEffect(Effect):
         super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
         self.max_retry_attempts = pubnub_instance.config.maximum_reconnection_retries
-        self.interval = pubnub_instance.config.RECONNECTION_INTERVAL
-        self.min_backoff = pubnub_instance.config.RECONNECTION_MIN_EXPONENTIAL_BACKOFF
-        self.max_backoff = pubnub_instance.config.RECONNECTION_MAX_EXPONENTIAL_BACKOFF
+        self.interval = pubnub_instance.config.reconnection_interval
+
+    def calculate_reconnection_delay(self, attempts):
+        if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
+            delay = ExponentialDelay.calculate(attempts)
+        elif self.interval is None:
+            delay = LinearDelay.calculate(attempts)
+        else:
+            delay = self.interval
+
+        return delay
 
     def run(self):
         if self.reconnection_policy is PNReconnectionPolicy.NONE or self.invocation.attempts > self.max_retry_attempts:

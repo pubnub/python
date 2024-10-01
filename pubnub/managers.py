@@ -1,10 +1,11 @@
 import logging
 from abc import abstractmethod, ABCMeta
 
-import math
 import time
 import copy
 import base64
+import random
+
 from cbor2 import loads
 
 from . import utils
@@ -51,33 +52,41 @@ class BasePathManager(object):
 
 
 class ReconnectionManager:
-    INTERVAL = 3
-    MINEXPONENTIALBACKOFF = 1
-    MAXEXPONENTIALBACKOFF = 32
-
     def __init__(self, pubnub):
         self._pubnub = pubnub
         self._callback = None
         self._timer = None
         self._timer_interval = None
-        self._connection_errors = 1
+        self._connection_errors = 0
 
     def set_reconnection_listener(self, reconnection_callback):
         assert isinstance(reconnection_callback, ReconnectionCallback)
         self._callback = reconnection_callback
 
     def _recalculate_interval(self):
-        if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.EXPONENTIAL:
-            self._timer_interval = int(math.pow(2, self._connection_errors) - 1)
-            if self._timer_interval > self.MAXEXPONENTIALBACKOFF:
-                self._timer_interval = self.MINEXPONENTIALBACKOFF
-                self._connection_errors = 1
-                logger.debug("timerInterval > MAXEXPONENTIALBACKOFF at: %s" % utils.datetime_now())
-            elif self._timer_interval < 1:
-                self._timer_interval = self.MINEXPONENTIALBACKOFF
-            logger.debug("timerInterval = %d at: %s" % (self._timer_interval, utils.datetime_now()))
+        policy = self._pubnub.config.reconnect_policy
+        interval = self._pubnub.config.reconnection_interval
+        if policy == PNReconnectionPolicy.LINEAR and interval is not None:
+            self._timer_interval = interval
+        elif policy == PNReconnectionPolicy.LINEAR:
+            self._timer_interval = LinearDelay.calculate(self._connection_errors)
         else:
-            self._timer_interval = self.INTERVAL
+            self._timer_interval = ExponentialDelay.calculate(self._connection_errors)
+
+    def _retry_limit_reached(self):
+        user_limit = self._pubnub.config.maximum_reconnection_retries
+        policy = self._pubnub.config.reconnect_policy
+
+        if user_limit == 0 or policy == PNReconnectionPolicy.NONE:
+            return True
+        elif user_limit == -1:
+            return False
+
+        policy_limit = (LinearDelay.MAX_RETRIES if policy == PNReconnectionPolicy.LINEAR
+                        else ExponentialDelay.MAX_RETRIES)
+        if user_limit is not None:
+            return self._connection_errors >= min(user_limit, policy_limit)
+        return self._connection_errors > policy_limit
 
     @abstractmethod
     def start_polling(self):
@@ -87,6 +96,26 @@ class ReconnectionManager:
         if self._timer is not None:
             self._timer.stop()
             self._timer = None
+
+
+class LinearDelay:
+    INTERVAL = 2
+    MAX_RETRIES = 10
+
+    @classmethod
+    def calculate(cls, attempt: int):
+        return cls.INTERVAL + round(random.random(), 3)
+
+
+class ExponentialDelay:
+    MIN_DELAY = 2
+    MAX_RETRIES = 6
+    MIN_BACKOFF = 2
+    MAX_BACKOFF = 150
+
+    @classmethod
+    def calculate(cls, attempt: int) -> int:
+        return min(cls.MAX_BACKOFF, cls.MIN_DELAY * (2 ** attempt)) + round(random.random(), 3)
 
 
 class StateManager:

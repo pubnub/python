@@ -101,6 +101,13 @@ class NativeReconnectionManager(ReconnectionManager):
     def _register_heartbeat_timer(self):
         self.stop_heartbeat_timer()
 
+        if self._retry_limit_reached():
+            logger.warning("Reconnection retry limit reached. Disconnecting.")
+            disconnect_status = PNStatus()
+            disconnect_status.category = PNStatusCategory.PNDisconnectedCategory
+            self._pubnub._subscription_manager._listener_manager.announce_status(disconnect_status)
+            return
+
         self._recalculate_interval()
 
         self._timer = threading.Timer(self._timer_interval, self._call_time)
@@ -129,6 +136,9 @@ class NativeReconnectionManager(ReconnectionManager):
     def start_polling(self):
         if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.NONE:
             logger.warning("reconnection policy is disabled, please handle reconnection manually.")
+            disconnect_status = PNStatus()
+            disconnect_status.category = PNStatusCategory.PNDisconnectedCategory
+            self._pubnub._subscription_manager._listener_manager.announce_status(disconnect_status)
             return
 
         logger.debug("reconnection manager start at: %s" % utils.datetime_now())

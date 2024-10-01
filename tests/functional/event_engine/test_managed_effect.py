@@ -15,9 +15,7 @@ from tests.helper import pnconf_env_copy
 
 class FakeConfig:
     reconnect_policy = PNReconnectionPolicy.NONE
-    RECONNECTION_INTERVAL = 1
-    RECONNECTION_MIN_EXPONENTIAL_BACKOFF = 1
-    RECONNECTION_MAX_EXPONENTIAL_BACKOFF = 32
+    reconnection_interval = 1
     maximum_reconnection_retries = 3
 
 

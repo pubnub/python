@@ -60,7 +60,7 @@ async def step_impl(context: PNContext):
     context.pn_config.enable_presence_heartbeat = True
     context.pn_config.reconnect_policy = PNReconnectionPolicy.LINEAR
     context.pn_config.subscribe_request_timeout = 10
-    context.pn_config.RECONNECTION_INTERVAL = 2
+    context.pn_config.reconnection_interval = 2
     context.pn_config.set_presence_timeout(3)
     context.pubnub = PubNubAsyncio(context.pn_config, subscription_manager=EventEngineSubscriptionManager)
 

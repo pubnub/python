@@ -1,5 +1,5 @@
 name: python
-version: 8.1.0
+version: 9.0.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-8.1.0
+            package-name: pubnub-9.0.0
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -97,8 +97,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-8.1.0
-            location: https://github.com/pubnub/python/releases/download/v8.1.0/pubnub-8.1.0.tar.gz
+            package-name: pubnub-9.0.0
+            location: https://github.com/pubnub/python/releases/download/v9.0.0/pubnub-9.0.0.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,19 @@ sdks:
                 license-url: https://github.com/aio-libs/aiohttp/blob/master/LICENSE.txt
                 is-required: Required
 changelog:
+  - date: 2024-10-02
+    version: v9.0.0
+    changes:
+      - type: feature
+        text: "BREAKING CHANGES: Automatic reconnecting for subscribe with exponential backoff is now enabled by default."
+      - type: feature
+        text: "Access manager v2 endpoints (grant and audit) will no longer be supported after December 31, 2024, and will be removed without further notice. Refer to the documentation to learn more."
+      - type: feature
+        text: "BREAKING CHANGES: Once used to instantiate PubNub, the configuration object (PNConfiguration instance) becomes immutable. You will receive exceptions if you rely on modifying the configuration after the PubNub instance is created. Refer to the documentation to learn more."
+      - type: improvement
+        text: "Type hints for parameters and return values are now added to provide a better developer experience."
+      - type: improvement
+        text: "All endpoints are now accessible through the builder pattern and named parameters, providing a more flexible experience suitable for custom solutions."
   - date: 2024-08-13
     version: v8.1.0
     changes:

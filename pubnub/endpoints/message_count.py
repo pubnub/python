@@ -1,23 +1,36 @@
+from typing import Union, List
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.exceptions import PubNubException
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.message_count import PNMessageCountResult
+from pubnub.structures import Envelope
+
+
+class PNMessageCountResultEnvelope(Envelope):
+    result: PNMessageCountResult
+    status: PNStatus
 
 
 class MessageCount(Endpoint):
     MESSAGE_COUNT_PATH = '/v3/history/sub-key/%s/message-counts/%s'
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, channels: Union[str, List[str]] = None,
+                 channels_timetoken: Union[str, List[str]] = None):
         Endpoint.__init__(self, pubnub)
-        self._channel = []
-        self._channels_timetoken = []
+        self._channel: list = []
+        self._channels_timetoken: list = []
+        if channels:
+            utils.extend_list(self._channel, channels)
+        if channels_timetoken:
+            utils.extend_list(self._channels_timetoken, [str(item) for item in channels_timetoken])
 
-    def channel(self, channel):
+    def channel(self, channel) -> 'MessageCount':
         utils.extend_list(self._channel, channel)
         return self
 
-    def channel_timetokens(self, timetokens):
+    def channel_timetokens(self, timetokens) -> 'MessageCount':
         timetokens = [str(item) for item in timetokens]
         utils.extend_list(self._channels_timetoken, timetokens)
         return self
@@ -52,6 +65,9 @@ class MessageCount(Endpoint):
 
     def create_response(self, result):  # pylint: disable=W0221
         return PNMessageCountResult(result)
+
+    def sync(self) -> PNMessageCountResultEnvelope:
+        return PNMessageCountResultEnvelope(super().sync())
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

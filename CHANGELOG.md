@@ -1,3 +1,15 @@
+## v9.0.0
+October 02 2024
+
+#### Added
+- BREAKING CHANGES: Automatic reconnecting for subscribe with exponential backoff is now enabled by default.
+- Access manager v2 endpoints (grant and audit) will no longer be supported after December 31, 2024, and will be removed without further notice. Refer to the documentation to learn more.
+- BREAKING CHANGES: Once used to instantiate PubNub, the configuration object (PNConfiguration instance) becomes immutable. You will receive exceptions if you rely on modifying the configuration after the PubNub instance is created. Refer to the documentation to learn more.
+
+#### Modified
+- Type hints for parameters and return values are now added to provide a better developer experience.
+- All endpoints are now accessible through the builder pattern and named parameters, providing a more flexible experience suitable for custom solutions.
+
 ## v8.1.0
 August 13 2024
 

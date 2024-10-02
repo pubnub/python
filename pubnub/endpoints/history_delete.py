@@ -1,26 +1,28 @@
+from typing import Optional
 from pubnub import utils
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.endpoints.endpoint import Endpoint
+from pubnub.structures import Envelope
 
 
 class HistoryDelete(Endpoint):  # pylint: disable=W0612
     HISTORY_DELETE_PATH = "/v3/history/sub-key/%s/channel/%s"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, channel: str = None, start: Optional[int] = None, end: Optional[int] = None):
         Endpoint.__init__(self, pubnub)
-        self._channel = None
-        self._start = None
-        self._end = None
+        self._channel = channel
+        self._start = start
+        self._end = end
 
-    def channel(self, channel):
+    def channel(self, channel) -> 'HistoryDelete':
         self._channel = channel
         return self
 
-    def start(self, start):
+    def start(self, start) -> 'HistoryDelete':
         self._start = start
         return self
 
-    def end(self, end):
+    def end(self, end) -> 'HistoryDelete':
         self._end = end
         return self
 
@@ -53,6 +55,9 @@ class HistoryDelete(Endpoint):  # pylint: disable=W0612
 
     def create_response(self, endpoint):
         return {}
+
+    def sync(self) -> Envelope:
+        return super().sync()
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

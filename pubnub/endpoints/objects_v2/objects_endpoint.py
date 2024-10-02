@@ -5,7 +5,7 @@ from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_UUID_MISSING, PNERR_CHANNEL_MISSING
 from pubnub.exceptions import PubNubException
-from pubnub.models.consumer.objects_v2.page import Next, Previous
+from pubnub.models.consumer.objects_v2.page import Next, PNPage, Previous
 
 logger = logging.getLogger("pubnub")
 
@@ -101,10 +101,10 @@ class ObjectsEndpoint(Endpoint):
 class CustomAwareEndpoint:
     __metaclass__ = ABCMeta
 
-    def __init__(self):
+    def __init__(self, custom: dict = None):
         self._custom = None
 
-    def custom(self, custom):
+    def custom(self, custom: dict):
         self._custom = dict(custom)
         self._include_custom = True
         return self
@@ -113,15 +113,15 @@ class CustomAwareEndpoint:
 class StatusTypeAwareEndpoint:
     __metaclass__ = ABCMeta
 
-    def __init__(self):
-        self._status = None
-        self._type = None
+    def __init__(self, status: str = None, type: str = None):
+        self._status = status
+        self._type = type
 
     def set_status(self, status: str):
         self._status = status
         return self
 
-    def set_type(self, type):
+    def set_type(self, type: str):
         self._type = type
         return self
 
@@ -136,10 +136,10 @@ class StatusTypeAwareEndpoint:
 class ChannelEndpoint:
     __metaclass__ = ABCMeta
 
-    def __init__(self):
-        self._channel = None
+    def __init__(self, channel: str = None):
+        self._channel = channel
 
-    def channel(self, channel):
+    def channel(self, channel: str):
         self._channel = str(channel)
         return self
 
@@ -151,10 +151,10 @@ class ChannelEndpoint:
 class UuidEndpoint:
     __metaclass__ = ABCMeta
 
-    def __init__(self):
-        self._uuid = None
+    def __init__(self, uuid: str = None):
+        self._uuid = uuid
 
-    def uuid(self, uuid):
+    def uuid(self, uuid: str):
         self._uuid = str(uuid)
         return self
 
@@ -172,30 +172,31 @@ class UuidEndpoint:
 class ListEndpoint:
     __metaclass__ = ABCMeta
 
-    def __init__(self):
-        self._limit = None
-        self._filter = None
-        self._include_total_count = None
-        self._sort_keys = None
-        self._page = None
+    def __init__(self, limit: int = None, filter: str = None, include_total_count: bool = None, sort_keys: list = None,
+                 page: PNPage = None):
+        self._limit = limit
+        self._filter = filter
+        self._include_total_count = include_total_count
+        self._sort_keys = sort_keys
+        self._page = page
 
-    def limit(self, limit):
+    def limit(self, limit: int):
         self._limit = int(limit)
         return self
 
-    def filter(self, filter):
+    def filter(self, filter: str):
         self._filter = str(filter)
         return self
 
-    def include_total_count(self, include_total_count):
+    def include_total_count(self, include_total_count: bool):
         self._include_total_count = bool(include_total_count)
         return self
 
-    def sort(self, *sort_keys):
+    def sort(self, *sort_keys: list):
         self._sort_keys = sort_keys
         return self
 
-    def page(self, page):
+    def page(self, page: PNPage):
         self._page = page
         return self
 
@@ -203,10 +204,10 @@ class ListEndpoint:
 class IncludeCustomEndpoint:
     __metaclass__ = ABCMeta
 
-    def __init__(self):
-        self._include_custom = None
+    def __init__(self, include_custom: bool = None):
+        self._include_custom = include_custom
 
-    def include_custom(self, include_custom):
+    def include_custom(self, include_custom: bool):
         self._include_custom = bool(include_custom)
         return self
 
@@ -214,15 +215,15 @@ class IncludeCustomEndpoint:
 class IncludeStatusTypeEndpoint:
     __metaclass__ = ABCMeta
 
-    def __init__(self):
-        self._include_status = True
-        self._include_type = True
+    def __init__(self, include_status: bool = None, include_type: bool = None):
+        self._include_status = include_status
+        self._include_type = include_type
 
-    def include_status(self, include_status):
+    def include_status(self, include_status: bool):
         self._include_status = bool(include_status)
         return self
 
-    def include_type(self, include_type):
+    def include_type(self, include_type: bool):
         self._include_type = bool(include_type)
         return self
 

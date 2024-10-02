@@ -1,3 +1,4 @@
+from typing import Dict, Optional, Union, List
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
@@ -9,23 +10,28 @@ class Heartbeat(Endpoint):
     # /v2/presence/sub-key/<subscribe_key>/channel/<channel>/heartbeat?uuid=<uuid>
     HEARTBEAT_PATH = "/v2/presence/sub-key/%s/channel/%s/heartbeat"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, channels: Union[str, List[str]] = None, channel_groups: Union[str, List[str]] = None,
+                 state: Optional[Dict[str, any]] = None):
         super(Heartbeat, self).__init__(pubnub)
         self._channels = []
         self._groups = []
-        self._state = None
+        if channels:
+            utils.extend_list(self._channels, channels)
 
-    def channels(self, channels):
+        if channel_groups:
+            utils.extend_list(self._groups, channel_groups)
+
+        self._state = state
+
+    def channels(self, channels: Union[str, List[str]]) -> 'Heartbeat':
         utils.extend_list(self._channels, channels)
-
         return self
 
-    def channel_groups(self, channel_groups):
+    def channel_groups(self, channel_groups: Union[str, List[str]]) -> 'Heartbeat':
         utils.extend_list(self._groups, channel_groups)
-
         return self
 
-    def state(self, state):
+    def state(self, state: Dict[str, any]) -> 'Heartbeat':
         self._state = state
 
         return self

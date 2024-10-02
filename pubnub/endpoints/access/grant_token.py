@@ -1,58 +1,77 @@
+from typing import Union, List, Optional
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_TTL_MISSING, PNERR_INVALID_META, PNERR_RESOURCES_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.v3.access_manager import PNGrantTokenResult
+from pubnub.structures import Envelope
+
+
+class PNGrantTokenResultEnvelope(Envelope):
+    result: PNGrantTokenResult
+    status: PNStatus
 
 
 class GrantToken(Endpoint):
     GRANT_TOKEN_PATH = "/v3/pam/%s/grant"
 
-    def __init__(self, pubnub):
+    def __init__(self, pubnub, channels: Union[str, List[str]] = None, channel_groups: Union[str, List[str]] = None,
+                 users: Union[str, List[str]] = None, spaces: Union[str, List[str]] = None,
+                 authorized_user_id: str = None, ttl: Optional[int] = None, meta: Optional[any] = None):
         Endpoint.__init__(self, pubnub)
-        self._ttl = None
-        self._meta = None
-        self._authorized_uuid = None
+        self._ttl = ttl
+        self._meta = meta
+        self._authorized_uuid = authorized_user_id
         self._channels = []
+        if channels:
+            utils.extend_list(self._channels, channels)
+        if spaces:
+            utils.extend_list(self._channels, spaces)
+
         self._groups = []
+        if channel_groups:
+            utils.extend_list(self._groups, channel_groups)
         self._uuids = []
+        if users:
+            utils.extend_list(self._uuids, users)
 
         self._sort_params = True
 
-    def ttl(self, ttl):
+    def ttl(self, ttl: int) -> 'GrantToken':
         self._ttl = ttl
         return self
 
-    def meta(self, meta):
+    def meta(self, meta: any) -> 'GrantToken':
         self._meta = meta
         return self
 
-    def authorized_uuid(self, uuid):
+    def authorized_uuid(self, uuid: str) -> 'GrantToken':
         self._authorized_uuid = uuid
         return self
 
-    def authorized_user(self, user):
+    def authorized_user(self, user) -> 'GrantToken':
         self._authorized_uuid = user
         return self
 
-    def spaces(self, spaces):
+    def spaces(self, spaces: Union[str, List[str]]) -> 'GrantToken':
         self._channels = spaces
         return self
 
-    def users(self, users):
+    def users(self, users: Union[str, List[str]]) -> 'GrantToken':
         self._uuids = users
         return self
 
-    def channels(self, channels):
+    def channels(self, channels: Union[str, List[str]]) -> 'GrantToken':
         self._channels = channels
         return self
 
-    def groups(self, groups):
+    def groups(self, groups: Union[str, List[str]]) -> 'GrantToken':
         self._groups = groups
         return self
 
-    def uuids(self, uuids):
+    def uuids(self, uuids: Union[str, List[str]]) -> 'GrantToken':
         self._uuids = uuids
         return self
 
@@ -102,8 +121,11 @@ class GrantToken(Endpoint):
         self.validate_ttl()
         self.validate_resources()
 
-    def create_response(self, envelope):
+    def create_response(self, envelope) -> PNGrantTokenResult:
         return PNGrantTokenResult.from_json(envelope['data'])
+
+    def sync(self) -> PNGrantTokenResultEnvelope:
+        return PNGrantTokenResultEnvelope(super().sync())
 
     def is_auth_required(self):
         return False

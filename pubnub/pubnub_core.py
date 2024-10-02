@@ -2,6 +2,7 @@ import logging
 import time
 from warnings import warn
 from copy import deepcopy
+from typing import Dict, List, Optional, Union
 from pubnub.endpoints.entities.membership.add_memberships import AddSpaceMembers, AddUserSpaces
 from pubnub.endpoints.entities.membership.update_memberships import UpdateSpaceMembers, UpdateUserSpaces
 from pubnub.endpoints.entities.membership.fetch_memberships import FetchSpaceMemberships, FetchUserMemberships
@@ -17,10 +18,13 @@ from pubnub.endpoints.entities.user.remove_user import RemoveUser
 from pubnub.endpoints.entities.user.update_user import UpdateUser
 from pubnub.endpoints.entities.user.fetch_user import FetchUser
 from pubnub.endpoints.entities.user.fetch_users import FetchUsers
+from pubnub.enums import PNPushEnvironment, PNPushType
 from pubnub.errors import PNERR_MISUSE_OF_USER_AND_SPACE, PNERR_USER_SPACE_PAIRS_MISSING
 from pubnub.exceptions import PubNubException
 from pubnub.features import feature_flag
 from pubnub.crypto import PubNubCryptoModule
+from pubnub.models.consumer.message_actions import PNMessageAction
+from pubnub.models.consumer.objects_v2.page import PNPage
 from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup, PubNubChannelMetadata, PubNubUserMetadata, \
     PNSubscriptionRegistry, PubNubSubscriptionSet
 
@@ -28,69 +32,69 @@ from abc import ABCMeta, abstractmethod
 
 from pubnub.pnconfiguration import PNConfiguration
 
-from .endpoints.objects_v2.uuid.set_uuid import SetUuid
-from .endpoints.objects_v2.channel.get_all_channels import GetAllChannels
-from .endpoints.objects_v2.channel.get_channel import GetChannel
-from .endpoints.objects_v2.channel.remove_channel import RemoveChannel
-from .endpoints.objects_v2.channel.set_channel import SetChannel
-from .endpoints.objects_v2.members.get_channel_members import GetChannelMembers
-from .endpoints.objects_v2.members.manage_channel_members import ManageChannelMembers
-from .endpoints.objects_v2.members.remove_channel_members import RemoveChannelMembers
-from .endpoints.objects_v2.members.set_channel_members import SetChannelMembers
-from .endpoints.objects_v2.memberships.get_memberships import GetMemberships
-from .endpoints.objects_v2.memberships.manage_memberships import ManageMemberships
-from .endpoints.objects_v2.memberships.remove_memberships import RemoveMemberships
-from .endpoints.objects_v2.memberships.set_memberships import SetMemberships
-from .endpoints.objects_v2.uuid.get_all_uuid import GetAllUuid
-from .endpoints.objects_v2.uuid.get_uuid import GetUuid
-from .endpoints.objects_v2.uuid.remove_uuid import RemoveUuid
-from .managers import BasePathManager, TokenManager
-from .builders import SubscribeBuilder
-from .builders import UnsubscribeBuilder
-from .endpoints.time import Time
-from .endpoints.history import History
-from .endpoints.access.audit import Audit
-from .endpoints.access.grant import Grant
-from .endpoints.access.grant_token import GrantToken
-from .endpoints.access.revoke_token import RevokeToken
-from .endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
-from .endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
-from .endpoints.channel_groups.remove_channel_from_channel_group import RemoveChannelFromChannelGroup
-from .endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
-from .endpoints.presence.get_state import GetState
-from .endpoints.presence.heartbeat import Heartbeat
-from .endpoints.presence.set_state import SetState
-from .endpoints.pubsub.publish import Publish
-from .endpoints.pubsub.fire import Fire
-from .endpoints.presence.here_now import HereNow
-from .endpoints.presence.where_now import WhereNow
-from .endpoints.history_delete import HistoryDelete
-from .endpoints.message_count import MessageCount
-from .endpoints.signal import Signal
-from .endpoints.fetch_messages import FetchMessages
-from .endpoints.message_actions.add_message_action import AddMessageAction
-from .endpoints.message_actions.get_message_actions import GetMessageActions
-from .endpoints.message_actions.remove_message_action import RemoveMessageAction
-from .endpoints.file_operations.list_files import ListFiles
-from .endpoints.file_operations.delete_file import DeleteFile
-from .endpoints.file_operations.get_file_url import GetFileDownloadUrl
-from .endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
-from .endpoints.file_operations.send_file import SendFileNative
-from .endpoints.file_operations.download_file import DownloadFileNative
-from .endpoints.file_operations.publish_file_message import PublishFileMessage
+from pubnub.endpoints.objects_v2.uuid.set_uuid import SetUuid
+from pubnub.endpoints.objects_v2.channel.get_all_channels import GetAllChannels
+from pubnub.endpoints.objects_v2.channel.get_channel import GetChannel
+from pubnub.endpoints.objects_v2.channel.remove_channel import RemoveChannel
+from pubnub.endpoints.objects_v2.channel.set_channel import SetChannel
+from pubnub.endpoints.objects_v2.members.get_channel_members import GetChannelMembers
+from pubnub.endpoints.objects_v2.members.manage_channel_members import ManageChannelMembers
+from pubnub.endpoints.objects_v2.members.remove_channel_members import RemoveChannelMembers
+from pubnub.endpoints.objects_v2.members.set_channel_members import SetChannelMembers
+from pubnub.endpoints.objects_v2.memberships.get_memberships import GetMemberships
+from pubnub.endpoints.objects_v2.memberships.manage_memberships import ManageMemberships
+from pubnub.endpoints.objects_v2.memberships.remove_memberships import RemoveMemberships
+from pubnub.endpoints.objects_v2.memberships.set_memberships import SetMemberships
+from pubnub.endpoints.objects_v2.uuid.get_all_uuid import GetAllUuid
+from pubnub.endpoints.objects_v2.uuid.get_uuid import GetUuid
+from pubnub.endpoints.objects_v2.uuid.remove_uuid import RemoveUuid
+from pubnub.managers import BasePathManager, TokenManager
+from pubnub.builders import SubscribeBuilder
+from pubnub.builders import UnsubscribeBuilder
+from pubnub.endpoints.time import Time
+from pubnub.endpoints.history import History
+from pubnub.endpoints.access.audit import Audit
+from pubnub.endpoints.access.grant import Grant
+from pubnub.endpoints.access.grant_token import GrantToken
+from pubnub.endpoints.access.revoke_token import RevokeToken
+from pubnub.endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
+from pubnub.endpoints.channel_groups.list_channels_in_channel_group import ListChannelsInChannelGroup
+from pubnub.endpoints.channel_groups.remove_channel_from_channel_group import RemoveChannelFromChannelGroup
+from pubnub.endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
+from pubnub.endpoints.presence.get_state import GetState
+from pubnub.endpoints.presence.heartbeat import Heartbeat
+from pubnub.endpoints.presence.set_state import SetState
+from pubnub.endpoints.pubsub.publish import Publish
+from pubnub.endpoints.pubsub.fire import Fire
+from pubnub.endpoints.presence.here_now import HereNow
+from pubnub.endpoints.presence.where_now import WhereNow
+from pubnub.endpoints.history_delete import HistoryDelete
+from pubnub.endpoints.message_count import MessageCount
+from pubnub.endpoints.signal import Signal
+from pubnub.endpoints.fetch_messages import FetchMessages
+from pubnub.endpoints.message_actions.add_message_action import AddMessageAction
+from pubnub.endpoints.message_actions.get_message_actions import GetMessageActions
+from pubnub.endpoints.message_actions.remove_message_action import RemoveMessageAction
+from pubnub.endpoints.file_operations.list_files import ListFiles
+from pubnub.endpoints.file_operations.delete_file import DeleteFile
+from pubnub.endpoints.file_operations.get_file_url import GetFileDownloadUrl
+from pubnub.endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
+from pubnub.endpoints.file_operations.send_file import SendFileNative
+from pubnub.endpoints.file_operations.download_file import DownloadFileNative
+from pubnub.endpoints.file_operations.publish_file_message import PublishFileMessage
 
-from .endpoints.push.add_channels_to_push import AddChannelsToPush
-from .endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
-from .endpoints.push.remove_device import RemoveDeviceFromPush
-from .endpoints.push.list_push_provisions import ListPushProvisions
-from .managers import TelemetryManager
+from pubnub.endpoints.push.add_channels_to_push import AddChannelsToPush
+from pubnub.endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
+from pubnub.endpoints.push.remove_device import RemoveDeviceFromPush
+from pubnub.endpoints.push.list_push_provisions import ListPushProvisions
+from pubnub.managers import TelemetryManager
 
 logger = logging.getLogger("pubnub")
 
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "8.1.0"
+    SDK_VERSION = "9.0.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -163,25 +167,26 @@ class PubNubCore:
 
     def get_subscribed_channel_groups(self):
         self._validate_subscribe_manager_enabled()
-
         return self._subscription_manager.get_subscribed_channel_groups()
 
-    def add_channel_to_channel_group(self):
-        return AddChannelToChannelGroup(self)
+    def add_channel_to_channel_group(self, channels: Union[str, List[str]] = None,
+                                     channel_group: str = None) -> AddChannelToChannelGroup:
+        return AddChannelToChannelGroup(self, channels=channels, channel_group=channel_group)
 
-    def remove_channel_from_channel_group(self):
-        return RemoveChannelFromChannelGroup(self)
+    def remove_channel_from_channel_group(self, channels: Union[str, List[str]] = None,
+                                          channel_group: str = None) -> RemoveChannelFromChannelGroup:
+        return RemoveChannelFromChannelGroup(self, channels=channels, channel_group=channel_group)
 
-    def list_channels_in_channel_group(self):
-        return ListChannelsInChannelGroup(self)
+    def list_channels_in_channel_group(self, channel_group: str = None) -> ListChannelsInChannelGroup:
+        return ListChannelsInChannelGroup(self, channel_group=channel_group)
 
-    def remove_channel_group(self):
+    def remove_channel_group(self) -> RemoveChannelGroup:
         return RemoveChannelGroup(self)
 
-    def subscribe(self):
+    def subscribe(self) -> SubscribeBuilder:
         return SubscribeBuilder(self)
 
-    def unsubscribe(self):
+    def unsubscribe(self) -> UnsubscribeBuilder:
         return UnsubscribeBuilder(self)
 
     def unsubscribe_all(self):
@@ -190,126 +195,206 @@ class PubNubCore:
     def reconnect(self):
         return self._subscription_registry.reconnect()
 
-    def heartbeat(self):
+    def heartbeat(self) -> Heartbeat:
         return Heartbeat(self)
 
-    def set_state(self):
-        return SetState(self, self._subscription_manager)
+    def set_state(self, channels: Union[str, List[str]] = None, channel_groups: Union[str, List[str]] = None,
+                  state: Optional[Dict[str, any]] = None) -> SetState:
+        return SetState(self, self._subscription_manager, channels, channel_groups, state)
 
-    def get_state(self):
-        return GetState(self)
+    def get_state(self, channels: Union[str, List[str]] = None, channel_groups: Union[str, List[str]] = None,
+                  uuid: Optional[str] = None) -> GetState:
+        return GetState(self, channels, channel_groups, uuid)
 
-    def here_now(self):
-        return HereNow(self)
+    def here_now(self, channels: Union[str, List[str]] = None, channel_groups: Union[str, List[str]] = None,
+                 include_state: bool = False, include_uuids: bool = True) -> HereNow:
+        return HereNow(self, channels, channel_groups, include_state, include_uuids)
 
-    def where_now(self):
-        return WhereNow(self)
+    def where_now(self, user_id: Optional[str] = None):
+        return WhereNow(self, user_id)
 
-    def publish(self):
-        return Publish(self)
+    def publish(self, channel: str = None, message: any = None, should_store: Optional[bool] = None,
+                use_post: Optional[bool] = None, meta: Optional[any] = None, replicate: Optional[bool] = None,
+                ptto: Optional[int] = None, ttl: Optional[int] = None) -> Publish:
+        """ Sends a message to all channel subscribers. A successfully published message is replicated across PubNub's
+        points of presence and sent simultaneously to all subscribed clients on a channel.
+        """
+        return Publish(self, channel=channel, message=message, should_store=should_store, use_post=use_post, meta=meta,
+                       replicate=replicate, ptto=ptto, ttl=ttl)
 
     def grant(self):
+        """ Deprecated. Use grant_token instead """
         warn("This method will stop working on 31th December 2024. We recommend that you use grant_token() instead.",
              DeprecationWarning, stacklevel=2)
         return Grant(self)
 
-    def grant_token(self):
-        return GrantToken(self)
+    def grant_token(self, channels: Union[str, List[str]] = None, channel_groups: Union[str, List[str]] = None,
+                    users: Union[str, List[str]] = None, spaces: Union[str, List[str]] = None,
+                    authorized_user_id: str = None, ttl: Optional[int] = None, meta: Optional[any] = None):
+        return GrantToken(self, channels=channels, channel_groups=channel_groups, users=users, spaces=spaces,
+                          authorized_user_id=authorized_user_id, ttl=ttl, meta=meta)
 
-    def revoke_token(self, token):
+    def revoke_token(self, token: str) -> RevokeToken:
         return RevokeToken(self, token)
 
     def audit(self):
+        """ Deprecated """
         warn("This method will stop working on 31th December 2024.", DeprecationWarning, stacklevel=2)
         return Audit(self)
 
     # Push Related methods
-    def list_push_channels(self):
-        return ListPushProvisions(self)
+    def list_push_channels(self, device_id: str = None, push_type: PNPushType = None, topic: str = None,
+                           environment: PNPushEnvironment = None) -> ListPushProvisions:
+        return ListPushProvisions(self, device_id=device_id, push_type=push_type, topic=topic, environment=environment)
 
-    def add_channels_to_push(self):
-        return AddChannelsToPush(self)
+    def add_channels_to_push(self, channels: Union[str, List[str]], device_id: str = None, push_type: PNPushType = None,
+                             topic: str = None, environment: PNPushEnvironment = None) -> AddChannelsToPush:
+        return AddChannelsToPush(self, channels=channels, device_id=device_id, push_type=push_type, topic=topic,
+                                 environment=environment)
 
-    def remove_channels_from_push(self):
-        return RemoveChannelsFromPush(self)
+    def remove_channels_from_push(self, channels: Union[str, List[str]] = None, device_id: str = None,
+                                  push_type: PNPushType = None, topic: str = None,
+                                  environment: PNPushEnvironment = None) -> RemoveChannelsFromPush:
+        return RemoveChannelsFromPush(self, channels=channels, device_id=device_id, push_type=push_type, topic=topic,
+                                      environment=environment)
 
-    def remove_device_from_push(self):
-        return RemoveDeviceFromPush(self)
+    def remove_device_from_push(self, device_id: str = None, push_type: PNPushType = None, topic: str = None,
+                                environment: PNPushEnvironment = None) -> RemoveDeviceFromPush:
+        return RemoveDeviceFromPush(self, device_id=device_id, push_type=push_type, topic=topic,
+                                    environment=environment)
 
     def history(self):
         return History(self)
 
-    def message_counts(self):
-        return MessageCount(self)
+    def message_counts(self, channels: Union[str, List[str]] = None,
+                       channels_timetoken: Union[str, List[str]] = None) -> MessageCount:
+        return MessageCount(self, channels=channels, channels_timetoken=channels_timetoken)
 
-    def fire(self):
-        return Fire(self)
+    def fire(self, channel: str = None, message: any = None, use_post: Optional[bool] = None,
+             meta: Optional[any] = None) -> Fire:
+        return Fire(self, channel=channel, message=message, use_post=use_post, meta=meta)
 
-    def signal(self):
-        return Signal(self)
+    def signal(self, channel: str = None, message: any = None) -> Signal:
+        return Signal(self, channel=channel, message=message)
 
-    def set_uuid_metadata(self):
-        return SetUuid(self)
+    def set_uuid_metadata(self, uuid: str = None, include_custom: bool = None, custom: dict = None,
+                          include_status: bool = True, include_type: bool = True, status: str = None, type: str = None,
+                          name: str = None, email: str = None, external_id: str = None,
+                          profile_url: str = None) -> SetUuid:
+        return SetUuid(self, uuid=uuid, include_custom=include_custom, custom=custom, include_status=include_status,
+                       include_type=include_type, status=status, type=type, name=name, email=email,
+                       external_id=external_id, profile_url=profile_url)
 
-    def get_uuid_metadata(self):
-        return GetUuid(self)
+    def get_uuid_metadata(self, uuud: str = None, include_custom: bool = None, include_status: bool = True,
+                          include_type: bool = True) -> GetUuid:
+        return GetUuid(self, uuid=uuud, include_custom=include_custom, include_status=include_status,
+                       include_type=include_type)
 
-    def remove_uuid_metadata(self):
-        return RemoveUuid(self)
+    def remove_uuid_metadata(self, uuid: str = None) -> RemoveUuid:
+        return RemoveUuid(self, uuid=uuid)
 
-    def get_all_uuid_metadata(self):
-        return GetAllUuid(self)
+    def get_all_uuid_metadata(self, include_custom: bool = None, include_status: bool = True, include_type: bool = True,
+                              limit: int = None, filter: str = None, include_total_count: bool = None,
+                              sort_keys: list = None) -> GetAllUuid:
+        return GetAllUuid(self, include_custom=include_custom, include_status=include_status, include_type=include_type,
+                          limit=limit, filter=filter, include_total_count=include_total_count, sort_keys=sort_keys)
 
-    def set_channel_metadata(self):
-        return SetChannel(self)
+    def set_channel_metadata(self, channel: str = None, custom: dict = None, include_custom: bool = False,
+                             include_status: bool = True, include_type: bool = True, name: str = None,
+                             description: str = None, status: str = None, type: str = None) -> SetChannel:
+        return SetChannel(self, channel=channel, custom=custom, include_custom=include_custom,
+                          include_status=include_status, include_type=include_type, name=name, description=description,
+                          status=status, type=type)
 
-    def get_channel_metadata(self):
-        return GetChannel(self)
+    def get_channel_metadata(self, channel: str = None, include_custom: bool = False, include_status: bool = True,
+                             include_type: bool = True) -> GetChannel:
+        return GetChannel(self, channel=channel, include_custom=include_custom, include_status=include_status,
+                          include_type=include_type)
 
-    def remove_channel_metadata(self):
-        return RemoveChannel(self)
+    def remove_channel_metadata(self, channel: str = None) -> RemoveChannel:
+        return RemoveChannel(self, channel=channel)
 
-    def get_all_channel_metadata(self):
-        return GetAllChannels(self)
+    def get_all_channel_metadata(self, include_custom=False, include_status=True, include_type=True,
+                                 limit: int = None, filter: str = None, include_total_count: bool = None,
+                                 sort_keys: list = None, page: PNPage = None) -> GetAllChannels:
+        return GetAllChannels(self, include_custom=include_custom, include_status=include_status,
+                              include_type=include_type, limit=limit, filter=filter,
+                              include_total_count=include_total_count, sort_keys=sort_keys, page=page)
 
-    def set_channel_members(self):
-        return SetChannelMembers(self)
+    def set_channel_members(self, channel: str = None, uuids: List[str] = None, include_custom: bool = None,
+                            limit: int = None, filter: str = None, include_total_count: bool = None,
+                            sort_keys: list = None, page: PNPage = None) -> SetChannelMembers:
+        return SetChannelMembers(self, channel=channel, uuids=uuids, include_custom=include_custom, limit=limit,
+                                 filter=filter, include_total_count=include_total_count, sort_keys=sort_keys, page=page)
 
-    def get_channel_members(self):
-        return GetChannelMembers(self)
+    def get_channel_members(self, channel: str = None, include_custom: bool = None, limit: int = None,
+                            filter: str = None, include_total_count: bool = None, sort_keys: list = None,
+                            page: PNPage = None) -> GetChannelMembers:
+        return GetChannelMembers(self, channel=channel, include_custom=include_custom, limit=limit, filter=filter,
+                                 include_total_count=include_total_count, sort_keys=sort_keys, page=page)
 
-    def remove_channel_members(self):
-        return RemoveChannelMembers(self)
+    def remove_channel_members(self, channel: str = None, uuids: List[str] = None, include_custom: bool = None,
+                               limit: int = None, filter: str = None, include_total_count: bool = None,
+                               sort_keys: list = None, page: PNPage = None) -> RemoveChannelMembers:
+        return RemoveChannelMembers(self, channel=channel, uuids=uuids, include_custom=include_custom, limit=limit,
+                                    filter=filter, include_total_count=include_total_count, sort_keys=sort_keys,
+                                    page=page)
 
-    def manage_channel_members(self):
-        return ManageChannelMembers(self)
+    def manage_channel_members(self, channel: str = None, uuids_to_set: List[str] = None,
+                               uuids_to_remove: List[str] = None, include_custom: bool = None, limit: int = None,
+                               filter: str = None, include_total_count: bool = None, sort_keys: list = None,
+                               page: PNPage = None) -> ManageChannelMembers:
+        return ManageChannelMembers(self, channel=channel, uuids_to_set=uuids_to_set, uuids_to_remove=uuids_to_remove,
+                                    include_custom=include_custom, limit=limit, filter=filter,
+                                    include_total_count=include_total_count, sort_keys=sort_keys, page=page)
 
-    def set_memberships(self):
-        return SetMemberships(self)
+    def set_memberships(self, uuid: str = None, channel_memberships: List[str] = None, include_custom: bool = False,
+                        limit: int = None, filter: str = None, include_total_count: bool = None, sort_keys: list = None,
+                        page: PNPage = None) -> SetMemberships:
+        return SetMemberships(self, uuid=uuid, channel_memberships=channel_memberships, include_custom=include_custom,
+                              limit=limit, filter=filter, include_total_count=include_total_count, sort_keys=sort_keys,
+                              page=page)
 
-    def get_memberships(self):
-        return GetMemberships(self)
+    def get_memberships(self, uuid: str = None, include_custom: bool = False, limit: int = None, filter: str = None,
+                        include_total_count: bool = None, sort_keys: list = None, page: PNPage = None):
+        return GetMemberships(self, uuid=uuid, include_custom=include_custom, limit=limit, filter=filter,
+                              include_total_count=include_total_count, sort_keys=sort_keys, page=page)
 
-    def manage_memberships(self):
-        return ManageMemberships(self)
+    def manage_memberships(self, uuid: str = None, channel_memberships_to_set: List[str] = None,
+                           channel_memberships_to_remove: List[str] = None, include_custom: bool = False,
+                           limit: int = None, filter: str = None, include_total_count: bool = None,
+                           sort_keys: list = None, page: PNPage = None) -> ManageMemberships:
+        return ManageMemberships(self, uuid=uuid, channel_memberships_to_set=channel_memberships_to_set,
+                                 channel_memberships_to_remove=channel_memberships_to_remove,
+                                 include_custom=include_custom, limit=limit, filter=filter,
+                                 include_total_count=include_total_count, sort_keys=sort_keys, page=page)
 
-    def fetch_messages(self):
-        return FetchMessages(self)
+    def fetch_messages(self, channels: Union[str, List[str]] = None, start: int = None, end: int = None,
+                       count: int = None, include_meta: bool = None, include_message_actions: bool = None,
+                       include_message_type: bool = None, include_uuid: bool = None,
+                       decrypt_messages: bool = False) -> FetchMessages:
+        return FetchMessages(self, channels=channels, start=start, end=end, count=count, include_meta=include_meta,
+                             include_message_actions=include_message_actions, include_message_type=include_message_type,
+                             include_uuid=include_uuid, decrypt_messages=decrypt_messages)
 
-    def add_message_action(self):
-        return AddMessageAction(self)
+    def add_message_action(self, channel: str = None, message_action: PNMessageAction = None):
+        return AddMessageAction(self, channel=channel, message_action=message_action)
 
-    def get_message_actions(self):
-        return GetMessageActions(self)
+    def get_message_actions(self, channel: str = None, start: str = None, end: str = None,
+                            limit: str = None) -> GetMessageActions:
+        return GetMessageActions(self, channel=channel, start=start, end=end, limit=limit)
 
-    def remove_message_action(self):
-        return RemoveMessageAction(self)
+    def remove_message_action(self, channel: str = None, message_timetoken: int = None,
+                              action_timetoken: int = None) -> RemoveMessageAction:
+        return RemoveMessageAction(self, channel=channel, message_timetoken=message_timetoken,
+                                   action_timetoken=action_timetoken)
 
-    def time(self):
+    def time(self) -> Time:
         return Time(self)
 
-    def delete_messages(self):
-        return HistoryDelete(self)
+    def delete_messages(self, channel: str = None, start: Optional[int] = None,
+                        end: Optional[int] = None) -> HistoryDelete:
+        return HistoryDelete(self, channel=channel, start=start, end=end)
 
     def parse_token(self, token):
         return self._token_manager.parse_token(token)
@@ -324,7 +409,7 @@ class PubNubCore:
         if not self.sdk_platform():
             return SendFileNative(self)
         elif "Asyncio" in self.sdk_platform():
-            from .endpoints.file_operations.send_file_asyncio import AsyncioSendFile
+            from pubnub.endpoints.file_operations.send_file_asyncio import AsyncioSendFile
             return AsyncioSendFile(self)
         else:
             raise NotImplementedError
@@ -333,24 +418,24 @@ class PubNubCore:
         if not self.sdk_platform():
             return DownloadFileNative(self)
         elif "Asyncio" in self.sdk_platform():
-            from .endpoints.file_operations.download_file_asyncio import DownloadFileAsyncio
+            from pubnub.endpoints.file_operations.download_file_asyncio import DownloadFileAsyncio
             return DownloadFileAsyncio(self)
         else:
             raise NotImplementedError
 
-    def list_files(self):
-        return ListFiles(self)
+    def list_files(self, channel: str = None) -> ListFiles:
+        return ListFiles(self, channel=channel)
 
-    def get_file_url(self):
-        return GetFileDownloadUrl(self)
+    def get_file_url(self, channel: str = None, file_name: str = None, file_id: str = None) -> GetFileDownloadUrl:
+        return GetFileDownloadUrl(self, channel=channel, file_name=file_name, file_id=file_id)
 
-    def delete_file(self):
-        return DeleteFile(self)
+    def delete_file(self, channel: str = None, file_name: str = None, file_id: str = None) -> DeleteFile:
+        return DeleteFile(self, channel=channel, file_name=file_name, file_id=file_id)
 
-    def _fetch_file_upload_s3_data(self):
+    def _fetch_file_upload_s3_data(self) -> FetchFileUploadS3Data:
         return FetchFileUploadS3Data(self)
 
-    def publish_file_message(self):
+    def publish_file_message(self) -> PublishFileMessage:
         return PublishFileMessage(self)
 
     def decrypt(self, cipher_key, file):

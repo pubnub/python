@@ -1,3 +1,4 @@
+from typing import Optional
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
@@ -17,10 +18,11 @@ class Signal(Endpoint):
     _channel: str
     _message: any
 
-    def __init__(self, pubnub, channel: str = None, message: any = None):
+    def __init__(self, pubnub, channel: str = None, message: any = None, custom_message_type: Optional[str] = None):
         Endpoint.__init__(self, pubnub)
         self._channel = channel
         self._message = message
+        self._custom_message_type = custom_message_type
 
     def channel(self, channel) -> 'Signal':
         self._channel = str(channel)
@@ -28,6 +30,10 @@ class Signal(Endpoint):
 
     def message(self, message) -> 'Signal':
         self._message = message
+        return self
+
+    def custom_message_type(self, custom_message_type: str) -> 'Signal':
+        self._custom_message_type = custom_message_type
         return self
 
     def build_path(self):
@@ -39,7 +45,11 @@ class Signal(Endpoint):
         )
 
     def custom_params(self):
-        return {}
+        params = {}
+        if self._custom_message_type:
+            params['custom_message_type'] = utils.url_encode(self._custom_message_type)
+
+        return params
 
     def http_method(self):
         return HttpMethod.GET

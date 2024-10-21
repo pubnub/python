@@ -2,7 +2,8 @@ from pubnub.models.consumer.message_actions import PNMessageAction
 
 
 class PNMessageResult(object):
-    def __init__(self, message, subscription, channel, timetoken, user_metadata=None, publisher=None, error=None):
+    def __init__(self, message, subscription, channel, timetoken, user_metadata=None, publisher=None,
+                 error=None, custom_message_type=None):
 
         if subscription is not None:
             assert isinstance(subscription, str)
@@ -30,6 +31,7 @@ class PNMessageResult(object):
         self.user_metadata = user_metadata
         self.publisher = publisher
         self.error = error
+        self.custom_message_type = custom_message_type
 
 
 class PNSignalMessageResult(PNMessageResult):

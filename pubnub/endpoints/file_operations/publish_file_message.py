@@ -22,6 +22,7 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._cipher_key = None
         self._replicate = None
         self._ptto = None
+        self._custom_message_type = None
 
     def meta(self, meta):
         self._meta = meta
@@ -51,6 +52,10 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
 
     def file_name(self, file_name):
         self._file_name = file_name
+        return self
+
+    def custom_message_type(self, custom_message_type: str) -> 'PublishFileMessage':
+        self._custom_message_type = custom_message_type
         return self
 
     def _encrypt_message(self, message):
@@ -90,6 +95,10 @@ class PublishFileMessage(FileOperationEndpoint, TimeTokenOverrideMixin):
             "ttl": self._ttl,
             "store": 1 if self._should_store else 0
         })
+
+        if self._custom_message_type:
+            params['custom_message_type'] = utils.url_encode(self._custom_message_type)
+
         return params
 
     def is_auth_required(self):

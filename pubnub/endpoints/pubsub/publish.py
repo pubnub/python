@@ -29,9 +29,9 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
     _ptto: Optional[int]
     _ttl: Optional[int]
 
-    def __init__(self, pubnub, channel: str = None, message: any = None,
-                 should_store: Optional[bool] = None, use_post: Optional[bool] = None, meta: Optional[any] = None,
-                 replicate: Optional[bool] = None, ptto: Optional[int] = None, ttl: Optional[int] = None):
+    def __init__(self, pubnub, channel: str = None, message: any = None, should_store: Optional[bool] = None,
+                 use_post: Optional[bool] = None, meta: Optional[any] = None, replicate: Optional[bool] = None,
+                 ptto: Optional[int] = None, ttl: Optional[int] = None, custom_message_type: Optional[str] = None):
 
         super(Publish, self).__init__(pubnub)
         self._channel = channel
@@ -39,6 +39,7 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
         self._should_store = should_store
         self._use_post = use_post
         self._meta = meta
+        self._custom_message_type = custom_message_type
         self._replicate = replicate
         self._ptto = ptto
         self._ttl = ttl
@@ -68,6 +69,10 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
 
     def meta(self, meta: any) -> 'Publish':
         self._meta = meta
+        return self
+
+    def custom_message_type(self, custom_message_type: str) -> 'Publish':
+        self._custom_message_type = custom_message_type
         return self
 
     def ttl(self, ttl: int) -> 'Publish':
@@ -104,6 +109,9 @@ class Publish(Endpoint, TimeTokenOverrideMixin):
 
         if self._meta:
             params['meta'] = utils.write_value_as_string(self._meta)
+
+        if self._custom_message_type:
+            params['custom_message_type'] = utils.url_encode(self._custom_message_type)
 
         if self._should_store is not None:
             if self._should_store:

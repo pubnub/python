@@ -30,6 +30,7 @@ class SubscribeMessage:
         self.publish_metadata = None
         self.only_channel_subscription = False
         self.type = 0
+        self.custom_message_type = None
 
     @classmethod
     def from_json(cls, json_input):
@@ -49,6 +50,8 @@ class SubscribeMessage:
         message.publish_metadata = PublishMetadata.from_json(json_input['p'])
         if 'e' in json_input:
             message.type = json_input['e']
+        if 'cmt' in json_input:
+            message.custom_message_type = json_input['cmt']
         return message
 
 

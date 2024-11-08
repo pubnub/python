@@ -1,0 +1,240 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-join-leave-cg-group?add=test-subscribe-asyncio-join-leave-cg-channel&uuid=test-subscribe-asyncio-messenger",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/9.0.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Tue, 29 Oct 2024 11:50:12 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "72"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Age": [
+                        "0"
+                    ],
+                    "Server": [
+                        "Pubnub Storage"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ]
+                },
+                "body": {
+                    "string": "{\"error\":false,\"message\":\"OK\",\"service\":\"channel-registry\",\"status\":200}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group%2Ctest-subscribe-asyncio-join-leave-cg-group-pnpres&ee=1&heartbeat=30&tt=0&uuid=test-subscribe-asyncio-listener",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/9.0.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Tue, 29 Oct 2024 11:50:13 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "45"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"17302025729072975\",\"r\":41},\"m\":[]}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group%2Ctest-subscribe-asyncio-join-leave-cg-group-pnpres&ee=1&heartbeat=30&tr=41&tt=17302025729072975&uuid=test-subscribe-asyncio-listener",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/9.0.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Tue, 29 Oct 2024 11:50:14 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"17302026145246029\",\"r\":41},\"m\":[{\"a\":\"2\",\"f\":0,\"p\":{\"t\":\"17302026145246029\",\"r\":42},\"k\":\"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe\",\"c\":\"test-subscribe-asyncio-join-leave-cg-channel-pnpres\",\"u\":{\"pn_action\":\"join\",\"pn_uuid\":\"test-subscribe-asyncio-listener\",\"pn_timestamp\":1730202614,\"pn_precise_timestamp\":1730202614520,\"pn_occupancy\":1,\"pn_ispresence\":1,\"pn_channel\":\"test-subscribe-asyncio-join-leave-cg-channel\"},\"d\":{\"action\":\"join\",\"uuid\":\"test-subscribe-asyncio-listener\",\"timestamp\":1730202614,\"precise_timestamp\":1730202614520,\"occupancy\":1},\"b\":\"test-subscribe-asyncio-join-leave-cg-group-pnpres\"}]}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group&ee=1&heartbeat=30&l_cg=0.2459278106689453&tt=0&uuid=test-subscribe-asyncio-messenger",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/9.0.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Tue, 29 Oct 2024 11:50:14 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "45"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"17302026148660004\",\"r\":43},\"m\":[]}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/,/0?channel-group=test-subscribe-asyncio-join-leave-cg-group%2Ctest-subscribe-asyncio-join-leave-cg-group-pnpres&ee=1&heartbeat=30&tr=41&tt=17302026145246029&uuid=test-subscribe-asyncio-listener",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/9.0.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Tue, 29 Oct 2024 11:50:15 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Origin": [
+                        "*"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ]
+                },
+                "body": {
+                    "string": "{\"t\":{\"t\":\"17302026156815862\",\"r\":41},\"m\":[{\"a\":\"2\",\"f\":0,\"p\":{\"t\":\"17302026156815862\",\"r\":43},\"k\":\"sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe\",\"c\":\"test-subscribe-asyncio-join-leave-cg-channel-pnpres\",\"u\":{\"pn_action\":\"join\",\"pn_uuid\":\"test-subscribe-asyncio-messenger\",\"pn_timestamp\":1730202615,\"pn_precise_timestamp\":1730202615678,\"pn_occupancy\":2,\"pn_ispresence\":1,\"pn_channel\":\"test-subscribe-asyncio-join-leave-cg-channel\"},\"d\":{\"action\":\"join\",\"uuid\":\"test-subscribe-asyncio-messenger\",\"timestamp\":1730202615,\"precise_timestamp\":1730202615678,\"occupancy\":2},\"b\":\"test-subscribe-asyncio-join-leave-cg-group-pnpres\"}]}"
+                }
+            }
+        }
+    ]
+}

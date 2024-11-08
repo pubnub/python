@@ -1,0 +1,61 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/asyncio-int-publish/0/%22hey%22",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/9.0.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 403,
+                    "message": "Forbidden"
+                },
+                "headers": {
+                    "Date": [
+                        "Wed, 06 Nov 2024 08:26:19 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "X-Pn-Cause": [
+                        "9999"
+                    ],
+                    "Cache-Control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "Access-Control-Allow-Headers": [
+                        "Origin, X-Requested-With, Content-Type, Accept"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
+                    ]
+                },
+                "body": {
+                    "string": "{\"message\": \"Forbidden\", \"payload\": {\"channels\": [\"asyncio-int-publish\"]}, \"error\": true, \"service\": \"Access Manager\", \"status\": 403}\n"
+                }
+            }
+        }
+    ]
+}

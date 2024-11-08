@@ -6,7 +6,7 @@ jobs:
   lint:
     name: Lint project
     runs-on:
-      group: Default
+      group: organization/Default
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
@@ -24,7 +24,7 @@ jobs:
   pubnub-yml:
     name: "Validate .pubnub.yml"
     runs-on:
-      group: Default
+      group: organization/Default
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
@@ -46,7 +46,7 @@ jobs:
     name: Validations
     needs: [pubnub-yml, lint]
     runs-on:
-      group: Default
+      group: organization/Default
     steps:
       - name: Validations summary
         run: echo -e "\033[38;2;95;215;0m\033[1mAll validations passed"

@@ -2,7 +2,7 @@
 November 19 2024
 
 #### Added
-- Publish, signal, share file, subscribe and history.
+- Add custom message type support for the following APIs: Publish, signal, share file, subscribe and history.
 
 ## v9.0.0
 October 02 2024

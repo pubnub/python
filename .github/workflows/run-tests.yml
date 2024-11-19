@@ -21,7 +21,7 @@ jobs:
   tests:
     name: Integration and Unit tests
     runs-on:
-      group: Default
+      group: organization/Default
     strategy:
       max-parallel: 1
       fail-fast: true
@@ -54,7 +54,7 @@ jobs:
   acceptance-tests:
     name: Acceptance tests
     runs-on:
-      group: Default
+      group: organization/Default
     timeout-minutes: 5
     steps:
       - name: Checkout project
@@ -103,7 +103,7 @@ jobs:
     name: Tests
     needs: [tests, acceptance-tests]
     runs-on:
-      group: Default
+      group: organization/Default
     steps:
       - name: Tests summary
         run: echo -e "\033[38;2;95;215;0m\033[1mAll tests successfully passed"

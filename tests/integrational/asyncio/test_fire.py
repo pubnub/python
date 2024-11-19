@@ -1,6 +1,6 @@
 import pytest
 
-from tests.helper import pnconf_copy
+from tests.helper import pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
 from pubnub.models.consumer.pubsub import PNFireResult
@@ -8,12 +8,12 @@ from pubnub.models.consumer.common import PNStatus
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/fire_get.yaml',
+    'tests/integrational/fixtures/asyncio/publish/fire_get.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio
 async def test_single_channel(event_loop):
-    config = pnconf_copy()
+    config = pnconf_env_copy()
     config.enable_subscribe = False
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
     chan = 'unique_sync'

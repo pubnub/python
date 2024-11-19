@@ -62,11 +62,12 @@ class PubNubAsyncio(PubNubCore):
         await asyncio.sleep(0.1)
 
     async def create_session(self):
-        self._session = aiohttp.ClientSession(
-            loop=self.event_loop,
-            timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
-            connector=self._connector
-        )
+        if not self._session:
+            self._session = aiohttp.ClientSession(
+                loop=self.event_loop,
+                timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
+                connector=self._connector
+            )
 
     async def close_session(self):
         if self._session is not None:
@@ -76,12 +77,7 @@ class PubNubAsyncio(PubNubCore):
         await self._session.close()
 
         self._connector = cn
-
-        self._session = aiohttp.ClientSession(
-            loop=self.event_loop,
-            timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
-            connector=self._connector
-        )
+        await self.create_session()
 
     async def stop(self):
         if self._subscription_manager:

@@ -336,6 +336,7 @@ async def test_cg_join_leave():
     assert prs_envelope.uuid == pubnub_listener.uuid
     assert prs_envelope.channel == ch
     assert prs_envelope.subscription == gr
+    await asyncio.sleep(2)
 
     pubnub.add_listener(callback_messages)
     pubnub.subscribe().channel_groups(gr).execute()
@@ -349,6 +350,7 @@ async def test_cg_join_leave():
     assert prs_envelope.uuid == pubnub.uuid
     assert prs_envelope.channel == ch
     assert prs_envelope.subscription == gr
+    await asyncio.sleep(2)
 
     pubnub.unsubscribe().channel_groups(gr).execute()
 
@@ -363,6 +365,7 @@ async def test_cg_join_leave():
     assert prs_envelope.subscription == gr
 
     pubnub_listener.unsubscribe().channel_groups(gr).execute()
+    await asyncio.sleep(2)
 
     # with EE you don't have to wait for disconnect
     if isinstance(pubnub._subscription_manager, AsyncioSubscriptionManager):

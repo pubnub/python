@@ -9,7 +9,7 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, PubNubAsyncioException
-from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_pam_copy
+from tests.helper import pnconf_enc_env_copy, pnconf_pam_env_copy, pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 pn.set_stream_logger('pubnub', logging.DEBUG)
@@ -47,12 +47,12 @@ async def assert_success_publish_post(pubnub, msg):
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/mixed_via_get.yaml',
-    filter_query_parameters=['uuid', 'seqn', 'pnsdk']
+    'tests/integrational/fixtures/asyncio/publish/mixed_via_get.json', serializer='pn_json',
+    filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_pub']
 )
 @pytest.mark.asyncio
 async def test_publish_mixed_via_get(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(), custom_event_loop=event_loop)
     await asyncio.gather(
         asyncio.ensure_future(assert_success_publish_get(pubnub, "hi")),
         asyncio.ensure_future(assert_success_publish_get(pubnub, 5)),
@@ -64,24 +64,24 @@ async def test_publish_mixed_via_get(event_loop):
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/object_via_get.yaml',
+    'tests/integrational/fixtures/asyncio/publish/object_via_get.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
     match_on=['method', 'scheme', 'host', 'port', 'object_in_path', 'query']
 )
 @pytest.mark.asyncio
 async def test_publish_object_via_get(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(), custom_event_loop=event_loop)
     await asyncio.ensure_future(assert_success_publish_get(pubnub, {"name": "Alex", "online": True}))
 
     await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/mixed_via_post.yaml',
-    filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+    'tests/integrational/fixtures/asyncio/publish/mixed_via_post.json', serializer='pn_json',
+    filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_pub'])
 @pytest.mark.asyncio
 async def test_publish_mixed_via_post(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(), custom_event_loop=event_loop)
     await asyncio.gather(
         asyncio.ensure_future(assert_success_publish_post(pubnub, "hi")),
         asyncio.ensure_future(assert_success_publish_post(pubnub, 5)),
@@ -92,24 +92,24 @@ async def test_publish_mixed_via_post(event_loop):
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/object_via_post.yaml',
+    'tests/integrational/fixtures/asyncio/publish/object_via_post.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
     match_on=['method', 'scheme', 'host', 'port', 'path', 'query', 'object_in_body'])
 @pytest.mark.asyncio
 async def test_publish_object_via_post(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(), custom_event_loop=event_loop)
     await asyncio.ensure_future(assert_success_publish_post(pubnub, {"name": "Alex", "online": True}))
 
     await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/mixed_via_get_encrypted.yaml',
-    filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
+    'tests/integrational/fixtures/asyncio/publish/mixed_via_get_encrypted.json', serializer='pn_json',
+    filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_pub'])
 @pytest.mark.asyncio
 async def test_publish_mixed_via_get_encrypted(event_loop):
     with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
-        pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
+        pubnub = PubNubAsyncio(pnconf_enc_env_copy(), custom_event_loop=event_loop)
         await asyncio.gather(
             asyncio.ensure_future(assert_success_publish_get(pubnub, "hi")),
             asyncio.ensure_future(assert_success_publish_get(pubnub, 5)),
@@ -120,28 +120,28 @@ async def test_publish_mixed_via_get_encrypted(event_loop):
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/object_via_get_encrypted.yaml',
+    'tests/integrational/fixtures/asyncio/publish/object_via_get_encrypted.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
     match_on=['host', 'method', 'query']
 )
 @pytest.mark.asyncio
 async def test_publish_object_via_get_encrypted(event_loop):
     with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
-        pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
+        pubnub = PubNubAsyncio(pnconf_enc_env_copy(), custom_event_loop=event_loop)
         await asyncio.ensure_future(assert_success_publish_get(pubnub, {"name": "Alex", "online": True}))
 
     await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/mixed_via_post_encrypted.yaml',
-    filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
+    'tests/integrational/fixtures/asyncio/publish/mixed_via_post_encrypted.json', serializer='pn_json',
+    filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'l_pub'],
     match_on=['method', 'path', 'query', 'body']
 )
 @pytest.mark.asyncio
 async def test_publish_mixed_via_post_encrypted(event_loop):
     with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
-        pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
+        pubnub = PubNubAsyncio(pnconf_enc_env_copy(), custom_event_loop=event_loop)
         await asyncio.gather(
             asyncio.ensure_future(assert_success_publish_post(pubnub, "hi")),
             asyncio.ensure_future(assert_success_publish_post(pubnub, 5)),
@@ -153,14 +153,14 @@ async def test_publish_mixed_via_post_encrypted(event_loop):
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/object_via_post_encrypted.yaml',
+    'tests/integrational/fixtures/asyncio/publish/object_via_post_encrypted.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
     match_on=['method', 'path', 'query']
 )
 @pytest.mark.asyncio
 async def test_publish_object_via_post_encrypted(event_loop):
     with patch("pubnub.crypto.PubNubCryptodome.get_initialization_vector", return_value="knightsofni12345"):
-        pubnub = PubNubAsyncio(pnconf_enc_copy(), custom_event_loop=event_loop)
+        pubnub = PubNubAsyncio(pnconf_enc_env_copy(), custom_event_loop=event_loop)
         await asyncio.ensure_future(assert_success_publish_post(pubnub, {"name": "Alex", "online": True}))
 
     await pubnub.stop()
@@ -168,7 +168,7 @@ async def test_publish_object_via_post_encrypted(event_loop):
 
 @pytest.mark.asyncio
 async def test_error_missing_message(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(), custom_event_loop=event_loop)
     await assert_client_side_error(pubnub.publish().channel(ch).message(None), "Message missing")
 
     await pubnub.stop()
@@ -176,7 +176,7 @@ async def test_error_missing_message(event_loop):
 
 @pytest.mark.asyncio
 async def test_error_missing_channel(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(), custom_event_loop=event_loop)
     await assert_client_side_error(pubnub.publish().channel("").message("hey"), "Channel missing")
 
     await pubnub.stop()
@@ -184,7 +184,7 @@ async def test_error_missing_channel(event_loop):
 
 @pytest.mark.asyncio
 async def test_error_non_serializable(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(), custom_event_loop=event_loop)
 
     def method():
         pass
@@ -194,23 +194,23 @@ async def test_error_non_serializable(event_loop):
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/meta_object.yaml',
+    'tests/integrational/fixtures/asyncio/publish/meta_object.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'],
     match_on=['host', 'method', 'path', 'meta_object_in_query'])
 @pytest.mark.asyncio
 async def test_publish_with_meta(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(), custom_event_loop=event_loop)
 
     await assert_success_await(pubnub.publish().channel(ch).message("hey").meta({'a': 2, 'b': 'qwer'}))
     await pubnub.stop()
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/do_not_store.yaml',
+    'tests/integrational/fixtures/asyncio/publish/do_not_store.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 async def test_publish_do_not_store(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_env_copy(), custom_event_loop=event_loop)
 
     await assert_success_await(pubnub.publish().channel(ch).message("hey").should_store(False))
     await pubnub.stop()
@@ -225,11 +225,11 @@ async def assert_server_side_error_yield(pub, expected_err_msg):
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/invalid_key.yaml',
+    'tests/integrational/fixtures/asyncio/publish/invalid_key.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'pnsdk'])
 @pytest.mark.asyncio
 async def test_error_invalid_key(event_loop):
-    pnconf = pnconf_pam_copy()
+    pnconf = pnconf_pam_env_copy()
 
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
@@ -238,11 +238,11 @@ async def test_error_invalid_key(event_loop):
 
 
 @pn_vcr.use_cassette(
-    'tests/integrational/fixtures/asyncio/publish/not_permitted.yaml',
+    'tests/integrational/fixtures/asyncio/publish/not_permitted.json', serializer='pn_json',
     filter_query_parameters=['uuid', 'seqn', 'signature', 'timestamp', 'pnsdk'])
 @pytest.mark.asyncio
 async def test_not_permitted(event_loop):
-    pnconf = pnconf_pam_copy()
+    pnconf = pnconf_pam_env_copy()
     pnconf.secret_key = None
     pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
@@ -252,7 +252,7 @@ async def test_not_permitted(event_loop):
 
 @pytest.mark.asyncio
 async def test_publish_super_admin_call(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+    pubnub = PubNubAsyncio(pnconf_pam_env_copy(), custom_event_loop=event_loop)
 
     await pubnub.publish().channel(ch).message("hey").future()
     await pubnub.publish().channel("f#!|oo.bar").message("hey^&#$").should_store(True).meta({

@@ -173,7 +173,7 @@ changelog:
     version: v9.1.0
     changes:
       - type: feature
-        text: "Publish, signal, share file, subscribe and history."
+        text: "Add custom message type support for the following APIs: Publish, signal, share file, subscribe and history."
   - date: 2024-10-02
     version: v9.0.0
     changes:

@@ -1,6 +1,7 @@
 import logging
 import threading
 import requests
+import httpx
 import json  # noqa # pylint: disable=W0611
 import urllib
 
@@ -30,12 +31,13 @@ class RequestsRequestHandler(BaseRequestHandler):
     ENDPOINT_THREAD_COUNTER: int = 0
 
     def __init__(self, pubnub):
-        self.session = Session()
+        self.session = httpx.Client()
+        # self.session = Session()
 
-        self.session.mount('http://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
-        self.session.mount('https://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
-        self.session.mount('http://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
-        self.session.mount('https://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
+        # self.session.mount('http://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
+        # self.session.mount('https://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
+        # self.session.mount('http://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
+        # self.session.mount('https://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
 
         self.pubnub = pubnub
 
@@ -154,8 +156,7 @@ class RequestsRequestHandler(BaseRequestHandler):
                     exception=e))
 
         if res is not None:
-            url = urllib.parse.urlparse(res.url)
-            query = urllib.parse.parse_qs(url.query)
+            query = urllib.parse.parse_qs(res.url.query)
             uuid = None
             auth_key = None
 
@@ -167,14 +168,14 @@ class RequestsRequestHandler(BaseRequestHandler):
 
             response_info = ResponseInfo(
                 status_code=res.status_code,
-                tls_enabled='https' == url.scheme,
-                origin=url.hostname,
+                tls_enabled='https' == res.url.scheme,
+                origin=res.url.host,
                 uuid=uuid,
                 auth_key=auth_key,
                 client_request=res.request
             )
 
-        if not res.ok:
+        if res.status_code not in [200, 204, 307]:
             if res.status_code == 403:
                 status_category = PNStatusCategory.PNAccessDeniedCategory
 
@@ -241,7 +242,7 @@ class RequestsRequestHandler(BaseRequestHandler):
             "url": url,
             "params": e_options.query_string,
             "timeout": (e_options.connect_timeout, e_options.request_timeout),
-            "allow_redirects": e_options.allow_redirects
+            "follow_redirects": e_options.allow_redirects
         }
 
         if e_options.is_post() or e_options.is_patch():

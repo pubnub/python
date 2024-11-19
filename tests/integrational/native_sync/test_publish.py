@@ -1,6 +1,6 @@
 import logging
 import unittest
-from urllib.parse import parse_qs, urlparse
+import urllib
 
 import pubnub
 from pubnub.exceptions import PubNubException
@@ -328,8 +328,8 @@ class TestPubNubPublish(unittest.TestCase):
             .sync()
 
         assert isinstance(env.result, PNPublishResult)
-        assert "ptto" in env.status.client_request.url
-        assert "norep" in env.status.client_request.url
+        assert "ptto" in urllib.parse.parse_qs(env.status.client_request.url.query.decode())
+        assert "norep" in urllib.parse.parse_qs(env.status.client_request.url.query.decode())
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/native_sync/publish/publish_with_single_quote_message.yaml',

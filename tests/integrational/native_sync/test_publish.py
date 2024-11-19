@@ -1,11 +1,12 @@
 import logging
 import unittest
+from urllib.parse import parse_qs, urlparse
 
 import pubnub
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf, pnconf_demo_copy, pnconf_enc, pnconf_file_copy
+from tests.helper import pnconf, pnconf_demo_copy, pnconf_enc, pnconf_file_copy, pnconf_env
 from tests.integrational.vcr_helper import pn_vcr
 from unittest.mock import patch
 
@@ -371,3 +372,20 @@ class TestPubNubPublish(unittest.TestCase):
             assert env.result.timetoken > 1
         except PubNubException as e:
             self.fail(e)
+
+    def test_publish_custom_message_type(self):
+        with pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/publish/publish_custom_message_type.json',
+                                 filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json') as cassette:
+            envelope = PubNub(pnconf_env).publish() \
+                .channel("ch1") \
+                .message("hi") \
+                .custom_message_type('test_message') \
+                .sync()
+
+            assert isinstance(envelope.result, PNPublishResult)
+            assert envelope.result.timetoken > 1
+            assert len(cassette) == 1
+            uri = urlparse(cassette.requests[0].uri)
+            query = parse_qs(uri.query)
+            assert 'custom_message_type' in query.keys()
+            assert query['custom_message_type'] == ['test_message']

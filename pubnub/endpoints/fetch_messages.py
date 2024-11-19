@@ -33,7 +33,8 @@ class FetchMessages(Endpoint):
 
     def __init__(self, pubnub, channels: Union[str, List[str]] = None, start: int = None, end: int = None,
                  count: int = None, include_meta: bool = None, include_message_actions: bool = None,
-                 include_message_type: bool = None, include_uuid: bool = None, decrypt_messages: bool = False):
+                 include_message_type: bool = None, include_uuid: bool = None, decrypt_messages: bool = False,
+                 include_custom_message_type: bool = None):
         Endpoint.__init__(self, pubnub)
         self._channels = []
         if channels:
@@ -46,6 +47,7 @@ class FetchMessages(Endpoint):
         self._include_message_type = include_message_type
         self._include_uuid = include_uuid
         self._decrypt_messages = decrypt_messages
+        self._include_custom_message_type = include_custom_message_type
 
     def channels(self, channels: Union[str, List[str]]) -> 'FetchMessages':
         utils.extend_list(self._channels, channels)
@@ -84,6 +86,11 @@ class FetchMessages(Endpoint):
         self._include_message_type = include_message_type
         return self
 
+    def include_custom_message_type(self, include_custom_message_type: bool) -> 'FetchMessages':
+        assert isinstance(include_custom_message_type, bool)
+        self._include_custom_message_type = include_custom_message_type
+        return self
+
     def include_uuid(self, include_uuid: bool) -> 'FetchMessages':
         assert isinstance(include_uuid, bool)
         self._include_uuid = include_uuid
@@ -107,6 +114,9 @@ class FetchMessages(Endpoint):
 
         if self._include_message_type is not None:
             params['include_message_type'] = "true" if self._include_message_type else "false"
+
+        if self._include_custom_message_type is not None:
+            params['include_custom_message_type'] = "true" if self._include_custom_message_type else "false"
 
         if self.include_message_actions and self._include_uuid is not None:
             params['include_uuid'] = "true" if self._include_uuid else "false"

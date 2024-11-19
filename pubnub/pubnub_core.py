@@ -94,7 +94,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "9.0.0"
+    SDK_VERSION = "9.1.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -215,12 +215,13 @@ class PubNubCore:
 
     def publish(self, channel: str = None, message: any = None, should_store: Optional[bool] = None,
                 use_post: Optional[bool] = None, meta: Optional[any] = None, replicate: Optional[bool] = None,
-                ptto: Optional[int] = None, ttl: Optional[int] = None) -> Publish:
+                ptto: Optional[int] = None, ttl: Optional[int] = None, custom_message_type: Optional[str] = None
+                ) -> Publish:
         """ Sends a message to all channel subscribers. A successfully published message is replicated across PubNub's
         points of presence and sent simultaneously to all subscribed clients on a channel.
         """
         return Publish(self, channel=channel, message=message, should_store=should_store, use_post=use_post, meta=meta,
-                       replicate=replicate, ptto=ptto, ttl=ttl)
+                       replicate=replicate, ptto=ptto, ttl=ttl, custom_message_type=custom_message_type)
 
     def grant(self):
         """ Deprecated. Use grant_token instead """
@@ -274,8 +275,8 @@ class PubNubCore:
              meta: Optional[any] = None) -> Fire:
         return Fire(self, channel=channel, message=message, use_post=use_post, meta=meta)
 
-    def signal(self, channel: str = None, message: any = None) -> Signal:
-        return Signal(self, channel=channel, message=message)
+    def signal(self, channel: str = None, message: any = None, custom_message_type: Optional[str] = None) -> Signal:
+        return Signal(self, channel=channel, message=message, custom_message_type=custom_message_type)
 
     def set_uuid_metadata(self, uuid: str = None, include_custom: bool = None, custom: dict = None,
                           include_status: bool = True, include_type: bool = True, status: str = None, type: str = None,

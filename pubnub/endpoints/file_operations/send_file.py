@@ -24,9 +24,14 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         self._file_object = None
         self._replicate = None
         self._ptto = None
+        self._custom_message_type = None
 
     def file_object(self, fd):
         self._file_object = fd
+        return self
+
+    def custom_message_type(self, custom_message_type: str):
+        self._custom_message_type = custom_message_type
         return self
 
     def build_params_callback(self):
@@ -124,23 +129,24 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return "Send file to S3"
 
     def sync(self):
-        self._file_upload_envelope = FetchFileUploadS3Data(self._pubnub).\
-            channel(self._channel).\
-            file_name(self._file_name).sync()
+        self._file_upload_envelope = FetchFileUploadS3Data(self._pubnub) \
+            .channel(self._channel) \
+            .file_name(self._file_name).sync()
 
         response_envelope = super(SendFileNative, self).sync()
 
-        publish_file_response = PublishFileMessage(self._pubnub).\
-            channel(self._channel).\
-            meta(self._meta).\
-            message(self._message).\
-            file_id(response_envelope.result.file_id).\
-            file_name(response_envelope.result.name).\
-            should_store(self._should_store).\
-            ttl(self._ttl).\
-            replicate(self._replicate).\
-            ptto(self._ptto).\
-            cipher_key(self._cipher_key).sync()
+        publish_file_response = PublishFileMessage(self._pubnub) \
+            .channel(self._channel) \
+            .meta(self._meta) \
+            .message(self._message) \
+            .file_id(response_envelope.result.file_id) \
+            .file_name(response_envelope.result.name) \
+            .should_store(self._should_store) \
+            .ttl(self._ttl) \
+            .replicate(self._replicate) \
+            .ptto(self._ptto) \
+            .custom_message_type(self._custom_message_type) \
+            .cipher_key(self._cipher_key).sync()
 
         response_envelope.result.timestamp = publish_file_response.result.timestamp
         return response_envelope

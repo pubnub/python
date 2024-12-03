@@ -1,7 +1,7 @@
 import logging
 import json
 import asyncio
-import aiohttp
+import httpx
 import math
 import time
 import urllib
@@ -45,7 +45,10 @@ class PubNubAsyncio(PubNubCore):
         self._connector = None
         self._session = None
 
-        self._connector = aiohttp.TCPConnector(verify_ssl=True, loop=self.event_loop)
+        self._connector = httpx.AsyncHTTPTransport()
+
+        if not hasattr(self._connector, 'close'):
+            self._connector.close = self._connector.aclose
 
         if not subscription_manager:
             subscription_manager = EventEngineSubscriptionManager
@@ -62,19 +65,17 @@ class PubNubAsyncio(PubNubCore):
         await asyncio.sleep(0.1)
 
     async def create_session(self):
-        if not self._session:
-            self._session = aiohttp.ClientSession(
-                loop=self.event_loop,
-                timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
-                connector=self._connector
-            )
+        self._session = httpx.AsyncClient(
+            timeout=httpx.Timeout(self.config.connect_timeout),
+            transport=self._connector
+        )
 
     async def close_session(self):
         if self._session is not None:
-            await self._session.close()
+            await self._session.aclose()
 
     async def set_connector(self, cn):
-        await self._session.close()
+        await self._session.aclose()
 
         self._connector = cn
         await self.create_session()
@@ -171,7 +172,7 @@ class PubNubAsyncio(PubNubCore):
         else:
             url = utils.build_url(scheme="", origin="", path=options.path, params=options.query_string)
 
-        url = URL(url, encoded=True)
+        url = str(URL(url, encoded=True))
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 
         if options.request_headers:
@@ -189,7 +190,7 @@ class PubNubAsyncio(PubNubCore):
                     url,
                     headers=request_headers,
                     data=options.data if options.data else None,
-                    allow_redirects=options.allow_redirects
+                    follow_redirects=options.allow_redirects
                 ),
                 options.request_timeout
             )
@@ -199,13 +200,14 @@ class PubNubAsyncio(PubNubCore):
             logger.error("session.request exception: %s" % str(e))
             raise
 
+        response_body = response.read()
         if not options.non_json_response:
-            body = await response.text()
+            body = response_body
         else:
             if isinstance(response.content, bytes):
                 body = response.content  # TODO: simplify this logic within the v5 release
             else:
-                body = await response.read()
+                body = response_body
 
         if cancellation_event is not None and cancellation_event.is_set():
             return
@@ -226,7 +228,7 @@ class PubNubAsyncio(PubNubCore):
                 auth_key = query['auth_key'][0]
 
             response_info = ResponseInfo(
-                status_code=response.status,
+                status_code=response.status_code,
                 tls_enabled='https' == request_url.scheme,
                 origin=request_url.hostname,
                 uuid=uuid,
@@ -265,17 +267,17 @@ class PubNubAsyncio(PubNubCore):
 
         logger.debug(data)
 
-        if response.status not in (200, 307, 204):
+        if response.status_code not in (200, 307, 204):
 
-            if response.status >= 500:
+            if response.status_code >= 500:
                 err = PNERR_SERVER_ERROR
             else:
                 err = PNERR_CLIENT_ERROR
 
-            if response.status == 403:
+            if response.status_code == 403:
                 status_category = PNStatusCategory.PNAccessDeniedCategory
 
-            if response.status == 400:
+            if response.status_code == 400:
                 status_category = PNStatusCategory.PNBadRequestCategory
 
             raise create_exception(
@@ -285,7 +287,7 @@ class PubNubAsyncio(PubNubCore):
                 exception=PubNubException(
                     errormsg=data,
                     pn_error=err,
-                    status_code=response.status
+                    status_code=response.status_code
                 )
             )
         else:

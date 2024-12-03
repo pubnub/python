@@ -1,20 +1,9 @@
-import aiohttp
-
 from pubnub.endpoints.file_operations.send_file import SendFileNative
 from pubnub.endpoints.file_operations.publish_file_message import PublishFileMessage
 from pubnub.endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
 
 
 class AsyncioSendFile(SendFileNative):
-    def build_file_upload_request(self):
-        file = self.encrypt_payload()
-        form_data = aiohttp.FormData()
-        for form_field in self._file_upload_envelope.result.data["form_fields"]:
-            form_data.add_field(form_field["key"], form_field["value"], content_type="multipart/form-data")
-        form_data.add_field("file", file, filename=self._file_name, content_type="application/octet-stream")
-
-        return form_data
-
     def options(self):
         request_options = super(SendFileNative, self).options()
         request_options.data = request_options.files

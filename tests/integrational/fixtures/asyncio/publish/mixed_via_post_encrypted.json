@@ -4,64 +4,29 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
-                "body": "\"a25pZ2h0c29mbmkxMjM0NdOBbiWd7zGph7bFEv5GX+mTa3M0vVg2xcyYg7CW45mG\"",
-                "headers": {
-                    "User-Agent": [
-                        "PubNub-Python-Asyncio/9.0.0"
-                    ],
-                    "Content-type": [
-                        "application/json"
-                    ]
-                }
-            },
-            "response": {
-                "status": {
-                    "code": 200,
-                    "message": "OK"
-                },
-                "headers": {
-                    "Date": [
-                        "Wed, 06 Nov 2024 08:26:18 GMT"
-                    ],
-                    "Content-Type": [
-                        "text/javascript; charset=\"UTF-8\""
-                    ],
-                    "Content-Length": [
-                        "30"
-                    ],
-                    "Connection": [
-                        "keep-alive"
-                    ],
-                    "Cache-Control": [
-                        "no-cache"
-                    ],
-                    "Access-Control-Allow-Methods": [
-                        "POST"
-                    ],
-                    "Access-Control-Allow-Credentials": [
-                        "true"
-                    ],
-                    "Access-Control-Expose-Headers": [
-                        "*"
-                    ]
-                },
-                "body": {
-                    "string": "[1,\"Sent\",\"17308815785493215\"]"
-                }
-            }
-        },
-        {
-            "request": {
-                "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
+                "uri": "https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0",
                 "body": "\"a25pZ2h0c29mbmkxMjM0NclhU9jqi+5cNMXFiry5TPU=\"",
                 "headers": {
-                    "User-Agent": [
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
                         "PubNub-Python-Asyncio/9.0.0"
                     ],
-                    "Content-type": [
+                    "content-type": [
                         "application/json"
+                    ],
+                    "content-length": [
+                        "46"
                     ]
                 }
             },
@@ -72,7 +37,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Wed, 06 Nov 2024 08:26:18 GMT"
+                        "Thu, 28 Nov 2024 08:10:51 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -97,71 +62,36 @@
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"17308815785535925\"]"
+                    "string": "[1,\"Sent\",\"17327814514281042\"]"
                 }
             }
         },
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
-                "body": "\"a25pZ2h0c29mbmkxMjM0NQ66CzLYXFOKoI1a9G0s0hA=\"",
-                "headers": {
-                    "User-Agent": [
-                        "PubNub-Python-Asyncio/9.0.0"
-                    ],
-                    "Content-type": [
-                        "application/json"
-                    ]
-                }
-            },
-            "response": {
-                "status": {
-                    "code": 200,
-                    "message": "OK"
-                },
-                "headers": {
-                    "Date": [
-                        "Wed, 06 Nov 2024 08:26:18 GMT"
-                    ],
-                    "Content-Type": [
-                        "text/javascript; charset=\"UTF-8\""
-                    ],
-                    "Content-Length": [
-                        "30"
-                    ],
-                    "Connection": [
-                        "keep-alive"
-                    ],
-                    "Cache-Control": [
-                        "no-cache"
-                    ],
-                    "Access-Control-Allow-Methods": [
-                        "POST"
-                    ],
-                    "Access-Control-Allow-Credentials": [
-                        "true"
-                    ],
-                    "Access-Control-Expose-Headers": [
-                        "*"
-                    ]
-                },
-                "body": {
-                    "string": "[1,\"Sent\",\"17308815785539657\"]"
-                }
-            }
-        },
-        {
-            "request": {
-                "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
+                "uri": "https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0",
                 "body": "\"a25pZ2h0c29mbmkxMjM0NS/B7ZYYL/8ZE/NEGBapOF0=\"",
                 "headers": {
-                    "User-Agent": [
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
                         "PubNub-Python-Asyncio/9.0.0"
                     ],
-                    "Content-type": [
+                    "content-type": [
                         "application/json"
+                    ],
+                    "content-length": [
+                        "46"
                     ]
                 }
             },
@@ -172,7 +102,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Wed, 06 Nov 2024 08:26:18 GMT"
+                        "Thu, 28 Nov 2024 08:10:51 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -197,7 +127,137 @@
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"17308815787486416\"]"
+                    "string": "[1,\"Sent\",\"17327814514290630\"]"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0",
+                "body": "\"a25pZ2h0c29mbmkxMjM0NdOBbiWd7zGph7bFEv5GX+mTa3M0vVg2xcyYg7CW45mG\"",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.0.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "66"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 28 Nov 2024 08:10:51 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"17327814514297687\"]"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0",
+                "body": "\"a25pZ2h0c29mbmkxMjM0NQ66CzLYXFOKoI1a9G0s0hA=\"",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.0.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "46"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 28 Nov 2024 08:10:51 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "POST"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"17327814514313760\"]"
                 }
             }
         }

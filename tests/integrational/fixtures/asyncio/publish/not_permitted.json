@@ -4,10 +4,22 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/asyncio-int-publish/0/%22hey%22",
-                "body": null,
+                "uri": "https://ps.pndsn.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22",
+                "body": "",
                 "headers": {
-                    "User-Agent": [
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
                         "PubNub-Python-Asyncio/9.0.0"
                     ]
                 }
@@ -19,7 +31,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Wed, 06 Nov 2024 08:26:19 GMT"
+                        "Thu, 28 Nov 2024 08:10:52 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=UTF-8"
@@ -53,7 +65,7 @@
                     ]
                 },
                 "body": {
-                    "string": "{\"message\": \"Forbidden\", \"payload\": {\"channels\": [\"asyncio-int-publish\"]}, \"error\": true, \"service\": \"Access Manager\", \"status\": 403}\n"
+                    "binary": "H4sIAAAAAAAAAx2NsQoCQQxEe79iSe2BoJWdjZ1fIBa5bPACa/ZIdoXjuH83ZznDzHsrfNgd3wzXBPdqo+TMCscEMy6lYo5+BZpQlYtHeAL6oiR1EG3D3MciPsFriwebVYtJs84Rne0r9AffiMKSHqhhsp3uDVvfeZfTeTv8AOusHVGGAAAA"
                 }
             }
         }

@@ -5,8 +5,6 @@ import httpx
 import json  # noqa # pylint: disable=W0611
 import urllib
 
-from requests import Session
-from requests.adapters import HTTPAdapter
 
 from pubnub import utils
 from pubnub.enums import PNStatusCategory

@@ -3,30 +3,12 @@
     "interactions": [
         {
             "request": {
-                "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0",
-                "body": "{\"name\": \"Alex\", \"online\": true}",
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%222222%22%2C%20%22name%22%3A%20%22test%22%7D%7D?meta=%7B%7D&store=1&ttl=222",
+                "body": null,
                 "headers": {
-                    "host": [
-                        "ps.pndsn.com"
-                    ],
-                    "accept": [
-                        "*/*"
-                    ],
-                    "accept-encoding": [
-                        "gzip, deflate"
-                    ],
-                    "connection": [
-                        "keep-alive"
-                    ],
-                    "user-agent": [
-                        "PubNub-Python-Asyncio/9.0.0"
-                    ],
-                    "content-type": [
-                        "application/json"
-                    ],
-                    "content-length": [
-                        "32"
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
                     ]
                 }
             },
@@ -37,7 +19,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Thu, 28 Nov 2024 08:10:50 GMT"
+                        "Tue, 03 Dec 2024 14:51:29 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -52,7 +34,7 @@
                         "no-cache"
                     ],
                     "Access-Control-Allow-Methods": [
-                        "POST"
+                        "GET"
                     ],
                     "Access-Control-Allow-Credentials": [
                         "true"
@@ -62,7 +44,7 @@
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"17327814509661189\"]"
+                    "string": "[1,\"Sent\",\"17332374895624143\"]"
                 }
             }
         }

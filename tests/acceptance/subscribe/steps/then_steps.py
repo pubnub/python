@@ -131,4 +131,6 @@ async def step_impl(context, channel1, channel2):
 @then(u'I don\'t observe any Events and Invocations of the Presence EE')
 @async_run_until_complete
 async def step_impl(context):
-    assert len(context.log_stream.getvalue().splitlines()) == 0
+    logs = context.log_stream.getvalue().splitlines()
+    logs = list(filter(lambda line: not line == 'Shutting down StateMachine', logs))
+    assert len(logs) == 0

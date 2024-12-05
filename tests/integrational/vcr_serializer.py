@@ -2,7 +2,6 @@ import os
 import re
 from base64 import b64decode, b64encode
 from vcr.serializers.jsonserializer import serialize, deserialize
-from aiohttp.formdata import FormData
 from pickle import dumps, loads
 
 
@@ -31,7 +30,7 @@ class PNSerializer:
             if type(interaction['response']['body']['string']) is bytes:
                 ascii_body = b64encode(interaction['response']['body']['string']).decode('ascii')
                 interaction['response']['body'] = {'binary': ascii_body}
-            if isinstance(interaction['request']['body'], FormData):
+            if interaction['request']['body']:
                 ascii_body = b64encode(dumps(interaction['request']['body'])).decode('ascii')
                 interaction['request']['body'] = {'pickle': ascii_body}
 

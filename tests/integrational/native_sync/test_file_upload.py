@@ -1,5 +1,6 @@
 from urllib.parse import parse_qs, urlparse
 import pytest
+import urllib
 
 from Cryptodome.Cipher import AES
 from unittest.mock import patch
@@ -153,7 +154,7 @@ def test_get_file_url_has_auth_key_in_url_and_signature(file_upload_test_data):
         .file_id("random_file_id") \
         .file_name("random_file_name").sync()
 
-    assert "auth=test_auth_key" in file_url_envelope.status.client_request.url
+    assert "auth=test_auth_key" in str(file_url_envelope.status.client_request.url)
 
 
 @pn_vcr.use_cassette(
@@ -220,7 +221,8 @@ def test_publish_file_message_with_overriding_time_token():
         .ttl(222).sync()
 
     assert isinstance(envelope.result, PNPublishFileMessageResult)
-    assert "ptto" in envelope.status.client_request.url
+
+    assert "ptto" in urllib.parse.parse_qs(envelope.status.client_request.url.query.decode())
 
 
 @pn_vcr.use_cassette(

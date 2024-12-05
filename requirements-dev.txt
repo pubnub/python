@@ -4,8 +4,7 @@ pycryptodomex
 flake8
 pytest
 pytest-asyncio
-aiohttp
-requests
+httpx
 cbor2
 behave
 vcrpy

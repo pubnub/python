@@ -8,6 +8,7 @@ import urllib
 
 from asyncio import Event, Queue, Semaphore
 from yarl import URL
+from httpx import AsyncHTTPTransport
 from pubnub.event_engine.containers import PresenceStateContainer
 from pubnub.event_engine.models import events, states
 
@@ -33,6 +34,14 @@ from .exceptions import PubNubException
 logger = logging.getLogger("pubnub")
 
 
+class PubNubAsyncHTTPTransport(AsyncHTTPTransport):
+    is_closed: bool = False
+
+    def close(self):
+        self.is_closed = True
+        super().aclose()
+
+
 class PubNubAsyncio(PubNubCore):
     """
     PubNub Python SDK for asyncio framework
@@ -45,10 +54,7 @@ class PubNubAsyncio(PubNubCore):
         self._connector = None
         self._session = None
 
-        self._connector = httpx.AsyncHTTPTransport()
-
-        if not hasattr(self._connector, 'close'):
-            self._connector.close = self._connector.aclose
+        self._connector = PubNubAsyncHTTPTransport()
 
         if not subscription_manager:
             subscription_manager = EventEngineSubscriptionManager
@@ -150,6 +156,8 @@ class PubNubAsyncio(PubNubCore):
         :param cancellation_event:
         :return:
         """
+        if self._connector and self._connector.is_closed:
+            raise RuntimeError('Session is closed')
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 

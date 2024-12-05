@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/pub-c-98863562-19a6-4760-bf0b-d537d1f5c582/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/0/asyncio-int-publish/0/%22hey%22",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/asyncio-int-publish/0/%22hey%22",
                 "body": "",
                 "headers": {
                     "host": [
@@ -20,7 +20,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "PubNub-Python-Asyncio/9.0.0"
+                        "PubNub-Python-Asyncio/9.1.0"
                     ]
                 }
             },
@@ -31,7 +31,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Thu, 28 Nov 2024 08:10:52 GMT"
+                        "Thu, 05 Dec 2024 15:00:32 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=UTF-8"

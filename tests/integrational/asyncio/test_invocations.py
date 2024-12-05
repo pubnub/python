@@ -55,7 +55,7 @@ async def test_publish_future_raises_pubnub_error(event_loop):
 async def test_publish_future_raises_lower_level_error(event_loop):
     pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
 
-    pubnub._connector.aclose()
+    pubnub._connector.close()
 
     with pytest.raises(RuntimeError) as exinfo:
         await pubnub.publish().message('hey').channel('blah').result()
@@ -102,7 +102,7 @@ async def test_publish_envelope_raises(event_loop):
 async def test_publish_envelope_raises_lower_level_error(event_loop):
     pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
 
-    pubnub._connector.aclose()
+    pubnub._connector.close()
 
     e = await pubnub.publish().message('hey').channel('blah').future()
     assert isinstance(e, PubNubAsyncioException)

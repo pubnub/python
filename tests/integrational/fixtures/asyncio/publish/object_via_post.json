@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/asyncio-int-publish/0",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
                 "body": "{\"name\": \"Alex\", \"online\": true}",
                 "headers": {
                     "host": [
@@ -20,7 +20,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "PubNub-Python-Asyncio/9.0.0"
+                        "PubNub-Python-Asyncio/9.1.0"
                     ],
                     "content-type": [
                         "application/json"
@@ -37,7 +37,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Thu, 28 Nov 2024 08:10:50 GMT"
+                        "Thu, 05 Dec 2024 15:00:31 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -62,7 +62,7 @@
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"17327814509661189\"]"
+                    "string": "[1,\"Sent\",\"17334108313923637\"]"
                 }
             }
         }

@@ -1,6 +1,7 @@
 import logging
 import unittest
 import urllib
+import urllib.parse
 
 import pubnub
 from pubnub.exceptions import PubNubException
@@ -385,7 +386,7 @@ class TestPubNubPublish(unittest.TestCase):
             assert isinstance(envelope.result, PNPublishResult)
             assert envelope.result.timetoken > 1
             assert len(cassette) == 1
-            uri = urlparse(cassette.requests[0].uri)
-            query = parse_qs(uri.query)
+            uri = urllib.parse.urlparse(cassette.requests[0].uri)
+            query = urllib.parse.parse_qs(uri.query)
             assert 'custom_message_type' in query.keys()
             assert query['custom_message_type'] == ['test_message']

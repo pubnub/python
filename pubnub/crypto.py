@@ -104,6 +104,8 @@ class PubNubFileCrypto(PubNubCryptodome):
             cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, initialization_vector)
             result = unpad(cipher.decrypt(extracted_file), 16)
         except ValueError:
+            if not self.fallback_mode:  # No fallback mode so we return the original content
+                return file
             cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
             result = unpad(cipher.decrypt(extracted_file), 16)
 

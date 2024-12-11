@@ -66,10 +66,10 @@ async def test_list_files():
     await pubnub.stop()
 
 
-@pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_file.json", serializer="pn_json",
-    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
-)
+# @pn_vcr.use_cassette(
+#     "tests/integrational/fixtures/asyncio/file_upload/send_and_download_file.json", serializer="pn_json",
+#     filter_query_parameters=['uuid', 'l_file', 'pnsdk']
+# )
 @pytest.mark.asyncio(loop_scope="module")
 async def test_send_and_download_file(file_for_upload):
     pubnub = PubNubAsyncio(pnconf_env_copy())
@@ -83,11 +83,12 @@ async def test_send_and_download_file(file_for_upload):
     await pubnub.stop()
 
 
-@pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file_cipher_key.json",
-    filter_query_parameters=['uuid', 'l_file', 'pnsdk'], serializer='pn_json'
-)
+# @pn_vcr.use_cassette(
+#     "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file_cipher_key.json",
+#     filter_query_parameters=['uuid', 'l_file', 'pnsdk'], serializer='pn_json'
+# )
 @pytest.mark.asyncio(loop_scope="module")
+@pytest.mark.filterwarnings("ignore:.*Usage of local cipher_keys is discouraged.*:DeprecationWarning")
 async def test_send_and_download_file_encrypted_cipher_key(file_for_upload, file_upload_test_data):
     pubnub = PubNubAsyncio(pnconf_enc_env_copy())
 
@@ -105,10 +106,10 @@ async def test_send_and_download_file_encrypted_cipher_key(file_for_upload, file
         await pubnub.stop()
 
 
-@pn_vcr.use_cassette(
-    "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file_crypto_module.json",
-    filter_query_parameters=['uuid', 'l_file', 'pnsdk'], serializer='pn_json'
-)
+# @pn_vcr.use_cassette(
+#     "tests/integrational/fixtures/asyncio/file_upload/send_and_download_encrypted_file_crypto_module.json",
+#     filter_query_parameters=['uuid', 'l_file', 'pnsdk'], serializer='pn_json'
+# )
 @pytest.mark.asyncio(loop_scope="module")
 async def test_send_and_download_encrypted_file_crypto_module(file_for_upload, file_upload_test_data):
     pubnub = PubNubAsyncio(pnconf_enc_env_copy())

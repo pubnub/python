@@ -225,7 +225,7 @@ class PubNubCore:
 
     def grant(self):
         """ Deprecated. Use grant_token instead """
-        warn("This method will stop working on 31th December 2024. We recommend that you use grant_token() instead.",
+        warn("Access management v2 is being deprecated. We recommend switching to grant_token().",
              DeprecationWarning, stacklevel=2)
         return Grant(self)
 
@@ -240,7 +240,7 @@ class PubNubCore:
 
     def audit(self):
         """ Deprecated """
-        warn("This method will stop working on 31th December 2024.", DeprecationWarning, stacklevel=2)
+        warn("Access management v2 is being deprecated.", DeprecationWarning, stacklevel=2)
         return Audit(self)
 
     # Push Related methods

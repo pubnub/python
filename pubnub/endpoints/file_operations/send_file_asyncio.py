@@ -4,27 +4,25 @@ from pubnub.endpoints.file_operations.fetch_upload_details import FetchFileUploa
 
 
 class AsyncioSendFile(SendFileNative):
-    def options(self):
-        request_options = super(SendFileNative, self).options()
-        request_options.data = request_options.files
-        return request_options
-
     async def future(self):
-        self._file_upload_envelope = await FetchFileUploadS3Data(self._pubnub).\
-            channel(self._channel).\
-            file_name(self._file_name).future()
+        self._file_upload_envelope = await FetchFileUploadS3Data(self._pubnub) \
+            .channel(self._channel) \
+            .file_name(self._file_name).future()
 
         response_envelope = await super(SendFileNative, self).future()
 
-        publish_file_response = await PublishFileMessage(self._pubnub).\
-            channel(self._channel).\
-            meta(self._meta).\
-            message(self._message).\
-            file_id(response_envelope.result.file_id).\
-            file_name(response_envelope.result.name).\
-            should_store(self._should_store).\
-            ttl(self._ttl).\
-            cipher_key(self._cipher_key).future()
+        publish_file_response = await PublishFileMessage(self._pubnub) \
+            .channel(self._channel) \
+            .meta(self._meta) \
+            .message(self._message) \
+            .file_id(response_envelope.result.file_id) \
+            .file_name(response_envelope.result.name) \
+            .should_store(self._should_store) \
+            .ttl(self._ttl) \
+            .replicate(self._replicate) \
+            .ptto(self._ptto) \
+            .custom_message_type(self._custom_message_type) \
+            .cipher_key(self._cipher_key).future()
 
         response_envelope.result.timestamp = publish_file_response.result.timestamp
         return response_envelope

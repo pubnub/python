@@ -7,7 +7,6 @@ import time
 import urllib
 
 from asyncio import Event, Queue, Semaphore
-from yarl import URL
 from httpx import AsyncHTTPTransport
 from pubnub.event_engine.containers import PresenceStateContainer
 from pubnub.event_engine.models import events, states
@@ -180,7 +179,8 @@ class PubNubAsyncio(PubNubCore):
         else:
             url = utils.build_url(scheme="", origin="", path=options.path, params=options.query_string)
 
-        url = str(URL(url, encoded=True))
+        full_url = httpx.URL(url, query=options.query_string.encode('utf-8'))
+
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 
         if options.request_headers:
@@ -188,18 +188,23 @@ class PubNubAsyncio(PubNubCore):
         else:
             request_headers = self.headers
 
+        request_arguments = {
+            'method': options.method_string,
+            'headers': request_headers,
+            'url': full_url,
+            'follow_redirects': options.allow_redirects,
+            'timeout': (options.connect_timeout, options.request_timeout),
+        }
+        if options.is_post() or options.is_patch():
+            request_arguments['content'] = options.data
+            request_arguments['files'] = options.files
+
         try:
             if not self._session:
                 await self.create_session()
             start_timestamp = time.time()
             response = await asyncio.wait_for(
-                self._session.request(
-                    options.method_string,
-                    url,
-                    headers=request_headers,
-                    data=options.data if options.data else None,
-                    follow_redirects=options.allow_redirects
-                ),
+                self._session.request(**request_arguments),
                 options.request_timeout
             )
         except (asyncio.TimeoutError, asyncio.CancelledError):

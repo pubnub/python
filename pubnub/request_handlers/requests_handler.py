@@ -1,6 +1,5 @@
 import logging
 import threading
-import requests
 import httpx
 import json  # noqa # pylint: disable=W0611
 import urllib
@@ -237,14 +236,13 @@ class RequestsRequestHandler(BaseRequestHandler):
         args = {
             "method": e_options.method_string,
             "headers": request_headers,
-            "url": url,
-            "params": e_options.query_string,
+            "url": httpx.URL(url, query=e_options.query_string.encode("utf-8")),
             "timeout": (e_options.connect_timeout, e_options.request_timeout),
             "follow_redirects": e_options.allow_redirects
         }
 
         if e_options.is_post() or e_options.is_patch():
-            args["data"] = e_options.data
+            args["content"] = e_options.data
             args["files"] = e_options.files
             logger.debug("%s %s %s" % (
                 e_options.method_string,
@@ -265,32 +263,33 @@ class RequestsRequestHandler(BaseRequestHandler):
         try:
             res = self.session.request(**args)
             logger.debug("GOT %s" % res.text)
-        except requests.exceptions.ConnectionError as e:
+
+        except httpx.ConnectError as e:
             raise PubNubException(
                 pn_error=PNERR_CONNECTION_ERROR,
                 errormsg=str(e)
             )
-        except requests.exceptions.HTTPError as e:
-            raise PubNubException(
-                pn_error=PNERR_HTTP_ERROR,
-                errormsg=str(e)
-            )
-        except requests.exceptions.Timeout as e:
+        except httpx.TimeoutException as e:
             raise PubNubException(
                 pn_error=PNERR_CLIENT_TIMEOUT,
                 errormsg=str(e)
             )
-        except requests.exceptions.TooManyRedirects as e:
+        except httpx.TooManyRedirects as e:
             raise PubNubException(
                 pn_error=PNERR_TOO_MANY_REDIRECTS_ERROR,
                 errormsg=str(e)
+            )
+        except httpx.HTTPStatusError as e:
+            raise PubNubException(
+                pn_error=PNERR_HTTP_ERROR,
+                errormsg=str(e),
+                status_code=e.response.status_code
             )
         except Exception as e:
             raise PubNubException(
                 pn_error=PNERR_UNKNOWN_ERROR,
                 errormsg=str(e)
             )
-
         return res
 
 

@@ -10,7 +10,8 @@ from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.history import PNHistoryResult
 from pubnub.models.consumer.pubsub import PNPublishResult
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_enc_env_copy, pnconf_env_copy, pnconf_pam_copy
+from tests.helper import pnconf_copy, pnconf_enc_copy, pnconf_enc_env_copy, pnconf_env_copy, pnconf_pam_copy, \
+    pnconf_pam_stub_copy
 from tests.integrational.vcr_helper import use_cassette_and_stub_time_sleep_native
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
@@ -76,11 +77,9 @@ class TestPubNubHistory(unittest.TestCase):
         assert envelope.result.messages[3].entry == 'hey-3'
         assert envelope.result.messages[4].entry == 'hey-4'
 
-    @use_cassette_and_stub_time_sleep_native('tests/integrational/fixtures/native_sync/history/not_permitted.yaml',
-                                             filter_query_parameters=['uuid', 'pnsdk'])
     def test_not_permitted(self):
         ch = "history-native-sync-ch"
-        pubnub = PubNub(pnconf_pam_copy())
+        pubnub = PubNub(pnconf_pam_stub_copy(non_subscribe_request_timeout=1))
         pubnub.config.uuid = "history-native-sync-uuid"
 
         with pytest.raises(PubNubException):

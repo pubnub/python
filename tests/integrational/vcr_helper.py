@@ -197,6 +197,8 @@ pn_vcr.register_matcher('string_list_in_path', string_list_in_path_matcher)
 pn_vcr.register_matcher('string_list_in_query', string_list_in_query_matcher)
 pn_vcr.register_serializer('pn_json', PNSerializer())
 
+pn_vcr_with_empty_body_request.register_serializer('pn_json', PNSerializer())
+
 
 def use_cassette_and_stub_time_sleep_native(cassette_name, **kwargs):
     context = pn_vcr.use_cassette(cassette_name, **kwargs)

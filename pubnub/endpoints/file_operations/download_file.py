@@ -5,6 +5,7 @@ from pubnub.models.consumer.file import PNDownloadFileResult
 from pubnub.request_handlers.requests_handler import RequestsRequestHandler
 from pubnub.endpoints.file_operations.get_file_url import GetFileDownloadUrl
 from warnings import warn
+from urllib.parse import urlparse, parse_qs
 
 
 class DownloadFileNative(FileOperationEndpoint):
@@ -69,7 +70,8 @@ class DownloadFileNative(FileOperationEndpoint):
         return False
 
     def build_params_callback(self):
-        return lambda a: {}
+        params = parse_qs(urlparse(self._download_data.result.file_url).query)
+        return lambda a: {key: str(params[key][0]) for key in params.keys()}
 
     def name(self):
         return "Downloading file"

@@ -2,7 +2,6 @@ from pubnub.endpoints.file_operations.file_based_endpoint import FileOperationEn
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.crypto import PubNubFileCrypto
 from pubnub.models.consumer.file import PNDownloadFileResult
-from pubnub.request_handlers.requests_handler import RequestsRequestHandler
 from pubnub.endpoints.file_operations.get_file_url import GetFileDownloadUrl
 from warnings import warn
 from urllib.parse import urlparse, parse_qs
@@ -86,4 +85,4 @@ class DownloadFileNative(FileOperationEndpoint):
         return super(DownloadFileNative, self).sync()
 
     def pn_async(self, callback):
-        return RequestsRequestHandler(self._pubnub).async_file_based_operation(self.sync, callback, "File Download")
+        self._pubnub.get_request_handler().async_file_based_operation(self.sync, callback, "File Download")

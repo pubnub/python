@@ -1,9 +1,11 @@
 import logging
 import threading
-import httpx
+import requests
 import json  # noqa # pylint: disable=W0611
 import urllib
 
+from requests import Session
+from requests.adapters import HTTPAdapter
 
 from pubnub import utils
 from pubnub.enums import PNStatusCategory
@@ -28,13 +30,12 @@ class RequestsRequestHandler(BaseRequestHandler):
     ENDPOINT_THREAD_COUNTER: int = 0
 
     def __init__(self, pubnub):
-        self.session = httpx.Client()
-        # self.session = Session()
+        self.session = Session()
 
-        # self.session.mount('http://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
-        # self.session.mount('https://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
-        # self.session.mount('http://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
-        # self.session.mount('https://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
+        self.session.mount('http://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('https://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
+        self.session.mount('http://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
+        self.session.mount('https://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
 
         self.pubnub = pubnub
 
@@ -153,7 +154,8 @@ class RequestsRequestHandler(BaseRequestHandler):
                     exception=e))
 
         if res is not None:
-            query = urllib.parse.parse_qs(res.url.query)
+            url = urllib.parse.urlparse(res.url)
+            query = urllib.parse.parse_qs(url.query)
             uuid = None
             auth_key = None
 
@@ -165,14 +167,14 @@ class RequestsRequestHandler(BaseRequestHandler):
 
             response_info = ResponseInfo(
                 status_code=res.status_code,
-                tls_enabled='https' == res.url.scheme,
-                origin=res.url.host,
+                tls_enabled='https' == url.scheme,
+                origin=url.hostname,
                 uuid=uuid,
                 auth_key=auth_key,
                 client_request=res.request
             )
 
-        if res.status_code not in [200, 204, 307]:
+        if not res.ok:
             if res.status_code == 403:
                 status_category = PNStatusCategory.PNAccessDeniedCategory
 
@@ -236,13 +238,14 @@ class RequestsRequestHandler(BaseRequestHandler):
         args = {
             "method": e_options.method_string,
             "headers": request_headers,
-            "url": httpx.URL(url, query=e_options.query_string.encode("utf-8")),
+            "url": url,
+            "params": e_options.query_string,
             "timeout": (e_options.connect_timeout, e_options.request_timeout),
-            "follow_redirects": e_options.allow_redirects
+            "allow_redirects": e_options.allow_redirects
         }
 
         if e_options.is_post() or e_options.is_patch():
-            args["content"] = e_options.data
+            args["data"] = e_options.data
             args["files"] = e_options.files
             logger.debug("%s %s %s" % (
                 e_options.method_string,
@@ -263,33 +266,32 @@ class RequestsRequestHandler(BaseRequestHandler):
         try:
             res = self.session.request(**args)
             logger.debug("GOT %s" % res.text)
-
-        except httpx.ConnectError as e:
+        except requests.exceptions.ConnectionError as e:
             raise PubNubException(
                 pn_error=PNERR_CONNECTION_ERROR,
                 errormsg=str(e)
             )
-        except httpx.TimeoutException as e:
+        except requests.exceptions.HTTPError as e:
+            raise PubNubException(
+                pn_error=PNERR_HTTP_ERROR,
+                errormsg=str(e)
+            )
+        except requests.exceptions.Timeout as e:
             raise PubNubException(
                 pn_error=PNERR_CLIENT_TIMEOUT,
                 errormsg=str(e)
             )
-        except httpx.TooManyRedirects as e:
+        except requests.exceptions.TooManyRedirects as e:
             raise PubNubException(
                 pn_error=PNERR_TOO_MANY_REDIRECTS_ERROR,
                 errormsg=str(e)
-            )
-        except httpx.HTTPStatusError as e:
-            raise PubNubException(
-                pn_error=PNERR_HTTP_ERROR,
-                errormsg=str(e),
-                status_code=e.response.status_code
             )
         except Exception as e:
             raise PubNubException(
                 pn_error=PNERR_UNKNOWN_ERROR,
                 errormsg=str(e)
             )
+
         return res
 
 

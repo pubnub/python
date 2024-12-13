@@ -18,6 +18,9 @@ from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.presence.leave import Leave
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.pubnub_core import PubNubCore
+from pubnub.request_handlers.base import BaseRequestHandler
+from pubnub.request_handlers.httpx import HttpxRequestHandler
+from pubnub.request_handlers.requests import RequestsRequestHandler
 from pubnub.workers import SubscribeMessageWorker
 from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
 from pubnub import utils
@@ -46,7 +49,7 @@ class PubNubAsyncio(PubNubCore):
     PubNub Python SDK for asyncio framework
     """
 
-    def __init__(self, config, custom_event_loop=None, subscription_manager=None):
+    def __init__(self, config, custom_event_loop=None, subscription_manager=None, *, custom_request_handler=None):
         super(PubNubAsyncio, self).__init__(config)
         self.event_loop = custom_event_loop or asyncio.get_event_loop()
 
@@ -54,6 +57,11 @@ class PubNubAsyncio(PubNubCore):
         self._session = None
 
         self._connector = PubNubAsyncHTTPTransport()
+
+        if isinstance(custom_request_handler, BaseRequestHandler):
+            self._request_handler = custom_request_handler(self)
+        else:
+            self._request_handler = RequestsRequestHandler(self)
 
         if not subscription_manager:
             subscription_manager = EventEngineSubscriptionManager

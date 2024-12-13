@@ -17,7 +17,7 @@ def remove_request_body(request):
 
 
 pn_vcr = vcr.VCR(
-    cassette_library_dir=vcr_dir
+    cassette_library_dir=vcr_dir,
 )
 
 pn_vcr_with_empty_body_request = vcr.VCR(

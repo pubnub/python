@@ -11,8 +11,8 @@ from tests.integrational.vcr_helper import pn_vcr
     filter_query_parameters=['signature', 'timestamp', 'pnsdk', 'l_pam']
 )
 @pytest.mark.asyncio
-async def test_global_level(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_global_level():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
     pubnub.config.uuid = "my_uuid"
 
     env = await pubnub.grant().write(True).read(True).future()
@@ -33,8 +33,8 @@ async def test_global_level(event_loop):
     filter_query_parameters=['signature', 'timestamp', 'pnsdk', 'l_pam']
 )
 @pytest.mark.asyncio
-async def test_single_channel(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_single_channel():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
     pubnub.config.uuid = "my_uuid"
     ch = "test-pam-asyncio-ch"
 
@@ -54,8 +54,8 @@ async def test_single_channel(event_loop):
     filter_query_parameters=['signature', 'timestamp', 'pnsdk', 'l_pam']
 )
 @pytest.mark.asyncio
-async def test_single_channel_with_auth(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_single_channel_with_auth():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
     pubnub.config.uuid = "test-pam-asyncio-uuid"
     ch = "test-pam-asyncio-ch"
     auth = "test-pam-asyncio-auth"
@@ -78,8 +78,8 @@ async def test_single_channel_with_auth(event_loop):
 
 )
 @pytest.mark.asyncio
-async def test_multiple_channels(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_multiple_channels():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
     pubnub.config.uuid = "test-pam-asyncio-uuid"
     ch1 = "test-pam-asyncio-ch1"
     ch2 = "test-pam-asyncio-ch2"
@@ -105,8 +105,8 @@ async def test_multiple_channels(event_loop):
     match_on=['method', 'scheme', 'host', 'port', 'path', 'string_list_in_query']
 )
 @pytest.mark.asyncio
-async def test_multiple_channels_with_auth(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_multiple_channels_with_auth():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
     pubnub.config.uuid = "my_uuid"
     ch1 = "test-pam-asyncio-ch1"
     ch2 = "test-pam-asyncio-ch2"
@@ -132,8 +132,8 @@ async def test_multiple_channels_with_auth(event_loop):
     filter_query_parameters=['signature', 'timestamp', 'pnsdk', 'l_pam']
 )
 @pytest.mark.asyncio
-async def test_single_channel_group(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_single_channel_group():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
     pubnub.config.uuid = "test-pam-asyncio-uuid"
     cg = "test-pam-asyncio-cg"
 
@@ -154,8 +154,8 @@ async def test_single_channel_group(event_loop):
     filter_query_parameters=['signature', 'timestamp', 'pnsdk', 'l_pam']
 )
 @pytest.mark.asyncio
-async def test_single_channel_group_with_auth(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_single_channel_group_with_auth():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
     pubnub.config.uuid = "test-pam-asyncio-uuid"
     gr = "test-pam-asyncio-cg"
     auth = "test-pam-asyncio-auth"
@@ -178,8 +178,8 @@ async def test_single_channel_group_with_auth(event_loop):
     match_on=['method', 'scheme', 'host', 'port', 'path', 'string_list_in_query'],
 )
 @pytest.mark.asyncio
-async def test_multiple_channel_groups(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_multiple_channel_groups():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
     pubnub.config.uuid = "my_uuid"
     gr1 = "test-pam-asyncio-cg1"
     gr2 = "test-pam-asyncio-cg2"
@@ -205,8 +205,8 @@ async def test_multiple_channel_groups(event_loop):
     match_on=['method', 'scheme', 'host', 'port', 'path', 'string_list_in_query'],
 )
 @pytest.mark.asyncio
-async def test_multiple_channel_groups_with_auth(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_multiple_channel_groups_with_auth():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
     pubnub.config.uuid = "my_uuid"
     gr1 = "test-pam-asyncio-cg1"
     gr2 = "test-pam-asyncio-cg2"

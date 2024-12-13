@@ -51,23 +51,17 @@ def send_file(file_for_upload, cipher_key=None, pass_binary=False, timetoken_ove
     return envelope
 
 
-# @pn_vcr.use_cassette(
-#     "tests/integrational/fixtures/native_sync/file_upload/delete_all_files.json", serializer="pn_json",
-#     filter_query_parameters=('pnsdk',)
-# )
-def test_delete_all_files(file_upload_test_data):
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/list_files.json", serializer="pn_json",
+    filter_query_parameters=('pnsdk',)
+)
+def test_list_files(file_upload_test_data):
     envelope = pubnub.list_files().channel(CHANNEL).sync()
     files = envelope.result.data
     for i in range(len(files) - 1):
         file = files[i]
         pubnub.delete_file().channel(CHANNEL).file_id(file["id"]).file_name(file["name"]).sync()
 
-
-# @pn_vcr.use_cassette(
-#     "tests/integrational/fixtures/native_sync/file_upload/list_files.json", serializer="pn_json",
-#     filter_query_parameters=('pnsdk',)
-# )
-def test_list_files(file_upload_test_data):
     envelope = pubnub.list_files().channel(CHANNEL).sync()
 
     assert isinstance(envelope.result, PNGetFilesResult)
@@ -75,10 +69,10 @@ def test_list_files(file_upload_test_data):
     assert file_upload_test_data["UPLOADED_FILENAME"] == envelope.result.data[0]["name"]
 
 
-# @pn_vcr.use_cassette(
-#     "tests/integrational/fixtures/native_sync/file_upload/download_file.json", serializer="pn_json",
-#     filter_query_parameters=('pnsdk',)
-# )
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/send_and_download_file_using_bytes_object.json",
+    filter_query_parameters=('pnsdk',), serializer="pn_json"
+)
 def test_send_and_download_file_using_bytes_object(file_for_upload, file_upload_test_data):
     envelope = send_file(file_for_upload, pass_binary=True)
 
@@ -93,8 +87,8 @@ def test_send_and_download_file_using_bytes_object(file_for_upload, file_upload_
 
 
 # @pn_vcr.use_cassette(
-#     "tests/integrational/fixtures/native_sync/file_upload/download_file_encrypted.json", serializer="pn_json",
-#     filter_query_parameters=('pnsdk',)
+#     "tests/integrational/fixtures/native_sync/file_upload/send_and_download_encrypted_file.json",
+#     filter_query_parameters=('pnsdk',), serializer="pn_json"
 # )
 def test_send_and_download_encrypted_file(file_for_upload, file_upload_test_data):
     cipher_key = "silly_walk"
@@ -299,9 +293,9 @@ def test_send_and_download_encrypted_file_fallback_decode(file_for_upload, file_
         assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
 
 
-def test_publish_file_with_custom_type():
+def test_publish_file_message_with_custom_type():
     with pn_vcr.use_cassette(
-        "tests/integrational/fixtures/native_sync/file_upload/test_publish_file_with_custom_type.json",
+        "tests/integrational/fixtures/native_sync/file_upload/publish_file_message_with_custom_type.json",
          filter_query_parameters=('pnsdk',), serializer='pn_json') as cassette:
 
         pubnub = PubNub(pnconf_env_copy())

@@ -2,6 +2,7 @@ import os
 import re
 from base64 import b64decode, b64encode
 from vcr.serializers.jsonserializer import serialize, deserialize
+from pickle import dumps, loads
 
 
 class PNSerializer:
@@ -23,12 +24,12 @@ class PNSerializer:
     def serialize(self, cassette_dict):
         for index, interaction in enumerate(cassette_dict['interactions']):
             # for serializing binary body
-            if type(interaction['request']['body']) is bytes:
-                ascii_body = b64encode(interaction['request']['body']).decode('ascii')
-                interaction['request']['body'] = {'binary': ascii_body}
-            if type(interaction['response']['body']['string']) is bytes:
-                ascii_body = b64encode(interaction['response']['body']['string']).decode('ascii')
-                interaction['response']['body'] = {'binary': ascii_body}
+            if interaction['request']['body']:
+                picklebody = b64encode(dumps(interaction['request']['body'])).decode('ascii')
+                interaction['request']['body'] = {'pickle': picklebody}
+            if interaction['response']['body']:
+                picklebody = b64encode(dumps(interaction['response']['body'])).decode('ascii')
+                interaction['response']['body'] = {'pickle': picklebody}
 
         return self.replace_keys(serialize(cassette_dict))
 
@@ -40,11 +41,9 @@ class PNSerializer:
     def deserialize(self, cassette_string):
         cassette_dict = deserialize(self.replace_placeholders(cassette_string))
         for index, interaction in enumerate(cassette_dict['interactions']):
-            if isinstance(interaction['request']['body'], dict) and 'binary' in interaction['request']['body'].keys():
-                interaction['request']['body']['string'] = b64decode(interaction['request']['body']['binary'])
-                del interaction['request']['body']['binary']
-            if 'binary' in interaction['response']['body'].keys():
-                interaction['response']['body']['string'] = b64decode(interaction['response']['body']['binary'])
-                del interaction['response']['body']['binary']
+            if isinstance(interaction['request']['body'], dict) and 'pickle' in interaction['request']['body'].keys():
+                interaction['request']['body'] = loads(b64decode(interaction['request']['body']['pickle']))
+            if isinstance(interaction['response']['body'], dict) and 'pickle' in interaction['response']['body'].keys():
+                interaction['response']['body'] = loads(b64decode(interaction['response']['body']['pickle']))
             cassette_dict['interactions'][index] == interaction
         return cassette_dict

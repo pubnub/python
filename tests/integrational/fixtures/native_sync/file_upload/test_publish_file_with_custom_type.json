@@ -5,19 +5,22 @@
             "request": {
                 "method": "GET",
                 "uri": "https://ps.pndsn.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_native_sync_ch/0/%7B%22message%22%3A%20%7B%22test%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%222222%22%2C%20%22name%22%3A%20%22test%22%7D%7D?custom_message_type=test_message&meta=%7B%7D&store=0&ttl=0&uuid=uuid-mock",
-                "body": null,
+                "body": "",
                 "headers": {
-                    "User-Agent": [
-                        "PubNub-Python/9.0.0"
+                    "host": [
+                        "ps.pndsn.com"
                     ],
-                    "Accept-Encoding": [
-                        "gzip, deflate"
-                    ],
-                    "Accept": [
+                    "accept": [
                         "*/*"
                     ],
-                    "Connection": [
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
                         "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/9.1.0"
                     ]
                 }
             },
@@ -27,30 +30,33 @@
                     "message": "OK"
                 },
                 "headers": {
+                    "Date": [
+                        "Wed, 11 Dec 2024 17:59:14 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
                     "Cache-Control": [
                         "no-cache"
                     ],
                     "Access-Control-Allow-Methods": [
                         "GET"
                     ],
-                    "Date": [
-                        "Mon, 21 Oct 2024 08:19:49 GMT"
+                    "Access-Control-Allow-Credentials": [
+                        "true"
                     ],
-                    "Content-Type": [
-                        "text/javascript; charset=\"UTF-8\""
-                    ],
-                    "Connection": [
-                        "keep-alive"
-                    ],
-                    "Content-Length": [
-                        "30"
-                    ],
-                    "Access-Control-Allow-Origin": [
+                    "Access-Control-Expose-Headers": [
                         "*"
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"17294987898141374\"]"
+                    "pickle": "gASVLgAAAAAAAAB9lIwGc3RyaW5nlIweWzEsIlNlbnQiLCIxNzMzOTM5OTU0MzQxMTU2OCJdlHMu"
                 }
             }
         }

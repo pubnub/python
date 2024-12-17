@@ -17,8 +17,8 @@ ch = "asyncio-int-publish"
     filter_query_parameters=['uuid', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_publish_string_via_get_encrypted(event_loop):
-    pubnub = PubNubAsyncio(pnconf_ssl_copy(), custom_event_loop=event_loop)
+async def test_publish_string_via_get_encrypted():
+    pubnub = PubNubAsyncio(pnconf_ssl_copy())
     res = await pubnub.publish().channel(ch).message("hey").future()
     assert res.result.timetoken > 0
 

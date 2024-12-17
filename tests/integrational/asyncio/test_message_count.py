@@ -13,7 +13,6 @@ def pn(event_loop):
     config.enable_subscribe = False
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
     yield pn
-    pn.stop()
 
 
 @pn_vcr.use_cassette(

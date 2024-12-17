@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files",
+                "body": null,
+                "headers": {
+                    "User-Agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Tue, 03 Dec 2024 14:47:49 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "843"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":[{\"name\":\"king_arthur.txt\",\"id\":\"04727e47-cbf1-40b3-a009-35c6403f2f06\",\"size\":19,\"created\":\"2024-12-03T14:27:26Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"3ce7a21a-94b7-4b28-b946-4db05f42b81e\",\"size\":19,\"created\":\"2024-12-03T14:28:21Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"41e6f604-ff3d-4610-96af-9e14d96e13d5\",\"size\":19,\"created\":\"2024-12-03T14:30:21Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"73bfb032-5e05-458f-a7d7-5a9421156f18\",\"size\":19,\"created\":\"2024-12-03T14:29:07Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"d7d50b43-eb67-4baa-9c03-4ed69b893309\",\"size\":48,\"created\":\"2024-12-03T14:30:23Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"e1ea8031-b3c8-45fd-a3e3-bdbaceff7176\",\"size\":48,\"created\":\"2024-12-03T14:30:22Z\"},{\"name\":\"king_arthur.txt\",\"id\":\"f5ef27d5-5109-4229-aca1-221624aa920b\",\"size\":19,\"created\":\"2024-12-03T09:28:52Z\"}],\"next\":null,\"count\":7}"
+                }
+            }
+        }
+    ]
+}

@@ -196,8 +196,8 @@ def pnconf_pam_copy():
     return deepcopy(pnconf_pam)
 
 
-def pnconf_pam_stub_copy():
-    return deepcopy(pnconf_pam_stub)
+def pnconf_pam_stub_copy(**kwargs):
+    return copy_and_update(pnconf_pam_stub, **kwargs)
 
 
 def pnconf_pam_acceptance_copy():

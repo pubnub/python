@@ -1,13 +1,13 @@
 import logging
 import json
 import asyncio
-import aiohttp
+import httpx
 import math
 import time
 import urllib
 
 from asyncio import Event, Queue, Semaphore
-from yarl import URL
+from httpx import AsyncHTTPTransport
 from pubnub.event_engine.containers import PresenceStateContainer
 from pubnub.event_engine.models import events, states
 
@@ -18,6 +18,8 @@ from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.presence.leave import Leave
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.pubnub_core import PubNubCore
+from pubnub.request_handlers.base import BaseRequestHandler
+from pubnub.request_handlers.httpx import HttpxRequestHandler
 from pubnub.workers import SubscribeMessageWorker
 from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
 from pubnub import utils
@@ -33,19 +35,32 @@ from .exceptions import PubNubException
 logger = logging.getLogger("pubnub")
 
 
+class PubNubAsyncHTTPTransport(AsyncHTTPTransport):
+    is_closed: bool = False
+
+    def close(self):
+        self.is_closed = True
+        super().aclose()
+
+
 class PubNubAsyncio(PubNubCore):
     """
     PubNub Python SDK for asyncio framework
     """
 
-    def __init__(self, config, custom_event_loop=None, subscription_manager=None):
+    def __init__(self, config, custom_event_loop=None, subscription_manager=None, *, custom_request_handler=None):
         super(PubNubAsyncio, self).__init__(config)
         self.event_loop = custom_event_loop or asyncio.get_event_loop()
 
         self._connector = None
         self._session = None
 
-        self._connector = aiohttp.TCPConnector(verify_ssl=True, loop=self.event_loop)
+        self._connector = PubNubAsyncHTTPTransport()
+
+        if isinstance(custom_request_handler, BaseRequestHandler):
+            self._request_handler = custom_request_handler(self)
+        else:
+            self._request_handler = HttpxRequestHandler(self)
 
         if not subscription_manager:
             subscription_manager = EventEngineSubscriptionManager
@@ -62,19 +77,17 @@ class PubNubAsyncio(PubNubCore):
         await asyncio.sleep(0.1)
 
     async def create_session(self):
-        if not self._session:
-            self._session = aiohttp.ClientSession(
-                loop=self.event_loop,
-                timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
-                connector=self._connector
-            )
+        self._session = httpx.AsyncClient(
+            timeout=httpx.Timeout(self.config.connect_timeout),
+            transport=self._connector
+        )
 
     async def close_session(self):
         if self._session is not None:
-            await self._session.close()
+            await self._session.aclose()
 
     async def set_connector(self, cn):
-        await self._session.close()
+        await self._session.aclose()
 
         self._connector = cn
         await self.create_session()
@@ -149,6 +162,8 @@ class PubNubAsyncio(PubNubCore):
         :param cancellation_event:
         :return:
         """
+        if self._connector and self._connector.is_closed:
+            raise RuntimeError('Session is closed')
         if cancellation_event is not None:
             assert isinstance(cancellation_event, Event)
 
@@ -171,7 +186,8 @@ class PubNubAsyncio(PubNubCore):
         else:
             url = utils.build_url(scheme="", origin="", path=options.path, params=options.query_string)
 
-        url = URL(url, encoded=True)
+        full_url = httpx.URL(url, query=options.query_string.encode('utf-8'))
+
         logger.debug("%s %s %s" % (options.method_string, url, options.data))
 
         if options.request_headers:
@@ -179,18 +195,23 @@ class PubNubAsyncio(PubNubCore):
         else:
             request_headers = self.headers
 
+        request_arguments = {
+            'method': options.method_string,
+            'headers': request_headers,
+            'url': full_url,
+            'follow_redirects': options.allow_redirects,
+            'timeout': (options.connect_timeout, options.request_timeout),
+        }
+        if options.is_post() or options.is_patch():
+            request_arguments['content'] = options.data
+            request_arguments['files'] = options.files
+
         try:
             if not self._session:
                 await self.create_session()
             start_timestamp = time.time()
             response = await asyncio.wait_for(
-                self._session.request(
-                    options.method_string,
-                    url,
-                    headers=request_headers,
-                    data=options.data if options.data else None,
-                    allow_redirects=options.allow_redirects
-                ),
+                self._session.request(**request_arguments),
                 options.request_timeout
             )
         except (asyncio.TimeoutError, asyncio.CancelledError):
@@ -199,13 +220,14 @@ class PubNubAsyncio(PubNubCore):
             logger.error("session.request exception: %s" % str(e))
             raise
 
+        response_body = response.read()
         if not options.non_json_response:
-            body = await response.text()
+            body = response_body
         else:
             if isinstance(response.content, bytes):
                 body = response.content  # TODO: simplify this logic within the v5 release
             else:
-                body = await response.read()
+                body = response_body
 
         if cancellation_event is not None and cancellation_event.is_set():
             return
@@ -226,7 +248,7 @@ class PubNubAsyncio(PubNubCore):
                 auth_key = query['auth_key'][0]
 
             response_info = ResponseInfo(
-                status_code=response.status,
+                status_code=response.status_code,
                 tls_enabled='https' == request_url.scheme,
                 origin=request_url.hostname,
                 uuid=uuid,
@@ -265,17 +287,17 @@ class PubNubAsyncio(PubNubCore):
 
         logger.debug(data)
 
-        if response.status not in (200, 307, 204):
+        if response.status_code not in (200, 307, 204):
 
-            if response.status >= 500:
+            if response.status_code >= 500:
                 err = PNERR_SERVER_ERROR
             else:
                 err = PNERR_CLIENT_ERROR
 
-            if response.status == 403:
+            if response.status_code == 403:
                 status_category = PNStatusCategory.PNAccessDeniedCategory
 
-            if response.status == 400:
+            if response.status_code == 400:
                 status_category = PNStatusCategory.PNBadRequestCategory
 
             raise create_exception(
@@ -285,7 +307,7 @@ class PubNubAsyncio(PubNubCore):
                 exception=PubNubException(
                     errormsg=data,
                     pn_error=err,
-                    status_code=response.status
+                    status_code=response.status_code
                 )
             )
         else:

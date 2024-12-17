@@ -147,7 +147,7 @@ async def test_global():
 
 
 @pytest.mark.asyncio
-async def test_here_now_super_call(event_loop):
+async def test_here_now_super_call():
     pubnub = PubNubAsyncio(pnconf_demo_copy())
     pubnub.config.uuid = 'test-here-now-asyncio-uuid1'
 

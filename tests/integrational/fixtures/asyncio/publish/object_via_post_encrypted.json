@@ -7,11 +7,26 @@
                 "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
                 "body": "\"a25pZ2h0c29mbmkxMjM0NZJdqrQwIy2EGbanaofVioxjgR2wkk02J3Z3NvR+zhR3WaTKTArF54xtAoq4J7zUtg==\"",
                 "headers": {
-                    "User-Agent": [
-                        "PubNub-Python-Asyncio/9.0.0"
+                    "host": [
+                        "ps.pndsn.com"
                     ],
-                    "Content-type": [
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
+                    ],
+                    "content-type": [
                         "application/json"
+                    ],
+                    "content-length": [
+                        "90"
                     ]
                 }
             },
@@ -22,7 +37,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Wed, 06 Nov 2024 08:26:18 GMT"
+                        "Thu, 05 Dec 2024 15:00:32 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -47,7 +62,7 @@
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"17308815788886238\"]"
+                    "string": "[1,\"Sent\",\"17334108322170052\"]"
                 }
             }
         }

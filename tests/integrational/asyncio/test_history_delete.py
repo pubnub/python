@@ -10,8 +10,8 @@ from tests.helper import mocked_config_copy
     filter_query_parameters=['uuid', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_success(event_loop):
-    pubnub = PubNubAsyncio(mocked_config_copy(), custom_event_loop=event_loop)
+async def test_success():
+    pubnub = PubNubAsyncio(mocked_config_copy())
 
     res = await pubnub.delete_messages().channel("my-ch").start(123).end(456).future()
 
@@ -26,8 +26,8 @@ async def test_success(event_loop):
     filter_query_parameters=['uuid', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_delete_with_space_and_wildcard_in_channel_name(event_loop):
-    pubnub = PubNubAsyncio(mocked_config_copy(), custom_event_loop=event_loop)
+async def test_delete_with_space_and_wildcard_in_channel_name():
+    pubnub = PubNubAsyncio(mocked_config_copy())
 
     res = await pubnub.delete_messages().channel("my-ch- |.* $").start(123).end(456).future()
 

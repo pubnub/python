@@ -5,7 +5,6 @@ from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.file import PNSendFileResult
 from pubnub.endpoints.file_operations.publish_file_message import PublishFileMessage
 from pubnub.endpoints.file_operations.fetch_upload_details import FetchFileUploadS3Data
-from pubnub.request_handlers.requests_handler import RequestsRequestHandler
 from pubnub.endpoints.mixins import TimeTokenOverrideMixin
 from warnings import warn
 
@@ -152,4 +151,4 @@ class SendFileNative(FileOperationEndpoint, TimeTokenOverrideMixin):
         return response_envelope
 
     def pn_async(self, callback):
-        return RequestsRequestHandler(self._pubnub).async_file_based_operation(self.sync, callback, "File Download")
+        self._pubnub.get_request_handler().async_file_based_operation(self.sync, callback, "File Download")

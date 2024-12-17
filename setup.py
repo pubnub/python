@@ -21,6 +21,9 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
         'Programming Language :: Python :: Implementation :: CPython',
         'License :: Other/Proprietary License',
         'Operating System :: OS Independent',
@@ -30,9 +33,11 @@ setup(
     python_requires='>=3.7',
     install_requires=[
         'pycryptodomex>=3.3',
+        'httpx>=0.28',
+        'httpx>=0.28',
         'requests>=2.4',
-        'cbor2',
-        'aiohttp'
+        'aiohttp',
+        'cbor2>=5.6'
     ],
     zip_safe=False,
 )

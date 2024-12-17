@@ -4,22 +4,10 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/asyncio-int-publish/0/%22hey%22?timestamp=1733410832",
-                "body": "",
+                "uri": "https://ps.pndsn.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%222222%22%2C%20%22name%22%3A%20%22test%22%7D%7D?meta=%7B%7D&store=1&ttl=222",
+                "body": null,
                 "headers": {
-                    "host": [
-                        "ps.pndsn.com"
-                    ],
-                    "accept": [
-                        "*/*"
-                    ],
-                    "accept-encoding": [
-                        "gzip, deflate"
-                    ],
-                    "connection": [
-                        "keep-alive"
-                    ],
-                    "user-agent": [
+                    "User-Agent": [
                         "PubNub-Python-Asyncio/9.1.0"
                     ]
                 }
@@ -31,7 +19,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Thu, 05 Dec 2024 15:00:32 GMT"
+                        "Tue, 03 Dec 2024 14:51:29 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -56,7 +44,7 @@
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"17334108327846111\"]"
+                    "string": "[1,\"Sent\",\"17332374895624143\"]"
                 }
             }
         }

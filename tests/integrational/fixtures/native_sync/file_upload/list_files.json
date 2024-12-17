@@ -1,0 +1,111 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_native_sync_ch/files?uuid=files_native_sync_uuid",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/9.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Wed, 11 Dec 2024 18:05:29 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "159"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVrwAAAAAAAAB9lIwGc3RyaW5nlIyfeyJzdGF0dXMiOjIwMCwiZGF0YSI6W3sibmFtZSI6ImtpbmdfYXJ0aHVyLnR4dCIsImlkIjoiZmY3MmY1OTktNmQ5MS00YWY2LWFkZDYtNGU3MjFiZGVkYzkwIiwic2l6ZSI6NDgsImNyZWF0ZWQiOiIyMDI0LTEyLTExVDEzOjIyOjEzWiJ9XSwibmV4dCI6bnVsbCwiY291bnQiOjF9lHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_native_sync_ch/files?uuid=files_native_sync_uuid",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/9.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Wed, 11 Dec 2024 18:05:30 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "159"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVrwAAAAAAAAB9lIwGc3RyaW5nlIyfeyJzdGF0dXMiOjIwMCwiZGF0YSI6W3sibmFtZSI6ImtpbmdfYXJ0aHVyLnR4dCIsImlkIjoiZmY3MmY1OTktNmQ5MS00YWY2LWFkZDYtNGU3MjFiZGVkYzkwIiwic2l6ZSI6NDgsImNyZWF0ZWQiOiIyMDI0LTEyLTExVDEzOjIyOjEzWiJ9XSwibmV4dCI6bnVsbCwiY291bnQiOjF9lHMu"
+                }
+            }
+        }
+    ]
+}

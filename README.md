@@ -18,7 +18,7 @@ You will need the publish and subscribe keys to authenticate your app. Get your 
 ## Configure PubNub
 
 1. Integrate the Python SDK into your project using `pip`:
-    
+
     ```bash
     pip install pubnub
     ```
@@ -83,9 +83,8 @@ pubnub.subscribe().channels('my_channel').execute()
 
 ## Documentation
 
-* [Build your first realtime Python app with PubNub](https://www.pubnub.com/docs/platform/quickstarts/python)
-* [API reference for Python](https://www.pubnub.com/docs/python/pubnub-python-sdk)
-* [API reference for Python (asyncio)](https://www.pubnub.com/docs/python-aiohttp/pubnub-python-sdk)
+* [Build your first realtime Python app with PubNub](https://www.pubnub.com/docs/general/basics/set-up-your-account)
+* [API reference for Python](https://www.pubnub.com/docs/sdks/python)
 
 ## Support
 

@@ -20,7 +20,6 @@ from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.pubnub_core import PubNubCore
 from pubnub.request_handlers.base import BaseRequestHandler
 from pubnub.request_handlers.httpx import HttpxRequestHandler
-from pubnub.request_handlers.requests import RequestsRequestHandler
 from pubnub.workers import SubscribeMessageWorker
 from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
 from pubnub import utils
@@ -61,7 +60,7 @@ class PubNubAsyncio(PubNubCore):
         if isinstance(custom_request_handler, BaseRequestHandler):
             self._request_handler = custom_request_handler(self)
         else:
-            self._request_handler = RequestsRequestHandler(self)
+            self._request_handler = HttpxRequestHandler(self)
 
         if not subscription_manager:
             subscription_manager = EventEngineSubscriptionManager

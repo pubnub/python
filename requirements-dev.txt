@@ -5,6 +5,8 @@ flake8
 pytest
 pytest-asyncio
 httpx
+requests
+aiohttp
 cbor2
 behave
 vcrpy

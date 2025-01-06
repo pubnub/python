@@ -329,8 +329,13 @@ class TestPubNubPublish(unittest.TestCase):
             .sync()
 
         assert isinstance(env.result, PNPublishResult)
-        assert "ptto" in urllib.parse.parse_qs(env.status.client_request.url.query.decode())
-        assert "norep" in urllib.parse.parse_qs(env.status.client_request.url.query.decode())
+        # note: for requests url is string, for httpx is object
+        if hasattr(env.status.client_request.url, 'query'):
+            query = urllib.parse.parse_qs(env.status.client_request.url.query.decode())
+        else:
+            query = urllib.parse.parse_qs(urllib.parse.urlsplit(env.status.client_request.url).query)
+        assert "ptto" in query
+        assert "norep" in query
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/native_sync/publish/publish_with_single_quote_message.yaml',

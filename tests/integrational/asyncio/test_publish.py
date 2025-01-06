@@ -5,10 +5,11 @@ import pytest
 import pubnub as pn
 
 from unittest.mock import patch
-from pubnub.exceptions import PubNubException
+from pubnub.exceptions import PubNubAsyncioException, PubNubException
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNPublishResult
-from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, PubNubAsyncioException
+from pubnub.models.envelopes import AsyncioEnvelope
+from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.helper import pnconf_enc_env_copy, pnconf_pam_env_copy, pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
 

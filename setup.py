@@ -34,7 +34,7 @@ setup(
     install_requires=[
         'pycryptodomex>=3.3',
         'httpx>=0.28',
-        'httpx>=0.28',
+        'h2>=4.1',
         'requests>=2.4',
         'aiohttp',
         'cbor2>=5.6'

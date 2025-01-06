@@ -2,7 +2,8 @@ import pytest
 
 from tests.helper import pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
-from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
+from pubnub.pubnub_asyncio import PubNubAsyncio
+from pubnub.models.envelopes import AsyncioEnvelope
 from pubnub.models.consumer.pubsub import PNFireResult
 from pubnub.models.consumer.common import PNStatus
 

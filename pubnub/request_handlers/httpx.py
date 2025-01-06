@@ -32,10 +32,13 @@ class HttpxRequestHandler(BaseRequestHandler):
 
         self.pubnub = pubnub
 
+    async def async_request(self, options_func, cancellation_event):
+        raise NotImplementedError("async_request is not implemented for synchronous handler")
+
     def sync_request(self, platform_options, endpoint_call_options):
         return self._build_envelope(platform_options, endpoint_call_options)
 
-    def async_request(self, endpoint_name, platform_options, endpoint_call_options, callback, cancellation_event):
+    def threaded_request(self, endpoint_name, platform_options, endpoint_call_options, callback, cancellation_event):
         call = Call()
 
         if cancellation_event is None:

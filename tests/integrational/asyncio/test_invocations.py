@@ -5,7 +5,9 @@ import pubnub as pn
 
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
-from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, PubNubAsyncioException
+from pubnub.pubnub_asyncio import PubNubAsyncio
+from pubnub.models.envelopes import AsyncioEnvelope
+from pubnub.exceptions import PubNubAsyncioException
 from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 

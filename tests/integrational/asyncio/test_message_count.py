@@ -1,6 +1,7 @@
 import pytest
 
-from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
+from pubnub.pubnub_asyncio import PubNubAsyncio
+from pubnub.models.envelopes import AsyncioEnvelope
 from pubnub.models.consumer.message_count import PNMessageCountResult
 from pubnub.models.consumer.common import PNStatus
 from tests.helper import pnconf_mc_copy

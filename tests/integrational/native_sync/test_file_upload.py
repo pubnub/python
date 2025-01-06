@@ -69,10 +69,10 @@ def test_list_files(file_upload_test_data):
     assert file_upload_test_data["UPLOADED_FILENAME"] == envelope.result.data[0]["name"]
 
 
-@pn_vcr.use_cassette(
-    "tests/integrational/fixtures/native_sync/file_upload/send_and_download_file_using_bytes_object.json",
-    filter_query_parameters=('pnsdk',), serializer="pn_json"
-)
+# @pn_vcr.use_cassette(
+#     "tests/integrational/fixtures/native_sync/file_upload/send_and_download_file_using_bytes_object.json",
+#     filter_query_parameters=('pnsdk',), serializer="pn_json"
+# )
 def test_send_and_download_file_using_bytes_object(file_for_upload, file_upload_test_data):
     envelope = send_file(file_for_upload, pass_binary=True)
 
@@ -228,8 +228,12 @@ def test_publish_file_message_with_overriding_time_token():
         .ttl(222).sync()
 
     assert isinstance(envelope.result, PNPublishFileMessageResult)
-
-    assert "ptto" in urllib.parse.parse_qs(envelope.status.client_request.url.query.decode())
+    # note: for requests url is string, for httpx is object
+    if hasattr(envelope.status.client_request.url, 'query'):
+        query = urllib.parse.parse_qs(envelope.status.client_request.url.query.decode())
+    else:
+        query = urllib.parse.parse_qs(urllib.parse.urlsplit(envelope.status.client_request.url).query)
+    assert "ptto" in query
 
 
 # @pn_vcr.use_cassette(

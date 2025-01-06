@@ -18,3 +18,19 @@ class PubNubException(Exception):
     def _status(self):
         raise DeprecationWarning
         return self.status
+
+
+class PubNubAsyncioException(Exception):
+    def __init__(self, result, status):
+        self.result = result
+        self.status = status
+
+    def __str__(self):
+        return str(self.status.error_data.exception)
+
+    @staticmethod
+    def is_error():
+        return True
+
+    def value(self):
+        return self.status.error_data.exception

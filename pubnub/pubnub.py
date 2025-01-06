@@ -1,6 +1,8 @@
 import copy
+import importlib
 import logging
 import threading
+import os
 
 from typing import Type
 from threading import Event
@@ -37,7 +39,17 @@ class PubNub(PubNubCore):
         assert isinstance(config, PNConfiguration)
         PubNubCore.__init__(self, config)
 
-        if isinstance(custom_request_handler, BaseRequestHandler):
+        if (not custom_request_handler) and (handler := os.getenv('PUBNUB_REQUEST_HANDLER')):
+            module_name, class_name = handler.rsplit('.', 1)
+            module = importlib.import_module(module_name)
+            custom_request_handler = getattr(module, class_name)
+            if not issubclass(custom_request_handler, BaseRequestHandler):
+                raise Exception("Custom request handler must be subclass of BaseRequestHandler")
+            self._request_handler = custom_request_handler(self)
+
+        if custom_request_handler:
+            if not issubclass(custom_request_handler, BaseRequestHandler):
+                raise Exception("Custom request handler must be subclass of BaseRequestHandler")
             self._request_handler = custom_request_handler(self)
         else:
             self._request_handler = HttpxRequestHandler(self)
@@ -87,7 +99,7 @@ class PubNub(PubNubCore):
             tt = endpoint_call_options.params["tt"] if "tt" in endpoint_call_options.params else 0
             print(f'\033[48;5;236m{endpoint_name=}, {endpoint_call_options.path}, TT={tt}\033[0m\n')
 
-        return self._request_handler.async_request(
+        return self._request_handler.threaded_request(
             endpoint_name,
             platform_options,
             endpoint_call_options,

@@ -5,6 +5,7 @@ flake8
 pytest
 pytest-asyncio
 httpx
+h2
 requests
 aiohttp
 cbor2

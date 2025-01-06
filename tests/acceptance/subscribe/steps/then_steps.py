@@ -125,7 +125,7 @@ async def step_impl(ctx):
 @async_run_until_complete
 async def step_impl(context, channel1, channel2):
     context.pubnub.unsubscribe().channels([channel1, channel2]).execute()
-    await asyncio.sleep(0.5)
+    await asyncio.sleep(3)
 
 
 @then(u'I don\'t observe any Events and Invocations of the Presence EE')

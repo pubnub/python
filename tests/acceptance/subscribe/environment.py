@@ -1,8 +1,10 @@
 import asyncio
 import requests
+import logging
 
 from behave.runner import Context
 from io import StringIO
+from httpx import HTTPError
 from pubnub.pubnub import PubNub
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_asyncio import SubscribeCallback
@@ -51,6 +53,10 @@ def after_scenario(context: Context, feature):
             loop.run_until_complete(task)
         except asyncio.CancelledError:
             pass
+        except HTTPError as e:
+            logger = logging.getLogger("pubnub")
+            logger.error(f"HTTPError: {e}")
+
     loop.run_until_complete(asyncio.sleep(1.5))
     del context.pubnub
 

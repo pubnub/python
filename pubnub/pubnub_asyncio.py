@@ -26,6 +26,9 @@ from pubnub.callbacks import SubscribeCallback, ReconnectionCallback
 from pubnub.errors import PNERR_REQUEST_CANCELLED, PNERR_CLIENT_TIMEOUT
 from pubnub.exceptions import PubNubAsyncioException, PubNubException
 
+# flake8: noqa
+from pubnub.models.envelopes import AsyncioEnvelope
+
 logger = logging.getLogger("pubnub")
 
 

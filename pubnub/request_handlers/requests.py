@@ -26,7 +26,7 @@ logger = logging.getLogger("pubnub")
 
 
 class RequestsRequestHandler(BaseRequestHandler):
-    """ PubNub Python SDK Native requests handler based on `requests` HTTP library. """
+    """ PubNub Python SDK synchronous requests handler based on `requests` HTTP library. """
     ENDPOINT_THREAD_COUNTER: int = 0
 
     def __init__(self, pubnub):

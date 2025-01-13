@@ -1,3 +1,9 @@
+## 10.0.0
+January 13 2025
+
+#### Added
+- Introduced configurable request handler with HTTP/2 support.
+
 ## v9.1.0
 November 19 2024
 

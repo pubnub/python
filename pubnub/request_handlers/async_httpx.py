@@ -26,7 +26,7 @@ class PubNubAsyncHTTPTransport(httpx.AsyncHTTPTransport):
 
 
 class AsyncHttpxRequestHandler(BaseRequestHandler):
-    """ PubNub Python SDK Native requests handler based on `requests` HTTP library. """
+    """ PubNub Python SDK asychronous requests handler based on the `httpx` HTTP library. """
     ENDPOINT_THREAD_COUNTER: int = 0
     _connector: httpx.AsyncHTTPTransport = None
     _session: httpx.AsyncClient = None

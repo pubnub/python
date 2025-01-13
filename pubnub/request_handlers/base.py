@@ -9,5 +9,9 @@ class BaseRequestHandler(object):
         pass
 
     @abstractmethod
-    def async_request(self, endpoint_name, platform_options, endpoint_call_options, callback, cancellation_event):
+    def threaded_request(self, endpoint_name, platform_options, endpoint_call_options, callback, cancellation_event):
+        pass
+
+    @abstractmethod
+    async def async_request(self, options_func, cancellation_event):
         pass

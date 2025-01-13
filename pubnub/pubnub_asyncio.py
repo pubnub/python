@@ -1,13 +1,11 @@
+import importlib
 import logging
-import json
 import asyncio
-import aiohttp
 import math
-import time
-import urllib
 
 from asyncio import Event, Queue, Semaphore
-from yarl import URL
+import os
+from httpx import AsyncHTTPTransport
 from pubnub.event_engine.containers import PresenceStateContainer
 from pubnub.event_engine.models import events, states
 
@@ -18,19 +16,28 @@ from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.presence.leave import Leave
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.pubnub_core import PubNubCore
+from pubnub.request_handlers.base import BaseRequestHandler
+from pubnub.request_handlers.async_httpx import AsyncHttpxRequestHandler
 from pubnub.workers import SubscribeMessageWorker
 from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
 from pubnub import utils
-from pubnub.structures import ResponseInfo, RequestOptions
 from pubnub.enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
 from pubnub.callbacks import SubscribeCallback, ReconnectionCallback
-from pubnub.errors import (
-    PNERR_SERVER_ERROR, PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED,
-    PNERR_REQUEST_CANCELLED, PNERR_CLIENT_TIMEOUT
-)
-from .exceptions import PubNubException
+from pubnub.errors import PNERR_REQUEST_CANCELLED, PNERR_CLIENT_TIMEOUT
+from pubnub.exceptions import PubNubAsyncioException, PubNubException
+
+# flake8: noqa
+from pubnub.models.envelopes import AsyncioEnvelope
 
 logger = logging.getLogger("pubnub")
+
+
+class PubNubAsyncHTTPTransport(AsyncHTTPTransport):
+    is_closed: bool = False
+
+    def close(self):
+        self.is_closed = True
+        super().aclose()
 
 
 class PubNubAsyncio(PubNubCore):
@@ -38,14 +45,26 @@ class PubNubAsyncio(PubNubCore):
     PubNub Python SDK for asyncio framework
     """
 
-    def __init__(self, config, custom_event_loop=None, subscription_manager=None):
+    def __init__(self, config, custom_event_loop=None, subscription_manager=None, *, custom_request_handler=None):
         super(PubNubAsyncio, self).__init__(config)
         self.event_loop = custom_event_loop or asyncio.get_event_loop()
 
-        self._connector = None
         self._session = None
 
-        self._connector = aiohttp.TCPConnector(verify_ssl=True, loop=self.event_loop)
+        if (not custom_request_handler) and (handler := os.getenv('PUBNUB_ASYNC_REQUEST_HANDLER')):
+            module_name, class_name = handler.rsplit('.', 1)
+            module = importlib.import_module(module_name)
+            custom_request_handler = getattr(module, class_name)
+            if not issubclass(custom_request_handler, BaseRequestHandler):
+                raise Exception("Custom request handler must be subclass of BaseRequestHandler")
+            self._request_handler = custom_request_handler(self)
+
+        if custom_request_handler:
+            if not issubclass(custom_request_handler, BaseRequestHandler):
+                raise Exception("Custom request handler must be subclass of BaseRequestHandler")
+            self._request_handler = custom_request_handler(self)
+        else:
+            self._request_handler = AsyncHttpxRequestHandler(self)
 
         if not subscription_manager:
             subscription_manager = EventEngineSubscriptionManager
@@ -57,27 +76,22 @@ class PubNubAsyncio(PubNubCore):
 
         self._telemetry_manager = AsyncioTelemetryManager()
 
+    @property
+    def _connector(self):
+        return self._request_handler._connector
+
     async def close_pending_tasks(self, tasks):
         await asyncio.gather(*tasks)
         await asyncio.sleep(0.1)
 
     async def create_session(self):
-        if not self._session:
-            self._session = aiohttp.ClientSession(
-                loop=self.event_loop,
-                timeout=aiohttp.ClientTimeout(connect=self.config.connect_timeout),
-                connector=self._connector
-            )
+        await self._request_handler.create_session()
 
     async def close_session(self):
-        if self._session is not None:
-            await self._session.close()
+        await self._request_handler.close_session()
 
-    async def set_connector(self, cn):
-        await self._session.close()
-
-        self._connector = cn
-        await self.create_session()
+    async def set_connector(self, connector):
+        await self._request_handler.set_connector(connector)
 
     async def stop(self):
         if self._subscription_manager:
@@ -94,12 +108,12 @@ class PubNubAsyncio(PubNubCore):
         raise NotImplementedError
 
     async def request_result(self, options_func, cancellation_event):
-        envelope = await self._request_helper(options_func, cancellation_event)
+        envelope = await self._request_handler.async_request(options_func, cancellation_event)
         return envelope.result
 
     async def request_future(self, options_func, cancellation_event):
         try:
-            res = await self._request_helper(options_func, cancellation_event)
+            res = await self._request_handler.async_request(options_func, cancellation_event)
             return res
         except PubNubException as e:
             return PubNubAsyncioException(
@@ -138,166 +152,6 @@ class PubNubAsyncio(PubNubCore):
                     None,
                     None,
                     e
-                )
-            )
-
-    async def _request_helper(self, options_func, cancellation_event):
-        """
-        Query string should be provided as a manually serialized and encoded string.
-
-        :param options_func:
-        :param cancellation_event:
-        :return:
-        """
-        if cancellation_event is not None:
-            assert isinstance(cancellation_event, Event)
-
-        options = options_func()
-        assert isinstance(options, RequestOptions)
-
-        create_response = options.create_response
-        create_status = options.create_status
-        create_exception = options.create_exception
-
-        params_to_merge_in = {}
-
-        if options.operation_type == PNOperationType.PNPublishOperation:
-            params_to_merge_in['seqn'] = await self._publish_sequence_manager.get_next_sequence()
-
-        options.merge_params_in(params_to_merge_in)
-
-        if options.use_base_path:
-            url = utils.build_url(self.config.scheme(), self.base_origin, options.path, options.query_string)
-        else:
-            url = utils.build_url(scheme="", origin="", path=options.path, params=options.query_string)
-
-        url = URL(url, encoded=True)
-        logger.debug("%s %s %s" % (options.method_string, url, options.data))
-
-        if options.request_headers:
-            request_headers = {**self.headers, **options.request_headers}
-        else:
-            request_headers = self.headers
-
-        try:
-            if not self._session:
-                await self.create_session()
-            start_timestamp = time.time()
-            response = await asyncio.wait_for(
-                self._session.request(
-                    options.method_string,
-                    url,
-                    headers=request_headers,
-                    data=options.data if options.data else None,
-                    allow_redirects=options.allow_redirects
-                ),
-                options.request_timeout
-            )
-        except (asyncio.TimeoutError, asyncio.CancelledError):
-            raise
-        except Exception as e:
-            logger.error("session.request exception: %s" % str(e))
-            raise
-
-        if not options.non_json_response:
-            body = await response.text()
-        else:
-            if isinstance(response.content, bytes):
-                body = response.content  # TODO: simplify this logic within the v5 release
-            else:
-                body = await response.read()
-
-        if cancellation_event is not None and cancellation_event.is_set():
-            return
-
-        response_info = None
-        status_category = PNStatusCategory.PNUnknownCategory
-
-        if response:
-            request_url = urllib.parse.urlparse(str(response.url))
-            query = urllib.parse.parse_qs(request_url.query)
-            uuid = None
-            auth_key = None
-
-            if 'uuid' in query and len(query['uuid']) > 0:
-                uuid = query['uuid'][0]
-
-            if 'auth_key' in query and len(query['auth_key']) > 0:
-                auth_key = query['auth_key'][0]
-
-            response_info = ResponseInfo(
-                status_code=response.status,
-                tls_enabled='https' == request_url.scheme,
-                origin=request_url.hostname,
-                uuid=uuid,
-                auth_key=auth_key,
-                client_request=None,
-                client_response=response
-            )
-
-        # if body is not None and len(body) > 0 and not options.non_json_response:
-        if body is not None and len(body) > 0:
-            if options.non_json_response:
-                data = body
-            else:
-                try:
-                    data = json.loads(body)
-                except ValueError:
-                    if response.status == 599 and len(body) > 0:
-                        data = body
-                    else:
-                        raise
-                except TypeError:
-                    try:
-                        data = json.loads(body.decode("utf-8"))
-                    except ValueError:
-                        raise create_exception(
-                            category=status_category,
-                            response=response,
-                            response_info=response_info,
-                            exception=PubNubException(
-                                pn_error=PNERR_JSON_DECODING_FAILED,
-                                errormsg='json decode error',
-                            )
-                        )
-        else:
-            data = "N/A"
-
-        logger.debug(data)
-
-        if response.status not in (200, 307, 204):
-
-            if response.status >= 500:
-                err = PNERR_SERVER_ERROR
-            else:
-                err = PNERR_CLIENT_ERROR
-
-            if response.status == 403:
-                status_category = PNStatusCategory.PNAccessDeniedCategory
-
-            if response.status == 400:
-                status_category = PNStatusCategory.PNBadRequestCategory
-
-            raise create_exception(
-                category=status_category,
-                response=data,
-                response_info=response_info,
-                exception=PubNubException(
-                    errormsg=data,
-                    pn_error=err,
-                    status_code=response.status
-                )
-            )
-        else:
-            self._telemetry_manager.store_latency(time.time() - start_timestamp, options.operation_type)
-
-            return AsyncioEnvelope(
-                result=create_response(data) if not options.non_json_response else create_response(response, data),
-                status=create_status(
-                    PNStatusCategory.PNAcknowledgmentCategory,
-                    data,
-                    response_info,
-                    None
                 )
             )
 
@@ -693,32 +547,6 @@ class AsyncioPeriodicCallback(object):
                 (current_time - self._next_timeout) / callback_time_sec) + 1) * callback_time_sec
 
         self._timeout = self._event_loop.call_at(self._next_timeout, self._run)
-
-
-class AsyncioEnvelope(object):
-    def __init__(self, result, status):
-        self.result = result
-        self.status = status
-
-    @staticmethod
-    def is_error():
-        return False
-
-
-class PubNubAsyncioException(Exception):
-    def __init__(self, result, status):
-        self.result = result
-        self.status = status
-
-    def __str__(self):
-        return str(self.status.error_data.exception)
-
-    @staticmethod
-    def is_error():
-        return True
-
-    def value(self):
-        return self.status.error_data.exception
 
 
 class SubscribeListener(SubscribeCallback):

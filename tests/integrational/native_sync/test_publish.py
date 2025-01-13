@@ -1,6 +1,7 @@
 import logging
 import unittest
-from urllib.parse import parse_qs, urlparse
+import urllib
+import urllib.parse
 
 import pubnub
 from pubnub.exceptions import PubNubException
@@ -328,8 +329,13 @@ class TestPubNubPublish(unittest.TestCase):
             .sync()
 
         assert isinstance(env.result, PNPublishResult)
-        assert "ptto" in env.status.client_request.url
-        assert "norep" in env.status.client_request.url
+        # note: for requests url is string, for httpx is object
+        if hasattr(env.status.client_request.url, 'query'):
+            query = urllib.parse.parse_qs(env.status.client_request.url.query.decode())
+        else:
+            query = urllib.parse.parse_qs(urllib.parse.urlsplit(env.status.client_request.url).query)
+        assert "ptto" in query
+        assert "norep" in query
 
     @pn_vcr.use_cassette(
         'tests/integrational/fixtures/native_sync/publish/publish_with_single_quote_message.yaml',
@@ -385,7 +391,7 @@ class TestPubNubPublish(unittest.TestCase):
             assert isinstance(envelope.result, PNPublishResult)
             assert envelope.result.timetoken > 1
             assert len(cassette) == 1
-            uri = urlparse(cassette.requests[0].uri)
-            query = parse_qs(uri.query)
+            uri = urllib.parse.urlparse(cassette.requests[0].uri)
+            query = urllib.parse.parse_qs(uri.query)
             assert 'custom_message_type' in query.keys()
             assert query['custom_message_type'] == ['test_message']

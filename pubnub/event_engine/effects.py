@@ -218,12 +218,15 @@ class ReconnectEffect(Effect):
         elif response.status.error:
             self.logger.warning(f'Reconnect failed: {response.status.error_data.__dict__}')
             self.failure(response.status.error_data, attempt, self.get_timetoken())
-        else:
+        elif 't' in response.result:
             cursor = response.result['t']
             timetoken = int(self.invocation.timetoken) if self.invocation.timetoken else cursor['t']
             region = cursor['r']
             messages = response.result['m']
             self.success(timetoken=timetoken, region=region, messages=messages)
+        else:
+            self.logger.warning(f'Reconnect failed: Invalid response {str(response)}')
+            self.failure(str(response), attempt, self.get_timetoken())
 
     def stop(self):
         self.logger.debug(f'stop called on {self.__class__.__name__}')

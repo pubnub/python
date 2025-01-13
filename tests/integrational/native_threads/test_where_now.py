@@ -2,10 +2,10 @@ import unittest
 import logging
 import pubnub
 import threading
+import time
 
 from pubnub.pubnub import PubNub, SubscribeListener, NonSubscribeListener
-from tests.integrational.vcr_helper import pn_vcr
-from tests.helper import mocked_config_copy
+from tests.helper import pnconf_env_copy
 
 pubnub.set_stream_logger('pubnub', logging.DEBUG)
 
@@ -19,12 +19,10 @@ class TestPubNubState(unittest.TestCase):
         self.status = status
         self.event.set()
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/where_now/single_channel.yaml',
-                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
-                         allow_playback_repeats=True)
+    # for subscribe we don't use VCR due to it's limitations with longpolling
     def test_single_channel(self):
         print('test_single_channel')
-        pubnub = PubNub(mocked_config_copy())
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True))
         ch = "wherenow-asyncio-channel"
         uuid = "wherenow-asyncio-uuid"
         pubnub.config.uuid = uuid
@@ -35,6 +33,8 @@ class TestPubNubState(unittest.TestCase):
         pubnub.subscribe().channels(ch).execute()
         subscribe_listener.wait_for_connect()
 
+        # the delay is needed for the server side to propagate presence
+        time.sleep(1)
         pubnub.where_now() \
             .uuid(uuid) \
             .pn_async(where_now_listener.callback)
@@ -53,11 +53,9 @@ class TestPubNubState(unittest.TestCase):
 
         pubnub.stop()
 
-    @pn_vcr.use_cassette('tests/integrational/fixtures/native_threads/where_now/multiple_channels.yaml',
-                         filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'],
-                         allow_playback_repeats=True)
+    # for subscribe we don't use VCR due to it's limitations with longpolling
     def test_multiple_channels(self):
-        pubnub = PubNub(mocked_config_copy())
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True))
         ch1 = "state-native-sync-ch-1"
         ch2 = "state-native-sync-ch-2"
         pubnub.config.uuid = "state-native-sync-uuid"
@@ -70,6 +68,8 @@ class TestPubNubState(unittest.TestCase):
 
         subscribe_listener.wait_for_connect()
 
+        # the delay is needed for the server side to propagate presence
+        time.sleep(1)
         pubnub.where_now() \
             .uuid(uuid) \
             .pn_async(where_now_listener.callback)

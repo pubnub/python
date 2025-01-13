@@ -1,0 +1,442 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
+                "body": "{\"name\": \"king_arthur.txt\"}",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "27"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Mon, 09 Dec 2024 15:38:04 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "1982"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":{\"id\":\"740ff3c3-6e0e-4849-801b-995dec393bca\",\"name\":\"king_arthur.txt\"},\"file_upload_request\":{\"url\":\"https://pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com/\",\"method\":\"POST\",\"expiration_date\":\"2024-12-09T15:39:04Z\",\"form_fields\":[{\"key\":\"tagging\",\"value\":\"\\u003cTagging\\u003e\\u003cTagSet\\u003e\\u003cTag\\u003e\\u003cKey\\u003eObjectTTLInDays\\u003c/Key\\u003e\\u003cValue\\u003e1\\u003c/Value\\u003e\\u003c/Tag\\u003e\\u003c/TagSet\\u003e\\u003c/Tagging\\u003e\"},{\"key\":\"key\",\"value\":\"{PN_KEY_SUBSCRIBE}/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/740ff3c3-6e0e-4849-801b-995dec393bca/king_arthur.txt\"},{\"key\":\"Content-Type\",\"value\":\"text/plain; charset=utf-8\"},{\"key\":\"X-Amz-Credential\",\"value\":\"AKIAY7AU6GQDV5LCPVEX/20241209/us-east-1/s3/aws4_request\"},{\"key\":\"X-Amz-Security-Token\",\"value\":\"\"},{\"key\":\"X-Amz-Algorithm\",\"value\":\"AWS4-HMAC-SHA256\"},{\"key\":\"X-Amz-Date\",\"value\":\"20241209T153904Z\"},{\"key\":\"Policy\",\"value\":\"CnsKCSJleHBpcmF0aW9uIjogIjIwMjQtMTItMDlUMTU6Mzk6MDRaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtdXMtZWFzdC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtZDBiOGU1NDItMTJhMC00MWM0LTk5OWYtYTJkNTY5ZGM0MjU1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvNzQwZmYzYzMtNmUwZS00ODQ5LTgwMWItOTk1ZGVjMzkzYmNhL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRFY1TENQVkVYLzIwMjQxMjA5L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyNDEyMDlUMTUzOTA0WiIgfQoJXQp9Cg==\"},{\"key\":\"X-Amz-Signature\",\"value\":\"ebb872e578135630979d016807f021e3f954a7ae97f8e8a98a513262991f7902\"}]}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com/",
+                "body": "tagging=&tagging=%3CTagging%3E%3CTagSet%3E%3CTag%3E%3CKey%3EObjectTTLInDays%3C%2FKey%3E%3CValue%3E1%3C%2FValue%3E%3C%2FTag%3E%3C%2FTagSet%3E%3C%2FTagging%3E&key=&key={PN_KEY_SUBSCRIBE}%2F0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0%2F740ff3c3-6e0e-4849-801b-995dec393bca%2Fking_arthur.txt&Content-Type=&Content-Type=text%2Fplain%3B+charset%3Dutf-8&X-Amz-Credential=&X-Amz-Credential=AKIAY7AU6GQDV5LCPVEX%2F20241209%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Security-Token=&X-Amz-Security-Token=&X-Amz-Algorithm=&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=&X-Amz-Date=20241209T153904Z&Policy=&Policy=CnsKCSJleHBpcmF0aW9uIjogIjIwMjQtMTItMDlUMTU6Mzk6MDRaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtdXMtZWFzdC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc%2BPFRhZ1NldD48VGFnPjxLZXk%2BT2JqZWN0VFRMSW5EYXlzPC9LZXk%2BPFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtZDBiOGU1NDItMTJhMC00MWM0LTk5OWYtYTJkNTY5ZGM0MjU1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvNzQwZmYzYzMtNmUwZS00ODQ5LTgwMWItOTk1ZGVjMzkzYmNhL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRFY1TENQVkVYLzIwMjQxMjA5L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyNDEyMDlUMTUzOTA0WiIgfQoJXQp9Cg%3D%3D&X-Amz-Signature=&X-Amz-Signature=ebb872e578135630979d016807f021e3f954a7ae97f8e8a98a513262991f7902&file=king_arthur.txt&file=b%27Knights+who+say+Ni%21%27&file=",
+                "headers": {
+                    "host": [
+                        "pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
+                    ],
+                    "content-length": [
+                        "1684"
+                    ],
+                    "content-type": [
+                        "application/x-www-form-urlencoded"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 400,
+                    "message": "Bad Request"
+                },
+                "headers": {
+                    "x-amz-request-id": [
+                        "BP3G8C294E7HAKNJ"
+                    ],
+                    "x-amz-id-2": [
+                        "zMeim2dB+COXRwPdjzh3SS6Y3cfSyojyXb7z67As/oXDVVDxWTIABZCeEXnSOV5ws+10nRrYiJA="
+                    ],
+                    "Content-Type": [
+                        "application/xml"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Date": [
+                        "Mon, 09 Dec 2024 15:38:04 GMT"
+                    ],
+                    "Connection": [
+                        "close"
+                    ],
+                    "Server": [
+                        "AmazonS3"
+                    ]
+                },
+                "body": {
+                    "string": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Error><Code>AuthorizationQueryParametersError</Code><Message>X-Amz-Algorithm only supports \"AWS4-HMAC-SHA256 and AWS4-ECDSA-P256-SHA256\"</Message><RequestId>BP3G8C294E7HAKNJ</RequestId><HostId>zMeim2dB+COXRwPdjzh3SS6Y3cfSyojyXb7z67As/oXDVVDxWTIABZCeEXnSOV5ws+10nRrYiJA=</HostId></Error>"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
+                "body": "{\"name\": \"king_arthur.txt\"}",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "27"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Wed, 11 Dec 2024 13:43:35 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "1982"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "{\"status\":200,\"data\":{\"id\":\"c2d3cc93-5813-4191-8bec-7d210d66c4f2\",\"name\":\"king_arthur.txt\"},\"file_upload_request\":{\"url\":\"https://pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com/\",\"method\":\"POST\",\"expiration_date\":\"2024-12-11T13:44:35Z\",\"form_fields\":[{\"key\":\"tagging\",\"value\":\"\\u003cTagging\\u003e\\u003cTagSet\\u003e\\u003cTag\\u003e\\u003cKey\\u003eObjectTTLInDays\\u003c/Key\\u003e\\u003cValue\\u003e1\\u003c/Value\\u003e\\u003c/Tag\\u003e\\u003c/TagSet\\u003e\\u003c/Tagging\\u003e\"},{\"key\":\"key\",\"value\":\"{PN_KEY_SUBSCRIBE}/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/c2d3cc93-5813-4191-8bec-7d210d66c4f2/king_arthur.txt\"},{\"key\":\"Content-Type\",\"value\":\"text/plain; charset=utf-8\"},{\"key\":\"X-Amz-Credential\",\"value\":\"AKIAY7AU6GQDV5LCPVEX/20241211/us-east-1/s3/aws4_request\"},{\"key\":\"X-Amz-Security-Token\",\"value\":\"\"},{\"key\":\"X-Amz-Algorithm\",\"value\":\"AWS4-HMAC-SHA256\"},{\"key\":\"X-Amz-Date\",\"value\":\"20241211T134435Z\"},{\"key\":\"Policy\",\"value\":\"CnsKCSJleHBpcmF0aW9uIjogIjIwMjQtMTItMTFUMTM6NDQ6MzVaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtdXMtZWFzdC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtZDBiOGU1NDItMTJhMC00MWM0LTk5OWYtYTJkNTY5ZGM0MjU1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvYzJkM2NjOTMtNTgxMy00MTkxLThiZWMtN2QyMTBkNjZjNGYyL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRFY1TENQVkVYLzIwMjQxMjExL3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyNDEyMTFUMTM0NDM1WiIgfQoJXQp9Cg==\"},{\"key\":\"X-Amz-Signature\",\"value\":\"4ab85ea548c2bb97eab49565d34bd8c8a4535d22a7df6755dfda7f5a37dc68f9\"}]}}"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com/",
+                "body": "--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"tagging\"\r\n\r\n<Tagging><TagSet><Tag><Key>ObjectTTLInDays</Key><Value>1</Value></Tag></TagSet></Tagging>\r\n--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"key\"\r\n\r\n{PN_KEY_SUBSCRIBE}/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/c2d3cc93-5813-4191-8bec-7d210d66c4f2/king_arthur.txt\r\n--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"Content-Type\"\r\n\r\ntext/plain; charset=utf-8\r\n--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"X-Amz-Credential\"\r\n\r\nAKIAY7AU6GQDV5LCPVEX/20241211/us-east-1/s3/aws4_request\r\n--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"X-Amz-Security-Token\"\r\n\r\n\r\n--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"X-Amz-Algorithm\"\r\n\r\nAWS4-HMAC-SHA256\r\n--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"X-Amz-Date\"\r\n\r\n20241211T134435Z\r\n--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"Policy\"\r\n\r\nCnsKCSJleHBpcmF0aW9uIjogIjIwMjQtMTItMTFUMTM6NDQ6MzVaIiwKCSJjb25kaXRpb25zIjogWwoJCXsiYnVja2V0IjogInB1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtdXMtZWFzdC0xLXByZCJ9LAoJCVsiZXEiLCAiJHRhZ2dpbmciLCAiPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4iXSwKCQlbImVxIiwgIiRrZXkiLCAic3ViLWMtZDBiOGU1NDItMTJhMC00MWM0LTk5OWYtYTJkNTY5ZGM0MjU1LzBNUjEtejJ3MG5TSll4d0V5NzRwNVFqVjg1VG1nTkJLUHJWNzF0NTVOVDAvYzJkM2NjOTMtNTgxMy00MTkxLThiZWMtN2QyMTBkNjZjNGYyL2tpbmdfYXJ0aHVyLnR4dCJdLAoJCVsiY29udGVudC1sZW5ndGgtcmFuZ2UiLCAwLCA1MjQyODgwXSwKCQlbInN0YXJ0cy13aXRoIiwgIiRDb250ZW50LVR5cGUiLCAiIl0sCgkJeyJ4LWFtei1jcmVkZW50aWFsIjogIkFLSUFZN0FVNkdRRFY1TENQVkVYLzIwMjQxMjExL3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QifSwKCQl7IngtYW16LXNlY3VyaXR5LXRva2VuIjogIiJ9LAoJCXsieC1hbXotYWxnb3JpdGhtIjogIkFXUzQtSE1BQy1TSEEyNTYifSwKCQl7IngtYW16LWRhdGUiOiAiMjAyNDEyMTFUMTM0NDM1WiIgfQoJXQp9Cg==\r\n--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"X-Amz-Signature\"\r\n\r\n4ab85ea548c2bb97eab49565d34bd8c8a4535d22a7df6755dfda7f5a37dc68f9\r\n--2876c0687f6bb887121f13da41e6a26c\r\nContent-Disposition: form-data; name=\"file\"; filename=\"king_arthur.txt\"\r\nContent-Type: text/plain\r\n\r\nKnights who say Ni!\r\n--2876c0687f6bb887121f13da41e6a26c--\r\n",
+                "headers": {
+                    "host": [
+                        "pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
+                    ],
+                    "content-length": [
+                        "2329"
+                    ],
+                    "content-type": [
+                        "multipart/form-data; boundary=2876c0687f6bb887121f13da41e6a26c"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 204,
+                    "message": "No Content"
+                },
+                "headers": {
+                    "x-amz-id-2": [
+                        "53BiVvwuJD3G8bOBlm4U/vzgEkgh+pYb+3wOp/yFkEso9Bkyk+yFIupAD32rnngeA+a+SQySGrY="
+                    ],
+                    "x-amz-request-id": [
+                        "5JWZWYRR0FFK6F2E"
+                    ],
+                    "Date": [
+                        "Wed, 11 Dec 2024 13:43:37 GMT"
+                    ],
+                    "x-amz-expiration": [
+                        "expiry-date=\"Fri, 13 Dec 2024 00:00:00 GMT\", rule-id=\"Archive file 1 day after creation\""
+                    ],
+                    "x-amz-server-side-encryption": [
+                        "AES256"
+                    ],
+                    "ETag": [
+                        "\"3676cdb7a927db43c846070c4e7606c7\""
+                    ],
+                    "Location": [
+                        "https://pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com/{PN_KEY_SUBSCRIBE}%2F0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0%2Fc2d3cc93-5813-4191-8bec-7d210d66c4f2%2Fking_arthur.txt"
+                    ],
+                    "Server": [
+                        "AmazonS3"
+                    ]
+                },
+                "body": {
+                    "string": ""
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22c2d3cc93-5813-4191-8bec-7d210d66c4f2%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Wed, 11 Dec 2024 13:43:36 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": "[1,\"Sent\",\"17339246164989106\"]"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files/c2d3cc93-5813-4191-8bec-7d210d66c4f2/king_arthur.txt",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 307,
+                    "message": "Temporary Redirect"
+                },
+                "headers": {
+                    "Date": [
+                        "Wed, 11 Dec 2024 13:43:36 GMT"
+                    ],
+                    "Content-Length": [
+                        "0"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "public, max-age=1224, immutable"
+                    ],
+                    "Location": [
+                        "https://files-us-east-1.pndsn.com/{PN_KEY_SUBSCRIBE}/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/c2d3cc93-5813-4191-8bec-7d210d66c4f2/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQDV5LCPVEX%2F20241211%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241211T130000Z&X-Amz-Expires=3900&X-Amz-SignedHeaders=host&X-Amz-Signature=31281924b6e28335906e7d7cc7cc65c3278eda6f2b7a177fc9a6967329265156"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "string": ""
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://files-us-east-1.pndsn.com/{PN_KEY_SUBSCRIBE}/0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0/c2d3cc93-5813-4191-8bec-7d210d66c4f2/king_arthur.txt?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAY7AU6GQDV5LCPVEX%2F20241211%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241211T130000Z&X-Amz-Expires=3900&X-Amz-Signature=31281924b6e28335906e7d7cc7cc65c3278eda6f2b7a177fc9a6967329265156&X-Amz-SignedHeaders=host",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "files-us-east-1.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/9.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Content-Type": [
+                        "text/plain; charset=utf-8"
+                    ],
+                    "Content-Length": [
+                        "19"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Date": [
+                        "Wed, 11 Dec 2024 13:43:38 GMT"
+                    ],
+                    "Last-Modified": [
+                        "Wed, 11 Dec 2024 13:43:37 GMT"
+                    ],
+                    "x-amz-expiration": [
+                        "expiry-date=\"Fri, 13 Dec 2024 00:00:00 GMT\", rule-id=\"Archive file 1 day after creation\""
+                    ],
+                    "ETag": [
+                        "\"3676cdb7a927db43c846070c4e7606c7\""
+                    ],
+                    "x-amz-server-side-encryption": [
+                        "AES256"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ],
+                    "Server": [
+                        "AmazonS3"
+                    ],
+                    "X-Cache": [
+                        "Miss from cloudfront"
+                    ],
+                    "Via": [
+                        "1.1 9d27737697c14182077f1e9321735940.cloudfront.net (CloudFront)"
+                    ],
+                    "X-Amz-Cf-Pop": [
+                        "SFO5-P3"
+                    ],
+                    "X-Amz-Cf-Id": [
+                        "yYn-zPjZhNMM9iBpFaG-QYFKkbySONqdzHjx6zELxejn59lNWxB63A=="
+                    ]
+                },
+                "body": {
+                    "string": "Knights who say Ni!"
+                }
+            }
+        }
+    ]
+}

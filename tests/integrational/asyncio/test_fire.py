@@ -2,7 +2,8 @@ import pytest
 
 from tests.helper import pnconf_env_copy
 from tests.integrational.vcr_helper import pn_vcr
-from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
+from pubnub.pubnub_asyncio import PubNubAsyncio
+from pubnub.models.envelopes import AsyncioEnvelope
 from pubnub.models.consumer.pubsub import PNFireResult
 from pubnub.models.consumer.common import PNStatus
 
@@ -12,10 +13,10 @@ from pubnub.models.consumer.common import PNStatus
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_single_channel(event_loop):
+async def test_single_channel():
     config = pnconf_env_copy()
     config.enable_subscribe = False
-    pn = PubNubAsyncio(config, custom_event_loop=event_loop)
+    pn = PubNubAsyncio(config)
     chan = 'unique_sync'
     envelope = await pn.fire().channel(chan).message('bla').future()
 

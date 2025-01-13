@@ -7,7 +7,8 @@ from unittest.mock import patch
 from pubnub.callbacks import SubscribeCallback
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.pubsub import PNMessageResult
-from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio, AsyncioEnvelope, SubscribeListener
+from pubnub.models.envelopes import AsyncioEnvelope
+from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio, SubscribeListener
 from tests.helper import gen_channel, pnconf_enc_env_copy, pnconf_env_copy, pnconf_sub_copy
 from tests.integrational.vcr_asyncio_sleeper import VCR599Listener, VCR599ReconnectionManager
 from pubnub.enums import PNReconnectionPolicy, PNStatusCategory

@@ -4,7 +4,7 @@ import pytest
 from pubnub.models.consumer.channel_group import PNChannelGroupsAddChannelResult, PNChannelGroupsListResult, \
     PNChannelGroupsRemoveChannelResult, PNChannelGroupsRemoveGroupResult
 from pubnub.pubnub_asyncio import PubNubAsyncio
-from tests.helper import pnconf, pnconf_copy, pnconf_pam_copy
+from tests.helper import pnconf_copy, pnconf_pam_copy
 from tests.integrational.vcr_asyncio_sleeper import get_sleeper
 from tests.integrational.vcr_helper import pn_vcr
 
@@ -13,8 +13,8 @@ from tests.integrational.vcr_helper import pn_vcr
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/groups/add_remove_single_channel.yaml',
                      filter_query_parameters=['uuid', 'pnsdk', 'l_cg', 'l_pub'])
 @pytest.mark.asyncio
-async def test_add_remove_single_channel(event_loop, sleeper=asyncio.sleep):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+async def test_add_remove_single_channel(sleeper=asyncio.sleep, **kwargs):
+    pubnub = PubNubAsyncio(pnconf_copy())
     pubnub.config.uuid = 'test-channel-group-asyncio-uuid1'
 
     ch = "test-channel-groups-asyncio-ch"
@@ -58,8 +58,8 @@ async def test_add_remove_single_channel(event_loop, sleeper=asyncio.sleep):
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/groups/add_remove_multiple_channels.yaml',
                      filter_query_parameters=['uuid', 'pnsdk', 'l_cg', 'l_pub'])
 @pytest.mark.asyncio
-async def test_add_remove_multiple_channels(event_loop, sleeper=asyncio.sleep):
-    pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
+async def test_add_remove_multiple_channels(sleeper=asyncio.sleep, **kwargs):
+    pubnub = PubNubAsyncio(pnconf_copy())
 
     ch1 = "channel-groups-tornado-ch1"
     ch2 = "channel-groups-tornado-ch2"
@@ -100,8 +100,8 @@ async def test_add_remove_multiple_channels(event_loop, sleeper=asyncio.sleep):
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/groups/add_channel_remove_group.yaml',
                      filter_query_parameters=['uuid', 'pnsdk', 'l_cg', 'l_pub'])
 @pytest.mark.asyncio
-async def test_add_channel_remove_group(event_loop, sleeper=asyncio.sleep):
-    pubnub = PubNubAsyncio(pnconf, custom_event_loop=event_loop)
+async def test_add_channel_remove_group(sleeper=asyncio.sleep, **kwargs):
+    pubnub = PubNubAsyncio(pnconf_copy())
 
     ch = "channel-groups-tornado-ch"
     gr = "channel-groups-tornado-cg"
@@ -136,8 +136,8 @@ async def test_add_channel_remove_group(event_loop, sleeper=asyncio.sleep):
 
 
 @pytest.mark.asyncio
-async def test_super_call(event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=event_loop)
+async def test_super_call():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
 
     ch = "channel-groups-torna|do-ch"
     gr = "channel-groups-torna|do-cg"

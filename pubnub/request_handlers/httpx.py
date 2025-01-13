@@ -1,11 +1,9 @@
 import logging
 import threading
-import requests
+import httpx
 import json  # noqa # pylint: disable=W0611
 import urllib
 
-from requests import Session
-from requests.adapters import HTTPAdapter
 
 from pubnub import utils
 from pubnub.enums import PNStatusCategory
@@ -25,24 +23,22 @@ except ImportError:
 logger = logging.getLogger("pubnub")
 
 
-class RequestsRequestHandler(BaseRequestHandler):
-    """ PubNub Python SDK Native requests handler based on `requests` HTTP library. """
+class HttpxRequestHandler(BaseRequestHandler):
+    """ PubNub Python SDK synchronous requests handler based on `httpx` HTTP library. """
     ENDPOINT_THREAD_COUNTER: int = 0
 
     def __init__(self, pubnub):
-        self.session = Session()
-
-        self.session.mount('http://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
-        self.session.mount('https://%s' % pubnub.config.origin, HTTPAdapter(max_retries=1, pool_maxsize=500))
-        self.session.mount('http://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
-        self.session.mount('https://%s/v2/subscribe' % pubnub.config.origin, HTTPAdapter(pool_maxsize=500))
+        self.session = httpx.Client()
 
         self.pubnub = pubnub
+
+    async def async_request(self, options_func, cancellation_event):
+        raise NotImplementedError("async_request is not implemented for synchronous handler")
 
     def sync_request(self, platform_options, endpoint_call_options):
         return self._build_envelope(platform_options, endpoint_call_options)
 
-    def async_request(self, endpoint_name, platform_options, endpoint_call_options, callback, cancellation_event):
+    def threaded_request(self, endpoint_name, platform_options, endpoint_call_options, callback, cancellation_event):
         call = Call()
 
         if cancellation_event is None:
@@ -90,11 +86,11 @@ class RequestsRequestHandler(BaseRequestHandler):
     ):
         client = AsyncHTTPClient(callback_to_invoke_in_another_thread)
 
-        RequestsRequestHandler.ENDPOINT_THREAD_COUNTER += 1
+        HttpxRequestHandler.ENDPOINT_THREAD_COUNTER += 1
 
         thread = threading.Thread(
             target=client.run,
-            name=f"Thread-{operation_name}-{RequestsRequestHandler.ENDPOINT_THREAD_COUNTER}",
+            name=f"Thread-{operation_name}-{HttpxRequestHandler.ENDPOINT_THREAD_COUNTER}",
             daemon=self.pubnub.config.daemon
         ).start()
 
@@ -154,8 +150,7 @@ class RequestsRequestHandler(BaseRequestHandler):
                     exception=e))
 
         if res is not None:
-            url = urllib.parse.urlparse(res.url)
-            query = urllib.parse.parse_qs(url.query)
+            query = urllib.parse.parse_qs(res.url.query)
             uuid = None
             auth_key = None
 
@@ -167,14 +162,14 @@ class RequestsRequestHandler(BaseRequestHandler):
 
             response_info = ResponseInfo(
                 status_code=res.status_code,
-                tls_enabled='https' == url.scheme,
-                origin=url.hostname,
+                tls_enabled='https' == res.url.scheme,
+                origin=res.url.host,
                 uuid=uuid,
                 auth_key=auth_key,
                 client_request=res.request
             )
 
-        if not res.ok:
+        if res.status_code not in [200, 204, 307]:
             if res.status_code == 403:
                 status_category = PNStatusCategory.PNAccessDeniedCategory
 
@@ -238,14 +233,13 @@ class RequestsRequestHandler(BaseRequestHandler):
         args = {
             "method": e_options.method_string,
             "headers": request_headers,
-            "url": url,
-            "params": e_options.query_string,
+            "url": httpx.URL(url, query=e_options.query_string.encode("utf-8")),
             "timeout": (e_options.connect_timeout, e_options.request_timeout),
-            "allow_redirects": e_options.allow_redirects
+            "follow_redirects": e_options.allow_redirects
         }
 
         if e_options.is_post() or e_options.is_patch():
-            args["data"] = e_options.data
+            args["content"] = e_options.data
             args["files"] = e_options.files
             logger.debug("%s %s %s" % (
                 e_options.method_string,
@@ -266,32 +260,33 @@ class RequestsRequestHandler(BaseRequestHandler):
         try:
             res = self.session.request(**args)
             logger.debug("GOT %s" % res.text)
-        except requests.exceptions.ConnectionError as e:
+
+        except httpx.ConnectError as e:
             raise PubNubException(
                 pn_error=PNERR_CONNECTION_ERROR,
                 errormsg=str(e)
             )
-        except requests.exceptions.HTTPError as e:
-            raise PubNubException(
-                pn_error=PNERR_HTTP_ERROR,
-                errormsg=str(e)
-            )
-        except requests.exceptions.Timeout as e:
+        except httpx.TimeoutException as e:
             raise PubNubException(
                 pn_error=PNERR_CLIENT_TIMEOUT,
                 errormsg=str(e)
             )
-        except requests.exceptions.TooManyRedirects as e:
+        except httpx.TooManyRedirects as e:
             raise PubNubException(
                 pn_error=PNERR_TOO_MANY_REDIRECTS_ERROR,
                 errormsg=str(e)
+            )
+        except httpx.HTTPStatusError as e:
+            raise PubNubException(
+                pn_error=PNERR_HTTP_ERROR,
+                errormsg=str(e),
+                status_code=e.response.status_code
             )
         except Exception as e:
             raise PubNubException(
                 pn_error=PNERR_UNKNOWN_ERROR,
                 errormsg=str(e)
             )
-
         return res
 
 

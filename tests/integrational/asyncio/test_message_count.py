@@ -1,6 +1,7 @@
 import pytest
 
-from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
+from pubnub.pubnub_asyncio import PubNubAsyncio
+from pubnub.models.envelopes import AsyncioEnvelope
 from pubnub.models.consumer.message_count import PNMessageCountResult
 from pubnub.models.consumer.common import PNStatus
 from tests.helper import pnconf_mc_copy
@@ -13,7 +14,6 @@ def pn(event_loop):
     config.enable_subscribe = False
     pn = PubNubAsyncio(config, custom_event_loop=event_loop)
     yield pn
-    pn.stop()
 
 
 @pn_vcr.use_cassette(

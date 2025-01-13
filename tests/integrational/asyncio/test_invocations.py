@@ -5,7 +5,9 @@ import pubnub as pn
 
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.pubsub import PNPublishResult
-from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope, PubNubAsyncioException
+from pubnub.pubnub_asyncio import PubNubAsyncio
+from pubnub.models.envelopes import AsyncioEnvelope
+from pubnub.exceptions import PubNubAsyncioException
 from tests.helper import pnconf_copy
 from tests.integrational.vcr_helper import pn_vcr
 
@@ -22,8 +24,8 @@ corrupted_keys.subscribe_key = "blah"
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_publish_future(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+async def test_publish_future():
+    pubnub = PubNubAsyncio(pnconf_copy())
     result = await pubnub.publish().message('hey').channel('blah').result()
     assert isinstance(result, PNPublishResult)
 
@@ -35,8 +37,8 @@ async def test_publish_future(event_loop):
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_publish_future_raises_pubnub_error(event_loop):
-    pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
+async def test_publish_future_raises_pubnub_error():
+    pubnub = PubNubAsyncio(corrupted_keys)
 
     with pytest.raises(PubNubException) as exinfo:
         await pubnub.publish().message('hey').channel('blah').result()
@@ -52,8 +54,8 @@ async def test_publish_future_raises_pubnub_error(event_loop):
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_publish_future_raises_lower_level_error(event_loop):
-    pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
+async def test_publish_future_raises_lower_level_error():
+    pubnub = PubNubAsyncio(corrupted_keys)
 
     pubnub._connector.close()
 
@@ -70,8 +72,8 @@ async def test_publish_future_raises_lower_level_error(event_loop):
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_publish_envelope(event_loop):
-    pubnub = PubNubAsyncio(pnconf_copy(), custom_event_loop=event_loop)
+async def test_publish_envelope():
+    pubnub = PubNubAsyncio(pnconf_copy())
     envelope = await pubnub.publish().message('hey').channel('blah').future()
     assert isinstance(envelope, AsyncioEnvelope)
     assert not envelope.is_error()
@@ -84,8 +86,8 @@ async def test_publish_envelope(event_loop):
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_publish_envelope_raises(event_loop):
-    pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
+async def test_publish_envelope_raises():
+    pubnub = PubNubAsyncio(corrupted_keys)
     e = await pubnub.publish().message('hey').channel('blah').future()
     assert isinstance(e, PubNubAsyncioException)
     assert e.is_error()
@@ -99,8 +101,8 @@ async def test_publish_envelope_raises(event_loop):
     filter_query_parameters=['uuid', 'seqn', 'pnsdk']
 )
 @pytest.mark.asyncio
-async def test_publish_envelope_raises_lower_level_error(event_loop):
-    pubnub = PubNubAsyncio(corrupted_keys, custom_event_loop=event_loop)
+async def test_publish_envelope_raises_lower_level_error():
+    pubnub = PubNubAsyncio(corrupted_keys)
 
     pubnub._connector.close()
 

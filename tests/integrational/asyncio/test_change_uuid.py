@@ -3,7 +3,8 @@ import pytest
 from pubnub.models.consumer.signal import PNSignalResult
 from pubnub.models.consumer.common import PNStatus
 from pubnub.pnconfiguration import PNConfiguration
-from pubnub.pubnub_asyncio import PubNubAsyncio, AsyncioEnvelope
+from pubnub.pubnub_asyncio import PubNubAsyncio
+from pubnub.models.envelopes import AsyncioEnvelope
 from tests.integrational.vcr_helper import pn_vcr
 from tests.helper import pnconf_demo_copy
 

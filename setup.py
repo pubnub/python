@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub',
-    version='9.1.0',
+    version='10.0.0',
     description='PubNub Real-time push service in the cloud',
     author='PubNub',
     author_email='support@pubnub.com',
@@ -21,6 +21,9 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
         'Programming Language :: Python :: Implementation :: CPython',
         'License :: Other/Proprietary License',
         'Operating System :: OS Independent',
@@ -30,9 +33,11 @@ setup(
     python_requires='>=3.7',
     install_requires=[
         'pycryptodomex>=3.3',
+        'httpx>=0.28',
+        'h2>=4.1',
         'requests>=2.4',
-        'cbor2',
-        'aiohttp'
+        'aiohttp',
+        'cbor2>=5.6'
     ],
     zip_safe=False,
 )

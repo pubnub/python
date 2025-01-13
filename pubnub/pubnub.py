@@ -1,23 +1,26 @@
 import copy
+import importlib
 import logging
 import threading
+import os
 
+from typing import Type
 from threading import Event
 from queue import Queue, Empty
-from . import utils
-from .request_handlers.base import BaseRequestHandler
-from .request_handlers.requests_handler import RequestsRequestHandler
-from .callbacks import SubscribeCallback, ReconnectionCallback
-from .endpoints.presence.heartbeat import Heartbeat
-from .endpoints.presence.leave import Leave
-from .endpoints.pubsub.subscribe import Subscribe
-from .enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
-from .managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
-from .models.consumer.common import PNStatus
-from .pnconfiguration import PNConfiguration
-from .pubnub_core import PubNubCore
-from .structures import PlatformOptions
-from .workers import SubscribeMessageWorker
+from pubnub import utils
+from pubnub.request_handlers.base import BaseRequestHandler
+from pubnub.request_handlers.httpx import HttpxRequestHandler
+from pubnub.callbacks import SubscribeCallback, ReconnectionCallback
+from pubnub.endpoints.presence.heartbeat import Heartbeat
+from pubnub.endpoints.presence.leave import Leave
+from pubnub.endpoints.pubsub.subscribe import Subscribe
+from pubnub.enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
+from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
+from pubnub.models.consumer.common import PNStatus
+from pubnub.pnconfiguration import PNConfiguration
+from pubnub.pubnub_core import PubNubCore
+from pubnub.structures import PlatformOptions
+from pubnub.workers import SubscribeMessageWorker
 
 logger = logging.getLogger("pubnub")
 
@@ -25,10 +28,31 @@ logger = logging.getLogger("pubnub")
 class PubNub(PubNubCore):
     """PubNub Python API"""
 
-    def __init__(self, config):
+    def __init__(self, config: PNConfiguration, *, custom_request_handler: Type[BaseRequestHandler] = None):
+        """ PubNub instance constructor
+
+        Parameters:
+            config (PNConfiguration): PNConfiguration instance (required)
+            custom_request_handler (BaseRequestHandler): Custom request handler class (optional)
+
+        """
         assert isinstance(config, PNConfiguration)
         PubNubCore.__init__(self, config)
-        self._request_handler = RequestsRequestHandler(self)
+
+        if (not custom_request_handler) and (handler := os.getenv('PUBNUB_REQUEST_HANDLER')):
+            module_name, class_name = handler.rsplit('.', 1)
+            module = importlib.import_module(module_name)
+            custom_request_handler = getattr(module, class_name)
+            if not issubclass(custom_request_handler, BaseRequestHandler):
+                raise Exception("Custom request handler must be subclass of BaseRequestHandler")
+            self._request_handler = custom_request_handler(self)
+
+        if custom_request_handler:
+            if not issubclass(custom_request_handler, BaseRequestHandler):
+                raise Exception("Custom request handler must be subclass of BaseRequestHandler")
+            self._request_handler = custom_request_handler(self)
+        else:
+            self._request_handler = HttpxRequestHandler(self)
 
         if self.config.enable_subscribe:
             self._subscription_manager = NativeSubscriptionManager(self)
@@ -40,9 +64,21 @@ class PubNub(PubNubCore):
     def sdk_platform(self):
         return ""
 
-    def set_request_handler(self, handler):
+    def set_request_handler(self, handler: BaseRequestHandler):
+        """Set custom request handler
+
+        Parametrers:
+            handler (BaseRequestHandler): Instance of custom request handler
+        """
         assert isinstance(handler, BaseRequestHandler)
         self._request_handler = handler
+
+    def get_request_handler(self) -> BaseRequestHandler:
+        """Get instance of request handler
+
+        Return: handler(BaseRequestHandler): Instance of request handler
+        """
+        return self._request_handler
 
     def request_sync(self, endpoint_call_options):
         platform_options = PlatformOptions(self.headers, self.config)
@@ -63,7 +99,7 @@ class PubNub(PubNubCore):
             tt = endpoint_call_options.params["tt"] if "tt" in endpoint_call_options.params else 0
             print(f'\033[48;5;236m{endpoint_name=}, {endpoint_call_options.path}, TT={tt}\033[0m\n')
 
-        return self._request_handler.async_request(
+        return self._request_handler.threaded_request(
             endpoint_name,
             platform_options,
             endpoint_call_options,

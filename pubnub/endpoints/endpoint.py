@@ -97,7 +97,7 @@ class Endpoint(object):
         headers = {}
         if self.__compress_request():
             headers["Content-Encoding"] = "gzip"
-        if self.http_method() == HttpMethod.POST:
+        if self.http_method() in [HttpMethod.POST, HttpMethod.PATCH]:
             headers["Content-type"] = "application/json"
 
         return headers

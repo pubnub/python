@@ -1,11 +1,12 @@
 from typing import List
 from pubnub import utils
-from pubnub.endpoints.objects_v2.objects_endpoint import ObjectsEndpoint, IncludeCustomEndpoint, \
-    UUIDIncludeEndpoint, ChannelEndpoint, ListEndpoint
+from pubnub.endpoints.objects_v2.objects_endpoint import IncludeCapableEndpoint, ObjectsEndpoint, \
+    IncludeCustomEndpoint, UUIDIncludeEndpoint, ChannelEndpoint, ListEndpoint
 from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod
 from pubnub.models.consumer.common import PNStatus
-from pubnub.models.consumer.objects_v2.channel_members import PNSetChannelMembersResult
+from pubnub.models.consumer.objects_v2.channel_members import PNUUID, PNSetChannelMembersResult
+from pubnub.models.consumer.objects_v2.common import MemberIncludes
 from pubnub.models.consumer.objects_v2.page import PNPage
 from pubnub.structures import Envelope
 
@@ -15,14 +16,15 @@ class PNSetChannelMembersResultEnvelope(Envelope):
     status: PNStatus
 
 
-class SetChannelMembers(ObjectsEndpoint, ChannelEndpoint, ListEndpoint, IncludeCustomEndpoint,
+class SetChannelMembers(ObjectsEndpoint, ChannelEndpoint, ListEndpoint, IncludeCustomEndpoint, IncludeCapableEndpoint,
                         UUIDIncludeEndpoint):
     SET_CHANNEL_MEMBERS_PATH = "/v2/objects/%s/channels/%s/uuids"
 
-    def __init__(self, pubnub, channel: str = None, uuids: List[str] = None, include_custom: bool = None,
+    def __init__(self, pubnub, channel: str = None, uuids: List[PNUUID] = None, include_custom: bool = None,
                  limit: int = None, filter: str = None, include_total_count: bool = None, sort_keys: list = None,
-                 page: PNPage = None):
+                 page: PNPage = None, include: MemberIncludes = None):
         ObjectsEndpoint.__init__(self, pubnub)
+        IncludeCapableEndpoint.__init__(self, include)
         ListEndpoint.__init__(self, limit=limit, filter=filter, include_total_count=include_total_count,
                               sort_keys=sort_keys, page=page)
         ChannelEndpoint.__init__(self, channel=channel)
@@ -30,7 +32,7 @@ class SetChannelMembers(ObjectsEndpoint, ChannelEndpoint, ListEndpoint, IncludeC
         UUIDIncludeEndpoint.__init__(self)
 
         self._uuids = []
-        if self._uuids:
+        if uuids:
             utils.extend_list(self._uuids, uuids)
 
     def uuids(self, uuids) -> 'SetChannelMembers':

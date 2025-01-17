@@ -17,6 +17,10 @@ class PNUUID:
     def uuid_with_custom(uuid, custom):
         return UUIDWithCustom(uuid, custom)
 
+    @staticmethod
+    def uuid_extended(uuid: str = None, type: str = None, status: str = None, custom: any = None):
+        return UUIDExtended(uuid, type, status, custom)
+
     @abstractmethod
     def to_payload_dict(self):
         return None
@@ -43,6 +47,33 @@ class UUIDWithCustom(PNUUID):
             },
             "custom": dict(self._custom)
         }
+
+
+class UUIDExtended(PNUUID):
+    _uuid: str
+    _type: str
+    _status: str
+    _custom: any
+
+    def __init__(self, uuid: str = None, type: str = None, status: str = None, custom: any = None):
+        self._uuid = uuid
+        self._type = type
+        self._status = status
+        self._custom = custom
+
+    def to_payload_dict(self):
+        payload = {
+            "uuid": {
+                "id": str(self._uuid)
+            },
+        }
+        if self._type:
+            payload["type"] = str(self._type)
+        if self._status:
+            payload["status"] = str(self._status)
+        if self._custom:
+            payload["custom"] = dict(self._custom)
+        return payload
 
 
 class PNSetChannelMembersResult(PNPageable):

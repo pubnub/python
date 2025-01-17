@@ -24,6 +24,8 @@ from pubnub.exceptions import PubNubException
 from pubnub.features import feature_flag
 from pubnub.crypto import PubNubCryptoModule
 from pubnub.models.consumer.message_actions import PNMessageAction
+from pubnub.models.consumer.objects_v2.channel_members import PNUUID
+from pubnub.models.consumer.objects_v2.common import MemberIncludes
 from pubnub.models.consumer.objects_v2.page import PNPage
 from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup, PubNubChannelMetadata, PubNubUserMetadata, \
     PNSubscriptionRegistry, PubNubSubscriptionSet
@@ -322,32 +324,37 @@ class PubNubCore:
                               include_type=include_type, limit=limit, filter=filter,
                               include_total_count=include_total_count, sort_keys=sort_keys, page=page)
 
-    def set_channel_members(self, channel: str = None, uuids: List[str] = None, include_custom: bool = None,
+    def set_channel_members(self, channel: str = None, uuids: List[PNUUID] = None, include_custom: bool = None,
                             limit: int = None, filter: str = None, include_total_count: bool = None,
-                            sort_keys: list = None, page: PNPage = None) -> SetChannelMembers:
+                            sort_keys: list = None, page: PNPage = None, include: MemberIncludes = None
+                            ) -> SetChannelMembers:
         return SetChannelMembers(self, channel=channel, uuids=uuids, include_custom=include_custom, limit=limit,
-                                 filter=filter, include_total_count=include_total_count, sort_keys=sort_keys, page=page)
+                                 filter=filter, include_total_count=include_total_count, sort_keys=sort_keys, page=page,
+                                 include=include)
 
     def get_channel_members(self, channel: str = None, include_custom: bool = None, limit: int = None,
                             filter: str = None, include_total_count: bool = None, sort_keys: list = None,
-                            page: PNPage = None) -> GetChannelMembers:
+                            page: PNPage = None, include: MemberIncludes = None) -> GetChannelMembers:
         return GetChannelMembers(self, channel=channel, include_custom=include_custom, limit=limit, filter=filter,
-                                 include_total_count=include_total_count, sort_keys=sort_keys, page=page)
+                                 include_total_count=include_total_count, sort_keys=sort_keys, page=page,
+                                 include=include)
 
     def remove_channel_members(self, channel: str = None, uuids: List[str] = None, include_custom: bool = None,
                                limit: int = None, filter: str = None, include_total_count: bool = None,
-                               sort_keys: list = None, page: PNPage = None) -> RemoveChannelMembers:
+                               sort_keys: list = None, page: PNPage = None, include: MemberIncludes = None
+                               ) -> RemoveChannelMembers:
         return RemoveChannelMembers(self, channel=channel, uuids=uuids, include_custom=include_custom, limit=limit,
                                     filter=filter, include_total_count=include_total_count, sort_keys=sort_keys,
-                                    page=page)
+                                    page=page, include=include)
 
     def manage_channel_members(self, channel: str = None, uuids_to_set: List[str] = None,
                                uuids_to_remove: List[str] = None, include_custom: bool = None, limit: int = None,
                                filter: str = None, include_total_count: bool = None, sort_keys: list = None,
-                               page: PNPage = None) -> ManageChannelMembers:
+                               page: PNPage = None, include: MemberIncludes = None) -> ManageChannelMembers:
         return ManageChannelMembers(self, channel=channel, uuids_to_set=uuids_to_set, uuids_to_remove=uuids_to_remove,
                                     include_custom=include_custom, limit=limit, filter=filter,
-                                    include_total_count=include_total_count, sort_keys=sort_keys, page=page)
+                                    include_total_count=include_total_count, sort_keys=sort_keys, page=page,
+                                    include=include)
 
     def set_memberships(self, uuid: str = None, channel_memberships: List[str] = None, include_custom: bool = False,
                         limit: int = None, filter: str = None, include_total_count: bool = None, sort_keys: list = None,

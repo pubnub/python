@@ -57,8 +57,9 @@ class SetUuid(ObjectsEndpoint, UuidEndpoint, IncludeCustomEndpoint, CustomAwareE
             "email": self._email,
             "externalId": self._external_id,
             "profileUrl": self._profile_url,
-            "custom": self._custom
         }
+
+        payload = CustomAwareEndpoint.build_data(self, payload)
         payload = StatusTypeAwareEndpoint.build_data(self, payload)
         return utils.write_value_as_string(payload)
 

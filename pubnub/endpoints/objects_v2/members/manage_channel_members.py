@@ -6,7 +6,7 @@ from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.objects_v2.channel_members import PNUUID, PNManageChannelMembersResult
-from pubnub.models.consumer.objects_v2.common import MemberIncludes
+from pubnub.models.consumer.objects_v2.common import MembershipIncludes
 from pubnub.models.consumer.objects_v2.page import PNPage
 from pubnub.structures import Envelope
 
@@ -23,7 +23,7 @@ class ManageChannelMembers(ObjectsEndpoint, ChannelEndpoint, ListEndpoint, Inclu
     def __init__(self, pubnub, channel: str = None, uuids_to_set: List[PNUUID] = None,
                  uuids_to_remove: List[PNUUID] = None, include_custom: bool = None, limit: int = None,
                  filter: str = None, include_total_count: bool = None, sort_keys: list = None, page: PNPage = None,
-                 include: MemberIncludes = None):
+                 include: MembershipIncludes = None):
         ObjectsEndpoint.__init__(self, pubnub)
         IncludeCapableEndpoint.__init__(self, include)
         ChannelEndpoint.__init__(self, channel=channel)
@@ -49,6 +49,10 @@ class ManageChannelMembers(ObjectsEndpoint, ChannelEndpoint, ListEndpoint, Inclu
 
     def validate_specific_params(self):
         self._validate_channel()
+
+    def include(self, includes: MembershipIncludes) -> 'ManageChannelMembers':
+        super().include(includes)
+        return self
 
     def build_path(self):
         return ManageChannelMembers.MANAGE_CHANNELS_MEMBERS_PATH % (self.pubnub.config.subscribe_key, self._channel)

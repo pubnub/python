@@ -35,7 +35,7 @@ class GetChannelMembers(ObjectsEndpoint, ChannelEndpoint, ListEndpoint, IncludeC
     def validate_specific_params(self):
         self._validate_channel()
 
-    def include(self, includes: MemberIncludes):
+    def include(self, includes: MemberIncludes) -> 'GetChannelMembers':
         super().include(includes)
         return self
 

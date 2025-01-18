@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABCMeta
 
 from pubnub.models.consumer.objects_v2.page import PNPageable
+from pubnub.utils import deprecated
 
 
 class PNUUID:
@@ -10,16 +11,14 @@ class PNUUID:
         self._uuid = uuid
 
     @staticmethod
+    @deprecated(alternative='PNUserMember class')
     def uuid(uuid):
         return JustUUID(uuid)
 
     @staticmethod
+    @deprecated(alternative='PNUserMember class')
     def uuid_with_custom(uuid, custom):
         return UUIDWithCustom(uuid, custom)
-
-    @staticmethod
-    def uuid_extended(uuid: str = None, type: str = None, status: str = None, custom: any = None):
-        return UUIDExtended(uuid, type, status, custom)
 
     @abstractmethod
     def to_payload_dict(self):
@@ -49,22 +48,77 @@ class UUIDWithCustom(PNUUID):
         }
 
 
-class UUIDExtended(PNUUID):
-    _uuid: str
+class PNUserMember(PNUUID):
+    """
+    PNUser represents a user object with associated attributes and methods to convert it to a payload dictionary.
+
+    Attributes
+    ----------
+    _user_id : str
+        The unique identifier for the user.
+    _type : str
+        The type of the user.
+    _status : str
+        The status of the user.
+    _custom : any
+        Custom attributes associated with the user.
+
+     Methods
+    -------
+    __init__(user_id: str = None, type: str = None, status: str = None, custom: any = None)
+        Initializes a new instance of PNUser with required user_id, and optional type, status, and custom attributes.
+    to_payload_dict()
+        Converts the PNUser instance to a dictionary payload suitable for transmission.
+    """
+
+    _user_id: str
     _type: str
     _status: str
     _custom: any
 
-    def __init__(self, uuid: str = None, type: str = None, status: str = None, custom: any = None):
-        self._uuid = uuid
+    @property
+    def _uuuid(self):
+        return self._user_id
+
+    def __init__(self, user_id: str, type: str = None, status: str = None, custom: any = None):
+        """
+        Initialize a PNUser object. If optional values are omitted then they won't be included in the payload.
+
+        Parameters
+        ----------
+        user_id : str
+            The unique identifier for the user.
+        type : str, optional
+            The type of the channel member (default is None).
+        status : str, optional
+            The status of the channel member (default is None).
+        custom : any, optional
+            Custom data associated with the channel member (default is None).
+        """
+
+        self._user_id = user_id
         self._type = type
         self._status = status
         self._custom = custom
 
     def to_payload_dict(self):
+        """
+        Convert the objects attributes to a dictionary payload.
+
+        Returns
+
+        -------
+        dict
+            A dictionary containing the objects attributes:
+            - "uuid": A dictionary with the member's UUID.
+            - "type": The type of the member, if available.
+            - "status": The status of the member, if available.
+            - "custom": Custom attributes of the member, if available.
+        """
+
         payload = {
             "uuid": {
-                "id": str(self._uuid)
+                "id": str(self._user_id)
             },
         }
         if self._type:

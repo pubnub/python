@@ -42,6 +42,26 @@ class SetChannelMembers(ObjectsEndpoint, ChannelEndpoint, ListEndpoint, IncludeC
     def validate_specific_params(self):
         self._validate_channel()
 
+    def include(self, includes: MemberIncludes) -> 'SetChannelMembers':
+        """
+        Include additional information in the members response.
+
+        Parameters
+        ----------
+        includes : MemberIncludes
+            The additional information to include in the member response.
+
+        See Also
+        --------
+        pubnub.models.consumer.objects_v2.common.MemberIncludese : For details on the available includes.
+
+        Returns
+        -------
+        self : SetChannelMembers
+        """
+        super().include(includes)
+        return self
+
     def build_path(self):
         return SetChannelMembers.SET_CHANNEL_MEMBERS_PATH % (self.pubnub.config.subscribe_key, self._channel)
 

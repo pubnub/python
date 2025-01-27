@@ -290,7 +290,7 @@ class TestPubNubSubscription(unittest.TestCase):
 
         subscribe_listener = SubscribeListener()
         publish_operation = NonSubscribeListener()
-        metadata = {'test':'publish'}
+        metadata = {'test': 'publish'}
         custom_message_type = "test"
         message = "hey"
 

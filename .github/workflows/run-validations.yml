@@ -16,7 +16,7 @@ jobs:
           python-version: "3.11"
       - name: Install Python dependencies and run acceptance tests
         run: |
-          sudo pip3 install --user --ignore-installed -r requirements-dev.txt
+          pip3 install --user --ignore-installed -r requirements-dev.txt
           flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/,venv/ --ignore F811,E402
       - name: Cancel workflow runs for commit on error
         if: failure()

@@ -42,9 +42,10 @@ class PNFileMessageResult(PNMessageResult):
     def __init__(
             self, message, subscription,
             channel, timetoken, publisher,
-            file_url, file_id, file_name
+            file_url, file_id, file_name, user_metadata=None, custom_message_type=None
     ):
-        super(PNFileMessageResult, self).__init__(message, subscription, channel, timetoken, publisher=publisher)
+        super(PNFileMessageResult, self).__init__(message, subscription, channel, timetoken, user_metadata, publisher,
+                                                  custom_message_type=custom_message_type)
         self.file_url = file_url
         self.file_id = file_id
         self.file_name = file_name

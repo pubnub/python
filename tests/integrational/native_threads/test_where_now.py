@@ -34,7 +34,7 @@ class TestPubNubState(unittest.TestCase):
         subscribe_listener.wait_for_connect()
 
         # the delay is needed for the server side to propagate presence
-        time.sleep(1)
+        time.sleep(3)
         pubnub.where_now() \
             .uuid(uuid) \
             .pn_async(where_now_listener.callback)
@@ -69,7 +69,7 @@ class TestPubNubState(unittest.TestCase):
         subscribe_listener.wait_for_connect()
 
         # the delay is needed for the server side to propagate presence
-        time.sleep(1)
+        time.sleep(3)
         pubnub.where_now() \
             .uuid(uuid) \
             .pn_async(where_now_listener.callback)

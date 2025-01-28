@@ -1,3 +1,9 @@
+## 10.0.1
+January 28 2025
+
+#### Fixed
+- Fix issue because of which custom message type wasn't set to the parsed subscription response objects.
+
 ## 10.0.0
 January 13 2025
 

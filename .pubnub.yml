@@ -1,5 +1,5 @@
 name: python
-version: 10.0.0
+version: 10.0.1
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-10.0.0
+            package-name: pubnub-10.0.1
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -91,8 +91,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-10.0.0
-            location: https://github.com/pubnub/python/releases/download/10.0.0/pubnub-10.0.0.tar.gz
+            package-name: pubnub-10.0.1
+            location: https://github.com/pubnub/python/releases/download/10.0.1/pubnub-10.0.1.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -163,6 +163,11 @@ sdks:
                 license-url: https://github.com/encode/httpx/blob/master/LICENSE.md
                 is-required: Required
 changelog:
+  - date: 2025-01-28
+    version: 10.0.1
+    changes:
+      - type: bug
+        text: "Fix issue because of which custom message type wasn't set to the parsed subscription response objects."
   - date: 2025-01-13
     version: 10.0.0
     changes:

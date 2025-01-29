@@ -290,6 +290,8 @@ class TestPubNubSubscription(unittest.TestCase):
 
         subscribe_listener = SubscribeListener()
         publish_operation = NonSubscribeListener()
+        metadata = {'test': 'publish'}
+        custom_message_type = "test"
         message = "hey"
 
         try:
@@ -298,7 +300,12 @@ class TestPubNubSubscription(unittest.TestCase):
             pubnub.subscribe().channels(ch).execute()
             subscribe_listener.wait_for_connect()
 
-            pubnub_plain.publish().channel(ch).message(message).pn_async(publish_operation.callback)
+            pubnub_plain.publish() \
+                .channel(ch) \
+                .message(message) \
+                .custom_message_type(custom_message_type) \
+                .meta(metadata) \
+                .pn_async(publish_operation.callback)
 
             if publish_operation.pn_await() is False:
                 self.fail("Publish operation timeout")
@@ -313,6 +320,8 @@ class TestPubNubSubscription(unittest.TestCase):
             assert result.subscription is None
             assert result.timetoken > 0
             assert result.message == message
+            assert result.custom_message_type == custom_message_type
+            assert result.user_metadata == metadata
             assert result.error is not None
             assert isinstance(result.error, binascii.Error)
 

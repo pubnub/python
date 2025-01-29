@@ -162,6 +162,8 @@ class BaseMessageWorker:
                 subscription=subscription_match,
                 timetoken=publish_meta_data.publish_timetoken,
                 publisher=message.issuing_client_id,
+                custom_message_type=message.custom_message_type,
+                user_metadata=message.user_metadata,
                 file_url=download_url,
                 file_id=extracted_message["file"]["id"],
                 file_name=extracted_message["file"]["name"]
@@ -182,7 +184,10 @@ class BaseMessageWorker:
                     channel=channel,
                     subscription=subscription_match,
                     timetoken=publish_meta_data.publish_timetoken,
-                    publisher=publisher
+                    publisher=publisher,
+                    custom_message_type=message.custom_message_type,
+                    user_metadata=message.user_metadata,
+                    error=error
                 )
                 self.announce(pn_signal_result)
                 return pn_signal_result
@@ -202,6 +207,8 @@ class BaseMessageWorker:
                     subscription=subscription_match,
                     timetoken=publish_meta_data.publish_timetoken,
                     publisher=publisher,
+                    custom_message_type=message.custom_message_type,
+                    user_metadata=message.user_metadata,
                     error=error
                 )
                 self.announce(pn_message_result)

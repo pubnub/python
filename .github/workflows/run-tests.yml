@@ -85,7 +85,7 @@ jobs:
           cp sdk-specifications/features/subscribe/event-engine/happy-path_Legacy.feature tests/acceptance/subscribe/happy-path_Legacy.feature
           cp sdk-specifications/features/presence/event-engine/presence-engine_Legacy.feature  tests/acceptance/subscribe/presence-engine_Legacy.feature
 
-          sudo pip3 install -r requirements-dev.txt
+          pip3 install --user --ignore-installed -r requirements-dev.txt
           behave --junit tests/acceptance/pam
           behave --junit tests/acceptance/encryption/cryptor-module.feature -t=~na=python -k
           behave --junit tests/acceptance/subscribe

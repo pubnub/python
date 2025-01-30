@@ -593,14 +593,16 @@ class SubscribeListener(SubscribeCallback):
     async def wait_for_connect(self):
         if not self.connected_event.is_set():
             await self._wait_for(self.connected_event.wait())
-        else:
-            raise Exception("instance is already connected")
+        # failing because you don't have to wait is illogical
+        # else:
+        #     raise Exception("instance is already connected")
 
     async def wait_for_disconnect(self):
         if not self.disconnected_event.is_set():
             await self._wait_for(self.disconnected_event.wait())
-        else:
-            raise Exception("instance is already disconnected")
+        # failing because you don't have to wait is illogical
+        # else:
+        #     raise Exception("instance is already disconnected")
 
     async def wait_for_message_on(self, *channel_names):
         channel_names = list(channel_names)

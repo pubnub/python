@@ -5,19 +5,22 @@
             "request": {
                 "method": "GET",
                 "uri": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-unsubscribe-group?add=test-subscribe-unsubscribe-channel&uuid=uuid-mock",
-                "body": null,
+                "body": "",
                 "headers": {
-                    "User-Agent": [
-                        "PubNub-Python/7.4.2"
+                    "host": [
+                        "ps.pndsn.com"
                     ],
-                    "Accept-Encoding": [
-                        "gzip, deflate"
-                    ],
-                    "Accept": [
+                    "accept": [
                         "*/*"
                     ],
-                    "Connection": [
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
                         "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.0.0"
                     ]
                 }
             },
@@ -27,14 +30,8 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "Access-Control-Allow-Methods": [
-                        "GET, POST, DELETE, OPTIONS"
-                    ],
-                    "Server": [
-                        "Pubnub Storage"
-                    ],
-                    "Accept-Ranges": [
-                        "bytes"
+                    "Date": [
+                        "Mon, 27 Jan 2025 15:49:56 GMT"
                     ],
                     "Content-Type": [
                         "application/json"
@@ -42,24 +39,30 @@
                     "Content-Length": [
                         "72"
                     ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
+                    "Connection": [
+                        "keep-alive"
                     ],
-                    "Date": [
-                        "Mon, 25 Mar 2024 18:21:17 GMT"
-                    ],
-                    "Cache-Control": [
-                        "no-cache"
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
                     ],
                     "Age": [
                         "0"
                     ],
-                    "Connection": [
-                        "keep-alive"
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
                     ]
                 },
                 "body": {
-                    "string": "{\"error\":false,\"message\":\"OK\",\"service\":\"channel-registry\",\"status\":200}"
+                    "pickle": "gASVWAAAAAAAAAB9lIwGc3RyaW5nlIxIeyJlcnJvciI6ZmFsc2UsIm1lc3NhZ2UiOiJPSyIsInNlcnZpY2UiOiJjaGFubmVsLXJlZ2lzdHJ5Iiwic3RhdHVzIjoyMDB9lHMu"
                 }
             }
         },
@@ -67,19 +70,22 @@
             "request": {
                 "method": "GET",
                 "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock",
-                "body": null,
+                "body": "",
                 "headers": {
-                    "User-Agent": [
-                        "PubNub-Python/7.4.2"
+                    "host": [
+                        "ps.pndsn.com"
                     ],
-                    "Accept-Encoding": [
-                        "gzip, deflate"
-                    ],
-                    "Accept": [
+                    "accept": [
                         "*/*"
                     ],
-                    "Connection": [
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
                         "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.0.0"
                     ]
                 }
             },
@@ -89,8 +95,8 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "Access-Control-Allow-Methods": [
-                        "GET"
+                    "Date": [
+                        "Mon, 27 Jan 2025 15:49:56 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -98,21 +104,24 @@
                     "Content-Length": [
                         "45"
                     ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
-                    ],
-                    "Date": [
-                        "Mon, 25 Mar 2024 18:21:17 GMT"
+                    "Connection": [
+                        "keep-alive"
                     ],
                     "Cache-Control": [
                         "no-cache"
                     ],
-                    "Connection": [
-                        "keep-alive"
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
                     ]
                 },
                 "body": {
-                    "string": "{\"t\":{\"t\":\"17113908770846110\",\"r\":41},\"m\":[]}"
+                    "pickle": "gASVPQAAAAAAAAB9lIwGc3RyaW5nlIwteyJ0Ijp7InQiOiIxNzM3OTkyOTk2NDEyODI1NCIsInIiOjQyfSwibSI6W119lHMu"
                 }
             }
         },
@@ -120,19 +129,22 @@
             "request": {
                 "method": "GET",
                 "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test-subscribe-unsubscribe-channel/0/%22hey%22?uuid=uuid-mock",
-                "body": null,
+                "body": "",
                 "headers": {
-                    "User-Agent": [
-                        "PubNub-Python/7.4.2"
+                    "host": [
+                        "ps.pndsn.com"
                     ],
-                    "Accept-Encoding": [
-                        "gzip, deflate"
-                    ],
-                    "Accept": [
+                    "accept": [
                         "*/*"
                     ],
-                    "Connection": [
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
                         "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.0.0"
                     ]
                 }
             },
@@ -142,8 +154,8 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "Access-Control-Allow-Methods": [
-                        "GET"
+                    "Date": [
+                        "Mon, 27 Jan 2025 15:49:56 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -151,21 +163,24 @@
                     "Content-Length": [
                         "30"
                     ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
-                    ],
-                    "Date": [
-                        "Mon, 25 Mar 2024 18:21:17 GMT"
+                    "Connection": [
+                        "keep-alive"
                     ],
                     "Cache-Control": [
                         "no-cache"
                     ],
-                    "Connection": [
-                        "keep-alive"
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
                     ]
                 },
                 "body": {
-                    "string": "[1,\"Sent\",\"17113908772201101\"]"
+                    "pickle": "gASVLgAAAAAAAAB9lIwGc3RyaW5nlIweWzEsIlNlbnQiLCIxNzM3OTkyOTk2NTQ1NzYxMCJdlHMu"
                 }
             }
         },
@@ -173,19 +188,22 @@
             "request": {
                 "method": "GET",
                 "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock",
-                "body": null,
+                "body": "",
                 "headers": {
-                    "User-Agent": [
-                        "PubNub-Python/7.4.2"
+                    "host": [
+                        "ps.pndsn.com"
                     ],
-                    "Accept-Encoding": [
-                        "gzip, deflate"
-                    ],
-                    "Accept": [
+                    "accept": [
                         "*/*"
                     ],
-                    "Connection": [
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
                         "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.0.0"
                     ]
                 }
             },
@@ -195,33 +213,36 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "Content-Encoding": [
-                        "gzip"
-                    ],
-                    "Access-Control-Allow-Methods": [
-                        "GET"
+                    "Date": [
+                        "Mon, 27 Jan 2025 15:49:56 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
                     ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
-                    ],
-                    "Date": [
-                        "Mon, 25 Mar 2024 18:21:17 GMT"
-                    ],
-                    "Cache-Control": [
-                        "no-cache"
+                    "Transfer-Encoding": [
+                        "chunked"
                     ],
                     "Connection": [
                         "keep-alive"
                     ],
-                    "Transfer-Encoding": [
-                        "chunked"
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ],
+                    "Content-Encoding": [
+                        "gzip"
                     ]
                 },
                 "body": {
-                    "binary": "H4sIAAAAAAAAA4yMSw7CMAxE7+J1LMUlqGmugljE+dCq9KOmWaCqd8es2CE21nj03hywgzs+B6glunTatm3TaCJNoGADZ+hUMIG7HeCFukqbwWkFg3y1DhGnJYzSFnCkYP1nbhS1VMaA1nIX2TM2OhMaGw3amC/YcfbMWgfNRraDCHsqO4pVwjZwwjp/c+j9PKengFHAPr0k8W/lsS11hfN+vgEAAP//AwBkxY98AgEAAA=="
+                    "pickle": "gASVwwAAAAAAAAB9lIwGc3RyaW5nlEOzH4sIAAAAAAAAA4yMSw7CMAxE7+J1LCUhaXGugljkV1qVftQ0C1T17pgVO8TGGo/emwN2cMfngGovLZEmaqyxbaMkCNjAGX0KmMDdDvBMXbjtwEkBA3+1DgmnJY7cFnBKwPrP3MhqqQEjJhmu2RqNSnuJRkWDRNSh18k2lKLR1vJ2ZGHPZUe2StyGkLHO3xx7P8/5yWBisM8vTuG38tiWusJ5P98AAAD//wMAiD18SwIBAACUcy4="
                 }
             }
         },
@@ -229,19 +250,22 @@
             "request": {
                 "method": "GET",
                 "uri": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/,/leave?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock",
-                "body": null,
+                "body": "",
                 "headers": {
-                    "User-Agent": [
-                        "PubNub-Python/7.4.2"
+                    "host": [
+                        "ps.pndsn.com"
                     ],
-                    "Accept-Encoding": [
-                        "gzip, deflate"
-                    ],
-                    "Accept": [
+                    "accept": [
                         "*/*"
                     ],
-                    "Connection": [
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
                         "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.0.0"
                     ]
                 }
             },
@@ -251,14 +275,8 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "Access-Control-Allow-Methods": [
-                        "OPTIONS, GET, POST"
-                    ],
-                    "Server": [
-                        "Pubnub Presence"
-                    ],
-                    "Accept-Ranges": [
-                        "bytes"
+                    "Date": [
+                        "Mon, 27 Jan 2025 15:49:56 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -266,24 +284,30 @@
                     "Content-Length": [
                         "74"
                     ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
+                    "Connection": [
+                        "keep-alive"
                     ],
-                    "Date": [
-                        "Mon, 25 Mar 2024 18:21:17 GMT"
-                    ],
-                    "Cache-Control": [
-                        "no-cache"
+                    "Access-Control-Allow-Methods": [
+                        "OPTIONS, GET, POST"
                     ],
                     "Age": [
                         "0"
                     ],
-                    "Connection": [
-                        "keep-alive"
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
                     ]
                 },
                 "body": {
-                    "string": "{\"status\": 200, \"message\": \"OK\", \"action\": \"leave\", \"service\": \"Presence\"}"
+                    "pickle": "gASVWgAAAAAAAAB9lIwGc3RyaW5nlIxKeyJzdGF0dXMiOiAyMDAsICJtZXNzYWdlIjogIk9LIiwgImFjdGlvbiI6ICJsZWF2ZSIsICJzZXJ2aWNlIjogIlByZXNlbmNlIn2Ucy4="
                 }
             }
         },
@@ -291,19 +315,22 @@
             "request": {
                 "method": "GET",
                 "uri": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-unsubscribe-group?remove=test-subscribe-unsubscribe-channel&uuid=uuid-mock",
-                "body": null,
+                "body": "",
                 "headers": {
-                    "User-Agent": [
-                        "PubNub-Python/7.4.2"
+                    "host": [
+                        "ps.pndsn.com"
                     ],
-                    "Accept-Encoding": [
-                        "gzip, deflate"
-                    ],
-                    "Accept": [
+                    "accept": [
                         "*/*"
                     ],
-                    "Connection": [
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
                         "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.0.0"
                     ]
                 }
             },
@@ -313,14 +340,8 @@
                     "message": "OK"
                 },
                 "headers": {
-                    "Access-Control-Allow-Methods": [
-                        "GET, POST, DELETE, OPTIONS"
-                    ],
-                    "Server": [
-                        "Pubnub Storage"
-                    ],
-                    "Accept-Ranges": [
-                        "bytes"
+                    "Date": [
+                        "Mon, 27 Jan 2025 15:49:56 GMT"
                     ],
                     "Content-Type": [
                         "application/json"
@@ -328,24 +349,30 @@
                     "Content-Length": [
                         "72"
                     ],
-                    "Access-Control-Allow-Origin": [
-                        "*"
+                    "Connection": [
+                        "keep-alive"
                     ],
-                    "Date": [
-                        "Mon, 25 Mar 2024 18:21:17 GMT"
-                    ],
-                    "Cache-Control": [
-                        "no-cache"
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
                     ],
                     "Age": [
                         "0"
                     ],
-                    "Connection": [
-                        "keep-alive"
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Accept-Ranges": [
+                        "bytes"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
                     ]
                 },
                 "body": {
-                    "string": "{\"error\":false,\"message\":\"OK\",\"service\":\"channel-registry\",\"status\":200}"
+                    "pickle": "gASVWAAAAAAAAAB9lIwGc3RyaW5nlIxIeyJlcnJvciI6ZmFsc2UsIm1lc3NhZ2UiOiJPSyIsInNlcnZpY2UiOiJjaGFubmVsLXJlZ2lzdHJ5Iiwic3RhdHVzIjoyMDB9lHMu"
                 }
             }
         }

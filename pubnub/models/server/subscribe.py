@@ -28,6 +28,7 @@ class SubscribeMessage:
         self.subscribe_key = None
         self.origination_timetoken = None
         self.publish_metadata = None
+        self.user_metadata = None
         self.only_channel_subscription = False
         self.type = 0
         self.custom_message_type = None
@@ -48,6 +49,8 @@ class SubscribeMessage:
         if 'o' in json_input:
             message.origination_timetoken = json_input['o']
         message.publish_metadata = PublishMetadata.from_json(json_input['p'])
+        if 'u' in json_input:
+            message.user_metadata = json_input['u']
         if 'e' in json_input:
             message.type = json_input['e']
         if 'cmt' in json_input:

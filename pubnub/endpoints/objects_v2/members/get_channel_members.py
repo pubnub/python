@@ -1,9 +1,10 @@
-from pubnub.endpoints.objects_v2.objects_endpoint import ObjectsEndpoint, IncludeCustomEndpoint, \
-    ChannelEndpoint, ListEndpoint, UUIDIncludeEndpoint
+from pubnub.endpoints.objects_v2.objects_endpoint import IncludeCapableEndpoint, ObjectsEndpoint, \
+    IncludeCustomEndpoint, ChannelEndpoint, ListEndpoint, UUIDIncludeEndpoint
 from pubnub.enums import PNOperationType
 from pubnub.enums import HttpMethod
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.objects_v2.channel_members import PNGetChannelMembersResult
+from pubnub.models.consumer.objects_v2.common import MemberIncludes
 from pubnub.models.consumer.objects_v2.page import PNPage
 from pubnub.structures import Envelope
 
@@ -14,12 +15,14 @@ class PNGetChannelMembersResultEnvelope(Envelope):
 
 
 class GetChannelMembers(ObjectsEndpoint, ChannelEndpoint, ListEndpoint, IncludeCustomEndpoint,
-                        UUIDIncludeEndpoint):
+                        UUIDIncludeEndpoint, IncludeCapableEndpoint):
     GET_CHANNEL_MEMBERS_PATH = "/v2/objects/%s/channels/%s/uuids"
 
-    def __init__(self, pubnub, channel: str = None, include_custom: bool = None, limit: int = None, filter: str = None,
-                 include_total_count: bool = None, sort_keys: list = None, page: PNPage = None):
+    def __init__(self, pubnub, channel: str = None, include_custom: bool = None,
+                 limit: int = None, filter: str = None, include_total_count: bool = None, sort_keys: list = None,
+                 page: PNPage = None, include: MemberIncludes = None):
         ObjectsEndpoint.__init__(self, pubnub)
+        IncludeCapableEndpoint.__init__(self, include)
         ChannelEndpoint.__init__(self, channel=channel)
         ListEndpoint.__init__(self, limit=limit, filter=filter, include_total_count=include_total_count,
                               sort_keys=sort_keys, page=page)
@@ -31,6 +34,10 @@ class GetChannelMembers(ObjectsEndpoint, ChannelEndpoint, ListEndpoint, IncludeC
 
     def validate_specific_params(self):
         self._validate_channel()
+
+    def include(self, includes: MemberIncludes) -> 'GetChannelMembers':
+        super().include(includes)
+        return self
 
     def create_response(self, envelope) -> PNGetChannelMembersResult:
         return PNGetChannelMembersResult(envelope)

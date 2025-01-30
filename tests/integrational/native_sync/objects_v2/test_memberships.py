@@ -5,6 +5,7 @@ from pubnub.endpoints.objects_v2.memberships.manage_memberships import ManageMem
 from pubnub.endpoints.objects_v2.memberships.remove_memberships import RemoveMemberships
 from pubnub.endpoints.objects_v2.memberships.set_memberships import SetMemberships
 from pubnub.models.consumer.common import PNStatus
+from pubnub.models.consumer.objects_v2.common import MembershipIncludes
 from pubnub.models.consumer.objects_v2.memberships import PNChannelMembership, PNSetMembershipsResult, \
     PNGetMembershipsResult, PNRemoveMembershipsResult, PNManageMembershipsResult
 from pubnub.pubnub import PubNub
@@ -18,8 +19,30 @@ def _pubnub():
     return PubNub(config)
 
 
+@pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/setup_module.json',
+                     filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
+def setup_module():
+    pubnub = _pubnub()
+    pubnub.remove_uuid_metadata("someuuid").sync()
+    pubnub.remove_uuid_metadata("otheruuid").sync()
+    pubnub.remove_channel_metadata("somechannelid").sync()
+    RemoveMemberships(pubnub).uuid("someuuid").channel_memberships([
+        PNChannelMembership.channel("somechannelid"),
+        PNChannelMembership.channel("some_channel"),
+        PNChannelMembership("otterchannel")
+    ]).sync()
+
+    RemoveMemberships(pubnub).uuid("otheruuid").channel_memberships([
+        PNChannelMembership.channel("somechannelid"),
+        PNChannelMembership.channel("some_channel"),
+        PNChannelMembership("otterchannel")
+    ]).sync()
+
+
 class TestObjectsV2Memberships:
     _some_uuid = "someuuid"
+    _some_channel = "somechannel"
+    _other_channel = "otterchannel"  # channel about otters, not a typo :D
 
     def test_set_memberships_endpoint_available(self):
         pn = _pubnub()
@@ -211,3 +234,97 @@ class TestObjectsV2Memberships:
 
         assert len([e for e in data if e['channel']['id'] == some_channel]) == 1
         assert len([e for e in data if e['channel']['id'] == some_channel_with_custom]) == 0
+
+    @pn_vcr.use_cassette('tests/integrational/fixtures/native_sync/objects_v2/memberships/'
+                         'channel_memberships_with_include_object.json',
+                         filter_query_parameters=['uuid', 'pnsdk'], serializer='pn_json')
+    def test_channel_memberships_with_include_object(self):
+        config = pnconf_env_copy()
+        pubnub = PubNub(config)
+        self._some_channel = "somechannel"
+
+        pubnub.set_uuid_metadata(
+            uuid=self._some_uuid,
+            name="Cornelia",
+            type='QA',
+            status='online',
+            custom={"removed": False}
+        ).sync()
+
+        pubnub.set_channel_metadata(
+            channel=self._some_channel,
+            name="some name",
+            description="This is a bit longer text",
+            type="QAChannel",
+            status="active",
+            custom={"public": False}
+        ).sync()
+
+        full_include = MembershipIncludes(
+            custom=True,
+            status=True,
+            type=True,
+            total_count=True,
+            channel=True,
+            channel_custom=True,
+            channel_type=True,
+            channel_status=True
+        )
+
+        membership = PNChannelMembership(self._some_channel, custom={"isDefaultChannel": True}, status="OFF", type="1")
+
+        set_response = pubnub.set_memberships(
+            uuid=self._some_uuid,
+            channel_memberships=[membership],
+            include=full_include
+        ).sync()
+
+        self.assert_expected_response(set_response)
+
+        get_response = pubnub.get_memberships(
+            uuid=self._some_uuid,
+            include=full_include
+        ).sync()
+        self.assert_expected_response(get_response)
+
+        otters = PNChannelMembership(self._other_channel)
+
+        manage_response = pubnub.manage_memberships(
+            uuid=self._some_uuid,
+            channel_memberships_to_set=[otters],
+            channel_memberships_to_remove=[membership]
+        ).sync()
+
+        assert manage_response.status.is_error() is False
+
+        assert len(manage_response.result.data) == 1
+        assert manage_response.result.data[0]['channel']['id'] == self._other_channel
+
+        rem_response = pubnub.remove_memberships(uuid=self._some_uuid, channel_memberships=[otters]).sync()
+
+        assert rem_response.status.is_error() is False
+
+        get_response = pubnub.get_memberships(
+            uuid=self._some_uuid,
+            include=full_include
+        ).sync()
+
+        assert get_response.status.is_error() is False
+        assert get_response.result.data == []
+
+    def assert_expected_response(self, response):
+        assert response is not None
+        assert response.status.is_error() is False
+        result = response.result.data
+        assert result is not None
+        assert len(result) == 1
+        membership_data = result[0]
+        assert membership_data['status'] == 'OFF'
+        assert membership_data['type'] == '1'
+        channel_data = result[0]['channel']
+        assert channel_data['id'] == self._some_channel
+        assert channel_data['description'] == 'This is a bit longer text'
+        assert channel_data['name'] == 'some name'
+        assert channel_data['status'] == 'active'
+        assert channel_data['type'] == 'QAChannel'
+        assert channel_data['custom'] == {'public': False}

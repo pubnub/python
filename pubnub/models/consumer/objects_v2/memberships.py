@@ -6,8 +6,11 @@ from pubnub.models.consumer.objects_v2.page import PNPageable
 class PNChannelMembership:
     __metaclass__ = ABCMeta
 
-    def __init__(self, channel):
+    def __init__(self, channel: str, custom: dict = None, status: str = None, type: str = None):
         self._channel = channel
+        self._custom = custom
+        self._status = status
+        self._type = type
 
     @staticmethod
     def channel(channel):
@@ -19,7 +22,18 @@ class PNChannelMembership:
 
     @abstractmethod
     def to_payload_dict(self):
-        return None
+        result = {
+            "channel": {
+                "id": str(self._channel)
+            }
+        }
+        if self._custom:
+            result["custom"] = dict(self._custom)
+        if self._status:
+            result["status"] = str(self._status)
+        if self._type:
+            result["type"] = str(self._type)
+        return result
 
 
 class JustChannel(PNChannelMembership):

@@ -1,15 +1,18 @@
 import datetime
+import functools
 import hmac
 import json
 import uuid as u
 import threading
 import urllib
+import warnings
+
 from hashlib import sha256
 
-from .enums import PNStatusCategory, PNOperationType, PNPushType, HttpMethod, PAMPermissions
-from .models.consumer.common import PNStatus
-from .errors import PNERR_JSON_NOT_SERIALIZABLE
-from .exceptions import PubNubException
+from pubnub.enums import PNStatusCategory, PNOperationType, PNPushType, HttpMethod, PAMPermissions
+from pubnub.models.consumer.common import PNStatus
+from pubnub.errors import PNERR_JSON_NOT_SERIALIZABLE
+from pubnub.exceptions import PubNubException
 
 
 def get_data_for_user(data):
@@ -321,3 +324,27 @@ def parse_pam_permissions(resource):
         }
 
     return new_res
+
+
+def deprecated(alternative=None, warning_message=None):
+    """A decorator to mark functions as deprecated."""
+
+    def decorator(func):
+        if warning_message:
+            message = warning_message
+        else:
+            message = f"The function {func.__name__} is deprecated."
+        if alternative:
+            message += f" Use: {alternative} instead"
+
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            warnings.warn(
+                message,
+                category=DeprecationWarning,
+                stacklevel=2
+            )
+            return func(*args, **kwargs)
+
+        return wrapper
+    return decorator

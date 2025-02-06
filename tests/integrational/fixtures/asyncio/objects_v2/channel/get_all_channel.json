@@ -1,0 +1,119 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=custom%2Cstatus%2Ctype",
+                "body": {
+                    "pickle": "gASVhgAAAAAAAACMgnsibmFtZSI6ICJTb21lIG5hbWUiLCAiZGVzY3JpcHRpb24iOiAiU29tZSBkZXNjcmlwdGlvbiIsICJzdGF0dXMiOiBudWxsLCAidHlwZSI6IG51bGwsICJjdXN0b20iOiB7ImtleTEiOiAidmFsMSIsICJrZXkyIjogInZhbDIifX2ULg=="
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "130"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:27:41 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "243"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVAwEAAAAAAAB9lIwGc3RyaW5nlIzzeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6InNvbWVjaGFubmVsaWQiLCJuYW1lIjoiU29tZSBuYW1lIiwiZGVzY3JpcHRpb24iOiJTb21lIGRlc2NyaXB0aW9uIiwidHlwZSI6bnVsbCwic3RhdHVzIjpudWxsLCJjdXN0b20iOnsia2V5MSI6InZhbDEiLCJrZXkyIjoidmFsMiJ9LCJ1cGRhdGVkIjoiMjAyNS0wMi0wNlQyMToyNzo0MC45ODA4ODRaIiwiZVRhZyI6IjYzMjY1ZTUxNjZhMjEwODEwZTkzOGE4N2ZlYjRhZjE5In19lHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels?count=True&include=custom%2Cstatus%2Ctype&limit=10&sort=id%3Aasc%2Cupdated%3Adesc",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:27:41 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVfAkAAAAAAAB9lIwGc3RyaW5nlFhpCQAAeyJzdGF0dXMiOjIwMCwiZGF0YSI6W3siaWQiOiIwMGE4ZDJlMC1jNjQwLTQ1YjEtZTZkZS1mNjFlNmJkOWEzOTMiLCJuYW1lIjoiMDBhOGQyZTAtYzY0MC00NWIxLWU2ZGUtZjYxZTZiZDlhMzkzIiwiZGVzY3JpcHRpb24iOm51bGwsInR5cGUiOiJncm91cCIsInN0YXR1cyI6bnVsbCwiY3VzdG9tIjpudWxsLCJ1cGRhdGVkIjoiMjAyNC0xMi0xM1QxMTowMzowMy40NTc5OTZaIiwiZVRhZyI6ImJmMjllYjJiZWYxYmFhNDdmZDk1NGVkNzAxMGNiNTFiIn0seyJpZCI6IjAyMzY5M2FjLTVjY2QtNGVkYi1mZDY3LTMzMzRjOGE1ZTdlNiIsIm5hbWUiOiIwMjM2OTNhYy01Y2NkLTRlZGItZmQ2Ny0zMzM0YzhhNWU3ZTYiLCJkZXNjcmlwdGlvbiI6bnVsbCwidHlwZSI6Imdyb3VwIiwic3RhdHVzIjpudWxsLCJjdXN0b20iOm51bGwsInVwZGF0ZWQiOiIyMDI1LTAxLTMwVDA5OjU1OjQzLjE1NDQwNloiLCJlVGFnIjoiOWMxYjE1NTVhZTFjOGMzMzg0M2RmZWE4ZGEyNzljMTkifSx7ImlkIjoiMDNkMjdjMTUtY2RhOS00ZGM3LWUyNzYtYjRkOGZhNmY4NDhlIiwibmFtZSI6IjAzZDI3YzE1LWNkYTktNGRjNy1lMjc2LWI0ZDhmYTZmODQ4ZSIsImRlc2NyaXB0aW9uIjpudWxsLCJ0eXBlIjoiZ3JvdXAiLCJzdGF0dXMiOm51bGwsImN1c3RvbSI6bnVsbCwidXBkYXRlZCI6IjIwMjQtMTItMTZUMDk6MDg6NTQuMjMxNTE1WiIsImVUYWciOiJmZWI0NGU4NDBmYmVlN2RhMWJiYzg3ZWY1MWYyMjNiYSJ9LHsiaWQiOiIwNGUzMDgzZS0wMTlhLTRkYWUtYmU3Zi1kODk2MjkxYWI0ZDkiLCJuYW1lIjoiMDRlMzA4M2UtMDE5YS00ZGFlLWJlN2YtZDg5NjI5MWFiNGQ5IiwiZGVzY3JpcHRpb24iOm51bGwsInR5cGUiOiJncm91cCIsInN0YXR1cyI6bnVsbCwiY3VzdG9tIjpudWxsLCJ1cGRhdGVkIjoiMjAyNC0xMi0xOVQxMjowNjozNy4zMTMyNzVaIiwiZVRhZyI6ImRkZjg5MjliNDU1YjgwMGFmYmY2OTUzMWZjNTZhYWQ4In0seyJpZCI6IjA1YjJkNDAyLWY5MDQtNDk5ZC1iOWYzLTgxNjZmYmNkNjZkNCIsIm5hbWUiOiIwNWIyZDQwMi1mOTA0LTQ5OWQtYjlmMy04MTY2ZmJjZDY2ZDQiLCJkZXNjcmlwdGlvbiI6bnVsbCwidHlwZSI6Imdyb3VwIiwic3RhdHVzIjpudWxsLCJjdXN0b20iOm51bGwsInVwZGF0ZWQiOiIyMDI0LTEyLTE5VDExOjMwOjQzLjIxMjI0WiIsImVUYWciOiIwMDVmODc1ODhhYmY4ZTY3YWVjYTMwMzQwMzEwZGU3ZCJ9LHsiaWQiOiIwNmQ4ZjNiNi0zMmJhLTQ3OWMtODMwMC04ZDdkYWIwZWEyMWIiLCJuYW1lIjoiMDZkOGYzYjYtMzJiYS00NzljLTgzMDAtOGQ3ZGFiMGVhMjFiIiwiZGVzY3JpcHRpb24iOm51bGwsInR5cGUiOiJncm91cCIsInN0YXR1cyI6bnVsbCwiY3VzdG9tIjpudWxsLCJ1cGRhdGVkIjoiMjAyNC0xMi0xOFQxODo0MjoxNi45NjczNjlaIiwiZVRhZyI6IjU5MTFhNjNiZTYyY2FmNjlmZDZhYWVjMGYzZTU0MjEyIn0seyJpZCI6IjA3NWZhMDAzLTRlNjctNGU3ZC04NGI2LThlMDEzYmM3ODIxOCIsIm5hbWUiOiIwNzVmYTAwMy00ZTY3LTRlN2QtODRiNi04ZTAxM2JjNzgyMTgiLCJkZXNjcmlwdGlvbiI6bnVsbCwidHlwZSI6Imdyb3VwIiwic3RhdHVzIjpudWxsLCJjdXN0b20iOm51bGwsInVwZGF0ZWQiOiIyMDI0LTEyLTEyVDEzOjE0OjU1LjE1ODk1N1oiLCJlVGFnIjoiMWVkMzhiMWRkYjY4ZjdiY2YzNjU5N2Q0YjZjYzgxNjAifSx7ImlkIjoiMDg2ZGQ4NGMtZDY0NS00MDNjLWFmYWEtMTY4OTI3OGYxNzBjIiwibmFtZSI6IjA4NmRkODRjLWQ2NDUtNDAzYy1hZmFhLTE2ODkyNzhmMTcwYyIsImRlc2NyaXB0aW9uIjpudWxsLCJ0eXBlIjoiZ3JvdXAiLCJzdGF0dXMiOm51bGwsImN1c3RvbSI6bnVsbCwidXBkYXRlZCI6IjIwMjQtMTItMTZUMTY6NDc6MzEuNDU1NTk0WiIsImVUYWciOiI4MjkyNGFkNjBlMjI2OTE0ODFmNjI4NzJiYzc4MjQzMiJ9LHsiaWQiOiIwQ0lFeXJubWNoYW5uZWxfOEQzU2JJODciLCJuYW1lIjoiMENJRXlybm1UZXN0IENoYW5uZWwiLCJkZXNjcmlwdGlvbiI6IlRoaXMgaXMgYSB0ZXN0IGNoYW5uZWwiLCJ0eXBlIjoidW5rbm93biIsInN0YXR1cyI6bnVsbCwiY3VzdG9tIjpudWxsLCJ1cGRhdGVkIjoiMjAyNC0xMi0xMlQxMzoyNjo1MC43Mzg4MzZaIiwiZVRhZyI6IjE0N2IwZTIyNDZjMjg3ZGE1YWI2MWExZjUzYTg3YTNkIn0seyJpZCI6IjBkMjhkYTgwLTUxYzktNDBmOC1hNjAzLWJjYzFiMzM5OGRjMyIsIm5hbWUiOiIwZDI4ZGE4MC01MWM5LTQwZjgtYTYwMy1iY2MxYjMzOThkYzMiLCJkZXNjcmlwdGlvbiI6bnVsbCwidHlwZSI6InB1YmxpYyIsInN0YXR1cyI6bnVsbCwiY3VzdG9tIjpudWxsLCJ1cGRhdGVkIjoiMjAyNC0xMi0yMFQxNDozNTozMS41NDgxOTdaIiwiZVRhZyI6ImM2ZjVjZDAwOWQwYTgxZDdjNDBlMDIzYmNjYTVmNTU4In1dLCJ0b3RhbENvdW50IjoyMzAzNiwibmV4dCI6Ik1UQSJ9lHMu"
+                }
+            }
+        }
+    ]
+}

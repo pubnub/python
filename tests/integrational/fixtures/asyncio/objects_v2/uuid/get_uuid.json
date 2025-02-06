@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=custom%2Cstatus%2Ctype",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:16:35 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "290"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVNQEAAAAAAAB9lIwGc3RyaW5nlFgiAQAAeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6InNvbWV1dWlkIiwibmFtZSI6IlNvbWUgbmFtZSIsImV4dGVybmFsSWQiOiIxMjM0IiwicHJvZmlsZVVybCI6Imh0dHA6Ly9leGFtcGxlLmNvbSIsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsInR5cGUiOiJRQSIsInN0YXR1cyI6Im9ubGluZSIsImN1c3RvbSI6eyJrZXkxIjoidmFsMSIsImtleTIiOiJ2YWwyIn0sInVwZGF0ZWQiOiIyMDI1LTAyLTA2VDIxOjE2OjM0LjUyNzg2M1oiLCJlVGFnIjoiZjJkN2EzODY0NDAyZDI1NWQyYWUyMjU1NTY0OTg0MWEifX2Ucy4="
+                }
+            }
+        }
+    ]
+}

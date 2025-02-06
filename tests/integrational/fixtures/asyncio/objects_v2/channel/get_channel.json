@@ -1,0 +1,58 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=custom%2Cstatus%2Ctype",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:27:40 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "243"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVAwEAAAAAAAB9lIwGc3RyaW5nlIzzeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6InNvbWVjaGFubmVsaWQiLCJuYW1lIjoiU29tZSBuYW1lIiwiZGVzY3JpcHRpb24iOiJTb21lIGRlc2NyaXB0aW9uIiwidHlwZSI6bnVsbCwic3RhdHVzIjpudWxsLCJjdXN0b20iOnsia2V5MSI6InZhbDEiLCJrZXkyIjoidmFsMiJ9LCJ1cGRhdGVkIjoiMjAyNS0wMi0wNlQyMToyNzozOS43ODc0NzdaIiwiZVRhZyI6IjU4ZTg2M2VhMjUwOTg5MjBhNmM1ZDVjMzgxNzZlODYyIn19lHMu"
+                }
+            }
+        }
+    ]
+}

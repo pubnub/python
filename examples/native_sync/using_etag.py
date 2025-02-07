@@ -32,14 +32,14 @@ set_result = pubnub.set_uuid_metadata(
 ).sync()
 
 # We store the eTag for the user for further updates.
-e_tag = set_result.result.data.get('eTag')
+original_e_tag = set_result.result.data.get('eTag')
 
 # Another client sets the user meta with the same UUID but different data.
 overwrite_result = pubnub_2.set_uuid_metadata(uuid="SampleUser", name="Jane Doe").sync()
 new_e_tag = overwrite_result.result.data.get('eTag')
 
 # We can verify that there is a new eTag for the user.
-print(f"{e_tag == new_e_tag=}")
+print(f"{original_e_tag == new_e_tag=}")
 
 # We modify the user and try to update it.
 updated_user = {**sample_user, "custom": {"age": 43, "address": "321 Other St."}}
@@ -50,8 +50,9 @@ try:
         include_custom=True,
         include_status=True,
         include_type=True
-    ).if_matches_etag(e_tag).sync()
+    ).if_matches_etag(original_e_tag).sync()
 except PubNubException as e:
     # We get an exception and after reading the error message we can see that the reason is that the eTag is outdated.
     print(f"Update failed: {e.get_error_message().get('message')}")
-
+except Exception as e:
+    print(f"Unexpected error: {e}")

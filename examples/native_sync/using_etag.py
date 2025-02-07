@@ -53,6 +53,8 @@ try:
     ).if_matches_etag(original_e_tag).sync()
 except PubNubException as e:
     # We get an exception and after reading the error message we can see that the reason is that the eTag is outdated.
-    print(f"Update failed: {e.get_error_message().get('message')}")
+    print(f"Update failed: {e.get_error_message().get('message')}\nHTTP Status Code: {e.get_status_code()}")
+
+
 except Exception as e:
     print(f"Unexpected error: {e}")

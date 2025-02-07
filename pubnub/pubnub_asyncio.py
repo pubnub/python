@@ -47,7 +47,7 @@ class PubNubAsyncio(PubNubCore):
 
     def __init__(self, config, custom_event_loop=None, subscription_manager=None, *, custom_request_handler=None):
         super(PubNubAsyncio, self).__init__(config)
-        self.event_loop = custom_event_loop or asyncio.new_event_loop()
+        self.event_loop = custom_event_loop or asyncio.get_event_loop()
 
         self._session = None
 
@@ -632,7 +632,7 @@ class SubscribeListener(SubscribeCallback):
 class AsyncioTelemetryManager(TelemetryManager):
     def __init__(self):
         TelemetryManager.__init__(self)
-        self.loop = asyncio.new_event_loop()
+        self.loop = asyncio.get_event_loop()
         self._schedule_next_cleanup()
 
     def _schedule_next_cleanup(self):

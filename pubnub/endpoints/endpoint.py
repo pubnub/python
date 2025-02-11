@@ -25,6 +25,7 @@ class Endpoint(object):
 
     __metaclass__ = ABCMeta
     _path = None
+    _custom_headers: dict = None
 
     def __init__(self, pubnub):
         self.pubnub = pubnub
@@ -99,6 +100,9 @@ class Endpoint(object):
             headers["Content-Encoding"] = "gzip"
         if self.http_method() in [HttpMethod.POST, HttpMethod.PATCH]:
             headers["Content-type"] = "application/json"
+
+        if self._custom_headers:
+            headers.update(self._custom_headers)
 
         return headers
 

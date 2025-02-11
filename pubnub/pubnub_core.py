@@ -96,7 +96,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "10.1.0"
+    SDK_VERSION = "10.2.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -288,9 +288,9 @@ class PubNubCore:
                        include_type=include_type, status=status, type=type, name=name, email=email,
                        external_id=external_id, profile_url=profile_url)
 
-    def get_uuid_metadata(self, uuud: str = None, include_custom: bool = None, include_status: bool = True,
+    def get_uuid_metadata(self, uuid: str = None, include_custom: bool = None, include_status: bool = True,
                           include_type: bool = True) -> GetUuid:
-        return GetUuid(self, uuid=uuud, include_custom=include_custom, include_status=include_status,
+        return GetUuid(self, uuid=uuid, include_custom=include_custom, include_status=include_status,
                        include_type=include_type)
 
     def remove_uuid_metadata(self, uuid: str = None) -> RemoveUuid:

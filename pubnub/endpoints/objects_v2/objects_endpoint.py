@@ -17,6 +17,10 @@ class ObjectsEndpoint(Endpoint):
 
     _includes: PNIncludes = None
 
+    __if_matches_etag: str = None
+
+    _custom_headers: dict = {}
+
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
 
@@ -35,6 +39,11 @@ class ObjectsEndpoint(Endpoint):
 
     def validate_specific_params(self):
         pass
+
+    def if_matches_etag(self, etag: str):
+        self.__if_matches_etag = etag
+        self._custom_headers.update({"If-Match": etag})
+        return self
 
     def encoded_params(self):
         params = {}

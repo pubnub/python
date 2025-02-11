@@ -1,0 +1,361 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=status%2Ctype",
+                "body": {
+                    "pickle": "gASVUAAAAAAAAACMTHsibmFtZSI6ICJTb21lIG5hbWUiLCAiZW1haWwiOiBudWxsLCAiZXh0ZXJuYWxJZCI6IG51bGwsICJwcm9maWxlVXJsIjogbnVsbH2ULg=="
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "76"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:16:36 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "215"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASV5wAAAAAAAAB9lIwGc3RyaW5nlIzXeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6InNvbWV1dWlkIiwibmFtZSI6IlNvbWUgbmFtZSIsImV4dGVybmFsSWQiOm51bGwsInByb2ZpbGVVcmwiOm51bGwsImVtYWlsIjpudWxsLCJ0eXBlIjpudWxsLCJzdGF0dXMiOm51bGwsInVwZGF0ZWQiOiIyMDI1LTAyLTA2VDIxOjE2OjM2LjM5NDEyOVoiLCJlVGFnIjoiMDExYmQxMDRjZWM0MjhiOTA0YjRmNDJmZDk2OGYxZTgifX2Ucy4="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=status%2Ctype&l_obj=0.36420512199401855",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:16:36 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "215"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASV5wAAAAAAAAB9lIwGc3RyaW5nlIzXeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6InNvbWV1dWlkIiwibmFtZSI6IlNvbWUgbmFtZSIsImV4dGVybmFsSWQiOm51bGwsInByb2ZpbGVVcmwiOm51bGwsImVtYWlsIjpudWxsLCJ0eXBlIjpudWxsLCJzdGF0dXMiOm51bGwsInVwZGF0ZWQiOiIyMDI1LTAyLTA2VDIxOjE2OjM2LjM5NDEyOVoiLCJlVGFnIjoiMDExYmQxMDRjZWM0MjhiOTA0YjRmNDJmZDk2OGYxZTgifX2Ucy4="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=status%2Ctype&l_obj=0.28897154331207275",
+                "body": {
+                    "pickle": "gASVUgAAAAAAAACMTnsibmFtZSI6ICJTb21lIG5hbWUtMiIsICJlbWFpbCI6IG51bGwsICJleHRlcm5hbElkIjogbnVsbCwgInByb2ZpbGVVcmwiOiBudWxsfZQu"
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "78"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:16:36 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "217"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASV6QAAAAAAAAB9lIwGc3RyaW5nlIzZeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6InNvbWV1dWlkIiwibmFtZSI6IlNvbWUgbmFtZS0yIiwiZXh0ZXJuYWxJZCI6bnVsbCwicHJvZmlsZVVybCI6bnVsbCwiZW1haWwiOm51bGwsInR5cGUiOm51bGwsInN0YXR1cyI6bnVsbCwidXBkYXRlZCI6IjIwMjUtMDItMDZUMjE6MTY6MzYuODQyNDQ5WiIsImVUYWciOiJkNWJlNmI0OTlhZTU2ZjJjNjE4YTcwZGI1ZGNmYzk5OCJ9fZRzLg=="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=status%2Ctype&l_obj=0.26676233609517414",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:16:37 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "217"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASV6QAAAAAAAAB9lIwGc3RyaW5nlIzZeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6InNvbWV1dWlkIiwibmFtZSI6IlNvbWUgbmFtZS0yIiwiZXh0ZXJuYWxJZCI6bnVsbCwicHJvZmlsZVVybCI6bnVsbCwiZW1haWwiOm51bGwsInR5cGUiOm51bGwsInN0YXR1cyI6bnVsbCwidXBkYXRlZCI6IjIwMjUtMDItMDZUMjE6MTY6MzYuODQyNDQ5WiIsImVUYWciOiJkNWJlNmI0OTlhZTU2ZjJjNjE4YTcwZGI1ZGNmYzk5OCJ9fZRzLg=="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=status%2Ctype&l_obj=0.2539291977882385",
+                "body": {
+                    "pickle": "gASVUgAAAAAAAACMTnsibmFtZSI6ICJTb21lIG5hbWUtMyIsICJlbWFpbCI6IG51bGwsICJleHRlcm5hbElkIjogbnVsbCwgInByb2ZpbGVVcmwiOiBudWxsfZQu"
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "if-match": [
+                        "d5be6b499ae56f2c618a70db5dcfc998"
+                    ],
+                    "content-length": [
+                        "78"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:16:37 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "216"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASV6AAAAAAAAAB9lIwGc3RyaW5nlIzYeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6InNvbWV1dWlkIiwibmFtZSI6IlNvbWUgbmFtZS0zIiwiZXh0ZXJuYWxJZCI6bnVsbCwicHJvZmlsZVVybCI6bnVsbCwiZW1haWwiOm51bGwsInR5cGUiOm51bGwsInN0YXR1cyI6bnVsbCwidXBkYXRlZCI6IjIwMjUtMDItMDZUMjE6MTY6MzcuMjgwNDRaIiwiZVRhZyI6ImMyZTVkZTljNjU0YTQ2MmU0YjI4N2ZkYjg2MmM4YzhkIn19lHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "PATCH",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=status%2Ctype&l_obj=0.24891014099121095",
+                "body": {
+                    "pickle": "gASVUgAAAAAAAACMTnsibmFtZSI6ICJTb21lIG5hbWUtMyIsICJlbWFpbCI6IG51bGwsICJleHRlcm5hbElkIjogbnVsbCwgInByb2ZpbGVVcmwiOiBudWxsfZQu"
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.1.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "if-match": [
+                        "011bd104cec428b904b4f42fd968f1e8"
+                    ],
+                    "content-length": [
+                        "78"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 412,
+                    "message": "Precondition Failed"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 06 Feb 2025 21:16:37 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "107"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVewAAAAAAAAB9lIwGc3RyaW5nlIxreyJzdGF0dXMiOjQxMiwiZXJyb3IiOnsibWVzc2FnZSI6IlVzZXIgdG8gdXBkYXRlIGhhcyBiZWVuIG1vZGlmaWVkIGFmdGVyIGl0IHdhcyByZWFkLiIsInNvdXJjZSI6Im9iamVjdHMifX2Ucy4="
+                }
+            }
+        }
+    ]
+}

@@ -1,3 +1,6 @@
+from json import loads, JSONDecodeError
+
+
 class PubNubException(Exception):
     def __init__(self, errormsg="", status_code=0, pn_error=None, status=None):
         self._errormsg = errormsg
@@ -18,6 +21,16 @@ class PubNubException(Exception):
     def _status(self):
         raise DeprecationWarning
         return self.status
+
+    def get_status_code(self):
+        return self._status_code
+
+    def get_error_message(self):
+        try:
+            error = loads(self._errormsg)
+            return error.get('error')
+        except JSONDecodeError:
+            return self._errormsg
 
 
 class PubNubAsyncioException(Exception):

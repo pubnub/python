@@ -6,6 +6,11 @@ from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.v3.access_manager import PNGrantTokenResult
+from pubnub.models.consumer.v3.channel import Channel
+from pubnub.models.consumer.v3.group import Group
+from pubnub.models.consumer.v3.space import Space
+from pubnub.models.consumer.v3.user import User
+from pubnub.models.consumer.v3.uuid import UUID
 from pubnub.structures import Envelope
 
 
@@ -55,23 +60,23 @@ class GrantToken(Endpoint):
         self._authorized_uuid = user
         return self
 
-    def spaces(self, spaces: Union[str, List[str]]) -> 'GrantToken':
+    def spaces(self, spaces: List[Space]) -> 'GrantToken':
         self._channels = spaces
         return self
 
-    def users(self, users: Union[str, List[str]]) -> 'GrantToken':
+    def users(self, users: List[User]) -> 'GrantToken':
         self._uuids = users
         return self
 
-    def channels(self, channels: Union[str, List[str]]) -> 'GrantToken':
+    def channels(self, channels: List[Channel]) -> 'GrantToken':
         self._channels = channels
         return self
 
-    def groups(self, groups: Union[str, List[str]]) -> 'GrantToken':
+    def groups(self, groups: List[Group]) -> 'GrantToken':
         self._groups = groups
         return self
 
-    def uuids(self, uuids: Union[str, List[str]]) -> 'GrantToken':
+    def uuids(self, uuids: List[UUID]) -> 'GrantToken':
         self._uuids = uuids
         return self
 

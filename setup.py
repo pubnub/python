@@ -36,7 +36,7 @@ setup(
         'httpx>=0.28',
         'h2>=4.1',
         'requests>=2.4',
-        'aiohttp',
+        'aiohttp>3.9.2',
         'cbor2>=5.6'
     ],
     zip_safe=False,

@@ -1,1 +1,2 @@
-fastapi
+fastapi>=0.115.11
+pubnub>=10.1.0

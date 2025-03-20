@@ -35,7 +35,7 @@ setup(
         'pycryptodomex>=3.3',
         'httpx>=0.28',
         'h2>=4.1',
-        'requests>=2.4',
+        'requests>=2.32',
         'aiohttp>3.9.2',
         'cbor2>=5.6'
     ],

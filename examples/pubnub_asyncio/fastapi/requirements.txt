@@ -1,4 +1,6 @@
 fastapi>=0.115.11
 pubnub>=10.1.0
-aiohttp>=3.11.14
-urllib3>=1.26.19,<2
+aiohttp>=3.11.14 # not directly required, pinned to avoid a vulnerability
+requests>=2.32.2 # not directly required, pinned to avoid a vulnerability
+urllib3>=1.26.19,<2 # not directly required, pinned to avoid a vulnerability
+zipp>=3.19.1 # not directly required, pinned to avoid a vulnerability

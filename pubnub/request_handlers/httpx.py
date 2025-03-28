@@ -28,7 +28,7 @@ class HttpxRequestHandler(BaseRequestHandler):
     ENDPOINT_THREAD_COUNTER: int = 0
 
     def __init__(self, pubnub):
-        self.session = httpx.Client()
+        self.session = httpx.Client(http2=True)
 
         self.pubnub = pubnub
 

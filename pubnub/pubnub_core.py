@@ -250,8 +250,9 @@ class PubNubCore:
                            environment: PNPushEnvironment = None) -> ListPushProvisions:
         return ListPushProvisions(self, device_id=device_id, push_type=push_type, topic=topic, environment=environment)
 
-    def add_channels_to_push(self, channels: Union[str, List[str]], device_id: str = None, push_type: PNPushType = None,
-                             topic: str = None, environment: PNPushEnvironment = None) -> AddChannelsToPush:
+    def add_channels_to_push(self, channels: Union[str, List[str]] = None, device_id: str = None,
+                             push_type: PNPushType = None, topic: str = None, environment: PNPushEnvironment = None
+                             ) -> AddChannelsToPush:
         return AddChannelsToPush(self, channels=channels, device_id=device_id, push_type=push_type, topic=topic,
                                  environment=environment)
 

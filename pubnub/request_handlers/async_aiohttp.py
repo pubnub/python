@@ -28,25 +28,55 @@ class AsyncAiohttpRequestHandler(BaseRequestHandler):
     ENDPOINT_THREAD_COUNTER: int = 0
     _connector: aiohttp.TCPConnector = None
     _session: aiohttp.ClientSession = None
+    _is_closing: bool = False
+    _max_connections: int = 100
+    _connection_timeout: float = 30.0
 
     def __init__(self, pubnub):
         self.pubnub = pubnub
-        self._connector = aiohttp.TCPConnector(verify_ssl=True, loop=self.pubnub.event_loop)
+        self._connector = aiohttp.TCPConnector(
+            verify_ssl=True,
+            loop=self.pubnub.event_loop,
+            limit=self._max_connections,
+            ttl_dns_cache=300
+        )
+        self._is_closing = False
 
     async def create_session(self):
-        if not self._session:
+        if not self._session and not self._is_closing:
             self._session = aiohttp.ClientSession(
                 loop=self.pubnub.event_loop,
-                timeout=aiohttp.ClientTimeout(connect=self.pubnub.config.connect_timeout),
+                timeout=aiohttp.ClientTimeout(
+                    total=self._connection_timeout,
+                    connect=self.pubnub.config.connect_timeout,
+                    sock_read=self.pubnub.config.connect_timeout,
+                    sock_connect=self.pubnub.config.connect_timeout
+                ),
                 connector=self._connector
             )
 
     async def close_session(self):
-        if self._session is not None:
-            await self._session.close()
+        if self._session is not None and not self._is_closing:
+            self._is_closing = True
+            try:
+                # Cancel any pending requests
+                if hasattr(self._session, '_connector'):
+                    for task in asyncio.all_tasks():
+                        if not task.done() and task is not asyncio.current_task():
+                            task.cancel()
+
+                # Close session and connector
+                await self._session.close()
+                await self._connector.close()
+            except Exception as e:
+                logger.error(f"Error during session cleanup: {str(e)}")
+            finally:
+                self._session = None
+                self._is_closing = False
 
     async def set_connector(self, connector):
-        await self._session.aclose()
+        if self._session is not None:
+            await self.close_session()
         self._connector = connector
         await self.create_session()
 

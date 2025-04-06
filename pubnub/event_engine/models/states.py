@@ -122,7 +122,15 @@ class HandshakingState(PNState):
 
         return PNTransition(
             state=HandshakingState,
-            context=self._context
+            context=self._context,
+            invocation=[
+                invocations.EmitStatusInvocation(PNStatusCategory.PNSubscriptionChangedCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+                invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+            ]
         )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
@@ -148,7 +156,7 @@ class HandshakingState(PNState):
 
         return PNTransition(
             state=HandshakeReconnectingState,
-            context=self._context
+            context=self._context,
         )
 
     def disconnect(self, event: events.DisconnectEvent, context: PNContext) -> PNTransition:
@@ -183,8 +191,14 @@ class HandshakingState(PNState):
         return PNTransition(
             state=UnsubscribedState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
-                                                        operation=PNOperationType.PNUnsubscribeOperation)
+            invocation=[
+                invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+                invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+            ]
         )
 
 
@@ -218,7 +232,10 @@ class HandshakeReconnectingState(PNState):
 
         return PNTransition(
             state=HandshakeStoppedState,
-            context=self._context
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory,
+                                                        operation=PNOperationType.PNSubscribeOperation,
+                                                        context=self._context)
         )
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
@@ -230,7 +247,10 @@ class HandshakeReconnectingState(PNState):
 
         return PNTransition(
             state=HandshakeReconnectingState,
-            context=self._context
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNSubscriptionChangedCategory,
+                                                        operation=PNOperationType.PNSubscribeOperation,
+                                                        context=self._context)
         )
 
     def handshake_reconnect(self, event: events.HandshakeReconnectFailureEvent, context: PNContext) -> PNTransition:
@@ -240,7 +260,7 @@ class HandshakeReconnectingState(PNState):
 
         return PNTransition(
             state=HandshakeReconnectingState,
-            context=self._context
+            context=self._context,
         )
 
     def give_up(self, event: events.HandshakeReconnectGiveupEvent, context: PNContext) -> PNTransition:
@@ -253,7 +273,7 @@ class HandshakeReconnectingState(PNState):
             status_invocation = invocations.EmitStatusInvocation(status=event.reason.status.category,
                                                                  operation=PNOperationType.PNUnsubscribeOperation)
         else:
-            status_invocation = invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory)
+            status_invocation = invocations.EmitStatusInvocation(PNStatusCategory.PNConnectionErrorCategory)
 
         return PNTransition(
             state=HandshakeFailedState,
@@ -305,7 +325,10 @@ class HandshakeFailedState(PNState):
 
         return PNTransition(
             state=HandshakingState,
-            context=self._context
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNSubscriptionChangedCategory,
+                                                        operation=PNOperationType.PNSubscribeOperation,
+                                                        context=self._context)
         )
 
     def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
@@ -340,8 +363,14 @@ class HandshakeFailedState(PNState):
         return PNTransition(
             state=UnsubscribedState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
-                                                        operation=PNOperationType.PNUnsubscribeOperation)
+            invocation=[
+                invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+                invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+            ]
         )
 
 
@@ -374,8 +403,14 @@ class HandshakeStoppedState(PNState):
         return PNTransition(
             state=UnsubscribedState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
-                                                        operation=PNOperationType.PNUnsubscribeOperation)
+            invocation=[
+                invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+                invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+            ]
         )
 
 
@@ -412,7 +447,10 @@ class ReceivingState(PNState):
 
         return PNTransition(
             state=self.__class__,
-            context=self._context
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNSubscriptionChangedCategory,
+                                                        operation=PNOperationType.PNSubscribeOperation,
+                                                        context=self._context)
         )
 
     def subscription_restored(self, event: events.SubscriptionRestoredEvent, context: PNContext) -> PNTransition:
@@ -446,7 +484,7 @@ class ReceivingState(PNState):
         self._context.timetoken = event.timetoken
         return PNTransition(
             state=ReceiveReconnectingState,
-            context=self._context
+            context=self._context,
         )
 
     def disconnect(self, event: events.DisconnectEvent, context: PNContext) -> PNTransition:
@@ -477,8 +515,14 @@ class ReceivingState(PNState):
         return PNTransition(
             state=UnsubscribedState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
-                                                        operation=PNOperationType.PNUnsubscribeOperation)
+            invocation=[
+                invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+                invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+            ]
         )
 
 
@@ -515,7 +559,10 @@ class ReceiveReconnectingState(PNState):
 
         return PNTransition(
             state=ReceiveReconnectingState,
-            context=self._context
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.UnexpectedDisconnectCategory,
+                                                        operation=PNOperationType.PNSubscribeOperation,
+                                                        context=self._context)
         )
 
     def subscription_changed(self, event: events.SubscriptionChangedEvent, context: PNContext) -> PNTransition:
@@ -527,7 +574,10 @@ class ReceiveReconnectingState(PNState):
 
         return PNTransition(
             state=ReceiveReconnectingState,
-            context=self._context
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNSubscriptionChangedCategory,
+                                                        operation=PNOperationType.PNSubscribeOperation,
+                                                        context=self._context)
         )
 
     def disconnect(self, event: events.DisconnectEvent, context: PNContext) -> PNTransition:
@@ -546,7 +596,9 @@ class ReceiveReconnectingState(PNState):
         return PNTransition(
             state=ReceiveFailedState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory)
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNUnexpectedDisconnectCategory,
+                                                        operation=PNOperationType.PNSubscribeOperation,
+                                                        context=self._context)
         )
 
     def reconnect_success(self, event: events.ReceiveReconnectSuccessEvent, context: PNContext) -> PNTransition:
@@ -602,7 +654,10 @@ class ReceiveFailedState(PNState):
 
         return PNTransition(
             state=ReceivingState,
-            context=self._context
+            context=self._context,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNSubscriptionChangedCategory,
+                                                        operation=PNOperationType.PNSubscribeOperation,
+                                                        context=self._context)
         )
 
     def reconnect(self, event: events.ReconnectEvent, context: PNContext) -> PNTransition:
@@ -637,8 +692,14 @@ class ReceiveFailedState(PNState):
         return PNTransition(
             state=UnsubscribedState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
-                                                        operation=PNOperationType.PNUnsubscribeOperation)
+            invocation=[
+                invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+                invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+            ]
         )
 
 
@@ -671,8 +732,14 @@ class ReceiveStoppedState(PNState):
         return PNTransition(
             state=UnsubscribedState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
-                                                        operation=PNOperationType.PNUnsubscribeOperation)
+            invocation=[
+                invocations.EmitStatusInvocation(PNStatusCategory.PNDisconnectedCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+                invocations.EmitStatusInvocation(PNStatusCategory.PNAcknowledgmentCategory,
+                                                 operation=PNOperationType.PNSubscribeOperation,
+                                                 context=self._context),
+            ]
         )
 
 

@@ -129,7 +129,6 @@ async def test_subscribe_publish_unsubscribe():
 # )
 @pytest.mark.asyncio
 async def test_encrypted_subscribe_publish_unsubscribe():
-
     pubnub = PubNubAsyncio(pnconf_enc_env_copy(enable_subscribe=True))
     pubnub.config.uuid = 'test-subscribe-asyncio-uuid'
 
@@ -341,7 +340,6 @@ async def test_cg_join_leave():
 
     pubnub.add_listener(callback_messages)
     pubnub.subscribe().channel_groups(gr).execute()
-
     callback_messages_future = asyncio.ensure_future(callback_messages.wait_for_connect())
     presence_messages_future = asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
     await asyncio.wait([callback_messages_future, presence_messages_future])

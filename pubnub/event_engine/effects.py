@@ -455,6 +455,9 @@ class EmitEffect:
             self.message_worker._process_incoming_payload(subscribe_message)
 
     def emit_status(self, invocation: invocations.EmitStatusInvocation):
+        if isinstance(invocation.status, PNStatus):
+            self.pubnub._subscription_manager._listener_manager.announce_status(invocation.status)
+            return
         pn_status = PNStatus()
         pn_status.category = invocation.status
         pn_status.operation = invocation.operation

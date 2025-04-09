@@ -4,6 +4,7 @@ from pubnub.event_engine.models.invocations import PNInvocation
 from pubnub.event_engine.models import events
 from pubnub.exceptions import PubNubException
 from typing import List, Union
+from pubnub.models.consumer.pn_error_data import PNErrorData
 
 
 class PNContext(dict):
@@ -272,6 +273,13 @@ class HandshakeReconnectingState(PNState):
         if isinstance(event, Exception) and 'status' in event.reason:
             status_invocation = invocations.EmitStatusInvocation(status=event.reason.status.category,
                                                                  operation=PNOperationType.PNUnsubscribeOperation)
+        elif isinstance(context.reason, PNErrorData):
+            status_invocation = invocations.EmitStatusInvocation(PNStatusCategory.PNConnectionErrorCategory,
+                                                                 context=self._context)
+        elif isinstance(context.reason, PubNubException):
+            status = context.reason.status
+            status.category = PNStatusCategory.PNConnectionErrorCategory
+            status_invocation = invocations.EmitStatusInvocation(status)
         else:
             status_invocation = invocations.EmitStatusInvocation(PNStatusCategory.PNConnectionErrorCategory)
 

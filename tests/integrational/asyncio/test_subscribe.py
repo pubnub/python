@@ -28,6 +28,7 @@ class TestCallback(SubscribeCallback):
     presence_result = None
 
     def status(self, pubnub, status):
+        super().status(pubnub, status)
         self.status_result = status
 
     def message(self, pubnub, message):
@@ -129,7 +130,6 @@ async def test_subscribe_publish_unsubscribe():
 # )
 @pytest.mark.asyncio
 async def test_encrypted_subscribe_publish_unsubscribe():
-
     pubnub = PubNubAsyncio(pnconf_enc_env_copy(enable_subscribe=True))
     pubnub.config.uuid = 'test-subscribe-asyncio-uuid'
 
@@ -341,7 +341,6 @@ async def test_cg_join_leave():
 
     pubnub.add_listener(callback_messages)
     pubnub.subscribe().channel_groups(gr).execute()
-
     callback_messages_future = asyncio.ensure_future(callback_messages.wait_for_connect())
     presence_messages_future = asyncio.ensure_future(callback_presence.wait_for_presence_on(ch))
     await asyncio.wait([callback_messages_future, presence_messages_future])
@@ -441,7 +440,7 @@ async def test_subscribe_failing_reconnect_policy_none():
     pubnub.subscribe().channels("my_channel").execute()
     while True:
         if isinstance(listener.status_result, PNStatus) \
-           and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+           and listener.status_result.category == PNStatusCategory.PNConnectionErrorCategory:
             break
         await asyncio.sleep(1)
 
@@ -459,7 +458,7 @@ async def test_subscribe_failing_reconnect_policy_none():
     pubnub.subscribe().channels("my_channel_none").execute()
     while True:
         if isinstance(listener.status_result, PNStatus) \
-           and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+           and listener.status_result.category == PNStatusCategory.PNConnectionErrorCategory:
             break
         await asyncio.sleep(0.5)
 
@@ -482,7 +481,7 @@ async def test_subscribe_failing_reconnect_policy_linear():
         pubnub.subscribe().channels("my_channel_linear").execute()
         while True:
             if isinstance(listener.status_result, PNStatus) \
-               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+               and listener.status_result.category == PNStatusCategory.PNConnectionErrorCategory:
                 break
             await asyncio.sleep(0.5)
         assert calculate_mock.call_count == LinearDelay.MAX_RETRIES
@@ -506,7 +505,7 @@ async def test_subscribe_failing_reconnect_policy_exponential():
         pubnub.subscribe().channels("my_channel_exponential").execute()
         while True:
             if isinstance(listener.status_result, PNStatus) \
-               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+               and listener.status_result.category == PNStatusCategory.PNConnectionErrorCategory:
                 break
             await asyncio.sleep(0.5)
         assert calculate_mock.call_count == ExponentialDelay.MAX_RETRIES
@@ -530,7 +529,7 @@ async def test_subscribe_failing_reconnect_policy_linear_with_max_retries():
         pubnub.subscribe().channels("my_channel_linear").execute()
         while True:
             if isinstance(listener.status_result, PNStatus) \
-               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+               and listener.status_result.category == PNStatusCategory.PNConnectionErrorCategory:
                 break
             await asyncio.sleep(0.5)
         assert calculate_mock.call_count == 3
@@ -554,7 +553,7 @@ async def test_subscribe_failing_reconnect_policy_exponential_with_max_retries()
         pubnub.subscribe().channels("my_channel_exponential").execute()
         while True:
             if isinstance(listener.status_result, PNStatus) \
-               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+               and listener.status_result.category == PNStatusCategory.PNConnectionErrorCategory:
                 break
             await asyncio.sleep(0.5)
         assert calculate_mock.call_count == 3
@@ -578,7 +577,7 @@ async def test_subscribe_failing_reconnect_policy_linear_with_custom_interval():
         pubnub.subscribe().channels("my_channel_linear").execute()
         while True:
             if isinstance(listener.status_result, PNStatus) \
-               and listener.status_result.category == PNStatusCategory.PNDisconnectedCategory:
+               and listener.status_result.category == PNStatusCategory.PNConnectionErrorCategory:
                 break
             await asyncio.sleep(0.5)
         assert calculate_mock.call_count == 0

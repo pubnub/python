@@ -37,6 +37,8 @@ class PNStatusCategory(Enum):
     PNTLSConnectionFailedCategory = 15
     PNTLSUntrustedCertificateCategory = 16
     PNInternalExceptionCategory = 17
+    PNSubscriptionChangedCategory = 18
+    PNConnectionErrorCategory = 19
 
 
 class PNOperationType(object):

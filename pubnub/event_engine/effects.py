@@ -128,6 +128,9 @@ class ReceiveMessagesEffect(Effect):
             recieve_failure = events.ReceiveFailureEvent('Empty response', 1, timetoken=timetoken)
             self.event_engine.trigger(recieve_failure)
         elif response.status.error:
+            if self.stop_event.is_set():
+                self.logger.debug(f'Recieve messages cancelled: {response.status.error_data.__dict__}')
+                return
             self.logger.warning(f'Recieve messages failed: {response.status.error_data.__dict__}')
             recieve_failure = events.ReceiveFailureEvent(response.status.error_data, 1, timetoken=timetoken)
             self.event_engine.trigger(recieve_failure)
@@ -437,6 +440,9 @@ class EmitEffect:
         self.message_worker = BaseMessageWorker(pubnub)
 
     def emit(self, invocation: invocations.PNEmittableInvocation):
+        if isinstance(invocation, list):
+            for inv in invocation:
+                self.emit(inv)
         if isinstance(invocation, invocations.EmitMessagesInvocation):
             self.emit_message(invocation)
         if isinstance(invocation, invocations.EmitStatusInvocation):
@@ -449,8 +455,15 @@ class EmitEffect:
             self.message_worker._process_incoming_payload(subscribe_message)
 
     def emit_status(self, invocation: invocations.EmitStatusInvocation):
+        if isinstance(invocation.status, PNStatus):
+            self.pubnub._subscription_manager._listener_manager.announce_status(invocation.status)
+            return
         pn_status = PNStatus()
         pn_status.category = invocation.status
         pn_status.operation = invocation.operation
+        if invocation.context and invocation.context.channels:
+            pn_status.affected_channels = invocation.context.channels
+        if invocation.context and invocation.context.groups:
+            pn_status.affected_groups = invocation.context.groups
         pn_status.error = False
         self.pubnub._subscription_manager._listener_manager.announce_status(pn_status)

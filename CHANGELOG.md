@@ -1,3 +1,9 @@
+## 10.3.0
+April 10 2025
+
+#### Added
+- Additional status emission during subscription.
+
 ## 10.2.0
 February 07 2025
 

@@ -24,32 +24,84 @@ class PubNubAsyncHTTPTransport(httpx.AsyncHTTPTransport):
         self.is_closed = True
         asyncio.create_task(super().aclose())
 
+    async def aclose(self):
+        self.is_closed = True
+        await super().aclose()
+
+    async def __aenter__(self):
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.aclose()
+
 
 class AsyncHttpxRequestHandler(BaseRequestHandler):
     """ PubNub Python SDK asychronous requests handler based on the `httpx` HTTP library. """
     ENDPOINT_THREAD_COUNTER: int = 0
     _connector: httpx.AsyncHTTPTransport = None
     _session: httpx.AsyncClient = None
+    _is_closing: bool = False
+    _max_connections: int = 100
+    _connection_timeout: float = 30.0
 
     def __init__(self, pubnub):
         self.pubnub = pubnub
-        self._connector = PubNubAsyncHTTPTransport(verify=True, http2=True)
+        self._connector = PubNubAsyncHTTPTransport(
+            verify=True,
+            http2=True,
+            limits=httpx.Limits(max_connections=self._max_connections)
+        )
+        self._is_closing = False
 
     async def create_session(self):
-        self._session = httpx.AsyncClient(
-            timeout=httpx.Timeout(self.pubnub.config.connect_timeout),
-            transport=self._connector
-        )
+        if self._session is None and not self._is_closing:
+            self._session = httpx.AsyncClient(
+                timeout=httpx.Timeout(
+                    connect=self._connection_timeout,
+                    read=self.pubnub.config.connect_timeout,
+                    write=self.pubnub.config.connect_timeout,
+                    pool=self._connection_timeout
+                ),
+                transport=self._connector,
+                http2=True
+            )
 
     async def close_session(self):
-        if self._session is not None:
-            self._connector.close()
-            await self._session.aclose()
+        if self._session is not None and not self._is_closing:
+            self._is_closing = True
+            try:
+                # Cancel any pending requests
+                if hasattr(self._session, '_transport'):
+                    for task in asyncio.all_tasks():
+                        if not task.done() and task is not asyncio.current_task():
+                            task.cancel()
+
+                # Close transport and session
+                await self._connector.aclose()
+                await self._session.aclose()
+            except Exception as e:
+                logger.error(f"Error during session cleanup: {str(e)}")
+            finally:
+                self._session = None
+                self._is_closing = False
 
     async def set_connector(self, connector):
-        await self._session.aclose()
+        if self._session is not None:
+            await self.close_session()
         self._connector = connector
         await self.create_session()
+
+    async def __aenter__(self):
+        await self.create_session()
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.close_session()
+
+    def __del__(self):
+        ...
+        # if self._session is not None and not self._is_closing:
+        #     asyncio.create_task(self.close_session())
 
     def sync_request(self, **_):
         raise NotImplementedError("sync_request is not implemented for asyncio handler")
@@ -123,13 +175,17 @@ class AsyncHttpxRequestHandler(BaseRequestHandler):
         except Exception as e:
             logger.error("session.request exception: %s" % str(e))
             raise
+        try:
+            response_body = await response.aread()
+        except Exception as e:
+            logger.error(f"Error reading response body: {str(e)}")
+            response_body = None
 
-        response_body = response.read()
         if not options.non_json_response:
             body = response_body
         else:
             if isinstance(response.content, bytes):
-                body = response.content  # TODO: simplify this logic within the v5 release
+                body = response.content
             else:
                 body = response_body
 
@@ -192,7 +248,6 @@ class AsyncHttpxRequestHandler(BaseRequestHandler):
         logger.debug(data)
 
         if response.status_code not in (200, 307, 204):
-
             if response.status_code >= 500:
                 err = PNERR_SERVER_ERROR
             else:

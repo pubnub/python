@@ -1,3 +1,55 @@
+"""PubNub Python SDK Asyncio Implementation.
+
+This module provides the asynchronous implementation of the PubNub Python SDK using
+asyncio. It enables non-blocking operations for real-time communication features
+and is designed for use in asyncio-based applications.
+
+Key Components:
+    - PubNubAsyncio: Main class for asynchronous PubNub operations
+    - AsyncioSubscriptionManager: Async implementation of subscription handling
+    - EventEngineSubscriptionManager: Event-driven subscription management
+    - AsyncioReconnectionManager: Async network reconnection handling
+    - AsyncioPublishSequenceManager: Async message sequence management
+
+Features:
+    - Asynchronous publish/subscribe messaging
+    - Non-blocking network operations
+    - Event-driven architecture
+    - Customizable request handling
+    - Automatic reconnection with backoff strategies
+    - Concurrent message processing
+
+Usage Example:
+    ```python
+    import asyncio
+    from pubnub.pnconfiguration import PNConfiguration
+    from pubnub.pubnub_asyncio import PubNubAsyncio
+
+    async def main():
+        config = PNConfiguration()
+        config.publish_key = 'your_pub_key'
+        config.subscribe_key = 'your_sub_key'
+        config.uuid = 'client-123'
+
+        pubnub = PubNubAsyncio(config)
+
+        # Subscribe to channels
+        await pubnub.subscribe().channels("my_channel").execute()
+
+        # Publish messages
+        await pubnub.publish().channel("my_channel").message("Hello!").future()
+
+        # Cleanup
+        await pubnub.stop()
+
+    asyncio.run(main())
+    ```
+
+Note:
+    This implementation is designed for asynchronous operations using Python's
+    asyncio framework. For synchronous operations, use the standard PubNub class.
+"""
+
 import importlib
 import logging
 import asyncio
@@ -33,22 +85,50 @@ logger = logging.getLogger("pubnub")
 
 
 class PubNubAsyncHTTPTransport(AsyncHTTPTransport):
+    """Custom HTTP transport for asynchronous PubNub operations.
+
+    This class extends AsyncHTTPTransport to provide PubNub-specific
+    transport functionality with proper connection state tracking.
+
+    Attributes:
+        is_closed (bool): Whether the transport is closed
+    """
+
     is_closed: bool = False
 
     def close(self):
+        """Close the transport connection."""
         self.is_closed = True
         super().aclose()
 
 
 class PubNubAsyncio(PubNubCore):
-    """
-    PubNub Python SDK for asyncio framework
+    """PubNub Python SDK for asyncio framework.
+
+    This class provides the main interface for asynchronous interactions with
+    the PubNub network. It implements all core PubNub functionality in a
+    non-blocking manner.
+
+    Attributes:
+        event_loop (AbstractEventLoop): The asyncio event loop to use
     """
 
     def __init__(self, config, custom_event_loop=None, subscription_manager=None, *, custom_request_handler=None):
+        """Initialize a new PubNubAsyncio instance.
+
+        Args:
+            config: PubNub configuration instance
+            custom_event_loop (AbstractEventLoop, optional): Custom event loop to use
+            subscription_manager (Type, optional): Custom subscription manager class
+            custom_request_handler (Type[BaseRequestHandler], optional): Custom request
+                handler class. Can also be set via PUBNUB_ASYNC_REQUEST_HANDLER
+                environment variable.
+
+        Raises:
+            Exception: If custom request handler is not a subclass of BaseRequestHandler
+        """
         super(PubNubAsyncio, self).__init__(config)
         self.event_loop = custom_event_loop or asyncio.get_event_loop()
-
         self._session = None
 
         if (not custom_request_handler) and (handler := os.getenv('PUBNUB_ASYNC_REQUEST_HANDLER')):
@@ -73,7 +153,6 @@ class PubNubAsyncio(PubNubCore):
             self._subscription_manager = subscription_manager(self)
 
         self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop, PubNubCore.MAX_SEQUENCE)
-
         self._telemetry_manager = AsyncioTelemetryManager()
 
     @property
@@ -81,24 +160,42 @@ class PubNubAsyncio(PubNubCore):
         return self._request_handler._connector
 
     async def close_pending_tasks(self, tasks):
+        """Close any pending tasks and wait for completion.
+
+        Args:
+            tasks: List of tasks to close
+        """
         await asyncio.gather(*tasks)
         await asyncio.sleep(0.1)
 
     async def create_session(self):
+        """Create a new HTTP session."""
         await self._request_handler.create_session()
 
     async def close_session(self):
+        """Close the current HTTP session."""
         await self._request_handler.close_session()
 
     async def set_connector(self, connector):
+        """Set a custom connector for HTTP operations.
+
+        Args:
+            connector: The connector to use
+        """
         await self._request_handler.set_connector(connector)
 
     async def stop(self):
+        """Stop all operations and clean up resources."""
         if self._subscription_manager:
             self._subscription_manager.stop()
         await self.close_session()
 
     def sdk_platform(self):
+        """Get the SDK platform identifier.
+
+        Returns:
+            str: "-Asyncio" to identify this as the asyncio implementation
+        """
         return "-Asyncio"
 
     def request_sync(self, *args):
@@ -108,10 +205,32 @@ class PubNubAsyncio(PubNubCore):
         raise NotImplementedError
 
     async def request_result(self, options_func, cancellation_event):
+        """Execute a request and return its result.
+
+        Args:
+            options_func: Function that returns request options
+            cancellation_event: Event to cancel the request
+
+        Returns:
+            The result of the request
+        """
         envelope = await self._request_handler.async_request(options_func, cancellation_event)
         return envelope.result
 
     async def request_future(self, options_func, cancellation_event):
+        """Execute a request and return a future.
+
+        This method handles various error conditions and wraps them in
+        appropriate exception types.
+
+        Args:
+            options_func: Function that returns request options
+            cancellation_event: Event to cancel the request
+
+        Returns:
+            PubNubAsyncioException: On error
+            AsyncioEnvelope: On success
+        """
         try:
             res = await self._request_handler.async_request(options_func, cancellation_event)
             return res
@@ -157,16 +276,28 @@ class PubNubAsyncio(PubNubCore):
 
 
 class AsyncioReconnectionManager(ReconnectionManager):
+    """Manages reconnection attempts for lost network connections.
+
+    This class implements the reconnection policy (linear or exponential backoff)
+    using asyncio's event loop for timing.
+
+    Attributes:
+        _task: The current reconnection task
+    """
+
     def __init__(self, pubnub):
         self._task = None
         super(AsyncioReconnectionManager, self).__init__(pubnub)
 
     async def _register_heartbeat_timer(self):
+        """Register a new heartbeat timer for reconnection attempts.
+
+        This method implements the reconnection policy and schedules the next
+        reconnection attempt based on the current state.
+        """
         while True:
             self._recalculate_interval()
-
             await asyncio.sleep(self._timer_interval)
-
             logger.debug("reconnect loop at: %s" % utils.datetime_now())
 
             try:
@@ -180,6 +311,7 @@ class AsyncioReconnectionManager(ReconnectionManager):
                     self._connection_errors += 1
 
     def start_polling(self):
+        """Start the reconnection polling process."""
         if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.NONE:
             logger.warning("reconnection policy is disabled, please handle reconnection manually.")
             return
@@ -187,6 +319,7 @@ class AsyncioReconnectionManager(ReconnectionManager):
         self._task = asyncio.ensure_future(self._register_heartbeat_timer())
 
     def stop_polling(self):
+        """Stop the reconnection polling process."""
         if self._task is not None and not self._task.cancelled():
             self._task.cancel()
 
@@ -208,6 +341,18 @@ class AsyncioPublishSequenceManager(PublishSequenceManager):
 
 
 class AsyncioSubscriptionManager(SubscriptionManager):
+    """Manages channel subscriptions and message processing.
+
+    This class handles the subscription lifecycle, message queuing,
+    and delivery of messages to listeners using asyncio primitives.
+
+    Attributes:
+        _message_queue (Queue): Queue for incoming messages
+        _subscription_lock (Semaphore): Lock for subscription operations
+        _subscribe_loop_task: Current subscription loop task
+        _heartbeat_periodic_callback: Callback for periodic heartbeats
+    """
+
     def __init__(self, pubnub_instance):
         subscription_manager = self
 
@@ -255,13 +400,19 @@ class AsyncioSubscriptionManager(SubscriptionManager):
         )
 
     def reconnect(self):
-        # TODO: method is synchronized in Java
+        """Reconnect all current subscriptions.
+
+        Restarts the subscribe loop and heartbeat timer if enabled.
+        """
         self._should_stop = False
         self._subscribe_loop_task = asyncio.ensure_future(self._start_subscribe_loop())
         self._register_heartbeat_timer()
 
     def disconnect(self):
-        # TODO: method is synchronized in Java
+        """Disconnect from all subscriptions.
+
+        Stops the subscribe loop and heartbeat timer.
+        """
         self._should_stop = True
         self._stop_heartbeat_timer()
         self._stop_subscribe_loop()
@@ -273,61 +424,45 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             self._subscribe_loop_task.cancel()
 
     async def _start_subscribe_loop(self):
-        self._stop_subscribe_loop()
+        """Start the subscription loop.
 
+        This method handles the main subscription process, including
+        channel management and error handling.
+        """
+        self._stop_subscribe_loop()
         await self._subscription_lock.acquire()
 
-        combined_channels = self._subscription_state.prepare_channel_list(True)
-        combined_groups = self._subscription_state.prepare_channel_group_list(True)
+        try:
+            combined_channels = self._subscription_state.prepare_channel_list(True)
+            combined_groups = self._subscription_state.prepare_channel_group_list(True)
 
-        if len(combined_channels) == 0 and len(combined_groups) == 0:
-            self._subscription_lock.release()
-            return
-
-        self._subscribe_request_task = asyncio.ensure_future(
-            Subscribe(self._pubnub)
-            .channels(combined_channels)
-            .channel_groups(combined_groups)
-            .timetoken(self._timetoken)
-            .region(self._region)
-            .filter_expression(self._pubnub.config.filter_expression)
-            .future()
-        )
-
-        e = await self._subscribe_request_task
-
-        if self._subscribe_request_task.cancelled():
-            self._subscription_lock.release()
-            return
-
-        if e.is_error():
-            if e.status and e.status.category == PNStatusCategory.PNCancelledCategory:
+            if len(combined_channels) == 0 and len(combined_groups) == 0:
                 self._subscription_lock.release()
                 return
 
-            if e.status and e.status.category == PNStatusCategory.PNTimeoutCategory:
-                asyncio.ensure_future(self._start_subscribe_loop())
-                self._subscription_lock.release()
+            self._subscribe_request_task = asyncio.ensure_future(
+                Subscribe(self._pubnub)
+                .channels(combined_channels)
+                .channel_groups(combined_groups)
+                .timetoken(self._timetoken)
+                .region(self._region)
+                .filter_expression(self._pubnub.config.filter_expression)
+                .future()
+            )
+
+            e = await self._subscribe_request_task
+
+            if self._subscribe_request_task.cancelled():
                 return
 
-            logger.error("Exception in subscribe loop: %s" % str(e))
+            if e.is_error():
+                await self._handle_subscription_error(e)
+            else:
+                self._handle_endpoint_call(e.result, e.status)
+                self._subscribe_loop_task = asyncio.ensure_future(self._start_subscribe_loop())
 
-            if e.status and e.status.category == PNStatusCategory.PNAccessDeniedCategory:
-                e.status.operation = PNOperationType.PNUnsubscribeOperation
-
-            # TODO: raise error
-            self._listener_manager.announce_status(e.status)
-
-            self._reconnection_manager.start_polling()
+        finally:
             self._subscription_lock.release()
-            self.disconnect()
-            return
-        else:
-            self._handle_endpoint_call(e.result, e.status)
-            self._subscription_lock.release()
-            self._subscribe_loop_task = asyncio.ensure_future(self._start_subscribe_loop())
-
-        self._subscription_lock.release()
 
     def _stop_subscribe_loop(self):
         if self._subscribe_request_task is not None and not self._subscribe_request_task.cancelled():
@@ -397,6 +532,28 @@ class AsyncioSubscriptionManager(SubscriptionManager):
             .channel_groups(unsubscribe_operation.channel_groups).future()
 
         self._listener_manager.announce_status(envelope.status)
+
+    async def _handle_subscription_error(self, error):
+        """Handle errors that occur during subscription.
+
+        Args:
+            error: The error that occurred
+        """
+        if error.status and error.status.category == PNStatusCategory.PNCancelledCategory:
+            return
+
+        if error.status and error.status.category == PNStatusCategory.PNTimeoutCategory:
+            asyncio.ensure_future(self._start_subscribe_loop())
+            return
+
+        logger.error("Exception in subscribe loop: %s" % str(error))
+
+        if error.status and error.status.category == PNStatusCategory.PNAccessDeniedCategory:
+            error.status.operation = PNOperationType.PNUnsubscribeOperation
+
+        self._listener_manager.announce_status(error.status)
+        self._reconnection_manager.start_polling()
+        self.disconnect()
 
 
 class EventEngineSubscriptionManager(SubscriptionManager):
@@ -550,6 +707,20 @@ class AsyncioPeriodicCallback(object):
 
 
 class SubscribeListener(SubscribeCallback):
+    """Helper class for handling subscription events.
+
+    This class provides a way to wait for specific events or messages
+    in an asynchronous manner.
+
+    Attributes:
+        connected (bool): Whether currently connected
+        connected_event (Event): Event signaling connection
+        disconnected_event (Event): Event signaling disconnection
+        presence_queue (Queue): Queue for presence events
+        message_queue (Queue): Queue for messages
+        error_queue (Queue): Queue for errors
+    """
+
     def __init__(self):
         self.connected = False
         self.connected_event = Event()
@@ -559,6 +730,12 @@ class SubscribeListener(SubscribeCallback):
         self.error_queue = Queue()
 
     def status(self, pubnub, status):
+        """Handle status updates from the PubNub instance.
+
+        Args:
+            pubnub: The PubNub instance
+            status: The status update
+        """
         super().status(pubnub, status)
         if utils.is_subscribed_event(status) and not self.connected_event.is_set():
             self.connected_event.set()
@@ -568,12 +745,35 @@ class SubscribeListener(SubscribeCallback):
             self.error_queue.put_nowait(status.error_data.exception)
 
     def message(self, pubnub, message):
+        """Handle incoming messages from the PubNub instance.
+
+        Args:
+            pubnub: The PubNub instance
+            message: The incoming message
+        """
         self.message_queue.put_nowait(message)
 
     def presence(self, pubnub, presence):
+        """Handle presence updates from the PubNub instance.
+
+        Args:
+            pubnub: The PubNub instance
+            presence: The presence update
+        """
         self.presence_queue.put_nowait(presence)
 
     async def _wait_for(self, coro):
+        """Wait for a coroutine to complete.
+
+        Args:
+            coro: The coroutine to wait for
+
+        Returns:
+            The result of the coroutine
+
+        Raises:
+            Exception: If an error occurs while waiting
+        """
         scc_task = asyncio.ensure_future(coro)
         err_task = asyncio.ensure_future(self.error_queue.get())
 
@@ -592,20 +792,27 @@ class SubscribeListener(SubscribeCallback):
             return scc_task.result()
 
     async def wait_for_connect(self):
+        """Wait for a connection to be established."""
         if not self.connected_event.is_set():
             await self._wait_for(self.connected_event.wait())
-        # failing because you don't have to wait is illogical
-        # else:
-        #     raise Exception("instance is already connected")
 
     async def wait_for_disconnect(self):
+        """Wait for a disconnection to occur."""
         if not self.disconnected_event.is_set():
             await self._wait_for(self.disconnected_event.wait())
-        # failing because you don't have to wait is illogical
-        # else:
-        #     raise Exception("instance is already disconnected")
 
     async def wait_for_message_on(self, *channel_names):
+        """Wait for a message on specific channels.
+
+        Args:
+            *channel_names: Channel names to wait for
+
+        Returns:
+            The message envelope when received
+
+        Raises:
+            Exception: If an error occurs while waiting
+        """
         channel_names = list(channel_names)
         while True:
             try:

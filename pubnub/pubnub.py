@@ -1,3 +1,59 @@
+"""PubNub Python SDK Implementation.
+
+This module provides the main implementation of the PubNub Python SDK, offering real-time
+messaging and presence functionality. It implements the native (synchronous) version of
+the PubNub client, building upon the core functionality defined in PubNubCore.
+
+Key Components:
+    - PubNub: Main class for interacting with PubNub services
+    - NativeSubscriptionManager: Handles channel subscriptions and message processing
+    - NativeReconnectionManager: Manages network reconnection strategies
+    - NativePublishSequenceManager: Manages message sequence numbers for publishing
+    - SubscribeListener: Helper class for handling subscription events
+    - NonSubscribeListener: Helper class for handling non-subscription operations
+
+Features:
+    - Real-time messaging with publish/subscribe
+    - Presence detection and heartbeat
+    - Channel and Channel Group support
+    - Message queueing and worker thread management
+    - Automatic reconnection handling
+    - Custom request handler support
+    - Telemetry tracking
+
+Usage Example:
+    ```python
+    from pubnub.pnconfiguration import PNConfiguration
+    from pubnub.pubnub import PubNub
+
+    config = PNConfiguration()
+    config.publish_key = 'your_pub_key'
+    config.subscribe_key = 'your_sub_key'
+    config.uuid = 'client-123'
+
+    pubnub = PubNub(config)
+
+    # Publish messages
+    pubnub.publish().channel("my_channel").message("Hello!").sync()
+    ```
+
+Threading Notes:
+    - The SDK uses multiple threads for different operations
+    - SubscribeMessageWorker runs in a daemon thread
+    - Heartbeat and reconnection timers run in separate threads
+    - Thread-safe implementations for sequence management and message queuing
+
+Error Handling:
+    - Automatic retry mechanisms for failed operations
+    - Configurable reconnection policies
+    - Status callbacks for error conditions
+    - Exception propagation through status objects
+
+Note:
+    This implementation is designed for synchronous operations. For asynchronous
+    operations, consider using the PubNubAsyncio implementation of the SDK.
+"""
+
 import copy
 import importlib
 import logging
@@ -26,15 +82,27 @@ logger = logging.getLogger("pubnub")
 
 
 class PubNub(PubNubCore):
-    """PubNub Python API"""
+    """Main PubNub client class for synchronous operations.
+
+    This class provides the primary interface for interacting with the PubNub network.
+    It implements synchronous (blocking) operations and manages the lifecycle of subscriptions,
+    message processing, and network connectivity.
+
+    Attributes:
+        config (PNConfiguration): Configuration instance containing SDK settings
+    """
 
     def __init__(self, config: PNConfiguration, *, custom_request_handler: Type[BaseRequestHandler] = None):
-        """ PubNub instance constructor
+        """Initialize a new PubNub instance.
 
-        Parameters:
-            config (PNConfiguration): PNConfiguration instance (required)
-            custom_request_handler (BaseRequestHandler): Custom request handler class (optional)
+        Args:
+            config (PNConfiguration): Configuration instance containing settings
+            custom_request_handler (Type[BaseRequestHandler], optional): Custom request handler class.
+                Can also be set via set_request_handler method.
 
+        Raises:
+            Exception: If custom request handler is not a subclass of BaseRequestHandler
+            AssertionError: If config is not an instance of PNConfiguration
         """
         assert isinstance(config, PNConfiguration)
         PubNubCore.__init__(self, config)
@@ -61,28 +129,47 @@ class PubNub(PubNubCore):
 
         self._telemetry_manager = NativeTelemetryManager()
 
-    def sdk_platform(self):
+    def sdk_platform(self) -> str:
+        """Get the SDK platform identifier.
+
+        Returns:
+            str: An empty string for the native SDK implementation
+        """
         return ""
 
-    def set_request_handler(self, handler: BaseRequestHandler):
-        """Set custom request handler
+    def set_request_handler(self, handler: BaseRequestHandler) -> None:
+        """Set a custom request handler for HTTP operations.
 
-        Parametrers:
+        Args:
             handler (BaseRequestHandler): Instance of custom request handler
+
+        Raises:
+            AssertionError: If handler is not an instance of BaseRequestHandler
         """
         assert isinstance(handler, BaseRequestHandler)
         self._request_handler = handler
 
     def get_request_handler(self) -> BaseRequestHandler:
-        """Get instance of request handler
+        """Get the current request handler instance.
 
-        Return: handler(BaseRequestHandler): Instance of request handler
+        Returns:
+            BaseRequestHandler: The current request handler instance
         """
         return self._request_handler
 
     def request_sync(self, endpoint_call_options):
-        platform_options = PlatformOptions(self.headers, self.config)
+        """Execute a synchronous request to the PubNub network.
 
+        Args:
+            endpoint_call_options: Options for the endpoint call
+
+        Returns:
+            The response from the PubNub network
+
+        Note:
+            This is an internal method used by endpoint classes
+        """
+        platform_options = PlatformOptions(self.headers, self.config)
         self.merge_in_params(endpoint_call_options)
 
         if self.config.log_verbosity:
@@ -90,8 +177,21 @@ class PubNub(PubNubCore):
         return self._request_handler.sync_request(platform_options, endpoint_call_options)
 
     def request_async(self, endpoint_name, endpoint_call_options, callback, cancellation_event):
-        platform_options = PlatformOptions(self.headers, self.config)
+        """Execute an asynchronous request to the PubNub network.
 
+        Args:
+            endpoint_name: Name of the endpoint being called
+            endpoint_call_options: Options for the endpoint call
+            callback: Callback function for the response
+            cancellation_event: Event to cancel the request
+
+        Returns:
+            The async request object
+
+        Note:
+            This is an internal method used by endpoint classes
+        """
+        platform_options = PlatformOptions(self.headers, self.config)
         self.merge_in_params(endpoint_call_options)
 
         if self.config.log_verbosity:
@@ -108,7 +208,6 @@ class PubNub(PubNubCore):
         )
 
     def merge_in_params(self, options):
-
         params_to_merge_in = {}
 
         if options.operation_type == PNOperationType.PNPublishOperation:
@@ -117,6 +216,11 @@ class PubNub(PubNubCore):
         options.merge_params_in(params_to_merge_in)
 
     def stop(self):
+        """Stop all subscriptions and clean up resources.
+
+        Raises:
+            Exception: If subscription manager is not enabled
+        """
         if self._subscription_manager is not None:
             self._subscription_manager.stop()
         else:
@@ -130,10 +234,21 @@ class PubNub(PubNubCore):
 
 
 class NativeReconnectionManager(ReconnectionManager):
+    """Manages reconnection attempts for lost network connections.
+
+    This class implements the reconnection policy (linear or exponential backoff)
+    and handles the timing of reconnection attempts.
+    """
+
     def __init__(self, pubnub):
         super(NativeReconnectionManager, self).__init__(pubnub)
 
     def _register_heartbeat_timer(self):
+        """Register a new heartbeat timer for reconnection attempts.
+
+        This method implements the reconnection policy and schedules the next
+        reconnection attempt based on the current state.
+        """
         self.stop_heartbeat_timer()
 
         if self._retry_limit_reached():
@@ -169,6 +284,11 @@ class NativeReconnectionManager(ReconnectionManager):
             self._register_heartbeat_timer()
 
     def start_polling(self):
+        """Start the reconnection polling process.
+
+        This method begins the process of attempting to reconnect to the PubNub
+        network based on the configured reconnection policy.
+        """
         if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.NONE:
             logger.warning("reconnection policy is disabled, please handle reconnection manually.")
             disconnect_status = PNStatus()
@@ -177,7 +297,6 @@ class NativeReconnectionManager(ReconnectionManager):
             return
 
         logger.debug("reconnection manager start at: %s" % utils.datetime_now())
-
         self._register_heartbeat_timer()
 
     def stop_heartbeat_timer(self):
@@ -201,7 +320,24 @@ class NativePublishSequenceManager(PublishSequenceManager):
 
 
 class NativeSubscriptionManager(SubscriptionManager):
+    """Manages channel subscriptions and message processing.
+
+    This class handles the subscription lifecycle, message queuing,
+    and delivery of messages to listeners.
+
+    Attributes:
+        _message_queue (Queue): Queue for incoming messages
+        _consumer_event (Event): Event for controlling the consumer thread
+        _subscribe_call: Current subscription API call
+        _heartbeat_periodic_callback: Callback for periodic heartbeats
+    """
+
     def __init__(self, pubnub_instance):
+        """Initialize the subscription manager.
+
+        Args:
+            pubnub_instance: The PubNub instance this manager belongs to
+        """
         subscription_manager = self
 
         self._message_queue = Queue()
@@ -290,14 +426,20 @@ class NativeSubscriptionManager(SubscriptionManager):
         self._message_queue.put(message)
 
     def reconnect(self):
+        """Reconnect all current subscriptions.
+
+        Restarts the subscribe loop and heartbeat timer if enabled.
+        """
         self._should_stop = False
         self._start_subscribe_loop()
-        # Check the instance flag to determine if we want to perform the presence heartbeat
-        # This is False by default
         if self._pubnub.config.enable_presence_heartbeat is True:
             self._register_heartbeat_timer()
 
     def disconnect(self):
+        """Disconnect from all subscriptions.
+
+        Stops the subscribe loop and heartbeat timer.
+        """
         self._should_stop = True
         self._stop_heartbeat_timer()
         self._stop_subscribe_loop()
@@ -425,6 +567,22 @@ class NativeSubscribeMessageWorker(SubscribeMessageWorker):
 
 
 class SubscribeListener(SubscribeCallback):
+    """Helper class for handling subscription events.
+
+    This class provides a way to wait for specific events or messages
+    in a synchronous manner.
+
+    Attributes:
+        connected (bool): Whether currently connected
+        connected_event (Event): Event signaling connection
+        disconnected_event (Event): Event signaling disconnection
+        presence_queue (Queue): Queue for presence events
+        message_queue (Queue): Queue for messages
+        channel_queue (Queue): Queue for channel events
+        uuid_queue (Queue): Queue for UUID events
+        membership_queue (Queue): Queue for membership events
+    """
+
     def __init__(self):
         self.connected = False
         self.connected_event = Event()
@@ -448,29 +606,32 @@ class SubscribeListener(SubscribeCallback):
         self.presence_queue.put(presence)
 
     def wait_for_connect(self):
+        """Wait for a connection to be established.
+
+        Raises:
+            Exception: If already connected
+        """
         if not self.connected_event.is_set():
             self.connected_event.wait()
-        # failing because you don't have to wait is illogical
-        # else:
-        #     raise Exception("the instance is already connected")
-
-    def channel(self, pubnub, channel):
-        self.channel_queue.put(channel)
-
-    def uuid(self, pubnub, uuid):
-        self.uuid_queue.put(uuid)
-
-    def membership(self, pubnub, membership):
-        self.membership_queue.put(membership)
 
     def wait_for_disconnect(self):
+        """Wait for a disconnection to occur.
+
+        Raises:
+            Exception: If already disconnected
+        """
         if not self.disconnected_event.is_set():
             self.disconnected_event.wait()
-        # failing because you don't have to wait is illogical
-        # else:
-        #     raise Exception("the instance is already disconnected")
 
     def wait_for_message_on(self, *channel_names):
+        """Wait for a message on specific channels.
+
+        Args:
+            *channel_names: Channel names to wait for
+
+        Returns:
+            The message envelope when received
+        """
         channel_names = list(channel_names)
         while True:
             env = self.message_queue.get()
@@ -492,6 +653,17 @@ class SubscribeListener(SubscribeCallback):
 
 
 class NonSubscribeListener:
+    """Helper class for handling non-subscription operations.
+
+    This class provides a way to wait for the completion of non-subscription
+    operations in a synchronous manner.
+
+    Attributes:
+        result: The operation result
+        status: The operation status
+        done_event (Event): Event signaling operation completion
+    """
+
     def __init__(self):
         self.result = None
         self.status = None
@@ -503,20 +675,44 @@ class NonSubscribeListener:
         self.done_event.set()
 
     def pn_await(self, timeout=5):
-        """ Returns False if a timeout happened, otherwise True"""
+        """Wait for the operation to complete.
+
+        Args:
+            timeout (int): Maximum time to wait in seconds
+
+        Returns:
+            bool: False if timeout occurred, True otherwise
+        """
         return self.done_event.wait(timeout)
 
     def await_result(self, timeout=5):
+        """Wait for and return the operation result.
+
+        Args:
+            timeout (int): Maximum time to wait in seconds
+
+        Returns:
+            The operation result
+        """
         self.pn_await(timeout)
         return self.result
 
     def await_result_and_reset(self, timeout=5):
+        """Wait for the result and reset the listener.
+
+        Args:
+            timeout (int): Maximum time to wait in seconds
+
+        Returns:
+            Copy of the operation result
+        """
         self.pn_await(timeout)
         cp = copy.copy(self.result)
         self.reset()
         return cp
 
     def reset(self):
+        """Reset the listener state."""
         self.result = None
         self.status = None
         self.done_event.clear()

@@ -71,3 +71,4 @@ async def test_timeout_event_on_broken_heartbeat():
 
     await pubnub.stop()
     await pubnub_listener.stop()
+    await asyncio.sleep(0.5)

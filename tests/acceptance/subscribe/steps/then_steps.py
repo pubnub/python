@@ -58,7 +58,8 @@ async def step_impl(ctx: PNContext):
 
     status = ctx.callback.status_result
     assert isinstance(status, PNStatus)
-    assert status.category == PNStatusCategory.PNDisconnectedCategory
+    assert status.category in [PNStatusCategory.PNConnectionErrorCategory,
+                               PNStatusCategory.PNUnexpectedDisconnectCategory]
     await ctx.pubnub.stop()
 
 

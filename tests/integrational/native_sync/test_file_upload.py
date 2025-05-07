@@ -55,12 +55,14 @@ def send_file(file_for_upload, cipher_key=None, pass_binary=False, timetoken_ove
     "tests/integrational/fixtures/native_sync/file_upload/list_files.json", serializer="pn_json",
     filter_query_parameters=('pnsdk',)
 )
-def test_list_files(file_upload_test_data):
+def test_list_files(file_upload_test_data, file_for_upload):
     envelope = pubnub.list_files().channel(CHANNEL).sync()
     files = envelope.result.data
     for i in range(len(files) - 1):
         file = files[i]
         pubnub.delete_file().channel(CHANNEL).file_id(file["id"]).file_name(file["name"]).sync()
+
+    envelope = send_file(file_for_upload, pass_binary=True)
 
     envelope = pubnub.list_files().channel(CHANNEL).sync()
 
@@ -69,10 +71,45 @@ def test_list_files(file_upload_test_data):
     assert file_upload_test_data["UPLOADED_FILENAME"] == envelope.result.data[0]["name"]
 
 
-# @pn_vcr.use_cassette(
-#     "tests/integrational/fixtures/native_sync/file_upload/send_and_download_file_using_bytes_object.json",
-#     filter_query_parameters=('pnsdk',), serializer="pn_json"
-# )
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/list_files_with_limit.json", serializer="pn_json",
+    filter_query_parameters=('pnsdk',)
+)
+def test_list_files_with_limit(file_for_upload, file_upload_test_data):
+    envelope = send_file(file_for_upload, pass_binary=True)
+    envelope = send_file(file_for_upload, pass_binary=True)
+    envelope = pubnub.list_files().channel(CHANNEL).limit(2).sync()
+    assert isinstance(envelope.result, PNGetFilesResult)
+    assert envelope.result.count == 2
+    assert file_upload_test_data["UPLOADED_FILENAME"] == envelope.result.data[0]["name"]
+
+
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/list_files_with_page.json", serializer="pn_json",
+    filter_query_parameters=('pnsdk',)
+)
+def test_list_files_with_page(file_for_upload, file_upload_test_data):
+    envelope = send_file(file_for_upload, pass_binary=True)
+    envelope = send_file(file_for_upload, pass_binary=True)
+    envelope = pubnub.list_files().channel(CHANNEL).limit(2).sync()
+    assert isinstance(envelope.result, PNGetFilesResult)
+    assert envelope.result.count == 2
+    assert envelope.result.next is not None
+    next_page = envelope.result.next
+    file_ids = [envelope.result.data[0]['id'], envelope.result.data[1]['id']]
+    envelope = pubnub.list_files().channel(CHANNEL).limit(2).next(next_page).sync()
+    assert isinstance(envelope.result, PNGetFilesResult)
+    assert envelope.result.count == 2
+    assert envelope.result.next is not None
+    assert envelope.result.data[0]['id'] not in file_ids
+    assert envelope.result.data[1]['id'] not in file_ids
+    assert file_upload_test_data["UPLOADED_FILENAME"] == envelope.result.data[0]["name"]
+
+
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/send_and_download_file_using_bytes_object.json",
+    filter_query_parameters=('pnsdk',), serializer="pn_json"
+)
 def test_send_and_download_file_using_bytes_object(file_for_upload, file_upload_test_data):
     envelope = send_file(file_for_upload, pass_binary=True)
 
@@ -86,6 +123,7 @@ def test_send_and_download_file_using_bytes_object(file_for_upload, file_upload_
     assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
 
 
+# TODO: fix VCR to handle utf-8 properly
 # @pn_vcr.use_cassette(
 #     "tests/integrational/fixtures/native_sync/file_upload/send_and_download_encrypted_file.json",
 #     filter_query_parameters=('pnsdk',), serializer="pn_json"
@@ -105,10 +143,11 @@ def test_send_and_download_encrypted_file(file_for_upload, file_upload_test_data
         assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
 
 
+# TODO: fix VCR to handle utf-8 properly
 # @pn_vcr_with_empty_body_request.use_cassette(
 #     "tests/integrational/fixtures/native_sync/file_upload/file_size_exceeded_maximum_size.json", serializer="pn_json",
 #     filter_query_parameters=('pnsdk',)
-# # )
+# )
 def test_file_exceeded_maximum_size(file_for_upload_10mb_size):
     with pytest.raises(PubNubException) as exception:
         send_file(file_for_upload_10mb_size)
@@ -297,6 +336,10 @@ def test_send_and_download_encrypted_file_fallback_decode(file_for_upload, file_
         assert data == bytes(file_upload_test_data["FILE_CONTENT"], "utf-8")
 
 
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/native_sync/file_upload/publish_file_message_with_custom_type.json",
+    filter_query_parameters=('pnsdk',), serializer='pn_json'
+)
 def test_publish_file_message_with_custom_type():
     with pn_vcr.use_cassette(
         "tests/integrational/fixtures/native_sync/file_upload/publish_file_message_with_custom_type.json",
@@ -318,3 +361,15 @@ def test_publish_file_message_with_custom_type():
         query = parse_qs(uri.query)
         assert 'custom_message_type' in query.keys()
         assert query['custom_message_type'] == ['test_message']
+
+
+def test_delete_all_files():
+    envelope = pubnub.list_files().channel(CHANNEL).sync()
+    files = envelope.result.data
+    for i in range(len(files)):
+        file = files[i]
+        pubnub.delete_file().channel(CHANNEL).file_id(file["id"]).file_name(file["name"]).sync()
+    envelope = pubnub.list_files().channel(CHANNEL).sync()
+
+    assert isinstance(envelope.result, PNGetFilesResult)
+    assert envelope.result.count == 0

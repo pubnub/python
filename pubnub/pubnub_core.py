@@ -96,7 +96,7 @@ logger = logging.getLogger("pubnub")
 
 class PubNubCore:
     """A base class for PubNub Python API implementations"""
-    SDK_VERSION = "10.3.0"
+    SDK_VERSION = "10.4.0"
     SDK_NAME = "PubNub-Python"
 
     TIMESTAMP_DIVIDER = 1000
@@ -466,8 +466,8 @@ class PubNubCore:
         else:
             raise NotImplementedError
 
-    def list_files(self, channel: str = None) -> ListFiles:
-        return ListFiles(self, channel=channel)
+    def list_files(self, channel: str = None, *, limit: int = None, next: str = None) -> ListFiles:
+        return ListFiles(self, channel=channel, limit=limit, next=next)
 
     def get_file_url(self, channel: str = None, file_name: str = None, file_id: str = None) -> GetFileDownloadUrl:
         return GetFileDownloadUrl(self, channel=channel, file_name=file_name, file_id=file_id)

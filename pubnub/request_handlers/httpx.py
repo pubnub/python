@@ -136,7 +136,7 @@ class HttpxRequestHandler(BaseRequestHandler):
         try:
             res = self._invoke_request(p_options, e_options, url_base_path)
         except PubNubException as e:
-            if e._pn_error is PNERR_CONNECTION_ERROR:
+            if e._pn_error in [PNERR_CONNECTION_ERROR, PNERR_UNKNOWN_ERROR]:
                 status_category = PNStatusCategory.PNUnexpectedDisconnectCategory
             elif e._pn_error is PNERR_CLIENT_TIMEOUT:
                 status_category = PNStatusCategory.PNTimeoutCategory

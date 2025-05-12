@@ -57,12 +57,87 @@ async def test_delete_file(file_for_upload):
     filter_query_parameters=['uuid', 'l_file', 'pnsdk']
 )
 @pytest.mark.asyncio(loop_scope="module")
-async def test_list_files():
+async def test_list_files(file_for_upload, file_upload_test_data):
     pubnub = PubNubAsyncio(pnconf_env_copy())
+    pubnub.config.uuid = "files_asyncio_uuid"
+
+    # Clear existing files first to ensure a clean state
+    envelope = await pubnub.list_files().channel(CHANNEL).future()
+    files = envelope.result.data
+    for i in range(len(files)):
+        file = files[i]
+        await pubnub.delete_file().channel(CHANNEL).file_id(file["id"]).file_name(file["name"]).future()
+
+    envelope = await send_file(pubnub, file_for_upload)
+
     envelope = await pubnub.list_files().channel(CHANNEL).future()
 
     assert isinstance(envelope.result, PNGetFilesResult)
-    assert envelope.result.count == 7
+    assert envelope.result.count == 1
+    assert file_upload_test_data["UPLOADED_FILENAME"] == envelope.result.data[0]["name"]
+    await pubnub.stop()
+
+
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/asyncio/file_upload/list_files_with_limit.json", serializer="pn_json",
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
+)
+@pytest.mark.asyncio(loop_scope="module")
+async def test_list_files_with_limit(file_for_upload, file_upload_test_data):
+    pubnub = PubNubAsyncio(pnconf_env_copy())
+    pubnub.config.uuid = "files_asyncio_uuid"
+    await send_file(pubnub, file_for_upload)
+    await send_file(pubnub, file_for_upload)
+    envelope = await pubnub.list_files().channel(CHANNEL).limit(2).future()
+    assert isinstance(envelope.result, PNGetFilesResult)
+    assert envelope.result.count == 2
+    assert file_upload_test_data["UPLOADED_FILENAME"] == envelope.result.data[0]["name"]
+    await pubnub.stop()
+
+
+@pn_vcr.use_cassette(
+    "tests/integrational/fixtures/asyncio/file_upload/list_files_with_page.json", serializer="pn_json",
+    filter_query_parameters=['uuid', 'l_file', 'pnsdk']
+)
+@pytest.mark.asyncio(loop_scope="module")
+async def test_list_files_with_page(file_for_upload, file_upload_test_data):
+    pubnub = PubNubAsyncio(pnconf_env_copy())
+    pubnub.config.uuid = "files_asyncio_uuid"
+    await send_file(pubnub, file_for_upload)
+    await send_file(pubnub, file_for_upload)
+    envelope = await pubnub.list_files().channel(CHANNEL).limit(2).future()
+    assert isinstance(envelope.result, PNGetFilesResult)
+    assert envelope.result.count == 2
+    assert envelope.result.next is not None
+    next_page = envelope.result.next
+    file_ids = [envelope.result.data[0]['id'], envelope.result.data[1]['id']]
+    envelope = await pubnub.list_files().channel(CHANNEL).limit(2).next(next_page).future()
+    assert isinstance(envelope.result, PNGetFilesResult)
+    assert envelope.result.count == 2
+    assert envelope.result.next is not None
+    assert envelope.result.data[0]['id'] not in file_ids
+    assert envelope.result.data[1]['id'] not in file_ids
+    assert file_upload_test_data["UPLOADED_FILENAME"] == envelope.result.data[0]["name"]
+    await pubnub.stop()
+
+
+# @pn_vcr.use_cassette( # Needs new recording for asyncio
+#     "tests/integrational/fixtures/asyncio/file_upload/delete_all_files.json", serializer="pn_json",
+#     filter_query_parameters=['uuid', 'l_file', 'pnsdk']
+# )
+@pytest.mark.asyncio(loop_scope="module")
+async def test_delete_all_files():
+    pubnub = PubNubAsyncio(pnconf_env_copy())
+    pubnub.config.uuid = "files_asyncio_uuid"
+    envelope = await pubnub.list_files().channel(CHANNEL).future()
+    files = envelope.result.data
+    for i in range(len(files)):
+        file = files[i]
+        await pubnub.delete_file().channel(CHANNEL).file_id(file["id"]).file_name(file["name"]).future()
+    envelope = await pubnub.list_files().channel(CHANNEL).future()
+
+    assert isinstance(envelope.result, PNGetFilesResult)
+    assert envelope.result.count == 0
     await pubnub.stop()
 
 

@@ -1,3 +1,9 @@
+## 10.4.0
+May 07 2025
+
+#### Added
+- Added pagination to List Files.
+
 ## 10.3.0
 April 10 2025
 

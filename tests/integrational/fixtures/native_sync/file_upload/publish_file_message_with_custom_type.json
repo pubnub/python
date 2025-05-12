@@ -20,7 +20,7 @@
                         "keep-alive"
                     ],
                     "user-agent": [
-                        "PubNub-Python/9.1.0"
+                        "PubNub-Python/10.3.0"
                     ]
                 }
             },
@@ -31,7 +31,7 @@
                 },
                 "headers": {
                     "Date": [
-                        "Wed, 11 Dec 2024 18:00:04 GMT"
+                        "Mon, 05 May 2025 17:26:52 GMT"
                     ],
                     "Content-Type": [
                         "text/javascript; charset=\"UTF-8\""
@@ -56,7 +56,7 @@
                     ]
                 },
                 "body": {
-                    "pickle": "gASVLgAAAAAAAAB9lIwGc3RyaW5nlIweWzEsIlNlbnQiLCIxNzMzOTQwMDA0NzgzMTU4NSJdlHMu"
+                    "pickle": "gASVLgAAAAAAAAB9lIwGc3RyaW5nlIweWzEsIlNlbnQiLCIxNzQ2NDY2MDEyMDg5OTY2MyJdlHMu"
                 }
             }
         }

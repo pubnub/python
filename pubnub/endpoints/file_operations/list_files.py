@@ -14,10 +14,14 @@ class PNGetFilesResultEnvelope(Envelope):
 class ListFiles(FileOperationEndpoint):
     LIST_FILES_URL = "/v1/files/%s/channels/%s/files"
     _channel: str
+    _limit: int
+    _next: str
 
-    def __init__(self, pubnub, channel: str = None):
+    def __init__(self, pubnub, channel: str = None, *, limit: int = None, next: str = None):
         FileOperationEndpoint.__init__(self, pubnub)
         self._channel = channel
+        self._limit = limit
+        self._next = next
 
     def build_path(self):
         return ListFiles.LIST_FILES_URL % (
@@ -25,15 +29,28 @@ class ListFiles(FileOperationEndpoint):
             utils.url_encode(self._channel)
         )
 
-    def channel(self, channel) -> 'ListFiles':
+    def channel(self, channel: str) -> 'ListFiles':
         self._channel = channel
+        return self
+
+    def limit(self, limit: int) -> 'ListFiles':
+        self._limit = limit
+        return self
+
+    def next(self, next: str) -> 'ListFiles':
+        self._next = next
         return self
 
     def http_method(self):
         return HttpMethod.GET
 
     def custom_params(self):
-        return {}
+        params = {}
+        if self._limit:
+            params["limit"] = str(self._limit)
+        if self._next:
+            params["next"] = str(self._next)
+        return params
 
     def is_auth_required(self):
         return True

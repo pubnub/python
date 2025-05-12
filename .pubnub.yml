@@ -1,5 +1,5 @@
 name: python
-version: 10.3.0
+version: 10.4.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,16 +18,17 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-10.3.0
+            package-name: pubnub-10.4.0
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
                 Linux:
                   runtime-version:
-                    - Python 3.7
-                    - Python 3.8
                     - Python 3.9
                     - Python 3.10
+                    - Python 3.11
+                    - Python 3.12
+                    - Python 3.13
                   minimum-os-version:
                     - Ubuntu 12.04
                   maximum-os-version:
@@ -37,10 +38,11 @@ sdks:
                     - x86-64
                 macOS:
                   runtime-version:
-                    - Python 3.7
-                    - Python 3.8
                     - Python 3.9
                     - Python 3.10
+                    - Python 3.11
+                    - Python 3.12
+                    - Python 3.13
                   minimum-os-version:
                     - macOS 10.12
                   maximum-os-version:
@@ -49,10 +51,11 @@ sdks:
                     - x86-64
                 Windows:
                   runtime-version:
-                    - Python 3.7
-                    - Python 3.8
                     - Python 3.9
                     - Python 3.10
+                    - Python 3.11
+                    - Python 3.12
+                    - Python 3.13
                   minimum-os-version:
                     - Windows Vista Ultimate
                   maximum-os-version:
@@ -91,16 +94,17 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-10.3.0
-            location: https://github.com/pubnub/python/releases/download/10.3.0/pubnub-10.3.0.tar.gz
+            package-name: pubnub-10.4.0
+            location: https://github.com/pubnub/python/releases/download/10.4.0/pubnub-10.4.0.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
                   runtime-version:
-                    - Python 3.7
-                    - Python 3.8
                     - Python 3.9
                     - Python 3.10
+                    - Python 3.11
+                    - Python 3.12
+                    - Python 3.13
                   minimum-os-version:
                     - Ubuntu 12.04
                   maximum-os-version:
@@ -110,10 +114,11 @@ sdks:
                     - x86-64
                 macOS:
                   runtime-version:
-                    - Python 3.7
-                    - Python 3.8
                     - Python 3.9
                     - Python 3.10
+                    - Python 3.11
+                    - Python 3.12
+                    - Python 3.13
                   minimum-os-version:
                     - macOS 10.12
                   maximum-os-version:
@@ -122,10 +127,11 @@ sdks:
                     - x86-64
                 Windows:
                   runtime-version:
-                    - Python 3.7
-                    - Python 3.8
                     - Python 3.9
                     - Python 3.10
+                    - Python 3.11
+                    - Python 3.12
+                    - Python 3.13
                   minimum-os-version:
                     - Windows Vista Ultimate
                   maximum-os-version:
@@ -163,6 +169,11 @@ sdks:
                 license-url: https://github.com/encode/httpx/blob/master/LICENSE.md
                 is-required: Required
 changelog:
+  - date: 2025-05-07
+    version: 10.4.0
+    changes:
+      - type: feature
+        text: "Added pagination to List Files."
   - date: 2025-04-10
     version: 10.3.0
     changes:
@@ -773,19 +784,6 @@ supported-platforms:
       - python 3.6.0
       - pypy
   -
-    version: PubNub Python Tornado SDK
-    platforms:
-      - FreeBSD 8-STABLE or later, amd64, 386
-      - Linux 2.6 or later, amd64, 386.
-      - Mac OS X 10.8 or later, amd64
-      - Windows 7 or later, amd64, 386
-    editors:
-      - python 2.7.13
-      - python 3.4.5
-      - python 3.5.2
-      - python 3.6.0
-      - pypy
-  -
     version: PubNub Python Asyncio SDK
     platforms:
       - FreeBSD 8-STABLE or later, amd64, 386
@@ -793,12 +791,9 @@ supported-platforms:
       - Mac OS X 10.8 or later, amd64
       - Windows 7 or later, amd64, 386
     editors:
-      - python 3.4.5
-      - python 3.5.2
-      - python 3.6.0
-  -
-    version: PubNub Python Twisted SDK
-    platforms:
-      - Linux 2.6 or later, amd64, 386.
-    editors:
-      - python 2.7.13
+      - python 3.9.21
+      - python 3.10.16
+      - python 3.11.11
+      - python 3.12.9
+      - python 3.13.2
+

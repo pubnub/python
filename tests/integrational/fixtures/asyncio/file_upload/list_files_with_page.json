@@ -1,0 +1,497 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
+                "body": {
+                    "pickle": "gASVHwAAAAAAAACMG3sibmFtZSI6ICJraW5nX2FydGh1ci50eHQifZQu"
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.3.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "27"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Mon, 05 May 2025 19:11:00 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "1982"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASV0QcAAAAAAAB9lIwGc3RyaW5nlFi+BwAAeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6ImUwZWNlZjE2LWNkMDctNGQ1NS1iZmJjLWJiMDRhZmZiYThmNiIsIm5hbWUiOiJraW5nX2FydGh1ci50eHQifSwiZmlsZV91cGxvYWRfcmVxdWVzdCI6eyJ1cmwiOiJodHRwczovL3B1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtdXMtZWFzdC0xLXByZC5zMy5kdWFsc3RhY2sudXMtZWFzdC0xLmFtYXpvbmF3cy5jb20vIiwibWV0aG9kIjoiUE9TVCIsImV4cGlyYXRpb25fZGF0ZSI6IjIwMjUtMDUtMDVUMTk6MTI6MDBaIiwiZm9ybV9maWVsZHMiOlt7ImtleSI6InRhZ2dpbmciLCJ2YWx1ZSI6Ilx1MDAzY1RhZ2dpbmdcdTAwM2VcdTAwM2NUYWdTZXRcdTAwM2VcdTAwM2NUYWdcdTAwM2VcdTAwM2NLZXlcdTAwM2VPYmplY3RUVExJbkRheXNcdTAwM2MvS2V5XHUwMDNlXHUwMDNjVmFsdWVcdTAwM2UxXHUwMDNjL1ZhbHVlXHUwMDNlXHUwMDNjL1RhZ1x1MDAzZVx1MDAzYy9UYWdTZXRcdTAwM2VcdTAwM2MvVGFnZ2luZ1x1MDAzZSJ9LHsia2V5Ijoia2V5IiwidmFsdWUiOiJzdWItYy1kMGI4ZTU0Mi0xMmEwLTQxYzQtOTk5Zi1hMmQ1NjlkYzQyNTUvME1SMS16MncwblNKWXh3RXk3NHA1UWpWODVUbWdOQktQclY3MXQ1NU5UMC9lMGVjZWYxNi1jZDA3LTRkNTUtYmZiYy1iYjA0YWZmYmE4ZjYva2luZ19hcnRodXIudHh0In0seyJrZXkiOiJDb250ZW50LVR5cGUiLCJ2YWx1ZSI6InRleHQvcGxhaW47IGNoYXJzZXQ9dXRmLTgifSx7ImtleSI6IlgtQW16LUNyZWRlbnRpYWwiLCJ2YWx1ZSI6IkFLSUFZN0FVNkdRRFY1TENQVkVYLzIwMjUwNTA1L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QifSx7ImtleSI6IlgtQW16LVNlY3VyaXR5LVRva2VuIiwidmFsdWUiOiIifSx7ImtleSI6IlgtQW16LUFsZ29yaXRobSIsInZhbHVlIjoiQVdTNC1ITUFDLVNIQTI1NiJ9LHsia2V5IjoiWC1BbXotRGF0ZSIsInZhbHVlIjoiMjAyNTA1MDVUMTkxMjAwWiJ9LHsia2V5IjoiUG9saWN5IiwidmFsdWUiOiJDbnNLQ1NKbGVIQnBjbUYwYVc5dUlqb2dJakl3TWpVdE1EVXRNRFZVTVRrNk1USTZNREJhSWl3S0NTSmpiMjVrYVhScGIyNXpJam9nV3dvSkNYc2lZblZqYTJWMElqb2dJbkIxWW01MVlpMXRibVZ0YjNONWJtVXRabWxzWlhNdGRYTXRaV0Z6ZEMweExYQnlaQ0o5TEFvSkNWc2laWEVpTENBaUpIUmhaMmRwYm1jaUxDQWlQRlJoWjJkcGJtYytQRlJoWjFObGRENDhWR0ZuUGp4TFpYaytUMkpxWldOMFZGUk1TVzVFWVhselBDOUxaWGsrUEZaaGJIVmxQakU4TDFaaGJIVmxQand2VkdGblBqd3ZWR0ZuVTJWMFBqd3ZWR0ZuWjJsdVp6NGlYU3dLQ1FsYkltVnhJaXdnSWlSclpYa2lMQ0FpYzNWaUxXTXRaREJpT0dVMU5ESXRNVEpoTUMwME1XTTBMVGs1T1dZdFlUSmtOVFk1WkdNME1qVTFMekJOVWpFdGVqSjNNRzVUU2xsNGQwVjVOelJ3TlZGcVZqZzFWRzFuVGtKTFVISldOekYwTlRWT1ZEQXZaVEJsWTJWbU1UWXRZMlF3TnkwMFpEVTFMV0ptWW1NdFltSXdOR0ZtWm1KaE9HWTJMMnRwYm1kZllYSjBhSFZ5TG5SNGRDSmRMQW9KQ1ZzaVkyOXVkR1Z1ZEMxc1pXNW5kR2d0Y21GdVoyVWlMQ0F3TENBMU1qUXlPRGd3WFN3S0NRbGJJbk4wWVhKMGN5MTNhWFJvSWl3Z0lpUkRiMjUwWlc1MExWUjVjR1VpTENBaUlsMHNDZ2tKZXlKNExXRnRlaTFqY21Wa1pXNTBhV0ZzSWpvZ0lrRkxTVUZaTjBGVk5rZFJSRlkxVEVOUVZrVllMekl3TWpVd05UQTFMM1Z6TFdWaGMzUXRNUzl6TXk5aGQzTTBYM0psY1hWbGMzUWlmU3dLQ1FsN0luZ3RZVzE2TFhObFkzVnlhWFI1TFhSdmEyVnVJam9nSWlKOUxBb0pDWHNpZUMxaGJYb3RZV3huYjNKcGRHaHRJam9nSWtGWFV6UXRTRTFCUXkxVFNFRXlOVFlpZlN3S0NRbDdJbmd0WVcxNkxXUmhkR1VpT2lBaU1qQXlOVEExTURWVU1Ua3hNakF3V2lJZ2ZRb0pYUXA5Q2c9PSJ9LHsia2V5IjoiWC1BbXotU2lnbmF0dXJlIiwidmFsdWUiOiJmNmNjMjQ5ODdhZmVjZGQ5NjcwNDRmMjZmMjJhODc1ZGEyMWU0ZjgxMGVlZDhiODdhMmNiMzY0NmI3NjA4ZDk4In1dfX2Ucy4="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com/",
+                "body": {
+                    "pickle": "gASVIAkAAAAAAABYGQkAAC0tNzllMWVjYjUwYWYzZDAzZWQyN2NiNmQyN2RiOTJhNjINCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0idGFnZ2luZyINCg0KPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4NCi0tNzllMWVjYjUwYWYzZDAzZWQyN2NiNmQyN2RiOTJhNjINCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0ia2V5Ig0KDQpzdWItYy1kMGI4ZTU0Mi0xMmEwLTQxYzQtOTk5Zi1hMmQ1NjlkYzQyNTUvME1SMS16MncwblNKWXh3RXk3NHA1UWpWODVUbWdOQktQclY3MXQ1NU5UMC9lMGVjZWYxNi1jZDA3LTRkNTUtYmZiYy1iYjA0YWZmYmE4ZjYva2luZ19hcnRodXIudHh0DQotLTc5ZTFlY2I1MGFmM2QwM2VkMjdjYjZkMjdkYjkyYTYyDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9IkNvbnRlbnQtVHlwZSINCg0KdGV4dC9wbGFpbjsgY2hhcnNldD11dGYtOA0KLS03OWUxZWNiNTBhZjNkMDNlZDI3Y2I2ZDI3ZGI5MmE2Mg0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJYLUFtei1DcmVkZW50aWFsIg0KDQpBS0lBWTdBVTZHUURWNUxDUFZFWC8yMDI1MDUwNS91cy1lYXN0LTEvczMvYXdzNF9yZXF1ZXN0DQotLTc5ZTFlY2I1MGFmM2QwM2VkMjdjYjZkMjdkYjkyYTYyDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9IlgtQW16LVNlY3VyaXR5LVRva2VuIg0KDQoNCi0tNzllMWVjYjUwYWYzZDAzZWQyN2NiNmQyN2RiOTJhNjINCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iWC1BbXotQWxnb3JpdGhtIg0KDQpBV1M0LUhNQUMtU0hBMjU2DQotLTc5ZTFlY2I1MGFmM2QwM2VkMjdjYjZkMjdkYjkyYTYyDQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9IlgtQW16LURhdGUiDQoNCjIwMjUwNTA1VDE5MTIwMFoNCi0tNzllMWVjYjUwYWYzZDAzZWQyN2NiNmQyN2RiOTJhNjINCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iUG9saWN5Ig0KDQpDbnNLQ1NKbGVIQnBjbUYwYVc5dUlqb2dJakl3TWpVdE1EVXRNRFZVTVRrNk1USTZNREJhSWl3S0NTSmpiMjVrYVhScGIyNXpJam9nV3dvSkNYc2lZblZqYTJWMElqb2dJbkIxWW01MVlpMXRibVZ0YjNONWJtVXRabWxzWlhNdGRYTXRaV0Z6ZEMweExYQnlaQ0o5TEFvSkNWc2laWEVpTENBaUpIUmhaMmRwYm1jaUxDQWlQRlJoWjJkcGJtYytQRlJoWjFObGRENDhWR0ZuUGp4TFpYaytUMkpxWldOMFZGUk1TVzVFWVhselBDOUxaWGsrUEZaaGJIVmxQakU4TDFaaGJIVmxQand2VkdGblBqd3ZWR0ZuVTJWMFBqd3ZWR0ZuWjJsdVp6NGlYU3dLQ1FsYkltVnhJaXdnSWlSclpYa2lMQ0FpYzNWaUxXTXRaREJpT0dVMU5ESXRNVEpoTUMwME1XTTBMVGs1T1dZdFlUSmtOVFk1WkdNME1qVTFMekJOVWpFdGVqSjNNRzVUU2xsNGQwVjVOelJ3TlZGcVZqZzFWRzFuVGtKTFVISldOekYwTlRWT1ZEQXZaVEJsWTJWbU1UWXRZMlF3TnkwMFpEVTFMV0ptWW1NdFltSXdOR0ZtWm1KaE9HWTJMMnRwYm1kZllYSjBhSFZ5TG5SNGRDSmRMQW9KQ1ZzaVkyOXVkR1Z1ZEMxc1pXNW5kR2d0Y21GdVoyVWlMQ0F3TENBMU1qUXlPRGd3WFN3S0NRbGJJbk4wWVhKMGN5MTNhWFJvSWl3Z0lpUkRiMjUwWlc1MExWUjVjR1VpTENBaUlsMHNDZ2tKZXlKNExXRnRlaTFqY21Wa1pXNTBhV0ZzSWpvZ0lrRkxTVUZaTjBGVk5rZFJSRlkxVEVOUVZrVllMekl3TWpVd05UQTFMM1Z6TFdWaGMzUXRNUzl6TXk5aGQzTTBYM0psY1hWbGMzUWlmU3dLQ1FsN0luZ3RZVzE2TFhObFkzVnlhWFI1TFhSdmEyVnVJam9nSWlKOUxBb0pDWHNpZUMxaGJYb3RZV3huYjNKcGRHaHRJam9nSWtGWFV6UXRTRTFCUXkxVFNFRXlOVFlpZlN3S0NRbDdJbmd0WVcxNkxXUmhkR1VpT2lBaU1qQXlOVEExTURWVU1Ua3hNakF3V2lJZ2ZRb0pYUXA5Q2c9PQ0KLS03OWUxZWNiNTBhZjNkMDNlZDI3Y2I2ZDI3ZGI5MmE2Mg0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJYLUFtei1TaWduYXR1cmUiDQoNCmY2Y2MyNDk4N2FmZWNkZDk2NzA0NGYyNmYyMmE4NzVkYTIxZTRmODEwZWVkOGI4N2EyY2IzNjQ2Yjc2MDhkOTgNCi0tNzllMWVjYjUwYWYzZDAzZWQyN2NiNmQyN2RiOTJhNjINCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iZmlsZSI7IGZpbGVuYW1lPSJraW5nX2FydGh1ci50eHQiDQpDb250ZW50LVR5cGU6IHRleHQvcGxhaW4NCg0KS25pZ2h0cyB3aG8gc2F5IE5pIQ0KLS03OWUxZWNiNTBhZjNkMDNlZDI3Y2I2ZDI3ZGI5MmE2Mi0tDQqULg=="
+                },
+                "headers": {
+                    "host": [
+                        "pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.3.0"
+                    ],
+                    "content-length": [
+                        "2329"
+                    ],
+                    "content-type": [
+                        "multipart/form-data; boundary=79e1ecb50af3d03ed27cb6d27db92a62"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 204,
+                    "message": "No Content"
+                },
+                "headers": {
+                    "x-amz-id-2": [
+                        "Hy9Q0h742Sqzp7VH/CYILmR7yfYgTUH9sdybn+ZoU2iIsMig04L9wD7JwEd2M2hJQVXzYbZaeyva+frwf9u3VOc2z9Ad9Q6KnZCG/5+dC0o="
+                    ],
+                    "x-amz-request-id": [
+                        "D9KM86GH78FTZ1PC"
+                    ],
+                    "Date": [
+                        "Mon, 05 May 2025 19:11:01 GMT"
+                    ],
+                    "x-amz-expiration": [
+                        "expiry-date=\"Wed, 07 May 2025 00:00:00 GMT\", rule-id=\"Archive file 1 day after creation\""
+                    ],
+                    "x-amz-server-side-encryption": [
+                        "AES256"
+                    ],
+                    "ETag": [
+                        "\"3676cdb7a927db43c846070c4e7606c7\""
+                    ],
+                    "x-amz-checksum-crc64nvme": [
+                        "vyyxp15ByZo="
+                    ],
+                    "x-amz-checksum-type": [
+                        "FULL_OBJECT"
+                    ],
+                    "Location": [
+                        "https://pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com/{PN_KEY_SUBSCRIBE}%2F0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0%2Fe0ecef16-cd07-4d55-bfbc-bb04affba8f6%2Fking_arthur.txt"
+                    ],
+                    "Server": [
+                        "AmazonS3"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVEAAAAAAAAAB9lIwGc3RyaW5nlIwAlHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22e0ecef16-cd07-4d55-bfbc-bb04affba8f6%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.3.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Mon, 05 May 2025 19:11:00 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVLgAAAAAAAAB9lIwGc3RyaW5nlIweWzEsIlNlbnQiLCIxNzQ2NDcyMjYwNzkzNDI0NCJdlHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
+                "body": {
+                    "pickle": "gASVHwAAAAAAAACMG3sibmFtZSI6ICJraW5nX2FydGh1ci50eHQifZQu"
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.3.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "27"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Mon, 05 May 2025 19:11:00 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "1982"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASV0QcAAAAAAAB9lIwGc3RyaW5nlFi+BwAAeyJzdGF0dXMiOjIwMCwiZGF0YSI6eyJpZCI6ImUwMjJmNzgyLWViM2ItNDU0Ni1iMWI0LTY4YWU3MTg4ODc2OCIsIm5hbWUiOiJraW5nX2FydGh1ci50eHQifSwiZmlsZV91cGxvYWRfcmVxdWVzdCI6eyJ1cmwiOiJodHRwczovL3B1Ym51Yi1tbmVtb3N5bmUtZmlsZXMtdXMtZWFzdC0xLXByZC5zMy5kdWFsc3RhY2sudXMtZWFzdC0xLmFtYXpvbmF3cy5jb20vIiwibWV0aG9kIjoiUE9TVCIsImV4cGlyYXRpb25fZGF0ZSI6IjIwMjUtMDUtMDVUMTk6MTI6MDBaIiwiZm9ybV9maWVsZHMiOlt7ImtleSI6InRhZ2dpbmciLCJ2YWx1ZSI6Ilx1MDAzY1RhZ2dpbmdcdTAwM2VcdTAwM2NUYWdTZXRcdTAwM2VcdTAwM2NUYWdcdTAwM2VcdTAwM2NLZXlcdTAwM2VPYmplY3RUVExJbkRheXNcdTAwM2MvS2V5XHUwMDNlXHUwMDNjVmFsdWVcdTAwM2UxXHUwMDNjL1ZhbHVlXHUwMDNlXHUwMDNjL1RhZ1x1MDAzZVx1MDAzYy9UYWdTZXRcdTAwM2VcdTAwM2MvVGFnZ2luZ1x1MDAzZSJ9LHsia2V5Ijoia2V5IiwidmFsdWUiOiJzdWItYy1kMGI4ZTU0Mi0xMmEwLTQxYzQtOTk5Zi1hMmQ1NjlkYzQyNTUvME1SMS16MncwblNKWXh3RXk3NHA1UWpWODVUbWdOQktQclY3MXQ1NU5UMC9lMDIyZjc4Mi1lYjNiLTQ1NDYtYjFiNC02OGFlNzE4ODg3Njgva2luZ19hcnRodXIudHh0In0seyJrZXkiOiJDb250ZW50LVR5cGUiLCJ2YWx1ZSI6InRleHQvcGxhaW47IGNoYXJzZXQ9dXRmLTgifSx7ImtleSI6IlgtQW16LUNyZWRlbnRpYWwiLCJ2YWx1ZSI6IkFLSUFZN0FVNkdRRFY1TENQVkVYLzIwMjUwNTA1L3VzLWVhc3QtMS9zMy9hd3M0X3JlcXVlc3QifSx7ImtleSI6IlgtQW16LVNlY3VyaXR5LVRva2VuIiwidmFsdWUiOiIifSx7ImtleSI6IlgtQW16LUFsZ29yaXRobSIsInZhbHVlIjoiQVdTNC1ITUFDLVNIQTI1NiJ9LHsia2V5IjoiWC1BbXotRGF0ZSIsInZhbHVlIjoiMjAyNTA1MDVUMTkxMjAwWiJ9LHsia2V5IjoiUG9saWN5IiwidmFsdWUiOiJDbnNLQ1NKbGVIQnBjbUYwYVc5dUlqb2dJakl3TWpVdE1EVXRNRFZVTVRrNk1USTZNREJhSWl3S0NTSmpiMjVrYVhScGIyNXpJam9nV3dvSkNYc2lZblZqYTJWMElqb2dJbkIxWW01MVlpMXRibVZ0YjNONWJtVXRabWxzWlhNdGRYTXRaV0Z6ZEMweExYQnlaQ0o5TEFvSkNWc2laWEVpTENBaUpIUmhaMmRwYm1jaUxDQWlQRlJoWjJkcGJtYytQRlJoWjFObGRENDhWR0ZuUGp4TFpYaytUMkpxWldOMFZGUk1TVzVFWVhselBDOUxaWGsrUEZaaGJIVmxQakU4TDFaaGJIVmxQand2VkdGblBqd3ZWR0ZuVTJWMFBqd3ZWR0ZuWjJsdVp6NGlYU3dLQ1FsYkltVnhJaXdnSWlSclpYa2lMQ0FpYzNWaUxXTXRaREJpT0dVMU5ESXRNVEpoTUMwME1XTTBMVGs1T1dZdFlUSmtOVFk1WkdNME1qVTFMekJOVWpFdGVqSjNNRzVUU2xsNGQwVjVOelJ3TlZGcVZqZzFWRzFuVGtKTFVISldOekYwTlRWT1ZEQXZaVEF5TW1ZM09ESXRaV0l6WWkwME5UUTJMV0l4WWpRdE5qaGhaVGN4T0RnNE56WTRMMnRwYm1kZllYSjBhSFZ5TG5SNGRDSmRMQW9KQ1ZzaVkyOXVkR1Z1ZEMxc1pXNW5kR2d0Y21GdVoyVWlMQ0F3TENBMU1qUXlPRGd3WFN3S0NRbGJJbk4wWVhKMGN5MTNhWFJvSWl3Z0lpUkRiMjUwWlc1MExWUjVjR1VpTENBaUlsMHNDZ2tKZXlKNExXRnRlaTFqY21Wa1pXNTBhV0ZzSWpvZ0lrRkxTVUZaTjBGVk5rZFJSRlkxVEVOUVZrVllMekl3TWpVd05UQTFMM1Z6TFdWaGMzUXRNUzl6TXk5aGQzTTBYM0psY1hWbGMzUWlmU3dLQ1FsN0luZ3RZVzE2TFhObFkzVnlhWFI1TFhSdmEyVnVJam9nSWlKOUxBb0pDWHNpZUMxaGJYb3RZV3huYjNKcGRHaHRJam9nSWtGWFV6UXRTRTFCUXkxVFNFRXlOVFlpZlN3S0NRbDdJbmd0WVcxNkxXUmhkR1VpT2lBaU1qQXlOVEExTURWVU1Ua3hNakF3V2lJZ2ZRb0pYUXA5Q2c9PSJ9LHsia2V5IjoiWC1BbXotU2lnbmF0dXJlIiwidmFsdWUiOiI0MzVmN2RjZmIyY2E5YTgxMDA5YzAzMDQ0NjE3NzUyN2IxMzU5Y2QzYWVlMmVlODQ4YWFjMjM4ZjM0ODk3ZmZiIn1dfX2Ucy4="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com/",
+                "body": {
+                    "pickle": "gASVIAkAAAAAAABYGQkAAC0tNzhlMTA2NDgyOTM2MWFhYWYwNTVkNWRlNTFkY2Y3NDkNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0idGFnZ2luZyINCg0KPFRhZ2dpbmc+PFRhZ1NldD48VGFnPjxLZXk+T2JqZWN0VFRMSW5EYXlzPC9LZXk+PFZhbHVlPjE8L1ZhbHVlPjwvVGFnPjwvVGFnU2V0PjwvVGFnZ2luZz4NCi0tNzhlMTA2NDgyOTM2MWFhYWYwNTVkNWRlNTFkY2Y3NDkNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0ia2V5Ig0KDQpzdWItYy1kMGI4ZTU0Mi0xMmEwLTQxYzQtOTk5Zi1hMmQ1NjlkYzQyNTUvME1SMS16MncwblNKWXh3RXk3NHA1UWpWODVUbWdOQktQclY3MXQ1NU5UMC9lMDIyZjc4Mi1lYjNiLTQ1NDYtYjFiNC02OGFlNzE4ODg3Njgva2luZ19hcnRodXIudHh0DQotLTc4ZTEwNjQ4MjkzNjFhYWFmMDU1ZDVkZTUxZGNmNzQ5DQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9IkNvbnRlbnQtVHlwZSINCg0KdGV4dC9wbGFpbjsgY2hhcnNldD11dGYtOA0KLS03OGUxMDY0ODI5MzYxYWFhZjA1NWQ1ZGU1MWRjZjc0OQ0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJYLUFtei1DcmVkZW50aWFsIg0KDQpBS0lBWTdBVTZHUURWNUxDUFZFWC8yMDI1MDUwNS91cy1lYXN0LTEvczMvYXdzNF9yZXF1ZXN0DQotLTc4ZTEwNjQ4MjkzNjFhYWFmMDU1ZDVkZTUxZGNmNzQ5DQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9IlgtQW16LVNlY3VyaXR5LVRva2VuIg0KDQoNCi0tNzhlMTA2NDgyOTM2MWFhYWYwNTVkNWRlNTFkY2Y3NDkNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iWC1BbXotQWxnb3JpdGhtIg0KDQpBV1M0LUhNQUMtU0hBMjU2DQotLTc4ZTEwNjQ4MjkzNjFhYWFmMDU1ZDVkZTUxZGNmNzQ5DQpDb250ZW50LURpc3Bvc2l0aW9uOiBmb3JtLWRhdGE7IG5hbWU9IlgtQW16LURhdGUiDQoNCjIwMjUwNTA1VDE5MTIwMFoNCi0tNzhlMTA2NDgyOTM2MWFhYWYwNTVkNWRlNTFkY2Y3NDkNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iUG9saWN5Ig0KDQpDbnNLQ1NKbGVIQnBjbUYwYVc5dUlqb2dJakl3TWpVdE1EVXRNRFZVTVRrNk1USTZNREJhSWl3S0NTSmpiMjVrYVhScGIyNXpJam9nV3dvSkNYc2lZblZqYTJWMElqb2dJbkIxWW01MVlpMXRibVZ0YjNONWJtVXRabWxzWlhNdGRYTXRaV0Z6ZEMweExYQnlaQ0o5TEFvSkNWc2laWEVpTENBaUpIUmhaMmRwYm1jaUxDQWlQRlJoWjJkcGJtYytQRlJoWjFObGRENDhWR0ZuUGp4TFpYaytUMkpxWldOMFZGUk1TVzVFWVhselBDOUxaWGsrUEZaaGJIVmxQakU4TDFaaGJIVmxQand2VkdGblBqd3ZWR0ZuVTJWMFBqd3ZWR0ZuWjJsdVp6NGlYU3dLQ1FsYkltVnhJaXdnSWlSclpYa2lMQ0FpYzNWaUxXTXRaREJpT0dVMU5ESXRNVEpoTUMwME1XTTBMVGs1T1dZdFlUSmtOVFk1WkdNME1qVTFMekJOVWpFdGVqSjNNRzVUU2xsNGQwVjVOelJ3TlZGcVZqZzFWRzFuVGtKTFVISldOekYwTlRWT1ZEQXZaVEF5TW1ZM09ESXRaV0l6WWkwME5UUTJMV0l4WWpRdE5qaGhaVGN4T0RnNE56WTRMMnRwYm1kZllYSjBhSFZ5TG5SNGRDSmRMQW9KQ1ZzaVkyOXVkR1Z1ZEMxc1pXNW5kR2d0Y21GdVoyVWlMQ0F3TENBMU1qUXlPRGd3WFN3S0NRbGJJbk4wWVhKMGN5MTNhWFJvSWl3Z0lpUkRiMjUwWlc1MExWUjVjR1VpTENBaUlsMHNDZ2tKZXlKNExXRnRlaTFqY21Wa1pXNTBhV0ZzSWpvZ0lrRkxTVUZaTjBGVk5rZFJSRlkxVEVOUVZrVllMekl3TWpVd05UQTFMM1Z6TFdWaGMzUXRNUzl6TXk5aGQzTTBYM0psY1hWbGMzUWlmU3dLQ1FsN0luZ3RZVzE2TFhObFkzVnlhWFI1TFhSdmEyVnVJam9nSWlKOUxBb0pDWHNpZUMxaGJYb3RZV3huYjNKcGRHaHRJam9nSWtGWFV6UXRTRTFCUXkxVFNFRXlOVFlpZlN3S0NRbDdJbmd0WVcxNkxXUmhkR1VpT2lBaU1qQXlOVEExTURWVU1Ua3hNakF3V2lJZ2ZRb0pYUXA5Q2c9PQ0KLS03OGUxMDY0ODI5MzYxYWFhZjA1NWQ1ZGU1MWRjZjc0OQ0KQ29udGVudC1EaXNwb3NpdGlvbjogZm9ybS1kYXRhOyBuYW1lPSJYLUFtei1TaWduYXR1cmUiDQoNCjQzNWY3ZGNmYjJjYTlhODEwMDljMDMwNDQ2MTc3NTI3YjEzNTljZDNhZWUyZWU4NDhhYWMyMzhmMzQ4OTdmZmINCi0tNzhlMTA2NDgyOTM2MWFhYWYwNTVkNWRlNTFkY2Y3NDkNCkNvbnRlbnQtRGlzcG9zaXRpb246IGZvcm0tZGF0YTsgbmFtZT0iZmlsZSI7IGZpbGVuYW1lPSJraW5nX2FydGh1ci50eHQiDQpDb250ZW50LVR5cGU6IHRleHQvcGxhaW4NCg0KS25pZ2h0cyB3aG8gc2F5IE5pIQ0KLS03OGUxMDY0ODI5MzYxYWFhZjA1NWQ1ZGU1MWRjZjc0OS0tDQqULg=="
+                },
+                "headers": {
+                    "host": [
+                        "pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.3.0"
+                    ],
+                    "content-length": [
+                        "2329"
+                    ],
+                    "content-type": [
+                        "multipart/form-data; boundary=78e1064829361aaaf055d5de51dcf749"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 204,
+                    "message": "No Content"
+                },
+                "headers": {
+                    "x-amz-id-2": [
+                        "g68Vl0o6IEGVXJ+VmFM7OtsuliufgKkFrBBK3uggUw5d2ysPfuBLuQc/CUIasyDBPTyDOgJIr8VomRpCwmMyXTKgBlRdLEqZeg2r/GWZAP8="
+                    ],
+                    "x-amz-request-id": [
+                        "D9KQ0FDVXQTQYT28"
+                    ],
+                    "Date": [
+                        "Mon, 05 May 2025 19:11:01 GMT"
+                    ],
+                    "x-amz-expiration": [
+                        "expiry-date=\"Wed, 07 May 2025 00:00:00 GMT\", rule-id=\"Archive file 1 day after creation\""
+                    ],
+                    "x-amz-server-side-encryption": [
+                        "AES256"
+                    ],
+                    "ETag": [
+                        "\"3676cdb7a927db43c846070c4e7606c7\""
+                    ],
+                    "x-amz-checksum-crc64nvme": [
+                        "vyyxp15ByZo="
+                    ],
+                    "x-amz-checksum-type": [
+                        "FULL_OBJECT"
+                    ],
+                    "Location": [
+                        "https://pubnub-mnemosyne-files-us-east-1-prd.s3.dualstack.us-east-1.amazonaws.com/{PN_KEY_SUBSCRIBE}%2F0MR1-z2w0nSJYxwEy74p5QjV85TmgNBKPrV71t55NT0%2Fe022f782-eb3b-4546-b1b4-68ae71888768%2Fking_arthur.txt"
+                    ],
+                    "Server": [
+                        "AmazonS3"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVEAAAAAAAAAB9lIwGc3RyaW5nlIwAlHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22e022f782-eb3b-4546-b1b4-68ae71888768%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.3.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Mon, 05 May 2025 19:11:01 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "30"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVLgAAAAAAAAB9lIwGc3RyaW5nlIweWzEsIlNlbnQiLCIxNzQ2NDcyMjYxMDYzMTQ2NSJdlHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files?limit=2",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.3.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Mon, 05 May 2025 19:11:01 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "528"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVIwIAAAAAAAB9lIwGc3RyaW5nlFgQAgAAeyJzdGF0dXMiOjIwMCwiZGF0YSI6W3sibmFtZSI6ImtpbmdfYXJ0aHVyLnR4dCIsImlkIjoiMDdmMzNjOWEtOWM0NC00YTg5LTlhYWUtZmJlZTQzMjNkZWNhIiwic2l6ZSI6MTksImNyZWF0ZWQiOiIyMDI1LTA1LTA1VDE3OjQwOjA4WiJ9LHsibmFtZSI6ImtpbmdfYXJ0aHVyLnR4dCIsImlkIjoiMjFlZjI3NzEtY2Q2Ny00YjgzLWFjZGQtNzBjZmJhYWNmMjEwIiwic2l6ZSI6NDgsImNyZWF0ZWQiOiIyMDI1LTA1LTA1VDE3OjQ5OjEwWiJ9XSwibmV4dCI6IjE2cFluRFRyaWlYTFZIVXBkXzFTTzNlRXIwcDBoWHdLYjZoc0lpbU9FQ1NuanJBOEg3MFd3Q2ktV1VWamdnNXhKYTJTME5NbHdHMmZFZmpEVEtua2pSRXpkSHBzb0dJNXNvS1FzbmttbUlvSDZlS3NKNkQ5SVNab084SjNJQURfeVF3MzExYTd4bzR5LVJ1bG9FUXY5dHM3NXBZLW5KZmpxdW45SzBwNkpCVmhKeWktcmpyYjZsLWhCTjMwdnNkNEVqVk9kRFE0VUNlWFF0NGRiT1p5OHhUeW02ckswZ0ZzS0Zpc1Fsc1FRMWZrTC1mWWZWZTdCbG9MRlV3Y3h5TkRMIiwiY291bnQiOjJ9lHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files?limit=2&next=16pYnDTriiXLVHUpd_1SO3eEr0p0hXwKb6hsIimOECSnjrA8H70WwCi-WUVjgg5xJa2S0NMlwG2fEfjDTKnkjREzdHpsoGI5soKQsnkmmIoH6eKsJ6D9ISZoO8J3IAD_yQw311a7xo4y-RuloEQv9ts75pY-nJfjqun9K0p6JBVhJyi-rjrb6l-hBN30vsd4EjVOdDQ4UCeXQt4dbOZy8xTym6rK0gFsKFisQlsQQ1fkL-fYfVe7BloLFUwcxyNDL",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python-Asyncio/10.3.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Mon, 05 May 2025 19:11:01 GMT"
+                    ],
+                    "Content-Type": [
+                        "application/json"
+                    ],
+                    "Content-Length": [
+                        "528"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVIwIAAAAAAAB9lIwGc3RyaW5nlFgQAgAAeyJzdGF0dXMiOjIwMCwiZGF0YSI6W3sibmFtZSI6ImtpbmdfYXJ0aHVyLnR4dCIsImlkIjoiMmI0OGZiNzAtZjNiYi00OGFlLWI5NDItZTkyNzhlOGM3NWM1Iiwic2l6ZSI6MTksImNyZWF0ZWQiOiIyMDI1LTA1LTA1VDE3OjQ5OjA5WiJ9LHsibmFtZSI6ImtpbmdfYXJ0aHVyLnR4dCIsImlkIjoiMmM2YmNlYTAtN2QzYi00ZjU3LWI5MGMtMTJlZWI5ZDNmM2U4Iiwic2l6ZSI6NDgsImNyZWF0ZWQiOiIyMDI1LTA1LTA1VDE5OjA1OjA3WiJ9XSwibmV4dCI6IjFiSGZTS1F5aF94TF9uVHlzQ08yYzhjZEZpUmJ0Sm92WVBpOHVobGpMS2g2d3YwbzV4LTdSd2I2bmZmUkpGYlRlSnh1ZXlrNXo0bzMza09BeVFLX0pua1VvTTRvcVVBOEtMdzFfMmVpbUpKdW9zWVhXd3BmSVUzcTNyNGQxZV91OEs4T0ZiOW5xNkxBMk9UQ2Y2MS1sZV9SZm9FcXJtU3Z4SFhXQ3c0aFA5U1p5SV9kOEZzdlN0Y19IQzJ0UmJMTnJjT3BOZkctZkpxc3NUYWlmQnd3RGczaC13ZnB2OVkxNldHSzlvWmVHd2FJaTdlMGM5YzlYUm9mN3pnM19mbVpPIiwiY291bnQiOjJ9lHMu"
+                }
+            }
+        }
+    ]
+}

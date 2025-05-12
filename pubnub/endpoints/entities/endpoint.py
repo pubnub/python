@@ -164,12 +164,13 @@ class SpacesEndpoint:
 class ListEndpoint:
     __metaclass__ = ABCMeta
 
-    def __init__(self):
-        self._limit = None
-        self._filter = None
-        self._include_total_count = None
-        self._sort_keys = None
-        self._page = None
+    def __init__(self, limit: int = None, filter: str = None, include_total_count: bool = None,
+                 sort_keys: list = None, page: str = None):
+        self._limit = limit
+        self._filter = filter
+        self._include_total_count = include_total_count
+        self._sort_keys = sort_keys
+        self._page = page
 
     def limit(self, limit):
         self._limit = int(limit)

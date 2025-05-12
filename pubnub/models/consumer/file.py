@@ -3,7 +3,6 @@ class PNGetFilesResult:
         self.data = result['data']
         self.count = result.get('count', None)
         self.next = result.get('next', None)
-        self.prev = result.get('prev', None)
 
     def __str__(self):
         return "Get files success with data: %s" % self.data

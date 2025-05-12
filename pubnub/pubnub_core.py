@@ -1499,13 +1499,15 @@ class PubNubCore:
 
         Args:
             channel (str, optional): The channel to list files from.
+            limit (int, optional): The maximum number of files to return.
+            next (str, optional): The pagination token for the next page of results.
 
         Returns:
             ListFiles: A ListFiles object that can be used to execute the request.
 
         Example:
             ```python
-            result = pubnub.list_files(channel="room-1").sync()
+            result = pubnub.list_files(channel="room-1", limit=10, next="next_token").sync()
             for file in result.data:
                 print(f"File: {file.name}, Size: {file.size}")
             ```

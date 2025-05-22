@@ -127,6 +127,7 @@ class PNOperationType(object):
     PNRemoveSpaceUsersOperation = 82
     PNFetchUserMembershipsOperation = 85
     PNFetchSpaceMembershipsOperation = 86
+    #  NOTE: remember to update PubNub.managers.TelemetryManager.endpoint_name_for_operation() when adding operations
 
 
 class PNHeartbeatNotificationOptions(object):

@@ -211,4 +211,3 @@ class TestMessageActions(unittest.TestCase):
         self.assertFalse(envelope.status.is_error())
         self.assertIsNotNone(envelope.result)
         self.assertEqual(len(envelope.result.actions), 0)
-

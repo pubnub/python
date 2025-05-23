@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "body": {
+                    "pickle": "gASVdgIAAAAAAABYbwIAAHsidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsidGVzdC1jaGFubmVsIjogMX0sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjogeyJ0ZXN0LWNoYW5uZWwiOiAxfX0sICJwYXR0ZXJucyI6IHsiY2hhbm5lbHMiOiB7fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7fX0sICJtZXRhIjogeyJhcHBfZGF0YSI6IHsidmVyc2lvbiI6ICIxLjAuMCIsICJlbnZpcm9ubWVudCI6ICJwcm9kdWN0aW9uIiwgImZlYXR1cmVzIjogWyJjaGF0IiwgInByZXNlbmNlIiwgInB1c2giLCAic3RvcmFnZSJdLCAiY29uZmlnIjogeyJ0aW1lb3V0IjogNTAwMCwgInJldHJpZXMiOiAzLCAiY2FjaGVfc2l6ZSI6IDEwMDAsICJkZWJ1ZyI6IGZhbHNlfX0sICJ1c2VyX2RhdGEiOiB7ImlkIjogIjEyMzQ1IiwgInJvbGVzIjogWyJhZG1pbiIsICJtb2RlcmF0b3IiLCAidXNlciJdLCAicGVybWlzc2lvbnMiOiBbInJlYWQiLCAid3JpdGUiLCAiZGVsZXRlIl0sICJzZXR0aW5ncyI6IHsibm90aWZpY2F0aW9ucyI6IHRydWUsICJ0aGVtZSI6ICJkYXJrIiwgImxhbmd1YWdlIjogImVuIn19fX19lC4="
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "623"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 22 May 2025 13:01:52 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "cache-control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "content-encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVAQIAAAAAAAB9lIwGc3RyaW5nlELuAQAAH4sIAAAAAAAA/21Sy27bMBD8lULnBNAjMmADPUSxRNWNlZqxRWkvBR+uZIuUGOtlKci/lw7QnnLikrs7O5ydd0vQjlqrd0sd25YWR2tlvfacm4t1Z3VNdazNi7Yj97GKbKSK4UcYrEWMW7S+rrlKZ33AZ4qiviFXG7LEfiZJkxO/BzIGO1dM/Gew5l5w/jLvpTN/C0KRpRpudSiy/+OFSc3rp2LnJWO+MDOzZGpC7AgiK3N2kOGyUdLhbjplLi4FQlWuZAX7cNrOO4d6geTK0dxLNHP9uXDxBCSqIBMTzbAEhSVDqQ0knZh7lfwhkTnBHSW+ZmRp6jYGczlBnM4mbswcWyDZg/di+F1LpoSTEyFzlfaM+IPJKUoS0yMHVv9yDL8GiCMB4ZKrrsmzYPzHE1QyMAUaFvgtdyODl/7hrlwArtYLlFZANg78xrXR1+ZKSj4mtcHtgCwdEVT7E+okq0FztTSz014gPZq4EiSxKVn2FIHMM+zc9lOiTz1tGgeT0V8ylUiIA6NbWXMPD1xFNRDhmj/Ot16jX799ehiN7hqconh5pfScRfcdw5fCP7Th5hIjfNjfMzJqffL312cXx03goPG79XFntcfLcOI3Hz1+2ujbltbGVxdjp7ajXd9aK9e2P/4Crb3ijXkCAACUcy4="
+                }
+            }
+        }
+    ]
+}

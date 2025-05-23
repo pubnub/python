@@ -1,0 +1,72 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "body": {
+                    "pickle": "gASVOwEAAAAAAABYNAEAAHsidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsidGVzdC1jaGFubmVsIjogMX0sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjogeyJ0ZXN0LWNoYW5uZWwiOiAxfX0sICJwYXR0ZXJucyI6IHsiY2hhbm5lbHMiOiB7fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7fX0sICJtZXRhIjogeyJhcHBfaWQiOiAibXktYXBwIiwgInVzZXJfdHlwZSI6ICJhZG1pbiIsICJjdXN0b21fZmllbGQiOiAidmFsdWUifX19lC4="
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "308"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 22 May 2025 13:01:52 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "cache-control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "content-encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVQAEAAAAAAAB9lIwGc3RyaW5nlEItAQAAH4sIAAAAAAAA/22QzW7CMBCEX6XymYOTFCSQOGDyQwVNFdPajm/GSaHkxyl2EhLEu9f00FNPq90dzYy+G8iEEWBxA1WutTjmYAH2rZR2ARNgVJHX9tLA0F0VIYyqY/cSID/bYB35V19WZGw+8FlEYavoFXIWwx2NVUqnLac9StxskFvkSw+d//17ZJTfKMgYafhDF4Xwzy+Ia1mvj4kX9+nMZrJ4UAF2MloWdhrO8Em5/CQ36FNQXB1YYVKG+kMUO9LD3YHMK0GJ5hFxU3p1OC0d6ZKBeXgqI1KmFBtBp750y5qufb/qVrajGmdt+oagEvPLuxm7vs8Ss9+VuniuBybVtmHJcgnuE6DzS/clH7xWv7ieXkVt+V0sNm2EaTVYuBDefwB96fVUYQEAAJRzLg=="
+                }
+            }
+        }
+    ]
+}

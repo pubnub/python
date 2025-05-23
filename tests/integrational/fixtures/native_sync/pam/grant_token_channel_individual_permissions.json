@@ -1,0 +1,474 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "body": {
+                    "pickle": "gASV9wAAAAAAAACM83sidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsiY2hhbm5lbF9yZWFkIjogMX0sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjogeyJjaGFubmVsX3JlYWQiOiAxfX0sICJwYXR0ZXJucyI6IHsiY2hhbm5lbHMiOiB7fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7fX0sICJtZXRhIjoge319fZQu"
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "243"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 22 May 2025 12:59:27 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "cache-control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "content-encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVBwEAAAAAAAB9lIwGc3RyaW5nlEP3H4sIAAAAAAAA/22PTW+CMACG/8rSsyQVopvcRAo4lQw22+KttoRN5GO0IGL871YPnjy9eT/yJs8FCKYYsC+gSKVkWQps8N1yrg0YAVXlaamTGnrmPPegX2RdMJ25Ioil7/YuL/BQb+MD8722Iv1D9wWW1Po8JiRyIlOc+cpxueUcXvYWHvi/gwTF9e6+8z34/ENhyctFFlnhKZk6rqDhuULxWJBjrlXtaPyrNwMjIll6448OzrARDJlhEWPRBNsQBe8rOunWZLnf9KcGrVk/+UFf4DoCMm26P35nnT9Q3zas1OyNRpaKqVYC24TwegPHw8t3HQEAAJRzLg=="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "body": {
+                    "pickle": "gASV+QAAAAAAAACM9XsidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsiY2hhbm5lbF93cml0ZSI6IDJ9LCAiZ3JvdXBzIjoge30sICJ1dWlkcyI6IHt9LCAidXNlcnMiOiB7fSwgInNwYWNlcyI6IHsiY2hhbm5lbF93cml0ZSI6IDJ9fSwgInBhdHRlcm5zIjogeyJjaGFubmVscyI6IHt9LCAiZ3JvdXBzIjoge30sICJ1dWlkcyI6IHt9LCAidXNlcnMiOiB7fSwgInNwYWNlcyI6IHt9fSwgIm1ldGEiOiB7fX19lC4="
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "245"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 22 May 2025 12:59:27 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "cache-control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "content-encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVHQEAAAAAAAB9lIwGc3RyaW5nlEIKAQAAH4sIAAAAAAAA/x2PW2+CMACF/8rSZ024ZCya7AGHlMzIQlEuvpDSsjJogdmCY8b/bvXp5Fxyku8KKFYYrK9AVFJiVoE1iEdCtAELoPq26nQyGL7ltr4BBZsCZ+XRAEno/XlEJP/DETUY+mOfmk8tRSIzm844Q9xtw450Hyyyw0vu+Cq36roUr7z0VzYR3DhFnx7NwrnfIpOmvO23epfFHMGwz1OHRRadyW7jEXvT6M4k9o6hIDFxGjMETU4hfHwPJ5OxeF9c3MmpcfFtfdHfZElRBUtBQ6Ly5aFogmY62G/G0Uujd3BbAFmdpx/y4HWfuC973Gn+s8aWCqtRgrVlGLc71Vi6NSEBAACUcy4="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "body": {
+                    "pickle": "gASV+wAAAAAAAACM93sidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsiY2hhbm5lbF9tYW5hZ2UiOiA0fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7ImNoYW5uZWxfbWFuYWdlIjogNH19LCAicGF0dGVybnMiOiB7ImNoYW5uZWxzIjoge30sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjoge319LCAibWV0YSI6IHt9fX2ULg=="
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "247"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 22 May 2025 12:59:27 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "cache-control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "content-encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVHAEAAAAAAAB9lIwGc3RyaW5nlEIJAQAAH4sIAAAAAAAA/02QO2+DMACE/0rlOQOPJFKRMuCaR4sCBRQ7sBnzasFAMCSIKP+9bqZMp7vTDd/dQU4nCow74IUQtCqAAeKZMWnABkx9U3QyGRRbMxtbcXh1dffvKHcj4aAFMY7X4RT9Useee7J7asaxOGtqnXG7S8MIpfrXrbf8lTmBzPw+Ibs5JUuZEXtOSN5Cy1eZ7lWRi1VK4irUYZ172Eq0us4u8HUvO7yyC7TyMx5SD1oZwUpCIWJa25EP9K15N0SP7dJu+Tj4PqyV0baC0tuHnzg4lZlqVtsmiHszPBzAYwNEMV5/2D+z+UR+O9JOfjBKdDHRaRbA0BTl8QfVfCuoJQEAAJRzLg=="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "body": {
+                    "pickle": "gASV+wAAAAAAAACM93sidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsiY2hhbm5lbF9kZWxldGUiOiA4fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7ImNoYW5uZWxfZGVsZXRlIjogOH19LCAicGF0dGVybnMiOiB7ImNoYW5uZWxzIjoge30sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjoge319LCAibWV0YSI6IHt9fX2ULg=="
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "247"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 22 May 2025 12:59:27 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "cache-control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "content-encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVHQEAAAAAAAB9lIwGc3RyaW5nlEIKAQAAH4sIAAAAAAAA/02QO2+DMACE/0rlOQNxSKUgZcA8TEtDFCJs8GYMgYZnMI+UKP+9NFOn093phu8eIOE9B9oDVKmUPEuBBs6DEIsBK9A3RVovSavYUC9sBVfZ6LzvzMTxJTbvpqjI3Ab+lWN7aOj2pXFFZAj9MsZEYafcZJvPqbG8WeBjHldeE9HtwOj9wjCRLPRLw/LWYuNmvkPWnJ6z0wbliUusCOZ5fEP/90tHZnFDVhKSlrnIiilRIo5MAcuaGvolKGfoeVe3QR9FNuFj9JWpyQSZEakC0cOPOtBx5/RBN+334LkCMu3Gb/HHrL+Q3w68Xj7oFnTZ836QQIOK8vwFt/2qLCUBAACUcy4="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "body": {
+                    "pickle": "gASV9wAAAAAAAACM83sidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsiY2hhbm5lbF9nZXQiOiAzMn0sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjogeyJjaGFubmVsX2dldCI6IDMyfX0sICJwYXR0ZXJucyI6IHsiY2hhbm5lbHMiOiB7fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7fX0sICJtZXRhIjoge319fZQu"
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "243"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 22 May 2025 12:59:27 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "cache-control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "content-encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVBgEAAAAAAAB9lIwGc3RyaW5nlEP2H4sIAAAAAAAA/22PXW+CMBiF/8rSa5cw3FzGHVBAs9jNLhb0xtS2YRP6MVrcxPjfrV545dXJ+54nJ3mOgFNHQXQEUlhLawEi8NUz5g8wAk43QvmPCfIwbvKgkPV+OnmDfIptAf8hk2QwS7yjRd7r0l1zK4mtQt7ypK4XIT+w9wSycbK724/JwH6TjFfErC9ckQe3vQwpplLPoL/VJIG8Qged4Sdeto1Pt67wt2cGWvLVLE5Fq01TvjC06T5fF5vlI7IM96n8mD+rLXJwphUVhBgBTiNgRbf/YRfX+Kr6MKfKu3de2TrqeguiMAhOZ7kFTwAdAQAAlHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "body": {
+                    "pickle": "gASV/QAAAAAAAACM+XsidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsiY2hhbm5lbF91cGRhdGUiOiA2NH0sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjogeyJjaGFubmVsX3VwZGF0ZSI6IDY0fX0sICJwYXR0ZXJucyI6IHsiY2hhbm5lbHMiOiB7fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7fX0sICJtZXRhIjoge319fZQu"
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "249"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 22 May 2025 12:59:27 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "cache-control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "content-encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVCgEAAAAAAAB9lIwGc3RyaW5nlEP6H4sIAAAAAAAA/3WQT2+CMBjGv8rSswcGjGXcQCguKIkwy59bbRkoa+loUcH43Vc97Obpyfvklzf5PVdAscLAvQJWS4mbGrggGwnRB1gA1Xc1140woOl10IhYc1o5HwFdpTIKLgFhaBa79IgjOPb52yP3DMnCQucqgkaVtt7WpBOJ/YBY/vEpY6GZ/PohLZCo7qzu//+GCSd82Wyt5Fw6fkCLZOrD9JXmP51OVRVpq5kZ57T8jGNoZ/TC26T8ksKMNzBjaPfODlTY+bTG+2n9HS+doec2uC2ArIfTgdydvYfyywZzvcGg1aXCapTANQ3j9gdDmrOVJQEAAJRzLg=="
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "POST",
+                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "body": {
+                    "pickle": "gASV+wAAAAAAAACM93sidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsiY2hhbm5lbF9qb2luIjogMTI4fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7ImNoYW5uZWxfam9pbiI6IDEyOH19LCAicGF0dGVybnMiOiB7ImNoYW5uZWxzIjoge30sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjoge319LCAibWV0YSI6IHt9fX2ULg=="
+                },
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ],
+                    "content-type": [
+                        "application/json"
+                    ],
+                    "content-length": [
+                        "247"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 22 May 2025 12:59:27 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=UTF-8"
+                    ],
+                    "Transfer-Encoding": [
+                        "chunked"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "cache-control": [
+                        "no-cache, no-store, must-revalidate"
+                    ],
+                    "content-encoding": [
+                        "gzip"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVHgEAAAAAAAB9lIwGc3RyaW5nlEILAQAAH4sIAAAAAAAA/x2PW2+CMACF/8rSZx+gbmSS7AEEinGgwMZlL6a0rI47FBBm/O9Wn07OJSf5roDiAQP1CqqMc8wyoIJgJEQYsAJDU2S1SFrJglphSahik61sDGr7HBmzQarwv/32c4yssYnmp6ZVyGPYTjh6TZjp1qTeMm/tXhLF4gk8n9PqrUytTZfCckQ73aCxuzSmL9OoLBpT7OKg9JHbJJHCPEgXstcNstZz0clkvWe+Hco4CpiP5JIi9Phuf2TGnFDDDtu9e/CTzNguLooSnujha0nT7tc5WEufn5zuqG2PyQe4rQDP+umPPHi1J+6Lg2vB3wtsPuBh5ECFknS7A8jvN5IhAQAAlHMu"
+                }
+            }
+        }
+    ]
+}

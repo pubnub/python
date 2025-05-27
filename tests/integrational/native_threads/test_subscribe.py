@@ -40,7 +40,7 @@ class TestPubNubSubscription(unittest.TestCase):
                          filter_query_parameters=['seqn', 'pnsdk', 'tr', 'tt'], serializer='pn_json',
                          allow_playback_repeats=True)
     def test_subscribe_unsubscribe(self):
-        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
         ch = "test-subscribe-sub-unsub"
 
         try:
@@ -70,7 +70,7 @@ class TestPubNubSubscription(unittest.TestCase):
 
     def test_subscribe_pub_unsubscribe(self):
         ch = "test-subscribe-pub-unsubscribe"
-        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
         subscribe_listener = SubscribeListener()
         publish_operation = NonSubscribeListener()
         message = "hey"
@@ -106,8 +106,8 @@ class TestPubNubSubscription(unittest.TestCase):
 
     def test_join_leave(self):
         ch = helper.gen_channel("test-subscribe-join-leave")
-        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
-        pubnub_listener = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
+        pubnub_listener = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
         callback_messages = SubscribeListener()
         callback_presence = SubscribeListener()
 
@@ -157,7 +157,7 @@ class TestPubNubSubscription(unittest.TestCase):
         ch = "test-subscribe-unsubscribe-channel"
         gr = "test-subscribe-unsubscribe-group"
 
-        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
         callback_messages = SubscribeListener()
         cg_operation = NonSubscribeListener()
 
@@ -193,7 +193,7 @@ class TestPubNubSubscription(unittest.TestCase):
         gr = "test-subscribe-unsubscribe-group"
         message = "hey"
 
-        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
         callback_messages = SubscribeListener()
         non_subscribe_listener = NonSubscribeListener()
 
@@ -228,8 +228,8 @@ class TestPubNubSubscription(unittest.TestCase):
     def test_subscribe_cg_join_leave(self):
         ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
         gr = helper.gen_channel("test-subscribe-unsubscribe-group")
-        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
-        pubnub_listener = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
+        pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
+        pubnub_listener = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
         callback_messages = SubscribeListener()
         callback_presence = SubscribeListener()
 
@@ -285,8 +285,8 @@ class TestPubNubSubscription(unittest.TestCase):
     def test_subscribe_pub_unencrypted_unsubscribe(self):
         ch = helper.gen_channel("test-subscribe-pub-unencrypted-unsubscribe")
 
-        pubnub_plain = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True))
-        pubnub = PubNub(pnconf_enc_env_copy(enable_subscribe=True, daemon=True))
+        pubnub_plain = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
+        pubnub = PubNub(pnconf_enc_env_copy(enable_subscribe=True, daemon=True, enable_presence_heartbeat=True))
 
         subscribe_listener = SubscribeListener()
         publish_operation = NonSubscribeListener()
@@ -335,7 +335,7 @@ class TestPubNubSubscription(unittest.TestCase):
     def test_subscribe_retry_policy_none(self):
         ch = "test-subscribe-retry-policy-none"
         pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, origin='127.0.0.1',
-                                        reconnect_policy=PNReconnectionPolicy.NONE))
+                                        reconnect_policy=PNReconnectionPolicy.NONE, enable_presence_heartbeat=True))
         listener = DisconnectListener()
 
         try:
@@ -356,7 +356,8 @@ class TestPubNubSubscription(unittest.TestCase):
         with patch('pubnub.managers.LinearDelay.calculate', wraps=mock_calculate) as calculate_mock:
             ch = "test-subscribe-retry-policy-linear"
             pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, origin='127.0.0.1',
-                                            reconnect_policy=PNReconnectionPolicy.LINEAR))
+                                            reconnect_policy=PNReconnectionPolicy.LINEAR,
+                                            enable_presence_heartbeat=True))
             listener = DisconnectListener()
 
             try:
@@ -379,7 +380,8 @@ class TestPubNubSubscription(unittest.TestCase):
         with patch('pubnub.managers.ExponentialDelay.calculate', wraps=mock_calculate) as calculate_mock:
             ch = "test-subscribe-retry-policy-exponential"
             pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, origin='127.0.0.1',
-                                            reconnect_policy=PNReconnectionPolicy.EXPONENTIAL))
+                                            reconnect_policy=PNReconnectionPolicy.EXPONENTIAL,
+                                            enable_presence_heartbeat=True))
             listener = DisconnectListener()
 
             try:
@@ -403,7 +405,8 @@ class TestPubNubSubscription(unittest.TestCase):
             ch = "test-subscribe-retry-policy-linear"
             pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, origin='127.0.0.1',
                                             maximum_reconnection_retries=3,
-                                            reconnect_policy=PNReconnectionPolicy.LINEAR))
+                                            reconnect_policy=PNReconnectionPolicy.LINEAR,
+                                            enable_presence_heartbeat=True))
             listener = DisconnectListener()
 
             try:
@@ -427,7 +430,8 @@ class TestPubNubSubscription(unittest.TestCase):
             ch = "test-subscribe-retry-policy-exponential"
             pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, origin='127.0.0.1',
                                             maximum_reconnection_retries=3,
-                                            reconnect_policy=PNReconnectionPolicy.EXPONENTIAL))
+                                            reconnect_policy=PNReconnectionPolicy.EXPONENTIAL,
+                                            enable_presence_heartbeat=True))
             listener = DisconnectListener()
 
             try:
@@ -451,7 +455,8 @@ class TestPubNubSubscription(unittest.TestCase):
             ch = "test-subscribe-retry-policy-linear"
             pubnub = PubNub(pnconf_env_copy(enable_subscribe=True, daemon=True, origin='127.0.0.1',
                                             maximum_reconnection_retries=3, reconnection_interval=1,
-                                            reconnect_policy=PNReconnectionPolicy.LINEAR))
+                                            reconnect_policy=PNReconnectionPolicy.LINEAR,
+                                            enable_presence_heartbeat=True))
             listener = DisconnectListener()
 
             try:

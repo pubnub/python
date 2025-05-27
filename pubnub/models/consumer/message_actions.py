@@ -1,4 +1,4 @@
-class PNMessageAction(object):
+class PNMessageAction:
     def __init__(self, message_action=None):
         if message_action is not None:
             self.type = message_action['type']
@@ -12,6 +12,23 @@ class PNMessageAction(object):
             self.message_timetoken = None
             self.uuid = None
             self.action_timetoken = None
+
+    def create(self, *, type: str = None, value: str = None, message_timetoken: str = None,
+               user_id: str = None) -> 'PNMessageAction':
+        """
+        Create a new message action convenience method.
+
+        :param type: Type of the message action
+        :param value: Value of the message action
+        :param message_timetoken: Timetoken of the message
+        :param user_id: User ID of the message
+        """
+
+        self.type = type
+        self.value = value
+        self.message_timetoken = message_timetoken
+        self.uuid = user_id
+        return self
 
     def __str__(self):
         return "Message action with tt: %s for uuid %s with value %s " % (self.action_timetoken, self.uuid, self.value)

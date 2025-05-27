@@ -470,6 +470,7 @@ class TelemetryManager:
         endpoint = {
             PNOperationType.PNPublishOperation: 'pub',
             PNOperationType.PNFireOperation: 'pub',
+            PNOperationType.PNSendFileNotification: "pub",
 
             PNOperationType.PNHistoryOperation: 'hist',
             PNOperationType.PNHistoryDeleteOperation: 'hist',
@@ -533,6 +534,29 @@ class TelemetryManager:
             PNOperationType.PNFetchFileUploadS3DataAction: 'file',
             PNOperationType.PNDownloadFileAction: 'file',
             PNOperationType.PNSendFileAction: 'file',
+
+
+            PNOperationType.PNFetchMessagesOperation: "hist",
+
+            PNOperationType.PNCreateSpaceOperation: "obj",
+            PNOperationType.PNUpdateSpaceOperation: "obj",
+            PNOperationType.PNFetchSpaceOperation: "obj",
+            PNOperationType.PNFetchSpacesOperation: "obj",
+            PNOperationType.PNRemoveSpaceOperation: "obj",
+
+            PNOperationType.PNCreateUserOperation: "obj",
+            PNOperationType.PNUpdateUserOperation: "obj",
+            PNOperationType.PNFetchUserOperation: "obj",
+            PNOperationType.PNFetchUsersOperation: "obj",
+            PNOperationType.PNRemoveUserOperation: "obj",
+
+            PNOperationType.PNAddUserSpacesOperation: "obj",
+            PNOperationType.PNAddSpaceUsersOperation: "obj",
+            PNOperationType.PNUpdateUserSpacesOperation: "obj",
+
+            PNOperationType.PNUpdateSpaceUsersOperation: "obj",
+            PNOperationType.PNFetchUserMembershipsOperation: "obj",
+            PNOperationType.PNFetchSpaceMembershipsOperation: "obj",
 
         }[operation_type]
 

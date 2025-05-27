@@ -168,6 +168,7 @@ class TestPubNubSubscription(unittest.TestCase):
         result = cg_operation.await_result()
         assert isinstance(result, PNChannelGroupsAddChannelResult)
         cg_operation.reset()
+        time.sleep(5)
 
         pubnub.add_listener(callback_messages)
         pubnub.subscribe().channel_groups(gr).execute()
@@ -203,6 +204,8 @@ class TestPubNubSubscription(unittest.TestCase):
             .pn_async(non_subscribe_listener.callback)
         result = non_subscribe_listener.await_result_and_reset()
         assert isinstance(result, PNChannelGroupsAddChannelResult)
+        non_subscribe_listener.reset()
+        time.sleep(5)
 
         pubnub.add_listener(callback_messages)
         pubnub.subscribe().channel_groups(gr).execute()
@@ -239,6 +242,7 @@ class TestPubNubSubscription(unittest.TestCase):
             .sync()
 
         assert isinstance(result.result, PNChannelGroupsAddChannelResult)
+        time.sleep(5)
 
         pubnub.config.uuid = helper.gen_channel("messenger")
         pubnub_listener.config.uuid = helper.gen_channel("listener")

@@ -205,8 +205,6 @@ class AsyncAiohttpRequestHandler(BaseRequestHandler):
                 )
             )
         else:
-            self.pubnub._telemetry_manager.store_latency(time.time() - start_timestamp, options.operation_type)
-
             return AsyncioEnvelope(
                 result=create_response(data) if not options.non_json_response else create_response(response, data),
                 status=create_status(

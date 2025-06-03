@@ -4,7 +4,7 @@ from unittest.mock import MagicMock
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name
-from pubnub.managers import TelemetryManager, TokenManager
+from pubnub.managers import TokenManager
 
 
 class TestSubscribe(unittest.TestCase):
@@ -16,7 +16,6 @@ class TestSubscribe(unittest.TestCase):
             _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_SubscribeUnitTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.pubnub._token_manager = TokenManager()
         self.sub = Subscribe(self.pubnub)
 

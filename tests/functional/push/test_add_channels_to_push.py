@@ -11,7 +11,6 @@ import pubnub.enums
 
 from pubnub.endpoints.push.add_channels_to_push import AddChannelsToPush
 from tests.helper import pnconf, pnconf_env_copy, sdk_name
-from pubnub.managers import TelemetryManager
 from pubnub.enums import PNPushType, PNPushEnvironment
 
 
@@ -26,7 +25,6 @@ class TestAddChannelsFromPush(unittest.TestCase):
         )
 
         self.pubnub.uuid = "UUID_AddChannelsTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.add_channels = AddChannelsToPush(self.pubnub)
 
     def test_push_add_single_channel(self):

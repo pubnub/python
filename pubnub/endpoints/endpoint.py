@@ -204,9 +204,6 @@ class Endpoint(object):
             custom_params['pnsdk'] = self.pubnub.sdk_name
             custom_params['uuid'] = self.pubnub.uuid
 
-            for query_key, query_value in self.pubnub._telemetry_manager.operation_latencies().items():
-                custom_params[query_key] = query_value
-
             if self.is_auth_required():
                 if self.pubnub._get_token():
                     custom_params["auth"] = self.pubnub._get_token()

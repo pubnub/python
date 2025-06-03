@@ -26,11 +26,15 @@ class PubNubException(Exception):
         return self._status_code
 
     def get_error_message(self):
+        result = ''
         try:
             error = loads(self._errormsg)
-            return error.get('error')
+            result = error.get('error')
         except JSONDecodeError:
-            return self._errormsg
+            result = self._errormsg
+        if not result and self._pn_error:
+            result = self._pn_error
+        return result
 
 
 class PubNubAsyncioException(Exception):

@@ -167,8 +167,7 @@ class TestPubNubSubscription(unittest.TestCase):
             .pn_async(cg_operation.callback)
         result = cg_operation.await_result()
         assert isinstance(result, PNChannelGroupsAddChannelResult)
-        cg_operation.reset()
-        time.sleep(5)
+        time.sleep(1)
 
         pubnub.add_listener(callback_messages)
         pubnub.subscribe().channel_groups(gr).execute()
@@ -177,11 +176,13 @@ class TestPubNubSubscription(unittest.TestCase):
         pubnub.unsubscribe().channel_groups(gr).execute()
         callback_messages.wait_for_disconnect()
 
+        # Create a new listener for the remove operation to avoid potential race conditions
+        cg_remove_operation = NonSubscribeListener()
         pubnub.remove_channel_from_channel_group()\
             .channel_group(gr)\
             .channels(ch)\
-            .pn_async(cg_operation.callback)
-        result = cg_operation.await_result()
+            .pn_async(cg_remove_operation.callback)
+        result = cg_remove_operation.await_result()
         assert isinstance(result, PNChannelGroupsRemoveChannelResult)
 
         pubnub.stop()
@@ -205,7 +206,7 @@ class TestPubNubSubscription(unittest.TestCase):
         result = non_subscribe_listener.await_result_and_reset()
         assert isinstance(result, PNChannelGroupsAddChannelResult)
         non_subscribe_listener.reset()
-        time.sleep(5)
+        time.sleep(1)
 
         pubnub.add_listener(callback_messages)
         pubnub.subscribe().channel_groups(gr).execute()
@@ -242,7 +243,7 @@ class TestPubNubSubscription(unittest.TestCase):
             .sync()
 
         assert isinstance(result.result, PNChannelGroupsAddChannelResult)
-        time.sleep(5)
+        time.sleep(1)
 
         pubnub.config.uuid = helper.gen_channel("messenger")
         pubnub_listener.config.uuid = helper.gen_channel("listener")

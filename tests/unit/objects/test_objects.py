@@ -1,3 +1,4 @@
+import asyncio
 from pubnub.pubnub import PubNub
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from pubnub.pnconfiguration import PNConfiguration
@@ -15,7 +16,7 @@ class TestObjectsIsMatchingEtag(TestCase):
         self.config.subscribe_key = "test"
         self.config.uuid = "test"
         self.pubnub = PubNub(self.config)
-        self.pubnub_asyncio = PubNubAsyncio(self.config)
+        self.pubnub_asyncio = PubNubAsyncio(self.config, custom_event_loop=asyncio.new_event_loop())
         return super().setUp()
 
     def test_get_all_channel_metadata(self):

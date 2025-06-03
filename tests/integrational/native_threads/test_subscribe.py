@@ -11,7 +11,6 @@ from pubnub.models.consumer.pubsub import PNPublishResult, PNMessageResult
 from pubnub.pubnub import PubNub, SubscribeListener, NonSubscribeListener
 from tests import helper
 from tests.helper import pnconf_enc_env_copy, pnconf_env_copy
-from tests.integrational.vcr_helper import pn_vcr
 
 
 pn.set_stream_logger('pubnub', logging.DEBUG)

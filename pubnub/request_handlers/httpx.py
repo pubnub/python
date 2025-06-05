@@ -179,7 +179,15 @@ class HttpxRequestHandler(BaseRequestHandler):
             if res.text is None:
                 text = "N/A"
             else:
-                text = res.text
+                # Safely access response text - handle streaming responses
+                try:
+                    text = res.text
+                except httpx.ResponseNotRead:
+                    # For streaming responses, we need to read first
+                    text = res.content.decode('utf-8', errors='ignore')
+                except Exception:
+                    # Fallback in case of any response reading issues
+                    text = f"Response content unavailable (status: {res.status_code})"
 
             if res.status_code >= 500:
                 err = PNERR_SERVER_ERROR
@@ -259,7 +267,15 @@ class HttpxRequestHandler(BaseRequestHandler):
 
         try:
             res = self.session.request(**args)
-            logger.debug("GOT %s" % res.text)
+            # Safely access response text - read content first for streaming responses
+            try:
+                logger.debug("GOT %s" % res.text)
+            except httpx.ResponseNotRead:
+                # For streaming responses, we need to read first
+                logger.debug("GOT %s" % res.content.decode('utf-8', errors='ignore'))
+            except Exception as e:
+                # Fallback logging in case of any response reading issues
+                logger.debug("GOT response (content access failed: %s)" % str(e))
 
         except httpx.ConnectError as e:
             raise PubNubException(

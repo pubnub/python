@@ -10,8 +10,9 @@ from pubnub.pubnub import PubNub
 import pubnub.enums
 
 from pubnub.endpoints.push.add_channels_to_push import AddChannelsToPush
-from tests.helper import pnconf, sdk_name
+from tests.helper import pnconf, pnconf_env_copy, sdk_name
 from pubnub.managers import TelemetryManager
+from pubnub.enums import PNPushType, PNPushEnvironment
 
 
 class TestAddChannelsFromPush(unittest.TestCase):
@@ -89,3 +90,15 @@ class TestAddChannelsFromPush(unittest.TestCase):
         })
 
         self.assertEqual(self.add_channels._channels, ['ch'])
+
+    def test_add_channels_to_push_builder(self):
+        config = pnconf_env_copy()
+        pubnub = PubNub(config)
+        endpoint = pubnub.add_channels_to_push() \
+            .channels(['ch1', 'ch2']) \
+            .device_id("00000000000000000000000000000000") \
+            .push_type(PNPushType.APNS2) \
+            .environment(PNPushEnvironment.PRODUCTION) \
+            .topic("testTopic")
+        result = endpoint.sync()
+        self.assertEqual(result.status.error, None)

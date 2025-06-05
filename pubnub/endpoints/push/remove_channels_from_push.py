@@ -98,7 +98,7 @@ class RemoveChannelsFromPush(Endpoint):
         return PNPushRemoveChannelResult()
 
     def sync(self) -> PNPushRemoveChannelResultEnvelope:
-        return PNPushRemoveChannelResultEnvelope(self.process_sync())
+        return PNPushRemoveChannelResultEnvelope(super().sync())
 
     def is_auth_required(self):
         return True

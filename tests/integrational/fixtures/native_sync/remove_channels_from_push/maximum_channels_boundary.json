@@ -1,0 +1,64 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/0000000000000000?remove=max_channel_0%2Cmax_channel_1%2Cmax_channel_2%2Cmax_channel_3%2Cmax_channel_4%2Cmax_channel_5%2Cmax_channel_6%2Cmax_channel_7%2Cmax_channel_8%2Cmax_channel_9%2Cmax_channel_10%2Cmax_channel_11%2Cmax_channel_12%2Cmax_channel_13%2Cmax_channel_14%2Cmax_channel_15%2Cmax_channel_16%2Cmax_channel_17%2Cmax_channel_18%2Cmax_channel_19%2Cmax_channel_20%2Cmax_channel_21%2Cmax_channel_22%2Cmax_channel_23%2Cmax_channel_24%2Cmax_channel_25%2Cmax_channel_26%2Cmax_channel_27%2Cmax_channel_28%2Cmax_channel_29%2Cmax_channel_30%2Cmax_channel_31%2Cmax_channel_32%2Cmax_channel_33%2Cmax_channel_34%2Cmax_channel_35%2Cmax_channel_36%2Cmax_channel_37%2Cmax_channel_38%2Cmax_channel_39%2Cmax_channel_40%2Cmax_channel_41%2Cmax_channel_42%2Cmax_channel_43%2Cmax_channel_44%2Cmax_channel_45%2Cmax_channel_46%2Cmax_channel_47%2Cmax_channel_48%2Cmax_channel_49%2Cmax_channel_50%2Cmax_channel_51%2Cmax_channel_52%2Cmax_channel_53%2Cmax_channel_54%2Cmax_channel_55%2Cmax_channel_56%2Cmax_channel_57%2Cmax_channel_58%2Cmax_channel_59%2Cmax_channel_60%2Cmax_channel_61%2Cmax_channel_62%2Cmax_channel_63%2Cmax_channel_64%2Cmax_channel_65%2Cmax_channel_66%2Cmax_channel_67%2Cmax_channel_68%2Cmax_channel_69%2Cmax_channel_70%2Cmax_channel_71%2Cmax_channel_72%2Cmax_channel_73%2Cmax_channel_74%2Cmax_channel_75%2Cmax_channel_76%2Cmax_channel_77%2Cmax_channel_78%2Cmax_channel_79%2Cmax_channel_80%2Cmax_channel_81%2Cmax_channel_82%2Cmax_channel_83%2Cmax_channel_84%2Cmax_channel_85%2Cmax_channel_86%2Cmax_channel_87%2Cmax_channel_88%2Cmax_channel_89%2Cmax_channel_90%2Cmax_channel_91%2Cmax_channel_92%2Cmax_channel_93%2Cmax_channel_94%2Cmax_channel_95%2Cmax_channel_96%2Cmax_channel_97%2Cmax_channel_98%2Cmax_channel_99&type=apns&uuid=test-uuid",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 05 Jun 2025 13:11:14 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "24"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVKAAAAAAAAAB9lIwGc3RyaW5nlIwYWzEsICJNb2RpZmllZCBDaGFubmVscyJdlHMu"
+                }
+            }
+        }
+    ]
+}

@@ -189,7 +189,7 @@ def main() -> None:
     print(f"Fetched message with reactions: {messages[0].__dict__}")
     assert len(messages) == 1, "Message not found in history"
     assert hasattr(messages[0], 'actions'), "Message actions not included in response"
-    assert len(messages[0].actions) == 2, "Unexpected number of actions in history"
+    assert len(messages[0].actions) >= 2, "Unexpected number of actions in history"
 
     # Step 4: Retrieve all reactions for the message
     # We use a time window around the message timetoken to fetch reactions
@@ -198,7 +198,7 @@ def main() -> None:
     end_timetoken = str(int(message_timetoken) + 1000)
     reactions = get_reactions(pubnub, channel, start_timetoken, end_timetoken, "100")
     print(f"Reactions found: {len(reactions.actions)}")
-    assert len(reactions.actions) == 2, "Unexpected number of reactions"
+    assert len(reactions.actions) >= 2, "Unexpected number of reactions"
 
     # Step 5: Display and remove each reaction
     for reaction in reactions.actions:

@@ -110,7 +110,3 @@ class TestAddChannelsToPush(unittest.TestCase):
             endpoint.validate_params()
 
         self.assertIn("Channel missing", str(exc_info.value))
-
-
-if __name__ == '__main__':
-    unittest.main()

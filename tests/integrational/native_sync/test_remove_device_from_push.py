@@ -784,7 +784,3 @@ class TestRemoveDeviceFromPushIntegration(unittest.TestCase):
 
         self.assertIsNotNone(prod_list_envelope)
         self.assertTrue(prod_list_envelope.status.is_error() is False)
-
-
-if __name__ == '__main__':
-    unittest.main()

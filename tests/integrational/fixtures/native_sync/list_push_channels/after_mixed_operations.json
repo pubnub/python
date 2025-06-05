@@ -1,0 +1,300 @@
+{
+    "version": 1,
+    "interactions": [
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/0000000000000000?add=ch_1%2Cch_2%2Cch_3&type=apns&uuid=test-uuid",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 05 Jun 2025 12:42:47 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "24"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVKAAAAAAAAAB9lIwGc3RyaW5nlIwYWzEsICJNb2RpZmllZCBDaGFubmVscyJdlHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/0000000000000000?remove=ch_2&type=apns&uuid=test-uuid",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 05 Jun 2025 12:42:48 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "24"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVKAAAAAAAAAB9lIwGc3RyaW5nlIwYWzEsICJNb2RpZmllZCBDaGFubmVscyJdlHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/0000000000000000?add=ch_4%2Cch_5&type=apns&uuid=test-uuid",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 05 Jun 2025 12:42:48 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "24"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVKAAAAAAAAAB9lIwGc3RyaW5nlIwYWzEsICJNb2RpZmllZCBDaGFubmVscyJdlHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/0000000000000000?remove=ch_1&type=apns&uuid=test-uuid",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 05 Jun 2025 12:42:48 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "24"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVKAAAAAAAAAB9lIwGc3RyaW5nlIwYWzEsICJNb2RpZmllZCBDaGFubmVscyJdlHMu"
+                }
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "uri": "https://ps.pndsn.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/0000000000000000?type=apns&uuid=test-uuid",
+                "body": "",
+                "headers": {
+                    "host": [
+                        "ps.pndsn.com"
+                    ],
+                    "accept": [
+                        "*/*"
+                    ],
+                    "accept-encoding": [
+                        "gzip, deflate"
+                    ],
+                    "connection": [
+                        "keep-alive"
+                    ],
+                    "user-agent": [
+                        "PubNub-Python/10.4.0"
+                    ]
+                }
+            },
+            "response": {
+                "status": {
+                    "code": 200,
+                    "message": "OK"
+                },
+                "headers": {
+                    "Date": [
+                        "Thu, 05 Jun 2025 12:42:48 GMT"
+                    ],
+                    "Content-Type": [
+                        "text/javascript; charset=\"UTF-8\""
+                    ],
+                    "Content-Length": [
+                        "24"
+                    ],
+                    "Connection": [
+                        "keep-alive"
+                    ],
+                    "Cache-Control": [
+                        "no-cache"
+                    ],
+                    "Access-Control-Allow-Methods": [
+                        "GET, POST, DELETE, OPTIONS"
+                    ],
+                    "Access-Control-Allow-Credentials": [
+                        "true"
+                    ],
+                    "Access-Control-Expose-Headers": [
+                        "*"
+                    ]
+                },
+                "body": {
+                    "pickle": "gASVKAAAAAAAAAB9lIwGc3RyaW5nlIwYWyJjaF8zIiwgImNoXzQiLCAiY2hfNSJdlHMu"
+                }
+            }
+        }
+    ]
+}

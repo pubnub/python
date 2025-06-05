@@ -1,3 +1,9 @@
+## 10.4.1
+June 05 2025
+
+#### Fixed
+- Fixed add_channel_to_push and remove_channel_from_push endpoints.
+
 ## 10.4.0
 May 07 2025
 

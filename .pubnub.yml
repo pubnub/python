@@ -1,5 +1,5 @@
 name: python
-version: 10.4.0
+version: 10.4.1
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-10.4.0
+            package-name: pubnub-10.4.1
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -94,8 +94,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-10.4.0
-            location: https://github.com/pubnub/python/releases/download/10.4.0/pubnub-10.4.0.tar.gz
+            package-name: pubnub-10.4.1
+            location: https://github.com/pubnub/python/releases/download/10.4.1/pubnub-10.4.1.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,11 @@ sdks:
                 license-url: https://github.com/encode/httpx/blob/master/LICENSE.md
                 is-required: Required
 changelog:
+  - date: 2025-06-05
+    version: 10.4.1
+    changes:
+      - type: bug
+        text: "Fixed add_channel_to_push and remove_channel_from_push endpoints."
   - date: 2025-05-07
     version: 10.4.0
     changes:

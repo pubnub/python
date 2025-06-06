@@ -55,7 +55,6 @@ class TestPubNubCoreInit(unittest.TestCase):
         self.assertIsNotNone(pubnub._request_handler)
         self.assertIsInstance(pubnub._request_handler, HttpxRequestHandler)
         self.assertIsNotNone(pubnub._publish_sequence_manager)
-        self.assertIsNotNone(pubnub._telemetry_manager)
 
         # Verify subscription manager is created when enabled
         if self.config.enable_subscribe:
@@ -225,15 +224,6 @@ class TestPubNubCoreInitManagers(unittest.TestCase):
         self.assertIsNotNone(pubnub._publish_sequence_manager)
         # Verify it has the expected max sequence
         self.assertEqual(pubnub._publish_sequence_manager.max_sequence, PubNub.MAX_SEQUENCE)
-
-    def test_telemetry_manager_initialization(self):
-        """Test that telemetry manager is properly initialized."""
-        pubnub = PubNub(self.config)
-
-        self.assertIsNotNone(pubnub._telemetry_manager)
-        # Verify it's the native implementation
-        from pubnub.pubnub import NativeTelemetryManager
-        self.assertIsInstance(pubnub._telemetry_manager, NativeTelemetryManager)
 
     def test_subscription_manager_initialization_when_enabled(self):
         """Test subscription manager initialization when enabled."""

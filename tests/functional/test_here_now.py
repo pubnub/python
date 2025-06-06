@@ -1,7 +1,6 @@
 import unittest
 
 from pubnub.endpoints.presence.here_now import HereNow
-from pubnub.managers import TelemetryManager
 
 try:
     from mock import MagicMock
@@ -21,7 +20,6 @@ class TestHereNow(unittest.TestCase):
             _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_HereNowTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.here_now = HereNow(self.pubnub)
 
     def test_here_now(self):

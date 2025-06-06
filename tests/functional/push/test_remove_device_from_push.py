@@ -11,7 +11,6 @@ import pubnub.enums
 
 from pubnub.endpoints.push.remove_device import RemoveDeviceFromPush
 from tests.helper import pnconf, sdk_name
-from pubnub.managers import TelemetryManager
 
 
 class TestRemoveDeviceFromPush(unittest.TestCase):
@@ -25,7 +24,6 @@ class TestRemoveDeviceFromPush(unittest.TestCase):
         )
 
         self.pubnub.uuid = "UUID_RemoveDeviceTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.remove_device = RemoveDeviceFromPush(self.pubnub)
 
     def test_remove_push_apns(self):

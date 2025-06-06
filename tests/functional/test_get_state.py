@@ -9,7 +9,6 @@ except ImportError:
 
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name
-from pubnub.managers import TelemetryManager
 
 
 class TestGetState(unittest.TestCase):
@@ -22,7 +21,6 @@ class TestGetState(unittest.TestCase):
             _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_GetStateTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.get_state = GetState(self.pubnub)
 
     def test_get_state_single_channel(self):

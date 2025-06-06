@@ -1,7 +1,6 @@
 import unittest
 
 from pubnub.endpoints.channel_groups.remove_channel_group import RemoveChannelGroup
-from pubnub.managers import TelemetryManager
 
 try:
     from mock import MagicMock
@@ -22,7 +21,6 @@ class TestRemoveChannelGroup(unittest.TestCase):
             _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_ListChannelsInCGTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.list = RemoveChannelGroup(self.pubnub)
 
     def test_list_channel_group(self):

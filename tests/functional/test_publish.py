@@ -7,7 +7,6 @@ from unittest.mock import MagicMock
 from pubnub.endpoints.pubsub.publish import Publish
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name, url_encode
-from pubnub.managers import TelemetryManager
 
 
 class TestPublish(unittest.TestCase):
@@ -25,7 +24,6 @@ class TestPublish(unittest.TestCase):
         )
 
         self.pubnub.uuid = "UUID_PublishUnitTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.pub = Publish(self.pubnub)
 
     def test_pub_message(self):
@@ -122,7 +120,6 @@ class TestPublish(unittest.TestCase):
             _publish_sequence_manager=self.sm,
             _get_token=lambda: None
         )
-        pubnub._telemetry_manager = TelemetryManager()
         pub = Publish(pubnub)
         message = "hey"
         encoded_message = url_encode(message)
@@ -150,7 +147,6 @@ class TestPublish(unittest.TestCase):
             _publish_sequence_manager=self.sm,
             _get_token=lambda: None
         )
-        pubnub._telemetry_manager = TelemetryManager()
         pub = Publish(pubnub)
 
         message = ["hi", "hi2", "hi3"]

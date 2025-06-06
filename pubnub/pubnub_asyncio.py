@@ -71,7 +71,7 @@ from pubnub.pubnub_core import PubNubCore
 from pubnub.request_handlers.base import BaseRequestHandler
 from pubnub.request_handlers.async_httpx import AsyncHttpxRequestHandler
 from pubnub.workers import SubscribeMessageWorker
-from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
+from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager
 from pubnub import utils
 from pubnub.enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
 from pubnub.callbacks import SubscribeCallback, ReconnectionCallback
@@ -153,7 +153,6 @@ class PubNubAsyncio(PubNubCore):
             self._subscription_manager = subscription_manager(self)
 
         self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop, PubNubCore.MAX_SEQUENCE)
-        self._telemetry_manager = AsyncioTelemetryManager()
 
     @property
     def _connector(self):
@@ -835,23 +834,3 @@ class SubscribeListener(SubscribeCallback):
                     continue
             finally:
                 self.presence_queue.task_done()
-
-
-class AsyncioTelemetryManager(TelemetryManager):
-    def __init__(self):
-        TelemetryManager.__init__(self)
-        self.loop = asyncio.get_event_loop()
-        self._schedule_next_cleanup()
-
-    def _schedule_next_cleanup(self):
-        self._timer = self.loop.call_later(
-            self.CLEAN_UP_INTERVAL * self.CLEAN_UP_INTERVAL_MULTIPLIER / 1000,
-            self._clean_up_schedule_next
-        )
-
-    def _clean_up_schedule_next(self):
-        self.clean_up_telemetry_data()
-        self._schedule_next_cleanup()
-
-    def _stop_clean_up_timer(self):
-        self._timer.cancel()

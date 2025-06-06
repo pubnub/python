@@ -145,7 +145,6 @@ from pubnub.endpoints.push.add_channels_to_push import AddChannelsToPush
 from pubnub.endpoints.push.remove_channels_from_push import RemoveChannelsFromPush
 from pubnub.endpoints.push.remove_device import RemoveDeviceFromPush
 from pubnub.endpoints.push.list_push_provisions import ListPushProvisions
-from pubnub.managers import TelemetryManager
 
 if TYPE_CHECKING:
     from pubnub.endpoints.file_operations.send_file_asyncio import AsyncioSendFile
@@ -192,7 +191,6 @@ class PubNubCore:
 
         self._subscription_manager = None
         self._publish_sequence_manager = None
-        self._telemetry_manager = TelemetryManager()
         self._base_path_manager = BasePathManager(config)
         self._token_manager = TokenManager()
         self._subscription_registry = PNSubscriptionRegistry(self)

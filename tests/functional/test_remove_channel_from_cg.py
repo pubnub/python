@@ -9,7 +9,6 @@ except ImportError:
 
 from pubnub.pubnub import PubNub
 from tests.helper import pnconf, sdk_name
-from pubnub.managers import TelemetryManager
 
 
 class TestRemoveChannelToChannelGroup(unittest.TestCase):
@@ -22,7 +21,6 @@ class TestRemoveChannelToChannelGroup(unittest.TestCase):
             _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_RemoveChannelToCGTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.remove = RemoveChannelFromChannelGroup(self.pubnub)
 
     def test_remove_single_channel(self):

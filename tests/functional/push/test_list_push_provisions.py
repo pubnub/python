@@ -15,7 +15,6 @@ from pubnub.pubnub import PubNub
 import pubnub.enums
 
 from tests.helper import pnconf, sdk_name
-from pubnub.managers import TelemetryManager
 
 
 class TestListPushProvisions(unittest.TestCase):
@@ -28,7 +27,6 @@ class TestListPushProvisions(unittest.TestCase):
             _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_ListChannelsInCGTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.list_push = ListPushProvisions(self.pubnub)
 
     def test_list_channel_group_apns(self):

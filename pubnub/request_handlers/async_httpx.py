@@ -1,7 +1,6 @@
 from asyncio import Event
 import asyncio
 import logging
-import time
 import httpx
 import json  # noqa # pylint: disable=W0611
 import urllib
@@ -113,7 +112,6 @@ class AsyncHttpxRequestHandler(BaseRequestHandler):
         try:
             if not self._session:
                 await self.create_session()
-            start_timestamp = time.time()
             response = await asyncio.wait_for(
                 self._session.request(**request_arguments),
                 options.request_timeout

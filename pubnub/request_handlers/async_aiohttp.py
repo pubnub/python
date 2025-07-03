@@ -1,7 +1,6 @@
 import aiohttp
 import asyncio
 import logging
-import time
 import json  # noqa # pylint: disable=W0611
 import urllib
 
@@ -98,7 +97,6 @@ class AsyncAiohttpRequestHandler(BaseRequestHandler):
         try:
             if not self._session:
                 await self.create_session()
-            start_timestamp = time.time()
             response = await asyncio.wait_for(
                 self._session.request(
                     options.method_string,
@@ -205,8 +203,6 @@ class AsyncAiohttpRequestHandler(BaseRequestHandler):
                 )
             )
         else:
-            self.pubnub._telemetry_manager.store_latency(time.time() - start_timestamp, options.operation_type)
-
             return AsyncioEnvelope(
                 result=create_response(data) if not options.non_json_response else create_response(response, data),
                 status=create_status(

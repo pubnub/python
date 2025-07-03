@@ -1,7 +1,6 @@
 import unittest
 
 from pubnub.endpoints.channel_groups.add_channel_to_channel_group import AddChannelToChannelGroup
-from pubnub.managers import TelemetryManager
 
 try:
     from mock import MagicMock
@@ -22,7 +21,6 @@ class TestAddChannelToChannelGroup(unittest.TestCase):
             _get_token=lambda: None
         )
         self.pubnub.uuid = "UUID_AddChannelToCGTest"
-        self.pubnub._telemetry_manager = TelemetryManager()
         self.add = AddChannelToChannelGroup(self.pubnub)
 
     def test_add_single_channel(self):

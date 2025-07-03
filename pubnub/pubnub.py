@@ -19,7 +19,6 @@ Features:
     - Message queueing and worker thread management
     - Automatic reconnection handling
     - Custom request handler support
-    - Telemetry tracking
 
 Usage Example:
     ```python
@@ -71,7 +70,7 @@ from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.presence.leave import Leave
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
-from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager, TelemetryManager
+from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager
 from pubnub.models.consumer.common import PNStatus
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_core import PubNubCore
@@ -126,8 +125,6 @@ class PubNub(PubNubCore):
             self._subscription_manager = NativeSubscriptionManager(self)
 
         self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
-
-        self._telemetry_manager = NativeTelemetryManager()
 
     def sdk_platform(self) -> str:
         """Get the SDK platform identifier.
@@ -716,9 +713,3 @@ class NonSubscribeListener:
         self.result = None
         self.status = None
         self.done_event.clear()
-
-
-class NativeTelemetryManager(TelemetryManager):
-    def store_latency(self, latency, operation_type):
-        super(NativeTelemetryManager, self).store_latency(latency, operation_type)
-        self.clean_up_telemetry_data()

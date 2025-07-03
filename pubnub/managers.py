@@ -1,22 +1,20 @@
 import logging
 from abc import abstractmethod, ABCMeta
 
-import time
-import copy
 import base64
 import random
 
 from cbor2 import loads
 
-from . import utils
-from .enums import PNStatusCategory, PNReconnectionPolicy, PNOperationType
-from .models.consumer.common import PNStatus
-from .models.server.subscribe import SubscribeEnvelope
-from .dtos import SubscribeOperation, UnsubscribeOperation
-from .callbacks import SubscribeCallback, ReconnectionCallback
-from .models.subscription_item import SubscriptionItem
-from .errors import PNERR_INVALID_ACCESS_TOKEN
-from .exceptions import PubNubException
+from pubnub import utils
+from pubnub.enums import PNStatusCategory, PNReconnectionPolicy
+from pubnub.models.consumer.common import PNStatus
+from pubnub.models.server.subscribe import SubscribeEnvelope
+from pubnub.dtos import SubscribeOperation, UnsubscribeOperation
+from pubnub.callbacks import SubscribeCallback, ReconnectionCallback
+from pubnub.models.subscription_item import SubscriptionItem
+from pubnub.errors import PNERR_INVALID_ACCESS_TOKEN
+from pubnub.exceptions import PubNubException
 
 logger = logging.getLogger("pubnub")
 
@@ -396,171 +394,6 @@ class SubscriptionManager:
 
     def get_custom_params(self):
         return {}
-
-
-class TelemetryManager:
-    TIMESTAMP_DIVIDER = 1000
-    MAXIMUM_LATENCY_DATA_AGE = 60
-    CLEAN_UP_INTERVAL = 1
-    CLEAN_UP_INTERVAL_MULTIPLIER = 1000
-
-    def __init__(self):
-        self.latencies = {}
-
-    @abstractmethod
-    def _start_clean_up_timer(self):
-        pass
-
-    @abstractmethod
-    def _stop_clean_up_timer(self):
-        pass
-
-    def operation_latencies(self):
-        operation_latencies = {}
-
-        for endpoint_name, endpoint_latencies in self.latencies.items():
-            latency_key = 'l_' + endpoint_name
-
-            endpoint_average_latency = self.average_latency_from_data(endpoint_latencies)
-
-            if endpoint_average_latency > 0:
-                operation_latencies[latency_key] = endpoint_average_latency
-
-        return operation_latencies
-
-    def clean_up_telemetry_data(self):
-        current_timestamp = time.time()
-        copy_latencies = copy.deepcopy(self.latencies)
-
-        for endpoint_name, endpoint_latencies in copy_latencies.items():
-            for latency_information in endpoint_latencies:
-                if current_timestamp - latency_information["timestamp"] > self.MAXIMUM_LATENCY_DATA_AGE:
-                    self.latencies[endpoint_name].remove(latency_information)
-
-            if len(self.latencies[endpoint_name]) == 0:
-                del self.latencies[endpoint_name]
-
-    def store_latency(self, latency, operation_type):
-        if operation_type != PNOperationType.PNSubscribeOperation and latency > 0:
-            endpoint_name = self.endpoint_name_for_operation(operation_type)
-
-            store_timestamp = time.time()
-
-            if endpoint_name not in self.latencies:
-                self.latencies[endpoint_name] = []
-
-            latency_entry = {
-                "timestamp": store_timestamp,
-                "latency": latency,
-            }
-
-            self.latencies[endpoint_name].append(latency_entry)
-
-    @staticmethod
-    def average_latency_from_data(endpoint_latencies):
-        total_latency = 0
-
-        for latency_data in endpoint_latencies:
-            total_latency += latency_data['latency']
-
-        return total_latency / len(endpoint_latencies)
-
-    @staticmethod
-    def endpoint_name_for_operation(operation_type):
-        endpoint = {
-            PNOperationType.PNPublishOperation: 'pub',
-            PNOperationType.PNFireOperation: 'pub',
-            PNOperationType.PNSendFileNotification: "pub",
-
-            PNOperationType.PNHistoryOperation: 'hist',
-            PNOperationType.PNHistoryDeleteOperation: 'hist',
-            PNOperationType.PNMessageCountOperation: 'mc',
-
-            PNOperationType.PNUnsubscribeOperation: 'pres',
-            PNOperationType.PNWhereNowOperation: 'pres',
-            PNOperationType.PNHereNowOperation: 'pres',
-            PNOperationType.PNGetState: 'pres',
-            PNOperationType.PNSetStateOperation: 'pres',
-            PNOperationType.PNHeartbeatOperation: 'pres',
-
-            PNOperationType.PNAddChannelsToGroupOperation: 'cg',
-            PNOperationType.PNRemoveChannelsFromGroupOperation: 'cg',
-            PNOperationType.PNChannelGroupsOperation: 'cg',
-            PNOperationType.PNChannelsForGroupOperation: 'cg',
-            PNOperationType.PNRemoveGroupOperation: 'cg',
-
-            PNOperationType.PNAddPushNotificationsOnChannelsOperation: 'push',
-            PNOperationType.PNPushNotificationEnabledChannelsOperation: 'push',
-            PNOperationType.PNRemoveAllPushNotificationsOperation: 'push',
-            PNOperationType.PNRemovePushNotificationsFromChannelsOperation: 'push',
-
-            PNOperationType.PNAccessManagerAudit: 'pam',
-            PNOperationType.PNAccessManagerGrant: 'pam',
-            PNOperationType.PNAccessManagerRevoke: 'pam',
-            PNOperationType.PNTimeOperation: 'pam',
-
-            PNOperationType.PNAccessManagerGrantToken: 'pamv3',
-            PNOperationType.PNAccessManagerRevokeToken: 'pamv3',
-
-            PNOperationType.PNSignalOperation: 'sig',
-
-            PNOperationType.PNSetUuidMetadataOperation: 'obj',
-            PNOperationType.PNGetUuidMetadataOperation: 'obj',
-            PNOperationType.PNRemoveUuidMetadataOperation: 'obj',
-            PNOperationType.PNGetAllUuidMetadataOperation: 'obj',
-
-            PNOperationType.PNSetChannelMetadataOperation: 'obj',
-            PNOperationType.PNGetChannelMetadataOperation: 'obj',
-            PNOperationType.PNRemoveChannelMetadataOperation: 'obj',
-            PNOperationType.PNGetAllChannelMetadataOperation: 'obj',
-
-            PNOperationType.PNSetChannelMembersOperation: 'obj',
-            PNOperationType.PNGetChannelMembersOperation: 'obj',
-            PNOperationType.PNRemoveChannelMembersOperation: 'obj',
-            PNOperationType.PNManageChannelMembersOperation: 'obj',
-
-            PNOperationType.PNSetMembershipsOperation: 'obj',
-            PNOperationType.PNGetMembershipsOperation: 'obj',
-            PNOperationType.PNRemoveMembershipsOperation: 'obj',
-            PNOperationType.PNManageMembershipsOperation: 'obj',
-
-            PNOperationType.PNAddMessageAction: 'msga',
-            PNOperationType.PNGetMessageActions: 'msga',
-            PNOperationType.PNDeleteMessageAction: 'msga',
-
-            PNOperationType.PNGetFilesAction: 'file',
-            PNOperationType.PNDeleteFileOperation: 'file',
-            PNOperationType.PNGetFileDownloadURLAction: 'file',
-            PNOperationType.PNFetchFileUploadS3DataAction: 'file',
-            PNOperationType.PNDownloadFileAction: 'file',
-            PNOperationType.PNSendFileAction: 'file',
-
-
-            PNOperationType.PNFetchMessagesOperation: "hist",
-
-            PNOperationType.PNCreateSpaceOperation: "obj",
-            PNOperationType.PNUpdateSpaceOperation: "obj",
-            PNOperationType.PNFetchSpaceOperation: "obj",
-            PNOperationType.PNFetchSpacesOperation: "obj",
-            PNOperationType.PNRemoveSpaceOperation: "obj",
-
-            PNOperationType.PNCreateUserOperation: "obj",
-            PNOperationType.PNUpdateUserOperation: "obj",
-            PNOperationType.PNFetchUserOperation: "obj",
-            PNOperationType.PNFetchUsersOperation: "obj",
-            PNOperationType.PNRemoveUserOperation: "obj",
-
-            PNOperationType.PNAddUserSpacesOperation: "obj",
-            PNOperationType.PNAddSpaceUsersOperation: "obj",
-            PNOperationType.PNUpdateUserSpacesOperation: "obj",
-
-            PNOperationType.PNUpdateSpaceUsersOperation: "obj",
-            PNOperationType.PNFetchUserMembershipsOperation: "obj",
-            PNOperationType.PNFetchSpaceMembershipsOperation: "obj",
-
-        }[operation_type]
-
-        return endpoint
 
 
 class TokenManager:

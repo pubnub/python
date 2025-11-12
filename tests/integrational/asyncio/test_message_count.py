@@ -11,10 +11,12 @@ from tests.integrational.vcr_helper import pn_vcr
 @pytest.fixture
 def event_loop():
     loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
     try:
         yield loop
     finally:
         loop.run_until_complete(asyncio.sleep(0))
+        asyncio.set_event_loop(None)
         loop.close()
 
 @pytest.fixture

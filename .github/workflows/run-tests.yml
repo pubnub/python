@@ -87,7 +87,7 @@ jobs:
 
           pip3 install --user --ignore-installed -r requirements-dev.txt
           behave --junit tests/acceptance/pam
-          behave --junit tests/acceptance/encryption/cryptor-module.feature -t=~na=python -k
+          behave --junit tests/acceptance/encryption/cryptor-module.feature -t=~na=python
           behave --junit tests/acceptance/subscribe
       - name: Expose acceptance tests reports
         uses: actions/upload-artifact@v4

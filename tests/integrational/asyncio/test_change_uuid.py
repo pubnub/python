@@ -1,3 +1,4 @@
+import asyncio
 import pytest
 
 from pubnub.models.consumer.signal import PNSignalResult
@@ -52,12 +53,21 @@ async def test_change_uuid_no_lock():
     assert isinstance(envelope.status, PNStatus)
 
 
-def test_uuid_validation_at_init():
+@pytest.fixture
+def event_loop():
+    loop = asyncio.new_event_loop()
+    try:
+        yield loop
+    finally:
+        loop.run_until_complete(asyncio.sleep(0))
+        loop.close()
+
+def test_uuid_validation_at_init(event_loop):
     with pytest.raises(AssertionError) as exception:
         pnconf = PNConfiguration()
         pnconf.publish_key = "demo"
         pnconf.subscribe_key = "demo"
-        PubNubAsyncio(pnconf)
+        PubNubAsyncio(pnconf, custom_event_loop=event_loop)
 
     assert str(exception.value) == 'UUID missing or invalid type'
 

@@ -1,6 +1,5 @@
 import json
 from behave import then
-from soupsieve.util import lower
 
 from pubnub.exceptions import PubNubException
 
@@ -23,7 +22,7 @@ def step_impl(context, channel):
 @then("token {data_type} permission {permission}")
 def step_impl(context, data_type, permission):
     assert context.token_resource
-    assert context.token_resource[lower(permission)] == True
+    assert context.token_resource[permission.lower()] == True
 
 
 @then("the token contains the authorized UUID {test_uuid}")

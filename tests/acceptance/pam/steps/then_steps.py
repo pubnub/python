@@ -103,7 +103,7 @@ def step_impl(context, error_message):
 
 
 @then("the error detail message is not empty")
-def step_impl(context, details_message):
+def step_impl(context):
     if 'error' in context.pam_call_error and 'details' in context.pam_call_error['error']:
         assert len(context.pam_call_error['error']['details']) > 0
         assert 'message' in context.pam_call_error['error']['details'][0]

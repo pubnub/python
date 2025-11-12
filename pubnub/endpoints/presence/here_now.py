@@ -57,7 +57,7 @@ class HereNow(Endpoint):
         return self
 
     def custom_params(self):
-        params = { 'limit': self._limit }
+        params = {'limit': self._limit}
 
         if len(self._channel_groups) > 0:
             params['channel-group'] = utils.join_items_and_encode(self._channel_groups)

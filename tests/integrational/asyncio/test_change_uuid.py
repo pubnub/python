@@ -64,6 +64,7 @@ def event_loop():
         asyncio.set_event_loop(None)
         loop.close()
 
+
 def test_uuid_validation_at_init(event_loop):
     with pytest.raises(AssertionError) as exception:
         pnconf = PNConfiguration()

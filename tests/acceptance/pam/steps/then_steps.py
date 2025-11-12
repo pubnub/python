@@ -19,10 +19,11 @@ def step_impl(context, channel):
     context.token_resource = context.parsed_token["resources"]["channels"].get(channel.strip("'"))
     assert context.token_resource
 
+
 @then("token {data_type} permission {permission}")
 def step_impl(context, data_type, permission):
     assert context.token_resource
-    assert context.token_resource[permission.lower()] == True
+    assert context.token_resource[permission.lower()]
 
 
 @then("the token contains the authorized UUID {test_uuid}")

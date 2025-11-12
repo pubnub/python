@@ -54,10 +54,10 @@ class Leave(Endpoint):
         return True
 
     def affected_channels(self):
-        return list(self._channels)
+        return sorted(self._channels)
 
     def affected_channels_groups(self):
-        return list(self._groups)
+        return sorted(self._groups)
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

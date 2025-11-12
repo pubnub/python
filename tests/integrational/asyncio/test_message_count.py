@@ -9,10 +9,10 @@ from tests.integrational.vcr_helper import pn_vcr
 
 
 @pytest.fixture
-def pn(_function_event_loop):
+def pn():
     config = pnconf_mc_copy()
     config.enable_subscribe = False
-    pn = PubNubAsyncio(config, custom_event_loop=_function_event_loop)
+    pn = PubNubAsyncio(config)
     yield pn
 
 

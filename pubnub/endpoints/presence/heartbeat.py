@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Union, List
+from typing import Dict, Optional, Union, List, Set
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
@@ -13,22 +13,22 @@ class Heartbeat(Endpoint):
     def __init__(self, pubnub, channels: Union[str, List[str]] = None, channel_groups: Union[str, List[str]] = None,
                  state: Optional[Dict[str, any]] = None):
         super(Heartbeat, self).__init__(pubnub)
-        self._channels = []
-        self._groups = []
+        self._channels: Set[str] = set()
+        self._groups: Set[str] = set()
         if channels:
-            utils.extend_list(self._channels, channels)
+            utils.update_set(self._channels, channels)
 
         if channel_groups:
-            utils.extend_list(self._groups, channel_groups)
+            utils.update_set(self._groups, channel_groups)
 
         self._state = state
 
     def channels(self, channels: Union[str, List[str]]) -> 'Heartbeat':
-        utils.extend_list(self._channels, channels)
+        utils.update_set(self._channels, channels)
         return self
 
     def channel_groups(self, channel_groups: Union[str, List[str]]) -> 'Heartbeat':
-        utils.extend_list(self._groups, channel_groups)
+        utils.update_set(self._groups, channel_groups)
         return self
 
     def state(self, state: Dict[str, any]) -> 'Heartbeat':
@@ -46,14 +46,14 @@ class Heartbeat(Endpoint):
             raise PubNubException(pn_error=PNERR_CHANNEL_OR_GROUP_MISSING)
 
     def build_path(self):
-        channels = utils.join_channels(self._channels)
+        channels = utils.join_channels(self._channels, True)
         return Heartbeat.HEARTBEAT_PATH % (self.pubnub.config.subscribe_key, channels)
 
     def custom_params(self):
         params = {'heartbeat': str(self.pubnub.config.presence_timeout)}
 
         if len(self._groups) > 0:
-            params['channel-group'] = utils.join_items(self._groups)
+            params['channel-group'] = utils.join_items(self._groups, True)
 
         if self._state is not None and len(self._state) > 0:
             params['state'] = utils.url_write(self._state)

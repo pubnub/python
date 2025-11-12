@@ -32,7 +32,7 @@ class TestHeartbeat(unittest.TestCase):
             'heartbeat': '20'
         })
 
-        self.assertEqual(self.hb._channels, ['ch'])
+        self.assertEqual(list(self.hb._channels), ['ch'])
 
     def test_hb_multiple_channels_using_list(self):
         self.hb.channels(['ch1', 'ch2', 'ch3'])
@@ -46,7 +46,15 @@ class TestHeartbeat(unittest.TestCase):
             'heartbeat': '20'
         })
 
-        self.assertEqual(self.hb._channels, ['ch1', 'ch2', 'ch3'])
+        self.assertEqual(sorted(self.hb._channels), ['ch1', 'ch2', 'ch3'])
+
+    def test_hb_unique_channels_using_list(self):
+        self.hb.channels(['ch1', 'ch2', 'ch1'])
+
+        self.assertEqual(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
+                         % (pnconf.subscribe_key, "ch1,ch2"))
+
+        self.assertEqual(sorted(self.hb._channels), ['ch1', 'ch2'])
 
     def test_hb_single_group(self):
         self.hb.channel_groups("gr")
@@ -61,7 +69,7 @@ class TestHeartbeat(unittest.TestCase):
             'heartbeat': '20'
         })
 
-        self.assertEqual(self.hb._groups, ['gr'])
+        self.assertEqual(list(self.hb._groups), ['gr'])
 
     def test_hb_multiple_groups_using_list(self):
         self.hb.channel_groups(['gr1', 'gr2', 'gr3'])
@@ -76,7 +84,20 @@ class TestHeartbeat(unittest.TestCase):
             'heartbeat': '20'
         })
 
-        self.assertEqual(self.hb._groups, ['gr1', 'gr2', 'gr3'])
+        self.assertEqual(sorted(self.hb._groups), ['gr1', 'gr2', 'gr3'])
+
+    def test_hb_unique_channel_groups_using_list(self):
+        self.hb.channel_groups(['gr1', 'gr2', 'gr1'])
+
+        self.assertEqual(self.hb.build_path(), Heartbeat.HEARTBEAT_PATH
+                         % (pnconf.subscribe_key, ","))
+
+        self.assertEqual(self.hb.build_params_callback()({}), {
+            'channel-group': 'gr1,gr2',
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid,
+            'heartbeat': '20'
+        })
 
     def test_hb_with_state(self):
         state = {"name": "Alex", "count": 7}
@@ -95,5 +116,5 @@ class TestHeartbeat(unittest.TestCase):
             'state': state
         })
 
-        self.assertEqual(self.hb._groups, [])
-        self.assertEqual(self.hb._channels, ['ch1', 'ch2'])
+        self.assertEqual(list(self.hb._groups), [])
+        self.assertEqual(sorted(self.hb._channels), ['ch1', 'ch2'])

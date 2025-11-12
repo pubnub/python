@@ -52,12 +52,12 @@ async def test_change_uuid_no_lock():
     assert isinstance(envelope.status, PNStatus)
 
 
-def test_uuid_validation_at_init(_function_event_loop):
+def test_uuid_validation_at_init():
     with pytest.raises(AssertionError) as exception:
         pnconf = PNConfiguration()
         pnconf.publish_key = "demo"
         pnconf.subscribe_key = "demo"
-        PubNubAsyncio(pnconf, custom_event_loop=_function_event_loop)
+        PubNubAsyncio(pnconf)
 
     assert str(exception.value) == 'UUID missing or invalid type'
 

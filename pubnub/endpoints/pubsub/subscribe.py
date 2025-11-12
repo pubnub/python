@@ -1,4 +1,4 @@
-from typing import Optional, Union, List
+from typing import Optional, Union, List, Set
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.enums import HttpMethod, PNOperationType
@@ -25,12 +25,12 @@ class Subscribe(Endpoint):
                  with_presence: Optional[str] = None, state: Optional[str] = None):
 
         super(Subscribe, self).__init__(pubnub)
-        self._channels = []
+        self._channels: Set[str] = set()
+        self._groups: Set[str] = set()
         if channels:
-            utils.extend_list(self._channels, channels)
-        self._groups = []
+            utils.update_set(self._channels, channels)
         if groups:
-            utils.extend_list(self._groups, groups)
+            utils.update_set(self._groups, groups)
 
         self._region = region
         self._filter_expression = filter_expression
@@ -39,11 +39,11 @@ class Subscribe(Endpoint):
         self._state = state
 
     def channels(self, channels: Union[str, List[str]]) -> 'Subscribe':
-        utils.extend_list(self._channels, channels)
+        utils.update_set(self._channels, channels)
         return self
 
     def channel_groups(self, groups: Union[str, List[str]]) -> 'Subscribe':
-        utils.extend_list(self._groups, groups)
+        utils.update_set(self._groups, groups)
         return self
 
     def timetoken(self, timetoken) -> 'Subscribe':
@@ -72,14 +72,14 @@ class Subscribe(Endpoint):
             raise PubNubException(pn_error=PNERR_CHANNEL_OR_GROUP_MISSING)
 
     def build_path(self):
-        channels = utils.join_channels(self._channels)
+        channels = utils.join_channels(self._channels, True)
         return Subscribe.SUBSCRIBE_PATH % (self.pubnub.config.subscribe_key, channels)
 
     def custom_params(self):
         params = {}
 
         if len(self._groups) > 0:
-            params['channel-group'] = utils.join_items_and_encode(self._groups)
+            params['channel-group'] = utils.join_items_and_encode(self._groups, True)
 
         if self._filter_expression is not None and len(self._filter_expression) > 0:
             params['filter-expr'] = utils.url_encode(self._filter_expression)
@@ -108,10 +108,10 @@ class Subscribe(Endpoint):
         return True
 
     def affected_channels(self):
-        return self._channels
+        return list(self._channels)
 
     def affected_channels_groups(self):
-        return self._groups
+        return list(self._groups)
 
     def request_timeout(self):
         return self.pubnub.config.subscribe_request_timeout

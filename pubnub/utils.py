@@ -8,6 +8,7 @@ import urllib
 import warnings
 
 from hashlib import sha256
+from typing import Set, List, Union
 
 from pubnub.enums import PNStatusCategory, PNOperationType, PNPushType, HttpMethod, PAMPermissions
 from pubnub.models.consumer.common import PNStatus
@@ -54,19 +55,17 @@ def split_items(items_string):
         return items_string.split(",")
 
 
-def join_items(items_list):
-    return ",".join(items_list)
+def join_items(items_list, sort_items=False):
+    return ",".join(sorted(items_list) if sort_items else items_list)
 
+def join_items_and_encode(items_list, sort_items=False):
+    return ",".join(url_encode(x) for x in (sorted(items_list) if sort_items else items_list))
 
-def join_items_and_encode(items_list):
-    return ",".join(url_encode(x) for x in items_list)
-
-
-def join_channels(items_list):
+def join_channels(items_list, sort_items=False):
     if len(items_list) == 0:
         return ","
     else:
-        return join_items_and_encode(items_list)
+        return join_items_and_encode(items_list, sort_items)
 
 
 def extend_list(existing_items, new_items):
@@ -75,6 +74,11 @@ def extend_list(existing_items, new_items):
     else:
         existing_items.extend(new_items)
 
+def update_set(existing_items: Set[str], new_items: Union[str, List[str]]):
+    if isinstance(new_items, str):
+        existing_items.update(split_items(new_items))
+    else:
+        existing_items.update(new_items)
 
 def build_url(scheme, origin, path, params={}):
     return urllib.parse.urlunsplit((scheme, origin, path, params, ''))

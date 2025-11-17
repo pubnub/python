@@ -55,19 +55,6 @@ class TestListPushProvisions(unittest.TestCase):
             'type': 'gcm'
         })
 
-    def test_list_channel_group_mpns(self):
-        self.list_push.push_type(PNPushType.MPNS).device_id('coolDevice')
-
-        self.assertEqual(self.list_push.build_path(),
-                         ListPushProvisions.LIST_PATH % (
-                             pnconf.subscribe_key, "coolDevice"))
-
-        self.assertEqual(self.list_push.build_params_callback()({}), {
-            'pnsdk': sdk_name,
-            'uuid': self.pubnub.uuid,
-            'type': 'mpns'
-        })
-
     def test_list_channel_group_apns2(self):
         self.list_push.push_type(PNPushType.APNS2).device_id('coolDevice')\
             .environment(pubnub.enums.PNPushEnvironment.PRODUCTION).topic("testTopic")

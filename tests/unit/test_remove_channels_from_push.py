@@ -34,7 +34,7 @@ class TestRemoveChannelsFromPush(unittest.TestCase):
         self.assertEqual(endpoint._topic, topic)
         self.assertEqual(endpoint._environment, environment)
 
-    def test_remove_channels_from_push_builder(self):
+    def test_remove_channels_from_push_builder_gcm(self):
         """Test that the returned object supports method chaining."""
         pubnub = PubNub(mocked_config)
 
@@ -49,6 +49,22 @@ class TestRemoveChannelsFromPush(unittest.TestCase):
         self.assertEqual(endpoint._channels, ["test_channel"])
         self.assertEqual(endpoint._device_id, "test_device")
         self.assertEqual(endpoint._push_type, PNPushType.GCM)
+
+    def test_remove_channels_from_push_builder_fcm(self):
+        """Test that the returned object supports method chaining."""
+        pubnub = PubNub(mocked_config)
+
+        endpoint = pubnub.remove_channels_from_push() \
+            .channels(["test_channel"]) \
+            .device_id("test_device") \
+            .push_type(PNPushType.FCM) \
+            .topic("test_topic") \
+            .environment(PNPushEnvironment.DEVELOPMENT)
+
+        self.assertIsInstance(endpoint, RemoveChannelsFromPush)
+        self.assertEqual(endpoint._channels, ["test_channel"])
+        self.assertEqual(endpoint._device_id, "test_device")
+        self.assertEqual(endpoint._push_type, PNPushType.FCM)
 
     def test_remove_channels_from_push_apns2_fails_without_topic(self):
         """Test that APNS2 fails validation when no topic is provided."""

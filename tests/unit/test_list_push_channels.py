@@ -33,7 +33,7 @@ class TestListPushChannels(unittest.TestCase):
         self.assertEqual(endpoint._topic, topic)
         self.assertEqual(endpoint._environment, environment)
 
-    def test_list_push_channels_builder(self):
+    def test_list_push_channels_builder_gcm(self):
         """Test that the returned object supports method chaining."""
         pubnub = PubNub(mocked_config)
 
@@ -46,6 +46,20 @@ class TestListPushChannels(unittest.TestCase):
         self.assertIsInstance(endpoint, ListPushProvisions)
         self.assertEqual(endpoint._device_id, "test_device")
         self.assertEqual(endpoint._push_type, PNPushType.GCM)
+
+    def test_list_push_channels_builder_fcm(self):
+        """Test that the returned object supports method chaining."""
+        pubnub = PubNub(mocked_config)
+
+        endpoint = pubnub.list_push_channels() \
+            .device_id("test_device") \
+            .push_type(PNPushType.FCM) \
+            .topic("test_topic") \
+            .environment(PNPushEnvironment.DEVELOPMENT)
+
+        self.assertIsInstance(endpoint, ListPushProvisions)
+        self.assertEqual(endpoint._device_id, "test_device")
+        self.assertEqual(endpoint._push_type, PNPushType.FCM)
 
     def test_list_push_channels_apns2_fails_without_topic(self):
         """Test that APNS2 fails validation when no topic is provided."""

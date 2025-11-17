@@ -162,8 +162,8 @@ def push_type_to_string(push_type):
         return "apns"
     elif push_type == PNPushType.GCM:
         return "gcm"
-    elif push_type == PNPushType.MPNS:
-        return "mpns"
+    elif push_type == PNPushType.FCM:
+        return "fcm"
     else:
         return ""
 

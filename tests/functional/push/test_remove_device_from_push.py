@@ -50,8 +50,8 @@ class TestRemoveDeviceFromPush(unittest.TestCase):
             'type': 'gcm',
         })
 
-    def test_remove_push_mpns(self):
-        self.remove_device.push_type(pubnub.enums.PNPushType.MPNS).device_id("coolDevice")
+    def test_remove_push_fcm(self):
+        self.remove_device.push_type(pubnub.enums.PNPushType.FCM).device_id("coolDevice")
 
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEqual(self.remove_device.build_path(), RemoveDeviceFromPush.REMOVE_PATH % params)
@@ -59,7 +59,7 @@ class TestRemoveDeviceFromPush(unittest.TestCase):
         self.assertEqual(self.remove_device.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
-            'type': 'mpns',
+            'type': 'fcm',
         })
 
     def test_remove_push_apns2(self):

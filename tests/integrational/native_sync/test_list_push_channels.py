@@ -83,25 +83,6 @@ class TestListPushChannelsIntegration(unittest.TestCase):
         self.assertIsInstance(envelope.result.channels, list)
 
     @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/native_sync/list_push_channels/mpns_basic_success.json',
-        serializer='pn_json',
-        filter_query_parameters=['seqn', 'pnsdk', 'l_sig']
-    )
-    def test_list_push_channels_mpns_basic_success(self):
-        """Test basic MPNS channel listing functionality."""
-        device_id = "0000000000000000"
-
-        envelope = self.pubnub.list_push_channels() \
-            .device_id(device_id) \
-            .push_type(PNPushType.MPNS) \
-            .sync()
-
-        self.assertIsNotNone(envelope)
-        self.assertIsNotNone(envelope.result)
-        self.assertTrue(envelope.status.is_error() is False)
-        self.assertIsInstance(envelope.result.channels, list)
-
-    @pn_vcr.use_cassette(
         'tests/integrational/fixtures/native_sync/list_push_channels/empty_device.json',
         serializer='pn_json',
         filter_query_parameters=['seqn', 'pnsdk', 'l_sig']

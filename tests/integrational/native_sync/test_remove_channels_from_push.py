@@ -82,26 +82,6 @@ class TestRemoveChannelsFromPushIntegration(unittest.TestCase):
         self.assertTrue(envelope.status.is_error() is False)
 
     @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/native_sync/remove_channels_from_push/mpns_basic_success.json',
-        serializer='pn_json',
-        filter_query_parameters=['seqn', 'pnsdk', 'l_sig']
-    )
-    def test_remove_channels_from_push_mpns_basic_success(self):
-        """Test basic MPNS channel removal functionality."""
-        device_id = "0000000000000000"
-        channels = ["mpns_remove_channel_1", "mpns_remove_channel_2"]
-
-        envelope = self.pubnub.remove_channels_from_push() \
-            .channels(channels) \
-            .device_id(device_id) \
-            .push_type(PNPushType.MPNS) \
-            .sync()
-
-        self.assertIsNotNone(envelope)
-        self.assertIsNotNone(envelope.result)
-        self.assertTrue(envelope.status.is_error() is False)
-
-    @pn_vcr.use_cassette(
         'tests/integrational/fixtures/native_sync/remove_channels_from_push/single_channel.json',
         serializer='pn_json',
         filter_query_parameters=['seqn', 'pnsdk', 'l_sig']

@@ -76,24 +76,6 @@ class TestRemoveDeviceFromPushIntegration(unittest.TestCase):
         self.assertTrue(envelope.status.is_error() is False)
 
     @pn_vcr.use_cassette(
-        'tests/integrational/fixtures/native_sync/remove_device_from_push/mpns_basic_success.json',
-        serializer='pn_json',
-        filter_query_parameters=['seqn', 'pnsdk', 'l_sig']
-    )
-    def test_remove_device_from_push_mpns_basic_success(self):
-        """Test basic MPNS device removal functionality."""
-        device_id = "0000000000000000"
-
-        envelope = self.pubnub.remove_device_from_push() \
-            .device_id(device_id) \
-            .push_type(PNPushType.MPNS) \
-            .sync()
-
-        self.assertIsNotNone(envelope)
-        self.assertIsNotNone(envelope.result)
-        self.assertTrue(envelope.status.is_error() is False)
-
-    @pn_vcr.use_cassette(
         'tests/integrational/fixtures/native_sync/remove_device_from_push/complete_unregistration.json',
         serializer='pn_json',
         filter_query_parameters=['seqn', 'pnsdk', 'l_sig']

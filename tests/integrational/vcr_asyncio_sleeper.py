@@ -48,9 +48,9 @@ class VCR599Listener(SubscribeListener):
 
         super(VCR599Listener, self).__init__()
 
-    async def _wait_for(self, coro):
+    async def _wait_for(self, coro, timeout=30):
         try:
-            res = await super(VCR599Listener, self)._wait_for(coro)
+            res = await super(VCR599Listener, self)._wait_for(coro, timeout=timeout)
             return res
         except CannotOverwriteExistingCassetteException as e:
             if "Can't overwrite existing cassette" in str(e):

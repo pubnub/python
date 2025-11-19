@@ -761,35 +761,25 @@ class SubscribeListener(SubscribeCallback):
         """
         self.presence_queue.put_nowait(presence)
 
-    async def _wait_for(self, coro, timeout=30):
+    async def _wait_for(self, coro):
         """Wait for a coroutine to complete.
 
         Args:
             coro: The coroutine to wait for
-            timeout: Maximum time to wait in seconds (default: 30)
 
         Returns:
             The result of the coroutine
 
         Raises:
-            asyncio.TimeoutError: If the operation times out
             Exception: If an error occurs while waiting
         """
         scc_task = asyncio.ensure_future(coro)
         err_task = asyncio.ensure_future(self.error_queue.get())
 
-        done, pending = await asyncio.wait([
+        await asyncio.wait([
             scc_task,
             err_task
-        ], return_when=asyncio.FIRST_COMPLETED, timeout=timeout)
-
-        # Handle timeout
-        if not done:
-            if not scc_task.cancelled():
-                scc_task.cancel()
-            if not err_task.cancelled():
-                err_task.cancel()
-            raise asyncio.TimeoutError(f"Operation timed out after {timeout} seconds")
+        ], return_when=asyncio.FIRST_COMPLETED)
 
         if err_task.done() and not scc_task.done():
             if not scc_task.cancelled():
@@ -800,48 +790,32 @@ class SubscribeListener(SubscribeCallback):
                 err_task.cancel()
             return scc_task.result()
 
-    async def wait_for_connect(self, timeout=30):
-        """Wait for a connection to be established.
-
-        Args:
-            timeout: Maximum time to wait in seconds (default: 30)
-
-        Raises:
-            asyncio.TimeoutError: If connection is not established within timeout
-        """
+    async def wait_for_connect(self):
+        """Wait for a connection to be established."""
         if not self.connected_event.is_set():
-            await self._wait_for(self.connected_event.wait(), timeout=timeout)
+            await self._wait_for(self.connected_event.wait())
 
-    async def wait_for_disconnect(self, timeout=30):
-        """Wait for a disconnection to occur.
-
-        Args:
-            timeout: Maximum time to wait in seconds (default: 30)
-
-        Raises:
-            asyncio.TimeoutError: If disconnection does not occur within timeout
-        """
+    async def wait_for_disconnect(self):
+        """Wait for a disconnection to occur."""
         if not self.disconnected_event.is_set():
-            await self._wait_for(self.disconnected_event.wait(), timeout=timeout)
+            await self._wait_for(self.disconnected_event.wait())
 
-    async def wait_for_message_on(self, *channel_names, timeout=30):
+    async def wait_for_message_on(self, *channel_names):
         """Wait for a message on specific channels.
 
         Args:
             *channel_names: Channel names to wait for
-            timeout: Maximum time to wait in seconds (default: 30)
 
         Returns:
             The message envelope when received
 
         Raises:
-            asyncio.TimeoutError: If no message is received within timeout
             Exception: If an error occurs while waiting
         """
         channel_names = list(channel_names)
         while True:
             try:
-                env = await self._wait_for(self.message_queue.get(), timeout=timeout)
+                env = await self._wait_for(self.message_queue.get())
                 if env.channel in channel_names:
                     return env
                 else:
@@ -849,24 +823,11 @@ class SubscribeListener(SubscribeCallback):
             finally:
                 self.message_queue.task_done()
 
-    async def wait_for_presence_on(self, *channel_names, timeout=30):
-        """Wait for a presence event on specific channels.
-
-        Args:
-            *channel_names: Channel names to wait for
-            timeout: Maximum time to wait in seconds (default: 30)
-
-        Returns:
-            The presence envelope when received
-
-        Raises:
-            asyncio.TimeoutError: If no presence event is received within timeout
-            Exception: If an error occurs while waiting
-        """
+    async def wait_for_presence_on(self, *channel_names):
         channel_names = list(channel_names)
         while True:
             try:
-                env = await self._wait_for(self.presence_queue.get(), timeout=timeout)
+                env = await self._wait_for(self.presence_queue.get())
                 if env.channel in channel_names:
                     return env
                 else:

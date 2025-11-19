@@ -3,7 +3,7 @@ import asyncio
 import pytest
 
 import pubnub as pn
-from pubnub.pubnub_asyncio import AsyncioSubscriptionManager, PubNubAsyncio, SubscribeListener
+from pubnub.pubnub_asyncio import PubNubAsyncio, SubscribeListener
 from tests import helper
 from tests.helper import pnconf_env_copy
 

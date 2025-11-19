@@ -25,7 +25,7 @@ async def step_impl(ctx: PNContext):
     await ctx.pubnub.stop()
 
 
-@then("I observe the following")
+@then("I observe the following:")
 @async_run_until_complete
 async def step_impl(ctx):
     def parse_log_line(line: str):
@@ -74,7 +74,7 @@ async def step_impl(ctx: PNContext, wait_time: str):
     await asyncio.sleep(int(wait_time))
 
 
-@then(u'I observe the following Events and Invocations of the Presence EE')
+@then(u'I observe the following Events and Invocations of the Presence EE:')
 @async_run_until_complete
 async def step_impl(ctx):
     def parse_log_line(line: str):

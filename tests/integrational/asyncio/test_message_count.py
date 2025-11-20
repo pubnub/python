@@ -1,5 +1,5 @@
-import asyncio
 import pytest
+import pytest_asyncio
 
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from pubnub.models.envelopes import AsyncioEnvelope
@@ -9,27 +9,13 @@ from tests.helper import pnconf_mc_copy
 from tests.integrational.vcr_helper import pn_vcr
 
 
-@pytest.fixture
-def event_loop():
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    try:
-        yield loop
-    finally:
-        loop.run_until_complete(asyncio.sleep(0))
-        asyncio.set_event_loop(None)
-        loop.close()
-
-
-@pytest.fixture
-def pn(event_loop):
+@pytest_asyncio.fixture
+async def pn():
     config = pnconf_mc_copy()
     config.enable_subscribe = False
-    pn = PubNubAsyncio(config, custom_event_loop=event_loop)
-    try:
-        yield pn
-    finally:
-        event_loop.run_until_complete(pn.stop())
+    pn = PubNubAsyncio(config)
+    yield pn
+    await pn.stop()
 
 
 @pn_vcr.use_cassette(

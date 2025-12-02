@@ -1,5 +1,5 @@
 name: python
-version: 10.4.1
+version: 10.5.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-10.4.1
+            package-name: pubnub-10.5.0
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -94,8 +94,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-10.4.1
-            location: https://github.com/pubnub/python/releases/download/10.4.1/pubnub-10.4.1.tar.gz
+            package-name: pubnub-10.5.0
+            location: https://github.com/pubnub/python/releases/download/10.5.0/pubnub-10.5.0.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,15 @@ sdks:
                 license-url: https://github.com/encode/httpx/blob/master/LICENSE.md
                 is-required: Required
 changelog:
+  - date: 2025-12-02
+    version: 10.5.0
+    changes:
+      - type: feature
+        text: "Add `limit` (default `1000`) and `offset` parameters for `here_now` to fetch presence in portions."
+      - type: feature
+        text: "Add FCM push type support with GCM deprecation, and remove MPNS support due to its end of life."
+      - type: bug
+        text: "Fix issue because of which it was possible to add duplicated entries of `channels` and `groups` to the `subscribe`, `heartbeat`, and `leave` requests."
   - date: 2025-06-05
     version: 10.4.1
     changes:

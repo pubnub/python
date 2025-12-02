@@ -1,3 +1,13 @@
+## 10.5.0
+December 02 2025
+
+#### Added
+- Add `limit` (default `1000`) and `offset` parameters for `here_now` to fetch presence in portions.
+- Add FCM push type support with GCM deprecation, and remove MPNS support due to its end of life.
+
+#### Fixed
+- Fix issue because of which it was possible to add duplicated entries of `channels` and `groups` to the `subscribe`, `heartbeat`, and `leave` requests.
+
 ## 10.4.1
 June 05 2025
 

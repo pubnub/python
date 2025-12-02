@@ -30,6 +30,8 @@ async def test_change_uuid():
         assert isinstance(envelope.result, PNSignalResult)
         assert isinstance(envelope.status, PNStatus)
 
+        await pn.stop()
+
 
 @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/signal/uuid_no_lock.json',
                      filter_query_parameters=['seqn', 'pnsdk', 'l_sig'], serializer='pn_json')
@@ -51,13 +53,15 @@ async def test_change_uuid_no_lock():
     assert isinstance(envelope.result, PNSignalResult)
     assert isinstance(envelope.status, PNStatus)
 
+    await pn.stop()
 
-def test_uuid_validation_at_init(_function_event_loop):
+
+def test_uuid_validation_at_init():
     with pytest.raises(AssertionError) as exception:
         pnconf = PNConfiguration()
         pnconf.publish_key = "demo"
         pnconf.subscribe_key = "demo"
-        PubNubAsyncio(pnconf, custom_event_loop=_function_event_loop)
+        PubNubAsyncio(pnconf)
 
     assert str(exception.value) == 'UUID missing or invalid type'
 

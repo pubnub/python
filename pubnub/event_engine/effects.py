@@ -88,7 +88,7 @@ class HandshakeEffect(Effect):
             self.logger.warning(f'Handshake failed: {response.status.error_data.__dict__}')
             handshake_failure = events.HandshakeFailureEvent(response.status.error_data, 1, timetoken=timetoken)
             self.event_engine.trigger(handshake_failure)
-        else:
+        elif 't' in response.result:
             cursor = response.result['t']
             timetoken = timetoken if timetoken > 0 else cursor['t']
             region = cursor['r']
@@ -134,7 +134,7 @@ class ReceiveMessagesEffect(Effect):
             self.logger.warning(f'Recieve messages failed: {response.status.error_data.__dict__}')
             recieve_failure = events.ReceiveFailureEvent(response.status.error_data, 1, timetoken=timetoken)
             self.event_engine.trigger(recieve_failure)
-        else:
+        elif 't' in response.result:
             cursor = response.result['t']
             timetoken = cursor['t']
             region = cursor['r']

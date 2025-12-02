@@ -30,7 +30,7 @@ class TestSubscribe(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.sub._channels, ['ch'])
+        self.assertEqual(list(self.sub._channels), ['ch'])
 
     def test_sub_multiple_channels_using_string(self):
         self.sub.channels("ch1,ch2,ch3")
@@ -43,7 +43,7 @@ class TestSubscribe(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.sub._channels, ['ch1', 'ch2', 'ch3'])
+        self.assertEqual(sorted(self.sub._channels), ['ch1', 'ch2', 'ch3'])
 
     def test_sub_multiple_channels_using_list(self):
         self.sub.channels(['ch1', 'ch2', 'ch3'])
@@ -56,7 +56,7 @@ class TestSubscribe(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.sub._channels, ['ch1', 'ch2', 'ch3'])
+        self.assertEqual(sorted(self.sub._channels), ['ch1', 'ch2', 'ch3'])
 
     def test_sub_multiple_channels_using_tuple(self):
         self.sub.channels(('ch1', 'ch2', 'ch3'))
@@ -69,7 +69,20 @@ class TestSubscribe(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.sub._channels, ['ch1', 'ch2', 'ch3'])
+        self.assertEqual(sorted(self.sub._channels), ['ch1', 'ch2', 'ch3'])
+
+    def test_sub_unique_channels_using_list(self):
+        self.sub.channels(['ch1', 'ch2', 'ch1'])
+
+        self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
+                         % (pnconf.subscribe_key, "ch1,ch2"))
+
+        self.assertEqual(self.sub.build_params_callback()({}), {
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid
+        })
+
+        self.assertEqual(sorted(self.sub._channels), ['ch1', 'ch2'])
 
     def test_sub_single_group(self):
         self.sub.channel_groups("gr")
@@ -83,7 +96,7 @@ class TestSubscribe(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.sub._groups, ['gr'])
+        self.assertEqual(list(self.sub._groups), ['gr'])
 
     def test_sub_multiple_groups_using_string(self):
         self.sub.channel_groups("gr1,gr2,gr3")
@@ -97,7 +110,7 @@ class TestSubscribe(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.sub._groups, ['gr1', 'gr2', 'gr3'])
+        self.assertEqual(sorted(self.sub._groups), ['gr1', 'gr2', 'gr3'])
 
     def test_sub_multiple_groups_using_list(self):
         self.sub.channel_groups(['gr1', 'gr2', 'gr3'])
@@ -111,7 +124,21 @@ class TestSubscribe(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.sub._groups, ['gr1', 'gr2', 'gr3'])
+        self.assertEqual(sorted(self.sub._groups), ['gr1', 'gr2', 'gr3'])
+
+    def test_sub_unique_channel_groups_using_list(self):
+        self.sub.channel_groups(['gr1', 'gr2', 'gr1'])
+
+        self.assertEqual(self.sub.build_path(), Subscribe.SUBSCRIBE_PATH
+                         % (pnconf.subscribe_key, ","))
+
+        self.assertEqual(self.sub.build_params_callback()({}), {
+            'channel-group': 'gr1,gr2',
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid
+        })
+
+        self.assertEqual(sorted(self.sub._groups), ['gr1', 'gr2'])
 
     def test_sub_multiple(self):
         self.sub.channels('ch1,ch2').filter_expression('blah').region('us-east-1').timetoken('123')
@@ -127,8 +154,8 @@ class TestSubscribe(unittest.TestCase):
             'tt': '123'
         })
 
-        self.assertEqual(self.sub._groups, [])
-        self.assertEqual(self.sub._channels, ['ch1', 'ch2'])
+        self.assertEqual(list(self.sub._groups), [])
+        self.assertEqual(sorted(self.sub._channels), ['ch1', 'ch2'])
 
     def test_affected_channels_returns_provided_channels(self):
         self.sub.channels(('ch1', 'ch2', 'ch3'))

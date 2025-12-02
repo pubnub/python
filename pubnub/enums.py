@@ -143,9 +143,9 @@ class PNReconnectionPolicy(object):
 
 class PNPushType(object):
     APNS = 1
-    MPNS = 2
-    GCM = 3
+    GCM = 3  # Deprecated: Use FCM instead. GCM has been replaced by FCM (Firebase Cloud Messaging)
     APNS2 = 4
+    FCM = 5
 
 
 class PNResourceType(object):

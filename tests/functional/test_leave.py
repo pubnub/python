@@ -33,7 +33,7 @@ class TestLeave(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.leave._channels, ['ch'])
+        self.assertEqual(sorted(list(self.leave._channels)), ['ch'])
 
     def test_leave_multiple_channels(self):
         self.leave.channels("ch1,ch2,ch3")
@@ -45,7 +45,7 @@ class TestLeave(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.leave._channels, ['ch1', 'ch2', 'ch3'])
+        self.assertEqual(sorted(list(self.leave._channels)), ['ch1', 'ch2', 'ch3'])
 
     def test_leave_multiple_channels_using_list(self):
         self.leave.channels(['ch1', 'ch2', 'ch3'])
@@ -57,7 +57,7 @@ class TestLeave(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.leave._channels, ['ch1', 'ch2', 'ch3'])
+        self.assertEqual(sorted(list(self.leave._channels)), ['ch1', 'ch2', 'ch3'])
 
     def test_leave_multiple_channels_using_tuple(self):
         self.leave.channels(('ch1', 'ch2', 'ch3'))
@@ -69,7 +69,14 @@ class TestLeave(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.leave._channels, ['ch1', 'ch2', 'ch3'])
+        self.assertEqual(sorted(list(self.leave._channels)), ['ch1', 'ch2', 'ch3'])
+
+    def test_leave_unique_channels_using_list(self):
+        self.leave.channels(['ch1', 'ch2', 'ch1'])
+
+        self.assertEqual(self.leave.build_path(), Leave.LEAVE_PATH % (pnconf.subscribe_key, "ch1,ch2"))
+
+        self.assertEqual(sorted(list(self.leave._channels)), ['ch1', 'ch2'])
 
     def test_leave_single_group(self):
         self.leave.channel_groups("gr")
@@ -83,7 +90,7 @@ class TestLeave(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.leave._groups, ['gr'])
+        self.assertEqual(list(self.leave._groups), ['gr'])
 
     def test_leave_multiple_groups_using_string(self):
         self.leave.channel_groups("gr1,gr2,gr3")
@@ -97,7 +104,7 @@ class TestLeave(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.leave._groups, ['gr1', 'gr2', 'gr3'])
+        self.assertEqual(sorted(list(self.leave._groups)), ['gr1', 'gr2', 'gr3'])
 
     def test_leave_multiple_groups_using_list(self):
         self.leave.channel_groups(['gr1', 'gr2', 'gr3'])
@@ -111,7 +118,18 @@ class TestLeave(unittest.TestCase):
             'uuid': self.pubnub.uuid
         })
 
-        self.assertEqual(self.leave._groups, ['gr1', 'gr2', 'gr3'])
+        self.assertEqual(sorted(list(self.leave._groups)), ['gr1', 'gr2', 'gr3'])
+
+    def test_leave_unique_channel_groups_using_list(self):
+        self.leave.channel_groups(['gr1', 'gr2', 'gr1'])
+
+        self.assertEqual(self.leave.build_params_callback()({}), {
+            'channel-group': 'gr1,gr2',
+            'pnsdk': sdk_name,
+            'uuid': self.pubnub.uuid
+        })
+
+        self.assertEqual(sorted(list(self.leave._groups)), ['gr1', 'gr2'])
 
     def test_leave_channels_and_groups(self):
         self.leave.channels('ch1,ch2').channel_groups(["gr1", "gr2"])
@@ -125,5 +143,5 @@ class TestLeave(unittest.TestCase):
             'channel-group': 'gr1,gr2',
         })
 
-        self.assertEqual(self.leave._groups, ['gr1', 'gr2'])
-        self.assertEqual(self.leave._channels, ['ch1', 'ch2'])
+        self.assertEqual(sorted(list(self.leave._groups)), ['gr1', 'gr2'])
+        self.assertEqual(sorted(list(self.leave._channels)), ['ch1', 'ch2'])

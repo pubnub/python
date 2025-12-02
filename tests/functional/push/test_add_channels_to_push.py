@@ -43,7 +43,7 @@ class TestAddChannelsFromPush(unittest.TestCase):
         self.assertEqual(self.add_channels._channels, ['ch'])
 
     def test_push_add_multiple_channels(self):
-        self.add_channels.channels(['ch1', 'ch2']).push_type(pubnub.enums.PNPushType.MPNS).device_id("coolDevice")
+        self.add_channels.channels(['ch1', 'ch2']).push_type(pubnub.enums.PNPushType.APNS).device_id("coolDevice")
 
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEqual(self.add_channels.build_path(), AddChannelsToPush.ADD_PATH % params)
@@ -51,14 +51,14 @@ class TestAddChannelsFromPush(unittest.TestCase):
         self.assertEqual(self.add_channels.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
-            'type': 'mpns',
+            'type': 'apns',
             'add': 'ch1,ch2'
         })
 
         self.assertEqual(self.add_channels._channels, ['ch1', 'ch2'])
 
     def test_push_add_google(self):
-        self.add_channels.channels(['ch1', 'ch2', 'ch3']).push_type(pubnub.enums.PNPushType.GCM).device_id("coolDevice")
+        self.add_channels.channels(['ch1', 'ch2', 'ch3']).push_type(pubnub.enums.PNPushType.FCM).device_id("coolDevice")
 
         params = (pnconf.subscribe_key, "coolDevice")
         self.assertEqual(self.add_channels.build_path(), AddChannelsToPush.ADD_PATH % params)
@@ -66,7 +66,7 @@ class TestAddChannelsFromPush(unittest.TestCase):
         self.assertEqual(self.add_channels.build_params_callback()({}), {
             'pnsdk': sdk_name,
             'uuid': self.pubnub.uuid,
-            'type': 'gcm',
+            'type': 'fcm',
             'add': 'ch1,ch2,ch3'
         })
 

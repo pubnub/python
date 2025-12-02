@@ -1,3 +1,5 @@
+from typing import Set, Union, List
+
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
 from pubnub.errors import PNERR_CHANNEL_OR_GROUP_MISSING
@@ -11,30 +13,22 @@ class Leave(Endpoint):
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
-        self._channels = []
-        self._groups = []
+        self._channels: Set[str] = set()
+        self._groups: Set[str] = set()
 
-    def channels(self, channels):
-        if isinstance(channels, (list, tuple)):
-            self._channels.extend(channels)
-        else:
-            self._channels.extend(utils.split_items(channels))
-
+    def channels(self, channels: Union[str, List[str]]) -> 'Leave':
+        utils.update_set(self._channels, channels)
         return self
 
-    def channel_groups(self, channel_groups):
-        if isinstance(channel_groups, (list, tuple)):
-            self._groups.extend(channel_groups)
-        else:
-            self._groups.extend(utils.split_items(channel_groups))
-
+    def channel_groups(self, channel_groups: Union[str, List[str]]) -> 'Leave':
+        utils.update_set(self._groups, channel_groups)
         return self
 
     def custom_params(self):
         params = {}
 
         if len(self._groups) > 0:
-            params['channel-group'] = utils.join_items(self._groups)
+            params['channel-group'] = utils.join_items(self._groups, True)
 
         if hasattr(self.pubnub, '_subscription_manager'):
             params.update(self.pubnub._subscription_manager.get_custom_params())
@@ -42,7 +36,7 @@ class Leave(Endpoint):
         return params
 
     def build_path(self):
-        return Leave.LEAVE_PATH % (self.pubnub.config.subscribe_key, utils.join_channels(self._channels))
+        return Leave.LEAVE_PATH % (self.pubnub.config.subscribe_key, utils.join_channels(self._channels, True))
 
     def http_method(self):
         return HttpMethod.GET
@@ -60,10 +54,10 @@ class Leave(Endpoint):
         return True
 
     def affected_channels(self):
-        return self._channels
+        return sorted(self._channels)
 
     def affected_channels_groups(self):
-        return self._groups
+        return sorted(self._groups)
 
     def request_timeout(self):
         return self.pubnub.config.non_subscribe_request_timeout

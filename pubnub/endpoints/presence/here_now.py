@@ -29,6 +29,8 @@ class HereNow(Endpoint):
 
         self._include_state = include_state
         self._include_uuids = include_uuids
+        self._offset = None
+        self._limit = 1000
 
     def channels(self, channels: Union[str, List[str]]) -> 'HereNow':
         utils.extend_list(self._channels, channels)
@@ -46,8 +48,16 @@ class HereNow(Endpoint):
         self._include_uuids = include_uuids
         return self
 
+    def limit(self, limit: int) -> 'HereNow':
+        self._limit = limit
+        return self
+
+    def offset(self, offset: int) -> 'HereNow':
+        self._offset = offset
+        return self
+
     def custom_params(self):
-        params = {}
+        params = {'limit': self._limit}
 
         if len(self._channel_groups) > 0:
             params['channel-group'] = utils.join_items_and_encode(self._channel_groups)
@@ -57,6 +67,9 @@ class HereNow(Endpoint):
 
         if not self._include_uuids:
             params['disable_uuids'] = "1"
+
+        if self._offset is not None:
+            params['offset'] = self._offset
 
         return params
 

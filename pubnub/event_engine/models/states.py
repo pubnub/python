@@ -568,7 +568,7 @@ class ReceiveReconnectingState(PNState):
         return PNTransition(
             state=ReceiveReconnectingState,
             context=self._context,
-            invocation=invocations.EmitStatusInvocation(PNStatusCategory.UnexpectedDisconnectCategory,
+            invocation=invocations.EmitStatusInvocation(PNStatusCategory.PNUnexpectedDisconnectCategory,
                                                         operation=PNOperationType.PNSubscribeOperation,
                                                         context=self._context)
         )

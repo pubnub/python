@@ -82,8 +82,8 @@ async def test_multiple_channels():
 
 # @pytest.mark.asyncio
 @pytest.mark.skip(reason="Needs to be reworked to use VCR")
-async def test_where_now_super_admin_call(_function_event_loop):
-    pubnub = PubNubAsyncio(pnconf_pam_copy(), custom_event_loop=_function_event_loop)
+async def test_where_now_super_admin_call():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
 
     uuid = 'test-where-now-asyncio-uuid-.*|@'
     pubnub.config.uuid = uuid

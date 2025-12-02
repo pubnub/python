@@ -37,13 +37,13 @@ class TestRemoveDeviceFromPush(unittest.TestCase):
 
         endpoint = pubnub.remove_device_from_push() \
             .device_id("test_device") \
-            .push_type(PNPushType.GCM) \
+            .push_type(PNPushType.FCM) \
             .topic("test_topic") \
             .environment(PNPushEnvironment.DEVELOPMENT)
 
         self.assertIsInstance(endpoint, RemoveDeviceFromPush)
         self.assertEqual(endpoint._device_id, "test_device")
-        self.assertEqual(endpoint._push_type, PNPushType.GCM)
+        self.assertEqual(endpoint._push_type, PNPushType.FCM)
 
     def test_remove_device_from_push_apns2_fails_without_topic(self):
         """Test that APNS2 fails validation when no topic is provided."""

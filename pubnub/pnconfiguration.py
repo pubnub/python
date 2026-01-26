@@ -15,7 +15,7 @@ class PNConfiguration(object):
     _locked = False
 
     def __init__(self,
-                 subscriber_key: str | None = None,
+                 subscribe_key: str | None = None,
                  publish_key: str | None = None,
                  uuid: str | None = None):
         # TODO: add validation
@@ -25,7 +25,7 @@ class PNConfiguration(object):
         self.non_subscribe_request_timeout = 10
         self.subscribe_request_timeout = 310
         self.connect_timeout = 10
-        self.subscribe_key = subscriber_key
+        self.subscribe_key = subscribe_key
         self.publish_key = publish_key
         self.secret_key = None
         self.cipher_key = None

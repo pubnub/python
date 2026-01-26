@@ -1,5 +1,5 @@
 import warnings
-from typing import Any
+from typing import Any, Optional
 from copy import deepcopy
 from Cryptodome.Cipher import AES
 from pubnub.enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
@@ -15,9 +15,9 @@ class PNConfiguration(object):
     _locked = False
 
     def __init__(self,
-                 subscribe_key: str | None = None,
-                 publish_key: str | None = None,
-                 uuid: str | None = None):
+                 subscribe_key: Optional[str] = None,
+                 publish_key: Optional[str] = None,
+                 uuid: Optional[str] = None):
         # TODO: add validation
         self._uuid = uuid
         self.origin = "ps.pndsn.com"

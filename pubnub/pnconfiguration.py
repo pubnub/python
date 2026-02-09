@@ -1,5 +1,5 @@
 import warnings
-from typing import Any
+from typing import Any, Optional
 from copy import deepcopy
 from Cryptodome.Cipher import AES
 from pubnub.enums import PNHeartbeatNotificationOptions, PNReconnectionPolicy
@@ -14,16 +14,19 @@ class PNConfiguration(object):
     DEFAULT_CRYPTO_MODULE = LegacyCryptoModule
     _locked = False
 
-    def __init__(self):
+    def __init__(self,
+                 subscribe_key: Optional[str] = None,
+                 publish_key: Optional[str] = None,
+                 uuid: Optional[str] = None):
         # TODO: add validation
-        self._uuid = None
+        self._uuid = uuid
         self.origin = "ps.pndsn.com"
         self.ssl = True
         self.non_subscribe_request_timeout = 10
         self.subscribe_request_timeout = 310
         self.connect_timeout = 10
-        self.subscribe_key = None
-        self.publish_key = None
+        self.subscribe_key = subscribe_key
+        self.publish_key = publish_key
         self.secret_key = None
         self.cipher_key = None
         self._cipher_mode = AES.MODE_CBC

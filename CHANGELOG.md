@@ -1,3 +1,9 @@
+## 10.6.0
+January 29 2026
+
+#### Added
+- Add optional parameters to PNConfiguration.__init__, allowing developers to set subscribe_key, publish_key, and uuid during initialization. Fixed the following issues reported by [@JanluOfficial](https://github.com/JanluOfficial): [#227](https://github.com/pubnub/python/issues/227).
+
 ## 10.5.0
 December 02 2025
 

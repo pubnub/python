@@ -1,3 +1,9 @@
+## 10.6.1
+February 10 2026
+
+#### Fixed
+- Fix silent serialization failure when publishing non-JSON-serializable objects.
+
 ## 10.6.0
 January 29 2026
 

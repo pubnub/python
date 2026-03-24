@@ -218,10 +218,14 @@ class PubNub(PubNubCore):
         Raises:
             Exception: If subscription manager is not enabled
         """
-        if self._subscription_manager is not None:
-            self._subscription_manager.stop()
-        else:
-            raise Exception("Subscription manager is not enabled for this instance")
+        try:
+            if self._subscription_manager is not None:
+                self._subscription_manager.stop()
+            else:
+                raise Exception("Subscription manager is not enabled for this instance")
+        finally:
+            if hasattr(self._request_handler, 'close'):
+                self._request_handler.close()
 
     def request_deferred(self, options_func):
         raise NotImplementedError

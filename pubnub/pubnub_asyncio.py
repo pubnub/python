@@ -62,6 +62,7 @@ from pubnub.event_engine.containers import PresenceStateContainer
 from pubnub.event_engine.models import events, states
 
 from pubnub.models.consumer.common import PNStatus
+from pubnub.models.consumer.pn_error_data import PNErrorData
 from pubnub.dtos import SubscribeOperation, UnsubscribeOperation
 from pubnub.event_engine.statemachine import StateMachine
 from pubnub.endpoints.presence.heartbeat import Heartbeat
@@ -234,9 +235,17 @@ class PubNubAsyncio(PubNubCore):
             res = await self._request_handler.async_request(options_func, cancellation_event)
             return res
         except PubNubException as e:
+            if e.status is not None:
+                status = e.status
+            else:
+                status = PNStatus()
+                status.category = PNStatusCategory.PNBadRequestCategory
+                status.error = True
+                status.error_data = PNErrorData(str(e), e)
+                status.status_code = e._status_code if e._status_code != 0 else None
             return PubNubAsyncioException(
                 result=None,
-                status=e.status
+                status=status
             )
         except asyncio.TimeoutError:
             return PubNubAsyncioException(

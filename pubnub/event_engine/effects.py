@@ -6,7 +6,7 @@ from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.presence.leave import Leave
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.enums import PNReconnectionPolicy
-from pubnub.exceptions import PubNubException
+from pubnub.exceptions import PubNubAsyncioException, PubNubException
 from pubnub.features import feature_enabled
 from pubnub.models.server.subscribe import SubscribeMessage
 from pubnub.pubnub import PubNub
@@ -80,9 +80,10 @@ class HandshakeEffect(Effect):
         request.timetoken(0)
         response = await request.future()
 
-        if isinstance(response, Exception):
+        if isinstance(response, PubNubAsyncioException):
             self.logger.warning(f'Handshake failed: {str(response)}')
-            handshake_failure = events.HandshakeFailureEvent(response, 1, timetoken=timetoken)
+            reason = response.status.error_data if response.status and response.status.error_data else str(response)
+            handshake_failure = events.HandshakeFailureEvent(reason, 1, timetoken=timetoken)
             self.event_engine.trigger(handshake_failure)
         elif response.status.error:
             self.logger.warning(f'Handshake failed: {response.status.error_data.__dict__}')
@@ -184,8 +185,15 @@ class ReconnectEffect(Effect):
 
         return delay
 
+    def _should_give_up(self, attempts):
+        if self.reconnection_policy is PNReconnectionPolicy.NONE:
+            return True
+        if self.max_retry_attempts == -1:
+            return False
+        return attempts > self.max_retry_attempts
+
     def run(self):
-        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.invocation.attempts > self.max_retry_attempts:
+        if self._should_give_up(self.invocation.attempts):
             self.give_up(reason=self.invocation.reason, attempt=self.invocation.attempts)
         else:
             attempts = self.invocation.attempts
@@ -214,9 +222,10 @@ class ReconnectEffect(Effect):
 
         response = await request.future()
 
-        if isinstance(response, PubNubException):
+        if isinstance(response, PubNubAsyncioException):
             self.logger.warning(f'Reconnect failed: {str(response)}')
-            self.failure(str(response), attempt, self.get_timetoken())
+            reason = response.status.error_data if response.status and response.status.error_data else str(response)
+            self.failure(reason, attempt, self.get_timetoken())
 
         elif response.status.error:
             self.logger.warning(f'Reconnect failed: {response.status.error_data.__dict__}')
@@ -302,10 +311,11 @@ class HeartbeatEffect(Effect):
 
         response = await request.future()
 
-        if isinstance(response, PubNubException):
+        if isinstance(response, PubNubAsyncioException):
             self.logger.warning(f'Heartbeat failed: {str(response)}')
+            reason = response.status.error_data if response.status and response.status.error_data else str(response)
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
-                                                                   reason=response.status.error_data, attempt=1))
+                                                                   reason=reason, attempt=1))
         elif response.status and response.status.error:
             self.logger.warning(f'Heartbeat failed: {response.status.error_data.__dict__}')
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
@@ -345,8 +355,10 @@ class HeartbeatLeaveEffect(Effect):
         leave_request = Leave(self.pubnub).channels(channels).channel_groups(groups).cancellation_event(stop_event)
         leave = await leave_request.future()
 
-        if leave.status.error:
-            self.logger.warning(f'Heartbeat failed: {leave.status.error_data.__dict__}')
+        if isinstance(leave, PubNubAsyncioException):
+            self.logger.warning(f'Leave failed: {str(leave)}')
+        elif leave.status and leave.status.error:
+            self.logger.warning(f'Leave failed: {leave.status.error_data.__dict__}')
 
 
 class HeartbeatDelayedEffect(Effect):
@@ -354,8 +366,24 @@ class HeartbeatDelayedEffect(Effect):
                  invocation: Union[invocations.PNManageableInvocation, invocations.PNCancelInvocation]) -> None:
         super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
-        self.max_retry_attempts = pubnub_instance.config.maximum_reconnection_retries
         self.interval = pubnub_instance.config.reconnection_interval
+
+        if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
+            self.max_retry_attempts = ExponentialDelay.MAX_RETRIES
+        elif self.reconnection_policy is PNReconnectionPolicy.LINEAR:
+            self.max_retry_attempts = LinearDelay.MAX_RETRIES
+        else:
+            self.max_retry_attempts = 0
+
+        if pubnub_instance.config.maximum_reconnection_retries is not None:
+            self.max_retry_attempts = pubnub_instance.config.maximum_reconnection_retries
+
+    def _should_give_up(self, attempts):
+        if self.reconnection_policy is PNReconnectionPolicy.NONE:
+            return True
+        if self.max_retry_attempts == -1:
+            return False
+        return attempts > self.max_retry_attempts
 
     def calculate_reconnection_delay(self, attempts):
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
@@ -368,11 +396,12 @@ class HeartbeatDelayedEffect(Effect):
         return delay
 
     def run(self):
-        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.invocation.attempts > self.max_retry_attempts:
+        if self._should_give_up(self.invocation.attempts):
             self.event_engine.trigger(events.HeartbeatGiveUpEvent(channels=self.invocation.channels,
                                                                   groups=self.invocation.groups,
                                                                   reason=self.invocation.reason,
                                                                   attempt=self.invocation.attempts))
+            return
 
         if hasattr(self.pubnub, 'event_loop'):
             self.stop_event = self.get_new_stop_event()
@@ -380,11 +409,6 @@ class HeartbeatDelayedEffect(Effect):
                                           attempt=self.invocation.attempts, stop_event=self.stop_event))
 
     async def heartbeat(self, channels, groups, attempt, stop_event):
-        if self.reconnection_policy is PNReconnectionPolicy.NONE or self.invocation.attempts > self.max_retry_attempts:
-            self.event_engine.trigger(events.HeartbeatGiveUpEvent(channels=self.invocation.channels,
-                                                                  groups=self.invocation.groups,
-                                                                  reason=self.invocation.reason,
-                                                                  attempt=self.invocation.attempts))
 
         channels = list(filter(lambda ch: not ch.endswith('-pnpres'), self.invocation.channels))
         groups = list(filter(lambda gr: not gr.endswith('-pnpres'), self.invocation.groups))
@@ -395,12 +419,13 @@ class HeartbeatDelayedEffect(Effect):
         await asyncio.sleep(delay)
 
         response = await request.future()
-        if isinstance(response, PubNubException):
+        if isinstance(response, PubNubAsyncioException):
             self.logger.warning(f'Heartbeat failed: {str(response)}')
+            reason = response.status.error_data if response.status and response.status.error_data else str(response)
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
-                                                                   reason=response.status.error_data,
+                                                                   reason=reason,
                                                                    attempt=attempt))
-        elif response.status.error:
+        elif response.status and response.status.error:
             self.logger.warning(f'Heartbeat failed: {response.status.error_data.__dict__}')
             self.event_engine.trigger(events.HeartbeatFailureEvent(channels=channels, groups=groups,
                                                                    reason=response.status.error_data,

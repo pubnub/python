@@ -346,10 +346,11 @@ class HttpxRequestHandler(BaseRequestHandler):
             "method": e_options.method_string,
             "headers": request_headers,
             "url": httpx.URL(url, query=e_options.query_string.encode("utf-8")),
-            "timeout": httpx.Timeout(connect=e_options.connect_timeout,
-                                    read=e_options.request_timeout,
-                                    write=e_options.connect_timeout,
-                                    pool=e_options.connect_timeout),
+            "timeout": httpx.Timeout(
+                connect=e_options.connect_timeout,
+                read=e_options.request_timeout,
+                write=e_options.connect_timeout,
+                pool=e_options.connect_timeout),
             "follow_redirects": e_options.allow_redirects
         }
 

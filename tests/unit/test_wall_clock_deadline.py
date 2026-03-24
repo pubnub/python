@@ -360,7 +360,6 @@ class TestHttpxRequestHandlerCleanup(unittest.TestCase):
     def test_close_stops_watchdog(self):
         """HttpxRequestHandler.close() should stop the watchdog thread."""
         from pubnub.request_handlers.httpx import HttpxRequestHandler
-        from tests.helper import pnconf_copy
 
         handler = HttpxRequestHandler(MagicMock())
         # Start the watchdog by setting a deadline

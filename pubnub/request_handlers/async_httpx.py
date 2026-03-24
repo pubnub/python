@@ -137,10 +137,11 @@ class AsyncHttpxRequestHandler(BaseRequestHandler):
             'headers': request_headers,
             'url': full_url,
             'follow_redirects': options.allow_redirects,
-            'timeout': httpx.Timeout(connect=options.connect_timeout,
-                                    read=options.request_timeout,
-                                    write=options.connect_timeout,
-                                    pool=options.connect_timeout),
+            'timeout': httpx.Timeout(
+                connect=options.connect_timeout,
+                read=options.request_timeout,
+                write=options.connect_timeout,
+                pool=options.connect_timeout),
         }
         if options.is_post() or options.is_patch():
             request_arguments['content'] = options.data

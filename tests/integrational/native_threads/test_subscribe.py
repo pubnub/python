@@ -182,7 +182,9 @@ class TestPubNubSubscription(unittest.TestCase):
             if result is None:
                 self.fail("Remove channel from channel group operation timeout or failed")
             if cg_remove_operation.status is not None and cg_remove_operation.status.is_error():
-                self.fail(f"Remove channel from channel group operation failed with error: {cg_remove_operation.status}")
+                self.fail(
+                    f"Remove channel from channel group failed: {cg_remove_operation.status}"
+                )
             assert isinstance(result, PNChannelGroupsRemoveChannelResult)
         finally:
             pubnub.stop()
@@ -239,7 +241,9 @@ class TestPubNubSubscription(unittest.TestCase):
             if result is None:
                 self.fail("Remove channel from channel group operation timeout or failed")
             if non_subscribe_listener.status is not None and non_subscribe_listener.status.is_error():
-                self.fail(f"Remove channel from channel group operation failed with error: {non_subscribe_listener.status}")
+                self.fail(
+                    f"Remove channel from channel group failed: {non_subscribe_listener.status}"
+                )
             assert isinstance(result, PNChannelGroupsRemoveChannelResult)
         finally:
             pubnub.stop()

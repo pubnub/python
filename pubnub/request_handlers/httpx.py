@@ -113,8 +113,8 @@ class WallClockDeadlineWatchdog:
                     sock.shutdown(socket.SHUT_RDWR)
                 except (OSError, Exception):
                     pass
-        except Exception:
-            pass
+        except Exception as e:
+            logger.debug(f"Error iterating connection pool: {e}")
         try:
             session.close()
         except Exception as e:

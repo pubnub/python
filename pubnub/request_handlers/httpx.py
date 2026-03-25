@@ -1,4 +1,5 @@
 import logging
+import socket
 import time
 import threading
 import httpx
@@ -80,6 +81,45 @@ class WallClockDeadlineWatchdog:
         self._stop.set()
         self._wake.set()
 
+    @staticmethod
+    def _force_shutdown_connections(session):
+        """Force-interrupt blocked socket reads by shutting down raw TCP sockets.
+
+        On macOS (BSD), socket.close() from another thread does NOT interrupt a blocked
+        recv(). Only socket.shutdown(SHUT_RDWR) reliably unblocks it across platforms.
+
+        We access httpcore internals to reach the raw socket:
+          session._transport._pool._connections[i]._connection._network_stream._sock
+        This is wrapped in try/except so version changes in httpcore degrade gracefully
+        to session.close() behavior.
+
+        Tested with: httpx 0.28.1, httpcore 1.0.9
+        """
+        try:
+            transport = getattr(session, '_transport', None)
+            pool = getattr(transport, '_pool', None) if transport else None
+            connections = getattr(pool, '_connections', []) if pool else []
+            for conn in list(connections):
+                try:
+                    inner = getattr(conn, '_connection', None)
+                    if inner is None:
+                        continue
+                    stream = getattr(inner, '_network_stream', None)
+                    if stream is None:
+                        continue
+                    sock = getattr(stream, '_sock', None)
+                    if sock is None:
+                        continue
+                    sock.shutdown(socket.SHUT_RDWR)
+                except (OSError, Exception):
+                    pass
+        except Exception:
+            pass
+        try:
+            session.close()
+        except Exception as e:
+            logger.debug(f"Error closing session: {e}")
+
     def _run(self):
         while not self._stop.is_set():
             with self._lock:
@@ -110,10 +150,7 @@ class WallClockDeadlineWatchdog:
                     self._triggered_threads.add(earliest_tid)
                     self._deadlines.pop(earliest_tid, None)
                 logger.debug("Wall-clock deadline exceeded, closing session transport")
-                try:
-                    earliest_session.close()
-                except Exception as e:
-                    logger.debug(f"Error closing session: {e}")
+                self._force_shutdown_connections(earliest_session)
                 continue
 
             # Sleep until next check, new deadline, or stop
@@ -332,6 +369,10 @@ class HttpxRequestHandler(BaseRequestHandler):
         assert isinstance(p_options, PlatformOptions)
         assert isinstance(e_options, RequestOptions)
 
+        if self.session.is_closed:
+            logger.debug("HTTP session was closed (e.g. by wall-clock watchdog), recreating")
+            self.session = httpx.Client()
+
         if base_origin:
             url = p_options.pn_config.scheme() + "://" + base_origin + e_options.path
         else:
@@ -397,7 +438,7 @@ class HttpxRequestHandler(BaseRequestHandler):
             if use_watchdog and self._watchdog.triggered:
                 self.session = httpx.Client()
                 raise PubNubException(
-                    pn_error=PNERR_CLIENT_TIMEOUT,
+                    pn_error=PNERR_CONNECTION_ERROR,
                     errormsg="Wall-clock deadline exceeded (system sleep detected)"
                 )
             raise PubNubException(
@@ -405,6 +446,12 @@ class HttpxRequestHandler(BaseRequestHandler):
                 errormsg=str(e)
             )
         except httpx.TimeoutException as e:
+            if use_watchdog and self._watchdog.triggered:
+                self.session = httpx.Client()
+                raise PubNubException(
+                    pn_error=PNERR_CONNECTION_ERROR,
+                    errormsg="Wall-clock deadline exceeded (system sleep detected)"
+                )
             raise PubNubException(
                 pn_error=PNERR_CLIENT_TIMEOUT,
                 errormsg=str(e)
@@ -424,7 +471,7 @@ class HttpxRequestHandler(BaseRequestHandler):
             if use_watchdog and self._watchdog.triggered:
                 self.session = httpx.Client()
                 raise PubNubException(
-                    pn_error=PNERR_CLIENT_TIMEOUT,
+                    pn_error=PNERR_CONNECTION_ERROR,
                     errormsg="Wall-clock deadline exceeded (system sleep detected)"
                 )
             raise PubNubException(

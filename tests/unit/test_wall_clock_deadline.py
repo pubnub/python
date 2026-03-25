@@ -372,5 +372,378 @@ class TestHttpxRequestHandlerCleanup(unittest.TestCase):
         self.assertTrue(handler._watchdog._stop.is_set())
 
 
+class TestHttpxSessionRecreation(unittest.TestCase):
+    """Tests for automatic session recreation after watchdog closes the session.
+
+    When the WallClockDeadlineWatchdog closes the httpx.Client during system sleep,
+    subsequent requests (e.g., reconnection /time/0 calls) must detect the closed
+    session and recreate it. Without this, native threads reconnection never succeeds.
+    """
+
+    def _make_handler(self):
+        from pubnub.request_handlers.httpx import HttpxRequestHandler
+        pubnub_mock = MagicMock()
+        pubnub_mock.config.origin = 'ps.pndsn.com'
+        pubnub_mock.config.scheme.return_value = 'https'
+        handler = HttpxRequestHandler(pubnub_mock)
+        return handler
+
+    def test_closed_session_is_recreated_on_next_request(self):
+        """After session.close(), the next _invoke_request should recreate the session."""
+        handler = self._make_handler()
+        original_session = handler.session
+
+        # Simulate what the watchdog does
+        handler.session.close()
+        self.assertTrue(handler.session.is_closed)
+
+        # Build minimal request options
+        from pubnub.structures import RequestOptions, PlatformOptions
+        p_options = MagicMock(spec=PlatformOptions)
+        p_options.pn_config = MagicMock()
+        p_options.pn_config.scheme.return_value = 'https'
+        p_options.headers = {}
+
+        e_options = MagicMock(spec=RequestOptions)
+        e_options.method_string = 'GET'
+        e_options.path = '/time/0'
+        e_options.query_string = 'pnsdk=test'
+        e_options.request_headers = None
+        e_options.connect_timeout = 10
+        e_options.request_timeout = 10
+        e_options.is_post.return_value = False
+        e_options.is_patch.return_value = False
+        e_options.allow_redirects = True
+        e_options.use_base_path = True
+
+        # The request will fail (no real server), but session should be recreated first
+        try:
+            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+        except Exception:
+            pass
+
+        self.assertFalse(handler.session.is_closed)
+        self.assertIsNot(handler.session, original_session)
+
+        handler.close()
+
+    def test_open_session_is_not_recreated(self):
+        """An open session should not be replaced."""
+        handler = self._make_handler()
+        original_session = handler.session
+
+        self.assertFalse(handler.session.is_closed)
+
+        from pubnub.structures import RequestOptions, PlatformOptions
+        p_options = MagicMock(spec=PlatformOptions)
+        p_options.pn_config = MagicMock()
+        p_options.pn_config.scheme.return_value = 'https'
+        p_options.headers = {}
+
+        e_options = MagicMock(spec=RequestOptions)
+        e_options.method_string = 'GET'
+        e_options.path = '/time/0'
+        e_options.query_string = 'pnsdk=test'
+        e_options.request_headers = None
+        e_options.connect_timeout = 10
+        e_options.request_timeout = 10
+        e_options.is_post.return_value = False
+        e_options.is_patch.return_value = False
+        e_options.allow_redirects = True
+        e_options.use_base_path = True
+
+        try:
+            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+        except Exception:
+            pass
+
+        self.assertIs(handler.session, original_session)
+        handler.close()
+
+    def test_watchdog_trigger_with_timeout_exception_recreates_session(self):
+        """When watchdog triggers and the request gets TimeoutException, session should be recreated."""
+        handler = self._make_handler()
+        original_session = handler.session
+
+        # Set up watchdog as triggered
+        handler._watchdog.set_deadline(handler.session, time.time() - 1)
+        time.sleep(0.3)
+        self.assertTrue(handler.session.is_closed)
+
+        from pubnub.structures import RequestOptions, PlatformOptions
+        p_options = MagicMock(spec=PlatformOptions)
+        p_options.pn_config = MagicMock()
+        p_options.pn_config.scheme.return_value = 'https'
+        p_options.headers = {}
+
+        e_options = MagicMock(spec=RequestOptions)
+        e_options.method_string = 'GET'
+        e_options.path = '/v2/subscribe/demo/test/0'
+        e_options.query_string = 'tt=0&pnsdk=test'
+        e_options.request_headers = None
+        e_options.connect_timeout = 10
+        e_options.request_timeout = 310  # > 30, triggers watchdog usage
+        e_options.is_post.return_value = False
+        e_options.is_patch.return_value = False
+        e_options.allow_redirects = True
+        e_options.use_base_path = True
+
+        try:
+            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+        except Exception:
+            pass
+
+        # Session should have been recreated (either by is_closed check or watchdog trigger handler)
+        self.assertFalse(handler.session.is_closed)
+        self.assertIsNot(handler.session, original_session)
+
+        handler._watchdog.stop()
+        handler.close()
+
+    def test_reconnection_time_request_works_after_session_close(self):
+        """Simulates the reconnection manager's /time/0 call after watchdog closed the session.
+
+        This is the exact scenario that caused native threads to never reconnect:
+        1. Watchdog closes session during subscribe long-poll
+        2. Reconnection manager starts making /time/0 calls
+        3. /time/0 calls should detect closed session, recreate it, and eventually succeed
+        """
+        handler = self._make_handler()
+
+        # Step 1: Watchdog closes the session
+        handler.session.close()
+        self.assertTrue(handler.session.is_closed)
+
+        from pubnub.structures import RequestOptions, PlatformOptions
+        p_options = MagicMock(spec=PlatformOptions)
+        p_options.pn_config = MagicMock()
+        p_options.pn_config.scheme.return_value = 'https'
+        p_options.headers = {}
+
+        # Step 2: /time/0 request (short timeout, no watchdog)
+        e_options = MagicMock(spec=RequestOptions)
+        e_options.method_string = 'GET'
+        e_options.path = '/time/0'
+        e_options.query_string = 'pnsdk=test'
+        e_options.request_headers = None
+        e_options.connect_timeout = 10
+        e_options.request_timeout = 10  # Short timeout, use_watchdog=False
+        e_options.is_post.return_value = False
+        e_options.is_patch.return_value = False
+        e_options.allow_redirects = True
+        e_options.use_base_path = True
+
+        # Step 3: The request may fail (no real server) but should NOT fail due to closed session
+        try:
+            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+        except Exception as e:
+            # Should be a connection error, NOT "Cannot send a request, as the client has been closed"
+            self.assertNotIn("client has been closed", str(e).lower())
+
+        self.assertFalse(handler.session.is_closed)
+        handler.close()
+
+
+class TestWallClockErrorCategory(unittest.TestCase):
+    """Tests that wall-clock sleep timeouts produce PNUnexpectedDisconnectCategory,
+    not PNTimeoutCategory — so they route through the reconnection manager with
+    configured retry delays instead of an immediate silent restart.
+    """
+
+    def test_watchdog_triggered_produces_connection_error(self):
+        """When watchdog triggers during a request, the exception should use PNERR_CONNECTION_ERROR
+        which maps to PNUnexpectedDisconnectCategory in _build_envelope."""
+        from pubnub.request_handlers.httpx import HttpxRequestHandler
+        from pubnub.errors import PNERR_CONNECTION_ERROR
+        from pubnub.exceptions import PubNubException
+        from pubnub.structures import RequestOptions, PlatformOptions
+
+        handler = HttpxRequestHandler(MagicMock())
+
+        # Simulate: session is open, but request fails with TimeoutException
+        # while watchdog is in triggered state (watchdog fired DURING the request)
+        mock_session = MagicMock(spec=httpx.Client)
+        mock_session.is_closed = False
+        mock_session.request.side_effect = httpx.ReadTimeout("timed out")
+        handler.session = mock_session
+
+        # Mock watchdog.triggered to return True (simulates watchdog firing during request)
+        type(handler._watchdog).triggered = property(lambda self: True)
+
+        p_options = MagicMock(spec=PlatformOptions)
+        p_options.pn_config = MagicMock()
+        p_options.pn_config.scheme.return_value = 'https'
+        p_options.headers = {}
+
+        e_options = MagicMock(spec=RequestOptions)
+        e_options.method_string = 'GET'
+        e_options.path = '/v2/subscribe/demo/test/0'
+        e_options.query_string = 'tt=0&pnsdk=test'
+        e_options.request_headers = None
+        e_options.connect_timeout = 10
+        e_options.request_timeout = 310  # > 30, so use_watchdog=True
+        e_options.is_post.return_value = False
+        e_options.is_patch.return_value = False
+        e_options.allow_redirects = True
+        e_options.use_base_path = True
+
+        with self.assertRaises(PubNubException) as ctx:
+            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+
+        self.assertEqual(ctx.exception._pn_error, PNERR_CONNECTION_ERROR)
+        self.assertIn("Wall-clock deadline exceeded", ctx.exception._errormsg)
+        # Session should have been recreated
+        self.assertIsNot(handler.session, mock_session)
+
+        handler._watchdog.stop()
+        handler.close()
+
+    def test_async_wall_clock_timeout_raises_wall_clock_error(self):
+        """_request_with_wall_clock_deadline should raise WallClockTimeoutError (not generic TimeoutError)."""
+        from pubnub.request_handlers.async_httpx import AsyncHttpxRequestHandler, WallClockTimeoutError
+
+        handler = AsyncHttpxRequestHandler.__new__(AsyncHttpxRequestHandler)
+        handler._session = MagicMock()
+
+        async def never_completes(**kwargs):
+            await asyncio.sleep(3600)
+
+        handler._session.request = never_completes
+
+        async def run_test():
+            real_time = time.time
+            start = real_time()
+            call_count = [0]
+
+            def mock_time():
+                call_count[0] += 1
+                if call_count[0] <= 3:
+                    return real_time()
+                return start + 60
+
+            with patch('pubnub.request_handlers.async_httpx.time') as mock_time_module:
+                mock_time_module.time = mock_time
+                original = AsyncHttpxRequestHandler.WALL_CLOCK_CHECK_INTERVAL
+                AsyncHttpxRequestHandler.WALL_CLOCK_CHECK_INTERVAL = 0.1
+                try:
+                    with self.assertRaises(WallClockTimeoutError):
+                        await handler._request_with_wall_clock_deadline(
+                            {"method": "GET", "url": "http://test"},
+                            timeout=10
+                        )
+                finally:
+                    AsyncHttpxRequestHandler.WALL_CLOCK_CHECK_INTERVAL = original
+
+        asyncio.run(run_test())
+
+    def test_async_wall_clock_timeout_maps_to_unexpected_disconnect(self):
+        """WallClockTimeoutError should produce PNUnexpectedDisconnectCategory in request_future."""
+        from pubnub.request_handlers.async_httpx import WallClockTimeoutError
+        from pubnub.pubnub_asyncio import PubNubAsyncio
+        from pubnub.pnconfiguration import PNConfiguration
+        from pubnub.enums import PNStatusCategory
+
+        config = PNConfiguration()
+        config.subscribe_key = 'demo'
+        config.publish_key = 'demo'
+        config.user_id = 'test'
+
+        async def run_test():
+            pubnub = PubNubAsyncio(config)
+
+            async def mock_async_request(options_func, cancellation_event):
+                raise WallClockTimeoutError("Wall-clock deadline exceeded")
+
+            pubnub._request_handler.async_request = mock_async_request
+
+            try:
+                # Build an options_func the same way endpoints do
+                time_endpoint = pubnub.time()
+
+                def options_func():
+                    time_endpoint.validate_params()
+                    return time_endpoint.options()
+
+                result = await pubnub.request_future(options_func, None)
+                self.assertTrue(result.is_error())
+                self.assertEqual(
+                    result.status.category,
+                    PNStatusCategory.PNUnexpectedDisconnectCategory
+                )
+            finally:
+                await pubnub.stop()
+
+        asyncio.run(run_test())
+
+
+class TestForceShutdownConnections(unittest.TestCase):
+    """Tests for _force_shutdown_connections which uses socket.shutdown(SHUT_RDWR)
+    to interrupt blocked reads on macOS."""
+
+    def test_shutdown_calls_socket_shutdown(self):
+        """Verify the correct httpcore attribute path is traversed to reach the socket."""
+        from pubnub.request_handlers.httpx import WallClockDeadlineWatchdog
+
+        mock_sock = MagicMock()
+        mock_stream = MagicMock()
+        mock_stream._sock = mock_sock
+
+        mock_inner_conn = MagicMock()
+        mock_inner_conn._network_stream = mock_stream
+
+        mock_conn = MagicMock()
+        mock_conn._connection = mock_inner_conn
+
+        mock_pool = MagicMock()
+        mock_pool._connections = [mock_conn]
+
+        mock_transport = MagicMock()
+        mock_transport._pool = mock_pool
+
+        mock_session = MagicMock()
+        mock_session._transport = mock_transport
+
+        WallClockDeadlineWatchdog._force_shutdown_connections(mock_session)
+
+        import socket as sock_module
+        mock_sock.shutdown.assert_called_once_with(sock_module.SHUT_RDWR)
+        mock_session.close.assert_called_once()
+
+    def test_shutdown_degrades_gracefully_on_missing_attrs(self):
+        """If httpcore internals change, should not raise — just fall back to session.close()."""
+        from pubnub.request_handlers.httpx import WallClockDeadlineWatchdog
+
+        mock_session = MagicMock()
+        del mock_session._transport  # Simulate missing attribute
+
+        # Should not raise
+        WallClockDeadlineWatchdog._force_shutdown_connections(mock_session)
+        mock_session.close.assert_called_once()
+
+    def test_shutdown_with_real_httpx_client(self):
+        """Verify the attribute path works with a real httpx.Client after a request."""
+        from pubnub.request_handlers.httpx import WallClockDeadlineWatchdog
+
+        client = httpx.Client()
+        try:
+            client.get('https://ps.pndsn.com/time/0')
+        except Exception:
+            client.close()
+            return  # Skip if network unavailable
+
+        # Verify the path exists
+        pool = client._transport._pool
+        self.assertTrue(len(pool._connections) > 0)
+        conn = pool._connections[0]
+        inner = conn._connection
+        stream = inner._network_stream
+        sock = stream._sock
+        self.assertTrue(hasattr(sock, 'shutdown'))
+
+        # Now test the method
+        WallClockDeadlineWatchdog._force_shutdown_connections(client)
+        self.assertTrue(client.is_closed)
+
+
 if __name__ == '__main__':
     unittest.main()

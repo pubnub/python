@@ -17,6 +17,11 @@ from pubnub.structures import RequestOptions, ResponseInfo
 logger = logging.getLogger("pubnub")
 
 
+class WallClockTimeoutError(asyncio.TimeoutError):
+    """Raised when a wall-clock deadline is exceeded, typically due to system sleep."""
+    pass
+
+
 class PubNubAsyncHTTPTransport(httpx.AsyncHTTPTransport):
     is_closed = False
 
@@ -78,7 +83,7 @@ class AsyncHttpxRequestHandler(BaseRequestHandler):
                 remaining = wall_deadline - time.time()
                 if remaining <= 0:
                     request_task.cancel()
-                    raise asyncio.TimeoutError("Wall-clock deadline exceeded")
+                    raise WallClockTimeoutError("Wall-clock deadline exceeded (system sleep detected)")
 
                 done, _ = await asyncio.wait(
                     {request_task},

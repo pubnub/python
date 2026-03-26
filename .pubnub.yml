@@ -1,5 +1,5 @@
 name: python
-version: 10.6.1
+version: 10.6.2
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-10.6.1
+            package-name: pubnub-10.6.2
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -94,8 +94,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-10.6.1
-            location: https://github.com/pubnub/python/releases/download/10.6.1/pubnub-10.6.1.tar.gz
+            package-name: pubnub-10.6.2
+            location: https://github.com/pubnub/python/releases/download/10.6.2/pubnub-10.6.2.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,39 @@ sdks:
                 license-url: https://github.com/encode/httpx/blob/master/LICENSE.md
                 is-required: Required
 changelog:
+  - date: 2026-03-26
+    version: 10.6.2
+    changes:
+      - type: bug
+        text: "Ensure `PubNubAsyncioException` always carries a valid `PNStatus` with error data instead of `None`."
+      - type: bug
+        text: "Handle cases where status or `error_data` is `None` instead of raising `AttributeError`."
+      - type: bug
+        text: "Match `PubNubAsyncioException` which is what `request_future` actually returns on failure."
+      - type: bug
+        text: "Handle `-1 (unlimited)` correctly since `attempts > -1` was always `true`, causing immediate give-up."
+      - type: bug
+        text: "Use delay class defaults instead of config value which could be `None` causing `TypeError` on comparison."
+      - type: bug
+        text: "Prevent falling through to start a heartbeat after deciding to give up."
+      - type: bug
+        text: "Set all four timeout fields explicitly instead of a 2-tuple that left write and pool unset."
+      - type: bug
+        text: "On macOS and Linux, `time.monotonic()` does not advance during system sleep, causing socket and `asyncio` timeouts (310s subscribe) to stall for hours of wall-clock time. Add `time.time()`-based deadline checks that detect sleep and cancel stale requests within ~5s of wake."
+      - type: bug
+        text: "Use `asyncio.wait()` with periodic `time.time()` checks instead of a single monotonic-based `wait_for()`, yielding to the event loop between checks."
+      - type: bug
+        text: "Persistent single daemon thread monitors `time.time()` every 5s and closes the `httpx` session when the wall-clock deadline passes, interrupting the blocking socket read. Tracks deadlines per calling thread so concurrent requests (e.g., subscribe + publish) don't interfere. Only armed for long-timeout requests (>30s). Session is recreated for subsequent requests."
+      - type: improvement
+        text: "Cover both `asyncio` and threads paths simulated clock jumps, normal passthrough, clean watchdog shutdown, per-thread deadline isolation, concurrent request independence, cleanup, and exception propagation."
+      - type: improvement
+        text: "Ensure `pubnub.stop()` always runs to prevent non-daemon threads from blocking process exit."
+      - type: improvement
+        text: "Enable presence heartbeat and use unique channel names so presence registers on the server."
+      - type: improvement
+        text: "Restore `cipher_key` after use in `send_file` and pass it explicitly to `download_file`."
+      - type: improvement
+        text: "Avoid collisions with stale data from prior test runs."
   - date: 2026-02-10
     version: 10.6.1
     changes:

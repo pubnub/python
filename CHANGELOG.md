@@ -1,3 +1,25 @@
+## 10.6.2
+March 26 2026
+
+#### Fixed
+- Ensure `PubNubAsyncioException` always carries a valid `PNStatus` with error data instead of `None`.
+- Handle cases where status or `error_data` is `None` instead of raising `AttributeError`.
+- Match `PubNubAsyncioException` which is what `request_future` actually returns on failure.
+- Handle `-1 (unlimited)` correctly since `attempts > -1` was always `true`, causing immediate give-up.
+- Use delay class defaults instead of config value which could be `None` causing `TypeError` on comparison.
+- Prevent falling through to start a heartbeat after deciding to give up.
+- Set all four timeout fields explicitly instead of a 2-tuple that left write and pool unset.
+- On macOS and Linux, `time.monotonic()` does not advance during system sleep, causing socket and `asyncio` timeouts (310s subscribe) to stall for hours of wall-clock time. Add `time.time()`-based deadline checks that detect sleep and cancel stale requests within ~5s of wake.
+- Use `asyncio.wait()` with periodic `time.time()` checks instead of a single monotonic-based `wait_for()`, yielding to the event loop between checks.
+- Persistent single daemon thread monitors `time.time()` every 5s and closes the `httpx` session when the wall-clock deadline passes, interrupting the blocking socket read. Tracks deadlines per calling thread so concurrent requests (e.g., subscribe + publish) don't interfere. Only armed for long-timeout requests (>30s). Session is recreated for subsequent requests.
+
+#### Modified
+- Cover both `asyncio` and threads paths simulated clock jumps, normal passthrough, clean watchdog shutdown, per-thread deadline isolation, concurrent request independence, cleanup, and exception propagation.
+- Ensure `pubnub.stop()` always runs to prevent non-daemon threads from blocking process exit.
+- Enable presence heartbeat and use unique channel names so presence registers on the server.
+- Restore `cipher_key` after use in `send_file` and pass it explicitly to `download_file`.
+- Avoid collisions with stale data from prior test runs.
+
 ## 10.6.1
 February 10 2026
 

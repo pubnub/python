@@ -76,7 +76,7 @@ from pubnub.managers import SubscriptionManager, PublishSequenceManager, Reconne
 from pubnub import utils
 from pubnub.enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
 from pubnub.callbacks import SubscribeCallback, ReconnectionCallback
-from pubnub.errors import PNERR_REQUEST_CANCELLED, PNERR_CLIENT_TIMEOUT, PNERR_CONNECTION_ERROR
+from pubnub.errors import PNERR_REQUEST_CANCELLED, PNERR_CLIENT_TIMEOUT
 from pubnub.exceptions import PubNubAsyncioException, PubNubException
 
 # flake8: noqa
@@ -251,11 +251,11 @@ class PubNubAsyncio(PubNubCore):
             return PubNubAsyncioException(
                 result=None,
                 status=options_func().create_status(
-                    PNStatusCategory.PNUnexpectedDisconnectCategory,
+                    PNStatusCategory.PNTimeoutCategory,
                     None,
                     None,
                     exception=PubNubException(
-                        pn_error=PNERR_CONNECTION_ERROR,
+                        pn_error=PNERR_CLIENT_TIMEOUT,
                         errormsg="Wall-clock deadline exceeded (system sleep detected)"
                     )
                 )

@@ -163,15 +163,26 @@ class HttpxRequestHandler(BaseRequestHandler):
     ENDPOINT_THREAD_COUNTER: int = 0
 
     def __init__(self, pubnub):
-        self.session = httpx.Client()
+        self._session = None
+        self._session_lock = threading.Lock()
         self._watchdog = WallClockDeadlineWatchdog()
 
         self.pubnub = pubnub
 
+    def _ensure_session(self):
+        """Return the current httpx.Client, creating one if needed. Thread-safe."""
+        with self._session_lock:
+            if self._session is None or self._session.is_closed:
+                logger.debug("Creating new HTTP session")
+                self._session = httpx.Client()
+            return self._session
+
     def close(self):
         """Clean up resources: stop the watchdog thread and close the HTTP session."""
         self._watchdog.stop()
-        self.session.close()
+        with self._session_lock:
+            if self._session is not None:
+                self._session.close()
 
     async def async_request(self, options_func, cancellation_event):
         raise NotImplementedError("async_request is not implemented for synchronous handler")
@@ -369,9 +380,7 @@ class HttpxRequestHandler(BaseRequestHandler):
         assert isinstance(p_options, PlatformOptions)
         assert isinstance(e_options, RequestOptions)
 
-        if self.session.is_closed:
-            logger.debug("HTTP session was closed (e.g. by wall-clock watchdog), recreating")
-            self.session = httpx.Client()
+        session = self._ensure_session()
 
         if base_origin:
             url = p_options.pn_config.scheme() + "://" + base_origin + e_options.path
@@ -420,10 +429,10 @@ class HttpxRequestHandler(BaseRequestHandler):
         use_watchdog = e_options.request_timeout is not None and e_options.request_timeout > 30
 
         if use_watchdog:
-            self._watchdog.set_deadline(self.session, time.time() + e_options.request_timeout)
+            self._watchdog.set_deadline(session, time.time() + e_options.request_timeout)
 
         try:
-            res = self.session.request(**args)
+            res = session.request(**args)
             # Safely access response text - read content first for streaming responses
             try:
                 logger.debug("GOT %s" % res.text)
@@ -436,9 +445,8 @@ class HttpxRequestHandler(BaseRequestHandler):
 
         except httpx.ConnectError as e:
             if use_watchdog and self._watchdog.triggered:
-                self.session = httpx.Client()
                 raise PubNubException(
-                    pn_error=PNERR_CONNECTION_ERROR,
+                    pn_error=PNERR_CLIENT_TIMEOUT,
                     errormsg="Wall-clock deadline exceeded (system sleep detected)"
                 )
             raise PubNubException(
@@ -447,9 +455,8 @@ class HttpxRequestHandler(BaseRequestHandler):
             )
         except httpx.TimeoutException as e:
             if use_watchdog and self._watchdog.triggered:
-                self.session = httpx.Client()
                 raise PubNubException(
-                    pn_error=PNERR_CONNECTION_ERROR,
+                    pn_error=PNERR_CLIENT_TIMEOUT,
                     errormsg="Wall-clock deadline exceeded (system sleep detected)"
                 )
             raise PubNubException(
@@ -469,9 +476,8 @@ class HttpxRequestHandler(BaseRequestHandler):
             )
         except Exception as e:
             if use_watchdog and self._watchdog.triggered:
-                self.session = httpx.Client()
                 raise PubNubException(
-                    pn_error=PNERR_CONNECTION_ERROR,
+                    pn_error=PNERR_CLIENT_TIMEOUT,
                     errormsg="Wall-clock deadline exceeded (system sleep detected)"
                 )
             raise PubNubException(

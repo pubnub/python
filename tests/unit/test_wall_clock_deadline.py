@@ -362,8 +362,9 @@ class TestHttpxRequestHandlerCleanup(unittest.TestCase):
         from pubnub.request_handlers.httpx import HttpxRequestHandler
 
         handler = HttpxRequestHandler(MagicMock())
+        session = handler._ensure_session()
         # Start the watchdog by setting a deadline
-        handler._watchdog.set_deadline(handler.session, time.time() + 300)
+        handler._watchdog.set_deadline(session, time.time() + 300)
         self.assertIsNotNone(handler._watchdog._thread)
 
         handler.close()
@@ -391,11 +392,11 @@ class TestHttpxSessionRecreation(unittest.TestCase):
     def test_closed_session_is_recreated_on_next_request(self):
         """After session.close(), the next _invoke_request should recreate the session."""
         handler = self._make_handler()
-        original_session = handler.session
+        original_session = handler._ensure_session()
 
         # Simulate what the watchdog does
-        handler.session.close()
-        self.assertTrue(handler.session.is_closed)
+        original_session.close()
+        self.assertTrue(handler._session.is_closed)
 
         # Build minimal request options
         from pubnub.structures import RequestOptions, PlatformOptions
@@ -422,17 +423,17 @@ class TestHttpxSessionRecreation(unittest.TestCase):
         except Exception:
             pass
 
-        self.assertFalse(handler.session.is_closed)
-        self.assertIsNot(handler.session, original_session)
+        self.assertFalse(handler._session.is_closed)
+        self.assertIsNot(handler._session, original_session)
 
         handler.close()
 
     def test_open_session_is_not_recreated(self):
         """An open session should not be replaced."""
         handler = self._make_handler()
-        original_session = handler.session
+        original_session = handler._ensure_session()
 
-        self.assertFalse(handler.session.is_closed)
+        self.assertFalse(handler._session.is_closed)
 
         from pubnub.structures import RequestOptions, PlatformOptions
         p_options = MagicMock(spec=PlatformOptions)
@@ -457,18 +458,18 @@ class TestHttpxSessionRecreation(unittest.TestCase):
         except Exception:
             pass
 
-        self.assertIs(handler.session, original_session)
+        self.assertIs(handler._session, original_session)
         handler.close()
 
     def test_watchdog_trigger_with_timeout_exception_recreates_session(self):
         """When watchdog triggers and the request gets TimeoutException, session should be recreated."""
         handler = self._make_handler()
-        original_session = handler.session
+        original_session = handler._ensure_session()
 
         # Set up watchdog as triggered
-        handler._watchdog.set_deadline(handler.session, time.time() - 1)
+        handler._watchdog.set_deadline(original_session, time.time() - 1)
         time.sleep(0.3)
-        self.assertTrue(handler.session.is_closed)
+        self.assertTrue(original_session.is_closed)
 
         from pubnub.structures import RequestOptions, PlatformOptions
         p_options = MagicMock(spec=PlatformOptions)
@@ -493,9 +494,9 @@ class TestHttpxSessionRecreation(unittest.TestCase):
         except Exception:
             pass
 
-        # Session should have been recreated (either by is_closed check or watchdog trigger handler)
-        self.assertFalse(handler.session.is_closed)
-        self.assertIsNot(handler.session, original_session)
+        # Session should have been recreated by _ensure_session() since original was closed
+        self.assertFalse(handler._session.is_closed)
+        self.assertIsNot(handler._session, original_session)
 
         handler._watchdog.stop()
         handler.close()
@@ -509,10 +510,11 @@ class TestHttpxSessionRecreation(unittest.TestCase):
         3. /time/0 calls should detect closed session, recreate it, and eventually succeed
         """
         handler = self._make_handler()
+        original_session = handler._ensure_session()
 
         # Step 1: Watchdog closes the session
-        handler.session.close()
-        self.assertTrue(handler.session.is_closed)
+        original_session.close()
+        self.assertTrue(handler._session.is_closed)
 
         from pubnub.structures import RequestOptions, PlatformOptions
         p_options = MagicMock(spec=PlatformOptions)
@@ -540,21 +542,22 @@ class TestHttpxSessionRecreation(unittest.TestCase):
             # Should be a connection error, NOT "Cannot send a request, as the client has been closed"
             self.assertNotIn("client has been closed", str(e).lower())
 
-        self.assertFalse(handler.session.is_closed)
+        self.assertFalse(handler._session.is_closed)
         handler.close()
 
 
 class TestWallClockErrorCategory(unittest.TestCase):
-    """Tests that wall-clock sleep timeouts produce PNUnexpectedDisconnectCategory,
-    not PNTimeoutCategory — so they route through the reconnection manager with
-    configured retry delays instead of an immediate silent restart.
+    """Tests that wall-clock sleep timeouts produce PNTimeoutCategory,
+    so they silently restart the subscribe loop. If the network is actually
+    down, the next request will fail with a real connection error that routes
+    through the reconnection manager with configured retry delays.
     """
 
-    def test_watchdog_triggered_produces_connection_error(self):
-        """When watchdog triggers during a request, the exception should use PNERR_CONNECTION_ERROR
-        which maps to PNUnexpectedDisconnectCategory in _build_envelope."""
+    def test_watchdog_triggered_produces_timeout_error(self):
+        """When watchdog triggers during a request, the exception should use PNERR_CLIENT_TIMEOUT
+        which maps to PNTimeoutCategory in _build_envelope."""
         from pubnub.request_handlers.httpx import HttpxRequestHandler
-        from pubnub.errors import PNERR_CONNECTION_ERROR
+        from pubnub.errors import PNERR_CLIENT_TIMEOUT
         from pubnub.exceptions import PubNubException
         from pubnub.structures import RequestOptions, PlatformOptions
 
@@ -565,7 +568,7 @@ class TestWallClockErrorCategory(unittest.TestCase):
         mock_session = MagicMock(spec=httpx.Client)
         mock_session.is_closed = False
         mock_session.request.side_effect = httpx.ReadTimeout("timed out")
-        handler.session = mock_session
+        handler._session = mock_session
 
         # Mock watchdog.triggered to return True (simulates watchdog firing during request)
         type(handler._watchdog).triggered = property(lambda self: True)
@@ -590,10 +593,8 @@ class TestWallClockErrorCategory(unittest.TestCase):
         with self.assertRaises(PubNubException) as ctx:
             handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
 
-        self.assertEqual(ctx.exception._pn_error, PNERR_CONNECTION_ERROR)
+        self.assertEqual(ctx.exception._pn_error, PNERR_CLIENT_TIMEOUT)
         self.assertIn("Wall-clock deadline exceeded", ctx.exception._errormsg)
-        # Session should have been recreated
-        self.assertIsNot(handler.session, mock_session)
 
         handler._watchdog.stop()
         handler.close()
@@ -636,8 +637,8 @@ class TestWallClockErrorCategory(unittest.TestCase):
 
         asyncio.run(run_test())
 
-    def test_async_wall_clock_timeout_maps_to_unexpected_disconnect(self):
-        """WallClockTimeoutError should produce PNUnexpectedDisconnectCategory in request_future."""
+    def test_async_wall_clock_timeout_maps_to_timeout_category(self):
+        """WallClockTimeoutError should produce PNTimeoutCategory in request_future."""
         from pubnub.request_handlers.async_httpx import WallClockTimeoutError
         from pubnub.pubnub_asyncio import PubNubAsyncio
         from pubnub.pnconfiguration import PNConfiguration
@@ -668,7 +669,7 @@ class TestWallClockErrorCategory(unittest.TestCase):
                 self.assertTrue(result.is_error())
                 self.assertEqual(
                     result.status.category,
-                    PNStatusCategory.PNUnexpectedDisconnectCategory
+                    PNStatusCategory.PNTimeoutCategory
                 )
             finally:
                 await pubnub.stop()

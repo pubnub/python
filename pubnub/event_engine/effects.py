@@ -178,8 +178,8 @@ class ReconnectEffect(Effect):
 
     def calculate_reconnection_delay(self, attempts):
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            delay = ExponentialDelay.calculate(attempts, minimum_delay=self.interval,
-                                              maximum_delay=self.maximum_interval)
+            delay = ExponentialDelay.calculate(
+                attempts, minimum_delay=self.interval, maximum_delay=self.maximum_interval)
         else:
             delay = LinearDelay.calculate(attempts, delay=self.interval)
 
@@ -388,8 +388,8 @@ class HeartbeatDelayedEffect(Effect):
 
     def calculate_reconnection_delay(self, attempts):
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            delay = ExponentialDelay.calculate(attempts, minimum_delay=self.interval,
-                                              maximum_delay=self.maximum_interval)
+            delay = ExponentialDelay.calculate(
+                attempts, minimum_delay=self.interval, maximum_delay=self.maximum_interval)
         else:
             delay = LinearDelay.calculate(attempts, delay=self.interval)
 

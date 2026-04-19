@@ -154,6 +154,7 @@ class ReconnectEffect(Effect):
         super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
         self.interval = pubnub_instance.config.reconnection_interval
+        self.maximum_interval = pubnub_instance.config.maximum_reconnection_interval
 
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
             self.max_retry_attempts = ExponentialDelay.MAX_RETRIES
@@ -177,11 +178,10 @@ class ReconnectEffect(Effect):
 
     def calculate_reconnection_delay(self, attempts):
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            delay = ExponentialDelay.calculate(attempts)
-        elif self.interval is None:
-            delay = LinearDelay.calculate(attempts)
+            delay = ExponentialDelay.calculate(attempts, minimum_delay=self.interval,
+                                              maximum_delay=self.maximum_interval)
         else:
-            delay = self.interval
+            delay = LinearDelay.calculate(attempts, delay=self.interval)
 
         return delay
 
@@ -367,6 +367,7 @@ class HeartbeatDelayedEffect(Effect):
         super().__init__(pubnub_instance, event_engine_instance, invocation)
         self.reconnection_policy = pubnub_instance.config.reconnect_policy
         self.interval = pubnub_instance.config.reconnection_interval
+        self.maximum_interval = pubnub_instance.config.maximum_reconnection_interval
 
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
             self.max_retry_attempts = ExponentialDelay.MAX_RETRIES
@@ -387,11 +388,10 @@ class HeartbeatDelayedEffect(Effect):
 
     def calculate_reconnection_delay(self, attempts):
         if self.reconnection_policy is PNReconnectionPolicy.EXPONENTIAL:
-            delay = ExponentialDelay.calculate(attempts)
-        elif self.interval is None:
-            delay = LinearDelay.calculate(attempts)
+            delay = ExponentialDelay.calculate(attempts, minimum_delay=self.interval,
+                                              maximum_delay=self.maximum_interval)
         else:
-            delay = self.interval
+            delay = LinearDelay.calculate(attempts, delay=self.interval)
 
         return delay
 

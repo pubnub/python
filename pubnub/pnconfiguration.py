@@ -41,7 +41,8 @@ class PNConfiguration(object):
         self.heartbeat_notification_options = PNHeartbeatNotificationOptions.FAILURES
         self.reconnect_policy = PNReconnectionPolicy.EXPONENTIAL
         self.maximum_reconnection_retries = None  # -1 means unlimited/ 0 means no retries
-        self.reconnection_interval = None  # if None is left the default value from LinearDelay is used
+        self.reconnection_interval = None  # if None is left the default value from LinearDelay/ExponentialDelay is used
+        self.maximum_reconnection_interval = None  # if None the default value from ExponentialDelay is used
         self.daemon = False
         self.use_random_initialization_vector = True
         self.suppress_leave_events = False

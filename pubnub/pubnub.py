@@ -8,7 +8,6 @@ Key Components:
     - PubNub: Main class for interacting with PubNub services
     - NativeSubscriptionManager: Handles channel subscriptions and message processing
     - NativeReconnectionManager: Manages network reconnection strategies
-    - NativePublishSequenceManager: Manages message sequence numbers for publishing
     - SubscribeListener: Helper class for handling subscription events
     - NonSubscribeListener: Helper class for handling non-subscription operations
 
@@ -40,7 +39,7 @@ Threading Notes:
     - The SDK uses multiple threads for different operations
     - SubscribeMessageWorker runs in a daemon thread
     - Heartbeat and reconnection timers run in separate threads
-    - Thread-safe implementations for sequence management and message queuing
+    - Thread-safe implementations for message queuing
 
 Error Handling:
     - Automatic retry mechanisms for failed operations
@@ -70,7 +69,7 @@ from pubnub.endpoints.presence.heartbeat import Heartbeat
 from pubnub.endpoints.presence.leave import Leave
 from pubnub.endpoints.pubsub.subscribe import Subscribe
 from pubnub.enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
-from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager
+from pubnub.managers import SubscriptionManager, ReconnectionManager
 from pubnub.models.consumer.common import PNStatus
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub_core import PubNubCore
@@ -123,8 +122,6 @@ class PubNub(PubNubCore):
 
         if self.config.enable_subscribe:
             self._subscription_manager = NativeSubscriptionManager(self)
-
-        self._publish_sequence_manager = PublishSequenceManager(PubNubCore.MAX_SEQUENCE)
 
     def sdk_platform(self) -> str:
         """Get the SDK platform identifier.
@@ -205,12 +202,7 @@ class PubNub(PubNubCore):
         )
 
     def merge_in_params(self, options):
-        params_to_merge_in = {}
-
-        if options.operation_type == PNOperationType.PNPublishOperation:
-            params_to_merge_in['seqn'] = self._publish_sequence_manager.get_next_sequence()
-
-        options.merge_params_in(params_to_merge_in)
+        options.merge_params_in({})
 
     def stop(self):
         """Stop all subscriptions and clean up resources.
@@ -303,21 +295,6 @@ class NativeReconnectionManager(ReconnectionManager):
     def stop_heartbeat_timer(self):
         if self._timer is not None:
             self._timer.cancel()
-
-
-class NativePublishSequenceManager(PublishSequenceManager):
-    def __init__(self, provided_max_sequence):
-        super(NativePublishSequenceManager, self).__init__(provided_max_sequence)
-        self._lock = threading.Lock()
-
-    def get_next_sequence(self):
-        with self._lock:
-            if self.max_sequence == self.next_sequence:
-                self.next_sequence = 1
-            else:
-                self.next_sequence += 1
-
-            return self.next_sequence
 
 
 class NativeSubscriptionManager(SubscriptionManager):

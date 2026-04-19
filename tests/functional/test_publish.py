@@ -11,15 +11,10 @@ from tests.helper import pnconf, sdk_name, url_encode
 
 class TestPublish(unittest.TestCase):
     def setUp(self):
-        self.sm = MagicMock(
-            get_next_sequence=MagicMock(return_value=2)
-        )
-
         self.pubnub = MagicMock(
             spec=PubNub,
             config=pnconf,
             sdk_name=sdk_name,
-            _publish_sequence_manager=self.sm,
             _get_token=lambda: None
         )
 
@@ -117,7 +112,6 @@ class TestPublish(unittest.TestCase):
             config=conf,
             sdk_name=sdk_name,
             uuid="UUID_PublishUnitTest",
-            _publish_sequence_manager=self.sm,
             _get_token=lambda: None
         )
         pub = Publish(pubnub)
@@ -144,7 +138,6 @@ class TestPublish(unittest.TestCase):
             config=conf,
             sdk_name=sdk_name,
             uuid="UUID_PublishUnitTest",
-            _publish_sequence_manager=self.sm,
             _get_token=lambda: None
         )
         pub = Publish(pubnub)

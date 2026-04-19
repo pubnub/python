@@ -9,8 +9,6 @@ Key Components:
     - AsyncioSubscriptionManager: Async implementation of subscription handling
     - EventEngineSubscriptionManager: Event-driven subscription management
     - AsyncioReconnectionManager: Async network reconnection handling
-    - AsyncioPublishSequenceManager: Async message sequence management
-
 Features:
     - Asynchronous publish/subscribe messaging
     - Non-blocking network operations
@@ -72,7 +70,7 @@ from pubnub.pubnub_core import PubNubCore
 from pubnub.request_handlers.base import BaseRequestHandler
 from pubnub.request_handlers.async_httpx import AsyncHttpxRequestHandler, WallClockTimeoutError
 from pubnub.workers import SubscribeMessageWorker
-from pubnub.managers import SubscriptionManager, PublishSequenceManager, ReconnectionManager
+from pubnub.managers import SubscriptionManager, ReconnectionManager
 from pubnub import utils
 from pubnub.enums import PNStatusCategory, PNHeartbeatNotificationOptions, PNOperationType, PNReconnectionPolicy
 from pubnub.callbacks import SubscribeCallback, ReconnectionCallback
@@ -152,8 +150,6 @@ class PubNubAsyncio(PubNubCore):
 
         if self.config.enable_subscribe:
             self._subscription_manager = subscription_manager(self)
-
-        self._publish_sequence_manager = AsyncioPublishSequenceManager(self.event_loop, PubNubCore.MAX_SEQUENCE)
 
     @property
     def _connector(self):
@@ -317,6 +313,13 @@ class AsyncioReconnectionManager(ReconnectionManager):
         reconnection attempt based on the current state.
         """
         while True:
+            if self._retry_limit_reached():
+                logger.warning("Reconnection retry limit reached. Disconnecting.")
+                disconnect_status = PNStatus()
+                disconnect_status.category = PNStatusCategory.PNDisconnectedCategory
+                self._pubnub._subscription_manager._listener_manager.announce_status(disconnect_status)
+                break
+
             self._recalculate_interval()
             await asyncio.sleep(self._timer_interval)
             logger.debug("reconnect loop at: %s" % utils.datetime_now())
@@ -327,9 +330,8 @@ class AsyncioReconnectionManager(ReconnectionManager):
                 self._callback.on_reconnect()
                 break
             except Exception:
-                if self._pubnub.config.reconnect_policy == PNReconnectionPolicy.EXPONENTIAL:
-                    logger.debug("reconnect interval increment at: %s" % utils.datetime_now())
-                    self._connection_errors += 1
+                logger.debug("reconnect interval increment at: %s" % utils.datetime_now())
+                self._connection_errors += 1
 
     def start_polling(self):
         """Start the reconnection polling process."""
@@ -343,22 +345,6 @@ class AsyncioReconnectionManager(ReconnectionManager):
         """Stop the reconnection polling process."""
         if self._task is not None and not self._task.cancelled():
             self._task.cancel()
-
-
-class AsyncioPublishSequenceManager(PublishSequenceManager):
-    def __init__(self, ioloop, provided_max_sequence):
-        super(AsyncioPublishSequenceManager, self).__init__(provided_max_sequence)
-        self._lock = asyncio.Lock()
-        self._event_loop = ioloop
-
-    async def get_next_sequence(self):
-        async with self._lock:
-            if self.max_sequence == self.next_sequence:
-                self.next_sequence = 1
-            else:
-                self.next_sequence += 1
-
-            return self.next_sequence
 
 
 class AsyncioSubscriptionManager(SubscriptionManager):

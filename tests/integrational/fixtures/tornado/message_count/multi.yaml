@@ -31,7 +31,7 @@ interactions:
       - Access-Control-Allow-Methods
       - [GET]
     status: {code: 200, message: OK}
-    url: https://balancer1g.bronze.aws-pdx-1.ps.pn/publish/demo-36/demo-36/0/unique_asyncio_1/0/%22something%22?seqn=1&pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=367fcb65-053e-4790-ba94-dcc0d4e56750
+    url: https://balancer1g.bronze.aws-pdx-1.ps.pn/publish/demo-36/demo-36/0/unique_asyncio_1/0/%22something%22?pnsdk=PubNub-Python-Tornado%2F4.1.0&uuid=367fcb65-053e-4790-ba94-dcc0d4e56750
 - request:
     body: null
     headers:

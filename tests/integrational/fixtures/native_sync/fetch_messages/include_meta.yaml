@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/6.2.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-meta-1/0/%22hey-meta%22?meta=%7B%22is-this%22%3A+%22krusty-krab%22%7D&seqn=1
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-meta-1/0/%22hey-meta%22?meta=%7B%22is-this%22%3A+%22krusty-krab%22%7D
   response:
     body:
       string: '[1,"Sent","16485817254069189"]'
@@ -45,7 +45,7 @@ interactions:
       User-Agent:
       - PubNub-Python/6.2.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-meta-1/0/%22hey-meta%22?meta=%7B%22this-is%22%3A+%22patrick%22%7D&seqn=2
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-meta-1/0/%22hey-meta%22?meta=%7B%22this-is%22%3A+%22patrick%22%7D
   response:
     body:
       string: '[1,"Sent","16485817254397299"]'

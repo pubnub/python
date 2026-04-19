@@ -14,7 +14,7 @@ interactions:
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult [http, balancer1g.bronze.aws-pdx-1.ps.pn,
-        /publish/demo-36/demo-36/0/unique_asyncio/0/%22bla%22, seqn=1&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=68f7b4f4-c169-4a49-b09d-7c68e22049b8,
+        /publish/demo-36/demo-36/0/unique_asyncio/0/%22bla%22, pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=68f7b4f4-c169-4a49-b09d-7c68e22049b8,
         '']
 - request:
     body: null

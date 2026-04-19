@@ -34,7 +34,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/5.0.1
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22a25pZ2h0c29mbmkxMjM0Nf61IdsMAvG1F5OWmMXjVxo%3D%22?seqn=1&uuid=test-subscribe-asyncio-uuid
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22a25pZ2h0c29mbmkxMjM0Nf61IdsMAvG1F5OWmMXjVxo%3D%22?uuid=test-subscribe-asyncio-uuid
   response:
     body:
       string: '[1,"Sent","16148941682656065"]'
@@ -56,7 +56,7 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22a25pZ2h0c29mbmkxMjM0Nf61IdsMAvG1F5OWmMXjVxo%3D%22?seqn=1&pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=test-subscribe-asyncio-uuid
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/test-subscribe-asyncio-ch/0/%22a25pZ2h0c29mbmkxMjM0Nf61IdsMAvG1F5OWmMXjVxo%3D%22?pnsdk=PubNub-Python-Asyncio%2F5.0.1&uuid=test-subscribe-asyncio-uuid
 - request:
     body: null
     headers:

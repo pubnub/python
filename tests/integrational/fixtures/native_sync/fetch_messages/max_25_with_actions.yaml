@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-0%22?seqn=1
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-0%22
   response:
     body:
       string: '[1,"Sent","16075190358030554"]'
@@ -45,7 +45,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-1%22?seqn=2
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-1%22
   response:
     body:
       string: '[1,"Sent","16075190359592966"]'
@@ -79,7 +79,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-2%22?seqn=3
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-2%22
   response:
     body:
       string: '[1,"Sent","16075190361073010"]'
@@ -113,7 +113,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-3%22?seqn=4
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-3%22
   response:
     body:
       string: '[1,"Sent","16075190362531028"]'
@@ -147,7 +147,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-4%22?seqn=5
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-4%22
   response:
     body:
       string: '[1,"Sent","16075190364032342"]'
@@ -181,7 +181,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-5%22?seqn=6
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-5%22
   response:
     body:
       string: '[1,"Sent","16075190365479057"]'
@@ -215,7 +215,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-6%22?seqn=7
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-6%22
   response:
     body:
       string: '[1,"Sent","16075190366912883"]'
@@ -249,7 +249,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-7%22?seqn=8
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-7%22
   response:
     body:
       string: '[1,"Sent","16075190368368766"]'
@@ -283,7 +283,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-8%22?seqn=9
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-8%22
   response:
     body:
       string: '[1,"Sent","16075190369888900"]'
@@ -317,7 +317,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-9%22?seqn=10
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-9%22
   response:
     body:
       string: '[1,"Sent","16075190371384891"]'
@@ -351,7 +351,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-10%22?seqn=11
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-10%22
   response:
     body:
       string: '[1,"Sent","16075190372772089"]'
@@ -385,7 +385,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-11%22?seqn=12
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-11%22
   response:
     body:
       string: '[1,"Sent","16075190374244320"]'
@@ -419,7 +419,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-12%22?seqn=13
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-12%22
   response:
     body:
       string: '[1,"Sent","16075190375799207"]'
@@ -453,7 +453,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-13%22?seqn=14
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-13%22
   response:
     body:
       string: '[1,"Sent","16075190377243263"]'
@@ -487,7 +487,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-14%22?seqn=15
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-14%22
   response:
     body:
       string: '[1,"Sent","16075190378684077"]'
@@ -521,7 +521,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-15%22?seqn=16
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-15%22
   response:
     body:
       string: '[1,"Sent","16075190380117582"]'
@@ -555,7 +555,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-16%22?seqn=17
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-16%22
   response:
     body:
       string: '[1,"Sent","16075190381599199"]'
@@ -589,7 +589,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-17%22?seqn=18
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-17%22
   response:
     body:
       string: '[1,"Sent","16075190383062222"]'
@@ -623,7 +623,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-18%22?seqn=19
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-18%22
   response:
     body:
       string: '[1,"Sent","16075190384510264"]'
@@ -657,7 +657,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-19%22?seqn=20
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-19%22
   response:
     body:
       string: '[1,"Sent","16075190386053770"]'
@@ -691,7 +691,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-20%22?seqn=21
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-20%22
   response:
     body:
       string: '[1,"Sent","16075190387536451"]'
@@ -725,7 +725,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-21%22?seqn=22
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-21%22
   response:
     body:
       string: '[1,"Sent","16075190389051030"]'
@@ -759,7 +759,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-22%22?seqn=23
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-22%22
   response:
     body:
       string: '[1,"Sent","16075190390578316"]'
@@ -793,7 +793,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-23%22?seqn=24
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-23%22
   response:
     body:
       string: '[1,"Sent","16075190392014071"]'
@@ -827,7 +827,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-24%22?seqn=25
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-24%22
   response:
     body:
       string: '[1,"Sent","16075190393490815"]'
@@ -861,7 +861,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-25%22?seqn=26
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-25%22
   response:
     body:
       string: '[1,"Sent","16075190394975812"]'
@@ -895,7 +895,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-26%22?seqn=27
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-26%22
   response:
     body:
       string: '[1,"Sent","16075190396441272"]'
@@ -929,7 +929,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-27%22?seqn=28
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-27%22
   response:
     body:
       string: '[1,"Sent","16075190397818949"]'
@@ -963,7 +963,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-28%22?seqn=29
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-28%22
   response:
     body:
       string: '[1,"Sent","16075190399409082"]'
@@ -997,7 +997,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-29%22?seqn=30
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-29%22
   response:
     body:
       string: '[1,"Sent","16075190400941496"]'
@@ -1031,7 +1031,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-30%22?seqn=31
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-30%22
   response:
     body:
       string: '[1,"Sent","16075190402614596"]'
@@ -1065,7 +1065,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-31%22?seqn=32
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-31%22
   response:
     body:
       string: '[1,"Sent","16075190404141508"]'
@@ -1099,7 +1099,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-32%22?seqn=33
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-32%22
   response:
     body:
       string: '[1,"Sent","16075190405605957"]'
@@ -1133,7 +1133,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-33%22?seqn=34
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-33%22
   response:
     body:
       string: '[1,"Sent","16075190407151554"]'
@@ -1167,7 +1167,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-34%22?seqn=35
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-34%22
   response:
     body:
       string: '[1,"Sent","16075190408693841"]'
@@ -1201,7 +1201,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-35%22?seqn=36
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-35%22
   response:
     body:
       string: '[1,"Sent","16075190410317147"]'
@@ -1235,7 +1235,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-36%22?seqn=37
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-36%22
   response:
     body:
       string: '[1,"Sent","16075190411809277"]'
@@ -1269,7 +1269,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-37%22?seqn=38
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-37%22
   response:
     body:
       string: '[1,"Sent","16075190413468037"]'
@@ -1303,7 +1303,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-38%22?seqn=39
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-38%22
   response:
     body:
       string: '[1,"Sent","16075190414893492"]'
@@ -1337,7 +1337,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-39%22?seqn=40
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-39%22
   response:
     body:
       string: '[1,"Sent","16075190416308626"]'
@@ -1371,7 +1371,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-40%22?seqn=41
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-40%22
   response:
     body:
       string: '[1,"Sent","16075190417722774"]'
@@ -1405,7 +1405,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-41%22?seqn=42
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-41%22
   response:
     body:
       string: '[1,"Sent","16075190419178014"]'
@@ -1439,7 +1439,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-42%22?seqn=43
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-42%22
   response:
     body:
       string: '[1,"Sent","16075190420726602"]'
@@ -1473,7 +1473,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-43%22?seqn=44
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-43%22
   response:
     body:
       string: '[1,"Sent","16075190422313978"]'
@@ -1507,7 +1507,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-44%22?seqn=45
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-44%22
   response:
     body:
       string: '[1,"Sent","16075190423744442"]'
@@ -1541,7 +1541,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-45%22?seqn=46
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-45%22
   response:
     body:
       string: '[1,"Sent","16075190425306129"]'
@@ -1575,7 +1575,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-46%22?seqn=47
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-46%22
   response:
     body:
       string: '[1,"Sent","16075190426809680"]'
@@ -1609,7 +1609,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-47%22?seqn=48
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-47%22
   response:
     body:
       string: '[1,"Sent","16075190428257122"]'
@@ -1643,7 +1643,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-48%22?seqn=49
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-48%22
   response:
     body:
       string: '[1,"Sent","16075190429694129"]'
@@ -1677,7 +1677,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-49%22?seqn=50
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-49%22
   response:
     body:
       string: '[1,"Sent","16075190431194238"]'
@@ -1711,7 +1711,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-50%22?seqn=51
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-50%22
   response:
     body:
       string: '[1,"Sent","16075190432676119"]'
@@ -1745,7 +1745,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-51%22?seqn=52
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-51%22
   response:
     body:
       string: '[1,"Sent","16075190434160471"]'
@@ -1779,7 +1779,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-52%22?seqn=53
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-52%22
   response:
     body:
       string: '[1,"Sent","16075190435800583"]'
@@ -1813,7 +1813,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-53%22?seqn=54
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-53%22
   response:
     body:
       string: '[1,"Sent","16075190437307648"]'
@@ -1847,7 +1847,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-54%22?seqn=55
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-54%22
   response:
     body:
       string: '[1,"Sent","16075190438901992"]'
@@ -1881,7 +1881,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-55%22?seqn=56
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-55%22
   response:
     body:
       string: '[1,"Sent","16075190440407001"]'
@@ -1915,7 +1915,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-56%22?seqn=57
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-56%22
   response:
     body:
       string: '[1,"Sent","16075190441840241"]'
@@ -1949,7 +1949,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-57%22?seqn=58
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-57%22
   response:
     body:
       string: '[1,"Sent","16075190443264522"]'
@@ -1983,7 +1983,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-58%22?seqn=59
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-58%22
   response:
     body:
       string: '[1,"Sent","16075190444719997"]'
@@ -2017,7 +2017,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-59%22?seqn=60
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-59%22
   response:
     body:
       string: '[1,"Sent","16075190446227766"]'
@@ -2051,7 +2051,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-60%22?seqn=61
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-60%22
   response:
     body:
       string: '[1,"Sent","16075190447766425"]'
@@ -2085,7 +2085,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-61%22?seqn=62
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-61%22
   response:
     body:
       string: '[1,"Sent","16075190449307512"]'
@@ -2119,7 +2119,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-62%22?seqn=63
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-62%22
   response:
     body:
       string: '[1,"Sent","16075190450964219"]'
@@ -2153,7 +2153,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-63%22?seqn=64
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-63%22
   response:
     body:
       string: '[1,"Sent","16075190452503068"]'
@@ -2187,7 +2187,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-64%22?seqn=65
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-64%22
   response:
     body:
       string: '[1,"Sent","16075190454179078"]'
@@ -2221,7 +2221,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-65%22?seqn=66
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-65%22
   response:
     body:
       string: '[1,"Sent","16075190455649012"]'
@@ -2255,7 +2255,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-66%22?seqn=67
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-66%22
   response:
     body:
       string: '[1,"Sent","16075190457297455"]'
@@ -2289,7 +2289,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-67%22?seqn=68
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-67%22
   response:
     body:
       string: '[1,"Sent","16075190459000371"]'
@@ -2323,7 +2323,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-68%22?seqn=69
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-68%22
   response:
     body:
       string: '[1,"Sent","16075190460457037"]'
@@ -2357,7 +2357,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-69%22?seqn=70
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-69%22
   response:
     body:
       string: '[1,"Sent","16075190461999122"]'
@@ -2391,7 +2391,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-70%22?seqn=71
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-70%22
   response:
     body:
       string: '[1,"Sent","16075190463819990"]'
@@ -2425,7 +2425,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-71%22?seqn=72
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-71%22
   response:
     body:
       string: '[1,"Sent","16075190465767383"]'
@@ -2459,7 +2459,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-72%22?seqn=73
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-72%22
   response:
     body:
       string: '[1,"Sent","16075190467653255"]'
@@ -2493,7 +2493,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-73%22?seqn=74
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-73%22
   response:
     body:
       string: '[1,"Sent","16075190469424962"]'
@@ -2527,7 +2527,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-74%22?seqn=75
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-74%22
   response:
     body:
       string: '[1,"Sent","16075190470946958"]'
@@ -2561,7 +2561,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-75%22?seqn=76
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-75%22
   response:
     body:
       string: '[1,"Sent","16075190472517226"]'
@@ -2595,7 +2595,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-76%22?seqn=77
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-76%22
   response:
     body:
       string: '[1,"Sent","16075190473964740"]'
@@ -2629,7 +2629,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-77%22?seqn=78
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-77%22
   response:
     body:
       string: '[1,"Sent","16075190475435852"]'
@@ -2663,7 +2663,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-78%22?seqn=79
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-78%22
   response:
     body:
       string: '[1,"Sent","16075190476983670"]'
@@ -2697,7 +2697,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-79%22?seqn=80
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-79%22
   response:
     body:
       string: '[1,"Sent","16075190478481524"]'
@@ -2731,7 +2731,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-80%22?seqn=81
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-80%22
   response:
     body:
       string: '[1,"Sent","16075190480115667"]'
@@ -2765,7 +2765,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-81%22?seqn=82
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-81%22
   response:
     body:
       string: '[1,"Sent","16075190481553175"]'
@@ -2799,7 +2799,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-82%22?seqn=83
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-82%22
   response:
     body:
       string: '[1,"Sent","16075190483145534"]'
@@ -2833,7 +2833,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-83%22?seqn=84
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-83%22
   response:
     body:
       string: '[1,"Sent","16075190484683657"]'
@@ -2867,7 +2867,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-84%22?seqn=85
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-84%22
   response:
     body:
       string: '[1,"Sent","16075190486175682"]'
@@ -2901,7 +2901,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-85%22?seqn=86
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-85%22
   response:
     body:
       string: '[1,"Sent","16075190587670821"]'
@@ -2935,7 +2935,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-86%22?seqn=87
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-86%22
   response:
     body:
       string: '[1,"Sent","16075190589275649"]'
@@ -2969,7 +2969,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-87%22?seqn=88
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-87%22
   response:
     body:
       string: '[1,"Sent","16075190590770884"]'
@@ -3003,7 +3003,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-88%22?seqn=89
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-88%22
   response:
     body:
       string: '[1,"Sent","16075190592644444"]'
@@ -3037,7 +3037,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-89%22?seqn=90
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-89%22
   response:
     body:
       string: '[1,"Sent","16075190594243502"]'
@@ -3071,7 +3071,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-90%22?seqn=91
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-90%22
   response:
     body:
       string: '[1,"Sent","16075190595728851"]'
@@ -3105,7 +3105,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-91%22?seqn=92
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-91%22
   response:
     body:
       string: '[1,"Sent","16075190597448279"]'
@@ -3139,7 +3139,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-92%22?seqn=93
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-92%22
   response:
     body:
       string: '[1,"Sent","16075190599011148"]'
@@ -3173,7 +3173,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-93%22?seqn=94
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-93%22
   response:
     body:
       string: '[1,"Sent","16075190600562137"]'
@@ -3207,7 +3207,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-94%22?seqn=95
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-94%22
   response:
     body:
       string: '[1,"Sent","16075190602191148"]'
@@ -3241,7 +3241,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-95%22?seqn=96
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-95%22
   response:
     body:
       string: '[1,"Sent","16075190603666320"]'
@@ -3275,7 +3275,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-96%22?seqn=97
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-96%22
   response:
     body:
       string: '[1,"Sent","16075190605103323"]'
@@ -3309,7 +3309,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-97%22?seqn=98
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-97%22
   response:
     body:
       string: '[1,"Sent","16075190606615823"]'
@@ -3343,7 +3343,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-98%22?seqn=99
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-98%22
   response:
     body:
       string: '[1,"Sent","16075190608085962"]'
@@ -3377,7 +3377,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-99%22?seqn=100
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-99%22
   response:
     body:
       string: '[1,"Sent","16075190609660189"]'
@@ -3411,7 +3411,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-100%22?seqn=101
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-100%22
   response:
     body:
       string: '[1,"Sent","16075190611330780"]'
@@ -3445,7 +3445,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-101%22?seqn=102
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-101%22
   response:
     body:
       string: '[1,"Sent","16075190612817808"]'
@@ -3479,7 +3479,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-102%22?seqn=103
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-102%22
   response:
     body:
       string: '[1,"Sent","16075190614359327"]'
@@ -3513,7 +3513,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-103%22?seqn=104
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-103%22
   response:
     body:
       string: '[1,"Sent","16075190615823898"]'
@@ -3547,7 +3547,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-104%22?seqn=105
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-104%22
   response:
     body:
       string: '[1,"Sent","16075190617332432"]'
@@ -3581,7 +3581,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-105%22?seqn=106
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-105%22
   response:
     body:
       string: '[1,"Sent","16075190618895409"]'
@@ -3615,7 +3615,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-106%22?seqn=107
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-106%22
   response:
     body:
       string: '[1,"Sent","16075190620367862"]'
@@ -3649,7 +3649,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-107%22?seqn=108
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-107%22
   response:
     body:
       string: '[1,"Sent","16075190622036422"]'
@@ -3683,7 +3683,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-108%22?seqn=109
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-108%22
   response:
     body:
       string: '[1,"Sent","16075190623524937"]'
@@ -3717,7 +3717,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-109%22?seqn=110
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-109%22
   response:
     body:
       string: '[1,"Sent","16075190625078130"]'
@@ -3751,7 +3751,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-110%22?seqn=111
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-110%22
   response:
     body:
       string: '[1,"Sent","16075190626560082"]'
@@ -3785,7 +3785,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-111%22?seqn=112
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-111%22
   response:
     body:
       string: '[1,"Sent","16075190628046233"]'
@@ -3819,7 +3819,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-112%22?seqn=113
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-112%22
   response:
     body:
       string: '[1,"Sent","16075190629823867"]'
@@ -3853,7 +3853,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-113%22?seqn=114
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-113%22
   response:
     body:
       string: '[1,"Sent","16075190631560342"]'
@@ -3887,7 +3887,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-114%22?seqn=115
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-114%22
   response:
     body:
       string: '[1,"Sent","16075190633110168"]'
@@ -3921,7 +3921,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-115%22?seqn=116
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-115%22
   response:
     body:
       string: '[1,"Sent","16075190634798384"]'
@@ -3955,7 +3955,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-116%22?seqn=117
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-116%22
   response:
     body:
       string: '[1,"Sent","16075190636274898"]'
@@ -3989,7 +3989,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-117%22?seqn=118
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-117%22
   response:
     body:
       string: '[1,"Sent","16075190637921371"]'
@@ -4023,7 +4023,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-118%22?seqn=119
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-118%22
   response:
     body:
       string: '[1,"Sent","16075190639807408"]'
@@ -4057,7 +4057,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-119%22?seqn=120
+    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-ch-1/0/%22hey-119%22
   response:
     body:
       string: '[1,"Sent","16075190641439209"]'

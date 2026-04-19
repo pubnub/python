@@ -107,7 +107,7 @@ interactions:
       - Content-Type
       - [text/javascript; charset="UTF-8"]
     status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.4&seqn=1&uuid=eb63e8cb-b81c-4ccc-b411-bb53264e3c09
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/subscribe-unsubscribe-channel/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.4&uuid=eb63e8cb-b81c-4ccc-b411-bb53264e3c09
 - request:
     body: null
     headers:

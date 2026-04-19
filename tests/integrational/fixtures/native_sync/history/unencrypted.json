@@ -69,7 +69,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test_unencrypted/0/%22Lorem%20Ipsum%22?seqn=1",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test_unencrypted/0/%22Lorem%20Ipsum%22",
                 "body": null,
                 "headers": {
                     "User-Agent": [

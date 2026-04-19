@@ -31,7 +31,7 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '"hi"'
     headers:
@@ -64,7 +64,7 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '5'
     headers:
@@ -97,7 +97,7 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '5'
     headers:
@@ -130,7 +130,7 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: 'true'
     headers:
@@ -163,7 +163,7 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: 'true'
     headers:
@@ -196,7 +196,7 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '["hi", "hi2", "hi3"]'
     headers:
@@ -229,7 +229,7 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=1&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: '["hi", "hi2", "hi3"]'
     headers:
@@ -262,5 +262,5 @@ interactions:
       - Connection
       - [close]
     status: {code: 200, message: OK}
-    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?seqn=2&uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/tornado-publish/0?uuid=dd43a67d-45af-45cb-af78-13c18720f404&pnsdk=PubNub-Python-Tornado%2F4.0.4
 version: 1

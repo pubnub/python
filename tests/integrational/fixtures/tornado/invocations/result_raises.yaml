@@ -40,5 +40,5 @@ interactions:
       - Content-Type
       - [text/javascript; charset=UTF-8]
     status: {code: 400, message: Bad Request}
-    url: https://ps.pndsn.com/publish/blah/blah/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2&seqn=1&uuid=189c0a7b-13b1-4d4c-a257-14fc2a124aaa
+    url: https://ps.pndsn.com/publish/blah/blah/0/blah/0/%22hey%22?pnsdk=PubNub-Python-Tornado%2F4.0.2&uuid=189c0a7b-13b1-4d4c-a257-14fc2a124aaa
 version: 1

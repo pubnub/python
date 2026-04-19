@@ -169,4 +169,4 @@ class TestPubNubRetryPolicies(unittest.TestCase):
             except PubNubException as e:
                 self.fail(e)
 
-            assert calculate_mock.call_count == 0
+            assert calculate_mock.call_count == 3

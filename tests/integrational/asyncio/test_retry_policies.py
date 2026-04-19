@@ -149,4 +149,4 @@ async def test_subscribe_retry_policy_linear_with_custom_interval():
             pubnub.unsubscribe_all()
             await pubnub.stop()
 
-        assert calculate_mock.call_count == 0
+        assert calculate_mock.call_count == 3

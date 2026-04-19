@@ -580,4 +580,4 @@ async def test_subscribe_failing_reconnect_policy_linear_with_custom_interval():
                and listener.status_result.category == PNStatusCategory.PNConnectionErrorCategory:
                 break
             await asyncio.sleep(0.5)
-        assert calculate_mock.call_count == 0
+        assert calculate_mock.call_count == 3

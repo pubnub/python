@@ -1,3 +1,13 @@
+## 10.6.3
+April 20 2026
+
+#### Fixed
+- The retry limit was silently clamped to the policy default, configured intervals were ignored by delay calculators, and the async reconnection loop never checked the limit or advanced its counter — fix all three and add a `maximum_reconnection_interval` config option.
+
+#### Modified
+- `seqn` is not required by PubNub REST API, so remove `PublishSequenceManager`, all its subclasses, `MAX_SEQUENCE`, and `seqn` injection.
+- Cover `LinearDelay`, `ExponentialDelay`, `ReconnectionManager`, `ReconnectEffect`, and `HeartbeatDelayedEffect` with deterministic assertions for default, custom, and edge cases.
+
 ## 10.6.2
 March 26 2026
 

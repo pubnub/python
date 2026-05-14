@@ -175,7 +175,10 @@ class RequestsRequestHandler(BaseRequestHandler):
                 uuid=uuid,
                 auth_key=auth_key,
                 client_request=res.request,
-                http_version=f"HTTP/{res.raw.version // 10}.{res.raw.version % 10}" if res.raw and res.raw.version else None
+                http_version=(
+                    f"HTTP/{res.raw.version // 10}.{res.raw.version % 10}"
+                    if res.raw and res.raw.version else None
+                )
             )
 
         if not res.ok:
@@ -271,8 +274,14 @@ class RequestsRequestHandler(BaseRequestHandler):
             res = self.session.request(**args)
             logger.debug("GOT %s" % res.text)
 
-            http_ver = f"HTTP/{res.raw.version // 10}.{res.raw.version % 10}" if res.raw and res.raw.version else "unknown"
-            logger.debug("PubNub request completed: operation=%s protocol=%s" % (e_options.operation_type, http_ver))
+            http_ver = (
+                f"HTTP/{res.raw.version // 10}.{res.raw.version % 10}"
+                if res.raw and res.raw.version else "unknown"
+            )
+            logger.debug(
+                "PubNub request completed: operation=%s protocol=%s"
+                % (e_options.operation_type, http_ver)
+            )
 
         except requests.exceptions.ConnectionError as e:
             raise PubNubException(

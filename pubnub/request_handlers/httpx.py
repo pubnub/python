@@ -267,7 +267,10 @@ class HttpxRequestHandler(BaseRequestHandler):
 
         try:
             res = self.session.request(**args)
-            logger.debug("PubNub request completed: operation=%s protocol=%s" % (e_options.operation_type, res.http_version))
+            logger.debug(
+                "PubNub request completed: operation=%s protocol=%s"
+                % (e_options.operation_type, res.http_version)
+            )
 
             # Safely access response text - read content first for streaming responses
             try:

@@ -179,7 +179,10 @@ class AsyncAiohttpRequestHandler(BaseRequestHandler):
             data = "N/A"
 
         logger.debug(data)
-        logger.debug("PubNub request completed: operation=%s protocol=%s" % (options.operation_type, response_info.http_version))
+        logger.debug(
+            "PubNub request completed: operation=%s protocol=%s"
+            % (options.operation_type, response_info.http_version)
+        )
 
         if response.status not in (200, 307, 204):
 

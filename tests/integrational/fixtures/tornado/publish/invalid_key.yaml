@@ -31,7 +31,7 @@ interactions:
       - Date
       - ['Tue, 09 Aug 2016 06:27:45 GMT']
     status: {code: 400, message: INVALID}
-    url: https://ps.pndsn.com/publish/fake/demo/0/tornado-publish/0/%22hey%22?uuid=efbce3be-6fe8-4225-b03b-b6813b291f7d&seqn=1&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/fake/demo/0/tornado-publish/0/%22hey%22?uuid=efbce3be-6fe8-4225-b03b-b6813b291f7d&pnsdk=PubNub-Python-Tornado%2F4.0.4
 - request:
     body: null
     headers:
@@ -64,5 +64,5 @@ interactions:
       - Date
       - ['Tue, 09 Aug 2016 06:27:45 GMT']
     status: {code: 400, message: INVALID}
-    url: https://ps.pndsn.com/publish/fake/demo/0/tornado-publish/0/%22hey%22?uuid=efbce3be-6fe8-4225-b03b-b6813b291f7d&seqn=2&pnsdk=PubNub-Python-Tornado%2F4.0.4
+    url: https://ps.pndsn.com/publish/fake/demo/0/tornado-publish/0/%22hey%22?uuid=efbce3be-6fe8-4225-b03b-b6813b291f7d&pnsdk=PubNub-Python-Tornado%2F4.0.4
 version: 1

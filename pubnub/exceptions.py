@@ -43,7 +43,9 @@ class PubNubAsyncioException(Exception):
         self.status = status
 
     def __str__(self):
-        return str(self.status.error_data.exception)
+        if self.status and hasattr(self.status, 'error_data') and self.status.error_data:
+            return str(self.status.error_data.exception)
+        return f"PubNubAsyncioException(result={self.result}, status={self.status})"
 
     @staticmethod
     def is_error():

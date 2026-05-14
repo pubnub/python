@@ -24,6 +24,7 @@ pubnub.config.uuid = "files_native_sync_uuid"
 def send_file(file_for_upload, cipher_key=None, pass_binary=False, timetoken_override=None, pubnub_instance=None):
     if not pubnub_instance:
         pubnub_instance = pubnub
+    original_cipher_key = pubnub_instance.config.cipher_key
     if cipher_key:
         pubnub_instance.config.cipher_key = cipher_key
 
@@ -43,6 +44,8 @@ def send_file(file_for_upload, cipher_key=None, pass_binary=False, timetoken_ove
             send_file_endpoint = send_file_endpoint.ptto(timetoken_override)
 
         envelope = send_file_endpoint.sync()
+
+    pubnub_instance.config.cipher_key = original_cipher_key
 
     assert isinstance(envelope.result, PNSendFileResult)
     assert envelope.result.name
@@ -136,7 +139,8 @@ def test_send_and_download_encrypted_file(file_for_upload, file_upload_test_data
         download_envelope = pubnub.download_file() \
             .channel(CHANNEL) \
             .file_id(envelope.result.file_id) \
-            .file_name(envelope.result.name).sync()
+            .file_name(envelope.result.name) \
+            .cipher_key(cipher_key).sync()
 
         assert isinstance(download_envelope.result, PNDownloadFileResult)
         data = download_envelope.result.data

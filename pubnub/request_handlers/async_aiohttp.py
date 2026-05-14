@@ -6,7 +6,7 @@ import urllib
 
 from asyncio import Event
 from pubnub import utils
-from pubnub.enums import PNOperationType, PNStatusCategory
+from pubnub.enums import PNStatusCategory
 from pubnub.errors import PNERR_CLIENT_ERROR, PNERR_JSON_DECODING_FAILED, PNERR_SERVER_ERROR
 from pubnub.exceptions import PubNubException
 from pubnub.models.envelopes import AsyncioEnvelope
@@ -73,12 +73,7 @@ class AsyncAiohttpRequestHandler(BaseRequestHandler):
         create_status = options.create_status
         create_exception = options.create_exception
 
-        params_to_merge_in = {}
-
-        if options.operation_type == PNOperationType.PNPublishOperation:
-            params_to_merge_in['seqn'] = await self.pubnub._publish_sequence_manager.get_next_sequence()
-
-        options.merge_params_in(params_to_merge_in)
+        options.merge_params_in({})
 
         if options.use_base_path:
             url = utils.build_url(self.pubnub.config.scheme(), self.pubnub.base_origin, options.path,

@@ -19,20 +19,6 @@ from pubnub.exceptions import PubNubException
 logger = logging.getLogger("pubnub")
 
 
-class PublishSequenceManager:
-    def __init__(self, provided_max_sequence):
-        self.max_sequence = provided_max_sequence
-        self.next_sequence = 0
-
-    @abstractmethod
-    def get_next_sequence(self):
-        if self.max_sequence == self.next_sequence:
-            self.next_sequence = 1
-        else:
-            self.next_sequence += 1
-        return self.next_sequence
-
-
 class BasePathManager(object):
     MAX_SUBDOMAIN = 20
     DEFAULT_SUBDOMAIN = "pubsub"
@@ -64,12 +50,14 @@ class ReconnectionManager:
     def _recalculate_interval(self):
         policy = self._pubnub.config.reconnect_policy
         interval = self._pubnub.config.reconnection_interval
-        if policy == PNReconnectionPolicy.LINEAR and interval is not None:
-            self._timer_interval = interval
-        elif policy == PNReconnectionPolicy.LINEAR:
-            self._timer_interval = LinearDelay.calculate(self._connection_errors)
+        if policy == PNReconnectionPolicy.LINEAR:
+            self._timer_interval = LinearDelay.calculate(self._connection_errors, delay=interval)
         else:
-            self._timer_interval = ExponentialDelay.calculate(self._connection_errors)
+            self._timer_interval = ExponentialDelay.calculate(
+                self._connection_errors,
+                minimum_delay=interval,
+                maximum_delay=self._pubnub.config.maximum_reconnection_interval
+            )
 
     def _retry_limit_reached(self):
         user_limit = self._pubnub.config.maximum_reconnection_retries
@@ -83,7 +71,7 @@ class ReconnectionManager:
         policy_limit = (LinearDelay.MAX_RETRIES if policy == PNReconnectionPolicy.LINEAR
                         else ExponentialDelay.MAX_RETRIES)
         if user_limit is not None:
-            return self._connection_errors >= min(user_limit, policy_limit)
+            return self._connection_errors >= user_limit
         return self._connection_errors > policy_limit
 
     @abstractmethod
@@ -101,8 +89,9 @@ class LinearDelay:
     MAX_RETRIES = 10
 
     @classmethod
-    def calculate(cls, attempt: int):
-        return cls.INTERVAL + round(random.random(), 3)
+    def calculate(cls, attempt: int, delay=None):
+        base = delay if delay is not None else cls.INTERVAL
+        return base + round(random.random(), 3)
 
 
 class ExponentialDelay:
@@ -112,8 +101,10 @@ class ExponentialDelay:
     MAX_BACKOFF = 150
 
     @classmethod
-    def calculate(cls, attempt: int) -> int:
-        return min(cls.MAX_BACKOFF, cls.MIN_DELAY * (2 ** attempt)) + round(random.random(), 3)
+    def calculate(cls, attempt: int, minimum_delay=None, maximum_delay=None) -> float:
+        min_delay = minimum_delay if minimum_delay is not None else cls.MIN_DELAY
+        max_backoff = maximum_delay if maximum_delay is not None else cls.MAX_BACKOFF
+        return min(max_backoff, min_delay * (2 ** attempt)) + round(random.random(), 3)
 
 
 class StateManager:

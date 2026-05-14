@@ -1,12 +1,12 @@
 import unittest
 from pubnub.models.consumer.message_actions import PNMessageAction
 from pubnub.pubnub import PubNub
-from tests.helper import pnconf_env_copy
+from tests.helper import pnconf_env_copy, gen_channel
 
 
 class TestMessageActions(unittest.TestCase):
     pubnub: PubNub = None
-    channel = "test_message_actions"
+    channel = gen_channel("test_message_actions")
     message_timetoken = None
 
     action_value_1 = "hello"

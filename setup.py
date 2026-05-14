@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub',
-    version='10.6.0',
+    version='10.6.3',
     description='PubNub Real-time push service in the cloud',
     author='PubNub',
     author_email='support@pubnub.com',
@@ -31,7 +31,7 @@ setup(
     python_requires='>=3.9',
     install_requires=[
         'pycryptodomex>=3.3',
-        'httpx>=0.28',
+        'httpx>=0.28,<1.0',
         'h2>=4.1',
         'requests>=2.32.2',
         'aiohttp>3.10.11',

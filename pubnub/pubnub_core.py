@@ -165,7 +165,6 @@ class PubNubCore:
     SDK_NAME: str = "PubNub-Python"
 
     TIMESTAMP_DIVIDER: int = 1000
-    MAX_SEQUENCE: int = 65535
 
     __metaclass__ = ABCMeta
     __crypto: Optional[PubNubCryptoModule] = None
@@ -190,7 +189,6 @@ class PubNubCore:
         }
 
         self._subscription_manager = None
-        self._publish_sequence_manager = None
         self._base_path_manager = BasePathManager(config)
         self._token_manager = TokenManager()
         self._subscription_registry = PNSubscriptionRegistry(self)

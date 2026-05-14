@@ -152,39 +152,42 @@ class TestPubNubSubscription(unittest.TestCase):
         callback_messages = SubscribeListener()
         cg_operation = NonSubscribeListener()
 
-        pubnub.add_channel_to_channel_group()\
-            .channel_group(gr)\
-            .channels(ch)\
-            .pn_async(cg_operation.callback)
-        result = cg_operation.await_result(1)
-        if result is None:
-            self.fail("Add channel to channel group operation timeout or failed")
-        if cg_operation.status is not None and cg_operation.status.is_error():
-            self.fail(f"Add channel to channel group operation failed with error: {cg_operation.status}")
-        assert isinstance(result, PNChannelGroupsAddChannelResult)
-        time.sleep(1)
+        try:
+            pubnub.add_channel_to_channel_group()\
+                .channel_group(gr)\
+                .channels(ch)\
+                .pn_async(cg_operation.callback)
+            result = cg_operation.await_result(1)
+            if result is None:
+                self.fail("Add channel to channel group operation timeout or failed")
+            if cg_operation.status is not None and cg_operation.status.is_error():
+                self.fail(f"Add channel to channel group operation failed with error: {cg_operation.status}")
+            assert isinstance(result, PNChannelGroupsAddChannelResult)
+            time.sleep(1)
 
-        pubnub.add_listener(callback_messages)
-        pubnub.subscribe().channel_groups(gr).execute()
-        callback_messages.wait_for_connect()
+            pubnub.add_listener(callback_messages)
+            pubnub.subscribe().channel_groups(gr).execute()
+            callback_messages.wait_for_connect()
 
-        pubnub.unsubscribe().channel_groups(gr).execute()
-        callback_messages.wait_for_disconnect()
+            pubnub.unsubscribe().channel_groups(gr).execute()
+            callback_messages.wait_for_disconnect()
 
-        # Create a new listener for the remove operation to avoid potential race conditions
-        cg_remove_operation = NonSubscribeListener()
-        pubnub.remove_channel_from_channel_group()\
-            .channel_group(gr)\
-            .channels(ch)\
-            .pn_async(cg_remove_operation.callback)
-        result = cg_remove_operation.await_result(1)
-        if result is None:
-            self.fail("Remove channel from channel group operation timeout or failed")
-        if cg_remove_operation.status is not None and cg_remove_operation.status.is_error():
-            self.fail(f"Remove channel from channel group operation failed with error: {cg_remove_operation.status}")
-        assert isinstance(result, PNChannelGroupsRemoveChannelResult)
-
-        pubnub.stop()
+            # Create a new listener for the remove operation to avoid potential race conditions
+            cg_remove_operation = NonSubscribeListener()
+            pubnub.remove_channel_from_channel_group()\
+                .channel_group(gr)\
+                .channels(ch)\
+                .pn_async(cg_remove_operation.callback)
+            result = cg_remove_operation.await_result(1)
+            if result is None:
+                self.fail("Remove channel from channel group operation timeout or failed")
+            if cg_remove_operation.status is not None and cg_remove_operation.status.is_error():
+                self.fail(
+                    f"Remove channel from channel group failed: {cg_remove_operation.status}"
+                )
+            assert isinstance(result, PNChannelGroupsRemoveChannelResult)
+        finally:
+            pubnub.stop()
 
     def test_subscribe_cg_publish_unsubscribe(self):
         ch = "test-subscribe-unsubscribe-channel"
@@ -195,52 +198,55 @@ class TestPubNubSubscription(unittest.TestCase):
         callback_messages = SubscribeListener()
         non_subscribe_listener = NonSubscribeListener()
 
-        pubnub.add_channel_to_channel_group() \
-            .channel_group(gr) \
-            .channels(ch) \
-            .pn_async(non_subscribe_listener.callback)
-        result = non_subscribe_listener.await_result_and_reset(1)
-        if result is None:
-            self.fail("Add channel to channel group operation timeout or failed")
-        if non_subscribe_listener.status is not None and non_subscribe_listener.status.is_error():
-            self.fail(f"Add channel to channel group operation failed with error: {non_subscribe_listener.status}")
-        assert isinstance(result, PNChannelGroupsAddChannelResult)
-        non_subscribe_listener.reset()
-        time.sleep(1)
+        try:
+            pubnub.add_channel_to_channel_group() \
+                .channel_group(gr) \
+                .channels(ch) \
+                .pn_async(non_subscribe_listener.callback)
+            result = non_subscribe_listener.await_result_and_reset(1)
+            if result is None:
+                self.fail("Add channel to channel group operation timeout or failed")
+            if non_subscribe_listener.status is not None and non_subscribe_listener.status.is_error():
+                self.fail(f"Add channel to channel group operation failed with error: {non_subscribe_listener.status}")
+            assert isinstance(result, PNChannelGroupsAddChannelResult)
+            non_subscribe_listener.reset()
+            time.sleep(1)
 
-        pubnub.add_listener(callback_messages)
-        pubnub.subscribe().channel_groups(gr).execute()
-        callback_messages.wait_for_connect()
+            pubnub.add_listener(callback_messages)
+            pubnub.subscribe().channel_groups(gr).execute()
+            callback_messages.wait_for_connect()
 
-        pubnub.publish().message(message).channel(ch).pn_async(non_subscribe_listener.callback)
-        result = non_subscribe_listener.await_result_and_reset(10)
-        if result is None:
-            print(f"Debug: non_subscribe_listener.status = {non_subscribe_listener.status}")
-            if non_subscribe_listener.status is not None:
-                print(f"Debug: status.is_error() = {non_subscribe_listener.status.is_error()}")
-                print(f"Debug: status.category = {non_subscribe_listener.status.category}")
-                print(f"Debug: status.error_data = {non_subscribe_listener.status.error_data}")
-            self.fail("Publish operation timeout or failed")
-        if non_subscribe_listener.status is not None and non_subscribe_listener.status.is_error():
-            self.fail(f"Publish operation failed with error: {non_subscribe_listener.status}")
-        assert isinstance(result, PNPublishResult)
-        assert result.timetoken > 0
+            pubnub.publish().message(message).channel(ch).pn_async(non_subscribe_listener.callback)
+            result = non_subscribe_listener.await_result_and_reset(10)
+            if result is None:
+                print(f"Debug: non_subscribe_listener.status = {non_subscribe_listener.status}")
+                if non_subscribe_listener.status is not None:
+                    print(f"Debug: status.is_error() = {non_subscribe_listener.status.is_error()}")
+                    print(f"Debug: status.category = {non_subscribe_listener.status.category}")
+                    print(f"Debug: status.error_data = {non_subscribe_listener.status.error_data}")
+                self.fail("Publish operation timeout or failed")
+            if non_subscribe_listener.status is not None and non_subscribe_listener.status.is_error():
+                self.fail(f"Publish operation failed with error: {non_subscribe_listener.status}")
+            assert isinstance(result, PNPublishResult)
+            assert result.timetoken > 0
 
-        pubnub.unsubscribe().channel_groups(gr).execute()
-        callback_messages.wait_for_disconnect()
+            pubnub.unsubscribe().channel_groups(gr).execute()
+            callback_messages.wait_for_disconnect()
 
-        pubnub.remove_channel_from_channel_group() \
-            .channel_group(gr) \
-            .channels(ch) \
-            .pn_async(non_subscribe_listener.callback)
-        result = non_subscribe_listener.await_result_and_reset(1)
-        if result is None:
-            self.fail("Remove channel from channel group operation timeout or failed")
-        if non_subscribe_listener.status is not None and non_subscribe_listener.status.is_error():
-            self.fail(f"Remove channel from channel group operation failed with error: {non_subscribe_listener.status}")
-        assert isinstance(result, PNChannelGroupsRemoveChannelResult)
-
-        pubnub.stop()
+            pubnub.remove_channel_from_channel_group() \
+                .channel_group(gr) \
+                .channels(ch) \
+                .pn_async(non_subscribe_listener.callback)
+            result = non_subscribe_listener.await_result_and_reset(1)
+            if result is None:
+                self.fail("Remove channel from channel group operation timeout or failed")
+            if non_subscribe_listener.status is not None and non_subscribe_listener.status.is_error():
+                self.fail(
+                    f"Remove channel from channel group failed: {non_subscribe_listener.status}"
+                )
+            assert isinstance(result, PNChannelGroupsRemoveChannelResult)
+        finally:
+            pubnub.stop()
 
     def test_subscribe_cg_join_leave(self):
         ch = helper.gen_channel("test-subscribe-unsubscribe-channel")
@@ -250,55 +256,56 @@ class TestPubNubSubscription(unittest.TestCase):
         callback_messages = SubscribeListener()
         callback_presence = SubscribeListener()
 
-        result = pubnub.add_channel_to_channel_group() \
-            .channel_group(gr) \
-            .channels(ch) \
-            .sync()
+        try:
+            result = pubnub.add_channel_to_channel_group() \
+                .channel_group(gr) \
+                .channels(ch) \
+                .sync()
 
-        assert isinstance(result.result, PNChannelGroupsAddChannelResult)
-        time.sleep(1)
+            assert isinstance(result.result, PNChannelGroupsAddChannelResult)
+            time.sleep(1)
 
-        pubnub.config.uuid = helper.gen_channel("messenger")
-        pubnub_listener.config.uuid = helper.gen_channel("listener")
+            pubnub.config.uuid = helper.gen_channel("messenger")
+            pubnub_listener.config.uuid = helper.gen_channel("listener")
 
-        pubnub.add_listener(callback_messages)
-        pubnub_listener.add_listener(callback_presence)
+            pubnub.add_listener(callback_messages)
+            pubnub_listener.add_listener(callback_presence)
 
-        pubnub_listener.subscribe().channel_groups(gr).with_presence().execute()
-        callback_presence.wait_for_connect()
+            pubnub_listener.subscribe().channel_groups(gr).with_presence().execute()
+            callback_presence.wait_for_connect()
 
-        envelope = callback_presence.wait_for_presence_on(ch)
-        assert envelope.channel == ch
-        assert envelope.event == 'join'
-        assert envelope.uuid == pubnub_listener.uuid
+            envelope = callback_presence.wait_for_presence_on(ch)
+            assert envelope.channel == ch
+            assert envelope.event == 'join'
+            assert envelope.uuid == pubnub_listener.uuid
 
-        pubnub.subscribe().channel_groups(gr).execute()
-        callback_messages.wait_for_connect()
+            pubnub.subscribe().channel_groups(gr).execute()
+            callback_messages.wait_for_connect()
 
-        envelope = callback_presence.wait_for_presence_on(ch)
-        assert envelope.channel == ch
-        assert envelope.event == 'join'
-        assert envelope.uuid == pubnub.uuid
+            envelope = callback_presence.wait_for_presence_on(ch)
+            assert envelope.channel == ch
+            assert envelope.event == 'join'
+            assert envelope.uuid == pubnub.uuid
 
-        pubnub.unsubscribe().channel_groups(gr).execute()
-        callback_messages.wait_for_disconnect()
+            pubnub.unsubscribe().channel_groups(gr).execute()
+            callback_messages.wait_for_disconnect()
 
-        envelope = callback_presence.wait_for_presence_on(ch)
-        assert envelope.channel == ch
-        assert envelope.event == 'leave'
-        assert envelope.uuid == pubnub.uuid
+            envelope = callback_presence.wait_for_presence_on(ch)
+            assert envelope.channel == ch
+            assert envelope.event == 'leave'
+            assert envelope.uuid == pubnub.uuid
 
-        pubnub_listener.unsubscribe().channel_groups(gr).execute()
-        callback_presence.wait_for_disconnect()
+            pubnub_listener.unsubscribe().channel_groups(gr).execute()
+            callback_presence.wait_for_disconnect()
 
-        result = pubnub.remove_channel_from_channel_group() \
-            .channel_group(gr) \
-            .channels(ch) \
-            .sync()
-        assert isinstance(result.result, PNChannelGroupsRemoveChannelResult)
-
-        pubnub.stop()
-        pubnub_listener.stop()
+            result = pubnub.remove_channel_from_channel_group() \
+                .channel_group(gr) \
+                .channels(ch) \
+                .sync()
+            assert isinstance(result.result, PNChannelGroupsRemoveChannelResult)
+        finally:
+            pubnub.stop()
+            pubnub_listener.stop()
 
     def test_subscribe_pub_unencrypted_unsubscribe(self):
         ch = helper.gen_channel("test-subscribe-pub-unencrypted-unsubscribe")

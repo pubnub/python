@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/ch1/0/%22hi%22?custom_message_type=test_message&seqn=1",
+                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/ch1/0/%22hi%22?custom_message_type=test_message",
                 "body": null,
                 "headers": {
                     "User-Agent": [

@@ -54,8 +54,6 @@ class TestPubNubCoreInit(unittest.TestCase):
         self.assertIsInstance(pubnub.config, PNConfiguration)
         self.assertIsNotNone(pubnub._request_handler)
         self.assertIsInstance(pubnub._request_handler, HttpxRequestHandler)
-        self.assertIsNotNone(pubnub._publish_sequence_manager)
-
         # Verify subscription manager is created when enabled
         if self.config.enable_subscribe:
             self.assertIsNotNone(pubnub._subscription_manager)
@@ -216,14 +214,6 @@ class TestPubNubCoreInitManagers(unittest.TestCase):
     def setUp(self):
         """Set up test fixtures."""
         self.config = pnconf_copy()
-
-    def test_publish_sequence_manager_initialization(self):
-        """Test that publish sequence manager is properly initialized."""
-        pubnub = PubNub(self.config)
-
-        self.assertIsNotNone(pubnub._publish_sequence_manager)
-        # Verify it has the expected max sequence
-        self.assertEqual(pubnub._publish_sequence_manager.max_sequence, PubNub.MAX_SEQUENCE)
 
     def test_subscription_manager_initialization_when_enabled(self):
         """Test subscription manager initialization when enabled."""

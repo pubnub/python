@@ -14,6 +14,7 @@ from pubnub.enums import PNStatusCategory, PNOperationType, PNPushType, HttpMeth
 from pubnub.models.consumer.common import PNStatus
 from pubnub.errors import PNERR_JSON_NOT_SERIALIZABLE
 from pubnub.exceptions import PubNubException
+from pubnub.models.consumer.pn_error_data import PNErrorData
 
 
 def get_data_for_user(data):
@@ -29,10 +30,17 @@ def get_data_for_user(data):
 def write_value_as_string(data):
     try:
         return json.dumps(data)
-    except TypeError:
-        raise PubNubException(
+    except TypeError as e:
+        exc = PubNubException(
+            errormsg=str(e),
             pn_error=PNERR_JSON_NOT_SERIALIZABLE
         )
+        status = PNStatus()
+        status.category = PNStatusCategory.PNSerializationErrorCategory
+        status.error = True
+        status.error_data = PNErrorData(str(exc), exc)
+        exc.status = status
+        raise exc
 
 
 def url_encode(data):

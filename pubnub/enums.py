@@ -39,6 +39,7 @@ class PNStatusCategory(Enum):
     PNInternalExceptionCategory = 17
     PNSubscriptionChangedCategory = 18
     PNConnectionErrorCategory = 19
+    PNSerializationErrorCategory = 20
 
 
 class PNOperationType(object):

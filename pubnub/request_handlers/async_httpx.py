@@ -156,7 +156,8 @@ class AsyncHttpxRequestHandler(BaseRequestHandler):
                 uuid=uuid,
                 auth_key=auth_key,
                 client_request=None,
-                client_response=response
+                client_response=response,
+                http_version=response.http_version
             )
 
         # if body is not None and len(body) > 0 and not options.non_json_response:
@@ -188,6 +189,7 @@ class AsyncHttpxRequestHandler(BaseRequestHandler):
             data = "N/A"
 
         logger.debug(data)
+        logger.debug("PubNub request completed: operation=%s protocol=%s" % (options.operation_type, response_info.http_version))
 
         if response.status_code not in (200, 307, 204):
 

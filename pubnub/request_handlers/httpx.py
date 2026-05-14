@@ -28,8 +28,7 @@ class HttpxRequestHandler(BaseRequestHandler):
     ENDPOINT_THREAD_COUNTER: int = 0
 
     def __init__(self, pubnub):
-        self.session = httpx.Client()
-
+        self.session = httpx.Client(http2=True)
         self.pubnub = pubnub
 
     async def async_request(self, options_func, cancellation_event):
@@ -166,7 +165,8 @@ class HttpxRequestHandler(BaseRequestHandler):
                 origin=res.url.host,
                 uuid=uuid,
                 auth_key=auth_key,
-                client_request=res.request
+                client_request=res.request,
+                http_version=res.http_version
             )
 
         if res.status_code not in [200, 204, 307]:
@@ -267,6 +267,8 @@ class HttpxRequestHandler(BaseRequestHandler):
 
         try:
             res = self.session.request(**args)
+            logger.debug("PubNub request completed: operation=%s protocol=%s" % (e_options.operation_type, res.http_version))
+
             # Safely access response text - read content first for streaming responses
             try:
                 logger.debug("GOT %s" % res.text)

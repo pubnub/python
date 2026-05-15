@@ -4,13 +4,13 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "uri": "https://h2.pubnubapi.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
                 "body": {
                     "pickle": "gASVGwEAAAAAAABYFAEAAHsidHRsIjogMSwgInBlcm1pc3Npb25zIjogeyJyZXNvdXJjZXMiOiB7ImNoYW5uZWxzIjogeyJ0ZXN0X2NoYW5uZWwiOiAyMDd9LCAiZ3JvdXBzIjoge30sICJ1dWlkcyI6IHt9LCAidXNlcnMiOiB7fSwgInNwYWNlcyI6IHsidGVzdF9jaGFubmVsIjogMjA3fX0sICJwYXR0ZXJucyI6IHsiY2hhbm5lbHMiOiB7fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7fX0sICJtZXRhIjoge30sICJ1dWlkIjogInRlc3RfcmV2b2tlX3ZlcmlmeSJ9fZQu"
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -71,11 +71,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/test_channel/0/%22test%20message%22?auth=qEF2AkF0GmgwSytDdHRsAUNyZXOlRGNoYW6hbHRlc3RfY2hhbm5lbBjPQ2dycKBDc3BjoWx0ZXN0X2NoYW5uZWwYz0N1c3KgRHV1aWSgQ3BhdKVEY2hhbqBDZ3JwoENzcGOgQ3VzcqBEdXVpZKBEbWV0YaBEdXVpZHJ0ZXN0X3Jldm9rZV92ZXJpZnlDc2lnWCCpIDaBECABP5cv5d8p0nsiMqgtR1uB4oUMKVMAJa_EQQ%3D%3D",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/test_channel/0/%22test%20message%22?auth=qEF2AkF0GmgwSytDdHRsAUNyZXOlRGNoYW6hbHRlc3RfY2hhbm5lbBjPQ2dycKBDc3BjoWx0ZXN0X2NoYW5uZWwYz0N1c3KgRHV1aWSgQ3BhdKVEY2hhbqBDZ3JwoENzcGOgQ3VzcqBEdXVpZKBEbWV0YaBEdXVpZHJ0ZXN0X3Jldm9rZV92ZXJpZnlDc2lnWCCpIDaBECABP5cv5d8p0nsiMqgtR1uB4oUMKVMAJa_EQQ%3D%3D",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -130,11 +130,11 @@
         {
             "request": {
                 "method": "DELETE",
-                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant/qEF2AkF0GmgwSytDdHRsAUNyZXOlRGNoYW6hbHRlc3RfY2hhbm5lbBjPQ2dycKBDc3BjoWx0ZXN0X2NoYW5uZWwYz0N1c3KgRHV1aWSgQ3BhdKVEY2hhbqBDZ3JwoENzcGOgQ3VzcqBEdXVpZKBEbWV0YaBEdXVpZHJ0ZXN0X3Jldm9rZV92ZXJpZnlDc2lnWCCpIDaBECABP5cv5d8p0nsiMqgtR1uB4oUMKVMAJa_EQQ%3D%3D",
+                "uri": "https://h2.pubnubapi.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant/qEF2AkF0GmgwSytDdHRsAUNyZXOlRGNoYW6hbHRlc3RfY2hhbm5lbBjPQ2dycKBDc3BjoWx0ZXN0X2NoYW5uZWwYz0N1c3KgRHV1aWSgQ3BhdKVEY2hhbqBDZ3JwoENzcGOgQ3VzcqBEdXVpZKBEbWV0YaBEdXVpZHJ0ZXN0X3Jldm9rZV92ZXJpZnlDc2lnWCCpIDaBECABP5cv5d8p0nsiMqgtR1uB4oUMKVMAJa_EQQ%3D%3D",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -189,11 +189,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/test_channel/0/%22test%20message%22?auth=qEF2AkF0GmgwSytDdHRsAUNyZXOlRGNoYW6hbHRlc3RfY2hhbm5lbBjPQ2dycKBDc3BjoWx0ZXN0X2NoYW5uZWwYz0N1c3KgRHV1aWSgQ3BhdKVEY2hhbqBDZ3JwoENzcGOgQ3VzcqBEdXVpZKBEbWV0YaBEdXVpZHJ0ZXN0X3Jldm9rZV92ZXJpZnlDc2lnWCCpIDaBECABP5cv5d8p0nsiMqgtR1uB4oUMKVMAJa_EQQ%3D%3D",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/test_channel/0/%22test%20message%22?auth=qEF2AkF0GmgwSytDdHRsAUNyZXOlRGNoYW6hbHRlc3RfY2hhbm5lbBjPQ2dycKBDc3BjoWx0ZXN0X2NoYW5uZWwYz0N1c3KgRHV1aWSgQ3BhdKVEY2hhbqBDZ3JwoENzcGOgQ3VzcqBEdXVpZKBEbWV0YaBEdXVpZHJ0ZXN0X3Jldm9rZV92ZXJpZnlDc2lnWCCpIDaBECABP5cv5d8p0nsiMqgtR1uB4oUMKVMAJa_EQQ%3D%3D",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

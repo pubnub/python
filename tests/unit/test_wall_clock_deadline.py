@@ -384,7 +384,7 @@ class TestHttpxSessionRecreation(unittest.TestCase):
     def _make_handler(self):
         from pubnub.request_handlers.httpx import HttpxRequestHandler
         pubnub_mock = MagicMock()
-        pubnub_mock.config.origin = 'ps.pndsn.com'
+        pubnub_mock.config.origin = 'h2.pubnubapi.com'
         pubnub_mock.config.scheme.return_value = 'https'
         handler = HttpxRequestHandler(pubnub_mock)
         return handler
@@ -419,7 +419,7 @@ class TestHttpxSessionRecreation(unittest.TestCase):
 
         # The request will fail (no real server), but session should be recreated first
         try:
-            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+            handler._invoke_request(p_options, e_options, 'h2.pubnubapi.com')
         except Exception:
             pass
 
@@ -454,7 +454,7 @@ class TestHttpxSessionRecreation(unittest.TestCase):
         e_options.use_base_path = True
 
         try:
-            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+            handler._invoke_request(p_options, e_options, 'h2.pubnubapi.com')
         except Exception:
             pass
 
@@ -490,7 +490,7 @@ class TestHttpxSessionRecreation(unittest.TestCase):
         e_options.use_base_path = True
 
         try:
-            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+            handler._invoke_request(p_options, e_options, 'h2.pubnubapi.com')
         except Exception:
             pass
 
@@ -537,7 +537,7 @@ class TestHttpxSessionRecreation(unittest.TestCase):
 
         # Step 3: The request may fail (no real server) but should NOT fail due to closed session
         try:
-            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+            handler._invoke_request(p_options, e_options, 'h2.pubnubapi.com')
         except Exception as e:
             # Should be a connection error, NOT "Cannot send a request, as the client has been closed"
             self.assertNotIn("client has been closed", str(e).lower())
@@ -591,7 +591,7 @@ class TestWallClockErrorCategory(unittest.TestCase):
         e_options.use_base_path = True
 
         with self.assertRaises(PubNubException) as ctx:
-            handler._invoke_request(p_options, e_options, 'ps.pndsn.com')
+            handler._invoke_request(p_options, e_options, 'h2.pubnubapi.com')
 
         self.assertEqual(ctx.exception._pn_error, PNERR_CLIENT_TIMEOUT)
         self.assertIn("Wall-clock deadline exceeded", ctx.exception._errormsg)
@@ -727,7 +727,7 @@ class TestForceShutdownConnections(unittest.TestCase):
 
         client = httpx.Client()
         try:
-            client.get('https://ps.pndsn.com/time/0')
+            client.get('https://h2.pubnubapi.com/time/0')
         except Exception:
             client.close()
             return  # Skip if network unavailable

@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-sub-unsub/0?uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-sub-unsub/0?uuid=uuid-mock",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -57,7 +57,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/test-subscribe-sub-unsub/leave?uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/test-subscribe-sub-unsub/leave?uuid=uuid-mock",
                 "body": null,
                 "headers": {
                     "User-Agent": [

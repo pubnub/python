@@ -17,7 +17,7 @@ interactions:
       User-Agent:
       - PubNub-Python/5.1.1
     method: POST
-    uri: https://ps.pndsn.com/v3/pam/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/grant
+    uri: https://h2.pubnubapi.com/v3/pam/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/grant
   response:
     body:
       string: '{"data":{"message":"Success","token":"p0F2AkF0GmB4Sd9DdHRsD0NyZXOkRGNoYW6iY2ZvbwFjYmFyAUNncnCiY2ZvbwFjYmFyAUN1c3KgQ3NwY6BDcGF0pERjaGFuoENncnCgQ3VzcqBDc3BjoERtZXRhoENzaWdYIBHsbMOeRAHUvsCURvZ3Yehv74QvPT4xqfHY5JPONmyJ"},"service":"Access

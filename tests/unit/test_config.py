@@ -132,7 +132,7 @@ class TestPNConfigurationDefaults:
         config = PNConfiguration()
 
         # Test default values from documentation
-        assert config.origin == "ps.pndsn.com"
+        assert config.origin == "h2.pubnubapi.com"
         assert config.ssl is True
         assert config.non_subscribe_request_timeout == 10
         assert config.subscribe_request_timeout == 310
@@ -341,11 +341,11 @@ class TestPNConfigurationSchemes:
         """Test scheme_and_host() method."""
         config = PNConfiguration()
         config.ssl = True
-        config.origin = "ps.pndsn.com"
-        assert config.scheme_and_host() == "https://ps.pndsn.com"
+        config.origin = "h2.pubnubapi.com"
+        assert config.scheme_and_host() == "https://h2.pubnubapi.com"
 
         config.ssl = False
-        assert config.scheme_and_host() == "http://ps.pndsn.com"
+        assert config.scheme_and_host() == "http://h2.pubnubapi.com"
 
 
 class TestPNConfigurationPresence:

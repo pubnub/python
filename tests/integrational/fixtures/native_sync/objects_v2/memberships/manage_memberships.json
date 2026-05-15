@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cchannel.custom",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cchannel.custom",
                 "body": "{\"set\": [{\"channel\": {\"id\": \"somechannel\"}}], \"delete\": [{\"channel\": {\"id\": \"somechannel_with_custom\"}}]}",
                 "headers": {
                     "User-Agent": [

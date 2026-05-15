@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids?count=True&include=custom%2Cstatus%2Ctype&limit=10&sort=id%3Aasc%2Cupdated%3Adesc",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids?count=True&include=custom%2Cstatus%2Ctype&limit=10&sort=id%3Aasc%2Cupdated%3Adesc",
                 "body": null,
                 "headers": {
                     "User-Agent": [

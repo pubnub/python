@@ -4,13 +4,13 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "uri": "https://h2.pubnubapi.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
                 "body": {
                     "pickle": "gASVDgEAAAAAAABYBwEAAHsidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsidGVzdF9jaGFubmVsIjogMjA3fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7InRlc3RfY2hhbm5lbCI6IDIwN319LCAicGF0dGVybnMiOiB7ImNoYW5uZWxzIjoge30sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjoge319LCAibWV0YSI6IHt9LCAidXVpZCI6ICJ0ZXN0In19lC4="
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -71,11 +71,11 @@
         {
             "request": {
                 "method": "DELETE",
-                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant/qEF2AkF0GmgwPF1DdHRsGDxDcmVzpURjaGFuoWx0ZXN0X2NoYW5uZWwYz0NncnCgQ3NwY6FsdGVzdF9jaGFubmVsGM9DdXNyoER1dWlkoENwYXSlRGNoYW6gQ2dycKBDc3BjoEN1c3KgRHV1aWSgRG1ldGGgRHV1aWRkdGVzdENzaWdYIMACT_mnkZol5_3T1d6Osb4kCX1Z3sNvk6MVCfqvKP3L",
+                "uri": "https://h2.pubnubapi.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant/qEF2AkF0GmgwPF1DdHRsGDxDcmVzpURjaGFuoWx0ZXN0X2NoYW5uZWwYz0NncnCgQ3NwY6FsdGVzdF9jaGFubmVsGM9DdXNyoER1dWlkoENwYXSlRGNoYW6gQ2dycKBDc3BjoEN1c3KgRHV1aWSgRG1ldGGgRHV1aWRkdGVzdENzaWdYIMACT_mnkZol5_3T1d6Osb4kCX1Z3sNvk6MVCfqvKP3L",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

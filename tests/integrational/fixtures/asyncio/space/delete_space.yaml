@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: DELETE
-    uri: https://ps.pndsn.com/v1/objects/demo/spaces/in_space
+    uri: https://h2.pubnubapi.com/v1/objects/demo/spaces/in_space
   response:
     body:
       string: '{"status":200,"data":null}'
@@ -22,7 +22,7 @@ interactions:
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult
         - http
-        - ps.pndsn.com
+        - h2.pubnubapi.com
         - /v1/objects/demo/spaces/in_space
         - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=982fa2bc-479b-4f37-a3a0-1a44f7a00011
         - ''

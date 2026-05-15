@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/0000000000000000?uuid=test-uuid",
+                "uri": "https://h2.pubnubapi.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/0000000000000000?uuid=test-uuid",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: POST
-    uri: https://ps.pndsn.com/v1/objects/demo/spaces?include=custom
+    uri: https://h2.pubnubapi.com/v1/objects/demo/spaces?include=custom
   response:
     body:
       string: '{"status":200,"data":{"id":"in_space","name":"some_name","description":null,"custom":{"a":3},"created":"2019-08-19T21:24:47.720337Z","updated":"2019-08-19T21:24:47.720337Z","eTag":"AYfFv4PUk4yMOg"}}'
@@ -22,7 +22,7 @@ interactions:
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult
         - http
-        - ps.pndsn.com
+        - h2.pubnubapi.com
         - /v1/objects/demo/spaces
         - include=custom&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=30b485f7-38c6-4e5b-8911-06f5016d415d
         - ''

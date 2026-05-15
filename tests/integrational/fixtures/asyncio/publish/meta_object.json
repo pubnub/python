@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0/%22hey%22?meta=%7B%22a%22%3A+2%2C+%22b%22%3A+%22qwer%22%7D",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0/%22hey%22?meta=%7B%22a%22%3A+2%2C+%22b%22%3A+%22qwer%22%7D",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

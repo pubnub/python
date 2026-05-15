@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: GET
-    uri: https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22
+    uri: https://h2.pubnubapi.com/signal/demo/demo/0/unique_sync/0/%22test%22
   response:
     body:
       string: '[1,"Sent","15640051159323676"]'
@@ -25,7 +25,7 @@ interactions:
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult
         - http
-        - ps.pndsn.com
+        - h2.pubnubapi.com
         - /signal/demo/demo/0/unique_sync/0/%22test%22
         - pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=f5706789-e3a0-459e-871d-e4aed46e5458
         - ''

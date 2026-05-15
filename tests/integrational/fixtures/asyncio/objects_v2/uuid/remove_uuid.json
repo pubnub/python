@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "DELETE",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

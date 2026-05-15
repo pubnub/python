@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-sub-pub-unsub/0?uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/test-subscribe-sub-pub-unsub/0?uuid=uuid-mock",
                 "body": null,
                 "headers": {
                     "User-Agent": [

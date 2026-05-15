@@ -20,7 +20,7 @@ class PNConfiguration(object):
                  uuid: Optional[str] = None):
         # TODO: add validation
         self._uuid = uuid
-        self.origin = "ps.pndsn.com"
+        self.origin = "h2.pubnubapi.com"
         self.ssl = True
         self.non_subscribe_request_timeout = 10
         self.subscribe_request_timeout = 310

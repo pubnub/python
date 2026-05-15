@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: GET
-    uri: https://ps.pndsn.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?channel-group=test-pam-asyncio-cg&r=1&uuid=test-pam-asyncio-uuid&w=1
+    uri: https://h2.pubnubapi.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?channel-group=test-pam-asyncio-cg&r=1&uuid=test-pam-asyncio-uuid&w=1
   response:
     body:
       string: '{"message":"Success","payload":{"level":"channel-group","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1440,"channel-groups":{"test-pam-asyncio-cg":{"r":1,"w":1,"m":0,"d":0}}},"service":"Access
@@ -26,7 +26,7 @@ interactions:
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult
         - http
-        - ps.pndsn.com
+        - h2.pubnubapi.com
         - /v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f
         - channel-group=test-pam-asyncio-cg&pnsdk=PubNub-Python-Asyncio%2F4.1.0&r=1&signature=v2.BihlEpGJOoGHtVcTzIw1h0Jp7vqKoIdpkxaIYrvV1FU&timestamp=1577189138&uuid=test-pam-asyncio-uuid&w=1
         - ''

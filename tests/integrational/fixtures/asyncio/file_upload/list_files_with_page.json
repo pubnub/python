@@ -4,13 +4,13 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
+                "uri": "https://h2.pubnubapi.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
                 "body": {
                     "pickle": "gASVHwAAAAAAAACMG3sibmFtZSI6ICJraW5nX2FydGh1ci50eHQifZQu"
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -138,11 +138,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22e0ecef16-cd07-4d55-bfbc-bb04affba8f6%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222",
+                "uri": "https://h2.pubnubapi.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22e0ecef16-cd07-4d55-bfbc-bb04affba8f6%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -197,13 +197,13 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
+                "uri": "https://h2.pubnubapi.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
                 "body": {
                     "pickle": "gASVHwAAAAAAAACMG3sibmFtZSI6ICJraW5nX2FydGh1ci50eHQifZQu"
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -331,11 +331,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22e022f782-eb3b-4546-b1b4-68ae71888768%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222",
+                "uri": "https://h2.pubnubapi.com/v1/files/publish-file/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/files_asyncio_ch/0/%7B%22message%22%3A%20%7B%22test_message%22%3A%20%22test%22%7D%2C%20%22file%22%3A%20%7B%22id%22%3A%20%22e022f782-eb3b-4546-b1b4-68ae71888768%22%2C%20%22name%22%3A%20%22king_arthur.txt%22%7D%7D?meta=null&store=1&ttl=222",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -390,11 +390,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files?limit=2",
+                "uri": "https://h2.pubnubapi.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files?limit=2",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -443,11 +443,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files?limit=2&next=16pYnDTriiXLVHUpd_1SO3eEr0p0hXwKb6hsIimOECSnjrA8H70WwCi-WUVjgg5xJa2S0NMlwG2fEfjDTKnkjREzdHpsoGI5soKQsnkmmIoH6eKsJ6D9ISZoO8J3IAD_yQw311a7xo4y-RuloEQv9ts75pY-nJfjqun9K0p6JBVhJyi-rjrb6l-hBN30vsd4EjVOdDQ4UCeXQt4dbOZy8xTym6rK0gFsKFisQlsQQ1fkL-fYfVe7BloLFUwcxyNDL",
+                "uri": "https://h2.pubnubapi.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/files?limit=2&next=16pYnDTriiXLVHUpd_1SO3eEr0p0hXwKb6hsIimOECSnjrA8H70WwCi-WUVjgg5xJa2S0NMlwG2fEfjDTKnkjREzdHpsoGI5soKQsnkmmIoH6eKsJ6D9ISZoO8J3IAD_yQw311a7xo4y-RuloEQv9ts75pY-nJfjqun9K0p6JBVhJyi-rjrb6l-hBN30vsd4EjVOdDQ4UCeXQt4dbOZy8xTym6rK0gFsKFisQlsQQ1fkL-fYfVe7BloLFUwcxyNDL",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

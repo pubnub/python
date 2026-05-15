@@ -4,13 +4,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype",
                 "body": {
                     "pickle": "gASVXAAAAAAAAACMWHsibmFtZSI6ICJTb21lIG5hbWUiLCAiZGVzY3JpcHRpb24iOiBudWxsLCAic3RhdHVzIjogbnVsbCwgInR5cGUiOiBudWxsLCAiY3VzdG9tIjogbnVsbH2ULg=="
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -65,11 +65,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.3599560260772705",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.3599560260772705",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -118,13 +118,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.28776609897613525",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.28776609897613525",
                 "body": {
                     "pickle": "gASVXgAAAAAAAACMWnsibmFtZSI6ICJTb21lIG5hbWUtMiIsICJkZXNjcmlwdGlvbiI6IG51bGwsICJzdGF0dXMiOiBudWxsLCAidHlwZSI6IG51bGwsICJjdXN0b20iOiBudWxsfZQu"
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -179,11 +179,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.2635527451833089",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.2635527451833089",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -232,13 +232,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.2515745759010315",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.2515745759010315",
                 "body": {
                     "pickle": "gASVXgAAAAAAAACMWnsibmFtZSI6ICJTb21lIG5hbWUtMyIsICJkZXNjcmlwdGlvbiI6IG51bGwsICJzdGF0dXMiOiBudWxsLCAidHlwZSI6IG51bGwsICJjdXN0b20iOiBudWxsfZQu"
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -296,13 +296,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.2458338737487793",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=status%2Ctype&l_obj=0.2458338737487793",
                 "body": {
                     "pickle": "gASVXgAAAAAAAACMWnsibmFtZSI6ICJTb21lIG5hbWUtMyIsICJkZXNjcmlwdGlvbiI6IG51bGwsICJzdGF0dXMiOiBudWxsLCAidHlwZSI6IG51bGwsICJjdXN0b20iOiBudWxsfZQu"
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

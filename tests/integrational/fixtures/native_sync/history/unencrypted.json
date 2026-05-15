@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "DELETE",
-                "uri": "https://ps.pndsn.com/v3/history/sub-key/{PN_KEY_SUBSCRIBE}/channel/test_unencrypted",
+                "uri": "https://h2.pubnubapi.com/v3/history/sub-key/{PN_KEY_SUBSCRIBE}/channel/test_unencrypted",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -69,7 +69,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test_unencrypted/0/%22Lorem%20Ipsum%22",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test_unencrypted/0/%22Lorem%20Ipsum%22",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -122,7 +122,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/history/sub-key/{PN_KEY_SUBSCRIBE}/channel/test_unencrypted?count=100",
+                "uri": "https://h2.pubnubapi.com/v2/history/sub-key/{PN_KEY_SUBSCRIBE}/channel/test_unencrypted?count=100",
                 "body": null,
                 "headers": {
                     "User-Agent": [

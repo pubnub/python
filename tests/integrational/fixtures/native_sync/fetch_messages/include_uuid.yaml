@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/6.2.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-uuid/0/%22hey-uuid-1%22
+    uri: https://h2.pubnubapi.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-uuid/0/%22hey-uuid-1%22
   response:
     body:
       string: '[1,"Sent","16485843882209571"]'
@@ -45,7 +45,7 @@ interactions:
       User-Agent:
       - PubNub-Python/6.2.0
     method: GET
-    uri: https://ps.pndsn.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-uuid/0/%22hey-uuid-2%22
+    uri: https://h2.pubnubapi.com/publish/pub-c-739aa0fc-3ed5-472b-af26-aca1b333ec52/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/0/fetch-messages-actions-uuid/0/%22hey-uuid-2%22
   response:
     body:
       string: '[1,"Sent","16485843882539012"]'
@@ -79,7 +79,7 @@ interactions:
       User-Agent:
       - PubNub-Python/6.2.0
     method: GET
-    uri: https://ps.pndsn.com/v3/history-with-actions/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/fetch-messages-actions-uuid?include_meta=false&include_uuid=true&max=25
+    uri: https://h2.pubnubapi.com/v3/history-with-actions/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/fetch-messages-actions-uuid?include_meta=false&include_uuid=true&max=25
   response:
     body:
       string: '{"status": 200, "channels": {"fetch-messages-actions-uuid": [{"message":

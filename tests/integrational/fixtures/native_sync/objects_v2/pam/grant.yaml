@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.5.3
     method: GET
-    uri: https://ps.pndsn.com/v2/auth/grant/sub-key/SUB_KEY?auth=authKey123&g=1&j=1&target-uuid=someuuid&ttl=120&u=1
+    uri: https://h2.pubnubapi.com/v2/auth/grant/sub-key/SUB_KEY?auth=authKey123&g=1&j=1&target-uuid=someuuid&ttl=120&u=1
   response:
     body:
       string: '{"message":"Success","payload":{"level":"uuid","subscribe_key":"SUB_KEY","ttl":120,"uuids":{"someuuid":{"auths":{"authKey123":{"r":0,"w":0,"m":0,"d":0,"g":1,"u":1,"j":1}}}}},"service":"Access

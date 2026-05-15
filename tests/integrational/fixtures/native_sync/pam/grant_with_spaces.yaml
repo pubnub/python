@@ -11,7 +11,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.6.1
     method: GET
-    uri: https://ps.pndsn.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=client+auth+key+with+spaces&channel=test+channel&r=1&signature=v2.4se-YdYJx5VMZsBjzVgBxG8rRfr62Wabb516r2F3mtQ&timestamp=1604650731&ttl=60&w=1
+    uri: https://h2.pubnubapi.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=client+auth+key+with+spaces&channel=test+channel&r=1&signature=v2.4se-YdYJx5VMZsBjzVgBxG8rRfr62Wabb516r2F3mtQ&timestamp=1604650731&ttl=60&w=1
   response:
     body:
       string: '{"message":"Success","payload":{"level":"user","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":60,"channel":"test

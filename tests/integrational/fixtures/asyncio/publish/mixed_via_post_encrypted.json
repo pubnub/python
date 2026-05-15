@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
                 "body": "\"a25pZ2h0c29mbmkxMjM0NdOBbiWd7zGph7bFEv5GX+mTa3M0vVg2xcyYg7CW45mG\"",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -69,11 +69,11 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
                 "body": "\"a25pZ2h0c29mbmkxMjM0NclhU9jqi+5cNMXFiry5TPU=\"",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -134,11 +134,11 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
                 "body": "\"a25pZ2h0c29mbmkxMjM0NS/B7ZYYL/8ZE/NEGBapOF0=\"",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -199,11 +199,11 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
                 "body": "\"a25pZ2h0c29mbmkxMjM0NQ66CzLYXFOKoI1a9G0s0hA=\"",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

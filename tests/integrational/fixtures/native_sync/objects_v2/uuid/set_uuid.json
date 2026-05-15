@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=custom%2Cstatus%2Ctype",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=custom%2Cstatus%2Ctype",
                 "body": "{\"name\": \"Some name\", \"email\": \"test@example.com\", \"externalId\": \"1234\", \"profileUrl\": \"http://example.com\", \"custom\": {\"key1\": \"val1\", \"key2\": \"val2\"}}",
                 "headers": {
                     "User-Agent": [

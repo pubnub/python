@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=custom%2Cstatus%2Ctype",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid?include=custom%2Cstatus%2Ctype",
                 "body": null,
                 "headers": {
                     "User-Agent": [

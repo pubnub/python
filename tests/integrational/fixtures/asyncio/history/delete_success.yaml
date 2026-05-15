@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.7.0
     method: DELETE
-    uri: https://ps.pndsn.com/v3/history/sub-key/sub-c-mock-key/channel/my-ch?end=456&start=123
+    uri: https://h2.pubnubapi.com/v3/history/sub-key/sub-c-mock-key/channel/my-ch?end=456&start=123
   response:
     body:
       string: '{"status": 200, "error": false, "error_message": ""}'
@@ -27,7 +27,7 @@ interactions:
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult
         - https
-        - ps.pndsn.com
+        - h2.pubnubapi.com
         - /v3/history/sub-key/sub-c-mock-key/channel/my-ch
         - start=123&end=456&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=af9429d0-aa10-4919-9670-abe67a5c395f
         - ''

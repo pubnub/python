@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
+                "uri": "https://h2.pubnubapi.com/v1/files/{PN_KEY_SUBSCRIBE}/channels/files_asyncio_ch/generate-upload-url",
                 "body": "{\"name\": \"king_arthur.txt\"}",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

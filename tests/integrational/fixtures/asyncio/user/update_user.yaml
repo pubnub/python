@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.1.0
     method: PATCH
-    uri: https://ps.pndsn.com/v1/objects/demo/users/mg?include=custom
+    uri: https://h2.pubnubapi.com/v1/objects/demo/users/mg?include=custom
   response:
     body:
       string: '{"status":200,"data":{"id":"mg","name":"number 3","externalId":null,"profileUrl":null,"email":null,"custom":{"XXX":"YYYY"},"created":"2019-08-19T21:04:00.148418Z","updated":"2019-08-19T21:04:59.878283Z","eTag":"Af/+vv+glMjK3gE"}}'
@@ -22,7 +22,7 @@ interactions:
       state: !!python/tuple
       - !!python/object/new:urllib.parse.SplitResult
         - http
-        - ps.pndsn.com
+        - h2.pubnubapi.com
         - /v1/objects/demo/users/mg
         - include=custom&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=9a39324e-5c80-4d99-952e-565748cc858d
         - ''

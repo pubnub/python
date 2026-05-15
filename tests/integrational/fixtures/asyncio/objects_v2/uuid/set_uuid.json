@@ -4,13 +4,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=custom%2Cstatus%2Ctype",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=custom%2Cstatus%2Ctype",
                 "body": {
                     "pickle": "gASVnAAAAAAAAACMmHsibmFtZSI6ICJTb21lIG5hbWUiLCAiZW1haWwiOiAidGVzdEBleGFtcGxlLmNvbSIsICJleHRlcm5hbElkIjogIjEyMzQiLCAicHJvZmlsZVVybCI6ICJodHRwOi8vZXhhbXBsZS5jb20iLCAiY3VzdG9tIjogeyJrZXkxIjogInZhbDEiLCAia2V5MiI6ICJ2YWwyIn19lC4="
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

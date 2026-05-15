@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "DELETE",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/metadata_channel",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/metadata_channel",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -57,7 +57,7 @@
         {
             "request": {
                 "method": "DELETE",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/metadata_channel-two",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/metadata_channel-two",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -110,7 +110,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels?include=custom%2Cstatus%2Ctype",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels?include=custom%2Cstatus%2Ctype",
                 "body": null,
                 "headers": {
                     "User-Agent": [

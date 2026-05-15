@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?add=apns2_channel_1%2Capns2_channel_2&environment=development&topic=com.example.testapp.notifications&uuid=test-uuid",
+                "uri": "https://h2.pubnubapi.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?add=apns2_channel_1%2Capns2_channel_2&environment=development&topic=com.example.testapp.notifications&uuid=test-uuid",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

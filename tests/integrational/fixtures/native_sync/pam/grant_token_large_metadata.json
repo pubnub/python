@@ -4,13 +4,13 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "uri": "https://h2.pubnubapi.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
                 "body": {
                     "pickle": "gASVdgIAAAAAAABYbwIAAHsidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsidGVzdC1jaGFubmVsIjogMX0sICJncm91cHMiOiB7fSwgInV1aWRzIjoge30sICJ1c2VycyI6IHt9LCAic3BhY2VzIjogeyJ0ZXN0LWNoYW5uZWwiOiAxfX0sICJwYXR0ZXJucyI6IHsiY2hhbm5lbHMiOiB7fSwgImdyb3VwcyI6IHt9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7fX0sICJtZXRhIjogeyJhcHBfZGF0YSI6IHsidmVyc2lvbiI6ICIxLjAuMCIsICJlbnZpcm9ubWVudCI6ICJwcm9kdWN0aW9uIiwgImZlYXR1cmVzIjogWyJjaGF0IiwgInByZXNlbmNlIiwgInB1c2giLCAic3RvcmFnZSJdLCAiY29uZmlnIjogeyJ0aW1lb3V0IjogNTAwMCwgInJldHJpZXMiOiAzLCAiY2FjaGVfc2l6ZSI6IDEwMDAsICJkZWJ1ZyI6IGZhbHNlfX0sICJ1c2VyX2RhdGEiOiB7ImlkIjogIjEyMzQ1IiwgInJvbGVzIjogWyJhZG1pbiIsICJtb2RlcmF0b3IiLCAidXNlciJdLCAicGVybWlzc2lvbnMiOiBbInJlYWQiLCAid3JpdGUiLCAiZGVsZXRlIl0sICJzZXR0aW5ncyI6IHsibm90aWZpY2F0aW9ucyI6IHRydWUsICJ0aGVtZSI6ICJkYXJrIiwgImxhbmd1YWdlIjogImVuIn19fX19lC4="
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

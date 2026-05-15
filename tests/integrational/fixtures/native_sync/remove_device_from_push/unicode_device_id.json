@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/%E6%B5%8B%E8%AF%95%E8%AE%BE%E5%A4%87ID123456/remove?type=apns&uuid=test-uuid",
+                "uri": "https://h2.pubnubapi.com/v1/push/sub-key/{PN_KEY_SUBSCRIBE}/devices/%E6%B5%8B%E8%AF%95%E8%AE%BE%E5%A4%87ID123456/remove?type=apns&uuid=test-uuid",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

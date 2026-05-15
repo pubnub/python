@@ -288,7 +288,7 @@ class TestGetFileDownloadUrl(TestFileEndpoints):
         endpoint = GetFileDownloadUrl(self.pubnub, self.channel, self.file_name, self.file_id)
         complete_url = endpoint.get_complete_url()
 
-        expected_base = (f"https://ps.pndsn.com/v1/files/{self.config.subscribe_key}/"
+        expected_base = (f"https://h2.pubnubapi.com/v1/files/{self.config.subscribe_key}/"
                          f"channels/{self.channel}/files/{self.file_id}/{self.file_name}")
         self.assertIn(expected_base, complete_url)
         self.assertIn("auth=test&uuid=test-uuid", complete_url)

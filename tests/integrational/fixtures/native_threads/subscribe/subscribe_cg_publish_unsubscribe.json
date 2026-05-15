@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-unsubscribe-group?add=test-subscribe-unsubscribe-channel&uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-unsubscribe-group?add=test-subscribe-unsubscribe-channel&uuid=uuid-mock",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -69,11 +69,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -128,11 +128,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test-subscribe-unsubscribe-channel/0/%22hey%22?uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/test-subscribe-unsubscribe-channel/0/%22hey%22?uuid=uuid-mock",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -187,11 +187,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/v2/subscribe/{PN_KEY_SUBSCRIBE}/,/0?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -249,11 +249,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/,/leave?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/v2/presence/sub-key/{PN_KEY_SUBSCRIBE}/channel/,/leave?channel-group=test-subscribe-unsubscribe-group&uuid=uuid-mock",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -314,11 +314,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-unsubscribe-group?remove=test-subscribe-unsubscribe-channel&uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/v1/channel-registration/sub-key/{PN_KEY_SUBSCRIBE}/channel-group/test-subscribe-unsubscribe-group?remove=test-subscribe-unsubscribe-channel&uuid=uuid-mock",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

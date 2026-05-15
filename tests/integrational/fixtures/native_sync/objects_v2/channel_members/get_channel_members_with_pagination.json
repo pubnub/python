@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids",
                 "body": "{\"set\": [{\"uuid\": {\"id\": \"test-fix-118-0\"}}, {\"uuid\": {\"id\": \"test-fix-118-1\"}}, {\"uuid\": {\"id\": \"test-fix-118-2\"}}, {\"uuid\": {\"id\": \"test-fix-118-3\"}}, {\"uuid\": {\"id\": \"test-fix-118-4\"}}, {\"uuid\": {\"id\": \"test-fix-118-5\"}}, {\"uuid\": {\"id\": \"test-fix-118-6\"}}, {\"uuid\": {\"id\": \"test-fix-118-7\"}}, {\"uuid\": {\"id\": \"test-fix-118-8\"}}, {\"uuid\": {\"id\": \"test-fix-118-9\"}}, {\"uuid\": {\"id\": \"test-fix-118-10\"}}, {\"uuid\": {\"id\": \"test-fix-118-11\"}}, {\"uuid\": {\"id\": \"test-fix-118-12\"}}, {\"uuid\": {\"id\": \"test-fix-118-13\"}}, {\"uuid\": {\"id\": \"test-fix-118-14\"}}], \"delete\": []}",
                 "headers": {
                     "User-Agent": [
@@ -57,7 +57,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids?limit=10",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids?limit=10",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -107,7 +107,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids?limit=10&start=MTA",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannelid/uuids?limit=10&start=MTA",
                 "body": null,
                 "headers": {
                     "User-Agent": [

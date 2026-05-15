@@ -4,13 +4,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=status%2Ctype",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid?include=status%2Ctype",
                 "body": {
                     "pickle": "gASVjwAAAAAAAACMi3sibmFtZSI6ICJDb3JuZWxpYSIsICJlbWFpbCI6IG51bGwsICJleHRlcm5hbElkIjogbnVsbCwgInByb2ZpbGVVcmwiOiBudWxsLCAiY3VzdG9tIjogeyJyZW1vdmVkIjogZmFsc2V9LCAic3RhdHVzIjogIm9ubGluZSIsICJ0eXBlIjogIlFBIn2ULg=="
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -65,13 +65,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannel?include=status%2Ctype",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/somechannel?include=status%2Ctype",
                 "body": {
                     "pickle": "gASViwAAAAAAAACMh3sibmFtZSI6ICJzb21lIG5hbWUiLCAiZGVzY3JpcHRpb24iOiAiVGhpcyBpcyBhIGJpdCBsb25nZXIgdGV4dCIsICJzdGF0dXMiOiAiYWN0aXZlIiwgInR5cGUiOiAiUUFDaGFubmVsIiwgImN1c3RvbSI6IHsicHVibGljIjogZmFsc2V9fZQu"
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -126,13 +126,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status",
                 "body": {
                     "pickle": "gASVgwAAAAAAAACMf3sic2V0IjogW3siY2hhbm5lbCI6IHsiaWQiOiAic29tZWNoYW5uZWwifSwgImN1c3RvbSI6IHsiaXNEZWZhdWx0Q2hhbm5lbCI6IHRydWV9LCAic3RhdHVzIjogIk9GRiIsICJ0eXBlIjogIjEifV0sICJkZWxldGUiOiBbXX2ULg=="
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -187,11 +187,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -240,13 +240,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels",
                 "body": {
                     "pickle": "gASVpgAAAAAAAACMonsic2V0IjogW3siY2hhbm5lbCI6IHsiaWQiOiAib3R0ZXJjaGFubmVsIn19XSwgImRlbGV0ZSI6IFt7ImNoYW5uZWwiOiB7ImlkIjogInNvbWVjaGFubmVsIn0sICJjdXN0b20iOiB7ImlzRGVmYXVsdENoYW5uZWwiOiB0cnVlfSwgInN0YXR1cyI6ICJPRkYiLCAidHlwZSI6ICIxIn1dfZQu"
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -301,13 +301,13 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels",
                 "body": {
                     "pickle": "gASVQAAAAAAAAACMPHsic2V0IjogW10sICJkZWxldGUiOiBbeyJjaGFubmVsIjogeyJpZCI6ICJvdHRlcmNoYW5uZWwifX1dfZQu"
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -362,11 +362,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

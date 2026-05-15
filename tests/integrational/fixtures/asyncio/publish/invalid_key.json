@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/asyncio-int-publish/0/%22hey%22?timestamp=1733410832",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PAM_PUBLISH}/{PN_KEY_PAM_SUBSCRIBE}/0/asyncio-int-publish/0/%22hey%22?timestamp=1733410832",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

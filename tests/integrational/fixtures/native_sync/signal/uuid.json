@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/signal/demo/demo/0/unique_sync/0/%22test%22?uuid=uuid-mock",
                 "body": null,
                 "headers": {
                     "User-Agent": [
@@ -57,7 +57,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/signal/demo/demo/0/unique_sync/0/%22test%22?uuid=uuid-mock",
+                "uri": "https://h2.pubnubapi.com/signal/demo/demo/0/unique_sync/0/%22test%22?uuid=uuid-mock",
                 "body": null,
                 "headers": {
                     "User-Agent": [

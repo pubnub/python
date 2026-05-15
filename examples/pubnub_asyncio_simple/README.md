@@ -26,7 +26,7 @@ Received message: Hello World on channel: my_channel
 ```shell
 export PUBNUB_PUBLISH_KEY=demo
 export PUBNUB_SUBSCRIBE_KEY=demo
-curl "https://ps.pndsn.com/publish/${PUBNUB_PUBLISH_KEY}/${PUBNUB_SUBSCRIBE_KEY}/0/my_channel/0/%22Hello%20World%22"
+curl "https://h2.pubnubapi.com/publish/${PUBNUB_PUBLISH_KEY}/${PUBNUB_SUBSCRIBE_KEY}/0/my_channel/0/%22Hello%20World%22"
 ```
 
 ### Output:

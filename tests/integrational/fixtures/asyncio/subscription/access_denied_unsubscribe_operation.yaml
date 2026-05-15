@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/7.0.1
     method: GET
-    uri: https://ps.pndsn.com/v2/subscribe/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/not-permitted-channel/0?tt=0&uuid=uuid-mock
+    uri: https://h2.pubnubapi.com/v2/subscribe/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/not-permitted-channel/0?tt=0&uuid=uuid-mock
   response:
     body:
       string: '{"message":"Forbidden","payload":{"channels":["not-permitted-channel"]},"error":true,"service":"Access
@@ -36,5 +36,5 @@ interactions:
     status:
       code: 403
       message: Forbidden
-    url: https://ps.pndsn.com/v2/subscribe/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/not-permitted-channel/0?tt=0&pnsdk=PubNub-Python-Asyncio%2F7.0.1&uuid=uuid-mock
+    url: https://h2.pubnubapi.com/v2/subscribe/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/not-permitted-channel/0?tt=0&pnsdk=PubNub-Python-Asyncio%2F7.0.1&uuid=uuid-mock
 version: 1

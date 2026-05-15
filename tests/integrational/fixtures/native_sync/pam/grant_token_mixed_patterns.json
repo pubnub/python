@@ -4,13 +4,13 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
+                "uri": "https://h2.pubnubapi.com/v3/pam/{PN_KEY_PAM_SUBSCRIBE}/grant",
                 "body": {
                     "pickle": "gASVPQEAAAAAAABYNgEAAHsidHRsIjogNjAsICJwZXJtaXNzaW9ucyI6IHsicmVzb3VyY2VzIjogeyJjaGFubmVscyI6IHsic3BlY2lmaWMtY2hhbm5lbCI6IDN9LCAiZ3JvdXBzIjogeyJzcGVjaWZpYy1ncm91cCI6IDR9LCAidXVpZHMiOiB7fSwgInVzZXJzIjoge30sICJzcGFjZXMiOiB7InNwZWNpZmljLWNoYW5uZWwiOiAzfX0sICJwYXR0ZXJucyI6IHsiY2hhbm5lbHMiOiB7ImNoYW5uZWxfKiI6IDF9LCAiZ3JvdXBzIjogeyJncm91cF8qIjogMX0sICJ1dWlkcyI6IHt9LCAidXNlcnMiOiB7fSwgInNwYWNlcyI6IHsiY2hhbm5lbF8qIjogMX19LCAibWV0YSI6IHt9fX2ULg=="
                 },
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

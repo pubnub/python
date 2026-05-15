@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.example.app&uuid=test-uuid",
+                "uri": "https://h2.pubnubapi.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.example.app&uuid=test-uuid",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -63,11 +63,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.example-app.notifications&uuid=test-uuid",
+                "uri": "https://h2.pubnubapi.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.example-app.notifications&uuid=test-uuid",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -122,11 +122,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.example_app.notifications&uuid=test-uuid",
+                "uri": "https://h2.pubnubapi.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.example_app.notifications&uuid=test-uuid",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -181,11 +181,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.EXAMPLE.APP.NOTIFICATIONS&uuid=test-uuid",
+                "uri": "https://h2.pubnubapi.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.EXAMPLE.APP.NOTIFICATIONS&uuid=test-uuid",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"
@@ -240,11 +240,11 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.example.app.notifications-dev&uuid=test-uuid",
+                "uri": "https://h2.pubnubapi.com/v2/push/sub-key/{PN_KEY_SUBSCRIBE}/devices-apns2/0000000000000000?environment=development&remove=apns2_topic_remove_test_channel&topic=com.example.app.notifications-dev&uuid=test-uuid",
                 "body": "",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

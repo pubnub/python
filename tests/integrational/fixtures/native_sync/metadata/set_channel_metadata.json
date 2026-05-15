@@ -4,7 +4,7 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/metadata_channel?include=custom%2Cstatus%2Ctype",
+                "uri": "https://h2.pubnubapi.com/v2/objects/{PN_KEY_SUBSCRIBE}/channels/metadata_channel?include=custom%2Cstatus%2Ctype",
                 "body": "{\"name\": \"name\", \"description\": \"This is a description\", \"custom\": {\"foo\": \"bar\"}, \"status\": \"Testing\", \"type\": \"test\"}",
                 "headers": {
                     "User-Agent": [

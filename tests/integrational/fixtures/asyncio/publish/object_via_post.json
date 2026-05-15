@@ -4,11 +4,11 @@
         {
             "request": {
                 "method": "POST",
-                "uri": "https://ps.pndsn.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
+                "uri": "https://h2.pubnubapi.com/publish/{PN_KEY_PUBLISH}/{PN_KEY_SUBSCRIBE}/0/asyncio-int-publish/0",
                 "body": "{\"name\": \"Alex\", \"online\": true}",
                 "headers": {
                     "host": [
-                        "ps.pndsn.com"
+                        "h2.pubnubapi.com"
                     ],
                     "accept": [
                         "*/*"

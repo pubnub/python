@@ -13,7 +13,7 @@ interactions:
       User-Agent:
       - PubNub-Python/4.1.0
     method: DELETE
-    uri: https://ps.pndsn.com/v1/objects/demo/users/mg
+    uri: https://h2.pubnubapi.com/v1/objects/demo/users/mg
   response:
     body:
       string: '{"status":200,"data":null}'

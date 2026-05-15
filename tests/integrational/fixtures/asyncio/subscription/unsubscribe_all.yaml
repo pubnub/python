@@ -5,7 +5,7 @@ interactions:
       User-Agent:
       - PubNub-Python-Asyncio/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?add=test-subscribe-asyncio-unsubscribe-all-ch&uuid=test-subscribe-asyncio-messenger
+    uri: https://h2.pubnubapi.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?add=test-subscribe-asyncio-unsubscribe-all-ch&uuid=test-subscribe-asyncio-messenger
   response:
     body:
       string: '{"status": 200, "message": "OK", "service": "channel-registry", "error":
@@ -34,14 +34,14 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger
+    url: https://h2.pubnubapi.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger
 - request:
     body: null
     headers:
       User-Agent:
       - PubNub-Python-Asyncio/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?add=test-subscribe-asyncio-unsubscribe-all-ch&uuid=test-subscribe-asyncio-messenger
+    uri: https://h2.pubnubapi.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?add=test-subscribe-asyncio-unsubscribe-all-ch&uuid=test-subscribe-asyncio-messenger
   response:
     body:
       string: '{"status": 200, "message": "OK", "service": "channel-registry", "error":
@@ -70,14 +70,14 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.17911815643310547
+    url: https://h2.pubnubapi.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?add=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.17911815643310547
 - request:
     body: null
     headers:
       User-Agent:
       - PubNub-Python-Asyncio/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/0?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1%2Ctest-subscribe-asyncio-unsubscribe-all-gr2&tt=0&uuid=test-subscribe-asyncio-messenger
+    uri: https://h2.pubnubapi.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/0?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1%2Ctest-subscribe-asyncio-unsubscribe-all-gr2&tt=0&uuid=test-subscribe-asyncio-messenger
   response:
     body:
       string: '{"t":{"t":"16079598526833689","r":12},"m":[]}'
@@ -99,14 +99,14 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://ps.pndsn.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/0?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.11011052131652832
+    url: https://h2.pubnubapi.com/v2/subscribe/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/0?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&tt=0&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.11011052131652832
 - request:
     body: null
     headers:
       User-Agent:
       - PubNub-Python-Asyncio/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/leave?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1%2Ctest-subscribe-asyncio-unsubscribe-all-gr2&uuid=test-subscribe-asyncio-messenger
+    uri: https://h2.pubnubapi.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/leave?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1%2Ctest-subscribe-asyncio-unsubscribe-all-gr2&uuid=test-subscribe-asyncio-messenger
   response:
     body:
       string: '{"status": 200, "message": "OK", "action": "leave", "service": "Presence"}'
@@ -134,14 +134,14 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://ps.pndsn.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/leave?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.11011052131652832
+    url: https://h2.pubnubapi.com/v2/presence/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel/test-subscribe-asyncio-unsubscribe-all-ch1,test-subscribe-asyncio-unsubscribe-all-ch2,test-subscribe-asyncio-unsubscribe-all-ch3/leave?channel-group=test-subscribe-asyncio-unsubscribe-all-gr1,test-subscribe-asyncio-unsubscribe-all-gr2&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.11011052131652832
 - request:
     body: null
     headers:
       User-Agent:
       - PubNub-Python-Asyncio/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?remove=test-subscribe-asyncio-unsubscribe-all-ch&uuid=test-subscribe-asyncio-messenger
+    uri: https://h2.pubnubapi.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?remove=test-subscribe-asyncio-unsubscribe-all-ch&uuid=test-subscribe-asyncio-messenger
   response:
     body:
       string: '{"status": 200, "message": "OK", "service": "channel-registry", "error":
@@ -170,14 +170,14 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.11011052131652832&l_pres=0.5682003498077393
+    url: https://h2.pubnubapi.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr1?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.11011052131652832&l_pres=0.5682003498077393
 - request:
     body: null
     headers:
       User-Agent:
       - PubNub-Python-Asyncio/4.7.0
     method: GET
-    uri: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?remove=test-subscribe-asyncio-unsubscribe-all-ch&uuid=test-subscribe-asyncio-messenger
+    uri: https://h2.pubnubapi.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?remove=test-subscribe-asyncio-unsubscribe-all-ch&uuid=test-subscribe-asyncio-messenger
   response:
     body:
       string: '{"status": 200, "message": "OK", "service": "channel-registry", "error":
@@ -206,5 +206,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://ps.pndsn.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.08846743901570638&l_pres=0.5682003498077393
+    url: https://h2.pubnubapi.com/v1/channel-registration/sub-key/sub-c-33f55052-190b-11e6-bfbc-02ee2ddab7fe/channel-group/test-subscribe-asyncio-unsubscribe-all-gr2?remove=test-subscribe-asyncio-unsubscribe-all-ch&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=test-subscribe-asyncio-messenger&l_cg=0.08846743901570638&l_pres=0.5682003498077393
 version: 1

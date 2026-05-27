@@ -43,7 +43,8 @@ class AsyncHttpxRequestHandler(BaseRequestHandler):
     async def create_session(self):
         self._session = httpx.AsyncClient(
             timeout=httpx.Timeout(self.pubnub.config.connect_timeout),
-            transport=self._connector
+            transport=self._connector,
+            http2=True
         )
 
     async def close_session(self):
@@ -225,11 +226,7 @@ class AsyncHttpxRequestHandler(BaseRequestHandler):
         else:
             data = "N/A"
 
-        logger.debug(data)
-        logger.debug(
-            "PubNub request completed: operation=%s protocol=%s"
-            % (options.operation_type, response_info.http_version)
-        )
+        logger.debug("[%s %s] %s" % (options.operation_type, response_info.http_version, data))
 
         if response.status_code not in (200, 307, 204):
 

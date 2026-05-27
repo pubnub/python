@@ -174,7 +174,7 @@ class HttpxRequestHandler(BaseRequestHandler):
         with self._session_lock:
             if self._session is None or self._session.is_closed:
                 logger.debug("Creating new HTTP session")
-                self._session = httpx.Client()
+                self._session = httpx.Client(http2=True)
             return self._session
 
     def close(self):
@@ -434,20 +434,15 @@ class HttpxRequestHandler(BaseRequestHandler):
 
         try:
             res = session.request(**args)
-            logger.debug(
-                "PubNub request completed: operation=%s protocol=%s"
-                % (e_options.operation_type, res.http_version)
-            )
 
-            # Safely access response text - read content first for streaming responses
             try:
-                logger.debug("GOT %s" % res.text)
+                logger.debug("[%s %s] %s" % (e_options.operation_type, res.http_version, res.text))
             except httpx.ResponseNotRead:
-                # For streaming responses, we need to read first
-                logger.debug("GOT %s" % res.content.decode('utf-8', errors='ignore'))
+                content = res.content.decode('utf-8', errors='ignore')
+                logger.debug("[%s %s] %s" % (e_options.operation_type, res.http_version, content))
             except Exception as e:
-                # Fallback logging in case of any response reading issues
-                logger.debug("GOT response (content access failed: %s)" % str(e))
+                msg = "(content access failed: %s)" % str(e)
+                logger.debug("[%s %s] %s" % (e_options.operation_type, res.http_version, msg))
 
         except httpx.ConnectError as e:
             if use_watchdog and self._watchdog.triggered:

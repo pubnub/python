@@ -1,3 +1,11 @@
+## 10.7.0
+June 08 2026
+
+#### Added
+- Enable HTTP/2 negotiation on the synchronous `httpx` handler.
+- Add `http_version` field to `ResponseInfo`.
+- Log negotiated protocol version at DEBUG level across all request handlers.
+
 ## 10.6.3
 April 20 2026
 

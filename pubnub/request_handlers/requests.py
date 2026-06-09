@@ -174,7 +174,11 @@ class RequestsRequestHandler(BaseRequestHandler):
                 origin=url.hostname,
                 uuid=uuid,
                 auth_key=auth_key,
-                client_request=res.request
+                client_request=res.request,
+                http_version=(
+                    f"HTTP/{res.raw.version // 10}.{res.raw.version % 10}"
+                    if res.raw and res.raw.version else None
+                )
             )
 
         if not res.ok:
@@ -268,7 +272,12 @@ class RequestsRequestHandler(BaseRequestHandler):
 
         try:
             res = self.session.request(**args)
-            logger.debug("GOT %s" % res.text)
+            http_ver = (
+                f"HTTP/{res.raw.version // 10}.{res.raw.version % 10}"
+                if res.raw and res.raw.version else "unknown"
+            )
+            logger.debug("[%s %s] %s" % (e_options.operation_type, http_ver, res.text))
+
         except requests.exceptions.ConnectionError as e:
             raise PubNubException(
                 pn_error=PNERR_CONNECTION_ERROR,

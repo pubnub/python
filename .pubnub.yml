@@ -1,5 +1,5 @@
 name: python
-version: 10.6.3
+version: 10.7.0
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-10.6.3
+            package-name: pubnub-10.7.0
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -94,8 +94,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-10.6.3
-            location: https://github.com/pubnub/python/releases/download/10.6.3/pubnub-10.6.3.tar.gz
+            package-name: pubnub-10.7.0
+            location: https://github.com/pubnub/python/releases/download/10.7.0/pubnub-10.7.0.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,15 @@ sdks:
                 license-url: https://github.com/encode/httpx/blob/master/LICENSE.md
                 is-required: Required
 changelog:
+  - date: 2026-06-08
+    version: 10.7.0
+    changes:
+      - type: feature
+        text: "Enable HTTP/2 negotiation on the synchronous `httpx` handler."
+      - type: feature
+        text: "Add `http_version` field to `ResponseInfo`."
+      - type: feature
+        text: "Log negotiated protocol version at DEBUG level across all request handlers."
   - date: 2026-04-20
     version: 10.6.3
     changes:

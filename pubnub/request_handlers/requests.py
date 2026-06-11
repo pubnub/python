@@ -272,12 +272,7 @@ class RequestsRequestHandler(BaseRequestHandler):
 
         try:
             res = self.session.request(**args)
-            http_ver = (
-                f"HTTP/{res.raw.version // 10}.{res.raw.version % 10}"
-                if res.raw and res.raw.version else "unknown"
-            )
-            logger.debug("[%s %s] %s" % (e_options.operation_type, http_ver, res.text))
-
+            logger.debug("GOT %s" % res.text)
         except requests.exceptions.ConnectionError as e:
             raise PubNubException(
                 pn_error=PNERR_CONNECTION_ERROR,

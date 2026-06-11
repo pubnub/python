@@ -434,15 +434,15 @@ class HttpxRequestHandler(BaseRequestHandler):
 
         try:
             res = session.request(**args)
-
+            # Safely access response text - read content first for streaming responses
             try:
-                logger.debug("[%s %s] %s" % (e_options.operation_type, res.http_version, res.text))
+                logger.debug("GOT %s" % res.text)
             except httpx.ResponseNotRead:
-                content = res.content.decode('utf-8', errors='ignore')
-                logger.debug("[%s %s] %s" % (e_options.operation_type, res.http_version, content))
+                # For streaming responses, we need to read first
+                logger.debug("GOT %s" % res.content.decode('utf-8', errors='ignore'))
             except Exception as e:
-                msg = "(content access failed: %s)" % str(e)
-                logger.debug("[%s %s] %s" % (e_options.operation_type, res.http_version, msg))
+                # Fallback logging in case of any response reading issues
+                logger.debug("GOT response (content access failed: %s)" % str(e))
 
         except httpx.ConnectError as e:
             if use_watchdog and self._watchdog.triggered:

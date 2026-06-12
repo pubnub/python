@@ -276,7 +276,7 @@ class RequestsRequestHandler(BaseRequestHandler):
                 f"HTTP/{res.raw.version // 10}.{res.raw.version % 10}"
                 if res.raw and res.raw.version else "unknown"
             )
-            logger.debug("[%s %s] %s" % (e_options.operation_type, http_ver, res.text))
+            logger.debug("[%s %s] %s", e_options.operation_name, http_ver, res.text)
 
         except requests.exceptions.ConnectionError as e:
             raise PubNubException(

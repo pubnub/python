@@ -1,3 +1,9 @@
+## 10.7.1
+June 15 2026
+
+#### Fixed
+- Drop operation identifier from request handler debug logs.
+
 ## 10.7.0
 June 08 2026
 

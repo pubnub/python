@@ -173,7 +173,7 @@ class AsyncAiohttpRequestHandler(BaseRequestHandler):
         else:
             data = "N/A"
 
-        logger.debug("[%s %s] %s" % (options.operation_type, response_info.http_version, data))
+        logger.debug("[%s] %s", response_info.http_version, data)
 
         if response.status not in (200, 307, 204):
 

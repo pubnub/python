@@ -134,7 +134,6 @@ class Endpoint(object):
             create_status=self.create_status,
             create_exception=self.create_exception,
             operation_type=self.operation_type(),
-            operation_name=self.name(),
             data=data,
             files=self.build_file_upload_request(),
             sort_arguments=self._sort_params,

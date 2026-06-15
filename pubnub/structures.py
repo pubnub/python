@@ -8,8 +8,7 @@ class RequestOptions(object):
             create_response, create_status, create_exception,
             operation_type, data=None, sort_arguments=False,
             allow_redirects=True, use_base_path=None, files=None,
-            request_headers=None, non_json_response=False,
-            operation_name=None
+            request_headers=None, non_json_response=False
     ):
         assert len(path) > 0
         assert callable(params_callback)
@@ -36,7 +35,6 @@ class RequestOptions(object):
         self.create_status = create_status
         self.create_exception = create_exception
         self.operation_type = operation_type
-        self.operation_name = operation_name
         self.allow_redirects = allow_redirects
         self.use_base_path = use_base_path
         self.request_headers = request_headers

@@ -436,13 +436,13 @@ class HttpxRequestHandler(BaseRequestHandler):
             res = session.request(**args)
 
             try:
-                logger.debug("[%s %s] %s", e_options.operation_name, res.http_version, res.text)
+                logger.debug("[%s] %s", res.http_version, res.text)
             except httpx.ResponseNotRead:
                 content = res.content.decode('utf-8', errors='ignore')
-                logger.debug("[%s %s] %s", e_options.operation_name, res.http_version, content)
+                logger.debug("[%s] %s", res.http_version, content)
             except Exception as e:
                 msg = "(content access failed: %s)" % str(e)
-                logger.debug("[%s %s] %s", e_options.operation_name, res.http_version, msg)
+                logger.debug("[%s] %s", res.http_version, msg)
 
         except httpx.ConnectError as e:
             if use_watchdog and self._watchdog.triggered:

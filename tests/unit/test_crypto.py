@@ -1,7 +1,10 @@
+import pytest
+
 from pubnub.pubnub import PubNub
 from pubnub.pnconfiguration import PNConfiguration
-from pubnub.crypto import PubNubCryptodome, PubNubCrypto, AesCbcCryptoModule, PubNubCryptoModule
-from pubnub.crypto_core import PubNubAesCbcCryptor, PubNubLegacyCryptor
+from pubnub.crypto import PubNubCryptodome, PubNubCrypto, PubNubFileCrypto, AesCbcCryptoModule, \
+    PubNubCryptoModule
+from pubnub.crypto_core import PubNubAesCbcCryptor, PubNubLegacyCryptor, CryptorPayload
 from pubnub.exceptions import PubNubException
 from tests.helper import pnconf_file_copy, hardcoded_iv_config_copy, pnconf_env_copy
 
@@ -213,3 +216,89 @@ class TestPubNubCryptoModule:
             "mvPmbuQKLErBzS2l7vEohCwbmAJODPR2yNhJGB8989reTZ7Y7Q=="
         decrypted = crypto.decrypt(phpmess)
         assert decrypted == 'PHP can into space with headers and aes cbc and other shiny stuff'
+
+
+class TestDecryptionFailureRaises:
+    """Decrypt failures must raise PubNubException, never silently return ciphertext."""
+
+    cipher_key = 'myCipherKey'
+
+    @pytest.mark.parametrize('use_random_iv', [True, False])
+    def test_file_decrypt_wrong_key_raises(self, use_random_iv):
+        config = pnconf_file_copy()
+        config.cipher_key = self.cipher_key
+        config.use_random_initialization_vector = use_random_iv
+        crypto = PubNubFileCrypto(config)
+        encrypted = crypto.encrypt(self.cipher_key, b'secret file content', use_random_iv=use_random_iv)
+
+        with pytest.raises(PubNubException) as exc_info:
+            crypto.decrypt('totallyWrongKey', encrypted, use_random_iv=use_random_iv)
+        assert 'decryption error' in str(exc_info.value)
+        assert exc_info.value is not encrypted
+
+    def test_module_decrypt_file_corrupt_raises(self):
+        # The AES-CBC cryptor validates PKCS#7 padding, so corrupting the ciphertext
+        # is detected and surfaces as a generic decryption error.
+        config = pnconf_file_copy()
+        config.cipher_key = self.cipher_key
+        module = AesCbcCryptoModule(config)
+        encrypted = module.encrypt_file(b'secret file content')
+        corrupted = bytearray(encrypted)
+        corrupted[-1] ^= 0xFF
+
+        with pytest.raises(PubNubException) as exc_info:
+            module.decrypt_file(bytes(corrupted))
+        assert 'decryption error' in str(exc_info.value)
+
+
+class TestPaddingOracleHardening:
+    """Distinct crypto failures must produce an identical
+    generic error, leaking no PyCryptodome mode-specific message."""
+
+    cipher_key = 'myCipherKey'
+    _leak_substrings = ('padding', 'pkcs', 'boundary', 'block', 'incorrect')
+
+    def _bad_padding_payload(self, cryptor):
+        # Flip a byte in the first ciphertext block to corrupt the decrypted PKCS#7
+        # padding while keeping the input block-aligned (so unpad, not decrypt, fails).
+        payload = cryptor.encrypt(b'A' * 20)
+        corrupted = bytearray(payload['data'])
+        corrupted[15] ^= 0xFF
+
+        return CryptorPayload(data=bytes(corrupted), cryptor_data=payload['cryptor_data'])
+
+    def _wrong_length_payload(self, cryptor):
+        payload = cryptor.encrypt(b'A' * 20)
+        return CryptorPayload(data=payload['data'][:-3], cryptor_data=payload['cryptor_data'])
+
+    def _assert_generic(self, message):
+        assert 'decryption error' in message
+        lowered = message.lower()
+
+        for leak in self._leak_substrings:
+            assert leak not in lowered, f"error message leaks crypto detail: {message!r}"
+
+    @pytest.mark.parametrize('binary_mode', [True, False])
+    def test_aes_cbc_failures_identical(self, binary_mode):
+        cryptor = PubNubAesCbcCryptor(self.cipher_key)
+
+        with pytest.raises(PubNubException) as bad_padding:
+            cryptor.decrypt(self._bad_padding_payload(cryptor), binary_mode=binary_mode)
+        with pytest.raises(PubNubException) as wrong_length:
+            cryptor.decrypt(self._wrong_length_payload(cryptor), binary_mode=binary_mode)
+
+        self._assert_generic(str(bad_padding.value))
+        self._assert_generic(str(wrong_length.value))
+
+        assert str(bad_padding.value) == str(wrong_length.value)
+
+    def test_cryptodome_message_wrong_key(self):
+        config = pnconf_file_copy()
+        config.cipher_key = self.cipher_key
+        config.use_random_initialization_vector = True
+        crypto = PubNubCryptodome(config)
+        encrypted = crypto.encrypt(self.cipher_key, 'a secret message', use_random_iv=True)
+
+        with pytest.raises(PubNubException) as exc_info:
+            crypto.decrypt('totallyWrongKey', encrypted, use_random_iv=True)
+        self._assert_generic(str(exc_info.value))

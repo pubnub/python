@@ -1,5 +1,6 @@
 import hashlib
 import json
+import logging
 import secrets
 
 from abc import abstractmethod
@@ -79,15 +80,24 @@ class PubNubLegacyCryptor(PubNubCryptor):
             raise PubNubException('decryption error')
         cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, initialization_vector)
         if binary_mode:
-            return self.depad(cipher.decrypt(extracted_message), binary_mode)
+            try:
+                return self.depad(cipher.decrypt(extracted_message), binary_mode)
+            except (ValueError, IndexError) as e:
+                logging.debug(f'Decryption failed: {e}')
+                raise PubNubException('decryption error')
         try:
             plain = self.depad((cipher.decrypt(extracted_message)).decode('utf-8'), binary_mode)
         except UnicodeDecodeError as e:
             if not self.fallback_mode:
-                raise e
+                logging.debug(f'Decryption failed: {e}')
+                raise PubNubException('decryption error')
 
-            cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
-            plain = self.depad((cipher.decrypt(extracted_message)).decode('utf-8'), binary_mode)
+            try:
+                cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
+                plain = self.depad((cipher.decrypt(extracted_message)).decode('utf-8'), binary_mode)
+            except (UnicodeDecodeError, ValueError, IndexError) as fallback_error:
+                logging.debug(f'Decryption failed: {fallback_error}')
+                raise PubNubException('decryption error')
 
         try:
             return json.loads(plain)
@@ -156,7 +166,11 @@ class PubNubAesCbcCryptor(PubNubCryptor):
 
         cipher = AES.new(secret, mode=self.mode, iv=iv)
 
-        if binary_mode:
-            return unpad(cipher.decrypt(payload['data']), AES.block_size)
-        else:
-            return unpad(cipher.decrypt(payload['data']), AES.block_size).decode()
+        try:
+            if binary_mode:
+                return unpad(cipher.decrypt(payload['data']), AES.block_size)
+            else:
+                return unpad(cipher.decrypt(payload['data']), AES.block_size).decode()
+        except (ValueError, UnicodeDecodeError) as e:
+            logging.debug(f'Decryption failed: {e}')
+            raise PubNubException('decryption error')

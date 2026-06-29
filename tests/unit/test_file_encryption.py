@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 from pubnub.pubnub import PubNub
 from pubnub.crypto import PubNubFileCrypto, AesCbcCryptoModule, LegacyCryptoModule
+from pubnub.exceptions import PubNubException
 from Cryptodome.Cipher import AES
 from tests.helper import pnconf_file_copy
 
@@ -99,23 +100,24 @@ class TestPubNubFileCrypto:
         assert encrypted_cbc != encrypted_gcm
 
     def test_decrypt_with_wrong_key(self):
-        """Test decryption with wrong cipher key."""
+        """Test decryption with wrong cipher key raises instead of returning ciphertext."""
         encrypted_data = self.file_crypto.encrypt(self.cipher_key, self.test_data)
-
-        # Try to decrypt with wrong key - should return original encrypted data
         wrong_key = 'wrongKey'
-        result = self.file_crypto.decrypt(wrong_key, encrypted_data)
 
-        # With wrong key, should return the original encrypted data
-        assert result == encrypted_data
+        with pytest.raises(PubNubException) as exc_info:
+            self.file_crypto.decrypt(wrong_key, encrypted_data)
+
+        assert 'decryption error' in str(exc_info.value)
 
     def test_decrypt_invalid_data(self):
-        """Test decryption of invalid/corrupted data."""
+        """Test decryption of invalid/corrupted data raises instead of returning ciphertext."""
         invalid_data = b'this is not encrypted data'
 
-        # Should return the original data when decryption fails
-        result = self.file_crypto.decrypt(self.cipher_key, invalid_data)
-        assert result == invalid_data
+        # Should raise a generic decryption error when decryption fails
+        with pytest.raises(PubNubException) as exc_info:
+            self.file_crypto.decrypt(self.cipher_key, invalid_data)
+
+        assert 'decryption error' in str(exc_info.value)
 
     def test_fallback_cipher_mode(self):
         """Test fallback cipher mode functionality."""
@@ -264,10 +266,10 @@ class TestFileEncryptionIntegration:
             # Encrypt with key1
             encrypted_with_key1 = pubnub1.crypto.encrypt_file(file_content)
 
-            # Try to decrypt with key2 (should fail gracefully)
+            # Try to decrypt with key2. The default (legacy) crypto module has no padding
+            # integrity check, so a wrong key yields garbage rather than raising - but it
+            # must never return the original content.
             decrypted_with_wrong_key = pubnub2.crypto.decrypt_file(encrypted_with_key1)
-
-            # Should return empty bytes when decryption fails with wrong key
             assert decrypted_with_wrong_key != file_content
 
             # Decrypt with correct key

@@ -23,12 +23,4 @@ interactions:
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - ps.pndsn.com
-        - /v3/history/sub-key/sub-c-mock-key/channel/my-ch
-        - start=123&end=456&pnsdk=PubNub-Python-Asyncio%2F4.7.0&uuid=af9429d0-aa10-4919-9670-abe67a5c395f
-        - ''
 version: 1

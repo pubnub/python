@@ -44,10 +44,15 @@ class PubNubCryptodome(PubNubCrypto):
             plain = self.depad((cipher.decrypt(extracted_message)).decode('utf-8'))
         except UnicodeDecodeError as e:
             if not self.fallback_mode:
-                raise e
+                logging.debug(f'Decryption failed: {e}')
+                raise PubNubException('decryption error')
 
-            cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
-            plain = self.depad((cipher.decrypt(extracted_message)).decode('utf-8'))
+            try:
+                cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
+                plain = self.depad((cipher.decrypt(extracted_message)).decode('utf-8'))
+            except (UnicodeDecodeError, ValueError, IndexError) as fallback_error:
+                logging.debug(f'Decryption failed: {fallback_error}')
+                raise PubNubException('decryption error')
 
         try:
             return json.loads(plain)
@@ -103,11 +108,16 @@ class PubNubFileCrypto(PubNubCryptodome):
         try:
             cipher = AES.new(bytes(secret[0:32], "utf-8"), self.mode, initialization_vector)
             result = unpad(cipher.decrypt(extracted_file), 16)
-        except ValueError:
-            if not self.fallback_mode:  # No fallback mode so we return the original content
-                return file
-            cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
-            result = unpad(cipher.decrypt(extracted_file), 16)
+        except ValueError as e:
+            if not self.fallback_mode:
+                logging.debug(f'File decryption failed: {e}')
+                raise PubNubException('decryption error')
+            try:
+                cipher = AES.new(bytes(secret[0:32], "utf-8"), self.fallback_mode, initialization_vector)
+                result = unpad(cipher.decrypt(extracted_file), 16)
+            except ValueError as fallback_error:
+                logging.debug(f'File decryption failed: {fallback_error}')
+                raise PubNubException('decryption error')
 
         return result
 

@@ -14,10 +14,13 @@ This test file covers all crypto-related classes and methods in the PubNub Pytho
 - CryptoHeader and CryptorPayload (data structures)
 """
 
+import pytest
+
 from pubnub.crypto_core import (
     PubNubCrypto, CryptorPayload, PubNubCryptor,
     PubNubLegacyCryptor, PubNubAesCbcCryptor
 )
+from pubnub.exceptions import PubNubException
 from pubnub.pnconfiguration import PNConfiguration
 
 
@@ -1381,14 +1384,11 @@ class TestCryptoModuleErrorHandling:
         binary_data = bytes([0xFF, 0xFE, 0xFD, 0xFC] * 4)
         encrypted = cryptor.encrypt(binary_data)
 
-        try:
-            # Try to decrypt as text (non-binary mode)
-            result = cryptor.decrypt(encrypted, binary_mode=False)
-            # If no exception, should handle gracefully
-            assert result is not None
-        except (UnicodeDecodeError, ValueError) as e:
-            # Expected for invalid UTF-8
-            assert isinstance(e, (UnicodeDecodeError, ValueError))
+        # Decrypting non-utf-8 content as text (no fallback mode) surfaces a single
+        # generic decryption error rather than leaking the raw UnicodeDecodeError.
+        with pytest.raises(PubNubException) as exc_info:
+            cryptor.decrypt(encrypted, binary_mode=False)
+        assert 'decryption error' in str(exc_info.value)
 
     def test_json_parsing_error_handling(self):
         """Test handling of JSON parsing errors."""

@@ -22,14 +22,6 @@ interactions:
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - ps.pndsn.com
-        - /v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f
-        - pnsdk=PubNub-Python-Asyncio%2F4.7.0&r=1&signature=v2.Um4OSe_f8tRtFo2tuw0lmwE6Rq5wgjTHmfblkIyoZ4I&timestamp=1606303468&uuid=my_uuid&w=1
-        - ''
 - request:
     body: null
     headers:
@@ -53,12 +45,4 @@ interactions:
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - ps.pndsn.com
-        - /v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f
-        - g=0&j=0&l_pam=0.24709081649780273&m=0&pnsdk=PubNub-Python-Asyncio%2F4.7.0&r=0&signature=v2.NyyRFAQKOOpqAAAMlcN6wHg-cmHLwC6L7KgdEqwS7bY&timestamp=1606303468&u=0&uuid=my_uuid&w=0
-        - ''
 version: 1

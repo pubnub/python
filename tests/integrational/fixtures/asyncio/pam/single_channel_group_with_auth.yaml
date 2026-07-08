@@ -22,12 +22,4 @@ interactions:
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - http
-        - ps.pndsn.com
-        - /v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f
-        - auth=test-pam-asyncio-auth&channel-group=test-pam-asyncio-cg&pnsdk=PubNub-Python-Asyncio%2F4.1.0&r=1&signature=v2.Sjk_iz1y4xns4Mt3xuch3EWqgAJogNU6RJ6TCce-_3w&timestamp=1577189139&uuid=test-pam-asyncio-uuid&w=1
-        - ''
 version: 1

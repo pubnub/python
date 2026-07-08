@@ -1,5 +1,5 @@
 name: python
-version: 10.7.1
+version: 10.7.2
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-10.7.1
+            package-name: pubnub-10.7.2
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -94,8 +94,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-10.7.1
-            location: https://github.com/pubnub/python/releases/download/10.7.1/pubnub-10.7.1.tar.gz
+            package-name: pubnub-10.7.2
+            location: https://github.com/pubnub/python/releases/download/10.7.2/pubnub-10.7.2.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,15 @@ sdks:
                 license-url: https://github.com/encode/httpx/blob/master/LICENSE.md
                 is-required: Required
 changelog:
+  - date: 2026-07-08
+    version: 10.7.2
+    changes:
+      - type: bug
+        text: "`PubNubFileCrypto.decrypt` now raises `PubNubException('decryption error')` instead of returning the still-encrypted bytes on failure, so callers can no longer mistake ciphertext for plaintext."
+      - type: bug
+        text: "Cryptors now return a single generic error on any decryption failure instead of surfacing the underlying crypto-library message. Cause kept in debug logs only."
+      - type: improvement
+        text: "Strip dead python-object URL tags from asyncio VCR cassettes so vcrpy's hardened SafeLoader can deserialize them."
   - date: 2026-06-15
     version: 10.7.1
     changes:

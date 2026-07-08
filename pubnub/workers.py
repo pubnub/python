@@ -47,7 +47,8 @@ class BaseMessageWorker:
             try:
                 return self._pubnub.crypto.decrypt(message_input), None
             except Exception as exception:
-                logger.warning("could not decrypt message: \"%s\", due to error %s" % (message_input, str(exception)))
+                logger.warning("could not decrypt message, due to error %s" % str(exception))
+                logger.debug("could not decrypt message: \"%s\", due to error %s" % (message_input, str(exception)))
 
                 pn_status = PNStatus()
                 pn_status.category = PNStatusCategory.PNDecryptionErrorCategory

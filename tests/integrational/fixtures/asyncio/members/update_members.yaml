@@ -21,12 +21,4 @@ interactions:
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - http
-        - ps.pndsn.com
-        - /v1/objects/demo/spaces/value1/users
-        - include=custom,user,user.custom&pnsdk=PubNub-Python-Asyncio%2F4.1.0&uuid=8cc8fb7d-6bb8-4109-a6b9-750490d89e7a
-        - ''
 version: 1

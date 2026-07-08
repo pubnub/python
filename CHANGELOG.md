@@ -1,3 +1,13 @@
+## 10.7.2
+July 08 2026
+
+#### Fixed
+- `PubNubFileCrypto.decrypt` now raises `PubNubException('decryption error')` instead of returning the still-encrypted bytes on failure, so callers can no longer mistake ciphertext for plaintext.
+- Cryptors now return a single generic error on any decryption failure instead of surfacing the underlying crypto-library message. Cause kept in debug logs only.
+
+#### Modified
+- Strip dead python-object URL tags from asyncio VCR cassettes so vcrpy's hardened SafeLoader can deserialize them.
+
 ## 10.7.1
 June 15 2026
 

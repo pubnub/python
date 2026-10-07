@@ -6,6 +6,7 @@ from pubnub.exceptions import PubNubException
 from pubnub.enums import HttpMethod, PNOperationType
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.v3.access_manager import PNGrantTokenResult
+from pubnub.models.consumer.v3.category import Category
 from pubnub.models.consumer.v3.channel import Channel
 from pubnub.models.consumer.v3.group import Group
 from pubnub.models.consumer.v3.space import Space
@@ -24,7 +25,8 @@ class GrantToken(Endpoint):
 
     def __init__(self, pubnub, channels: Union[str, List[str]] = None, channel_groups: Union[str, List[str]] = None,
                  users: Union[str, List[str]] = None, spaces: Union[str, List[str]] = None,
-                 authorized_user_id: str = None, ttl: Optional[int] = None, meta: Optional[any] = None):
+                 authorized_user_id: str = None, ttl: Optional[int] = None, meta: Optional[any] = None,
+                 categories: Optional[List[Category]] = None):
         Endpoint.__init__(self, pubnub)
         self._ttl = ttl
         self._meta = meta
@@ -41,6 +43,10 @@ class GrantToken(Endpoint):
         self._uuids = []
         if users:
             utils.extend_list(self._uuids, users)
+
+        self._categories = []
+        if categories:
+            utils.extend_list(self._categories, categories)
 
         self._sort_params = True
 
@@ -80,6 +86,10 @@ class GrantToken(Endpoint):
         self._uuids = uuids
         return self
 
+    def categories(self, categories: List[Category]) -> 'GrantToken':
+        self._categories = categories
+        return self
+
     def custom_params(self):
         return {}
 
@@ -98,6 +108,11 @@ class GrantToken(Endpoint):
 
         permissions['resources'] = resources
         permissions['patterns'] = patterns
+
+        if self._categories:
+            permissions['categories'] = {
+                category.get_id(): utils.calculate_bitmask(category) for category in self._categories
+            }
 
         if self._meta:
             if isinstance(self._meta, dict):
@@ -148,7 +163,7 @@ class GrantToken(Endpoint):
         return "Grant Token"
 
     def validate_resources(self):
-        if not any((self._channels, self._groups, self._uuids)):
+        if not any((self._channels, self._groups, self._uuids, self._categories)):
             raise PubNubException(pn_error=PNERR_RESOURCES_MISSING)
 
     def validate_ttl(self):

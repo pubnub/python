@@ -15,6 +15,7 @@ class Grant(Endpoint):
         self._channels = []
         self._groups = []
         self._uuids = []
+        self._categories = []
         self._read = None
         self._write = None
         self._manage = None
@@ -52,6 +53,15 @@ class Grant(Endpoint):
 
     def channel_groups(self, channel_groups):
         utils.extend_list(self._groups, channel_groups)
+        return self
+
+    def categories(self, categories):
+        """ Grants category-level (enumeration) permissions on a whole App Context resource type.
+
+        Supported values are `channels` and `uuids`. Requires an auth key and allows
+        only the `get` permission; the server rejects anything else. Revoke with `get(False)`.
+        """
+        utils.extend_list(self._categories, categories)
         return self
 
     def read(self, flag):
@@ -117,6 +127,9 @@ class Grant(Endpoint):
 
         if self._uuids:
             params['target-uuid'] = utils.join_items(self._uuids)
+
+        if self._categories:
+            params['category'] = utils.join_items(self._categories)
 
         if self._ttl is not None:
             params['ttl'] = str(int(self._ttl))

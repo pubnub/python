@@ -431,6 +431,15 @@ class TokenManager:
                         token[resource_type][resource]
                     )
 
+        categories = {}
+        for wire_key, category_name in (("chan", "channels"), ("uuid", "uuids")):
+            permissions = token.get("cat", {}).get(wire_key)
+            if permissions is not None:
+                categories[category_name] = {"get": utils.has_get_permission(permissions)}
+
+        if categories:
+            parsed_token["categories"] = categories
+
         return parsed_token
 
     @staticmethod

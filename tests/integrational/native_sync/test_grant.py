@@ -1,4 +1,5 @@
 from pubnub.pubnub import PubNub
+from pubnub.models.consumer.v3.category import Category
 from pubnub.models.consumer.v3.channel import Channel
 from pubnub.models.consumer.v3.group import Group
 from tests.integrational.vcr_helper import pn_vcr
@@ -43,3 +44,61 @@ def test_grant_token():
 
     assert isinstance(envelope.result, PNGrantTokenResult)
     assert envelope.result.get_token()
+
+
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/native_sync/pam/category_grant.yaml',
+    filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'timestamp', 'signature']
+)
+def test_grant_categories():
+    auth = "category-auth-key"
+
+    envelope = pubnub.grant()\
+        .auth_keys(auth)\
+        .categories(['channels', 'uuids'])\
+        .get(True)\
+        .ttl(1440)\
+        .sync()
+
+    assert isinstance(envelope.result, PNAccessManagerGrantResult)
+    assert envelope.result.level == 'category'
+    assert envelope.result.categories['channels'].auth_keys[auth].get is True
+    assert envelope.result.categories['uuids'].auth_keys[auth].get is True
+
+
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/native_sync/pam/category_grant_with_channel.yaml',
+    filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'timestamp', 'signature']
+)
+def test_grant_categories_with_channel():
+    """ A combined grant keeps its resource-level `level` and reports the category in addition. """
+    auth = "category-auth-key"
+
+    envelope = pubnub.grant()\
+        .auth_keys(auth)\
+        .channels("ch1")\
+        .categories(['channels'])\
+        .get(True)\
+        .ttl(1440)\
+        .sync()
+
+    assert isinstance(envelope.result, PNAccessManagerGrantResult)
+    assert envelope.result.level == 'channel+auth'
+    assert envelope.result.channels['ch1'].auth_keys[auth].get is True
+    assert envelope.result.categories['channels'].auth_keys[auth].get is True
+
+
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/native_sync/pam/category_grant_token.yaml',
+    filter_query_parameters=['uuid', 'seqn', 'pnsdk', 'timestamp', 'signature']
+)
+def test_grant_token_categories():
+    envelope = pubnub.grant_token()\
+        .categories([Category.channels().get(), Category.uuids().get()])\
+        .ttl(1440)\
+        .sync()
+
+    assert isinstance(envelope.result, PNGrantTokenResult)
+
+    parsed = pubnub.parse_token(envelope.result.get_token())
+    assert parsed['categories'] == {'channels': {'get': True}, 'uuids': {'get': True}}

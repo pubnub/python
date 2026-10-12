@@ -83,6 +83,7 @@ from pubnub.models.consumer.message_actions import PNMessageAction
 from pubnub.models.consumer.objects_v2.channel_members import PNUUID
 from pubnub.models.consumer.objects_v2.common import MemberIncludes, MembershipIncludes
 from pubnub.models.consumer.objects_v2.page import PNPage
+from pubnub.models.consumer.v3.category import Category
 from pubnub.models.subscription import PubNubChannel, PubNubChannelGroup, PubNubChannelMetadata, PubNubUserMetadata, \
     PNSubscriptionRegistry, PubNubSubscriptionSet
 
@@ -571,7 +572,8 @@ class PubNubCore:
         spaces: Union[str, List[str]] = None,
         authorized_user_id: str = None,
         ttl: Optional[int] = None,
-        meta: Optional[Any] = None
+        meta: Optional[Any] = None,
+        categories: Optional[List[Category]] = None
     ) -> GrantToken:
         return GrantToken(
             self,
@@ -581,7 +583,8 @@ class PubNubCore:
             spaces=spaces,
             authorized_user_id=authorized_user_id,
             ttl=ttl,
-            meta=meta
+            meta=meta,
+            categories=categories
         )
 
     def revoke_token(self, token: str) -> RevokeToken:

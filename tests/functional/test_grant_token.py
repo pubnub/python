@@ -2,6 +2,7 @@ import json
 import unittest
 
 from pubnub.endpoints.access.grant_token import GrantToken
+from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.v3.category import Category
 from pubnub.models.consumer.v3.channel import Channel
 from pubnub.models.consumer.v3.uuid import UUID
@@ -57,3 +58,25 @@ class TestGrantTokenCategories(unittest.TestCase):
         grant_token = GrantToken(self.pubnub, ttl=1440).channels([Channel.id('ch1').read()])
 
         self.assertEqual(sorted(self.permissions(grant_token).keys()), ['meta', 'patterns', 'resources'])
+
+
+class TestGrantTokenCategoryValidation(unittest.TestCase):
+    def setUp(self):
+        self.pubnub = PubNub(pnconf_pam_copy())
+
+    def test_valid_category(self):
+        GrantToken(self.pubnub, categories=[Category.channels().get()]).ttl(60).validate_categories()
+
+    def test_non_get_permission_rejected(self):
+        category = Category.channels().get()
+        category._read = True
+        with self.assertRaises(PubNubException):
+            GrantToken(self.pubnub, categories=[category]).validate_categories()
+
+    def test_no_permission_rejected(self):
+        with self.assertRaises(PubNubException):
+            GrantToken(self.pubnub, categories=[Category.uuids()]).validate_categories()
+
+    def test_unknown_category_rejected(self):
+        with self.assertRaises(PubNubException):
+            GrantToken(self.pubnub, categories=[Category('users').get()]).validate_categories()

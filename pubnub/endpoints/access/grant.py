@@ -8,6 +8,7 @@ from pubnub.models.consumer.access_manager import PNAccessManagerGrantResult
 
 class Grant(Endpoint):
     GRANT_PATH = "/v2/auth/grant/sub-key/%s"
+    SUPPORTED_CATEGORIES = ("channels", "uuids")
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
@@ -161,6 +162,32 @@ class Grant(Endpoint):
         if self._write is None and self._read is None and self._manage is None and self._get is None \
                 and self._update is None and self._join is None:
             raise PubNubException(pn_error=PNERR_PAM_NO_FLAGS)
+
+        self.validate_categories()
+
+    def validate_categories(self):
+        if not self._categories:
+            return
+
+        invalid = [category for category in self._categories if category not in self.SUPPORTED_CATEGORIES]
+        if invalid:
+            raise PubNubException(
+                pn_error=PNERR_PAM_INVALID_ARGUMENTS,
+                errormsg="Unsupported categories: %s. Only 'channels' and 'uuids' are supported" % ", ".join(
+                    str(category) for category in invalid))
+
+        if not self._auth_keys:
+            raise PubNubException(pn_error=PNERR_PAM_INVALID_ARGUMENTS,
+                                  errormsg="Category grants require providing non empty authKeys")
+
+        if any(flag is True for flag in (self._read, self._write, self._manage, self._delete, self._update,
+                                         self._join)):
+            raise PubNubException(pn_error=PNERR_PAM_INVALID_ARGUMENTS,
+                                  errormsg="Category grants allow only the 'get' permission")
+
+        if self._get is True and self._ttl is not None and int(self._ttl) == 1:
+            raise PubNubException(pn_error=PNERR_PAM_INVALID_ARGUMENTS,
+                                  errormsg="One-minute (ttl=1) category grants are not supported")
 
     def create_response(self, envelope):
         return PNAccessManagerGrantResult.from_json(envelope['payload'])

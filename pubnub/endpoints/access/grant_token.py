@@ -1,9 +1,10 @@
 from typing import Union, List, Optional
 from pubnub import utils
 from pubnub.endpoints.endpoint import Endpoint
-from pubnub.errors import PNERR_TTL_MISSING, PNERR_INVALID_META, PNERR_RESOURCES_MISSING
+from pubnub.errors import PNERR_TTL_MISSING, PNERR_INVALID_META, PNERR_RESOURCES_MISSING, \
+    PNERR_PAM_INVALID_ARGUMENTS
 from pubnub.exceptions import PubNubException
-from pubnub.enums import HttpMethod, PNOperationType
+from pubnub.enums import HttpMethod, PNOperationType, PAMPermissions
 from pubnub.models.consumer.common import PNStatus
 from pubnub.models.consumer.v3.access_manager import PNGrantTokenResult
 from pubnub.models.consumer.v3.category import Category
@@ -140,6 +141,7 @@ class GrantToken(Endpoint):
         self.validate_secret_key()
         self.validate_ttl()
         self.validate_resources()
+        self.validate_categories()
 
     def create_response(self, envelope) -> PNGrantTokenResult:
         return PNGrantTokenResult.from_json(envelope['data'])
@@ -165,6 +167,17 @@ class GrantToken(Endpoint):
     def validate_resources(self):
         if not any((self._channels, self._groups, self._uuids, self._categories)):
             raise PubNubException(pn_error=PNERR_RESOURCES_MISSING)
+
+    def validate_categories(self):
+        for category in self._categories:
+            if not isinstance(category, Category) or category.get_id() not in (Category.CHANNELS, Category.UUIDS):
+                raise PubNubException(
+                    pn_error=PNERR_PAM_INVALID_ARGUMENTS,
+                    errormsg="Unsupported category. Only Category.channels() and Category.uuids() are supported")
+
+            if utils.calculate_bitmask(category) != PAMPermissions.GET.value:
+                raise PubNubException(pn_error=PNERR_PAM_INVALID_ARGUMENTS,
+                                      errormsg="Category permissions must be exactly the 'get' permission")
 
     def validate_ttl(self):
         if not self._ttl:

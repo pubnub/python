@@ -3,6 +3,7 @@ import unittest
 from pubnub import utils
 from pubnub.endpoints.access.grant import Grant
 from pubnub.enums import HttpMethod
+from pubnub.exceptions import PubNubException
 
 try:
     from mock import MagicMock
@@ -131,3 +132,33 @@ class TestGrant(unittest.TestCase):
             'channel-group': 'gr1,gr2',
             'signature': "v2." + utils.sign_sha256(pnconf_pam.secret_key, sign_input).rstrip("=")
         })
+
+
+class TestGrantCategoryValidation(unittest.TestCase):
+    def setUp(self):
+        self.pubnub = MagicMock(spec=PubNub, config=pnconf_pam, sdk_name=sdk_name,
+                                timestamp=MagicMock(return_value=123), uuid=None)
+        self.pubnub.uuid = "UUID_GrantUnitTest"
+        self.grant = Grant(self.pubnub)
+
+    def test_valid_category_grant(self):
+        self.grant.auth_keys('a').categories(['channels', 'uuids']).get(True).validate_params()
+
+    def test_unknown_category_rejected(self):
+        with self.assertRaises(PubNubException):
+            self.grant.auth_keys('a').categories(['users']).get(True).validate_params()
+
+    def test_category_requires_auth(self):
+        with self.assertRaises(PubNubException):
+            self.grant.categories(['channels']).get(True).validate_params()
+
+    def test_category_rejects_other_permissions(self):
+        with self.assertRaises(PubNubException):
+            self.grant.auth_keys('a').categories(['channels']).get(True).read(True).validate_params()
+
+    def test_category_one_minute_grant_rejected(self):
+        with self.assertRaises(PubNubException):
+            self.grant.auth_keys('a').categories(['channels']).get(True).ttl(1).validate_params()
+
+    def test_category_one_minute_revoke_allowed(self):
+        self.grant.auth_keys('a').categories(['channels']).get(False).ttl(1).validate_params()

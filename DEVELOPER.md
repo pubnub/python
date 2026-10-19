@@ -20,9 +20,7 @@ Run the unit, functional, and integrational tests (with coverage):
 python scripts/run-tests.py
 ```
 
-This runs `py.test tests --cov=pubnub --ignore=tests/manual/`. Integrational tests replay recorded HTTP interactions (VCR cassettes), so they don't need real keys.
-
-Acceptance tests use `behave`. The `.feature` files come from the `sdk-specifications` repository and are copied into `tests/acceptance/` by CI (see the `acceptance` job in `run-tests.yml`). They run against the PubNub mock server, so they are not practical to run locally without it. Run one suite with, for example, `behave tests/acceptance/pam`.
+This runs `py.test tests --cov=pubnub --ignore=tests/manual/`.
 
 ## Linting
 

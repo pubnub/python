@@ -1,3 +1,5 @@
+<img width="1920" height="600" alt="python-header" src="https://github.com/user-attachments/assets/d938cfc9-0e67-4286-9eba-e7697472455a" />
+
 # PubNub Python SDK
 
 [![PyPI](https://img.shields.io/pypi/v/pubnub.svg)](https://pypi.org/project/pubnub/)

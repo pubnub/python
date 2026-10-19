@@ -1,0 +1,26 @@
+interactions:
+- request:
+    body: '{"ttl": 1440, "permissions": {"resources": {"channels": {}, "groups": {},
+      "uuids": {}, "users": {}, "spaces": {}}, "patterns": {"channels": {}, "groups":
+      {}, "uuids": {}, "users": {}, "spaces": {}}, "categories": {"channels": 32,
+      "uuids": 32}, "meta": {}}}'
+    headers:
+      Content-Type:
+      - application/json
+      User-Agent:
+      - PubNub-Python
+    method: POST
+    uri: https://ps.pndsn.com/v3/pam/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f/grant
+  response:
+    body:
+      string: '{"status":200,"data":{"message":"Success","token":"qGF2AmF0GmFLd-NjdHRsGQWgY3Jlc6BjcGF0oGRtZXRhoGNjYXSiZGNoYW4YIGR1dWlkGCBjc2lnRAECAwQ="},"service":"Access
+        Manager"}'
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Cache-Control: no-cache, no-store, must-revalidate
+      Connection: keep-alive
+      Content-Type: application/json
+    status:
+      code: 200
+      message: OK
+version: 1

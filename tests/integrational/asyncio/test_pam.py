@@ -1,6 +1,7 @@
 import pytest
 
 from pubnub.models.consumer.access_manager import PNAccessManagerGrantResult
+from pubnub.models.consumer.v3.category import Category
 from pubnub.pubnub_asyncio import PubNubAsyncio
 from tests.helper import pnconf_pam_copy
 from tests.integrational.vcr_helper import pn_vcr
@@ -223,5 +224,70 @@ async def test_multiple_channel_groups_with_auth():
     assert env.result.groups[gr2].auth_keys[auth].manage_enabled is False
     assert env.result.groups[gr1].auth_keys[auth].delete_enabled is False
     assert env.result.groups[gr2].auth_keys[auth].delete_enabled is False
+
+    await pubnub.stop()
+
+
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/pam/category_grant.yaml',
+    filter_query_parameters=['signature', 'timestamp', 'pnsdk', 'l_pam']
+)
+@pytest.mark.asyncio
+async def test_category_grant():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
+    pubnub.config.uuid = "my_uuid"
+    auth = "test-pam-asyncio-auth"
+
+    env = await pubnub.grant().auth_keys(auth).categories(['channels', 'uuids']).get(True).ttl(1440).future()
+
+    assert isinstance(env.result, PNAccessManagerGrantResult)
+    assert env.result.level == 'category'
+    assert env.result.categories['channels'].auth_keys[auth].get is True
+    assert env.result.categories['uuids'].auth_keys[auth].get is True
+    assert env.result.categories['channels'].auth_keys[auth].read_enabled is False
+    assert env.result.categories['channels'].auth_keys[auth].write_enabled is False
+
+    await pubnub.stop()
+
+
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/pam/category_revoke.yaml',
+    filter_query_parameters=['signature', 'timestamp', 'pnsdk', 'l_pam']
+)
+@pytest.mark.asyncio
+async def test_category_revoke():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
+    pubnub.config.uuid = "my_uuid"
+    auth = "test-pam-asyncio-auth"
+
+    env = await pubnub.grant().auth_keys(auth).categories(['channels']).get(False).future()
+
+    assert isinstance(env.result, PNAccessManagerGrantResult)
+    assert env.result.categories['channels'].auth_keys[auth].get is False
+
+    await pubnub.stop()
+
+
+@pn_vcr.use_cassette(
+    'tests/integrational/fixtures/asyncio/pam/category_grant_token.yaml',
+    filter_query_parameters=['signature', 'timestamp', 'pnsdk', 'l_pam', 'uuid', 'seqn']
+)
+@pytest.mark.asyncio
+async def test_category_grant_token():
+    pubnub = PubNubAsyncio(pnconf_pam_copy())
+    pubnub.config.uuid = "my_uuid"
+
+    env = await pubnub.grant_token(
+        categories=[Category.channels().get(), Category.uuids().get()],
+        ttl=1440
+    ).future()
+
+    # `GrantToken` overrides `sync()` to wrap the result, but not `future()`, so the asyncio path
+    # yields a bare Envelope.
+    token = env.result.get_token()
+    assert token
+
+    parsed = pubnub.parse_token(token)
+    assert parsed['categories'] == {'channels': {'get': True}, 'uuids': {'get': True}}
 
     await pubnub.stop()

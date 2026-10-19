@@ -4,7 +4,8 @@ Possible responses of PAM request
 
 
 class _PAMResult:
-    def __init__(self, level, subscribe_key, channels, groups, uuids, ttl=None, r=None, w=None, m=None, d=None):
+    def __init__(self, level, subscribe_key, channels, groups, uuids, ttl=None, r=None, w=None, m=None, d=None,
+                 categories=None):
         self.level = level
         self.subscribe_key = subscribe_key
         self.channels = channels
@@ -15,12 +16,14 @@ class _PAMResult:
         self.write_enabled = w
         self.manage_enabled = m
         self.delete_enabled = d
+        self.categories = categories if categories is not None else {}
 
     @classmethod
     def from_json(cls, json_input):
         constructed_channels = {}
         constructed_groups = {}
         constructed_uuids = {}
+        constructed_categories = {}
 
         # only extract ttl, others are to be fetched on per uuid level
         r, w, m, d, g, u, j, ttl = fetch_permissions(json_input)
@@ -72,6 +75,10 @@ class _PAMResult:
             for uuid, value in json_input['uuids'].items():
                 constructed_uuids[uuid] = PNAccessManagerUuidsData.from_json(uuid, value)
 
+        if 'categories' in json_input:
+            for category_name, value in json_input['categories'].items():
+                constructed_categories[category_name] = PNAccessManagerCategoryData.from_json(category_name, value)
+
         return cls(
             level=json_input['level'],
             subscribe_key=json_input['subscribe_key'],
@@ -83,6 +90,7 @@ class _PAMResult:
             m=m,
             d=d,
             ttl=ttl,
+            categories=constructed_categories,
         )
 
 
@@ -133,6 +141,10 @@ class PNAccessManagerChannelGroupData(_PAMEntityData):
 
 
 class PNAccessManagerUuidsData(_PAMEntityData):
+    pass
+
+
+class PNAccessManagerCategoryData(_PAMEntityData):
     pass
 
 

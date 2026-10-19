@@ -1,0 +1,21 @@
+interactions:
+- request:
+    body: null
+    headers:
+      User-Agent:
+      - PubNub-Python
+    method: GET
+    uri: https://ps.pndsn.com/v2/auth/grant/sub-key/sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f?auth=category-auth-key&category=channels&channel=ch1&g=1&ttl=1440
+  response:
+    body:
+      string: '{"message":"Success","payload":{"level":"channel+auth","subscribe_key":"sub-c-7ba2ac4c-4836-11e6-85a4-0619f8945a4f","ttl":1440,"channels":{"ch1":{"auths":{"category-auth-key":{"r":0,"w":0,"m":0,"d":0,"g":1,"u":0,"j":0}}}},"categories":{"channels":{"auths":{"category-auth-key":{"r":0,"w":0,"m":0,"d":0,"g":1,"u":0,"j":0}}}}},"service":"Access
+        Manager","status":200}'
+    headers:
+      Access-Control-Allow-Origin: '*'
+      Cache-Control: no-cache, no-store, must-revalidate
+      Connection: keep-alive
+      Content-Type: text/javascript; charset=UTF-8
+    status:
+      code: 200
+      message: OK
+version: 1

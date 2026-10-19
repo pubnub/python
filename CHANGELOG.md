@@ -1,3 +1,9 @@
+## 10.8.0
+October 19 2026
+
+#### Added
+- Add category-level permissions for App Context enumeration.
+
 ## 10.7.2
 July 08 2026
 

@@ -55,18 +55,16 @@ from pubnub.pnconfiguration import PNConfiguration
 from pubnub.pubnub import PubNub
 
 
-class Listener(SubscribeCallback):
+class StatusListener(SubscribeCallback):
     def __init__(self):
         self.connected = Event()
-        self.received = Event()
 
     def status(self, pubnub, status):
         if status.category == PNStatusCategory.PNConnectedCategory:
             self.connected.set()
 
     def message(self, pubnub, message):
-        print(message.message)
-        self.received.set()
+        pass
 
     def presence(self, pubnub, presence):
         pass
@@ -78,21 +76,32 @@ config.publish_key = "YOUR_PUBLISH_KEY"
 config.user_id = "hello-world-user"
 
 pubnub = PubNub(config)
-listener = Listener()
+listener = StatusListener()
 pubnub.add_listener(listener)
 
+received = Event()
+
+
+def on_message(message):
+    print(message.message)
+    received.set()
+
+
+subscription = pubnub.channel("hello_world").subscription()
+subscription.on_message = on_message
+
 try:
-    pubnub.subscribe().channels("hello_world").execute()
+    subscription.subscribe()
 
     if not listener.connected.wait(timeout=10):
         raise TimeoutError("Timed out waiting for the subscription to connect")
 
     pubnub.publish().channel("hello_world").message("Hello world").sync()
 
-    if not listener.received.wait(timeout=10):
+    if not received.wait(timeout=10):
         raise TimeoutError("Timed out waiting for the message")
 finally:
-    pubnub.unsubscribe().channels("hello_world").execute()
+    subscription.unsubscribe()
     pubnub.remove_listener(listener)
     pubnub.stop()
 ```

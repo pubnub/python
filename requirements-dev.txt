@@ -11,5 +11,5 @@ aiohttp>=3.10.11,<3.11
 cbor2>=5.6
 behave>=1.2.6
 vcrpy>=6.0.2
-urllib3>=1.26.19,<2
+urllib3>=2.0
 busypie>=0.5.1

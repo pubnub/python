@@ -1,47 +1,69 @@
-# Developers manual
+# Developer guide
 
 ## Supported Python versions
-We support Python 3.7, 3.8, 3.9, 3.10
 
-## Supported platforms
-We maintain and test our SDK using Travis.CI and Ubuntu.
-Windows/MacOS/BSD platforms support was verified only once, after SDK v4.0 release. We did not test the newer releases with these platforms.
+Python 3.9–3.13. This matches `python_requires` in `setup.py` and the CI matrix in `.github/workflows/run-tests.yml`.
 
-## Event Loop Frameworks
-### Native (`threading`)
-Native implementation concerns using `requests` library (https://github.com/requests/requests), a wrapper for a lower level urllib3 (https://github.com/shazow/urllib3).
-urllib2 is not supported, there is an outline of request handler for it (which doesn't work, just the outline) can be found at (https://github.com/pubnub/python/blob/master/pubnub/request_handlers/urllib2_handler.py).
-All listed Python versions are supported.
+## Setup
 
-#### sync
-Synchronous calls can be invoked by using `sync()` call. This will return Envelope object https://github.com/pubnub/python/blob/037a6829c341471c2c78a7a429f02dec671fd791/pubnub/structures.py#L79-L82 which wraps both Result and Status. All exceptions are triggered natively using `raise Exception` syntax. The idea was to use 2 types of final execution methods like in Asyncio/Tornado. These fixes are postponed until next major release (v5.0.0):
-- `result()` should return just Response and natively raise an exception if there is one
-- `sync()` should return Envelope(as is now), but do not raise any exceptions
-The work on it has been started in branch 'fix-errors-handling', but as were mentioned above, was postponed.
+Use a virtual environment, then install the development dependencies from the repository root:
 
-#### async
-Asynchronous calls are implemented by using threads (`threading` module https://docs.python.org/3/library/threading.html). The passed-in to async() functinon callback will be called with a response or an error.
-
-### Asyncio
-Asyncio library is supported since Python 3.4.
-There are 2 types of calls:
-- using `result()` - only a result will be returned; in case of exception it will be raised natively
-- using `future()` - a wrapper (Envelope) for a result and a status; in case of exception it can be checked using env.is_error()
-
-You can find more examples here https://github.com/pubnub/python/blob/master/tests/integrational/asyncio/test_invocations.py
-
-## Tests
-* Test runner: py.test
-* Source code checker: flake
-* BDD tests runner: behave - one needs to place needed feature file under acceptance/name_of_the_feature directory.
-   An example: `behave tests/acceptance/pam`
-
-## Daemon mode with Native SDK
-Daemon mode for all requests are disabled by default. This means that all asynchronous requests including will block the main thread until all the children be closed. If SDK user want to use Java-like behaviour when it's up to him to decide should he wait for response completion or continue program execution, he has to explicitly set daemon mode to true:
-
-```python
-pubnub.config.daemon = True
+```sh
+./scripts/install.sh
 ```
 
-## SubscribeListener
-SubscribeListeners for all implementations are helpers developed to simplify tests behaviour.  They can be used by SDK end-user, but  are not well tested and can't be found in any documentation.
+## Tests
+
+Run the unit, functional, and integrational tests (with coverage):
+
+```sh
+python scripts/run-tests.py
+```
+
+This runs `py.test tests --cov=pubnub --ignore=tests/manual/`.
+
+## Linting
+
+CI runs flake8 in `.github/workflows/run-validations.yml`. To run the same check locally:
+
+```sh
+flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/,venv/ --ignore F811,E402
+```
+
+## Pull requests
+
+- Include tests for behavioral changes and keep the test matrix green on all supported Python versions.
+
+## Clients and call styles
+
+`PubNub` (native threads) and `PubNubAsyncio` (`pubnub.pubnub_asyncio`) share the same endpoint builders. The method that finishes the call decides how it runs.
+
+### Native (`threading`)
+
+`PubNub` uses `HttpxRequestHandler` (with HTTP/2 support) by default. A different handler can be passed as `custom_request_handler`, set with `set_request_handler`, or selected with the `PUBNUB_REQUEST_HANDLER` environment variable. A `requests`-based handler is also included.
+
+- `sync()` blocks and returns an `Envelope` (`result` and `status`). If the request fails, it raises the underlying exception.
+- `pn_async(callback)` runs the request on a thread and calls `callback(result, status)`. Check `status.is_error()` for failures.
+
+### Asyncio
+
+Create the client with `PubNubAsyncio` and call these inside the event loop:
+
+- `await ....result()` returns the result and raises on failure.
+- `await ....future()` returns an `Envelope`. Check `envelope.status.is_error()` for failures.
+
+For more usage, see `tests/integrational/asyncio/test_invocations.py`.
+
+## Daemon mode (native threads)
+
+`config.daemon` defaults to `False`. Threads started by `pn_async()` are then non-daemon, so the interpreter waits for them before exiting. To let the process exit without waiting for in-flight asynchronous requests, set it before making calls:
+
+```python
+pnconfig.daemon = True
+```
+
+This setting is read when each `pn_async()` request thread is created. It does not affect the subscribe loop or the heartbeat timer, which always run as daemon threads.
+
+## SubscribeListener helpers
+
+`pubnub.pubnub.SubscribeListener` (native) and `pubnub.pubnub_asyncio.SubscribeListener` (asyncio) are helpers that expose connection state and queue incoming events so code (mostly tests) can wait for them. They are documented in their docstrings and used by `examples/native_threads/subscribe.py` and the integrational tests. They are not covered by the public SDK documentation, so prefer `SubscribeCallback` in application code.

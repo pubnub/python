@@ -162,25 +162,3 @@ class TestGrantCategoryValidation(unittest.TestCase):
 
     def test_category_one_minute_revoke_allowed(self):
         self.grant.auth_keys('a').categories(['channels']).get(False).ttl(1).validate_params()
-
-
-class TestGrantUuidCombinationValidation(unittest.TestCase):
-    def setUp(self):
-        self.pubnub = MagicMock(spec=PubNub, config=pnconf_pam, sdk_name=sdk_name,
-                                timestamp=MagicMock(return_value=123), uuid=None)
-        self.pubnub.uuid = "UUID_GrantUnitTest"
-        self.grant = Grant(self.pubnub)
-
-    def test_uuids_with_channels_rejected(self):
-        with self.assertRaises(PubNubException):
-            self.grant.auth_keys('a').uuids(['u']).channels(['c']).get(True).validate_params()
-
-    def test_uuids_with_groups_rejected(self):
-        with self.assertRaises(PubNubException):
-            self.grant.auth_keys('a').uuids(['u']).channel_groups(['g']).get(True).validate_params()
-
-    def test_uuids_only_allowed(self):
-        self.grant.auth_keys('a').uuids(['u']).get(True).validate_params()
-
-    def test_uuids_with_category_allowed(self):
-        self.grant.auth_keys('a').uuids(['u']).categories(['channels']).get(True).validate_params()

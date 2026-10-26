@@ -1,3 +1,9 @@
+## 10.8.1
+October 26 2026
+
+#### Fixed
+- Reject uuids combined with channels or groups (grant-v2).
+
 ## 10.8.0
 October 19 2026
 

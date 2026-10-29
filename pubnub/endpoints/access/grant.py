@@ -149,7 +149,7 @@ class Grant(Endpoint):
         self.validate_publish_key()
         # self.validate_channels_and_groups()
 
-        if self._channels and self._groups and self._uuids:
+        if self._uuids and (self._channels or self._groups):
             raise PubNubException(
                 pn_error=PNERR_PAM_INVALID_ARGUMENTS,
                 errormsg="Grants for channels or channelGroups can't be changed together with grants for UUIDs")

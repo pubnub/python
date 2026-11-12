@@ -18,9 +18,6 @@ jobs:
         run: |
           pip3 install --user --ignore-installed -r requirements-dev.txt
           flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/,venv/ --ignore F811,E402
-      - name: Cancel workflow runs for commit on error
-        if: failure()
-        uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   pubnub-yml:
     name: "Validate .pubnub.yml"
     runs-on:
@@ -39,9 +36,6 @@ jobs:
         uses: ./.github/.release/actions/actions/validators/pubnub-yml
         with:
           token: ${{ secrets.GH_TOKEN }}
-      - name: Cancel workflow runs for commit on error
-        if: failure()
-        uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   all-validations:
     name: Validations
     needs: [pubnub-yml, lint]

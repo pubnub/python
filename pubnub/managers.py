@@ -2,6 +2,7 @@ import logging
 from abc import abstractmethod, ABCMeta
 
 import base64
+import binascii
 import random
 
 from cbor2 import loads
@@ -401,6 +402,14 @@ class TokenManager:
     def parse_token(cls, token):
         token = cls.unwrap_token(token)
 
+        try:
+            return cls._parse_unwrapped_token(token)
+        except (KeyError, TypeError, AttributeError, ValueError):
+            raise PubNubException(pn_error=PNERR_INVALID_ACCESS_TOKEN,
+                                  errormsg="token payload is missing required fields or has the wrong shape")
+
+    @staticmethod
+    def _parse_unwrapped_token(token):
         parsed_token = {
             "version": token["v"],
             "timestamp": token["t"],
@@ -444,13 +453,23 @@ class TokenManager:
 
     @staticmethod
     def unwrap_token(token):
+        if not isinstance(token, str) or len(token) == 0:
+            raise PubNubException(pn_error=PNERR_INVALID_ACCESS_TOKEN, errormsg="token must be a non-empty string")
+
         token = token.replace("_", "/").replace("-", "+")
-        byte_array = base64.b64decode(token)
+
+        try:
+            byte_array = base64.b64decode(token)
+        except (binascii.Error, ValueError):
+            raise PubNubException(pn_error=PNERR_INVALID_ACCESS_TOKEN, errormsg="token is not valid base64")
 
         try:
             unwrapped_obj = loads(byte_array)
             decoded_obj = utils.decode_utf8_dict(unwrapped_obj)
-
-            return decoded_obj
         except Exception:
             raise PubNubException(pn_error=PNERR_INVALID_ACCESS_TOKEN)
+
+        if not isinstance(decoded_obj, dict):
+            raise PubNubException(pn_error=PNERR_INVALID_ACCESS_TOKEN, errormsg="token payload is not a map")
+
+        return decoded_obj

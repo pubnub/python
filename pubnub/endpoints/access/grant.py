@@ -160,7 +160,7 @@ class Grant(Endpoint):
                                   )
 
         if self._write is None and self._read is None and self._manage is None and self._get is None \
-                and self._update is None and self._join is None:
+                and self._update is None and self._join is None and self._delete is None:
             raise PubNubException(pn_error=PNERR_PAM_NO_FLAGS)
 
         self.validate_categories()

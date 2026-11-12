@@ -92,6 +92,8 @@ class PNFetchMessagesResult(object):
                     message.uuid = item['uuid']
                 if 'message_type' in item:
                     message.message_type = item['message_type']
+                if 'custom_message_type' in item:
+                    message.custom_message_type = item['custom_message_type']
 
                 if 'meta' in item:
                     message.meta = item['meta']
@@ -118,6 +120,7 @@ class PNFetchMessageItem(object):
         self.timetoken = timetoken
         self.actions = actions
         self.error = error
+        self.custom_message_type = None
 
     def __str__(self):
         return "Fetch message item with tt: %s and content: %s" % (self.timetoken, self.message)

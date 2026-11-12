@@ -40,10 +40,12 @@ class PNEventEmitter:
             return any([subscription_item.is_matching_listener(message)
                         for subscription_item in self.get_subscription_items()])
         else:
+            # App Context results built outside the message worker have no channel or subscription
+            channel = getattr(message, 'channel', None)
             if self._type == PNSubscriptionType.CHANNEL:
-                return message.channel == self.name or wildcard_match(message.channel, self.name)
+                return channel is not None and (channel == self.name or wildcard_match(channel, self.name))
             else:
-                return message.subscription == self.name
+                return getattr(message, 'subscription', None) == self.name
 
     def presence(self, presence):
         if not hasattr(self, 'on_presence') or not (hasattr(self, 'with_presence') and self.with_presence):
@@ -63,6 +65,22 @@ class PNEventEmitter:
     def signal(self, signal):
         if self.is_matching_listener(signal) and hasattr(self, 'on_signal'):
             self.on_signal(signal)
+
+    def channel_metadata(self, channel_metadata):
+        if self.is_matching_listener(channel_metadata) and hasattr(self, 'on_channel_metadata'):
+            self.on_channel_metadata(channel_metadata)
+
+    def user_metadata(self, user_metadata):
+        if self.is_matching_listener(user_metadata) and hasattr(self, 'on_user_metadata'):
+            self.on_user_metadata(user_metadata)
+
+    def membership(self, membership):
+        if self.is_matching_listener(membership) and hasattr(self, 'on_membership'):
+            self.on_membership(membership)
+
+    def file_message(self, file_message):
+        if self.is_matching_listener(file_message) and hasattr(self, 'on_file'):
+            self.on_file(file_message)
 
 
 class PNSubscribeCapable:
@@ -122,7 +140,7 @@ class PubNubChannelMetadata(PNSubscribable):
 
 
 class PubNubUserMetadata(PNSubscribable):
-    _types = PNSubscriptionType.CHANNEL
+    _type = PNSubscriptionType.CHANNEL
 
     def __init__(self, pubnub_instance, user_id: str) -> None:
         super().__init__(pubnub_instance, user_id)
@@ -153,17 +171,23 @@ class PNSubscriptionRegistry:
 
         for name in subscription.get_names_with_presence():
             if name not in subscription_list:
-                subscription_list[name] = subscriptions
+                # each name gets its own list, a shared one would be emptied by the first removal
+                subscription_list[name] = list(subscriptions)
                 names_added.append(name)
             else:
                 subscription_list[name].extend(subscriptions)
         return names_added
 
-    def __remove_subscription(self, subscription: PubNubSubscription):
+    def __remove_subscription(self, subscription: PubNubSubscription, subscription_set: PubNubSubscriptionSet = None):
         names_removed = {'channels': [],
                          'groups': []}
 
-        self.subscriptions.remove(subscription)
+        if subscription in self.subscriptions:
+            self.subscriptions.remove(subscription)
+
+        subscriptions = [subscription]
+        if subscription_set:
+            subscriptions.append(subscription_set)
 
         if subscription._type == PNSubscriptionType.CHANNEL:
             subscription_list = self.channels
@@ -173,10 +197,17 @@ class PNSubscriptionRegistry:
             removed = names_removed['groups']
 
         for name in subscription.get_names_with_presence():
-            if name in subscription_list and subscription in subscription_list[name]:
-                subscription_list[name].remove(subscription)
-                if len(subscription_list[name]) == 0:
-                    removed.append(name)
+            if name not in subscription_list:
+                continue
+            listeners = subscription_list[name]
+            if not any(item in listeners for item in subscriptions):
+                continue
+            for item in subscriptions:
+                if item in listeners:
+                    listeners.remove(item)
+            if len(listeners) == 0:
+                del subscription_list[name]
+                removed.append(name)
 
         return names_removed
 
@@ -214,7 +245,7 @@ class PNSubscriptionRegistry:
 
         if isinstance(subscription, PubNubSubscriptionSet):
             for subscription_part in subscription.subscriptions:
-                names_changed = self.__remove_subscription(subscription_part)
+                names_changed = self.__remove_subscription(subscription_part, subscription)
                 channels_changed += names_changed['channels']
                 groups_changed += names_changed['groups']
         else:
@@ -224,10 +255,10 @@ class PNSubscriptionRegistry:
 
         self.with_presence = any(sub.with_presence for sub in self.subscriptions)
 
-        if names_changed:
+        if channels_changed or groups_changed:
             unsubscribe_operation = UnsubscribeOperation(channels=channels_changed, channel_groups=groups_changed)
             self.pubnub._subscription_manager.adapt_unsubscribe_builder(unsubscribe_operation)
-        return names_changed
+        return {'channels': channels_changed, 'groups': groups_changed}
 
     def get_subscribed_channels(self):
         return list(self.channels.keys())
@@ -261,13 +292,16 @@ class PNSubscriptionRegistry:
         self.global_listeners.remove(listener)
 
     def unsubscribe_all(self):
-        unsubscribe_operation = UnsubscribeOperation(
-            channels=list(self.channels.keys()),
-            channel_groups=list(self.channel_groups.keys())
-        )
+        channels = list(self.channels.keys())
+        channel_groups = list(self.channel_groups.keys())
+        self.channels = {}
+        self.channel_groups = {}
+        self.subscriptions = []
+        self.with_presence = False
+        if not channels and not channel_groups:
+            return
+        unsubscribe_operation = UnsubscribeOperation(channels=channels, channel_groups=channel_groups)
         self.pubnub._subscription_manager.adapt_unsubscribe_builder(unsubscribe_operation)
-        self.channels = []
-        self.channel_groups = []
 
     def unsubscribe(self, channels=None, groups=None):
         presence_channels = []
@@ -296,37 +330,38 @@ class PNSubscriptionRegistryCallback(SubscribeCallback):
         self.subscription_registry = subscription_registry
         super().__init__()
 
+    def _dispatch(self, pubnub, callback_name, emitter_name, event):
+        # Listeners added with subscription.add_listener() are SubscribeCallback instances and take
+        # (pubnub, event). Subscriptions and subscription sets take only the event.
+        for listener in self.subscription_registry.get_all_listeners():
+            if isinstance(listener, SubscribeCallback):
+                getattr(listener, callback_name)(pubnub, event)
+            else:
+                getattr(listener, emitter_name)(event)
+
     def status(self, _, status):
         pass
 
-    def presence(self, _, presence):
-        for listener in self.subscription_registry.get_all_listeners():
-            listener.presence(presence)
+    def presence(self, pubnub, presence):
+        self._dispatch(pubnub, 'presence', 'presence', presence)
 
-    def message(self, _, message):
-        for listener in self.subscription_registry.get_all_listeners():
-            listener.message(message)
+    def message(self, pubnub, message):
+        self._dispatch(pubnub, 'message', 'message', message)
 
-    def signal(self, _, signal):
-        for listener in self.subscription_registry.get_all_listeners():
-            listener.signal(signal)
+    def signal(self, pubnub, signal):
+        self._dispatch(pubnub, 'signal', 'signal', signal)
 
-    def channel(self, _, channel):
-        for listener in self.subscription_registry.get_all_listeners():
-            listener.channel(channel)
+    def channel(self, pubnub, channel):
+        self._dispatch(pubnub, 'channel', 'channel_metadata', channel)
 
     def uuid(self, pubnub, uuid):
-        for listener in self.subscription_registry.get_all_listeners():
-            listener.uuid(uuid)
+        self._dispatch(pubnub, 'uuid', 'user_metadata', uuid)
 
-    def membership(self, _, membership):
-        for listener in self.subscription_registry.get_all_listeners():
-            listener.membership(membership)
+    def membership(self, pubnub, membership):
+        self._dispatch(pubnub, 'membership', 'membership', membership)
 
-    def message_action(self, _, message_action):
-        for listener in self.subscription_registry.get_all_listeners():
-            listener.message_action(message_action)
+    def message_action(self, pubnub, message_action):
+        self._dispatch(pubnub, 'message_action', 'message_action', message_action)
 
-    def file(self, _, file_message):
-        for listener in self.subscription_registry.get_all_listeners():
-            listener.file_message(file_message)
+    def file(self, pubnub, file_message):
+        self._dispatch(pubnub, 'file', 'file_message', file_message)

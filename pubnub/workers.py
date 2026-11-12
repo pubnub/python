@@ -40,6 +40,12 @@ class BaseMessageWorker:
             .file_name(extracted_message["file"]["name"])\
             .file_id(extracted_message["file"]["id"]).get_complete_url()
 
+    @staticmethod
+    def _set_origin(result, channel, subscription):
+        # subscription and subscription set listeners match App Context events by these attributes
+        result.channel = channel
+        result.subscription = subscription
+
     def _process_message(self, message_input):
         if self._pubnub.config.cipher_key is None:
             return message_input, None
@@ -134,6 +140,7 @@ class BaseMessageWorker:
                     event=message.payload['event'],
                     data=message.payload['data']
                 )
+                self._set_origin(channel_result, channel, subscription_match)
                 self.announce(channel_result)
                 return channel_result
 
@@ -142,6 +149,7 @@ class BaseMessageWorker:
                     event=message.payload['event'],
                     data=message.payload['data']
                 )
+                self._set_origin(uuid_result, channel, subscription_match)
                 self.announce(uuid_result)
                 return uuid_result
 
@@ -150,6 +158,7 @@ class BaseMessageWorker:
                     event=message.payload['event'],
                     data=message.payload['data']
                 )
+                self._set_origin(membership_result, channel, subscription_match)
                 self.announce(membership_result)
                 return membership_result
 
@@ -199,6 +208,7 @@ class BaseMessageWorker:
                     message_action['uuid'] = publisher
                 message_action_result = PNMessageActionResult(message_action, subscription=subscription_match,
                                                               channel=channel)
+                message_action_result.event = extracted_message.get('event')
                 self._listener_manager.announce_message_action(message_action_result)
 
             else:

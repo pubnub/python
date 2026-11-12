@@ -325,5 +325,13 @@ def test_state_for_groups(clients):
     # snippet.end
     a.eq(envelope.result.state, {'age': 22}, 'state returned by set_state for groups (named)')
     a.eq(pubnub.get_state().channels(own).sync().result.channels, {own: {'age': 22}})
-    group_state = pubnub.get_state().channel_groups(groups).sync().result.channels
-    a.eq(group_state, {m: {'age': 22} for m in members}, 'state read back through the channel groups')
+
+    def group_state():
+        # The presence service resolves a channel group some seconds after it was created and answers 400 until then.
+        try:
+            return pubnub.get_state().channel_groups(groups).sync().result.channels
+        except PubNubException as error:
+            raise AssertionError(f'channel groups not resolved yet: {error}')
+
+    eventually(lambda: a.eq(group_state(), {m: {'age': 22} for m in members}, 'state read back through the groups'),
+               timeout=45, what='state read back through the channel groups')

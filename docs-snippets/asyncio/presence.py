@@ -248,5 +248,14 @@ async def test_state_for_groups(aclients):
     a.eq(envelope.result.state, {'age': 20}, 'state returned by set_state for groups')
     own_state = await pubnub.get_state().channels(own).future()
     a.eq(own_state.result.channels, {own: {'age': 20}})
-    group_state = await pubnub.get_state().channel_groups(groups).future()
-    a.eq(group_state.result.channels, {m: {'age': 20} for m in members}, 'state read back through the channel groups')
+
+    async def group_state():
+        # The presence service resolves a channel group some seconds after it was created, an error answers until then.
+        envelope = await pubnub.get_state().channel_groups(groups).future()
+        a.ok(not envelope.is_error() and envelope.result is not None, 'channel groups not resolved yet')
+        return envelope.result.channels
+
+    async def read_back():
+        a.eq(await group_state(), {m: {'age': 20} for m in members}, 'state read back through the channel groups')
+
+    await aeventually(read_back, timeout=45, what='state read back through the channel groups')

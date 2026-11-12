@@ -406,7 +406,25 @@ class PubNubCore:
         return self._subscription_registry.unsubscribe_all()
 
     def reconnect(self) -> None:
-        return self._subscription_registry.reconnect()
+        """Restart the subscribe loop for the current subscriptions.
+
+        The event engine subscription manager (asyncio default) handles reconnection
+        itself, so there this call does nothing.
+        """
+        self._validate_subscribe_manager_enabled()
+        return self._subscription_manager.reconnect()
+
+    def disconnect(self) -> None:
+        """Stop the subscribe loop and heartbeat timer without removing the subscriptions.
+
+        Raises:
+            PubNubException: If the subscription manager in use does not support disconnect.
+        """
+        self._validate_subscribe_manager_enabled()
+        if not hasattr(self._subscription_manager, 'disconnect'):
+            raise PubNubException(
+                errormsg="disconnect() is not supported by %s" % type(self._subscription_manager).__name__)
+        return self._subscription_manager.disconnect()
 
     def heartbeat(self) -> Heartbeat:
         """Send a heartbeat signal to the PubNub network.

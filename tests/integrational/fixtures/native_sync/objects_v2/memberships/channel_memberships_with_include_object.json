@@ -126,7 +126,7 @@
         {
             "request": {
                 "method": "PATCH",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status&count=True",
                 "body": {
                     "pickle": "gASVgwAAAAAAAACMf3sic2V0IjogW3siY2hhbm5lbCI6IHsiaWQiOiAic29tZWNoYW5uZWwifSwgImN1c3RvbSI6IHsiaXNEZWZhdWx0Q2hhbm5lbCI6IHRydWV9LCAic3RhdHVzIjogIk9GRiIsICJ0eXBlIjogIjEifV0sICJkZWxldGUiOiBbXX2ULg=="
                 },
@@ -187,7 +187,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status&count=True",
                 "body": "",
                 "headers": {
                     "host": [
@@ -362,7 +362,7 @@
         {
             "request": {
                 "method": "GET",
-                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status",
+                "uri": "https://ps.pndsn.com/v2/objects/{PN_KEY_SUBSCRIBE}/uuids/someuuid/channels?include=custom%2Cstatus%2Ctype%2CtotalCount%2Cchannel%2Cchannel.custom%2Cchannel.type%2Cchannel.status&count=True",
                 "body": "",
                 "headers": {
                     "host": [

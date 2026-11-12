@@ -19,7 +19,7 @@ class ObjectsEndpoint(Endpoint):
 
     __if_matches_etag: str = None
 
-    _custom_headers: dict = {}
+    _custom_headers: dict = None
 
     def __init__(self, pubnub):
         Endpoint.__init__(self, pubnub)
@@ -42,7 +42,9 @@ class ObjectsEndpoint(Endpoint):
 
     def if_matches_etag(self, etag: str):
         self.__if_matches_etag = etag
-        self._custom_headers.update({"If-Match": etag})
+        # copy so the header stays on this request and never lands on a shared dict
+        self._custom_headers = dict(self._custom_headers or {})
+        self._custom_headers["If-Match"] = etag
         return self
 
     def encoded_params(self):
@@ -67,8 +69,8 @@ class ObjectsEndpoint(Endpoint):
             if self._limit:
                 params["limit"] = int(self._limit)
 
-            if self._include_total_count:
-                params["count"] = bool(self._include_total_count)
+            if self._include_total_count or getattr(self._includes, 'total_count', False):
+                params["count"] = True
 
             if self._sort_keys:
                 joined_sort_params_array = []

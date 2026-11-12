@@ -38,15 +38,21 @@ def run(argv):
     if os.environ.get('CI') and ('-k' in extra or os.environ.get('DOCS_SNIPPETS_MUTATE')):
         print('subset selection and mutation are refused in CI')
         return 2
+    needed = ('open', 'pam') if shard == 'all' else (shard,)
     for line in env.status():
-        print('keys', line)
+        if line.split(':')[0] in needed:
+            print('keys', line)
     if env.missing('admin'):
         print('preflight: not run, PUBNUB_ADMIN_API_KEY is missing')
     elif preflight.main():
         print('preflight: a keyset lacks a feature, see above. The steps that need it will fail.')
     target = stage.stage()
     print('staged:', target.name)
-    environ = {**os.environ, 'DOCS_SNIPPETS_STAGED': '1', 'PYTHONUNBUFFERED': '1',
+    # The staged copy lives in .run/<id>/, so its harness cannot find the checkout by itself. Put the repository root on
+    # the import path, otherwise pytest only works where pubnub is installed.
+    repo_root = str(registry.ROOT.parent)
+    python_path = os.pathsep.join(p for p in (repo_root, os.environ.get('PYTHONPATH', '')) if p)
+    environ = {**os.environ, 'DOCS_SNIPPETS_STAGED': '1', 'PYTHONUNBUFFERED': '1', 'PYTHONPATH': python_path,
                'DOCS_SNIPPETS_REPORT': str(registry.ROOT / 'report' / shard),
                'DOCS_SNIPPETS_LEDGER_DIR': str(registry.ROOT / '.run')}
     import pubnub

@@ -192,10 +192,11 @@ def main() -> None:
     assert len(messages[0].actions) >= 2, "Unexpected number of actions in history"
 
     # Step 4: Retrieve all reactions for the message
-    # We use a time window around the message timetoken to fetch reactions
-    # The window is 1000 time units before and after the message
-    start_timetoken = str(int(message_timetoken) - 1000)
-    end_timetoken = str(int(message_timetoken) + 1000)
+    # The range is made of action timetokens. start is the newer bound (exclusive) and end is the older bound
+    # (inclusive), so start must be greater than end. Reactions are added after the message, hence the message
+    # timetoken is a safe older bound and the newest reaction plus one is the newer bound.
+    start_timetoken = str(int(second_reaction.action_timetoken) + 1)
+    end_timetoken = str(message_timetoken)
     reactions = get_reactions(pubnub, channel, start_timetoken, end_timetoken, "100")
     print(f"Reactions found: {len(reactions.actions)}")
     assert len(reactions.actions) >= 2, "Unexpected number of reactions"

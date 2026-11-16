@@ -37,8 +37,8 @@ class GetMessageActions(Endpoint):
         return self
 
     def limit(self, limit: str) -> 'GetMessageActions':
-        assert isinstance(limit, (str, int)) and not isinstance(limit, bool)
-        self._limit = str(limit)
+        assert isinstance(limit, str)
+        self._limit = limit
         return self
 
     def custom_params(self):

@@ -115,3 +115,18 @@ def test_app_context_results_carry_channel_and_subscription():
         assert direct.subscription is None
         assert via_group.channel == 'ch2'
         assert via_group.subscription == 'group1'
+
+
+def test_app_context_result_constructors_accept_channel_and_subscription():
+    for result_class in (PNChannelMetadataResult, PNUUIDMetadataResult, PNMembershipResult):
+        legacy = result_class('set', {'id': 'x'})
+        assert legacy.event == 'set'
+        assert legacy.data == {'id': 'x'}
+        assert legacy.channel is None
+        assert legacy.subscription is None
+
+        result = result_class(event='delete', data={'id': 'y'}, channel='ch1', subscription='group1')
+        assert result.event == 'delete'
+        assert result.data == {'id': 'y'}
+        assert result.channel == 'ch1'
+        assert result.subscription == 'group1'

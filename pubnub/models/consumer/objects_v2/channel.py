@@ -39,9 +39,12 @@ class PNGetAllChannelMetadataResult(PNPageable):
 
 
 class PNChannelMetadataResult(object):
-    def __init__(self, event, data):
+    def __init__(self, event, data, *, channel=None, subscription=None):
         self.data = data
         self.event = event
+        # subscription and subscription set listeners match App Context events by these two attributes
+        self.channel = channel
+        self.subscription = subscription
 
     def __str__(self):
         return "Channel %s event with data: %s" % (self.event, self.data)

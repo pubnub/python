@@ -5,6 +5,7 @@ from unittest.mock import Mock
 import cbor2
 import pytest
 
+from pubnub.dtos import StateOperation
 from pubnub.event_engine.models import states
 from pubnub.event_engine.statemachine import StateMachine
 from pubnub.exceptions import PubNubException
@@ -42,6 +43,14 @@ def test_disconnect_without_manager_support_raises_pubnub_exception():
 
     with pytest.raises(PubNubException):
         pubnub.disconnect()
+
+
+def test_reconnect_without_manager_support_raises_pubnub_exception():
+    pubnub = PubNub(pnconf_copy())
+    pubnub._subscription_manager = Mock(spec=['disconnect'])
+
+    with pytest.raises(PubNubException, match="reconnect\\(\\) is not supported"):
+        pubnub.reconnect()
 
 
 def test_reconnect_without_subscription_manager_raises_clear_error():
@@ -99,8 +108,36 @@ def test_disconnect_with_event_engine_manager_raises_pubnub_exception():
         pubnub = PubNub(pnconf_copy())
         pubnub._subscription_manager = manager
 
-        with pytest.raises(PubNubException):
+        expected = "disconnect\\(\\) is not supported by EventEngineSubscriptionManager"
+        with pytest.raises(PubNubException, match=expected):
             pubnub.disconnect()
+    finally:
+        manager.loop.close()
+
+
+def test_reconnect_with_event_engine_manager_raises_pubnub_exception():
+    manager = make_event_engine_manager()
+    try:
+        pubnub = PubNub(pnconf_copy())
+        pubnub._subscription_manager = manager
+
+        expected = "reconnect\\(\\) is not supported by EventEngineSubscriptionManager"
+        with pytest.raises(PubNubException, match=expected):
+            pubnub.reconnect()
+    finally:
+        manager.loop.close()
+
+
+def test_event_engine_manager_set_state_does_not_reconnect():
+    manager = make_event_engine_manager()
+    try:
+        manager.reconnect = Mock()
+
+        manager.adapt_state_builder(StateOperation(channels=['ch1'], channel_groups=[], state={'mood': 'ok'}))
+
+        manager.reconnect.assert_not_called()
+        assert manager.state_container.get_state(['ch1']) == {'ch1': {'mood': 'ok'}}
+        assert manager.event_engine.get_state_name() == 'UnsubscribedState'
     finally:
         manager.loop.close()
 

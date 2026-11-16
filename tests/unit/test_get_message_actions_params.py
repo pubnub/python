@@ -46,15 +46,6 @@ def test_limit_accepts_str():
     assert params['limit'] == '50'
 
 
-def test_limit_accepts_int():
-    params = pubnub.get_message_actions().channel('ch').limit(50).custom_params()
-
-    assert params['limit'] == '50'
-
-
-def test_limit_rejects_other_types():
+def test_limit_rejects_int():
     with pytest.raises(AssertionError):
-        pubnub.get_message_actions().channel('ch').limit(5.5)
-
-    with pytest.raises(AssertionError):
-        pubnub.get_message_actions().channel('ch').limit(True)
+        pubnub.get_message_actions().channel('ch').limit(50)

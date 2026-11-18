@@ -1,0 +1,10 @@
+# Ruff replaces flake8 (and Codacy) for linting; rules mirror the previous flake8 setup.
+line-length = 120
+extend-exclude = ["scripts", "src", ".cache", ".idea", ".tox", "venv"]
+
+[lint]
+select = ["E", "F", "W"]
+ignore = [
+    "E402",  # module-level import not at top (was ignored in flake8 config)
+    "F811",  # redefinition of unused name (was ignored in CI flake8 invocation)
+]

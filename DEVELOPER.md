@@ -28,10 +28,13 @@ CI runs Ruff (config in `ruff.toml`) in `.github/workflows/run-validations.yml`.
 
 ```sh
 ruff check .
-ruff format --check <changed files>
 ```
 
-`ruff check` is enforced on the whole repository. `ruff format --check` is enforced in CI only for Python files changed in a PR, because the legacy code is not yet formatted.
+`ruff check` is enforced on the whole repository, except `tests`, `scripts` and `src`. Ruff is pinned to `0.17.*` and runs in preview mode so the pycodestyle indentation, whitespace and blank-line rules stay enabled. Formatting is not checked in CI.
+
+## Vulnerability scan
+
+`.github/workflows/vulnerability-scan.yml` runs Snyk on pushes to `master` and `main` to monitor the dependencies declared in `setup.py`.
 
 ## Pull requests
 

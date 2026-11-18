@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: "3.11"
       - name: Install Ruff
-        run: pip3 install --user "ruff>=0.8"
+        run: pip3 install --user "ruff==0.17.*"
       - name: Ruff lint
         run: ruff check .
       - name: Cancel workflow runs for commit on error

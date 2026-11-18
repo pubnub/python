@@ -24,11 +24,14 @@ This runs `py.test tests --cov=pubnub --ignore=tests/manual/`.
 
 ## Linting
 
-CI runs flake8 in `.github/workflows/run-validations.yml`. To run the same check locally:
+CI runs Ruff (config in `ruff.toml`) in `.github/workflows/run-validations.yml`. To run the same checks locally:
 
 ```sh
-flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/,venv/ --ignore F811,E402
+ruff check .
+ruff format --check <changed files>
 ```
+
+`ruff check` is enforced on the whole repository. `ruff format --check` is enforced in CI only for Python files changed in a PR, because the legacy code is not yet formatted.
 
 ## Pull requests
 

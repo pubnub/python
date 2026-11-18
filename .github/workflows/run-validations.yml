@@ -1,6 +1,8 @@
 name: Validations
 
-on: [push]
+on:
+  push:
+  pull_request:
 
 jobs:
   lint:
@@ -14,10 +16,19 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install Python dependencies and run acceptance tests
+      - name: Install Ruff
+        run: pip3 install --user "ruff>=0.8"
+      - name: Ruff lint
+        run: ruff check .
+      - name: Ruff format (files changed vs. base branch)
+        # The legacy codebase is not yet ruff-formatted; enforce formatting on touched files only.
         run: |
-          pip3 install --user --ignore-installed -r requirements-dev.txt
-          flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/,venv/ --ignore F811,E402
+          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$base" 2>/dev/null; then
+            git fetch --no-tags --depth=1 origin master && base=FETCH_HEAD
+          fi
+          files=$(git diff --name-only --diff-filter=ACMR "$base" HEAD -- '*.py' '*.pyi')
+          if [ -n "$files" ]; then echo "$files" | xargs ruff format --check --diff; fi
       - name: Cancel workflow runs for commit on error
         if: failure()
         uses: ./.github/.release/actions/actions/utils/fast-jobs-failure

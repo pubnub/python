@@ -26,7 +26,7 @@ jobs:
       - name: Ruff format (files changed vs. base branch)
         # The legacy codebase is not yet ruff-formatted; enforce formatting on touched files only.
         run: |
-          base="${{ github.event.pull_request.base.sha || github.event.before }}"
+          base="${{ github.event.before }}"
           if [ -z "$base" ] || [ "$base" = "0000000000000000000000000000000000000000" ] || ! git cat-file -e "$base" 2>/dev/null; then
             git fetch --no-tags --depth=1 origin master && base=FETCH_HEAD
           fi

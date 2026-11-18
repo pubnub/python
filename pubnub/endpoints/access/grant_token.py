@@ -22,7 +22,7 @@ class PNGrantTokenResultEnvelope(Envelope):
 
 
 class GrantToken(Endpoint):
-    GRANT_TOKEN_PATH = "/v3/pam/%s/grant"
+    GRANT_TOKEN_PATH = "/v3/pam/%s/grant"  # noqa: S105
 
     def __init__(self, pubnub, channels: Union[str, List[str]] = None, channel_groups: Union[str, List[str]] = None,
                  users: Union[str, List[str]] = None, spaces: Union[str, List[str]] = None,

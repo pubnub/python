@@ -111,7 +111,7 @@ class WallClockDeadlineWatchdog:
                     if sock is None:
                         continue
                     sock.shutdown(socket.SHUT_RDWR)
-                except (OSError, Exception):
+                except (OSError, Exception):  # noqa: S110 best-effort socket shutdown
                     pass
         except Exception as e:
             logger.debug(f"Error iterating connection pool: {e}")

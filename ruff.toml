@@ -4,8 +4,12 @@ extend-exclude = ["scripts", "src", "tests", ".cache", ".idea", ".tox", "venv"]
 [lint]
 # preview enables pycodestyle E1/E2/E3 (indentation, whitespace, blank lines), which flake8 checked
 preview = true
-select = ["E", "F", "W"]
+select = ["E", "F", "W", "S"]
 ignore = [
     "E402",  # module-level import not at top (was ignored in flake8 config)
     "F811",  # redefinition of unused name (was ignored in CI flake8 invocation)
+    "S101",  # assert (was skipped as B101 in bandit.yml)
 ]
+
+[lint.per-file-ignores]
+"examples/**" = ["S104", "S108", "S110"]  # demo code: bind-all, temp file, try/except/pass

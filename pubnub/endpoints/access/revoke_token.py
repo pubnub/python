@@ -12,7 +12,7 @@ class PNRevokeTokenResultEnvelope(Envelope):
 
 
 class RevokeToken(Endpoint):
-    REVOKE_TOKEN_PATH = "/v3/pam/%s/grant/%s"
+    REVOKE_TOKEN_PATH = "/v3/pam/%s/grant/%s"  # noqa: S105
 
     def __init__(self, pubnub, token: str):
         Endpoint.__init__(self, pubnub)

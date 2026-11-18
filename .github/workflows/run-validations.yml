@@ -21,10 +21,6 @@ jobs:
           python-version: "3.11"
       - name: Install Ruff
         run: pip3 install --user "ruff>=0.8"
-      # Lint only. `ruff format` is intentionally not enforced: the legacy codebase is not ruff-formatted
-      # (~280 of ~360 files, ~17k changed lines), so formatting it here would bury functional changes in
-      # noise and break `git blame`. Do it in a separate, formatting-only PR (and add its commit to
-      # .git-blame-ignore-revs) before enabling a `ruff format --check .` step.
       - name: Ruff lint
         run: ruff check .
       - name: Cancel workflow runs for commit on error

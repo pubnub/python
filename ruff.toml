@@ -1,5 +1,5 @@
 line-length = 120
-extend-exclude = ["scripts", "src", "tests", ".cache", ".idea", ".tox", "venv"]
+extend-exclude = ["scripts", "src", ".cache", ".idea", ".tox", "venv"]
 
 [lint]
 preview = true
@@ -53,4 +53,5 @@ ignore = [
 max-complexity = 25  # baseline: highest existing is 25, lower as functions are refactored
 
 [lint.per-file-ignores]
+"tests/**" = ["S", "B", "PL", "SIM", "C90"]
 "examples/**" = ["S104", "S108", "S110"]  # demo code: bind-all, temp file, try/except/pass

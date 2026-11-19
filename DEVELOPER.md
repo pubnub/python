@@ -30,7 +30,7 @@ CI runs Ruff (config in `ruff.toml`) in `.github/workflows/run-validations.yml`.
 ruff check .
 ```
 
-`ruff check` is enforced on the whole repository, except `tests`, `scripts` and `src`. Ruff is pinned to `0.17.*` and runs in preview mode so the pycodestyle indentation, whitespace and blank-line rules stay enabled. Security rules (`S`, the flake8-bandit port) are enabled, with `assert` allowed. Formatting is not checked in CI.
+`ruff check` covers the whole repository except `tests`, `scripts` and `src`. Ruff is pinned to `0.17.*` and runs in preview mode. Enabled rule sets: `E`, `F`, `W` (pycodestyle, Pyflakes), `S` (security, `assert` allowed), `B` (bugbear), `PL` (Pylint), `SIM` (simplify) and `C90` (complexity). Disabled rules are commented in `ruff.toml`; remove baseline entries as they are fixed. Formatting is not checked in CI.
 
 ## Vulnerability scan
 

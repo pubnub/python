@@ -513,7 +513,7 @@ class NativePeriodicCallback:
             return
         try:
             self._callback()
-        except Exception:
+        except Exception:  # noqa: S110
             # TODO: handle the exception
             pass
         finally:

@@ -24,11 +24,17 @@ This runs `py.test tests --cov=pubnub --ignore=tests/manual/`.
 
 ## Linting
 
-CI runs flake8 in `.github/workflows/run-validations.yml`. To run the same check locally:
+CI runs Ruff (config in `ruff.toml`) in `.github/workflows/run-validations.yml`. To run the same checks locally:
 
 ```sh
-flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/,venv/ --ignore F811,E402
+ruff check .
 ```
+
+`ruff check` covers the whole repository except `scripts` and `src`. In `tests`, only `E`, `F` and `W` apply. Ruff is pinned to `0.17.*` and runs in preview mode. Enabled rule sets: `E`, `F`, `W` (pycodestyle, Pyflakes), `S` (security, `assert` allowed), `B` (bugbear), `PL` (Pylint), `SIM` (simplify) and `C90` (complexity). Disabled rules are commented in `ruff.toml`; remove baseline entries as they are fixed. Formatting is not checked in CI.
+
+## Vulnerability scan
+
+`.github/workflows/vulnerability-scan.yml` runs Snyk on pushes to `master` and `main` to monitor the dependencies declared in `setup.py`.
 
 ## Pull requests
 

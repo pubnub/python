@@ -1,0 +1,57 @@
+line-length = 120
+extend-exclude = ["scripts", "src", ".cache", ".idea", ".tox", "venv"]
+
+[lint]
+preview = true
+select = ["E", "F", "W", "S", "B", "PL", "SIM", "C90"]
+ignore = [
+    "E402",    # module-level import not at top
+    "F811",    # redefinition of unused name
+    "S101",    # assert
+    "PLR0904", # too many public methods
+    "PLR0911", # too many return statements
+    "PLR0912", # too many branches
+    "PLR0913", # too many arguments
+    "PLR0914", # too many local variables
+    "PLR0915", # too many statements
+    "PLR0916", # too many boolean expressions
+    "PLR0917", # too many positional arguments
+    "PLR2004", # magic value in comparison
+    "PLR6301", # method could be a function (no self use)
+    "PLW0717", # too many statements in try clause
+    "B006",    # mutable argument default
+    "B018",    # useless expression
+    "B028",    # warnings.warn without explicit stacklevel
+    "B903",    # class that could be a dataclass/namedtuple
+    "B904",    # raise inside except without `from`
+    "B909",    # mutating a collection while iterating over it
+    "SIM102",  # nested ifs that can be collapsed
+    "SIM105",  # try/except/pass that can use contextlib.suppress
+    "SIM108",  # if/else block that can be a ternary
+    "SIM113",  # manual loop counter instead of enumerate
+    "SIM114",  # if branches with identical bodies
+    "SIM115",  # open() without a context manager
+    "SIM118",  # `key in dict.keys()`
+    "SIM211",  # `False if x else True` instead of `not x`
+    "SIM300",  # Yoda condition
+    "SIM401",  # if/else that can be dict.get
+    "PLC0414", # useless import alias
+    "PLC0415", # import outside top level
+    "PLC1901", # comparison to empty string
+    "PLE0307", # __str__ returning non-str
+    "PLR1722", # exit() instead of sys.exit()
+    "PLR5501", # else + if that can be elif
+    "PLR6201", # list/tuple literal in membership test (use set)
+    "PLW0108", # unnecessary lambda
+    "PLW0127", # self-assigning variable
+    "PLW0128", # redeclared assigned name
+    "PLW1508", # non-string default for os.getenv
+    "PLW1514", # open() without explicit encoding
+]
+
+[lint.mccabe]
+max-complexity = 25
+
+[lint.per-file-ignores]
+"tests/**" = ["S", "B", "PL", "SIM", "C90"]
+"examples/**" = ["S104", "S108", "S110"]

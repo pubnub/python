@@ -47,7 +47,7 @@ class GetMessageActions(Endpoint):
         if self._start is not None:
             params['start'] = self._start
 
-        if self._end is not None and self._start is None:
+        if self._end is not None:
             params['end'] = self._end
 
         if self._limit != GetMessageActions.MAX_LIMIT:

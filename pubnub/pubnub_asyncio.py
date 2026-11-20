@@ -631,7 +631,33 @@ class EventEngineSubscriptionManager(SubscriptionManager):
     def adapt_state_builder(self, state_operation):
         self.state_container.register_state(state_operation.state,
                                             state_operation.channels)
-        return super().adapt_state_builder(state_operation)
+        # The base implementation also calls reconnect(), which this manager does not support.
+        # Updating the stored state without a restart keeps set_state() behaving as before.
+        self._subscription_state.adapt_state_builder(state_operation)
+
+    def reconnect(self):
+        """Not supported by the event engine subscription manager.
+
+        The event engine retries failed subscribe requests itself, based on the configured reconnection policy.
+
+        Raises:
+            PubNubException: Always.
+        """
+        raise PubNubException(errormsg=self._unsupported_message('reconnect'))
+
+    def disconnect(self):
+        """Not supported by the event engine subscription manager.
+
+        Use unsubscribe() or unsubscribe_all() to stop receiving messages.
+
+        Raises:
+            PubNubException: Always.
+        """
+        raise PubNubException(errormsg=self._unsupported_message('disconnect'))
+
+    @staticmethod
+    def _unsupported_message(method_name):
+        return "%s() is not supported by EventEngineSubscriptionManager" % method_name
 
     def unsubscribe_all(self):
         self.adapt_unsubscribe_builder(UnsubscribeOperation(

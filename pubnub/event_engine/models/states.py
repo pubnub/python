@@ -16,6 +16,12 @@ class PNContext(dict):
     reason: PubNubException
     with_presence: bool = False
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # read by get_subscribed_channels() and unsubscribe_all() before the first subscribe
+        self.channels = []
+        self.groups = []
+
     def update(self, context):
         super().update(context.__dict__)
 

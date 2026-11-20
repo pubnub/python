@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pubnub',
-    version='10.8.1',
+    version='10.9.0',
     description='PubNub Real-time push service in the cloud',
     author='PubNub',
     author_email='support@pubnub.com',
@@ -34,7 +34,7 @@ setup(
         'httpx>=0.28,<1.0',
         'h2>=4.3',
         'requests>=2.32.2',
-        'aiohttp>3.10.11',
+        'aiohttp>=3.10.11',
         'cbor2>=5.6'
     ],
     zip_safe=False,

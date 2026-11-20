@@ -132,7 +132,9 @@ class BaseMessageWorker:
             if message.payload['type'] == 'channel':
                 channel_result = PNChannelMetadataResult(
                     event=message.payload['event'],
-                    data=message.payload['data']
+                    data=message.payload['data'],
+                    channel=channel,
+                    subscription=subscription_match
                 )
                 self.announce(channel_result)
                 return channel_result
@@ -140,7 +142,9 @@ class BaseMessageWorker:
             elif message.payload['type'] == 'uuid':
                 uuid_result = PNUUIDMetadataResult(
                     event=message.payload['event'],
-                    data=message.payload['data']
+                    data=message.payload['data'],
+                    channel=channel,
+                    subscription=subscription_match
                 )
                 self.announce(uuid_result)
                 return uuid_result
@@ -148,7 +152,9 @@ class BaseMessageWorker:
             elif message.payload['type'] == 'membership':
                 membership_result = PNMembershipResult(
                     event=message.payload['event'],
-                    data=message.payload['data']
+                    data=message.payload['data'],
+                    channel=channel,
+                    subscription=subscription_match
                 )
                 self.announce(membership_result)
                 return membership_result
@@ -199,6 +205,7 @@ class BaseMessageWorker:
                     message_action['uuid'] = publisher
                 message_action_result = PNMessageActionResult(message_action, subscription=subscription_match,
                                                               channel=channel)
+                message_action_result.event = extracted_message.get('event')
                 self._listener_manager.announce_message_action(message_action_result)
 
             else:

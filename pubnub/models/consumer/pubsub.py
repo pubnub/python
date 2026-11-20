@@ -91,6 +91,8 @@ class PNMessageActionResult(PNMessageAction):
         super(PNMessageActionResult, self).__init__(result)
         self.subscription = subscription
         self.channel = channel
+        # 'added' or 'removed', set by the subscribe message worker from the event payload
+        self.event = None
 
 
 class PNPublishResult(object):

@@ -1,3 +1,27 @@
+## 10.9.0
+November 20 2026
+
+#### Added
+- Stop the subscribe loop and heartbeat timer without removing the subscriptions. The event engine subscription manager, the default for `PubNubAsyncio`, raises a clear `PubNubException`.
+
+#### Fixed
+- `reconnect()` always raised `AttributeError`. It now restarts the subscribe loop for the threaded and legacy asyncio subscription managers, and raises a clear `PubNubException` with the event engine subscription manager.
+- Channel, user and membership (App Context) and file events are now delivered to subscription and subscription set listeners instead of raising on the first event.
+- Listeners added with `subscription.add_listener()` now receive events with the correct callback signature instead of raising `TypeError`.
+- Fix subscription registry removal for subscription sets sharing channels, `unsubscribe_all` with a following `subscribe()`, a set `unsubscribe()` that sent an empty request, and the `PubNubUserMetadata` subscription type.
+- Both calls no longer raise `AttributeError` with the asyncio event engine before the first subscribe.
+- `get_message_actions` now sends `end` together with `start`, and `limit()` no longer accepts only `str`.
+- Message action events now carry the `event` type (`added` or `removed`).
+- `custom_message_type` is now parsed on items from fetch messages.
+- `MembershipIncludes(total_count=True)` and `MemberIncludes(total_count=True)` now send `count=true` on App Context requests.
+- The `If-Match` header set by `if_matches_etag` no longer leaks into other App Context requests through a shared class-level dict.
+- `parse_token` now raises `PubNubException` for malformed tokens instead of `binascii.Error` or `TypeError`.
+- Grant now accepts `delete` as the only permission flag instead of raising a no-flags error.
+- Relax `aiohttp>3.10.11` to `>=3.10.11` so it overlaps the dev pin and pip can resolve both.
+
+#### Modified
+- Add offline unit tests for the subscription registry, message worker events, `get_message_actions` parameters and the other fixes, and re-record the App Context include cassettes with `count=True`.
+
 ## 10.8.1
 October 26 2026
 

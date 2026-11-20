@@ -83,3 +83,8 @@ PubNubTwisted.ipynb
 
 venv/
 reports/
+
+# Docs snippet suite
+docs-snippets/.run/
+docs-snippets/report/
+docs-snippets/.env.local

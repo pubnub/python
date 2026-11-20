@@ -48,9 +48,6 @@ jobs:
         run: |
           ./scripts/install.sh
           python scripts/run-tests.py
-      - name: Cancel workflow runs for commit on error
-        if: failure()
-        uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   acceptance-tests:
     name: Acceptance tests
     runs-on:
@@ -96,9 +93,6 @@ jobs:
           name: acceptance-test-reports
           path: ./reports
           retention-days: 7
-      - name: Cancel workflow runs for commit on error
-        if: failure()
-        uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   all-tests:
     name: Tests
     needs: [tests, acceptance-tests]

@@ -1,0 +1,2183 @@
+{
+  "asyncio": {
+    "add_channels_builder": {
+      "file": "asyncio/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_channels"
+    },
+    "add_channels_named": {
+      "file": "asyncio/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_channels"
+    },
+    "add_channels_to_push_builder": {
+      "file": "asyncio/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_channels_to_push"
+    },
+    "add_channels_to_push_kwargs": {
+      "file": "asyncio/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_channels_to_push"
+    },
+    "add_message_action_builder": {
+      "file": "asyncio/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_message_action"
+    },
+    "add_message_action_named": {
+      "file": "asyncio/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_message_action"
+    },
+    "configuration_full": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_full_configuration"
+    },
+    "delete_channel_group_builder": {
+      "file": "asyncio/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_channel_group"
+    },
+    "delete_file_builder": {
+      "file": "asyncio/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_file"
+    },
+    "delete_message_single_builder": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_single_message"
+    },
+    "delete_message_single_named": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_single_message"
+    },
+    "delete_messages_builder": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_messages"
+    },
+    "delete_messages_named": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_messages"
+    },
+    "download_file_builder": {
+      "file": "asyncio/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_download_file"
+    },
+    "entity_channel": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_entities"
+    },
+    "entity_channel_group": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_entities"
+    },
+    "entity_channel_metadata": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_entities"
+    },
+    "entity_user_metadata": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_entities"
+    },
+    "fetch_history_builder": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fetch_history"
+    },
+    "fetch_history_multiple": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fetch_history_caps"
+    },
+    "fetch_history_named": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fetch_history"
+    },
+    "fetch_history_range": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fetch_history_range"
+    },
+    "fire_message": {
+      "file": "asyncio/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fire"
+    },
+    "fire_post": {
+      "file": "asyncio/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fire_post"
+    },
+    "get_file_url_builder": {
+      "file": "asyncio/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_file_url"
+    },
+    "get_filter_expression": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_filter_expression"
+    },
+    "get_message_actions_builder": {
+      "file": "asyncio/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_message_actions"
+    },
+    "get_message_actions_named": {
+      "file": "asyncio/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_message_actions"
+    },
+    "get_state_builder": {
+      "file": "asyncio/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_state"
+    },
+    "get_subscribed_channel_groups": {
+      "file": "asyncio/misc.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_subscribed"
+    },
+    "get_subscribed_channels": {
+      "file": "asyncio/misc.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_subscribed"
+    },
+    "grant_application_level": {
+      "file": "asyncio/zz_application_level.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_application_level"
+    },
+    "grant_categories": {
+      "file": "asyncio/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_categories"
+    },
+    "grant_channel_all_users": {
+      "file": "asyncio/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_channel_level"
+    },
+    "grant_channel_auth": {
+      "file": "asyncio/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_channel_and_auth_key"
+    },
+    "grant_channel_group": {
+      "file": "asyncio/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_channel_group"
+    },
+    "grant_channel_level": {
+      "file": "asyncio/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_channel_level"
+    },
+    "grant_channel_ro_auth": {
+      "file": "asyncio/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_user_level"
+    },
+    "grant_multiple_channels": {
+      "file": "asyncio/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_multiple_channels"
+    },
+    "grant_presence": {
+      "file": "asyncio/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_presence_channel"
+    },
+    "grant_subkey_all": {
+      "file": "asyncio/zz_application_level.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_application_level"
+    },
+    "grant_token_builder": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_and_parse_token"
+    },
+    "grant_token_categories": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_token_categories"
+    },
+    "grant_token_multi": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_resources"
+    },
+    "grant_token_multi_regex": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_resources"
+    },
+    "grant_token_regex": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_resources"
+    },
+    "grant_token_spaces_builder": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_spaces_users"
+    },
+    "grant_token_spaces_multi": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_spaces_users"
+    },
+    "grant_token_spaces_multi_regex": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_spaces_users"
+    },
+    "grant_token_spaces_regex": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_spaces_users"
+    },
+    "grant_user_level": {
+      "file": "asyncio/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_user_level"
+    },
+    "here_now_builder": {
+      "file": "asyncio/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now"
+    },
+    "here_now_groups": {
+      "file": "asyncio/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now_groups"
+    },
+    "here_now_occupancy": {
+      "file": "asyncio/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now_occupancy"
+    },
+    "here_now_state": {
+      "file": "asyncio/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now_state"
+    },
+    "history_basic": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "history_end": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "history_include_timetoken": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "history_paging": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history_paging"
+    },
+    "history_reverse": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "history_start_reverse": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "initialize_access_manager": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize_access_manager"
+    },
+    "initialize_custom_event_loop": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize_custom_event_loop"
+    },
+    "initialize_custom_request_handler": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize_custom_request_handler"
+    },
+    "initialize_custom_user_id": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize"
+    },
+    "initialize_non_secure": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize"
+    },
+    "initialize_pubnub": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize"
+    },
+    "initialize_read_only": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize_read_only"
+    },
+    "initialize_ssl": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize"
+    },
+    "list_channels_builder": {
+      "file": "asyncio/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_channels"
+    },
+    "list_channels_named": {
+      "file": "asyncio/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_channels"
+    },
+    "list_files_builder": {
+      "file": "asyncio/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_files"
+    },
+    "list_push_channels_builder": {
+      "file": "asyncio/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_push_channels"
+    },
+    "listeners_event_specific": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_event_specific"
+    },
+    "listeners_generic": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_generic"
+    },
+    "listeners_old_add": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_old_add"
+    },
+    "listeners_old_disconnects": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_old_disconnects"
+    },
+    "listeners_old_remove": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_old_remove"
+    },
+    "listeners_presence": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_presence"
+    },
+    "listeners_status": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_status"
+    },
+    "listeners_subscription_set": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_subscription_set"
+    },
+    "message_counts_builder": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_message_counts"
+    },
+    "message_counts_multiple_builder": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_message_counts"
+    },
+    "message_counts_multiple_named": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_message_counts"
+    },
+    "message_counts_named": {
+      "file": "asyncio/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_message_counts"
+    },
+    "parse_token": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_and_parse_token"
+    },
+    "parse_token_categories": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_token_categories"
+    },
+    "publish_builder": {
+      "file": "asyncio/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_message"
+    },
+    "publish_file_message_builder": {
+      "file": "asyncio/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_file_message"
+    },
+    "publish_metadata": {
+      "file": "asyncio/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_metadata"
+    },
+    "publish_named": {
+      "file": "asyncio/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_message"
+    },
+    "publish_store_post": {
+      "file": "asyncio/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_store_and_post"
+    },
+    "remove_channels_builder": {
+      "file": "asyncio/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channels"
+    },
+    "remove_channels_from_push_builder": {
+      "file": "asyncio/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channels_from_push"
+    },
+    "remove_channels_named": {
+      "file": "asyncio/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channels"
+    },
+    "remove_device_from_push_builder": {
+      "file": "asyncio/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_device_from_push"
+    },
+    "remove_message_action_builder": {
+      "file": "asyncio/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_message_action"
+    },
+    "remove_message_action_named": {
+      "file": "asyncio/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_message_action"
+    },
+    "revoke_token": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_revoke_token"
+    },
+    "send_file_builder": {
+      "file": "asyncio/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_send_file"
+    },
+    "send_file_options": {
+      "file": "asyncio/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_send_file"
+    },
+    "set_filter_expression": {
+      "file": "asyncio/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_filter_expression"
+    },
+    "set_state_builder": {
+      "file": "asyncio/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_state"
+    },
+    "set_state_groups_builder": {
+      "file": "asyncio/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_state_for_groups"
+    },
+    "set_token": {
+      "file": "asyncio/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_set_token"
+    },
+    "signal_message": {
+      "file": "asyncio/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_signal"
+    },
+    "subscribe_multiple": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_multiple"
+    },
+    "subscribe_old_channel": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_channel"
+    },
+    "subscribe_old_group": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_group"
+    },
+    "subscribe_old_group_presence": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_presence"
+    },
+    "subscribe_old_logging": {
+      "file": "asyncio/subscribe.py",
+      "mode": "compile-only",
+      "reason": "DEBUG logging writes every request URL with the keys to the output",
+      "role": "open",
+      "step": "logging_sample"
+    },
+    "subscribe_old_multiple": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_multiple"
+    },
+    "subscribe_old_presence": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_presence"
+    },
+    "subscribe_old_state": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_state"
+    },
+    "subscribe_old_wildcard": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_wildcard"
+    },
+    "subscribe_single": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_single"
+    },
+    "time_get": {
+      "file": "asyncio/misc.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_time"
+    },
+    "unsubscribe_all": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_all"
+    },
+    "unsubscribe_all_old": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_all_old"
+    },
+    "unsubscribe_old_channel": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_old_channel"
+    },
+    "unsubscribe_old_group": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_old_multiple_and_group"
+    },
+    "unsubscribe_old_multiple": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_old_multiple_and_group"
+    },
+    "unsubscribe_set": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_set"
+    },
+    "unsubscribe_subscription": {
+      "file": "asyncio/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_subscription"
+    },
+    "where_now_other": {
+      "file": "asyncio/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_where_now"
+    },
+    "where_now_self": {
+      "file": "asyncio/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_where_now"
+    }
+  },
+  "sync": {
+    "add_channels_builder": {
+      "file": "sync/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_channels"
+    },
+    "add_channels_named": {
+      "file": "sync/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_channels"
+    },
+    "add_channels_to_push_builder": {
+      "file": "sync/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_channels_to_push"
+    },
+    "add_channels_to_push_named": {
+      "file": "sync/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_channels_to_push"
+    },
+    "add_message_action_builder": {
+      "file": "sync/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_message_action"
+    },
+    "add_message_action_named": {
+      "file": "sync/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_add_message_action"
+    },
+    "configuration_full": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_full_configuration"
+    },
+    "crypto_module_aes_cbc": {
+      "file": "sync/encryption.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_aes_cbc_crypto_module"
+    },
+    "crypto_module_legacy": {
+      "file": "sync/encryption.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_legacy_crypto_module"
+    },
+    "crypto_module_partial": {
+      "file": "sync/encryption.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_partial_crypto_module"
+    },
+    "decrypt_file": {
+      "file": "sync/encryption.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_encrypt_and_decrypt_file"
+    },
+    "delete_channel_group_builder": {
+      "file": "sync/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_channel_group"
+    },
+    "delete_file_builder": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_file"
+    },
+    "delete_file_named": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_file"
+    },
+    "delete_message_single_builder": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_single_message"
+    },
+    "delete_message_single_named": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_single_message"
+    },
+    "delete_messages_builder": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_messages"
+    },
+    "delete_messages_named": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_delete_messages"
+    },
+    "disconnect_method": {
+      "file": "sync/misc.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_disconnect_and_reconnect"
+    },
+    "download_file_builder": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_download_file"
+    },
+    "encrypt_file": {
+      "file": "sync/encryption.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_encrypt_and_decrypt_file"
+    },
+    "entity_channel": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_entities"
+    },
+    "entity_channel_group": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_entities"
+    },
+    "entity_channel_metadata": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_entities"
+    },
+    "entity_user_metadata": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_entities"
+    },
+    "fetch_history_builder": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fetch_history"
+    },
+    "fetch_history_multiple": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fetch_history_caps"
+    },
+    "fetch_history_named": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fetch_history"
+    },
+    "fetch_history_range": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fetch_history_range"
+    },
+    "fire_message": {
+      "file": "sync/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fire"
+    },
+    "fire_named": {
+      "file": "sync/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fire_post_and_named"
+    },
+    "fire_post": {
+      "file": "sync/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_fire_post_and_named"
+    },
+    "get_all_channel_metadata_builder": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_all_channel_metadata"
+    },
+    "get_all_channel_metadata_named": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_all_channel_metadata"
+    },
+    "get_all_uuid_metadata_builder": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_all_uuid_metadata"
+    },
+    "get_all_uuid_metadata_named": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_all_uuid_metadata"
+    },
+    "get_channel_members_builder": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_channel_members"
+    },
+    "get_channel_members_named": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_channel_members"
+    },
+    "get_channel_metadata_builder": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_channel_metadata"
+    },
+    "get_channel_metadata_named": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_channel_metadata"
+    },
+    "get_file_url_builder": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_file_url"
+    },
+    "get_file_url_named": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_file_url"
+    },
+    "get_filter_expression": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_filter_expression"
+    },
+    "get_memberships_builder": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_memberships"
+    },
+    "get_memberships_named": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_memberships"
+    },
+    "get_message_actions_builder": {
+      "file": "sync/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_message_actions"
+    },
+    "get_message_actions_named": {
+      "file": "sync/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_message_actions"
+    },
+    "get_state_builder": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_state"
+    },
+    "get_state_named": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_state"
+    },
+    "get_subscribed_channel_groups": {
+      "file": "sync/misc.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_subscribed"
+    },
+    "get_subscribed_channels": {
+      "file": "sync/misc.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_subscribed"
+    },
+    "get_uuid_metadata_builder": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_uuid_metadata"
+    },
+    "get_uuid_metadata_named": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_get_uuid_metadata"
+    },
+    "grant_application_level": {
+      "file": "sync/zz_application_level.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_application_level"
+    },
+    "grant_categories": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_categories"
+    },
+    "grant_channel_all_users": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_channel_level"
+    },
+    "grant_channel_auth": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_channel_and_auth_key"
+    },
+    "grant_channel_group": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_channel_group"
+    },
+    "grant_channel_level": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_channel_level"
+    },
+    "grant_channel_ro_auth": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_user_level"
+    },
+    "grant_multiple_channels": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_multiple_channels"
+    },
+    "grant_presence": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_presence_channel"
+    },
+    "grant_subkey_all": {
+      "file": "sync/zz_application_level.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_application_level"
+    },
+    "grant_token_builder": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_and_parse_token"
+    },
+    "grant_token_categories": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_token_categories"
+    },
+    "grant_token_multi": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_resources"
+    },
+    "grant_token_multi_regex": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_resources"
+    },
+    "grant_token_named": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_and_parse_token"
+    },
+    "grant_token_regex": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_resources"
+    },
+    "grant_token_spaces_builder": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_spaces_users"
+    },
+    "grant_token_spaces_multi": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_spaces_users"
+    },
+    "grant_token_spaces_multi_regex": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_spaces_users"
+    },
+    "grant_token_spaces_named": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_spaces_users"
+    },
+    "grant_token_spaces_regex": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_token_spaces_users"
+    },
+    "grant_user_level": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_user_level"
+    },
+    "grant_uuid": {
+      "file": "sync/access_manager_v2.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_uuid"
+    },
+    "here_now_builder": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now"
+    },
+    "here_now_groups": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now_groups"
+    },
+    "here_now_named": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now"
+    },
+    "here_now_occupancy": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now_occupancy"
+    },
+    "here_now_paginate": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now_paginate"
+    },
+    "here_now_state": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_here_now_state"
+    },
+    "history_basic": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "history_end": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "history_include_timetoken": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "history_paging": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history_paging"
+    },
+    "history_reverse": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "history_start_reverse": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_history"
+    },
+    "initialize_access_manager": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize_access_manager"
+    },
+    "initialize_custom_request_handler": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize_custom_request_handler"
+    },
+    "initialize_custom_user_id": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize"
+    },
+    "initialize_non_secure": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize"
+    },
+    "initialize_pubnub": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize"
+    },
+    "initialize_read_only": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize_read_only"
+    },
+    "initialize_ssl": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_initialize"
+    },
+    "list_channels_builder": {
+      "file": "sync/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_channels"
+    },
+    "list_channels_named": {
+      "file": "sync/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_channels"
+    },
+    "list_files_builder": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_files"
+    },
+    "list_files_named": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_files"
+    },
+    "list_push_channels_builder": {
+      "file": "sync/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_push_channels"
+    },
+    "list_push_channels_named": {
+      "file": "sync/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_list_push_channels"
+    },
+    "listeners_event_specific": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_event_specific"
+    },
+    "listeners_generic": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_generic"
+    },
+    "listeners_old_add": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_old_add"
+    },
+    "listeners_old_disconnects": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_old_disconnects"
+    },
+    "listeners_old_remove": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_old_remove"
+    },
+    "listeners_presence": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_presence"
+    },
+    "listeners_status": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_status"
+    },
+    "listeners_subscription_set": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_listeners_subscription_set"
+    },
+    "manage_channel_members_builder": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_manage_channel_members"
+    },
+    "manage_channel_members_named": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_manage_channel_members"
+    },
+    "manage_memberships_builder": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_manage_memberships"
+    },
+    "manage_memberships_named": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_manage_memberships"
+    },
+    "message_counts_builder": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_message_counts"
+    },
+    "message_counts_multiple_builder": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_message_counts"
+    },
+    "message_counts_multiple_named": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_message_counts"
+    },
+    "message_counts_named": {
+      "file": "sync/message_persistence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_message_counts"
+    },
+    "parse_token": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_grant_and_parse_token"
+    },
+    "parse_token_categories": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_token_categories"
+    },
+    "pnchannelmembership_class": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_channel_membership_class"
+    },
+    "pnuuid_class": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_uuid_class"
+    },
+    "publish_builder": {
+      "file": "sync/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_message"
+    },
+    "publish_file_message_builder": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_file_message"
+    },
+    "publish_file_message_callback": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_file_message"
+    },
+    "publish_metadata": {
+      "file": "sync/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_metadata"
+    },
+    "publish_named": {
+      "file": "sync/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_message"
+    },
+    "publish_store_post": {
+      "file": "sync/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_publish_store_and_post"
+    },
+    "reconnect_documented": {
+      "file": "sync/misc.py",
+      "mode": "compile-only",
+      "reason": "pubnub.reconnect() raises AttributeError: PNSubscriptionRegistry has no reconnect (SDK bug)",
+      "role": "open",
+      "step": "reconnect_documented"
+    },
+    "reconnect_method": {
+      "file": "sync/misc.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_disconnect_and_reconnect"
+    },
+    "remove_channel_members_builder": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channel_members"
+    },
+    "remove_channel_members_named": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channel_members"
+    },
+    "remove_channel_metadata_builder": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channel_metadata"
+    },
+    "remove_channel_metadata_named": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channel_metadata"
+    },
+    "remove_channels_builder": {
+      "file": "sync/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channels"
+    },
+    "remove_channels_from_push_builder": {
+      "file": "sync/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channels_from_push"
+    },
+    "remove_channels_from_push_named": {
+      "file": "sync/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channels_from_push"
+    },
+    "remove_channels_named": {
+      "file": "sync/channel_groups.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_channels"
+    },
+    "remove_device_from_push_builder": {
+      "file": "sync/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_device_from_push"
+    },
+    "remove_device_from_push_named": {
+      "file": "sync/mobile_push.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_device_from_push"
+    },
+    "remove_memberships_builder": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_memberships"
+    },
+    "remove_memberships_named": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_memberships"
+    },
+    "remove_message_action_builder": {
+      "file": "sync/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_message_action"
+    },
+    "remove_message_action_named": {
+      "file": "sync/message_actions.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_message_action"
+    },
+    "remove_uuid_metadata_builder": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_uuid_metadata"
+    },
+    "remove_uuid_metadata_named": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_remove_uuid_metadata"
+    },
+    "revoke_token": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_revoke_token"
+    },
+    "send_file_builder": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_send_file"
+    },
+    "send_file_custom_message_type": {
+      "file": "sync/file_sharing.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_send_file"
+    },
+    "set_channel_members_builder": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_set_channel_members"
+    },
+    "set_channel_members_named": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_set_channel_members"
+    },
+    "set_channel_metadata_builder": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_set_channel_metadata"
+    },
+    "set_channel_metadata_named": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_set_channel_metadata"
+    },
+    "set_filter_expression": {
+      "file": "sync/configuration.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_filter_expression"
+    },
+    "set_memberships_builder": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_set_memberships"
+    },
+    "set_memberships_named": {
+      "file": "sync/objects_membership.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_set_memberships"
+    },
+    "set_state_builder": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_state"
+    },
+    "set_state_groups_builder": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_state_for_groups"
+    },
+    "set_state_groups_named": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_state_for_groups"
+    },
+    "set_state_named": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_state"
+    },
+    "set_token": {
+      "file": "sync/access_manager.py",
+      "mode": "live",
+      "reason": "",
+      "role": "pam",
+      "step": "test_set_token"
+    },
+    "set_uuid_metadata_builder": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_set_uuid_metadata"
+    },
+    "set_uuid_metadata_named": {
+      "file": "sync/objects.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_set_uuid_metadata"
+    },
+    "signal_message": {
+      "file": "sync/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_signal"
+    },
+    "signal_named": {
+      "file": "sync/publish.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_signal_named"
+    },
+    "subscribe_multiple": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_multiple"
+    },
+    "subscribe_old_channel": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_channel"
+    },
+    "subscribe_old_group": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_group"
+    },
+    "subscribe_old_group_presence": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_presence"
+    },
+    "subscribe_old_logging": {
+      "file": "sync/subscribe.py",
+      "mode": "compile-only",
+      "reason": "DEBUG logging writes every request URL with the keys to the output",
+      "role": "open",
+      "step": "logging_sample"
+    },
+    "subscribe_old_multiple": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_multiple"
+    },
+    "subscribe_old_presence": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_presence"
+    },
+    "subscribe_old_state": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_state"
+    },
+    "subscribe_old_wildcard": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_old_wildcard"
+    },
+    "subscribe_single": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_subscribe_single"
+    },
+    "time_get": {
+      "file": "sync/misc.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_time"
+    },
+    "unsubscribe_all": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_all"
+    },
+    "unsubscribe_all_old": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_all_old"
+    },
+    "unsubscribe_old_channel": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_old_channel"
+    },
+    "unsubscribe_old_group": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_old_multiple_and_group"
+    },
+    "unsubscribe_old_multiple": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_old_multiple_and_group"
+    },
+    "unsubscribe_set": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_set"
+    },
+    "unsubscribe_subscription": {
+      "file": "sync/subscribe.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_unsubscribe_subscription"
+    },
+    "where_now_other_builder": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_where_now"
+    },
+    "where_now_other_named": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_where_now"
+    },
+    "where_now_self": {
+      "file": "sync/presence.py",
+      "mode": "live",
+      "reason": "",
+      "role": "open",
+      "step": "test_where_now"
+    }
+  }
+}

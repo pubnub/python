@@ -11,7 +11,7 @@ setup(
         'Source': 'https://github.com/pubnub/python',
         'Documentation': 'https://www.pubnub.com/docs/sdks/python',
     },
-    packages=find_packages(exclude=("examples*", 'tests*')),
+    packages=find_packages(exclude=("examples*", 'tests*', 'docs-snippets*')),
     license='PubNub Software Development Kit License',
     classifiers=(
         'Development Status :: 5 - Production/Stable',

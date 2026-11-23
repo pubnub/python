@@ -627,6 +627,21 @@ class EventEngineSubscriptionManager(SubscriptionManager):
                 groups=unsubscribe_operation.channel_groups_without_presence,
                 suppress_leave=self._pubnub.config.suppress_leave_events
             ))
+        elif not self._pubnub.config.suppress_leave_events:
+            # Without presence heartbeats the presence engine is idle, so it sends no leave. The other subscription
+            # managers send one unless suppress_leave_events is set, and so must this one.
+            self._send_leave(unsubscribe_operation)
+
+    def _send_leave(self, unsubscribe_operation):
+        channels = unsubscribe_operation.channels_without_presence
+        groups = unsubscribe_operation.channel_groups_without_presence
+        if not channels and not groups:
+            return
+        asyncio.ensure_future(self._send_leave_helper(channels, groups))
+
+    async def _send_leave_helper(self, channels, groups):
+        envelope = await Leave(self._pubnub).channels(channels).channel_groups(groups).future()
+        self._listener_manager.announce_status(envelope.status)
 
     def adapt_state_builder(self, state_operation):
         self.state_container.register_state(state_operation.state,

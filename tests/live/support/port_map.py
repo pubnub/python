@@ -26,6 +26,12 @@ MAP_FILE = LIVE_DIR / 'port-map.json'
 EXPECTED = {'ids': 311, 'live_steps': 193, 'compile_only': 3}
 
 
+def base_available(base=BASE):
+    """True when the commit of the old suite is in this checkout (the port proof needs its files)."""
+    return subprocess.run(['git', 'cat-file', '-e', base + '^{commit}'], cwd=REPO_ROOT,
+                          capture_output=True).returncode == 0
+
+
 def _git(*args):
     return subprocess.run(['git', *args], cwd=REPO_ROOT, capture_output=True, text=True, check=True).stdout
 

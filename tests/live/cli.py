@@ -45,7 +45,12 @@ def lint(argv):
         print('resources:', p)
     print(f'resources: {len(resources.all_names())} names, {len(problems)} problems')
     rc |= 1 if problems else 0
-    rc |= port_map.main(['--check'])
+    if port_map.base_available():
+        rc |= port_map.main(['--check'])
+    else:
+        # A shallow CI checkout, or a clone after the squash merge, has no old suite to compare with. The proof was made
+        # once, on the port branch, and stays available as `cli.py port-map --check` wherever the base commit exists.
+        print(f'port-map: skipped, base commit {port_map.BASE} is not in this checkout')
     print('lint:', 'ok' if rc == 0 else 'FAILED')
     return rc
 

@@ -81,7 +81,7 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Compile the tier
         run: python -m compileall -q tests/live
-      - name: Lint (markers, self-test, manifest, groups, resources, port map)
+      - name: Lint (markers, self-test, manifest, groups, resources)
         run: python -u tests/live/cli.py lint
 
   offline:
@@ -105,7 +105,7 @@ jobs:
         run: pip install -r requirements-dev.txt
       - name: Compile the tier
         run: python -m compileall -q tests/live
-      - name: Lint (markers, self-test, manifest, groups, resources, port map)
+      - name: Lint (markers, self-test, manifest, groups, resources)
         run: python -u tests/live/cli.py lint
       - name: flake8 of the tier
         run: python -m flake8 tests/live --max-line-length 120 --ignore F811,E402

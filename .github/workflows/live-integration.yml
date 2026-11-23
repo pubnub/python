@@ -1,0 +1,193 @@
+name: Live tests
+
+# Live tier (tests/live/README.md): the public documentation's Python and asyncio code samples, run against the real
+# PubNub service. Runs on non-draft pull requests into master, and on demand. No scheduled runs. Draft pull requests
+# run nothing. Fork pull requests never get the live jobs (no secrets for fork code).
+#
+# One job per API group. The groups and their files are in tests/live/groups.py. The offline job turns that file into
+# the job matrix, so a new group needs no change here except the `group` input options below (the lint checks that
+# they match). The matrix runs one group at a time (max-parallel: 1) and does not stop at a failed group
+# (fail-fast: false), so every group reports its own result and the run is red when any group failed. Each group checks
+# out, installs, cleans the keysets before and after its tests, and can be re-run alone ("Re-run job" on that group).
+#
+# Without a GitHub Environment with required reviewers, anyone with push access can read the secrets through a pull
+# request. This workflow does not set one.
+
+on:
+  # Every pull request into master, whatever files it changes, so SDK changes are tested too. A new push to the pull
+  # request starts a new run. Marking a draft as ready for review also starts a run.
+  pull_request:
+    branches:
+      - master
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+    inputs:
+      group:
+        description: 'Run only this group (tests/live/groups.py). "all" runs every group, one after another.'
+        required: false
+        default: 'all'
+        type: choice
+        # Must list 'all' and then every group name of groups.py, in that order (checked by tests/live/cli.py lint).
+        options:
+          - all
+          - messaging
+          - getting-started
+          - app-context
+          - access-manager
+          - access-manager-application-level
+      grep:
+        description: 'Run only tests whose name matches this pytest -k expression, inside the selected groups. Empty runs everything.'
+        required: false
+        default: ''
+        type: string
+
+# One live run at a time for the whole workflow: the tier uses fixed resource names on shared keysets, so the jobs of
+# two runs must never interleave. This group never cancels in progress, because that would also cancel the run of
+# another pull request. A new push to a pull request cancels the older live runs of the same pull request through
+# cancel-superseded-live-runs.yml (a run that waits for this group cannot cancel itself). Runs that get no live jobs
+# (draft or fork pull requests) take one group per pull request and cancel their own older run.
+concurrency:
+  group: ${{ (github.event_name == 'pull_request' && (github.event.pull_request.draft || github.event.pull_request.head.repo.full_name != github.repository)) && format('python-live-tests-no-live-{0}', github.ref) || 'python-docs-snippets-live' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' && (github.event.pull_request.draft || github.event.pull_request.head.repo.full_name != github.repository) }}
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: read
+
+jobs:
+  compat:
+    name: Compile and lint (Python ${{ matrix.python }})
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    runs-on:
+      group: organization/Default
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Setup Python ${{ matrix.python }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Compile the tier
+        run: python -m compileall -q tests/live
+      - name: Lint (markers, self-test, manifest, groups, resources, port map)
+        run: python -u tests/live/cli.py lint
+
+  offline:
+    name: Offline checks (lint, flake8, collect, plan)
+    if: ${{ github.event_name != 'pull_request' || !github.event.pull_request.draft }}
+    runs-on:
+      group: organization/Default
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Compile the tier
+        run: python -m compileall -q tests/live
+      - name: Lint (markers, self-test, manifest, groups, resources, port map)
+        run: python -u tests/live/cli.py lint
+      - name: flake8 of the tier
+        run: python -m flake8 tests/live --max-line-length 120 --ignore F811,E402
+      # No keys and no network: pytest-socket refuses every connection that is not to the loopback address.
+      - name: Collect without keys or network
+        working-directory: tests/live
+        run: python -u -m pytest --collect-only -q --allow-hosts=127.0.0.1,::1
+      - name: Plan the group jobs
+        id: plan
+        env:
+          # Empty on pull requests: every group. Reaches the script only through the environment.
+          GROUP: ${{ inputs.group }}
+        run: |
+          matrix="$(python -u tests/live/cli.py groups --matrix "${GROUP:-all}")"
+          echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+          echo "$matrix"
+
+  live:
+    name: ${{ matrix.group }}
+    needs: [offline, compat]
+    # Pull requests: only non-draft ones from a branch of this repository (never a fork: no secrets for fork code).
+    if: ${{ github.event_name != 'pull_request' || (!github.event.pull_request.draft && github.event.pull_request.head.repo.full_name == github.repository) }}
+    runs-on:
+      group: organization/Default
+    timeout-minutes: 30
+    strategy:
+      # One group at a time (the keysets are shared), and every group runs even after a failed one.
+      max-parallel: 1
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.offline.outputs.matrix) }}
+    env:
+      # Not secrets. Set on the job because they are only keyset ids for the Admin API feature check.
+      DOCS_SNIPPETS_OPEN_KEYSET_ID: ${{ vars.SDK_DOCS_OPEN_KEYSET_ID }}
+      DOCS_SNIPPETS_PAM_KEYSET_ID: ${{ vars.SDK_DOCS_PAM_KEYSET_ID }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      # Secrets are set per step below, never on the job, so installing dependencies never sees them.
+      - name: Install dependencies
+        id: install
+        run: pip install -r requirements-dev.txt
+      # Every docs keyset, whatever the group: the janitor cleans every role before and after the group, so each job
+      # starts and ends clean even when the job before it failed. The role check and the preflight cover only the
+      # group's roles.
+      - name: Docs samples (janitor and preflight on)
+        id: samples
+        if: ${{ !cancelled() && steps.install.outcome == 'success' && matrix.tier == 'docs' }}
+        working-directory: tests/live
+        env:
+          SUBSCRIBE_KEY: ${{ secrets.SDK_DOCS_OPEN_SUBSCRIBE_KEY }}
+          PUBLISH_KEY: ${{ secrets.SDK_DOCS_OPEN_PUBLISH_KEY }}
+          PAM_SUBSCRIBE_KEY: ${{ secrets.SDK_DOCS_PAM_SUBSCRIBE_KEY }}
+          PAM_PUBLISH_KEY: ${{ secrets.SDK_DOCS_PAM_PUBLISH_KEY }}
+          PAM_SECRET_KEY: ${{ secrets.SDK_DOCS_PAM_SECRET_KEY }}
+          PUBNUB_ADMIN_API_KEY: ${{ secrets.SDK_DOCS_ADMIN_API_KEY }}
+          LIVE_GROUP: ${{ matrix.group }}
+          # Untrusted input: reaches the script only through the environment.
+          GREP: ${{ inputs.grep }}
+        run: |
+          if [ -n "$GREP" ]; then
+            python -u -m pytest -k "$GREP"
+          else
+            python -u -m pytest
+          fi
+      # After a failure or a cancel the tier's own session teardown may not have run (killed process): revoke the
+      # application-level Access Manager grant and remove leftovers, so a keyset is never left open until the next
+      # group or run. Docs tier only.
+      - name: Revoke grants and clean up
+        if: ${{ (cancelled() || failure()) && steps.install.outcome == 'success' && matrix.tier == 'docs' }}
+        env:
+          SUBSCRIBE_KEY: ${{ secrets.SDK_DOCS_OPEN_SUBSCRIBE_KEY }}
+          PUBLISH_KEY: ${{ secrets.SDK_DOCS_OPEN_PUBLISH_KEY }}
+          PAM_SUBSCRIBE_KEY: ${{ secrets.SDK_DOCS_PAM_SUBSCRIBE_KEY }}
+          PAM_PUBLISH_KEY: ${{ secrets.SDK_DOCS_PAM_PUBLISH_KEY }}
+          PAM_SECRET_KEY: ${{ secrets.SDK_DOCS_PAM_SECRET_KEY }}
+        run: python -u tests/live/cli.py janitor
+      # No artifact upload: the tier prints to stdout only and writes no report file.
+
+  # Failure alerts (Slack or similar) are not wired yet: the run logs in GitHub are the only signal for now.

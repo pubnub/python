@@ -1,0 +1,16 @@
+{
+  "$comment": "Hand maintained. exceptions: docs embeds from pubnub/python that no test runs, with a reason (path under tests/live/, ids absent means every embed of the path). one_sided: pages that exist in one docset only, with a reason. cli.py docs-check reads exceptions, the lint checks the shape.",
+  "exceptions": [],
+  "one_sided": [
+    {
+      "docset": "sync",
+      "page": "test_encryption.py",
+      "reason": "The asyncio docset has no encryption page. The crypto module is configured the same way for both clients."
+    },
+    {
+      "docset": "sync",
+      "page": "test_objects.py",
+      "reason": "The asyncio docset has no App Context page with embedded samples on the docs branch (PR 1063)."
+    }
+  ]
+}

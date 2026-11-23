@@ -84,7 +84,5 @@ PubNubTwisted.ipynb
 venv/
 reports/
 
-# Docs snippet suite
-docs-snippets/.run/
-docs-snippets/report/
-docs-snippets/.env.local
+# Live tier (tests/live/README.md). Keys only, never commit.
+tests/live/.env.local

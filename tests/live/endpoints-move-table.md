@@ -1,0 +1,34 @@
+# Endpoint tier move table (reference only)
+
+Superseded 2026-11-20: the user decided that these tests stay in `tests/` and are not moved (plan Q4). This list only records which tests reach the network.
+
+
+Produced 2026-11-20 by running the root suite (`py.test tests --ignore=tests/manual/`, 8 workers, 15 s timeout) with every non-loopback `connect()` refused process wide and logged with `PYTEST_CURRENT_TEST`. No request reached the service. Nothing has moved yet.
+
+Caveats: a connect is attributed to the test that runs at that moment, so a thread an earlier test left running can be attributed to a later test. Confirm each row with `PN_OFFLINE_GUARD=1 py.test <file>` before moving it, and keep the before and after test counts equal (1143 collected today with `--ignore=tests/manual/`). Two connects happened outside any test (lingering threads at worker start). The unit test `unit/test_subscription_registry.py::test_set_unsubscribe_with_channel_groups` was attributed once in an earlier run and not in this one, so it is listed under "to confirm".
+
+| File (under `tests/`) | Tests that reached the network | Why | Proposed target |
+| :--- | :--- | :--- | :--- |
+| `examples/native_sync/test_examples.py` | `test_file_handling`, `test_message_reactions` | Runs the example programs, which build clients from env keys and call the service. No cassette | `tests/live/endpoints/examples/native_sync/test_endpoints_examples.py` |
+| `functional/event_engine/test_subscribe.py` | `test_handshake_failed_no_reconnect`, `test_handshake_failed_reconnect` | Subscribe handshake of the default subscription manager against the real origin (pnconf_env_copy), no cassette | `tests/live/endpoints/functional/event_engine/test_endpoints_subscribe.py` |
+| `integrational/asyncio/test_channel_groups.py` | `test_super_call` | test_super_call has no cassette (pnconf_pam_copy) | `tests/live/endpoints/asyncio/test_endpoints_channel_groups.py` |
+| `integrational/asyncio/test_here_now.py` | `test_multiple_channels`, `test_single_channel`, `test_here_now_super_call` | The listed tests subscribe for real (no cassette on these tests) | `tests/live/endpoints/asyncio/test_endpoints_here_now.py` |
+| `integrational/asyncio/test_state.py` | `test_single_channel_with_subscription`, `test_state_super_admin_call` | The listed tests have no cassette | `tests/live/endpoints/asyncio/test_endpoints_state.py` |
+| `integrational/asyncio/test_subscribe.py` | `test_join_leave`, `test_cg_join_leave` | Presence join and leave tests subscribe for real (no cassette) | `tests/live/endpoints/asyncio/test_endpoints_subscribe.py` |
+| `integrational/asyncio/test_unsubscribe_status.py` | `test_access_denied_unsubscribe_operation` | Access denied unsubscribe against the real `pam` role keyset, no cassette | `tests/live/endpoints/asyncio/test_endpoints_unsubscribe_status.py` |
+| `integrational/asyncio/test_where_now.py` | `test_single_channel`, `test_multiple_channels` | Subscribe then where_now for real, no cassette | `tests/live/endpoints/asyncio/test_endpoints_where_now.py` |
+| `integrational/native_sync/test_history.py` | `TestPubNubHistory::test_not_permitted`, `TestPubNubHistory::test_super_call_with_all_params`, `TestPubNubHistory::test_super_call_with_channel_only` | The listed tests have no cassette | `tests/live/endpoints/native_sync/test_endpoints_history.py` |
+| `integrational/native_sync/test_history_delete.py` | `TestPubNubHistoryDelete::test_success`, `TestPubNubHistoryDelete::test_super_call` | No cassette in the file | `tests/live/endpoints/native_sync/test_endpoints_history_delete.py` |
+| `integrational/native_threads/test_heartbeat.py` | `TestPubNubHeartbeat::test_timeout_event_on_broken_heartbeat` | Real subscribe and heartbeat, no cassette in the file | `tests/live/endpoints/native_threads/test_endpoints_heartbeat.py` |
+| `integrational/native_threads/test_here_now.py` | `TestPubNubState::test_multiple_channels`, `TestPubNubState::test_single_channel` | Real subscribe and here_now, no cassette in the file | `tests/live/endpoints/native_threads/test_endpoints_here_now.py` |
+| `integrational/native_threads/test_history_delete.py` | `TestPubNubSuccessHistoryDelete::test_super_call`, `TestPubNubSuccessHistoryDelete::test_success` | No cassette in the file | `tests/live/endpoints/native_threads/test_endpoints_history_delete.py` |
+| `integrational/native_threads/test_publish.py` | `TestPubNubSuccessPublish::test_publish_do_not_store`, `TestPubNubSuccessPublish::test_publish_encrypted_list_get`, `TestPubNubSuccessPublish::test_publish_encrypted_list_post`, `TestPubNubSuccessPublish::test_publish_encrypted_string_get`, `TestPubNubSuccessPublish::test_publish_encrypted_string_post`, `TestPubNubSuccessPublish::test_publish_get`, `TestPubNubSuccessPublish::test_publish_post`, `TestPubNubSuccessPublish::test_publish_with_meta`, `TestPubNubErrorPublish::test_invalid_key`, `TestPubNubErrorPublish::test_not_permitted` | No cassette in the file (threaded publish) | `tests/live/endpoints/native_threads/test_endpoints_publish.py` |
+| `integrational/native_threads/test_subscribe.py` | `TestPubNubSubscription::test_join_leave`, `TestPubNubSubscription::test_subscribe_cg_publish_unsubscribe`, `TestPubNubSubscription::test_subscribe_pub_unencrypted_unsubscribe`, `TestPubNubSubscription::test_subscribe_pub_unsubscribe`, `TestPubNubSubscription::test_subscribe_unsubscribe` | Real subscribe, no cassette in the file | `tests/live/endpoints/native_threads/test_endpoints_subscribe.py` |
+| `integrational/native_threads/test_where_now.py` | `TestPubNubState::test_multiple_channels`, `TestPubNubState::test_single_channel` | Real subscribe and where_now, no cassette in the file | `tests/live/endpoints/native_threads/test_endpoints_where_now.py` |
+| `unit/test_wall_clock_deadline.py` | `TestWallClockDeadlineWatchdog::test_clear_from_one_thread_does_not_affect_another`, `TestHttpxSessionRecreation::test_closed_session_is_recreated_on_next_request`, `TestHttpxSessionRecreation::test_open_session_is_not_recreated`, `TestHttpxSessionRecreation::test_reconnection_time_request_works_after_session_close`, `TestHttpxSessionRecreation::test_watchdog_trigger_with_timeout_exception_recreates_session`, `TestForceShutdownConnections::test_shutdown_with_real_httpx_client` | Builds a real httpx client and sends requests to the PubNub origin | Keep in place, point the client at a local `http.server` on 127.0.0.1 (a unit test must not need the service) |
+
+Total: 48 tests in 17 files.
+
+To confirm: `unit/test_subscription_registry.py::test_set_unsubscribe_with_channel_groups`.
+
+Target naming follows plan section 3 J24: functions become `test_endpoints_<file>_<case>`, channels use `unique_suffix()`, every create registers `cleanup_after_test`, and the tier runs on the SDK keysets (`SDK_*` secrets) with `LIVE_TIER=endpoints`. Cassette siblings of moved tests stay in place.

@@ -4,7 +4,7 @@ import os
 import tempfile
 
 from support import assertions as a
-from support.wait import aeventually
+from support.wait import aeventually, asettled
 from shared.file_sharing import (
     FIXTURE, FIXTURE_BYTES, channel_name_async as channel_name, fetch, listed_ids_async as listed_ids,
     remove_async as remove, stored_file_messages_async as stored_file_messages, upload_async as upload,
@@ -80,7 +80,7 @@ async def test_list_files_builder(aclients):
     try:
         async def both_listed():
             a.contains(await listed_ids(pubnub), second.file_id, 'second upload listed')
-        await aeventually(both_listed)
+        await asettled(both_listed)
 
         # snippet.list_files_builder
         envelope = await pubnub.list_files().channel("test_channel").limit(1).future()
@@ -163,7 +163,7 @@ async def test_delete_file_builder(aclients):
     try:
         async def both_listed():
             a.contains(await listed_ids(pubnub), two.file_id, 'uploads listed')
-        await aeventually(both_listed)
+        await asettled(both_listed)
 
         # snippet.delete_file_builder
         envelope = await pubnub.delete_file(). \

@@ -4,7 +4,7 @@ A message action needs a stored message, so every step waits until the published
 """
 from support import assertions as a
 from support.listen import alisten
-from support.wait import aeventually
+from support.wait import aeventually, asettled
 from shared.message_actions import add_action_async as add_action, publish_stored_async as publish_stored, remove_action
 
 
@@ -89,7 +89,7 @@ async def test_get_message_actions_builder(aclients):
         mine = [x.action_timetoken for x in got if int(x.message_timetoken) in tokens]
         a.eq(mine, [first, second, third], 'ascending by action timetoken')
 
-    await aeventually(all_visible, timeout=30, what='actions listed')
+    await asettled(all_visible, timeout=30, what='actions listed')
     start, end = str(third), str(second)
 
     # snippet.get_message_actions_builder
@@ -143,7 +143,7 @@ async def test_remove_message_action_builder(aclients):
         got = (await pubnub.get_message_actions(channel=channel).future()).result.actions
         a.eq([x.action_timetoken for x in got if int(x.message_timetoken) == message_timetoken], expected)
 
-    await aeventually(lambda: listed([first, second]), timeout=30, what='both actions listed')
+    await asettled(lambda: listed([first, second]), timeout=30, what='both actions listed')
     action_timetoken = int(first)
 
     # snippet.remove_message_action_builder

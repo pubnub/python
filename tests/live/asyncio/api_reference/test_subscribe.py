@@ -6,7 +6,8 @@ from pubnub.models.consumer.message_actions import PNMessageAction
 from support import assertions as a
 from support import cleanup as live_cleanup
 from support.listen import alisten
-from support.wait import aeventually
+from support.wait import PRESENCE_EVENT_TIMEOUT, aeventually
+from shared.presence import not_present
 from shared.subscribe import AppContextCollector, Printed, attach, connected_async as connected, texts
 
 
@@ -40,6 +41,8 @@ async def test_subscribe_multiple(aclients):
     grouped = 'grouped_channel'
     await publisher.add_channel_to_channel_group().channels([grouped]).channel_group(group_name).future()
     live_cleanup.record('channel_group', group_name)
+    # The join of second_user is checked below. The service emits it only if the user ID is not an occupant yet.
+    not_present(f'{name}.2', ['second_user'])
     seen = attach(pubnub)
     envelopes = []
     original_from_json = SubscribeMessage.from_json.__func__
@@ -99,7 +102,8 @@ async def test_subscribe_multiple(aclients):
         await alisten(other, f'{name}.2')
         await aeventually(lambda: a.contains([(p.event, p.uuid) for p in seen.presence_events
                                               if p.channel == f'{name}.2'],
-                                             ('join', other.uuid), 'join of the second client'))
+                                             ('join', other.uuid), 'join of the second client'),
+                          timeout=PRESENCE_EVENT_TIMEOUT)
     finally:
         SubscribeMessage.from_json = classmethod(original_from_json)
 

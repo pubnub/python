@@ -12,7 +12,8 @@ from support import assertions as a
 from support import cleanup as live_cleanup
 from support.env import use_open_keys
 from support.listen import Collector, listen
-from support.wait import eventually
+from support.wait import PRESENCE_EVENT_TIMEOUT, PRESENCE_TIMEOUT, eventually
+from shared.presence import not_present
 from shared.subscribe import Printed, attach, attach_status, connected, texts
 
 
@@ -117,6 +118,9 @@ def test_subscribe_old_presence(clients):
     clients.sync('open', 'publisher').add_channel_to_channel_group().channels([grouped]) \
         .channel_group(group_name).sync()
     live_cleanup.record('channel_group', group_name)
+    # A join is emitted only for a user ID that is not an occupant yet (an earlier test can leave one listed).
+    not_present(name, ['second_user'])
+    not_present(grouped, ['member_user'])
     seen = attach(pubnub)
 
     # snippet.subscribe_old_presence
@@ -137,7 +141,7 @@ def test_subscribe_old_presence(clients):
     other = clients.sync('open', 'second_user')
     listen(other, name)
     eventually(lambda: a.contains([(p.event, p.channel) for p in seen.presence_events if p.uuid == other.uuid],
-                                  ('join', name), 'join on the channel'))
+                                  ('join', name), 'join on the channel'), timeout=PRESENCE_EVENT_TIMEOUT)
     # Presence of a channel group is announced per member channel: a client that subscribes to the group itself
     # produces no join, a client that subscribes to a member channel does, and the event carries the group in
     # `subscription` (workers.py _process_incoming_payload, subscription_match with the -pnpres suffix stripped).
@@ -145,7 +149,8 @@ def test_subscribe_old_presence(clients):
     listen(member, grouped)
     eventually(lambda: a.contains([(p.event, p.channel, p.subscription) for p in seen.presence_events
                                    if p.uuid == member.uuid],
-                                  ('join', grouped, group_name), 'join of a member channel through the group'))
+                                  ('join', grouped, group_name), 'join of a member channel through the group'),
+               timeout=PRESENCE_EVENT_TIMEOUT)
     join = [p for p in seen.presence_events if p.event == 'join' and p.uuid == other.uuid and p.channel == name][0]
     a.ok(isinstance(join.timestamp, int) and join.occupancy >= 1, 'join carries timestamp and occupancy')
 
@@ -191,9 +196,13 @@ def test_subscribe_old_state(clients):
 
     eventually(lambda: a.eq(read_state(), {name: {'field_a': 'awesome', 'field_b': 10}},
                             'state set from the status callback'))
-    here = reader.here_now().channels(name).include_state(True).sync().result
-    a.eq([(o.uuid, o.state) for o in here.channels[0].occupants],
-         [(pubnub.uuid, {'field_a': 'awesome', 'field_b': 10})])
+
+    def listed_with_state():
+        here = reader.here_now().channels(name).include_state(True).sync().result
+        # Other user IDs can still be listed on the shared channel, so only the own occupant is checked.
+        a.contains([(o.uuid, o.state) for o in here.channels[0].occupants],
+                   (pubnub.uuid, {'field_a': 'awesome', 'field_b': 10}))
+    eventually(listed_with_state, timeout=PRESENCE_TIMEOUT, what='here_now lists the state')
 
 
 def test_subscribe_old_logging(clients, caplog, monkeypatch):

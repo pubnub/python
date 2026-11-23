@@ -13,7 +13,8 @@ from support import cleanup as live_cleanup
 from support.clients import BaseClients
 from support.env import use_open_keys
 from support.listen import Collector, alisten
-from support.wait import aeventually
+from support.wait import PRESENCE_EVENT_TIMEOUT, PRESENCE_TIMEOUT, aeventually
+from shared.presence import not_present
 from shared.subscribe import Printed, attach, attach_status, connected_async as connected, texts
 
 
@@ -117,6 +118,9 @@ async def test_subscribe_old_presence(aclients):
     await aclients.asyncio('open', 'publisher').add_channel_to_channel_group().channels([grouped]) \
         .channel_group(group_name).future()
     live_cleanup.record('channel_group', group_name)
+    # A join is emitted only for a user ID that is not an occupant yet (an earlier test can leave one listed).
+    not_present(name, ['second_user'])
+    not_present(grouped, ['member_user'])
     seen = attach(pubnub)
 
     # snippet.subscribe_old_presence
@@ -137,7 +141,7 @@ async def test_subscribe_old_presence(aclients):
     other = aclients.asyncio('open', 'second_user')
     await alisten(other, name)
     await aeventually(lambda: a.contains([(p.event, p.channel) for p in seen.presence_events if p.uuid == other.uuid],
-                                         ('join', name), 'join on the channel'))
+                                         ('join', name), 'join on the channel'), timeout=PRESENCE_EVENT_TIMEOUT)
     # Presence of a channel group is announced per member channel: a client that subscribes to the group itself
     # produces no join, a client that subscribes to a member channel does, and the event carries the group in
     # `subscription` (workers.py _process_incoming_payload, subscription_match with the -pnpres suffix stripped).
@@ -145,7 +149,8 @@ async def test_subscribe_old_presence(aclients):
     await alisten(member, grouped)
     await aeventually(lambda: a.contains([(p.event, p.channel, p.subscription) for p in seen.presence_events
                                           if p.uuid == member.uuid],
-                                         ('join', grouped, group_name), 'join of a member channel through the group'))
+                                         ('join', grouped, group_name), 'join of a member channel through the group'),
+                      timeout=PRESENCE_EVENT_TIMEOUT)
     join = [p for p in seen.presence_events if p.event == 'join' and p.uuid == other.uuid and p.channel == name][0]
     a.ok(isinstance(join.timestamp, int) and join.occupancy >= 1, 'join carries timestamp and occupancy')
 
@@ -192,9 +197,13 @@ async def test_subscribe_old_state(aclients):
         a.eq(fetched.result.channels, {name: {'field_a': 'awesome', 'field_b': 10}}, 'state set from the callback')
 
     await aeventually(check_state)
-    here = (await reader.here_now().channels(name).include_state(True).future()).result
-    a.eq([(o.uuid, o.state) for o in here.channels[0].occupants],
-         [(pubnub.uuid, {'field_a': 'awesome', 'field_b': 10})])
+
+    async def listed_with_state():
+        here = (await reader.here_now().channels(name).include_state(True).future()).result
+        # Other user IDs can still be listed on the shared channel, so only the own occupant is checked.
+        a.contains([(o.uuid, o.state) for o in here.channels[0].occupants],
+                   (pubnub.uuid, {'field_a': 'awesome', 'field_b': 10}))
+    await aeventually(listed_with_state, timeout=PRESENCE_TIMEOUT, what='here_now lists the state')
 
 
 def test_subscribe_old_logging(caplog, monkeypatch):
@@ -455,13 +464,16 @@ async def test_unsubscribe_old_channel(aclients):
     publisher = aclients.asyncio('open', 'publisher')
     single, control = 'my_channel', 'ch3'
     seen = attach(pubnub)
+    # The observer must see joins, which the service emits only for user IDs that are not occupants yet.
+    not_present(single, ['subscriber', 'sentinel', 'beating_subscriber'])
     observer = await alisten(aclients.asyncio('open', 'observer'), single, presence=True)
     pubnub.subscribe().channels([single, control]).execute()
     await connected(seen)
     await publisher.publish().channel(single).message('before').future()
     await aeventually(lambda: a.eq(texts(seen), ['before'], 'message before unsubscribe'))
     await aeventually(lambda: a.contains([(p.event, p.uuid) for p in observer.presence_events],
-                                         ('join', pubnub.uuid), 'the observer sees the join'))
+                                         ('join', pubnub.uuid), 'the observer sees the join'),
+                      timeout=PRESENCE_EVENT_TIMEOUT)
 
     # snippet.unsubscribe_old_channel
     pubnub.unsubscribe() \
@@ -482,7 +494,8 @@ async def test_unsubscribe_old_channel(aclients):
     sentinel = aclients.asyncio('open', 'sentinel')
     await alisten(sentinel, single)
     await aeventually(lambda: a.contains([(p.event, p.uuid) for p in observer.presence_events],
-                                         ('join', sentinel.uuid), 'the observer sees the later sentinel join'))
+                                         ('join', sentinel.uuid), 'the observer sees the later sentinel join'),
+                      timeout=PRESENCE_EVENT_TIMEOUT)
     a.not_contains([(p.event, p.uuid) for p in observer.presence_events], ('leave', pubnub.uuid),
                    'no leave event with the default configuration')
 
@@ -495,7 +508,8 @@ async def test_unsubscribe_old_channel(aclients):
     beating.subscribe().channels([single, control]).execute()
     await connected(beating_seen)
     await aeventually(lambda: a.contains([(p.event, p.uuid) for p in observer.presence_events],
-                                         ('join', beating.uuid), 'the observer sees the join of the heartbeat client'))
+                                         ('join', beating.uuid), 'the observer sees the join of the heartbeat client'),
+                      timeout=PRESENCE_EVENT_TIMEOUT)
     beating.unsubscribe() \
         .channels(single) \
         .execute()

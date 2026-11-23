@@ -12,12 +12,44 @@ from pubnub.models.consumer.objects_v2.sort import PNSortKey, PNSortKeyValue
 import pytest
 
 from support import assertions as a
-from support.wait import eventually
+from support.wait import settled
 from shared.objects import (
-    CUSTOM_1, CUSTOM_2, UUID_FIELDS, by_channel, by_member, channel_ids, check_members, check_memberships, cleanup,
-    first_event, gone, ids, member_ids, record, seed_channels, seed_members, seed_memberships, seed_one_member,
-    seed_one_membership, seed_users, watch,
+    CUSTOM_1, CUSTOM_2, UUID_FIELDS, attempt, by_channel, by_member, channel_ids, check_members, check_memberships,
+    cleanup, first_event, fresh, gone, ids, member_ids, record, seed_channels, seed_members, seed_memberships,
+    seed_one_member, seed_one_membership, seed_users, settled_read, watch,
 )
+
+# Every read after a write waits for consecutive agreeing reads (settled), and a test that asserts exact lists first
+# removes the leftovers of both sides (fresh). Both cost time, so the default timeout of pytest.ini is too short.
+pytestmark = pytest.mark.timeout(240)
+
+
+def memberships_of(pubnub, uid, **kwargs):
+    return attempt(lambda: pubnub.get_memberships(uuid=uid, **kwargs).sync()).result.data
+
+
+def members_of(pubnub, channel, **kwargs):
+    return attempt(lambda: pubnub.get_channel_members(channel=channel, **kwargs).sync()).result.data
+
+
+def memberships_visible(pubnub, uid, plain, with_custom):
+    """Precondition: the seeded memberships with all details, on consecutive reads. A module-level helper, because
+    the samples import MembershipIncludes themselves, which makes the name local to the whole test function."""
+    settled_read(lambda: pubnub.get_memberships(uuid=uid, include=MembershipIncludes(
+        custom=True, channel=True, channel_custom=True)).sync(),
+        lambda e: check_memberships(e.result.data, plain, with_custom), 'seeded memberships visible')
+
+
+def members_visible(pubnub, channel, plain, with_custom):
+    """Precondition: the seeded members with all details, on consecutive reads (see memberships_visible)."""
+    settled_read(lambda: pubnub.get_channel_members(channel=channel, include=MemberIncludes(
+        custom=True, user=True, user_custom=True)).sync(),
+        lambda e: check_members(e.result.data, plain, with_custom), 'seeded members visible')
+
+
+def settled_eq(read, want, what):
+    """read() equals want on consecutive reads (a write is visible on every replica)."""
+    settled(lambda: a.eq(read(), want, what), timeout=30, what=what)
 
 
 def test_get_all_uuid_metadata_builder(clients):
@@ -35,7 +67,7 @@ def test_get_all_uuid_metadata_builder(clients):
             builder = pubnub.get_all_uuid_metadata(filter="name == '%s'" % kind, **kwargs)
             return (builder.page(page) if page else builder).sync().result
 
-        eventually(lambda: a.eq(ids(listed().data), sorted(users), 'seeded users listed'), what='users listed')
+        settled_eq(lambda: ids(attempt(listed).data), sorted(users), 'seeded users listed')
 
         # snippet.get_all_uuid_metadata_builder
         from pubnub.models.consumer.objects_v2.sort import PNSortKey, PNSortKeyValue
@@ -118,6 +150,10 @@ def test_get_uuid_metadata_builder(clients):
         pubnub.set_uuid_metadata(uuid=me, name='Doc profile', status='Active', type='doc',
                                  custom={'team': 'docs'}).sync()
         pubnub.set_uuid_metadata(uuid=other, name='Doc other', custom={'team': 'other'}).sync()
+        settled_eq(lambda: attempt(lambda: pubnub.get_uuid_metadata(uuid=me, include_custom=True).sync())
+                   .result.data['custom'], {'team': 'docs'}, 'profile visible')
+        settled_eq(lambda: attempt(lambda: pubnub.get_uuid_metadata(uuid=other, include_custom=True).sync())
+                   .result.data['custom'], {'team': 'other'}, 'other profile visible')
 
         # snippet.get_uuid_metadata_builder
         envelope = pubnub.get_uuid_metadata() \
@@ -150,7 +186,7 @@ def test_get_uuid_metadata_builder(clients):
         cleanup(pubnub, [me, other])
 
 
-@pytest.mark.timeout(180)
+@pytest.mark.timeout(300)
 def test_set_uuid_metadata_builder(clients):
     """Snippets: set_uuid_metadata_builder, set_uuid_metadata_named."""
     pubnub = clients.sync('open', 'setter')
@@ -182,8 +218,8 @@ def test_set_uuid_metadata_builder(clients):
         a.eq((kind, event, payload['id'], payload['name']), ('uuid', 'set', first, 'Some Name'))
         a.eq(payload['custom'], {'key1': 'val1', 'key2': 'val2'})
         a.eq(payload['eTag'], data['eTag'])
-        read = pubnub.get_uuid_metadata(uuid=first, include_custom=True).sync().result.data
-        a.eq(read, data, 'read back equals the set response')
+        settled_eq(lambda: attempt(lambda: pubnub.get_uuid_metadata(uuid=first, include_custom=True).sync())
+                   .result.data, data, 'read back equals the set response')
 
         seen = watch(clients, second)
 
@@ -208,8 +244,8 @@ def test_set_uuid_metadata_builder(clients):
         # Custom is replaced as a whole, never merged
         replaced = pubnub.set_uuid_metadata(uuid=first, custom={'only': 'this'}, include_custom=True).sync().result.data
         a.eq(replaced['custom'], {'only': 'this'})
-        read = pubnub.get_uuid_metadata(uuid=first, include_custom=True).sync().result.data
-        a.eq(read['custom'], {'only': 'this'}, 'custom is overwritten')
+        settled_eq(lambda: attempt(lambda: pubnub.get_uuid_metadata(uuid=first, include_custom=True).sync())
+                   .result.data['custom'], {'only': 'this'}, 'custom is overwritten')
 
         # Defaults of the include flags: status and type come back unless they are switched off
         light = pubnub.set_uuid_metadata(uuid=first, name='Some Name', include_status=False, include_type=False)
@@ -240,7 +276,9 @@ def test_remove_uuid_metadata_builder(clients):
     try:
         for uid in (first, second):
             pubnub.set_uuid_metadata(uuid=uid, name='To remove', custom={'k': 'v'}).sync()
-        a.eq(pubnub.get_uuid_metadata(uuid=first, include_custom=True).sync().result.data['custom'], {'k': 'v'})
+        for uid in (first, second):
+            settled_eq(lambda: attempt(lambda: pubnub.get_uuid_metadata(uuid=uid, include_custom=True).sync())
+                       .result.data['custom'], {'k': 'v'}, f'{uid} visible')
         seen = watch(clients, first)
 
         # snippet.remove_uuid_metadata_builder
@@ -253,7 +291,8 @@ def test_remove_uuid_metadata_builder(clients):
         kind, event, payload = first_event(seen)
         a.eq((kind, event, payload['id']), ('uuid', 'delete', first))
         gone(lambda: pubnub.get_uuid_metadata(uuid=first).sync())
-        a.eq(pubnub.get_uuid_metadata(uuid=second).sync().result.data['id'], second, 'other users stay')
+        settled_eq(lambda: attempt(lambda: pubnub.get_uuid_metadata(uuid=second).sync()).result.data['id'], second,
+                   'other users stay')
 
         # snippet.remove_uuid_metadata_named
         envelope = pubnub.remove_uuid_metadata(uuid="some_uuid_named").sync()
@@ -261,8 +300,8 @@ def test_remove_uuid_metadata_builder(clients):
 
         a.eq(envelope.result.status, 200)
         gone(lambda: pubnub.get_uuid_metadata(uuid=second).sync())
-        listed = pubnub.get_all_uuid_metadata(filter="id == '%s'" % second).sync().result.data
-        a.eq(listed, [], 'the list no longer has the user')
+        settled_eq(lambda: pubnub.get_all_uuid_metadata(filter="id == '%s'" % second).sync().result.data, [],
+                   'the list no longer has the user')
     finally:
         cleanup(pubnub, [first, second])
 
@@ -281,7 +320,7 @@ def test_get_all_channel_metadata_builder(clients):
         def listed(**kwargs):
             return pubnub.get_all_channel_metadata(filter="name == '%s'" % kind, **kwargs).sync().result
 
-        eventually(lambda: a.eq(ids(listed().data), sorted(channels), 'seeded channels listed'), what='channels listed')
+        settled_eq(lambda: ids(attempt(listed).data), sorted(channels), 'seeded channels listed')
 
         # snippet.get_all_channel_metadata_builder
         from pubnub.models.consumer.objects_v2.sort import PNSortKey, PNSortKeyValue
@@ -345,6 +384,8 @@ def test_get_channel_metadata_builder(clients):
     try:
         pubnub.set_channel_metadata(channel=channel, name='Doc channel', description='About', status='live',
                                     type='room', custom={'topic': 'docs'}).sync()
+        settled_eq(lambda: attempt(lambda: pubnub.get_channel_metadata(channel=channel, include_custom=True).sync())
+                   .result.data['custom'], {'topic': 'docs'}, 'channel visible')
 
         # snippet.get_channel_metadata_builder
         envelope = pubnub.get_channel_metadata() \
@@ -372,7 +413,7 @@ def test_get_channel_metadata_builder(clients):
         cleanup(pubnub, channels=[channel])
 
 
-@pytest.mark.timeout(180)
+@pytest.mark.timeout(300)
 def test_set_channel_metadata_builder(clients):
     """Snippets: set_channel_metadata_builder, set_channel_metadata_named."""
     pubnub = clients.sync('open', 'setter')
@@ -402,8 +443,8 @@ def test_set_channel_metadata_builder(clients):
         kind, event, payload = first_event(seen)
         a.eq((kind, event, payload['id'], payload['name']), ('channel', 'set', first, 'Channel Name'))
         a.eq(payload['custom'], {'key1': 'val1', 'key2': 'val2'})
-        read = pubnub.get_channel_metadata(channel=first, include_custom=True).sync().result.data
-        a.eq(read, data, 'read back equals the set response')
+        settled_eq(lambda: attempt(lambda: pubnub.get_channel_metadata(channel=first, include_custom=True).sync())
+                   .result.data, data, 'read back equals the set response')
 
         seen = watch(clients, second)
 
@@ -427,8 +468,8 @@ def test_set_channel_metadata_builder(clients):
         replaced = pubnub.set_channel_metadata(channel=first, custom={'only': 'this'},
                                                include_custom=True).sync().result.data
         a.eq(replaced['custom'], {'only': 'this'})
-        read = pubnub.get_channel_metadata(channel=first, include_custom=True).sync().result.data
-        a.eq(read['custom'], {'only': 'this'}, 'custom is overwritten')
+        settled_eq(lambda: attempt(lambda: pubnub.get_channel_metadata(channel=first, include_custom=True).sync())
+                   .result.data['custom'], {'only': 'this'}, 'custom is overwritten')
         light = pubnub.set_channel_metadata(channel=first, name='Channel Name', include_status=False,
                                             include_type=False).sync().result.data
         a.not_contains(light, 'status')
@@ -457,6 +498,9 @@ def test_remove_channel_metadata_builder(clients):
     try:
         for channel in (first, second):
             pubnub.set_channel_metadata(channel=channel, name='To remove').sync()
+        for channel in (first, second):
+            settled_eq(lambda: attempt(lambda: pubnub.get_channel_metadata(channel=channel).sync()).result.data['name'],
+                       'To remove', f'{channel} visible')
         seen = watch(clients, first)
 
         # snippet.remove_channel_metadata_builder
@@ -470,7 +514,8 @@ def test_remove_channel_metadata_builder(clients):
         kind, event, payload = first_event(seen)
         a.eq((kind, event, payload['id']), ('channel', 'delete', first))
         gone(lambda: pubnub.get_channel_metadata(channel=first).sync())
-        a.eq(pubnub.get_channel_metadata(channel=second).sync().result.data['id'], second, 'other channels stay')
+        settled_eq(lambda: attempt(lambda: pubnub.get_channel_metadata(channel=second).sync()).result.data['id'],
+                   second, 'other channels stay')
 
         # snippet.remove_channel_metadata_named
         envelope = pubnub.remove_channel_metadata(channel="channel_id_named").sync()
@@ -478,8 +523,8 @@ def test_remove_channel_metadata_builder(clients):
 
         a.eq(envelope.result.status, 200)
         gone(lambda: pubnub.get_channel_metadata(channel=second).sync())
-        listed = pubnub.get_all_channel_metadata(filter="id == '%s'" % second).sync().result.data
-        a.eq(listed, [], 'the list no longer has the channel')
+        settled_eq(lambda: pubnub.get_all_channel_metadata(filter="id == '%s'" % second).sync().result.data, [],
+                   'the list no longer has the channel')
     finally:
         cleanup(pubnub, channels=[first, second])
 
@@ -492,8 +537,10 @@ def test_get_memberships_builder(clients):
     with_custom = 'somechannel_with_custom'
     record([uid], [plain, with_custom])
     try:
+        fresh(pubnub, [uid], [plain, with_custom])
         seed_channels(pubnub, plain, with_custom)
         seed_memberships(pubnub, uid, plain, with_custom)
+        memberships_visible(pubnub, uid, plain, with_custom)
 
         # snippet.get_memberships_builder
         from pubnub.models.consumer.objects_v2.common import MembershipIncludes
@@ -526,9 +573,9 @@ def test_get_memberships_builder(clients):
         a.not_contains(bare[0], 'status')
         typed = PNChannelMembership(plain, status='active', type='doc')
         pubnub.set_memberships(uuid=uid, channel_memberships=[typed]).sync()
-        shown = pubnub.get_memberships(uuid=uid, include=MembershipIncludes(type=True, status=True)).sync()
-        a.eq((by_channel(shown.result.data)[plain]['type'], by_channel(shown.result.data)[plain]['status']),
-             ('doc', 'active'))
+        settled_eq(lambda: [(m['type'], m['status']) for m in memberships_of(
+            pubnub, uid, include=MembershipIncludes(type=True, status=True)) if m['channel']['id'] == plain],
+            [('doc', 'active')], 'type and status of the membership')
 
         filtered = pubnub.get_memberships(uuid=uid, filter="channel.name LIKE 'some name with*'").sync().result.data
         a.eq(channel_ids(filtered), [with_custom], 'filter on the channel name')
@@ -549,7 +596,7 @@ def test_get_memberships_builder(clients):
         cleanup(pubnub, [uid], [plain, with_custom])
 
 
-@pytest.mark.timeout(180)
+@pytest.mark.timeout(300)
 def test_set_memberships_builder(clients):
     """Snippets: set_memberships_builder, set_memberships_named."""
     pubnub = clients.sync('open', 'setter')
@@ -559,6 +606,7 @@ def test_set_memberships_builder(clients):
     with_custom = 'somechannel_with_custom'
     record([first, second], [plain, with_custom])
     try:
+        fresh(pubnub, [first, second], [plain, with_custom])
         seen = watch(clients, first)
 
         # snippet.set_memberships_builder
@@ -647,8 +695,8 @@ def test_set_memberships_builder(clients):
         a.eq((kind, event, payload['uuid']['id']), ('membership', 'set', second))
 
         # The channel side sees the same memberships
-        members = pubnub.get_channel_members(channel=plain).sync().result.data
-        a.eq(sorted(member_ids(members)), sorted([first, second]), 'both users are members')
+        settled_eq(lambda: sorted(member_ids(members_of(pubnub, plain))), sorted([first, second]),
+                   'both users are members')
 
         # Set adds to the stored memberships, it does not replace them
         extra = 'somechannel_extra'
@@ -663,7 +711,7 @@ def test_set_memberships_builder(clients):
         cleanup(pubnub, [first, second], [plain, with_custom])
 
 
-@pytest.mark.timeout(180)
+@pytest.mark.timeout(300)
 def test_remove_memberships_builder(clients):
     """Snippets: remove_memberships_builder, remove_memberships_named."""
     pubnub = clients.sync('open', 'remover')
@@ -673,9 +721,13 @@ def test_remove_memberships_builder(clients):
     with_custom = 'somechannel_with_custom'
     record([first, second], [plain, with_custom])
     try:
+        fresh(pubnub, [first, second], [plain, with_custom])
         seed_channels(pubnub, plain, with_custom)
         for uid in (first, second):
             seed_memberships(pubnub, uid, plain, with_custom)
+        for uid in (first, second):
+            settled_eq(lambda: sorted(channel_ids(memberships_of(pubnub, uid))), sorted([plain, with_custom]),
+                       f'memberships of {uid} seeded')
         seen = watch(clients, first)
 
         # snippet.remove_memberships_builder
@@ -697,9 +749,8 @@ def test_remove_memberships_builder(clients):
         a.eq(left[0]['channel']['custom'], CUSTOM_1)
         kind, event, payload = first_event(seen)
         a.eq((kind, event, payload['uuid']['id'], payload['channel']['id']), ('membership', 'delete', first, plain))
-        eventually(lambda: a.eq(channel_ids(pubnub.get_memberships(uuid=first).sync().result.data), [with_custom]),
-                   what='membership removed')
-        a.eq(len(pubnub.get_memberships(uuid=second).sync().result.data), 2, 'other users keep theirs')
+        settled_eq(lambda: channel_ids(memberships_of(pubnub, first)), [with_custom], 'membership removed')
+        settled_eq(lambda: len(memberships_of(pubnub, second)), 2, 'other users keep theirs')
 
         # snippet.remove_memberships_named
         from pubnub.models.consumer.objects_v2.common import MembershipIncludes
@@ -714,14 +765,14 @@ def test_remove_memberships_builder(clients):
 
         a.eq(channel_ids(envelope.result.data), [with_custom])
         a.eq(envelope.result.data[0]['channel']['custom'], CUSTOM_1)
-        eventually(lambda: a.eq(channel_ids(pubnub.get_memberships(uuid=second).sync().result.data), [with_custom]),
-                   what='second membership removed')
-        a.eq(pubnub.get_channel_metadata(channel=plain).sync().result.data['id'], plain, 'the channel stays')
+        settled_eq(lambda: channel_ids(memberships_of(pubnub, second)), [with_custom], 'second membership removed')
+        settled_eq(lambda: attempt(lambda: pubnub.get_channel_metadata(channel=plain).sync()).result.data['id'], plain,
+                   'the channel stays')
     finally:
         cleanup(pubnub, [first, second], [plain, with_custom])
 
 
-@pytest.mark.timeout(180)
+@pytest.mark.timeout(300)
 def test_manage_memberships_builder(clients):
     """Snippets: manage_memberships_builder, manage_memberships_named."""
     pubnub = clients.sync('open', 'manager')
@@ -731,11 +782,12 @@ def test_manage_memberships_builder(clients):
     with_custom = 'somechannel_with_custom'
     record([first, second], [plain, with_custom])
     try:
+        fresh(pubnub, [first, second], [plain, with_custom])
         seed_channels(pubnub, plain, with_custom)
         for uid in (first, second):
             seed_one_membership(pubnub, uid, with_custom)
-        eventually(lambda: a.eq(channel_ids(pubnub.get_memberships(uuid=second).sync().result.data), [with_custom]),
-                   what='seed visible')
+        for uid in (first, second):
+            settled_eq(lambda: channel_ids(memberships_of(pubnub, uid)), [with_custom], f'seed of {uid} visible')
         seen = watch(clients, first)
 
         # snippet.manage_memberships_builder
@@ -757,8 +809,7 @@ def test_manage_memberships_builder(clients):
         kind, event, payload = first_event(seen)
         a.eq(kind, 'membership')
         a.contains([('set', plain), ('delete', with_custom)], (event, payload['channel']['id']))
-        eventually(lambda: a.eq(channel_ids(pubnub.get_memberships(uuid=first).sync().result.data), [plain]),
-                   what='memberships changed')
+        settled_eq(lambda: channel_ids(memberships_of(pubnub, first)), [plain], 'memberships changed')
 
         # snippet.manage_memberships_named
         from pubnub.models.consumer.objects_v2.common import MembershipIncludes
@@ -774,8 +825,7 @@ def test_manage_memberships_builder(clients):
         # snippet.end
 
         a.eq(channel_ids(envelope.result.data), [plain])
-        eventually(lambda: a.eq(channel_ids(pubnub.get_memberships(uuid=second).sync().result.data), [plain]),
-                   what='second user changed')
+        settled_eq(lambda: channel_ids(memberships_of(pubnub, second)), [plain], 'second user changed')
     finally:
         cleanup(pubnub, [first, second], [plain, with_custom])
 
@@ -788,9 +838,11 @@ def test_get_channel_members_builder(clients):
     with_custom = 'some_uuid_with_custom'
     record([plain, with_custom], [channel])
     try:
+        fresh(pubnub, [plain, with_custom], [channel])
         seed_users(pubnub, plain, with_custom)
         pubnub.set_channel_metadata(channel=channel, name='Doc channel').sync()
         seed_members(pubnub, channel, plain, with_custom)
+        members_visible(pubnub, channel, plain, with_custom)
 
         # snippet.get_channel_members_builder
         from pubnub.models.consumer.objects_v2.common import MemberIncludes
@@ -838,7 +890,7 @@ def test_get_channel_members_builder(clients):
         cleanup(pubnub, [plain, with_custom], [channel])
 
 
-@pytest.mark.timeout(180)
+@pytest.mark.timeout(300)
 def test_set_channel_members_builder(clients):
     """Snippets: set_channel_members_builder, set_channel_members_named."""
     pubnub = clients.sync('open', 'setter')
@@ -848,6 +900,7 @@ def test_set_channel_members_builder(clients):
     with_custom = 'some_uuid_with_custom'
     record([plain, with_custom], [first, second])
     try:
+        fresh(pubnub, [plain, with_custom, 'some_uuid_extra'], [first, second])
         seen = watch(clients, first)
 
         # snippet.set_channel_members_builder
@@ -929,8 +982,8 @@ def test_set_channel_members_builder(clients):
         kind, event, payload = first_event(seen)
         a.eq((kind, event, payload['channel']['id']), ('membership', 'set', second))
 
-        memberships = pubnub.get_memberships(uuid=plain).sync().result.data
-        a.eq(sorted(channel_ids(memberships)), sorted([first, second]), 'the user side sees both channels')
+        settled_eq(lambda: sorted(channel_ids(memberships_of(pubnub, plain))), sorted([first, second]),
+                   'the user side sees both channels')
 
         # Set adds to the stored members, it does not replace them
         extra = 'some_uuid_extra'
@@ -945,7 +998,7 @@ def test_set_channel_members_builder(clients):
         cleanup(pubnub, [plain, with_custom], [first, second])
 
 
-@pytest.mark.timeout(180)
+@pytest.mark.timeout(300)
 def test_remove_channel_members_builder(clients):
     """Snippets: remove_channel_members_builder, remove_channel_members_named."""
     pubnub = clients.sync('open', 'remover')
@@ -955,10 +1008,14 @@ def test_remove_channel_members_builder(clients):
     with_custom = 'some_uuid_with_custom'
     record([plain, with_custom], [first, second])
     try:
+        fresh(pubnub, [plain, with_custom, 'some_uuid_extra'], [first, second])
         seed_users(pubnub, plain, with_custom)
         for channel in (first, second):
             pubnub.set_channel_metadata(channel=channel, name='Doc channel').sync()
             seed_members(pubnub, channel, plain, with_custom)
+        for channel in (first, second):
+            settled_eq(lambda: sorted(member_ids(members_of(pubnub, channel))), sorted([plain, with_custom]),
+                       f'members of {channel} seeded')
         seen = watch(clients, first)
 
         # snippet.remove_channel_members_builder
@@ -978,9 +1035,8 @@ def test_remove_channel_members_builder(clients):
         a.eq(left[0]['uuid']['custom'], CUSTOM_1)
         kind, event, payload = first_event(seen)
         a.eq((kind, event, payload['channel']['id'], payload['uuid']['id']), ('membership', 'delete', first, plain))
-        eventually(lambda: a.eq(member_ids(pubnub.get_channel_members(channel=first).sync().result.data),
-                                [with_custom]), what='member removed')
-        a.eq(len(pubnub.get_channel_members(channel=second).sync().result.data), 2, 'other channels keep theirs')
+        settled_eq(lambda: member_ids(members_of(pubnub, first)), [with_custom], 'member removed')
+        settled_eq(lambda: len(members_of(pubnub, second)), 2, 'other channels keep theirs')
 
         # snippet.remove_channel_members_named
         from pubnub.models.consumer.objects_v2.common import MemberIncludes
@@ -994,14 +1050,14 @@ def test_remove_channel_members_builder(clients):
 
         a.eq(member_ids(envelope.result.data), [with_custom])
         a.eq(envelope.result.data[0]['uuid']['custom'], CUSTOM_1)
-        eventually(lambda: a.eq(member_ids(pubnub.get_channel_members(channel=second).sync().result.data),
-                                [with_custom]), what='second member removed')
-        a.eq(pubnub.get_uuid_metadata(uuid=plain).sync().result.data['id'], plain, 'the user stays')
+        settled_eq(lambda: member_ids(members_of(pubnub, second)), [with_custom], 'second member removed')
+        settled_eq(lambda: attempt(lambda: pubnub.get_uuid_metadata(uuid=plain).sync()).result.data['id'], plain,
+                   'the user stays')
     finally:
         cleanup(pubnub, [plain, with_custom], [first, second])
 
 
-@pytest.mark.timeout(180)
+@pytest.mark.timeout(300)
 def test_manage_channel_members_builder(clients):
     """Snippets: manage_channel_members_builder, manage_channel_members_named."""
     pubnub = clients.sync('open', 'manager')
@@ -1011,12 +1067,13 @@ def test_manage_channel_members_builder(clients):
     with_custom = 'some_uuid_with_custom'
     record([plain, with_custom], [first, second])
     try:
+        fresh(pubnub, [plain, with_custom, 'some_uuid_extra'], [first, second])
         seed_users(pubnub, plain, with_custom)
         for channel in (first, second):
             pubnub.set_channel_metadata(channel=channel, name='Doc channel').sync()
             seed_one_member(pubnub, channel, with_custom)
-        eventually(lambda: a.eq(member_ids(pubnub.get_channel_members(channel=second).sync().result.data),
-                                [with_custom]), what='seed visible')
+        for channel in (first, second):
+            settled_eq(lambda: member_ids(members_of(pubnub, channel)), [with_custom], f'seed of {channel} visible')
         seen = watch(clients, first)
 
         # snippet.manage_channel_members_builder
@@ -1035,8 +1092,7 @@ def test_manage_channel_members_builder(clients):
         kind, event, payload = first_event(seen)
         a.eq(kind, 'membership')
         a.contains([('set', plain), ('delete', with_custom)], (event, payload['uuid']['id']))
-        eventually(lambda: a.eq(member_ids(pubnub.get_channel_members(channel=first).sync().result.data), [plain]),
-                   what='members changed')
+        settled_eq(lambda: member_ids(members_of(pubnub, first)), [plain], 'members changed')
 
         # snippet.manage_channel_members_named
         from pubnub.models.consumer.objects_v2.common import MemberIncludes
@@ -1050,8 +1106,7 @@ def test_manage_channel_members_builder(clients):
         # snippet.end
 
         a.eq(member_ids(envelope.result.data), [plain])
-        eventually(lambda: a.eq(member_ids(pubnub.get_channel_members(channel=second).sync().result.data), [plain]),
-                   what='second channel changed')
+        settled_eq(lambda: member_ids(members_of(pubnub, second)), [plain], 'second channel changed')
     finally:
         cleanup(pubnub, [plain, with_custom], [first, second])
 
@@ -1064,6 +1119,7 @@ def test_pnchannelmembership_class(clients):
     with_custom = 'somechannel_with_custom'
     record([uid], [plain, with_custom])
     try:
+        fresh(pubnub, [uid], [plain, with_custom, 'channel_id'])
         seed_channels(pubnub, plain, with_custom)
 
         # snippet.pnchannelmembership_class
@@ -1078,11 +1134,9 @@ def test_pnchannelmembership_class(clients):
         a.eq(membership.to_payload_dict(), {'channel': {'id': plain}})
         a.eq(membership_with_custom.to_payload_dict(), {'channel': {'id': with_custom}, 'custom': CUSTOM_2})
         pubnub.set_memberships(uuid=uid, channel_memberships=[membership, membership_with_custom]).sync()
-        eventually(lambda: a.eq(sorted(channel_ids(pubnub.get_memberships(uuid=uid).sync().result.data)),
-                                sorted([plain, with_custom])), what='memberships set from the helper objects')
-        found = pubnub.get_memberships(uuid=uid, include=MembershipIncludes(custom=True)).sync().result.data
-        a.eq(by_channel(found)[with_custom]['custom'], CUSTOM_2)
-        a.eq(by_channel(found)[plain]['custom'], None)
+        settled_eq(lambda: {m['channel']['id']: m['custom'] for m in memberships_of(
+            pubnub, uid, include=MembershipIncludes(custom=True))}, {plain: None, with_custom: CUSTOM_2},
+            'memberships set from the helper objects')
     finally:
         cleanup(pubnub, [uid], [plain, with_custom])
 
@@ -1095,6 +1149,7 @@ def test_pnuuid_class(clients):
     with_custom = 'some_uuid_with_custom'
     record([plain, with_custom], [channel])
     try:
+        fresh(pubnub, [plain, with_custom, 'some_uuid_extra'], [channel])
         seed_users(pubnub, plain, with_custom)
         pubnub.set_channel_metadata(channel=channel, name='Doc channel').sync()
 
@@ -1109,10 +1164,8 @@ def test_pnuuid_class(clients):
         a.eq(member.to_payload_dict(), {'uuid': {'id': plain}})
         a.eq(member_with_custom.to_payload_dict(), {'uuid': {'id': with_custom}, 'custom': CUSTOM_2})
         pubnub.set_channel_members(channel=channel, uuids=[member, member_with_custom]).sync()
-        eventually(lambda: a.eq(sorted(member_ids(pubnub.get_channel_members(channel=channel).sync().result.data)),
-                                sorted([plain, with_custom])), what='members set from the helper objects')
-        found = pubnub.get_channel_members(channel=channel, include=MemberIncludes(custom=True)).sync().result.data
-        a.eq(by_member(found)[with_custom]['custom'], CUSTOM_2)
-        a.eq(by_member(found)[plain]['custom'], None)
+        settled_eq(lambda: {m['uuid']['id']: m['custom'] for m in members_of(
+            pubnub, channel, include=MemberIncludes(custom=True))}, {plain: None, with_custom: CUSTOM_2},
+            'members set from the helper objects')
     finally:
         cleanup(pubnub, [plain, with_custom], [channel])

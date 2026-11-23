@@ -7,7 +7,7 @@ from support import assertions as a
 from support import cleanup as live_cleanup
 from support.listen import alisten
 from support.wait import aeventually
-from shared.presence import Printed, occupants_of
+from shared.presence import Printed, consistent, occupancy_of, own_occupants
 
 
 async def test_here_now_builder(aclients, capsys):
@@ -44,13 +44,15 @@ async def test_here_now_builder(aclients, capsys):
     async def check():
         result = await builder()
         a.ok(result is not None, 'here_now returned an error')
-        a.eq({c: occupants_of(result, c) for c in expected}, expected, 'occupants per channel')
-        a.eq((result.result.total_channels, result.result.total_occupancy), (2, 3))
-    await aeventually(check, what='here_now lists both clients')
+        a.eq({c: own_occupants(result, c, expected[c]) for c in expected}, expected, 'own occupants per channel')
+        a.eq(result.result.total_channels, 2)
+        consistent(result)
+        return result
+    last = await aeventually(check, what='here_now lists both clients')
     text = printed.text()
-    a.contains(text, f'Channel: {first}\nOccupancy: 2\n')
+    a.contains(text, f'Channel: {first}\nOccupancy: {occupancy_of(last, first)}\n')
     a.contains(text, f'UUID: {one.uuid}, State: None')
-    a.contains(text, f'Channel: {second}\nOccupancy: 1\n')
+    a.contains(text, f'Channel: {second}\nOccupancy: {occupancy_of(last, second)}\n')
 
 
 async def test_here_now_state(aclients):
@@ -76,8 +78,9 @@ async def test_here_now_state(aclients):
     async def check():
         envelope = await read()
         found = [(o.uuid, o.state) for c in envelope.result.channels for o in c.occupants]
-        a.eq(found, [(one.uuid, {'abcd': {'age': 15}})], 'occupants with state')
-        a.eq((envelope.result.total_channels, envelope.result.total_occupancy), (1, 1))
+        a.contains(found, (one.uuid, {'abcd': {'age': 15}}), 'own occupant with state')
+        a.eq(envelope.result.total_channels, 1)
+        consistent(envelope)
     await aeventually(check, what='here_now returns the state')
 
 
@@ -85,7 +88,8 @@ async def test_here_now_occupancy(aclients):
     """Snippet: here_now_occupancy."""
     pubnub = aclients.asyncio('open', 'reader')
     name = 'my_channel'
-    for who in ('user_one', 'user_two', 'user_three'):
+    mine = ['user_one', 'user_two', 'user_three']
+    for who in mine:
         await alisten(aclients.asyncio('open', who), name)
 
     async def read():
@@ -102,9 +106,13 @@ async def test_here_now_occupancy(aclients):
 
     async def check():
         envelope = await read()
-        a.eq([(c.channel_name, c.occupancy, c.occupants) for c in envelope.result.channels], [(name, 3, [])])
-        a.eq((envelope.result.total_channels, envelope.result.total_occupancy), (1, 3))
-    await aeventually(check, what='here_now counts three occupants')
+        a.eq([(c.channel_name, c.occupants) for c in envelope.result.channels], [(name, [])], 'no user IDs')
+        a.ok(occupancy_of(envelope, name) >= len(mine), 'the count includes the three own occupants')
+        a.eq(envelope.result.total_occupancy, occupancy_of(envelope, name))
+        # The count has no user IDs, so a second read with them shows that the three own clients are counted.
+        listed = await pubnub.here_now().channels(name).include_uuids(True).future()
+        a.eq(own_occupants(listed, name, mine), sorted(mine), 'own occupants listed')
+    await aeventually(check, what='here_now counts the three occupants')
 
 
 async def test_here_now_groups(aclients):
@@ -132,9 +140,11 @@ async def test_here_now_groups(aclients):
 
     async def check():
         envelope = await read()
-        a.eq(sorted((c.channel_name, c.occupancy, [o.uuid for o in c.occupants]) for c in envelope.result.channels),
-             sorted((m, 1, [one.uuid]) for m in members), 'every channel of the groups with its occupant')
-        a.eq((envelope.result.total_channels, envelope.result.total_occupancy), (3, 3))
+        a.eq(sorted((c.channel_name, own_occupants(envelope, c.channel_name, [one.uuid]))
+                    for c in envelope.result.channels),
+             sorted((m, [one.uuid]) for m in members), 'every channel of the groups with its occupant')
+        a.eq(envelope.result.total_channels, 3)
+        consistent(envelope)
     await aeventually(check, what='here_now by channel group')
 
 

@@ -6,7 +6,7 @@ shared channel name from an earlier run of this page (for example the sync one) 
 import pytest
 
 from support import assertions as a
-from support.wait import aeventually
+from support.wait import aeventually, asettled
 from shared.message_persistence import (
     seed_async as seed, seed_parallel_async as seed_parallel, wait_stored_async as wait_stored,
     window_async as window,
@@ -113,14 +113,14 @@ async def test_fetch_history_multiple(aclients):
         got = (await pubnub.fetch_messages(channels=[channel], count=150).future()).result.channels[channel]
         a.eq([int(i.timetoken) for i in got], single[1:], 'newest 100 of 101')
 
-    await aeventually(single_stored, timeout=30, what='seeded messages stored')
+    await asettled(single_stored, timeout=30, what='seeded messages stored')
 
     async def newest_stored():
         got = (await pubnub.fetch_messages(channels=[first, second], count=30).future()).result.channels
         a.eq([int(i.timetoken) for i in got[first]], on_first[1:], 'newest 25 of ch1')
         a.eq([int(i.timetoken) for i in got[second]], on_second[1:], 'newest 25 of ch2')
 
-    await aeventually(newest_stored, timeout=30, what='seeded messages on both channels stored')
+    await asettled(newest_stored, timeout=30, what='seeded messages on both channels stored')
 
     # snippet.fetch_history_multiple
     envelope = await pubnub.fetch_messages() \

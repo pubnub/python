@@ -11,7 +11,8 @@ from pubnub.models.consumer.objects_v2.channel_members import PNUUID
 
 from support import assertions as a
 from support import cleanup as live_cleanup
-from support.wait import eventually
+from support import redact
+from support.wait import eventually, settled
 
 NAMES = [
     'channel_id',
@@ -103,17 +104,74 @@ def quiet_404(call):
     return None
 
 
+def attempt(call):
+    """Run a read. An SDK error (for example the 404 of a replica that has not seen a create yet) becomes an
+    AssertionError, so that eventually() and settled() retry it."""
+    try:
+        return call()
+    except PubNubException as e:
+        raise AssertionError(redact.scrub(f'read failed: {e}'))
+
+
+def settled_read(call, check, what, timeout=30):
+    """Read until `check` passes on SETTLED.passes consecutive reads, then return the last result. App Context reads
+    are served by replicas that lag a write, and two reads in a row can hit different replicas: a precondition that
+    passes once can still be stale on the next read (the sample's)."""
+    def once():
+        value = attempt(call)
+        check(value)
+        return value
+    return settled(once, timeout=timeout, what=what)
+
+
+def absent(read, what='object reports 404'):
+    """The read raises a 404 on consecutive reads (every replica has seen the delete)."""
+    settled(lambda: a.raises(PubNubException, read, match='404'), timeout=30, what=what)
+
+
+def _listed(call, key):
+    found = quiet_404(call)
+    return {item[key]['id'] for item in (found.result.data if found else []) or []}
+
+
 def cleanup(pubnub, uuids=(), channels=()):
-    """Remove memberships first, then the metadata objects."""
+    """Remove the memberships of both sides, then the metadata objects, then wait until consecutive reads agree.
+
+    Both sides are removed for every page name, not only for what a read returns: a read right after a write can come
+    from a lagging replica and miss a membership, which then outlives the test (CI saw some_uuid_extra and channel_id
+    leftovers). Removing a membership that does not exist is not an error.
+    """
+    names = set(NAMES)
     for uid in uuids:
-        found = quiet_404(lambda: pubnub.get_memberships(uuid=uid, limit=100).sync())
-        if found and found.result.data:
-            leftovers = [PNChannelMembership.channel(m['channel']['id']) for m in found.result.data]
-            quiet_404(lambda: pubnub.remove_memberships(uuid=uid, channel_memberships=leftovers).sync())
+        listed = _listed(lambda: pubnub.get_memberships(uuid=uid, limit=100).sync(), 'channel')
+        targets = sorted(listed | names)
+        quiet_404(lambda: pubnub.remove_memberships(
+            uuid=uid, channel_memberships=[PNChannelMembership.channel(c) for c in targets]).sync())
+    for channel in channels:
+        listed = _listed(lambda: pubnub.get_channel_members(channel=channel, limit=100).sync(), 'uuid')
+        targets = sorted(listed | names)
+        quiet_404(lambda: pubnub.remove_channel_members(
+            channel=channel, uuids=[PNUUID.uuid(u) for u in targets]).sync())
     for channel in channels:
         quiet_404(lambda: pubnub.remove_channel_metadata(channel=channel).sync())
     for uid in uuids:
         quiet_404(lambda: pubnub.remove_uuid_metadata(uuid=uid).sync())
+
+    def clean():
+        for uid in uuids:
+            a.eq(sorted(_listed(lambda: pubnub.get_memberships(uuid=uid, limit=100).sync(), 'channel') & names), [],
+                 f'memberships of {uid} left')
+            a.raises(PubNubException, lambda: pubnub.get_uuid_metadata(uuid=uid).sync(), match='404')
+        for channel in channels:
+            members = _listed(lambda: pubnub.get_channel_members(channel=channel, limit=100).sync(), 'uuid')
+            a.eq(sorted(members & names), [], f'members of {channel} left')
+            a.raises(PubNubException, lambda: pubnub.get_channel_metadata(channel=channel).sync(), match='404')
+    settled(clean, timeout=45, what='App Context objects removed')
+
+
+def fresh(pubnub, uuids=(), channels=()):
+    """Precondition: no membership, member or metadata of these names is left, on consecutive reads."""
+    cleanup(pubnub, uuids, channels)
 
 
 def record(uuids=(), channels=()):
@@ -128,8 +186,8 @@ def ids(items):
 
 
 def gone(read):
-    """The read raises a 404 once the object is removed."""
-    eventually(lambda: a.raises(PubNubException, read, match='404'), what='object reports 404')
+    """The read raises a 404 once the object is removed, on consecutive reads."""
+    absent(read)
 
 
 CUSTOM_1 = {'key3': 'val1', 'key4': 'val2'}

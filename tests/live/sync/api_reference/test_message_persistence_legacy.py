@@ -8,7 +8,7 @@ from pubnub.exceptions import PubNubException
 import pytest
 
 from support import assertions as a
-from support.wait import eventually
+from support.wait import settled
 from shared.message_persistence import check_paging, seed, seed_parallel
 
 
@@ -23,7 +23,7 @@ def test_history_basic(clients):
     def stored():
         a.eq(len(pubnub.history().channel(channel).count(100).sync().result.messages), 5)
 
-    eventually(stored, timeout=30, what='seeded messages stored')
+    settled(stored, timeout=30, what='seeded messages stored')
 
     # snippet.history_basic
     envelope = pubnub.history() \
@@ -89,7 +89,7 @@ def test_history_paging(clients):
     def stored():
         a.eq(len(pubnub.history().channel(channel).count(100).sync().result.messages), 100)
 
-    eventually(stored, timeout=30, what='seeded messages stored')
+    settled(stored, timeout=30, what='seeded messages stored')
     start_timetoken = tokens[-1] + 1
 
     # snippet.history_paging

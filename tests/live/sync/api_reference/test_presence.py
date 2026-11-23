@@ -8,8 +8,8 @@ from pubnub.exceptions import PubNubException
 from support import assertions as a
 from support import cleanup as live_cleanup
 from support.listen import listen
-from support.wait import eventually
-from shared.presence import Printed, occupancy_of, occupants_of
+from support.wait import PRESENCE_TIMEOUT, eventually
+from shared.presence import Printed, consistent, occupancy_of, occupants_of, own_occupants
 
 
 def test_here_now_builder(clients, capsys):
@@ -67,11 +67,13 @@ def test_here_now_builder(clients, capsys):
         def check(call=call):
             result = call()
             a.ok(result is not None, 'here_now returned an error')
-            a.eq({c: occupants_of(result, c) for c in expected}, expected, 'occupants per channel')
-            a.eq((result.result.total_channels, result.result.total_occupancy), (2, 3))
-        eventually(check, what='here_now lists both clients')
+            a.eq({c: own_occupants(result, c, expected[c]) for c in expected}, expected, 'own occupants per channel')
+            a.eq(result.result.total_channels, 2)
+            consistent(result)
+            return result
+        last = eventually(check, what='here_now lists both clients')
     text = printed.text()
-    a.contains(text, f'Channel: {first}\nOccupancy: 2\n')
+    a.contains(text, f'Channel: {first}\nOccupancy: {occupancy_of(last, first)}\n')
     a.contains(text, f'UUID: {one.uuid}, State: None')
 
 
@@ -96,8 +98,9 @@ def test_here_now_state(clients):
     def check():
         envelope = read()
         found = [(o.uuid, o.state) for c in envelope.result.channels for o in c.occupants]
-        a.eq(found, [(one.uuid, {'abcd': {'age': 15}})], 'occupants with state')
-        a.eq((envelope.result.total_channels, envelope.result.total_occupancy), (1, 1))
+        a.contains(found, (one.uuid, {'abcd': {'age': 15}}), 'own occupant with state')
+        a.eq(envelope.result.total_channels, 1)
+        consistent(envelope)
     eventually(check, what='here_now returns the state')
 
 
@@ -105,7 +108,8 @@ def test_here_now_occupancy(clients):
     """Snippet: here_now_occupancy."""
     pubnub = clients.sync('open', 'reader')
     name = 'my_channel'
-    for who in ('user_one', 'user_two', 'user_three'):
+    mine = ['user_one', 'user_two', 'user_three']
+    for who in mine:
         listen(clients.sync('open', who), name)
 
     def read():
@@ -120,9 +124,13 @@ def test_here_now_occupancy(clients):
 
     def check():
         envelope = read()
-        a.eq([(c.channel_name, c.occupancy, c.occupants) for c in envelope.result.channels], [(name, 3, [])])
-        a.eq((envelope.result.total_channels, envelope.result.total_occupancy), (1, 3))
-    eventually(check, what='here_now counts three occupants')
+        a.eq([(c.channel_name, c.occupants) for c in envelope.result.channels], [(name, [])], 'no user IDs')
+        a.ok(occupancy_of(envelope, name) >= len(mine), 'the count includes the three own occupants')
+        a.eq(envelope.result.total_occupancy, occupancy_of(envelope, name))
+        # The count has no user IDs, so a second read with them shows that the three own clients are counted.
+        listed = pubnub.here_now().channels(name).include_uuids(True).sync()
+        a.eq(own_occupants(listed, name, mine), sorted(mine), 'own occupants listed')
+    eventually(check, what='here_now counts the three occupants')
 
 
 def test_here_now_groups(clients):
@@ -148,9 +156,11 @@ def test_here_now_groups(clients):
 
     def check():
         envelope = read()
-        a.eq(sorted((c.channel_name, c.occupancy, [o.uuid for o in c.occupants]) for c in envelope.result.channels),
-             sorted((m, 1, [one.uuid]) for m in members), 'every channel of the groups with its occupant')
-        a.eq((envelope.result.total_channels, envelope.result.total_occupancy), (3, 3))
+        a.eq(sorted((c.channel_name, own_occupants(envelope, c.channel_name, [one.uuid]))
+                    for c in envelope.result.channels),
+             sorted((m, [one.uuid]) for m in members), 'every channel of the groups with its occupant')
+        a.eq(envelope.result.total_channels, 3)
+        consistent(envelope)
     eventually(check, what='here_now by channel group')
 
 
@@ -181,17 +191,26 @@ def test_here_now_paginate(clients):
         return envelope
 
     def check():
-        a.eq(occupants_of(read(), name), [], 'nothing from position 10 on')
+        # Other user IDs can still be listed on the shared channel (see own_occupants), so the page sizes follow the
+        # occupancy the same response reports, and the own clients must be on the pages.
+        rest = read()
+        a.eq(len(occupants_of(rest, name) or []), max(0, occupancy_of(rest, name) - 10), 'from position 10 on')
         all_in_ten = pubnub.here_now().channels(name).limit(10).sync()
-        a.eq(occupants_of(all_in_ten, name), everyone, 'limit 10 returns all three')
+        a.eq(own_occupants(all_in_ten, name, everyone), everyone, 'limit 10 lists the three own clients')
     eventually(check, what='here_now pagination')
-    pages = []
-    for offset in (0, 2):
-        page = pubnub.here_now().channels(name).limit(2).offset(offset).sync()
-        pages.append(occupants_of(page, name))
-        a.eq(occupancy_of(page, name), 3, 'occupancy counts all occupants on every page')
-    a.eq((len(pages[0]), len(pages[1])), (2, 1))
-    a.eq(sorted(pages[0] + pages[1]), everyone, 'pages cover every occupant once')
+
+    def paged():
+        total = occupancy_of(pubnub.here_now().channels(name).limit(2).sync(), name)
+        pages = []
+        for offset in range(0, total, 2):
+            page = pubnub.here_now().channels(name).limit(2).offset(offset).sync()
+            a.eq(occupancy_of(page, name), total, 'occupancy counts all occupants on every page')
+            pages.append(occupants_of(page, name) or [])
+        a.eq([len(p) for p in pages], [min(2, total - o) for o in range(0, total, 2)], 'page sizes')
+        merged = [u for p in pages for u in p]
+        a.eq(len(merged), len(set(merged)), 'pages list every occupant once')
+        a.eq(sorted(set(merged) & set(everyone)), everyone, 'pages cover every own occupant')
+    eventually(paged, timeout=PRESENCE_TIMEOUT, what='here_now pages')
 
 
 def test_where_now_self(clients):

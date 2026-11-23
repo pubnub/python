@@ -7,7 +7,7 @@ import io
 import pytest
 
 from support import assertions as a
-from support.wait import aeventually
+from support.wait import asettled
 from shared.message_persistence import check_paging, seed_async as seed, seed_parallel_async as seed_parallel
 
 
@@ -23,7 +23,7 @@ async def test_history_basic(aclients):
         got = await pubnub.history().channel(channel).count(100).future()
         a.eq(len(got.result.messages), 5)
 
-    await aeventually(stored, timeout=30, what='seeded messages stored')
+    await asettled(stored, timeout=30, what='seeded messages stored')
 
     # snippet.history_basic
     envelope = await pubnub.history() \
@@ -100,7 +100,7 @@ async def test_history_paging(aclients):
         got = await pubnub.history().channel(channel).count(100).future()
         a.eq(len(got.result.messages), 100)
 
-    await aeventually(stored, timeout=30, what='seeded messages stored')
+    await asettled(stored, timeout=30, what='seeded messages stored')
     start_timetoken = tokens[-1] + 1
 
     # snippet.history_paging

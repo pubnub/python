@@ -8,7 +8,7 @@ import tempfile
 import urllib.request
 
 from support import assertions as a
-from support.wait import eventually
+from support.wait import eventually, settled
 from shared.file_sharing import FIXTURE, FIXTURE_BYTES, channel_name, listed_ids, remove, stored_file_messages, upload
 
 
@@ -72,7 +72,7 @@ def test_list_files_builder(clients):
     pubnub = clients.sync('open', 'file_lister')
     first, second = upload(pubnub), upload(pubnub)
     try:
-        eventually(lambda: a.contains(listed_ids(pubnub), second.file_id, 'second upload listed'))
+        settled(lambda: a.contains(listed_ids(pubnub), second.file_id, 'second upload listed'))
 
         # snippet.list_files_builder
         file_list_response = pubnub.list_files().channel("ch1").sync()
@@ -175,7 +175,7 @@ def test_delete_file_builder(clients):
     one, two = upload(pubnub), upload(pubnub)
     remaining = [one, two]
     try:
-        eventually(lambda: a.contains(listed_ids(pubnub), two.file_id, 'uploads listed'))
+        settled(lambda: a.contains(listed_ids(pubnub), two.file_id, 'uploads listed'))
         file_data = {'id': one.file_id, 'name': one.name}
 
         # snippet.delete_file_builder

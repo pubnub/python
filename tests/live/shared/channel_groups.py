@@ -4,8 +4,7 @@ the snippet markers. Moved from the old docs-snippets/<docset>/ modules. Corouti
 carry an "_async" suffix, and the asyncio tests import them under the sync name.
 """
 from support import assertions as a
-from support.wait import eventually
-from support.wait import aeventually
+from support.wait import asettled, settled
 
 NAMES = ['channel_group', 'daughter', 'missing_group', 'son']
 
@@ -15,8 +14,10 @@ def members(client, group):
 
 
 def eventually_members(client, group, expected):
-    eventually(lambda: a.eq(members(client, group), sorted(expected), 'channels in the group'), timeout=30,
-               what='group membership')
+    """The group lists exactly `expected` on consecutive reads. A precondition that passes once can still be stale
+    on the next read (the sample's), and a later exact read must not see the state before a write."""
+    settled(lambda: a.eq(members(client, group), sorted(expected), 'channels in the group'), timeout=30,
+            what='group membership')
 
 
 async def members_async(client, group):
@@ -28,4 +29,4 @@ async def eventually_members_async(client, group, expected):
     async def check():
         a.eq(await members_async(client, group), sorted(expected), 'channels in the group')
 
-    await aeventually(check, timeout=30, what='group membership')
+    await asettled(check, timeout=30, what='group membership')

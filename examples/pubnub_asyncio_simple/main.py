@@ -30,6 +30,7 @@ async def main(pubnub):
     while True:
         await asyncio.sleep(1)
 
+
 if __name__ == "__main__":
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)

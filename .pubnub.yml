@@ -1,5 +1,5 @@
 name: python
-version: 10.9.0
+version: 10.9.1
 schema: 1
 scm: github.com/pubnub/python
 sdks:
@@ -18,7 +18,7 @@ sdks:
         distributions:
           - distribution-type: library
             distribution-repository: package
-            package-name: pubnub-10.9.0
+            package-name: pubnub-10.9.1
             location: https://pypi.org/project/pubnub/
             supported-platforms:
               supported-operating-systems:
@@ -94,8 +94,8 @@ sdks:
           -
             distribution-type: library
             distribution-repository: git release
-            package-name: pubnub-10.9.0
-            location: https://github.com/pubnub/python/releases/download/10.9.0/pubnub-10.9.0.tar.gz
+            package-name: pubnub-10.9.1
+            location: https://github.com/pubnub/python/releases/download/10.9.1/pubnub-10.9.1.tar.gz
             supported-platforms:
               supported-operating-systems:
                 Linux:
@@ -169,6 +169,13 @@ sdks:
                 license-url: https://github.com/encode/httpx/blob/master/LICENSE.md
                 is-required: Required
 changelog:
+  - date: 2026-11-23
+    version: 10.9.1
+    changes:
+      - type: bug
+        text: "Unsubscribing with the default `PubNubAsyncio` client now sends a leave request unless `suppress_leave_events` is set, as the threaded and legacy asyncio subscription managers already do. The event engine subscription manager used to send it only when `enable_presence_heartbeat` was on, so the user ID stayed an occupant of the channel until the presence timeout and the other subscribers did not receive its `leave` presence event."
+      - type: improvement
+        text: "Add offline unit tests for the leave request on unsubscribe."
   - date: 2026-11-20
     version: 10.9.0
     changes:

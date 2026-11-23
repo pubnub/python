@@ -1,6 +1,4 @@
-"""Docs page: subscribe-legacy (sync). The samples of the legacy page, moved from the old
-docs-snippets/sync/subscribe.py.
-"""
+"""Docs page: subscribe-legacy (sync). The samples of the legacy page."""
 import io
 import sys
 from logging import DEBUG, getLogger

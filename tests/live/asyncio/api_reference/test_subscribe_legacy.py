@@ -1,6 +1,4 @@
-"""Docs page: subscribe-legacy (asyncio). The samples of the legacy page, moved from the old
-docs-snippets/asyncio/subscribe.py.
-"""
+"""Docs page: subscribe-legacy (asyncio). The samples of the legacy page."""
 import io
 import sys
 from logging import DEBUG, getLogger
@@ -465,7 +463,7 @@ async def test_unsubscribe_old_channel(aclients):
     single, control = 'my_channel', 'ch3'
     seen = attach(pubnub)
     # The observer must see joins, which the service emits only for user IDs that are not occupants yet.
-    not_present(single, ['subscriber', 'sentinel', 'beating_subscriber'])
+    not_present(single, ['subscriber', 'sentinel', 'beating_subscriber', 'quiet_subscriber'])
     observer = await alisten(aclients.asyncio('open', 'observer'), single, presence=True)
     pubnub.subscribe().channels([single, control]).execute()
     await connected(seen)
@@ -487,17 +485,31 @@ async def test_unsubscribe_old_channel(aclients):
     await aeventually(lambda: a.contains(texts(seen), 'after control', 'the control channel still delivers'))
     a.not_contains(texts(seen), 'after single', 'no message after unsubscribe')
 
-    # Documented: with the default configuration (enable_presence_heartbeat is False) the asyncio client sends no
-    # leave request (pubnub_asyncio.py adapt_unsubscribe_builder). The sentinel is the join of a client that
-    # subscribes after the unsubscribe: the observer has received a later event on the same channel, so a leave that
-    # had been sent would be in its list by now.
+    # Documented: the default client sends a leave request when it unsubscribes, also without presence heartbeats,
+    # so the other subscribers see the leave event.
+    await aeventually(lambda: a.contains([(p.event, p.uuid) for p in observer.presence_events],
+                                         ('leave', pubnub.uuid), 'the observer sees the leave of the default client'),
+                      timeout=PRESENCE_EVENT_TIMEOUT)
+
+    # Documented: with suppress_leave_events the client sends no leave request. The sentinel is the join of a client
+    # that subscribes after the unsubscribe: the observer has received a later event on the same channel, so a leave
+    # that had been sent would be in its list by now.
+    quiet = aclients.asyncio('open', 'quiet_subscriber')
+    quiet.config.suppress_leave_events = True
+    quiet_seen = attach(quiet)
+    quiet.subscribe().channels(single).execute()
+    await connected(quiet_seen)
+    await aeventually(lambda: a.contains([(p.event, p.uuid) for p in observer.presence_events],
+                                         ('join', quiet.uuid), 'the observer sees the join of the quiet client'),
+                      timeout=PRESENCE_EVENT_TIMEOUT)
+    quiet.unsubscribe().channels(single).execute()
     sentinel = aclients.asyncio('open', 'sentinel')
     await alisten(sentinel, single)
     await aeventually(lambda: a.contains([(p.event, p.uuid) for p in observer.presence_events],
                                          ('join', sentinel.uuid), 'the observer sees the later sentinel join'),
                       timeout=PRESENCE_EVENT_TIMEOUT)
-    a.not_contains([(p.event, p.uuid) for p in observer.presence_events], ('leave', pubnub.uuid),
-                   'no leave event with the default configuration')
+    a.not_contains([(p.event, p.uuid) for p in observer.presence_events], ('leave', quiet.uuid),
+                   'no leave event with suppress_leave_events')
 
     # Documented: with enable_presence_heartbeat and a heartbeat interval above 0 the client sends the leave.
     beating = aclients.asyncio('open', 'beating_subscriber')
@@ -517,8 +529,6 @@ async def test_unsubscribe_old_channel(aclients):
                                          ('leave', beating.uuid), 'leave event with the presence heartbeat enabled'))
     leave = [p for p in observer.presence_events if p.event == 'leave' and p.uuid == beating.uuid][0]
     a.ok(isinstance(leave.timestamp, int) and isinstance(leave.occupancy, int), 'leave carries timestamp, occupancy')
-    a.not_contains([(p.event, p.uuid) for p in observer.presence_events], ('leave', pubnub.uuid),
-                   'the default client still sent no leave')
 
 
 async def test_unsubscribe_old_multiple(aclients):

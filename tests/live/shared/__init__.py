@@ -1,1 +1,1 @@
-"""Shared scenario data per docs page for the sync and asyncio docsets (plan section 4.3)."""
+"""Shared scenario data per docs page for the sync and asyncio docsets: resource names and helpers both call."""

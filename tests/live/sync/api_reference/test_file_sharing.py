@@ -141,7 +141,7 @@ def test_download_file_builder(clients, monkeypatch):
     pubnub = clients.sync('open', 'file_downloader')
     uploaded = upload(pubnub)
     file_data = {'id': uploaded.file_id, 'name': uploaded.name}
-    target = tempfile.mkdtemp(prefix='docs-snippets-')
+    target = tempfile.mkdtemp(prefix='pubnub-live-')
     saved_file = os.path.join(target, file_data['name'])
     monkeypatch.chdir(target)  # the sample saves the file in the working directory
     try:

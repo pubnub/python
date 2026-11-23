@@ -4,12 +4,11 @@ Needs the `pam` role keyset (Access Manager). Every grant is closed in a finally
 that grants at application level runs in its own group, because a downgrade is not guaranteed to apply at once and
 would otherwise leak into the 403 checks of later steps. Tokens and keys never reach output.
 
-The application level grant (test_grant_subkey_all, merged from the old docs-snippets/sync/zz_application_level.py)
-runs in its own group, access-manager-application-level, the last one in groups.py. An application level grant opens
-every channel. A downgrade is
-not guaranteed to apply at once, so this module asserts only what the docs claim: the grant call succeeds and the
-service accepts it. The grant is closed in a finally (all flags false, ttl 1) and the janitor revokes it again at
-the end of every run that uses the `pam` role.
+The application level grant (test_grant_subkey_all) runs in its own group, access-manager-application-level, the
+last one in groups.py. An application level grant opens every channel. A downgrade is not guaranteed to apply at
+once, so this module asserts only what the docs claim: the grant call succeeds and the service accepts it. The grant
+is closed in a finally (all flags false, ttl 1) and the janitor revokes it again at the end of every run that uses
+the `pam` role.
 """
 from pubnub.exceptions import PubNubException
 import pytest

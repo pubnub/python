@@ -1,8 +1,8 @@
 """Docs page: App Context (sync). User and channel metadata.
 
-Also channel memberships, channel members and the PNChannelMembership and PNUUID classes (merged from the old
-docs-snippets/sync/objects_membership.py, one file per docs page). The helpers are in shared/objects.py. Every object
-a test creates is removed in a finally block, and the janitor cleans the names listed in NAMES.
+Also channel memberships, channel members and the PNChannelMembership and PNUUID classes, because they are on the
+same docs page. The helpers are in shared/objects.py. Every object a test creates is removed in a finally block, and
+the janitor cleans the names listed in NAMES.
 """
 from pubnub.exceptions import PubNubException
 from pubnub.models.consumer.objects_v2.memberships import PNChannelMembership

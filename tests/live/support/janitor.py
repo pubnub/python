@@ -1,8 +1,8 @@
 """Janitor: cleans exactly the names of resources.py, revokes the application-level Access Manager (v2) grant and can
 wait until a client without a token is refused again.
 
-Runs before and after a live run (hooks.py) and after a failure or cancel in CI (cli.py janitor). The old six-hour
-sweep by name pattern and the ledger are gone: nothing that is not listed is touched.
+Runs before and after a live run (hooks.py) and after a failure or cancel in CI (cli.py janitor). It never sweeps by
+name pattern and never lists a keyset: nothing that is not listed is touched.
 """
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field

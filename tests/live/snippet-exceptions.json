@@ -10,7 +10,7 @@
     {
       "docset": "sync",
       "page": "test_objects.py",
-      "reason": "The asyncio docset has no App Context page with embedded samples on the docs branch (PR 1063)."
+      "reason": "The asyncio docset has no App Context page with embedded samples."
     }
   ]
 }

@@ -10,7 +10,7 @@ Marker rules (the docs extractor, src/helper/codeSnippetFetcher.ts in the docs r
   M6  no test-only code in the visible text: assert, pytest, the waits, anything imported from support or shared
   M7  no try/except, traceback or logging.exception in the visible text, except the ids in ERROR_HANDLING_SNIPPETS
   M8  the visible text, unindented, compiles on its own (await allowed in asyncio files)
-Honesty rules (replace the run-time recorder of the old harness):
+Honesty rules (every snippet runs and is checked):
   H1  a snippet runs inside a test_* function (or a top-level helper a test calls), or sits in a @compile_only function
   H2  the test asserts after the snippet's end line (an assert statement, a call of an assertion helper, a helper of
       the file or of its shared module that asserts), or carries "# lint: asserted-via <helper>"
@@ -19,7 +19,7 @@ Honesty rules (replace the run-time recorder of the old harness):
   H5  a whole-file sample (a .py file under a docset folder that is not test_*.py) is run by a test that names it
 Asyncio rule:
   P1  in asyncio files, every name a snippet binds from "await ....future()" is used in an assertion after the end
-      line (the call returns an error object instead of raising)
+      line (the call returns an error object instead of raising), except the ids in P1_EXEMPT
 Warnings (do not fail): ids that exist in one docset only for the same page, a test whose docstring does not name its
 snippet ids, allow-list entries no snippet needs.
 """
@@ -33,26 +33,25 @@ from .snippet_scan import ASSERT_NAMES
 
 MAX_HIDDEN_LINES = 3
 
-# Snippets whose purpose is to show error handling the docs page shows (M7 does not apply). Ported from the old
-# suite, where the same regions were published. Keep it short. See tests/live/port-text-changes.md for the review list.
+# Snippets whose purpose is to show the error handling of the docs page (M7 does not apply). Keep it short.
 ERROR_HANDLING_SNIPPETS = {
     # The published sample shows what a CBC-only client does with GCM messages (examples/crypto.py)
     ('sync', 'cipher_mode_experiment'),
 }
 
-# Hidden blocks of the old suite that hold more than MAX_HIDDEN_LINES lines. Ported unchanged (they are not
-# published), listed so that nothing is silent. Phase 6 shortens them to one line each.
+# Hidden blocks that may hold more than MAX_HIDDEN_LINES lines, each with its reason. Empty: every hidden block is
+# short. An entry no snippet needs is reported as a warning.
 LONG_HIDDEN_BLOCKS = set()
 
-# Regions of the old suite that do not compile on their own (M8), for example a region that ends inside a block.
+# Regions that do not compile on their own (M8), for example a region that ends inside a block, each with its
+# reason. Empty: every region compiles. An entry no snippet needs is reported as a warning.
 NOT_STANDALONE = set()
 
-# Asyncio snippets of the old suite whose envelope is not asserted after the end line yet (P1). Phase 6 adds the
-# assertion outside the markers (or a sample text change, see tests/live/port-text-changes.md).
-P1_PENDING = {
+# Asyncio snippets whose envelope no assertion after the end line can check (P1), each with its reason.
+P1_EXEMPT = {
     # The envelope is a local of the sample's recursive function, so no assertion after the end line can read it. The
-    # sample checks is_error() itself and returns (port-text-changes.md section 1), and the test compares the printed
-    # pages with an independent read of the same history, so an error leaves the output empty and fails the test.
+    # sample checks is_error() itself and returns, and the test compares the printed pages with an independent read
+    # of the same history, so an error leaves the output empty and fails the test.
     ('asyncio', 'history_paging'),
 }
 
@@ -269,8 +268,8 @@ def lint(scan=None):
             checked |= returned  # a helper that returns the envelope leaves the check to its caller
             loose = [b for b in bound if b not in checked and not (_derived(holder.node, region.start, b) & checked)]
             if loose:
-                if key in P1_PENDING:
-                    used_allow['P1_PENDING'].add(key)
+                if key in P1_EXEMPT:
+                    used_allow['P1_EXEMPT'].add(key)
                 else:
                     err(f, region.end, 'P1', f'"{", ".join(loose)}" from await ....future() in snippet "{s.id}" is '
                                              'not checked by an assertion after the end line')
@@ -299,7 +298,7 @@ def lint(scan=None):
         warnings.append(f'parity: {one_sided} snippet ids exist in one docset only for the same page '
                         '(cli.py lint --parity lists them)')
     for name, allowed in (('ERROR_HANDLING_SNIPPETS', ERROR_HANDLING_SNIPPETS), ('LONG_HIDDEN_BLOCKS',
-                          LONG_HIDDEN_BLOCKS), ('NOT_STANDALONE', NOT_STANDALONE), ('P1_PENDING', P1_PENDING)):
+                          LONG_HIDDEN_BLOCKS), ('NOT_STANDALONE', NOT_STANDALONE), ('P1_EXEMPT', P1_EXEMPT)):
         for key in sorted(allowed - used_allow[name]):
             warnings.append(f'allow-list {name}: {key} is not needed any more')
         if used_allow[name]:

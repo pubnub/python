@@ -7,8 +7,8 @@
 2. Live probes on the open keyset: publish (keys and network), fetch_messages (Message Persistence), delete_messages
    on an empty range (Delete-From-History) and here_now (Presence).
 
-Only feature names and flags are printed, never a key value. The PubNub-Version header follows the JavaScript tier
-(2026-09-17). The old harness sent 2026-11-06 and listed every keyset (plan D15).
+Only feature names and flags are printed, never a key value. Requests send the Admin API version header
+PubNub-Version (VERSION) and read only the keysets of the roles.
 """
 import os
 import time

@@ -8,7 +8,7 @@ class SyncClients(BaseClients):
     client_class = PubNub
 
     def sync(self, role='open', user_id=None, secret=True):
-        """Kept from the old harness: clients.sync('open', 'publisher')."""
+        """A sync client for a role and user ID: clients.sync('open', 'publisher')."""
         return self.make(role, user_id, secret)
 
     def close(self):

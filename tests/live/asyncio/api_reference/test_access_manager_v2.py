@@ -3,10 +3,9 @@
 Every grant is closed in a finally (all flags false, ttl 1). The step that grants at application level is the last one
 of this file. The asyncio client does not raise on an HTTP error, future() resolves with a PubNubAsyncioException.
 
-The application level grant (test_grant_subkey_all, merged from the old docs-snippets/asyncio/zz_application_level.py)
-runs in its own group, access-manager-application-level, the last one in groups.py. A downgrade
-is not asserted to apply at once. future() resolves with an exception object on failure, so the result type is
-asserted instead of a try/except.
+The application level grant (test_grant_subkey_all) runs in its own group, access-manager-application-level, the
+last one in groups.py. A downgrade is not asserted to apply at once. future() resolves with an exception object on
+failure, so the result type is asserted instead of a try/except.
 """
 from pubnub.exceptions import PubNubAsyncioException
 import pytest

@@ -190,4 +190,4 @@ jobs:
         run: python -u tests/live/cli.py janitor
       # No artifact upload: the tier prints to stdout only and writes no report file.
 
-  # Failure alerts (Slack or similar) are not wired yet: the run logs in GitHub are the only signal for now.
+  # No failure alerts (Slack or similar): the run logs in GitHub are the only signal.

@@ -1,6 +1,6 @@
 """Shared scanner of the tier: lists the files that can hold markers, scans the markers with the syntax of the docs
 extractor (snippets.scan), and uses ast to find the test function that runs each snippet. The marker lint, the
-coverage manifest, the docs cross-check and the port map all build on it. Pure file reads: nothing is imported or
+coverage manifest and the docs cross-check build on it. Pure file reads: nothing is imported or
 executed, no keys, no network.
 
 Owner of a region:
@@ -194,7 +194,7 @@ def _roles_in(node):
 
 def roles_of(file, func):
     """Keyset roles a test uses: role literals of client calls in its body and, transitively, in the helpers it calls
-    (same file or shared module). Heuristic, as in the JavaScript tier."""
+    (same file or shared module). Heuristic: a role chosen at run time is not seen."""
     roles, seen, todo = set(), set(), [(file, func)]
     while todo:
         f, fn = todo.pop()

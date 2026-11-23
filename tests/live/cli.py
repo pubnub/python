@@ -1,13 +1,12 @@
 """Command line of the live tier. Run from anywhere: python -u tests/live/cli.py <command>
 
   lint                       offline checks: compile, marker lint, self-test, manifest --check, groups --check,
-                             exceptions shape, resources shape, port-map --check. No keys, no network.
+                             exceptions shape, resources shape. No keys, no network.
   manifest [--check]         write or check coverage.json
   groups --check             group consistency (also part of lint)
   groups --matrix [name]     the CI job matrix as JSON ("all" or empty: every group)
   docs-check [<docs>] [--report-only] [--allow-ref <branch>] [--verbose]
                              classify every docs embed from pubnub/python
-  port-map [--check]         old-id to new-test mapping of the port from docs-snippets/
   extractor --regen <docs>   regenerate the extractor fixtures from the docs function
   parity                     ids that exist in one docset only, per page
   env                        which roles have keys (never prints a value)
@@ -25,7 +24,7 @@ from pathlib import Path
 LIVE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(LIVE_DIR))
 
-from support import env, groups, lint_markers, lint_selftest, manifest, port_map, resources  # noqa: E402
+from support import env, groups, lint_markers, lint_selftest, manifest, resources  # noqa: E402
 
 
 def _compile():
@@ -45,12 +44,6 @@ def lint(argv):
         print('resources:', p)
     print(f'resources: {len(resources.all_names())} names, {len(problems)} problems')
     rc |= 1 if problems else 0
-    if port_map.base_available():
-        rc |= port_map.main(['--check'])
-    else:
-        # A shallow CI checkout, or a clone after the squash merge, has no old suite to compare with. The proof was made
-        # once, on the port branch, and stays available as `cli.py port-map --check` wherever the base commit exists.
-        print(f'port-map: skipped, base commit {port_map.BASE} is not in this checkout')
     print('lint:', 'ok' if rc == 0 else 'FAILED')
     return rc
 
@@ -66,8 +59,6 @@ def main(argv):
     if cmd == 'docs-check':
         from support import docs_check
         return docs_check.main(rest)
-    if cmd == 'port-map':
-        return port_map.main(rest)
     if cmd == 'extractor' and '--regen' in rest:
         from support import extractor
         return extractor.regen(rest[rest.index('--regen') + 1])

@@ -1,7 +1,7 @@
 """API groups of the live tier. DATA ONLY. One group is one job of the "Live tests" workflow
 (.github/workflows/live-integration.yml) and one `LIVE_GROUP=<name>` run:
 
-    LIVE_GROUP=messaging python -u -m pytest -c tests/live/pytest.ini
+    cd tests/live && LIVE_GROUP=messaging python -u -m pytest
 
 `roles`: a group run without -k needs exactly these keyset roles up front, and the preflight and the wait for a closed
 Access Manager grant cover only these roles. The workflow builds its job matrix from this list

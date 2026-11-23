@@ -6,10 +6,10 @@ import pytest
 # it (scripts/run-tests.py also passes --ignore=tests/live/).
 collect_ignore = ["live"]
 
-# Offline guard (live tier plan, Phase 1). PN_OFFLINE_GUARD=1 refuses every connection that is not to the loopback
-# address, through pytest-socket (requirements-dev.txt). A test that reaches the real network then fails with
-# SocketConnectBlockedError. It is opt-in until the tests that need the network move to the endpoint tier
-# (plan Phase 7), then it becomes the default. Same effect: py.test tests --allow-hosts=127.0.0.1,::1
+# Offline guard. PN_OFFLINE_GUARD=1 refuses every connection that is not to the loopback address, through
+# pytest-socket (requirements-dev.txt). A test that reaches the real network then fails with SocketConnectBlockedError.
+# It is opt-in, because some tests in tests/ use the real network. Same effect:
+# py.test tests --allow-hosts=127.0.0.1,::1
 _OFFLINE = os.environ.get("PN_OFFLINE_GUARD") == "1"
 
 

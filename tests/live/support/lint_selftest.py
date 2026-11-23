@@ -1,5 +1,5 @@
 """Self-test of the offline checks, run by `cli.py lint`. Every broken fixture must be reported with its rule, the clean
-fixture must pass, redaction must mask a registered key, and the extractor port must reproduce the stored outputs of
+fixture must pass, redaction must mask a registered key, and the Python extractor must reproduce the stored outputs of
 the docs function (extractor_fixtures.json)."""
 import json
 import tempfile
@@ -224,7 +224,8 @@ def run_extractor_fixtures():
     for case in data['cases']:
         got = snippets.docs_extract_lines(case['text'], case['ids'])
         if got != case['expected']:
-            problems.append(f'extractor case {case["name"]!r}: port gives {got!r}, docs gave {case["expected"]!r}')
+            problems.append(f'extractor case {case["name"]!r}: the Python extractor gives {got!r}, '
+                            f'docs gave {case["expected"]!r}')
     return problems
 
 

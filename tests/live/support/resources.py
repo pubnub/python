@@ -5,14 +5,12 @@ exactly what is listed, before and after every run, and nothing else. It never l
 finds.
 
 Where the names live:
-  GLOBAL_NAMES       names that many pages use (ported from the old harness names.REGISTERED)
-  shared/<page>.py   NAMES, the names of one page (ported from the old REGISTERED_NAMES lists and the old
-                     names.with_suffix calls outside the markers)
+  GLOBAL_NAMES       names that many pages use
+  shared/<page>.py   NAMES, the names of one page, including the names that test code outside the markers uses
   PUSH_DEVICES       device tokens registered by the push samples: the FCM token and the APNs token (APNS2_DEVICE)
 
-The old suite never classified the names by kind, so for now every listed name is cleaned as a channel (history and
-files), a channel group, an App Context user and an App Context channel (with the memberships between listed names).
-Classifying the names per kind, as the JavaScript resources.ts does, is part of plan Phase 4 step 2.
+The names are not classified by kind: every listed name is cleaned as a channel (history and files), a channel group,
+an App Context user and an App Context channel (with the memberships between listed names).
 """
 import importlib
 import pkgutil
@@ -58,12 +56,13 @@ def all_names():
 
 
 def problems():
-    """Shape check used by the lint: names are non-empty strings without the old run suffix marker."""
+    """Shape check used by the lint: names are non-empty strings and carry no run suffix ("-dsn-"), because the
+    tests use the literal names the docs show."""
     found = []
     for page, listed in sorted(page_names().items()):
         for name in listed:
             if not isinstance(name, str) or not name:
                 found.append(f'shared/{page}.py: NAMES holds a non-string or empty entry {name!r}')
             elif '-dsn-' in name:
-                found.append(f'shared/{page}.py: {name!r} carries the old run suffix')
+                found.append(f'shared/{page}.py: {name!r} carries a run suffix')
     return found

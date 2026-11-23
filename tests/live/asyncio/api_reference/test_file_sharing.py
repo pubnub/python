@@ -128,7 +128,7 @@ async def test_download_file_builder(aclients, monkeypatch):
     """Snippet: download_file_builder."""
     pubnub = aclients.asyncio('open', 'file_downloader')
     uploaded = await upload(pubnub)
-    target = tempfile.mkdtemp(prefix='docs-snippets-')
+    target = tempfile.mkdtemp(prefix='pubnub-live-')
     saved_file = os.path.join(target, uploaded.name)
     monkeypatch.chdir(target)  # the sample saves the file in the working directory
     try:

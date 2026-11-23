@@ -161,7 +161,7 @@ def test_encrypt_file(clients):
     a.eq(decrypted_payload, FIXTURE_BYTES, 'round trip')
 
     # The same module on the file API: what is stored is encrypted, what the same client downloads is plain
-    target = tempfile.mkdtemp(prefix='docs-snippets-')
+    target = tempfile.mkdtemp(prefix='pubnub-live-')
     path = os.path.join(target, 'sample.gif')
     with open(path, 'wb') as f:
         f.write(FIXTURE_BYTES)

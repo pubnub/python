@@ -21,14 +21,14 @@ def test_disconnect_method(clients):
     manager = pubnub._subscription_manager
 
     # snippet.disconnect_method
-    pubnub._subscription_manager.disconnect()
+    pubnub.disconnect()
     print("Disconnected from PubNub.")
     # snippet.end
     a.ok(manager._should_stop, 'the manager is stopped')
     publisher.publish().channel(channel).message('while-away').sync()
 
     # snippet.reconnect_method
-    pubnub._subscription_manager.reconnect()
+    pubnub.reconnect()
     # snippet.end
     a.ok(not manager._should_stop, 'the manager runs again')
     eventually(lambda: a.eq([m.message for m in seen.messages], ['before', 'while-away'], 'caught up after reconnect'))

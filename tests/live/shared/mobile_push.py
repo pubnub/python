@@ -1,7 +1,6 @@
-"""Shared scenario data of the mobile-push page for both docsets: literal resource names (NAMES,
-read by the janitor through support/resources.py) and the helpers the sync and asyncio tests call outside
-the snippet markers. Moved from the old docs-snippets/<docset>/ modules. Coroutine twins of a sync helper
-carry an "_async" suffix, and the asyncio tests import them under the sync name.
+"""Scenario data and helpers of the mobile-push page, shared by the sync and asyncio tests: literal resource names
+(NAMES, read by the janitor through support/resources.py) and the helpers the tests call outside the snippet markers.
+Coroutine twins of a sync helper carry an "_async" suffix, and the asyncio tests import them under the sync name.
 """
 from pubnub.enums import PNPushEnvironment, PNPushType
 

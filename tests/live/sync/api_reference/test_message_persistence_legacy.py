@@ -1,6 +1,4 @@
-"""Docs page: message-persistence-legacy (sync). The samples of the legacy page, moved from the old
-docs-snippets/sync/message_persistence.py.
-"""
+"""Docs page: message-persistence-legacy (sync). The samples of the legacy page."""
 import contextlib
 import io
 

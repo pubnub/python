@@ -10,7 +10,7 @@ class AsyncioClients(BaseClients):
     client_class = PubNubAsyncio
 
     def asyncio(self, role='open', user_id=None, secret=True):
-        """Kept from the old harness: aclients.asyncio('open', 'publisher')."""
+        """An asyncio client for a role and user ID: aclients.asyncio('open', 'publisher')."""
         return self.make(role, user_id, secret)
 
     async def close(self):

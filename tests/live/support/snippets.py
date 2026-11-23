@@ -1,13 +1,13 @@
 """Snippet markers, two views of them.
 
-docs_extract(text, ids) is a line-by-line port of extractSnippets() in the docs repo
+docs_extract(text, ids) is a line-by-line Python copy of extractSnippets() in the docs repo
 (src/helper/codeSnippetFetcher.ts): what the docs show for a list of ids. Every offline check that compares sample
 text uses it. extractor_fixtures.json holds cases whose expected output came from the docs function itself
-(cli.py extractor --regen <docs checkout>), and the lint compares this port against them.
+(cli.py extractor --regen <docs checkout>), and the lint compares this copy against them.
 
 scan(rel, text) is the strict scanner of the tier: it finds the regions with the exact marker syntax of the docs
 extractor for Python files (prefix "# ", with the space) and reports every near miss the extractor would silently
-ignore, such as "#snippet.x" (the old harness accepted it, plan D8).
+ignore, such as "#snippet.x".
 """
 import re
 from dataclasses import dataclass, field
@@ -32,7 +32,7 @@ def _unindent(lines):
 
 
 def docs_extract_lines(content, snippet_ids, prefixes=None):
-    """Port of extractSnippets(content, snippetIds, prefixes). Returns the list of lines."""
+    """Python copy of extractSnippets(content, snippetIds, prefixes). Returns the list of lines."""
     if not snippet_ids:
         return [content]
     prefixes = list(prefixes or DOCS_PREFIXES)

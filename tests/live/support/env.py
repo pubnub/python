@@ -1,7 +1,7 @@
 """Key loader. Fixed env names, grouped in roles. Real env vars win over the optional env file.
 
 The file is LIVE_ENV_FILE, or tests/live/.env.local when that is not set. The loader never falls back to demo keys and
-prints only "set" or "missing" per role. Role variable names match the JavaScript live tier.
+prints only "set" or "missing" per role. The env names per role are in the Keys table of tests/live/README.md.
 """
 import os
 from pathlib import Path

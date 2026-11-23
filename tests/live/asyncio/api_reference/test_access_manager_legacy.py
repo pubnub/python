@@ -1,6 +1,4 @@
-"""Docs page: access-manager-legacy (asyncio). The samples of the legacy page, moved from the old
-docs-snippets/asyncio/access_manager.py.
-"""
+"""Docs page: access-manager-legacy (asyncio). The samples of the legacy page."""
 from support import assertions as a
 from support import redact
 from shared.access_manager import perms

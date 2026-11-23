@@ -1,8 +1,8 @@
 """Cleanup registry: cleanup_after_test(label, fn) runs fn after the test body, newest first, before the test's clients
 stop. A 404 is silent, any other failure is printed (redacted) and never hides the test result.
 
-record(kind, name) keeps the call shape of the old harness ledger: it registers the removal of one resource the test
-created. Kinds: channel_group, history, uuid_metadata, channel_metadata.
+record(kind, name) registers the removal of one resource the test created. Kinds: channel_group, history,
+uuid_metadata, channel_metadata.
 """
 from pubnub.exceptions import PubNubException
 

@@ -30,7 +30,7 @@ def config(role='open', user_id=None, secret=True):
     # so that the lingering thread check sees only real leaks.
     cfg.daemon = True
     # A client that stops without a leave stays an occupant of a shared channel for the presence timeout (default
-    # 300 s), and the next test would count it. JavaScript does the same (presenceTimeout 20, heartbeatInterval 8).
+    # 300 s), and the next test would count it. A short presence timeout lets it drop out between tests.
     cfg.set_presence_timeout(PRESENCE_TIMEOUT)
     return cfg
 
@@ -72,9 +72,8 @@ class BaseClients:
 
     @staticmethod
     def send_leaves(pending):
-        """An explicit leave per client. The asyncio client sends none by default (it only leaves with presence
-        heartbeats on), and a client that stays an occupant makes the next test miss the join event of the same
-        user ID."""
+        """An explicit leave per client. A client that stops without unsubscribing sends no leave (stop() never
+        does), and one that stays an occupant makes the next test miss the join event of the same user ID."""
         from pubnub.endpoints.presence.leave import Leave
         from pubnub.pubnub import PubNub
         for role, user, channels, groups in pending:

@@ -1,10 +1,10 @@
-"""Equivalence proof of the extractor port (support/snippets.py) against the docs function.
+"""Equivalence check of the Python extractor (support/snippets.py) against the docs function.
 
     python -u tests/live/cli.py extractor --regen <documentation checkout>
 
 runs extractSnippets() of <docs>/src/helper/codeSnippetFetcher.ts with `npx tsx` (from the docs checkout, read only)
 on every case below and writes the outputs to support/extractor_fixtures.json. CI has no docs checkout, so the lint
-self-test compares the port against the stored outputs.
+self-test compares the Python extractor against the stored outputs.
 """
 import json
 import subprocess

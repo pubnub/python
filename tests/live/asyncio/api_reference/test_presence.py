@@ -7,7 +7,7 @@ from support import assertions as a
 from support import cleanup as live_cleanup
 from support.listen import alisten
 from support.wait import aeventually
-from shared.presence import Printed, consistent, occupancy_of, own_occupants
+from shared.presence import Printed, consistent, occupancy_of, own_occupants, present
 
 
 async def test_here_now_builder(aclients, capsys):
@@ -227,6 +227,7 @@ async def test_set_state_groups_builder(aclients):
         await pubnub.add_channel_to_channel_group().channels([member]).channel_group(group).future()
         live_cleanup.record('channel_group', group)
     await alisten(pubnub, own, *members, groups=groups)
+    present([own, *members], pubnub.uuid)
     # The SDK refuses a set_state() that names channel groups and no channel (PubNubException "State setter for
     # channel groups is not supported yet" in sync, an error status in asyncio), so the sample below adds a
     # channel next to the groups.

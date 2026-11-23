@@ -9,7 +9,7 @@ from support import assertions as a
 from support import cleanup as live_cleanup
 from support.listen import listen
 from support.wait import PRESENCE_TIMEOUT, eventually
-from shared.presence import Printed, consistent, occupancy_of, occupants_of, own_occupants
+from shared.presence import Printed, consistent, occupancy_of, occupants_of, own_occupants, present
 
 
 def test_here_now_builder(clients, capsys):
@@ -295,6 +295,7 @@ def test_set_state_groups_builder(clients):
         pubnub.add_channel_to_channel_group().channels([member]).channel_group(group).sync()
         live_cleanup.record('channel_group', group)
     listen(pubnub, own, *members, groups=groups)
+    present([own, *members], pubnub.uuid)
     # The SDK refuses a set_state() that names channel groups and no channel (PubNubException "State setter for
     # channel groups is not supported yet"), so the samples below add a channel next to the groups.
     refusal = a.raises(PubNubException, lambda: pubnub.set_state().channel_groups(groups).state({'age': 20}).sync())

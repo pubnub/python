@@ -64,3 +64,22 @@ def not_present(channel, user_ids):
         settled(gone, timeout=PRESENCE_TIMEOUT, what=f'user IDs not present on {channel}')
     finally:
         reader.stop()
+
+
+def present(channels, user_id):
+    """Precondition of a test that sets state: the user ID is an occupant of every channel, on consecutive reads.
+
+    The service applies set_state() only to channels where the user ID is already present. A subscribe is connected
+    before its presence join is registered, and a fast client sets the state in between, which is then never applied.
+    Blocking: the asyncio tests call it too, before the sample.
+    """
+    from pubnub.pubnub import PubNub
+    reader = PubNub(config('open', 'presence_check'))
+    try:
+        def listed():
+            for channel in channels:
+                here = reader.here_now().channels(channel).include_uuids(True).sync()
+                a.eq(own_occupants(here, channel, [user_id]), [user_id], f'{user_id} not listed on {channel} yet')
+        settled(listed, timeout=PRESENCE_TIMEOUT, what=f'{user_id} present on {", ".join(channels)}')
+    finally:
+        reader.stop()

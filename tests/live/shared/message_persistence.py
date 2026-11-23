@@ -64,17 +64,20 @@ async def seed_async(client, channel, count, **extra):
     return seeded
 
 
-async def seed_parallel_async(client, channel, count):
-    """Publish count messages at the same time. Only the timetokens matter, they come back sorted."""
+async def seed_parallel_async(client, channel, count, concurrency=20):
+    """Publish count messages, at most `concurrency` at a time. Only the timetokens matter, they come back sorted.
+
+    No repeat after an error: a publish whose response was lost can already be stored, and a repeat would store it
+    twice. The cap keeps the number of requests in flight on one HTTP/2 connection low instead."""
+    limit = asyncio.Semaphore(concurrency)
+
     async def one(index):
-        # The asyncio SDK returns a failed request as an error object (result None), it does not raise. A publish that
-        # failed in transit is repeated, any other outcome is reported with the status instead of an AttributeError.
-        for attempt in range(3):
+        async with limit:
             envelope = await client.publish().channel(channel).message({'n': index}).future()
-            if not envelope.is_error():
-                return int(envelope.result.timetoken)
-            last = envelope.status
-        raise AssertionError(f'publish {index} failed 3 times: category={last.category} error={last.error_data}')
+        if envelope.is_error():
+            raise AssertionError(f'publish {index} failed: category={envelope.status.category} '
+                                 f'error={envelope.status.error_data}')
+        return int(envelope.result.timetoken)
 
     return sorted(await asyncio.gather(*[one(i) for i in range(count)]))
 

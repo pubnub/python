@@ -92,7 +92,9 @@ class BaseClients:
                 leaver.stop()
 
     def track(self, client):
-        """Stop a client the test built itself (for example from a sample's own configuration)."""
+        """Stop a client the test built itself (for example from a sample's own configuration).
+        Its later request threads are daemon threads, so a long poll that is still in flight cannot hold the process."""
+        client.config.daemon = True
         self._made.append(client)
         return client
 

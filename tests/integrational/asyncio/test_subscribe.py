@@ -306,6 +306,48 @@ async def test_cg_subscribe_publish_unsubscribe():
     await pubnub.stop()
 
 
+async def occupants(pubnub, channel):
+    envelope = await pubnub.here_now().channels(channel).include_uuids(True).future()
+    assert not envelope.is_error(), envelope.status.error_data
+    return [o.uuid for c in envelope.result.channels for o in (c.occupants or [])]
+
+
+async def wait_for_occupants(pubnub, channel, expected, seconds):
+    deadline = asyncio.get_running_loop().time() + seconds
+    found = await occupants(pubnub, channel)
+    while sorted(found) != sorted(expected) and asyncio.get_running_loop().time() < deadline:
+        await asyncio.sleep(0.5)
+        found = await occupants(pubnub, channel)
+    return found
+
+
+@pytest.mark.asyncio
+async def test_unsubscribe_sends_leave_without_presence_heartbeat():
+    """The default client (enable_presence_heartbeat is False) tells the service that it left, so it is not an
+    occupant any more. Without the leave it stays listed until the presence timeout (300 s by default)."""
+    channel = gen_channel("test-subscribe-asyncio-leave-no-heartbeat-ch")
+    messenger_config = pnconf_env_copy()
+    messenger_config.enable_subscribe = True
+    messenger_config.uuid = "test-subscribe-asyncio-quiet-messenger"
+    messenger = PubNubAsyncio(messenger_config)
+    observer_config = pnconf_env_copy()
+    observer_config.uuid = "test-subscribe-asyncio-quiet-observer"
+    observer = PubNubAsyncio(observer_config)
+
+    listener = SubscribeListener()
+    messenger.add_listener(listener)
+    messenger.subscribe().channels(channel).execute()
+    await listener.wait_for_connect()
+    assert await wait_for_occupants(observer, channel, [messenger.uuid], 15) == [messenger.uuid]
+
+    messenger.unsubscribe().channels(channel).execute()
+
+    assert await wait_for_occupants(observer, channel, [], 15) == []
+
+    await messenger.stop()
+    await observer.stop()
+
+
 # @pn_vcr.use_cassette('tests/integrational/fixtures/asyncio/subscription/cg_join_leave.json', serializer='pn_json',
 #                      filter_query_parameters=['pnsdk', 'l_cg', 'l_pres', 'ee', 'tr'])
 @pytest.mark.asyncio

@@ -1,9 +1,3 @@
-## 10.9.1
-November 23 2026
-
-#### Fixed
-- Unsubscribing with the default `PubNubAsyncio` client now sends a leave request unless `suppress_leave_events` is set, as the threaded and legacy asyncio subscription managers already do. The event engine subscription manager used to send it only when `enable_presence_heartbeat` was on, so the user ID stayed an occupant of the channel until the presence timeout and the other subscribers did not receive its `leave` presence event.
-
 ## 10.9.0
 November 20 2026
 

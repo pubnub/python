@@ -3,12 +3,11 @@
 Source: docs/sdks/python/api-reference/encryption.md. The client of each docs sample is built by the sample itself,
 so the page snippets show the crypto module lines on a PNConfiguration that the step created.
 """
-# flake8: noqa: E303 (the cipher_mode_experiment sample keeps the two blank lines of examples/crypto.py)
+# ruff: noqa: E303 (the cipher_mode_experiment sample keeps the two blank lines of examples/crypto.py)
 import os
 import tempfile
 
-from Cryptodome.Cipher import AES
-from pubnub.crypto import AesCbcCryptoModule, LegacyCryptoModule, PubNubAesCbcCryptor, PubNubCryptoModule
+from pubnub.crypto import AesCbcCryptoModule, PubNubAesCbcCryptor, PubNubCryptoModule
 from pubnub.enums import PNStatusCategory
 from pubnub.exceptions import PubNubException
 from pubnub import pubnub as pubnub_module

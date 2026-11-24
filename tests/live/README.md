@@ -143,7 +143,7 @@ The tests use the names the docs show, so the names are fixed, shared and persis
 `.github/workflows/live-integration.yml` runs on every non-draft pull request into `master` and on dispatch (inputs `group` and `grep`). There is no schedule. Fork pull requests never get the live jobs.
 
 1. `compat`: compile and `cli.py lint` on Python 3.9 to 3.12.
-2. `offline`: compile, `cli.py lint`, flake8 of the tier, a collect without keys or network, and the job matrix from `groups.py` (`cli.py groups --matrix`).
+2. `offline`: compile, `cli.py lint`, Ruff of the tier, a collect without keys or network, and the job matrix from `groups.py` (`cli.py groups --matrix`).
 3. `live`: one job per group, one at a time, without stopping at a failed group. After a failure or a cancel, a last step runs `cli.py janitor` so a keyset is never left open.
 
 One live run at a time runs for the whole workflow, because the keysets are shared. `cancel-superseded-live-runs.yml` cancels older runs of the same pull request when it gets a new push. The run logs in GitHub are the only failure signal.
@@ -153,6 +153,6 @@ One live run at a time runs for the whole workflow, because the keysets are shar
 1. Write `sync/api_reference/test_<page>.py` and `asyncio/api_reference/test_<page>.py`, one test per sample or group of samples, with the markers and assertions as above.
 2. Put the resource names of the page in `NAMES` of `shared/<page>.py`, with the helpers both docsets call. A coroutine twin of a sync helper carries an `_async` suffix.
 3. Add both files to a group in `groups.py`. A new group also needs its name in the `group` input options of the workflow.
-4. Run `python -u tests/live/cli.py manifest`, then `cli.py lint` and flake8 (`python -m flake8 tests/live --max-line-length 120 --ignore F811,E402`).
+4. Run `python -u tests/live/cli.py manifest`, then `cli.py lint` and Ruff (`ruff check tests/live`, configured by the `ruff.toml` of the repository).
 5. Run the page live (`python -u -m pytest -k <page>` from `tests/live`).
 6. Point the docs `EmbeddedCode` tags at the file and ids, and run `cli.py docs-check <docs checkout>`. A page that exists in one docset only goes in `one_sided` of `snippet-exceptions.json`.

@@ -2,16 +2,18 @@
 read by the janitor through support/resources.py) and the helpers the tests call outside the snippet markers.
 Coroutine twins of a sync helper carry an "_async" suffix, and the asyncio tests import them under the sync name.
 """
+import re
+
 from pubnub.callbacks import SubscribeCallback
 from pubnub.enums import PNStatusCategory
-from pubnub.exceptions import PubNubException
+from pubnub.exceptions import PubNubAsyncioException, PubNubException
 from pubnub.models.consumer.objects_v2.memberships import PNChannelMembership
 from pubnub.models.consumer.objects_v2.channel_members import PNUUID
 
 from support import assertions as a
 from support import cleanup as live_cleanup
 from support import redact
-from support.wait import eventually, settled
+from support.wait import aeventually, asettled, eventually, settled
 
 NAMES = [
     'channel_id',
@@ -260,3 +262,155 @@ def check_members(items, plain, with_custom):
     a.eq(found[plain]['uuid']['name'], 'some name')
     a.eq(found[with_custom]['uuid']['custom'], CUSTOM_1, 'user custom')
     a.eq(found[with_custom]['uuid']['name'], 'some name with custom')
+
+
+# Coroutine twins for the asyncio tests. The asyncio client does not raise on an HTTP error, future() resolves with a
+# PubNubAsyncioException instead, so the twins turn it into an AssertionError (or look at it, where an error is wanted).
+
+async def watch_async(aclients, *channels):
+    """A second asyncio client that listens on the given channels. Returns after it is connected."""
+    client = aclients.asyncio('open', 'watcher')
+    seen = AppContextEvents()
+    client.subscribed_by_suite = True
+    client.add_listener(seen)
+    client.subscribe().channels(list(channels)).execute()
+    await aeventually(lambda: a.ok(PNStatusCategory.PNConnectedCategory in seen.categories, 'not connected yet'),
+                      timeout=15, what='watcher connected')
+    return seen
+
+
+async def first_event_async(seen):
+    await aeventually(lambda: a.ok(len(seen.items) >= 1, 'no App Context event yet'), timeout=20,
+                      what='App Context event')
+    return seen.items[0]
+
+
+def checked(envelope):
+    """The envelope of a future(), or an AssertionError when the call resolved with an error."""
+    if isinstance(envelope, PubNubAsyncioException):
+        raise AssertionError(redact.scrub(f'call failed: {envelope}'))
+    return envelope
+
+
+def _is_404(failed):
+    return '404' in str(failed) or getattr(failed.status, 'status_code', None) == 404
+
+
+async def quiet_404_async(call):
+    """Run a cleanup call. A missing object is fine, any other error is not."""
+    result = await call()
+    if isinstance(result, PubNubAsyncioException):
+        if not _is_404(result):
+            raise AssertionError(redact.scrub(f'cleanup call failed: {result}'))
+        return None
+    return result
+
+
+async def attempt_async(call):
+    """Run a read. An error (for example the 404 of a replica that has not seen a create yet) becomes an
+    AssertionError, so that aeventually() and asettled() retry it."""
+    result = await call()
+    if isinstance(result, PubNubAsyncioException):
+        raise AssertionError(redact.scrub(f'read failed: {result}'))
+    return result
+
+
+async def expect_error_async(call, match):
+    """The call resolves with an error that matches `match`. Returns the error."""
+    result = await call()
+    if not isinstance(result, PubNubAsyncioException):
+        raise AssertionError('the call did not resolve with an error')
+    text = redact.scrub(f'{result} {getattr(result.status, "status_code", "")}')
+    if not re.search(match, text):
+        raise AssertionError(f'error {text!r} does not match {match!r}')
+    return result
+
+
+async def settled_read_async(call, check, what, timeout=30):
+    """settled_read() for a coroutine function."""
+    async def once():
+        value = await attempt_async(call)
+        check(value)
+        return value
+    return await asettled(once, timeout=timeout, what=what)
+
+
+async def absent_async(read, what='object reports 404'):
+    await asettled(lambda: expect_error_async(read, '404'), timeout=30, what=what)
+
+
+async def _listed_async(call, key):
+    found = await quiet_404_async(call)
+    return {item[key]['id'] for item in (found.result.data if found else []) or []}
+
+
+async def cleanup_async(pubnub, uuids=(), channels=()):
+    """cleanup() for an asyncio client."""
+    names = set(NAMES)
+    for uid in uuids:
+        listed = await _listed_async(lambda: pubnub.get_memberships(uuid=uid, limit=100).future(), 'channel')
+        targets = sorted(listed | names)
+        await quiet_404_async(lambda: pubnub.remove_memberships(
+            uuid=uid, channel_memberships=[PNChannelMembership.channel(c) for c in targets]).future())
+    for channel in channels:
+        listed = await _listed_async(lambda: pubnub.get_channel_members(channel=channel, limit=100).future(), 'uuid')
+        targets = sorted(listed | names)
+        await quiet_404_async(lambda: pubnub.remove_channel_members(
+            channel=channel, uuids=[PNUUID.uuid(u) for u in targets]).future())
+    for channel in channels:
+        await quiet_404_async(lambda: pubnub.remove_channel_metadata(channel=channel).future())
+    for uid in uuids:
+        await quiet_404_async(lambda: pubnub.remove_uuid_metadata(uuid=uid).future())
+
+    async def clean():
+        for uid in uuids:
+            left = await _listed_async(lambda: pubnub.get_memberships(uuid=uid, limit=100).future(), 'channel')
+            a.eq(sorted(left & names), [], f'memberships of {uid} left')
+            await expect_error_async(lambda: pubnub.get_uuid_metadata(uuid=uid).future(), '404')
+        for channel in channels:
+            members = await _listed_async(lambda: pubnub.get_channel_members(channel=channel, limit=100).future(),
+                                          'uuid')
+            a.eq(sorted(members & names), [], f'members of {channel} left')
+            await expect_error_async(lambda: pubnub.get_channel_metadata(channel=channel).future(), '404')
+    await asettled(clean, timeout=45, what='App Context objects removed')
+
+
+async def fresh_async(pubnub, uuids=(), channels=()):
+    """Precondition: no membership, member or metadata of these names is left, on consecutive reads."""
+    await cleanup_async(pubnub, uuids, channels)
+
+
+async def gone_async(read):
+    """The read resolves with a 404 once the object is removed, on consecutive reads."""
+    await absent_async(read)
+
+
+async def seed_channels_async(pubnub, plain, with_custom):
+    checked(await pubnub.set_channel_metadata(channel=plain, name='some name').future())
+    checked(await pubnub.set_channel_metadata(channel=with_custom, name='some name with custom',
+                                              custom=CUSTOM_1).future())
+
+
+async def seed_users_async(pubnub, plain, with_custom):
+    checked(await pubnub.set_uuid_metadata(uuid=plain, name='some name').future())
+    checked(await pubnub.set_uuid_metadata(uuid=with_custom, name='some name with custom', custom=CUSTOM_1).future())
+
+
+async def seed_memberships_async(pubnub, uid, plain, with_custom):
+    checked(await pubnub.set_memberships(uuid=uid, channel_memberships=[
+        PNChannelMembership.channel(plain), PNChannelMembership.channel_with_custom(with_custom, CUSTOM_2)]).future())
+
+
+async def seed_one_membership_async(pubnub, uid, with_custom):
+    checked(await pubnub.set_memberships(uuid=uid, channel_memberships=[
+        PNChannelMembership.channel_with_custom(with_custom, CUSTOM_2)]).future())
+
+
+async def seed_one_member_async(pubnub, channel, with_custom):
+    checked(await pubnub.set_channel_members(channel=channel, uuids=[
+        PNUUID.uuid_with_custom(with_custom, CUSTOM_2)]).future())
+
+
+async def seed_members_async(pubnub, channel, plain, with_custom):
+    checked(await pubnub.set_channel_members(channel=channel, uuids=[
+        PNUUID.uuid(plain), PNUUID.uuid_with_custom(with_custom, CUSTOM_2)]).future())

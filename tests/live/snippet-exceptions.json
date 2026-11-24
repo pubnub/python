@@ -6,11 +6,6 @@
       "docset": "sync",
       "page": "test_encryption.py",
       "reason": "The asyncio docset has no encryption page. The crypto module is configured the same way for both clients."
-    },
-    {
-      "docset": "sync",
-      "page": "test_objects.py",
-      "reason": "The asyncio docset has no App Context page with embedded samples."
     }
   ]
 }

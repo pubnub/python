@@ -71,11 +71,9 @@ def test_get_all_uuid_metadata_builder(clients):
 
         # snippet.get_all_uuid_metadata_builder
         from pubnub.models.consumer.objects_v2.sort import PNSortKey, PNSortKeyValue
-        result = pubnub.get_all_uuid_metadata() \
-            .include_custom(True) \
+        result = pubnub.get_all_uuid_metadata(include_custom=True, include_total_count=True) \
             .limit(10) \
             .filter("name == 'doc_type'") \
-            .include_total_count(True) \
             .sort(PNSortKey.asc(PNSortKeyValue.ID), PNSortKey.desc(PNSortKeyValue.UPDATED)) \
             .page(None) \
             .sync()
@@ -156,9 +154,7 @@ def test_get_uuid_metadata_builder(clients):
                    .result.data['custom'], {'team': 'other'}, 'other profile visible')
 
         # snippet.get_uuid_metadata_builder
-        envelope = pubnub.get_uuid_metadata() \
-            .include_custom(True) \
-            .sync()
+        envelope = pubnub.get_uuid_metadata(include_custom=True).sync()
         # snippet.end
 
         data = envelope.result.data
@@ -197,8 +193,7 @@ def test_set_uuid_metadata_builder(clients):
         seen = watch(clients, first)
 
         # snippet.set_uuid_metadata_builder
-        envelope = pubnub.set_uuid_metadata() \
-            .include_custom(True) \
+        envelope = pubnub.set_uuid_metadata(include_custom=True) \
             .uuid("some_uuid") \
             .set_name("Some Name") \
             .set_status("Active") \
@@ -324,11 +319,9 @@ def test_get_all_channel_metadata_builder(clients):
 
         # snippet.get_all_channel_metadata_builder
         from pubnub.models.consumer.objects_v2.sort import PNSortKey, PNSortKeyValue
-        envelope = pubnub.get_all_channel_metadata() \
-            .include_custom(True) \
+        envelope = pubnub.get_all_channel_metadata(include_custom=True, include_total_count=True) \
             .limit(10) \
             .filter("name == 'doc_type'") \
-            .include_total_count(True) \
             .sort(PNSortKey.asc(PNSortKeyValue.ID), PNSortKey.desc(PNSortKeyValue.UPDATED)) \
             .page(None) \
             .sync()
@@ -388,8 +381,7 @@ def test_get_channel_metadata_builder(clients):
                    .result.data['custom'], {'topic': 'docs'}, 'channel visible')
 
         # snippet.get_channel_metadata_builder
-        envelope = pubnub.get_channel_metadata() \
-            .include_custom(True) \
+        envelope = pubnub.get_channel_metadata(include_custom=True) \
             .channel("channel_id") \
             .sync()
         # snippet.end
@@ -425,8 +417,7 @@ def test_set_channel_metadata_builder(clients):
         seen = watch(clients, first)
 
         # snippet.set_channel_metadata_builder
-        envelope = pubnub.set_channel_metadata() \
-            .include_custom(True) \
+        envelope = pubnub.set_channel_metadata(include_custom=True) \
             .channel("channel_id") \
             .set_name("Channel Name") \
             .set_status("Archived") \
@@ -731,15 +722,14 @@ def test_remove_memberships_builder(clients):
         seen = watch(clients, first)
 
         # snippet.remove_memberships_builder
-        from pubnub.endpoints.objects_v2.objects_endpoint import ChannelIncludeEndpoint
+        from pubnub.models.consumer.objects_v2.common import MembershipIncludes
         from pubnub.models.consumer.objects_v2.memberships import PNChannelMembership
         some_channel = "somechannel"
 
         envelope = pubnub.remove_memberships() \
             .uuid("some_uuid") \
             .channel_memberships([PNChannelMembership.channel(some_channel)]) \
-            .include_custom(True) \
-            .include_channel(ChannelIncludeEndpoint.CHANNEL_WITH_CUSTOM) \
+            .include(MembershipIncludes(custom=True, channel=True, channel_custom=True)) \
             .sync()
         # snippet.end
 
@@ -904,7 +894,7 @@ def test_set_channel_members_builder(clients):
         seen = watch(clients, first)
 
         # snippet.set_channel_members_builder
-        from pubnub.models.consumer.objects_v2.channel_members import PNUUID
+        from pubnub.models.consumer.objects_v2.channel_members import PNUserMember
         from pubnub.models.consumer.objects_v2.common import MemberIncludes
         pubnub.set_uuid_metadata() \
             .uuid("some_uuid") \
@@ -928,8 +918,8 @@ def test_set_channel_members_builder(clients):
         }
 
         uuids_to_set = [
-            PNUUID.uuid("some_uuid"),
-            PNUUID.uuid_with_custom("some_uuid_with_custom", custom_2)
+            PNUserMember(user_id="some_uuid"),
+            PNUserMember(user_id="some_uuid_with_custom", custom=custom_2)
         ]
 
         envelope = pubnub.set_channel_members() \
@@ -948,7 +938,7 @@ def test_set_channel_members_builder(clients):
 
         # snippet.set_channel_members_named
         from pubnub.models.consumer.objects_v2.common import MemberIncludes
-        from pubnub.models.consumer.objects_v2.channel_members import PNUUID
+        from pubnub.models.consumer.objects_v2.channel_members import PNUserMember
 
         pubnub.set_uuid_metadata(uuid="some_uuid", name="some name").sync()
 
@@ -968,8 +958,8 @@ def test_set_channel_members_builder(clients):
         }
 
         uuids_to_set = [
-            PNUUID.uuid("some_uuid"),
-            PNUUID.uuid_with_custom("some_uuid_with_custom", custom_2)
+            PNUserMember(user_id="some_uuid"),
+            PNUserMember(user_id="some_uuid_with_custom", custom=custom_2)
         ]
 
         envelope = pubnub.set_channel_members(channel="channel_id_named",
@@ -990,7 +980,7 @@ def test_set_channel_members_builder(clients):
         record(uuids=[extra])
         try:
             pubnub.set_uuid_metadata(uuid=extra, name='extra').sync()
-            added = pubnub.set_channel_members(channel=first, uuids=[PNUUID.uuid(extra)]).sync()
+            added = pubnub.set_channel_members(channel=first, uuids=[PNUserMember(user_id=extra)]).sync()
             a.eq(sorted(member_ids(added.result.data)), sorted([plain, with_custom, extra]), 'set keeps the others')
         finally:
             cleanup(pubnub, [extra], [])
@@ -1019,13 +1009,12 @@ def test_remove_channel_members_builder(clients):
         seen = watch(clients, first)
 
         # snippet.remove_channel_members_builder
-        from pubnub.endpoints.objects_v2.objects_endpoint import UUIDIncludeEndpoint
-        from pubnub.models.consumer.objects_v2.channel_members import PNUUID
+        from pubnub.models.consumer.objects_v2.common import MemberIncludes
+        from pubnub.models.consumer.objects_v2.channel_members import PNUserMember
         envelope = pubnub.remove_channel_members() \
             .channel("channel_id") \
-            .uuids([PNUUID.uuid("some_uuid")]) \
-            .include_custom(True) \
-            .include_uuid(UUIDIncludeEndpoint.UUID_WITH_CUSTOM) \
+            .uuids([PNUserMember(user_id="some_uuid")]) \
+            .include(MemberIncludes(custom=True, user=True, user_custom=True)) \
             .sync()
         # snippet.end
 
@@ -1040,10 +1029,10 @@ def test_remove_channel_members_builder(clients):
 
         # snippet.remove_channel_members_named
         from pubnub.models.consumer.objects_v2.common import MemberIncludes
-        from pubnub.models.consumer.objects_v2.channel_members import PNUUID
+        from pubnub.models.consumer.objects_v2.channel_members import PNUserMember
 
         envelope = pubnub.remove_channel_members(channel="channel_id_named",
-                                                 uuids=[PNUUID.uuid("some_uuid")],
+                                                 uuids=[PNUserMember(user_id="some_uuid")],
                                                  include=MemberIncludes(custom=True, user=True, user_custom=True)) \
             .sync()
         # snippet.end
@@ -1077,12 +1066,12 @@ def test_manage_channel_members_builder(clients):
         seen = watch(clients, first)
 
         # snippet.manage_channel_members_builder
-        from pubnub.models.consumer.objects_v2.channel_members import PNUUID
+        from pubnub.models.consumer.objects_v2.channel_members import PNUserMember
         from pubnub.models.consumer.objects_v2.common import MemberIncludes
         envelope = pubnub.manage_channel_members() \
             .channel("channel_id") \
-            .set([PNUUID.uuid("some_uuid")]) \
-            .remove([PNUUID.uuid("some_uuid_with_custom")]) \
+            .set([PNUserMember(user_id="some_uuid")]) \
+            .remove([PNUserMember(user_id="some_uuid_with_custom")]) \
             .include(MemberIncludes(custom=True, user=True, user_custom=True)) \
             .sync()
         # snippet.end
@@ -1096,11 +1085,11 @@ def test_manage_channel_members_builder(clients):
 
         # snippet.manage_channel_members_named
         from pubnub.models.consumer.objects_v2.common import MemberIncludes
-        from pubnub.models.consumer.objects_v2.channel_members import PNUUID
+        from pubnub.models.consumer.objects_v2.channel_members import PNUserMember
 
         envelope = pubnub.manage_channel_members(channel="channel_id_named",
-                                                 uuids_to_set=[PNUUID.uuid("some_uuid")],
-                                                 uuids_to_remove=[PNUUID.uuid("some_uuid_with_custom")],
+                                                 uuids_to_set=[PNUserMember(user_id="some_uuid")],
+                                                 uuids_to_remove=[PNUserMember(user_id="some_uuid_with_custom")],
                                                  include=MemberIncludes(custom=True, user=True, user_custom=True)) \
             .sync()
         # snippet.end
@@ -1154,13 +1143,13 @@ def test_pnuuid_class(clients):
         pubnub.set_channel_metadata(channel=channel, name='Doc channel').sync()
 
         # snippet.pnuuid_class
-        from pubnub.models.consumer.objects_v2.channel_members import PNUUID
-        member = PNUUID.uuid("some_uuid")
-        member_with_custom = PNUUID.uuid_with_custom("some_uuid_with_custom", {"key5": "val1", "key6": "val2"})
+        from pubnub.models.consumer.objects_v2.channel_members import PNUserMember
+        member = PNUserMember(user_id="some_uuid")
+        member_with_custom = PNUserMember(user_id="some_uuid_with_custom", custom={"key5": "val1", "key6": "val2"})
         # snippet.end
 
-        a.eq(type(member).__name__, 'JustUUID')
-        a.eq(type(member_with_custom).__name__, 'UUIDWithCustom')
+        a.eq(type(member).__name__, 'PNUserMember')
+        a.eq(type(member_with_custom).__name__, 'PNUserMember')
         a.eq(member.to_payload_dict(), {'uuid': {'id': plain}})
         a.eq(member_with_custom.to_payload_dict(), {'uuid': {'id': with_custom}, 'custom': CUSTOM_2})
         pubnub.set_channel_members(channel=channel, uuids=[member, member_with_custom]).sync()

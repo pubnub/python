@@ -62,6 +62,7 @@ GROUPS = [
         'roles': ['open'],
         'files': [
             'sync/api_reference/test_objects.py',
+            'asyncio/api_reference/test_objects.py',
         ],
     },
     {

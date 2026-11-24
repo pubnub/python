@@ -428,6 +428,178 @@
         "mode": "live"
       }
     },
+    "tests/live/asyncio/api_reference/test_objects.py": {
+      "get_all_channel_metadata_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_all_channel_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_all_channel_metadata_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_all_channel_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_all_uuid_metadata_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_all_uuid_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_all_uuid_metadata_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_all_uuid_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_channel_members_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_channel_members_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_channel_members_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_channel_members_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_channel_metadata_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_channel_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_channel_metadata_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_channel_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_memberships_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_memberships_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_memberships_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_memberships_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_uuid_metadata_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_uuid_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "get_uuid_metadata_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_get_uuid_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "manage_channel_members_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_manage_channel_members_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "manage_channel_members_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_manage_channel_members_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "manage_memberships_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_manage_memberships_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "manage_memberships_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_manage_memberships_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "pnchannelmembership_class": {
+        "test": "asyncio/api_reference/test_objects.py::test_pnchannelmembership_class",
+        "role": "open",
+        "mode": "live"
+      },
+      "pnuuid_class": {
+        "test": "asyncio/api_reference/test_objects.py::test_pnuuid_class",
+        "role": "open",
+        "mode": "live"
+      },
+      "remove_channel_members_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_remove_channel_members_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "remove_channel_members_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_remove_channel_members_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "remove_channel_metadata_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_remove_channel_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "remove_channel_metadata_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_remove_channel_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "remove_memberships_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_remove_memberships_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "remove_memberships_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_remove_memberships_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "remove_uuid_metadata_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_remove_uuid_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "remove_uuid_metadata_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_remove_uuid_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "set_channel_members_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_set_channel_members_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "set_channel_members_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_set_channel_members_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "set_channel_metadata_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_set_channel_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "set_channel_metadata_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_set_channel_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "set_memberships_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_set_memberships_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "set_memberships_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_set_memberships_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "set_uuid_metadata_builder": {
+        "test": "asyncio/api_reference/test_objects.py::test_set_uuid_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      },
+      "set_uuid_metadata_named": {
+        "test": "asyncio/api_reference/test_objects.py::test_set_uuid_metadata_builder",
+        "role": "open",
+        "mode": "live"
+      }
+    },
     "tests/live/asyncio/api_reference/test_presence.py": {
       "get_state_builder": {
         "test": "asyncio/api_reference/test_presence.py::test_set_state_builder",

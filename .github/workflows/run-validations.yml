@@ -1,6 +1,11 @@
 name: Validations
 
-on: [push]
+on:
+  push:
+  workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   lint:
@@ -14,10 +19,13 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install Python dependencies and run acceptance tests
-        run: |
-          pip3 install --user --ignore-installed -r requirements-dev.txt
-          flake8 --exclude=scripts/,src/,.cache,.git,.idea,.tox,._trial_temp/,venv/ --ignore F811,E402
+      - name: Install Ruff
+        run: pip3 install --user "ruff==0.17.*"
+      - name: Ruff lint
+        run: ruff check .
+      - name: Cancel workflow runs for commit on error
+        if: failure()
+        uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   pubnub-yml:
     name: "Validate .pubnub.yml"
     runs-on:
@@ -36,6 +44,9 @@ jobs:
         uses: ./.github/.release/actions/actions/validators/pubnub-yml
         with:
           token: ${{ secrets.GH_TOKEN }}
+      - name: Cancel workflow runs for commit on error
+        if: failure()
+        uses: ./.github/.release/actions/actions/utils/fast-jobs-failure
   all-validations:
     name: Validations
     needs: [pubnub-yml, lint]

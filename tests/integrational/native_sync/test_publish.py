@@ -1,6 +1,5 @@
 import logging
 import unittest
-import urllib
 import urllib.parse
 
 import pubnub

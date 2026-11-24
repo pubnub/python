@@ -92,7 +92,7 @@ class LinearDelay:
     @classmethod
     def calculate(cls, attempt: int, delay=None):
         base = delay if delay is not None else cls.INTERVAL
-        return base + round(random.random(), 3)
+        return base + round(random.random(), 3)  # noqa: S311 retry jitter, not security
 
 
 class ExponentialDelay:
@@ -105,7 +105,7 @@ class ExponentialDelay:
     def calculate(cls, attempt: int, minimum_delay=None, maximum_delay=None) -> float:
         min_delay = minimum_delay if minimum_delay is not None else cls.MIN_DELAY
         max_backoff = maximum_delay if maximum_delay is not None else cls.MAX_BACKOFF
-        return min(max_backoff, min_delay * (2 ** attempt)) + round(random.random(), 3)
+        return min(max_backoff, min_delay * (2 ** attempt)) + round(random.random(), 3)  # noqa: S311
 
 
 class StateManager:

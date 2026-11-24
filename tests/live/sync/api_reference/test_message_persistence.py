@@ -7,7 +7,7 @@ import pytest
 
 from support import assertions as a
 from support.wait import eventually, settled
-from shared.message_persistence import seed, seed_parallel, wait_stored, window
+from shared.message_persistence import seed, seed_many, wait_stored, window
 
 
 def test_fetch_history_builder(clients):
@@ -96,9 +96,9 @@ def test_fetch_history_multiple(clients):
     channel = 'my_channel'
     first = 'ch1'
     second = 'ch2'
-    single = seed_parallel(pubnub, channel, 101)
-    on_first = seed_parallel(pubnub, first, 26)
-    on_second = seed_parallel(pubnub, second, 26)
+    single = seed_many(pubnub, channel, 101)
+    on_first = seed_many(pubnub, first, 26)
+    on_second = seed_many(pubnub, second, 26)
 
     def single_stored():
         got = pubnub.fetch_messages(channels=[channel], count=150).sync().result.channels[channel]

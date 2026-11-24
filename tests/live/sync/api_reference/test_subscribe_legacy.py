@@ -476,8 +476,15 @@ def test_unsubscribe_old_channel(clients):
     publisher.publish().channel(control).message('after control').sync()
     eventually(lambda: a.contains(texts(seen), 'after control', 'the control channel still delivers'))
     a.not_contains(texts(seen), 'after single', 'no message after unsubscribe')
-    eventually(lambda: a.contains([(p.event, p.uuid) for p in observer.presence_events], ('leave', pubnub.uuid),
-                                  'leave event'))
+
+    def leave_seen():
+        # The leave request is sent in the background and its status goes to the listeners of the client, so a
+        # failed request would show up there and nowhere else.
+        answers = [(s.category.name, str(s.error_data)[:100]) for s in seen.statuses if s.is_error()]
+        a.contains([(p.event, p.uuid) for p in observer.presence_events], ('leave', pubnub.uuid),
+                   f'leave event (error statuses of the unsubscribing client: {answers})')
+
+    eventually(leave_seen, timeout=PRESENCE_EVENT_TIMEOUT)
     leave = [p for p in observer.presence_events if p.event == 'leave' and p.uuid == pubnub.uuid][0]
     a.ok(isinstance(leave.timestamp, int) and isinstance(leave.occupancy, int), 'leave carries timestamp, occupancy')
 

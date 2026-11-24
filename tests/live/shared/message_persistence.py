@@ -3,7 +3,6 @@ names (NAMES, read by the janitor through support/resources.py) and the helpers 
 markers. Coroutine twins of a sync helper carry an "_async" suffix, and the asyncio tests import them under the sync
 name.
 """
-from concurrent.futures import ThreadPoolExecutor
 import asyncio
 
 from support import assertions as a
@@ -27,13 +26,16 @@ def seed(client, channel, count, **extra):
     return seeded
 
 
-def seed_parallel(client, channel, count):
-    """Publish count messages from several threads. Only the timetokens matter, they come back sorted."""
-    def one(index):
-        return int(client.publish().channel(channel).message({'n': index}).sync().result.timetoken)
+def seed_many(client, channel, count):
+    """Publish count messages one after the other and return their timetokens, oldest first.
 
-    with ThreadPoolExecutor(8) as pool:
-        return sorted(pool.map(one, range(count)))
+    One at a time on purpose: 8 threads on one client returned the same timetoken for two publishes in a CI run, so the
+    expected values no longer matched what the service stored. A duplicate fails here, with the cause, not later as a
+    mismatch of two long lists."""
+    tokens = [int(client.publish().channel(channel).message({'n': index}).sync().result.timetoken)
+              for index in range(count)]
+    a.eq(len(set(tokens)), count, f'every publish on {channel} returned its own timetoken')
+    return sorted(tokens)
 
 
 def window(client, channel, newest, oldest, **kwargs):

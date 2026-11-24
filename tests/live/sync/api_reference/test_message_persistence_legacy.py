@@ -7,7 +7,7 @@ import pytest
 
 from support import assertions as a
 from support.wait import settled
-from shared.message_persistence import check_paging, seed, seed_parallel
+from shared.message_persistence import check_paging, seed, seed_many
 
 
 def test_history_basic(clients):
@@ -82,7 +82,7 @@ def test_history_paging(clients):
     """Snippet: history_paging."""
     pubnub = clients.sync('open', 'pager')
     channel = 'history_paging_channel'
-    tokens = seed_parallel(pubnub, channel, 101)
+    tokens = seed_many(pubnub, channel, 101)
 
     def stored():
         a.eq(len(pubnub.history().channel(channel).count(100).sync().result.messages), 100)

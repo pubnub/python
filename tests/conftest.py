@@ -1,4 +1,25 @@
+import os
+
 import pytest
+
+# The live tier (tests/live/) has its own pytest.ini and needs keys and the real service. The root run never collects
+# it (scripts/run-tests.py also passes --ignore=tests/live/).
+collect_ignore = ["live"]
+
+# Offline guard. PN_OFFLINE_GUARD=1 refuses every connection that is not to the loopback address, through
+# pytest-socket (requirements-dev.txt). A test that reaches the real network then fails with SocketConnectBlockedError.
+# It is opt-in, because some tests in tests/ use the real network. Same effect:
+# py.test tests --allow-hosts=127.0.0.1,::1
+_OFFLINE = os.environ.get("PN_OFFLINE_GUARD") == "1"
+
+
+def pytest_collection_modifyitems(config, items):
+    if not _OFFLINE:
+        return
+    if not config.pluginmanager.hasplugin("socket"):
+        raise pytest.UsageError("PN_OFFLINE_GUARD=1 needs pytest-socket (pip install -r requirements-dev.txt)")
+    for item in items:
+        item.add_marker(pytest.mark.allow_hosts(["127.0.0.1", "::1"]))
 
 
 @pytest.fixture()

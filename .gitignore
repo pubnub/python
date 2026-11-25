@@ -83,3 +83,6 @@ PubNubTwisted.ipynb
 
 venv/
 reports/
+
+# Live tier (tests/live/README.md). Keys only, never commit.
+tests/live/.env.local

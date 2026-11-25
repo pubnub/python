@@ -11,7 +11,7 @@ _dname = os.path.dirname
 REPO_ROOT = _dname(_dname(os.path.abspath(__file__)))
 os.chdir(os.path.join(REPO_ROOT))
 
-tcmn = 'py.test tests --cov=pubnub --ignore=tests/manual/'
+tcmn = 'py.test tests --cov=pubnub --ignore=tests/manual/ --ignore=tests/live/'
 fcmn = 'ruff check .'
 
 

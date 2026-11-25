@@ -4,6 +4,8 @@ pycryptodomex>=3.21.0
 ruff==0.17.*
 pytest>=8.3.5
 pytest-asyncio>=1.0.0
+pytest-socket>=0.7
+pytest-timeout>=2.3
 httpx>=0.28
 h2>=4.3
 requests>=2.32.2

@@ -228,7 +228,7 @@ async def test_initialize_access_manager(aclients):
 
     pubnub = PubNubAsyncio(pnconfig)
     # snippet.end
-    a.eq(pnconfig.secret_key, 'my_secretkey')
+    a.eq(pnconfig.secret_key, environ['PUBNUB_SECRET_KEY'], 'the sample sets the secret key from the environment')
     aclients._made.append(pubnub)
 
     counter = RequestCounter()

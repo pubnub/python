@@ -177,7 +177,7 @@
       },
       "initialize_access_manager": {
         "test": "asyncio/api_reference/test_configuration.py::test_initialize_access_manager",
-        "role": "open",
+        "role": "open,pam",
         "mode": "live"
       },
       "initialize_custom_event_loop": {
@@ -1024,7 +1024,7 @@
       },
       "initialize_access_manager": {
         "test": "sync/api_reference/test_configuration.py::test_initialize_access_manager",
-        "role": "open",
+        "role": "open,pam",
         "mode": "live"
       },
       "initialize_custom_request_handler": {

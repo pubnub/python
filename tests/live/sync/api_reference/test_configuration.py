@@ -212,14 +212,17 @@ def test_initialize_read_only(clients):
 
 def test_initialize_access_manager(clients):
     """Snippet: initialize_access_manager."""
+    # The sample reads the secret key from PUBNUB_SECRET_KEY. The live tier sets it from the PAM keyset.
+    environ.setdefault('PUBNUB_SECRET_KEY', client_config('pam', 'configurer').secret_key)
     # snippet.initialize_access_manager
+    import os
     from pubnub.pnconfiguration import PNConfiguration
     from pubnub.pubnub import PubNub
 
     pnconfig = PNConfiguration()
     pnconfig.subscribe_key = "my_subkey"
     pnconfig.publish_key = "my_pubkey"
-    pnconfig.secret_key = "my_secretkey"
+    pnconfig.secret_key = os.environ["PUBNUB_SECRET_KEY"]
     pnconfig.user_id = "my_custom_user_id"
     pnconfig.ssl = True
 

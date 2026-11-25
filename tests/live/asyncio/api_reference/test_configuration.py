@@ -228,7 +228,8 @@ async def test_initialize_access_manager(aclients):
 
     pubnub = PubNubAsyncio(pnconfig)
     # snippet.end
-    a.eq(pnconfig.secret_key, environ['PUBNUB_SECRET_KEY'], 'the sample sets the secret key from the environment')
+    # a.ok, not a.eq: a.eq puts both values in the failure message, and the secret must not reach the CI log
+    a.ok(pnconfig.secret_key == environ['PUBNUB_SECRET_KEY'], 'the sample sets the secret key from the environment')
     aclients._made.append(pubnub)
 
     counter = RequestCounter()

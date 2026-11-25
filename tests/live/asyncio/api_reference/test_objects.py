@@ -1072,7 +1072,8 @@ async def test_set_channel_members_builder(aclients):
         record(uuids=[extra])
         try:
             checked(await pubnub.set_uuid_metadata(uuid=extra, name='extra').future())
-            added = checked(await pubnub.set_channel_members(channel=first, uuids=[PNUserMember(user_id=extra)]).future())
+            added = checked(
+                await pubnub.set_channel_members(channel=first, uuids=[PNUserMember(user_id=extra)]).future())
             a.eq(sorted(member_ids(added.result.data)), sorted([plain, with_custom, extra]), 'set keeps the others')
         finally:
             await cleanup(pubnub, [extra], [])

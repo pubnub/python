@@ -82,5 +82,7 @@ async def listed_ids_async(pubnub):
 
 
 def fetch(url):
-    with urllib.request.urlopen(url, timeout=30) as served:
+    if not url.startswith('https://'):
+        raise ValueError('only https URLs are fetched')
+    with urllib.request.urlopen(url, timeout=30) as served:  # nosec B310: scheme checked above
         return served.status, served.read()

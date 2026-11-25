@@ -23,7 +23,7 @@ from shared.encryption import CBC_HEADER_B64, FIXTURE_BYTES, only_message, reade
 def test_crypto_module_aes_cbc(clients):
     """Snippet: crypto_module_aes_cbc."""
     channel = 'my_channel'
-    secret = {'secret': 'knights who say ni'}
+    payload = {'text': 'knights who say ni'}
     config = client_config('open', 'encrypting_publisher')
 
     # snippet.crypto_module_aes_cbc
@@ -44,15 +44,15 @@ def test_crypto_module_aes_cbc(clients):
     no_key = listen(reader(clients, 'no_key'), channel)
     wrong_key = listen(reader(clients, 'wrong_key', AesCbcCryptoModule, key='another_cipher_key'), channel)
 
-    envelope = pubnub.publish().channel(channel).message(secret).sync()
+    envelope = pubnub.publish().channel(channel).message(payload).sync()
 
     a.timetoken(envelope.result.timetoken)
-    a.eq(only_message(same_key), secret, 'a subscriber with the same key reads the message')
+    a.eq(only_message(same_key), payload, 'a subscriber with the same key reads the message')
     unreadable = only_message(no_key)
     a.ok(isinstance(unreadable, str) and unreadable.startswith(CBC_HEADER_B64), 'without a key the 256-bit payload')
     a.ok('ni' not in unreadable, 'the plain text is not in the payload')
     a.ok(isinstance(only_message(wrong_key), str), 'a wrong key leaves the payload encrypted')
-    a.ok(only_message(wrong_key) != secret, 'a wrong key does not read the message')
+    a.ok(only_message(wrong_key) != payload, 'a wrong key does not read the message')
     a.ok(wrong_key.messages[0].error is not None, 'the wrong key is reported as an error on the message')
     a.contains(wrong_key.categories, PNStatusCategory.PNDecryptionErrorCategory, 'decryption error status')
 
@@ -60,7 +60,7 @@ def test_crypto_module_aes_cbc(clients):
 def test_crypto_module_legacy(clients):
     """Snippet: crypto_module_legacy."""
     channel = 'my_channel'
-    secret = {'secret': 'legacy knights'}
+    payload = {'text': 'legacy knights'}
     config = client_config('open', 'legacy_publisher')
 
     # snippet.crypto_module_legacy
@@ -81,14 +81,14 @@ def test_crypto_module_legacy(clients):
     cbc_reader = listen(reader(clients, 'cbc_reader', AesCbcCryptoModule), channel)
     no_key = listen(reader(clients, 'no_key'), channel)
 
-    pubnub.publish().channel(channel).message(secret).sync()
+    pubnub.publish().channel(channel).message(payload).sync()
 
-    a.eq(only_message(legacy_reader), secret, 'the legacy module reads its own payload')
-    a.eq(only_message(cbc_reader), secret, 'the 256-bit module reads the legacy payload')
+    a.eq(only_message(legacy_reader), payload, 'the legacy module reads its own payload')
+    a.eq(only_message(cbc_reader), payload, 'the 256-bit module reads the legacy payload')
     unreadable = only_message(no_key)
     a.ok(isinstance(unreadable, str), 'without a key the payload is a string')
     a.ok(not unreadable.startswith(CBC_HEADER_B64), 'the legacy payload has no 256-bit header')
-    a.ok(unreadable != secret and 'legacy' not in unreadable, 'the plain text is not in the payload')
+    a.ok(unreadable != payload and 'legacy' not in unreadable, 'the plain text is not in the payload')
 
     # The other direction: a message from a 256-bit client is readable by the legacy module
     cbc_config = client_config('open', 'cbc_publisher')
@@ -215,7 +215,6 @@ def test_cipher_mode_experiment(clients, monkeypatch, capsys):
 
     channel = 'cipher_algorithm_experiment'
 
-
     def PNFactory(cipher_mode=AES.MODE_GCM, fallback_cipher_mode=AES.MODE_CBC) -> PubNub:
         config = PNConfiguration()
         config.publish_key = getenv('PN_KEY_PUBLISH')
@@ -227,7 +226,6 @@ def test_cipher_mode_experiment(clients, monkeypatch, capsys):
         config.fallback_cipher_mode = fallback_cipher_mode
 
         return PubNub(config)
-
 
     # let's build history with legacy AES.CBC
     pn = PNFactory(cipher_mode=AES.MODE_CBC, fallback_cipher_mode=None)

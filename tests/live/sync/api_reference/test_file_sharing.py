@@ -5,11 +5,12 @@ be compared byte for byte.
 """
 import os
 import tempfile
-import urllib.request
 
 from support import assertions as a
 from support.wait import eventually, settled
-from shared.file_sharing import FIXTURE, FIXTURE_BYTES, channel_name, listed_ids, remove, stored_file_messages, upload
+from shared.file_sharing import (
+    FIXTURE, FIXTURE_BYTES, channel_name, fetch, listed_ids, remove, stored_file_messages, upload,
+)
 
 
 def test_send_file_builder(clients, monkeypatch):
@@ -129,9 +130,9 @@ def test_get_file_url_builder(clients):
         for url in (url_builder, url_named):
             a.ok(url.startswith('https://'), 'url scheme')
             a.contains(url, uploaded.file_id)
-            with urllib.request.urlopen(url, timeout=30) as served:
-                a.eq(served.status, 200, 'the url serves the file')
-                a.eq(served.read(), FIXTURE_BYTES, 'the url serves the same bytes')
+            status, body = fetch(url)
+            a.eq(status, 200, 'the url serves the file')
+            a.eq(body, FIXTURE_BYTES, 'the url serves the same bytes')
     finally:
         remove(pubnub, uploaded)
 

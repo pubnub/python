@@ -3,6 +3,7 @@
 Roles: 'open' (no Access Manager), 'pam' (Access Manager keyset, with the secret key unless secret=False). User ids are
 the literal names the tests pass in, there is no run suffix.
 """
+import logging
 import threading
 import time
 
@@ -86,7 +87,7 @@ class BaseClients:
                     request.channel_groups(groups)
                 request.sync()
             except Exception:  # best effort: the janitor and the presence timeout are the backstop
-                pass
+                logging.getLogger(__name__).debug('leave failed, janitor and presence timeout clean up', exc_info=True)
             finally:
                 leaver.stop()
 
